@@ -19,464 +19,432 @@
   ],
   "sections": {},
   "groups": [
-    "Ecrins",
-    "Illustrations",
-    "Encre",
-    "Papier",
-    "Scenes",
-    "Choix"
+    "Pages",
+    "Photos",
+    "Affiches",
+    "Papier"
   ],
   "assetGroups": {
-    "Ecrins": {
-      "name": "Écrins",
+    "Pages": {
+      "name": "Pages cuites",
       "tile": "m",
       "order": [
-        "cloche/a/back.webp",
-        "cloche/a/dome.webp",
-        "cloche/a/domeBack.webp",
-        "cloche/a/front.webp",
-        "cloche/a/glint.webp",
-        "cloche/a/mask-soft.webp"
+        "1x/fin-droite.webp",
+        "1x/fin-gauche.webp",
+        "1x/julie-droite.webp",
+        "1x/julie-gauche.webp",
+        "1x/lisa-droite.webp",
+        "1x/lisa-feuillet-recto.webp",
+        "1x/lisa-feuillet-verso.webp",
+        "1x/lisa-gauche.webp",
+        "1x/mathis-droite.webp",
+        "1x/mathis-gauche.webp",
+        "1x/papier/c-lisa-recto.webp",
+        "1x/papier/c-lisa-verso.webp",
+        "1x/papier/f11.webp",
+        "1x/papier/f13.webp",
+        "1x/papier/f15.webp",
+        "1x/papier/f17.webp",
+        "1x/papier/f19.webp",
+        "1x/papier/f9.webp",
+        "1x/rose-droite.webp",
+        "1x/rose-gauche.webp",
+        "fin-droite.webp",
+        "fin-gauche.webp",
+        "julie-droite.webp",
+        "julie-gauche.webp",
+        "lisa-droite.webp",
+        "lisa-feuillet-recto.webp",
+        "lisa-feuillet-verso.webp",
+        "lisa-gauche.webp",
+        "mathis-droite.webp",
+        "mathis-gauche.webp",
+        "papier/c-lisa-recto.webp",
+        "papier/c-lisa-verso.webp",
+        "papier/f11.webp",
+        "papier/f13.webp",
+        "papier/f15.webp",
+        "papier/f17.webp",
+        "papier/f19.webp",
+        "papier/f9.webp",
+        "rose-droite.webp",
+        "rose-gauche.webp"
       ],
       "files": {
-        "cloche/a/back.webp": {
-          "name": "cloche/a/back.webp",
-          "blob": "86162858aa2ac50b9af9f0cbdda87dbe",
-          "size": 32792,
+        "1x/fin-droite.webp": {
+          "name": "1x/fin-droite.webp",
+          "blob": "4a8a07e096f386c617d0ece02028aec7",
+          "size": 12088,
           "type": "image/webp"
         },
-        "cloche/a/dome.webp": {
-          "name": "cloche/a/dome.webp",
-          "blob": "0892aace203c466e1b9fa79197258881",
-          "size": 48240,
+        "1x/fin-gauche.webp": {
+          "name": "1x/fin-gauche.webp",
+          "blob": "d060138925eb782f1462c625888d58dd",
+          "size": 38074,
           "type": "image/webp"
         },
-        "cloche/a/domeBack.webp": {
-          "name": "cloche/a/domeBack.webp",
-          "blob": "425e9d872aeba5073f1b22104384e9e8",
-          "size": 12726,
+        "1x/julie-droite.webp": {
+          "name": "1x/julie-droite.webp",
+          "blob": "1471dfe4286ca9db8466159174a4741d",
+          "size": 70768,
           "type": "image/webp"
         },
-        "cloche/a/front.webp": {
-          "name": "cloche/a/front.webp",
-          "blob": "ba12db6f0ca677a97d4a6bb57f9d4cb4",
-          "size": 40448,
+        "1x/julie-gauche.webp": {
+          "name": "1x/julie-gauche.webp",
+          "blob": "ec867c26e0bea41bcec29e036b2ebae6",
+          "size": 40592,
           "type": "image/webp"
         },
-        "cloche/a/glint.webp": {
-          "name": "cloche/a/glint.webp",
-          "blob": "1121f50b80534fb4ba6a7a7434961b6c",
-          "size": 7278,
+        "1x/lisa-droite.webp": {
+          "name": "1x/lisa-droite.webp",
+          "blob": "02b90fd9aab752a89e50a08e6fcb8fb9",
+          "size": 55084,
           "type": "image/webp"
         },
-        "cloche/a/mask-soft.webp": {
-          "name": "cloche/a/mask-soft.webp",
-          "blob": "54f31dd4cb84bcbabe459d5ab0989d17",
-          "size": 6822,
+        "1x/lisa-feuillet-recto.webp": {
+          "name": "1x/lisa-feuillet-recto.webp",
+          "blob": "5ae660f2d35b66f5e61ef5ac81ab2dda",
+          "size": 85310,
+          "type": "image/webp"
+        },
+        "1x/lisa-feuillet-verso.webp": {
+          "name": "1x/lisa-feuillet-verso.webp",
+          "blob": "7eab35ec42bb0f42e42e5a2980754098",
+          "size": 81314,
+          "type": "image/webp"
+        },
+        "1x/lisa-gauche.webp": {
+          "name": "1x/lisa-gauche.webp",
+          "blob": "396384c92322ed346b831ec087a602f3",
+          "size": 27088,
+          "type": "image/webp"
+        },
+        "1x/mathis-droite.webp": {
+          "name": "1x/mathis-droite.webp",
+          "blob": "134139bdee606cab45660fe35ef8ce62",
+          "size": 44374,
+          "type": "image/webp"
+        },
+        "1x/mathis-gauche.webp": {
+          "name": "1x/mathis-gauche.webp",
+          "blob": "a06201fe0f70e3e212e6ecf501376e66",
+          "size": 85338,
+          "type": "image/webp"
+        },
+        "1x/papier/c-lisa-recto.webp": {
+          "name": "1x/papier/c-lisa-recto.webp",
+          "blob": "d736f332e71513e9de0db299747b7bf6",
+          "size": 27448,
+          "type": "image/webp"
+        },
+        "1x/papier/c-lisa-verso.webp": {
+          "name": "1x/papier/c-lisa-verso.webp",
+          "blob": "6d25e382e582de2a579d01658b73caf3",
+          "size": 27092,
+          "type": "image/webp"
+        },
+        "1x/papier/f11.webp": {
+          "name": "1x/papier/f11.webp",
+          "blob": "46cd89a35dfbb4d59dc93f9e595b0105",
+          "size": 25676,
+          "type": "image/webp"
+        },
+        "1x/papier/f13.webp": {
+          "name": "1x/papier/f13.webp",
+          "blob": "fd9216490f6ba5e020ae5f4de7240912",
+          "size": 21466,
+          "type": "image/webp"
+        },
+        "1x/papier/f15.webp": {
+          "name": "1x/papier/f15.webp",
+          "blob": "f2363826bfe76f3a19720e20970548c3",
+          "size": 26336,
+          "type": "image/webp"
+        },
+        "1x/papier/f17.webp": {
+          "name": "1x/papier/f17.webp",
+          "blob": "0d80410ca5e982b37cadc0944bcc8f91",
+          "size": 30598,
+          "type": "image/webp"
+        },
+        "1x/papier/f19.webp": {
+          "name": "1x/papier/f19.webp",
+          "blob": "809323baa50be71edb6625da1cb58041",
+          "size": 56198,
+          "type": "image/webp"
+        },
+        "1x/papier/f9.webp": {
+          "name": "1x/papier/f9.webp",
+          "blob": "95008163ea1611de9a0d2d954932c54b",
+          "size": 23430,
+          "type": "image/webp"
+        },
+        "1x/rose-droite.webp": {
+          "name": "1x/rose-droite.webp",
+          "blob": "6ef6b0273243f0b5f4c50bda96a6a4c5",
+          "size": 86286,
+          "type": "image/webp"
+        },
+        "1x/rose-gauche.webp": {
+          "name": "1x/rose-gauche.webp",
+          "blob": "98b3880539cc6dfee843ae4c24bdfbd1",
+          "size": 70440,
+          "type": "image/webp"
+        },
+        "fin-droite.webp": {
+          "name": "fin-droite.webp",
+          "blob": "9163d71807d10ea617b4d0e293f9108a",
+          "size": 33010,
+          "type": "image/webp"
+        },
+        "fin-gauche.webp": {
+          "name": "fin-gauche.webp",
+          "blob": "6c0913ea49a62ff8f707566b792cc87e",
+          "size": 98718,
+          "type": "image/webp"
+        },
+        "julie-droite.webp": {
+          "name": "julie-droite.webp",
+          "blob": "02cf1352cf74104f350d4140d13f3794",
+          "size": 190786,
+          "type": "image/webp"
+        },
+        "julie-gauche.webp": {
+          "name": "julie-gauche.webp",
+          "blob": "4eaa4b024d5a9abba2a0be03cfca187d",
+          "size": 110964,
+          "type": "image/webp"
+        },
+        "lisa-droite.webp": {
+          "name": "lisa-droite.webp",
+          "blob": "e64ca4c971395b8737d6d8f3ed1abf77",
+          "size": 162026,
+          "type": "image/webp"
+        },
+        "lisa-feuillet-recto.webp": {
+          "name": "lisa-feuillet-recto.webp",
+          "blob": "5a74faecc02dfdec1ba11aef823678de",
+          "size": 237400,
+          "type": "image/webp"
+        },
+        "lisa-feuillet-verso.webp": {
+          "name": "lisa-feuillet-verso.webp",
+          "blob": "b2ae22faa94de7519f61e8e4c947ba4f",
+          "size": 224312,
+          "type": "image/webp"
+        },
+        "lisa-gauche.webp": {
+          "name": "lisa-gauche.webp",
+          "blob": "492cf8a6fa8f4591936ff9b36b2d3e73",
+          "size": 80364,
+          "type": "image/webp"
+        },
+        "mathis-droite.webp": {
+          "name": "mathis-droite.webp",
+          "blob": "7324d4ca264e6ce9caea8fa32ac6b72c",
+          "size": 117766,
+          "type": "image/webp"
+        },
+        "mathis-gauche.webp": {
+          "name": "mathis-gauche.webp",
+          "blob": "8b31ea74befa99dae7b2f73b2aa60723",
+          "size": 246344,
+          "type": "image/webp"
+        },
+        "papier/c-lisa-recto.webp": {
+          "name": "papier/c-lisa-recto.webp",
+          "blob": "4b7efdcbc868502ea0f0e97b7c460022",
+          "size": 104386,
+          "type": "image/webp"
+        },
+        "papier/c-lisa-verso.webp": {
+          "name": "papier/c-lisa-verso.webp",
+          "blob": "a3560288f9d17d9d0ce4b151da34304f",
+          "size": 98174,
+          "type": "image/webp"
+        },
+        "papier/f11.webp": {
+          "name": "papier/f11.webp",
+          "blob": "bc1e4a3d534109903f3daf2f406ad377",
+          "size": 170940,
+          "type": "image/webp"
+        },
+        "papier/f13.webp": {
+          "name": "papier/f13.webp",
+          "blob": "5cca9329f613e963b756eb0ab7fdf1d6",
+          "size": 154164,
+          "type": "image/webp"
+        },
+        "papier/f15.webp": {
+          "name": "papier/f15.webp",
+          "blob": "cc8fd2ce7ba50462fbdccaedb1981279",
+          "size": 258728,
+          "type": "image/webp"
+        },
+        "papier/f17.webp": {
+          "name": "papier/f17.webp",
+          "blob": "96f01fc349790c17c38109b7ac2a1742",
+          "size": 254562,
+          "type": "image/webp"
+        },
+        "papier/f19.webp": {
+          "name": "papier/f19.webp",
+          "blob": "0d8c8163b3091bc668927fc743e90aa6",
+          "size": 335284,
+          "type": "image/webp"
+        },
+        "papier/f9.webp": {
+          "name": "papier/f9.webp",
+          "blob": "6252388a726ef2a914740fa998084719",
+          "size": 165324,
+          "type": "image/webp"
+        },
+        "rose-droite.webp": {
+          "name": "rose-droite.webp",
+          "blob": "a8fabebb8bcdfe8c8f6df986d603a4aa",
+          "size": 244056,
+          "type": "image/webp"
+        },
+        "rose-gauche.webp": {
+          "name": "rose-gauche.webp",
+          "blob": "c5ae7416b6d4d80a37812750eb9788d5",
+          "size": 211610,
           "type": "image/webp"
         }
       }
     },
-    "Illustrations": {
-      "name": "Illustrations",
+    "Photos": {
+      "name": "Photos collées",
       "tile": "m",
       "order": [
-        "essai/cake-citron.webp",
-        "portraits/julie.webp"
+        "bernard/coins.webp",
+        "bernard/tirage.webp",
+        "julie/coins.webp",
+        "julie/tirage.webp",
+        "lisa/coins.webp",
+        "lisa/tirage.webp",
+        "mathis/coins.webp",
+        "mathis/tirage.webp",
+        "rose/coins.webp",
+        "rose/tirage.webp"
       ],
       "files": {
-        "essai/cake-citron.webp": {
-          "name": "essai/cake-citron.webp",
-          "blob": "11eccab1fdcd647155c3e3a078233446",
-          "size": 79278,
+        "bernard/coins.webp": {
+          "name": "bernard/coins.webp",
+          "blob": "863c2e95d704e373bac91af154409dd0",
+          "size": 15862,
           "type": "image/webp"
         },
-        "portraits/julie.webp": {
-          "name": "portraits/julie.webp",
-          "blob": "6e9f0ec768da38d2f912297e5b5d3630",
-          "size": 175148,
+        "bernard/tirage.webp": {
+          "name": "bernard/tirage.webp",
+          "blob": "27ea86f20df325ef8c59ef9e4faa208b",
+          "size": 150844,
+          "type": "image/webp"
+        },
+        "julie/coins.webp": {
+          "name": "julie/coins.webp",
+          "blob": "1b6170fa48e4af6d3d77a77256bf19b6",
+          "size": 13822,
+          "type": "image/webp"
+        },
+        "julie/tirage.webp": {
+          "name": "julie/tirage.webp",
+          "blob": "fa13677f75bb81609dfeb5063350ce54",
+          "size": 150662,
+          "type": "image/webp"
+        },
+        "lisa/coins.webp": {
+          "name": "lisa/coins.webp",
+          "blob": "423a25216b61f8196348549fa6da25e2",
+          "size": 30820,
+          "type": "image/webp"
+        },
+        "lisa/tirage.webp": {
+          "name": "lisa/tirage.webp",
+          "blob": "17149e5b3e53085fec9284258d208582",
+          "size": 128760,
+          "type": "image/webp"
+        },
+        "mathis/coins.webp": {
+          "name": "mathis/coins.webp",
+          "blob": "193a032fae21deb854f4d188266915cb",
+          "size": 28506,
+          "type": "image/webp"
+        },
+        "mathis/tirage.webp": {
+          "name": "mathis/tirage.webp",
+          "blob": "5078d14f82b5676c68d9f3dfae604b23",
+          "size": 137704,
+          "type": "image/webp"
+        },
+        "rose/coins.webp": {
+          "name": "rose/coins.webp",
+          "blob": "27a13d8aafe59923e725430244b2cdd9",
+          "size": 24088,
+          "type": "image/webp"
+        },
+        "rose/tirage.webp": {
+          "name": "rose/tirage.webp",
+          "blob": "13143bec8cd9cf46b39de48961e76f50",
+          "size": 187094,
           "type": "image/webp"
         }
       }
     },
-    "Encre": {
-      "name": "Encre",
+    "Affiches": {
+      "name": "Affiches des vidéos",
       "tile": "m",
       "order": [
-        "grain.webp"
+        "bernard-affiche.webp",
+        "julie-affiche.webp",
+        "lisa-affiche.webp",
+        "mathis-affiche.webp",
+        "rose-affiche.webp"
       ],
       "files": {
-        "grain.webp": {
-          "name": "grain.webp",
-          "blob": "2be83422e3f59555f939ca40c80c90ac",
-          "size": 43778,
+        "bernard-affiche.webp": {
+          "name": "bernard-affiche.webp",
+          "blob": "f8007d569a8570b2e5c5d0dd99fde909",
+          "size": 40926,
+          "type": "image/webp"
+        },
+        "julie-affiche.webp": {
+          "name": "julie-affiche.webp",
+          "blob": "fce13875a8120dc62be66d96912582b4",
+          "size": 54512,
+          "type": "image/webp"
+        },
+        "lisa-affiche.webp": {
+          "name": "lisa-affiche.webp",
+          "blob": "2c054371e0b85c5c67e3c8d5115edccb",
+          "size": 26142,
+          "type": "image/webp"
+        },
+        "mathis-affiche.webp": {
+          "name": "mathis-affiche.webp",
+          "blob": "74a9fef7b694fe8f7088ad23a06c6755",
+          "size": 49572,
+          "type": "image/webp"
+        },
+        "rose-affiche.webp": {
+          "name": "rose-affiche.webp",
+          "blob": "05635ddd1a404d269fe9c5ad3658c642",
+          "size": 85402,
           "type": "image/webp"
         }
       }
     },
     "Papier": {
-      "name": "Papier ancien",
+      "name": "Papier",
       "tile": "m",
       "order": [
-        "age.webp",
-        "base.webp",
-        "cockle-1-light.webp",
-        "cockle-1-shade.webp",
-        "cockle-2-light.webp",
-        "cockle-2-shade.webp",
-        "cockle-3-light.webp",
-        "cockle-3-shade.webp",
-        "cockle-4-light.webp",
-        "cockle-4-shade.webp",
-        "cockle-5-light.webp",
-        "cockle-5-shade.webp",
-        "cockle-6-light.webp",
-        "cockle-6-shade.webp",
-        "fox-1.webp",
-        "fox-10.webp",
-        "fox-11.webp",
-        "fox-12.webp",
-        "fox-2.webp",
-        "fox-3.webp",
-        "fox-4.webp",
-        "fox-5.webp",
-        "fox-6.webp",
-        "fox-7.webp",
-        "fox-8.webp",
-        "fox-9.webp",
-        "tide-1.webp",
-        "tide-2.webp",
-        "tide-3.webp",
-        "tide-4.webp",
-        "tide-5.webp"
+        "base.webp"
       ],
       "files": {
-        "age.webp": {
-          "name": "age.webp",
-          "blob": "87d22759b7d849f8d890a289a238c7a6",
-          "size": 25164,
-          "type": "image/webp"
-        },
         "base.webp": {
           "name": "base.webp",
           "blob": "f64423f22e27ad044f885cb81dd62c0d",
           "size": 75854,
-          "type": "image/webp"
-        },
-        "cockle-1-light.webp": {
-          "name": "cockle-1-light.webp",
-          "blob": "8add065ad54cb294118dcd6171223104",
-          "size": 23550,
-          "type": "image/webp"
-        },
-        "cockle-1-shade.webp": {
-          "name": "cockle-1-shade.webp",
-          "blob": "6bfaffc16d19f9b97af94e9fb0d896d0",
-          "size": 9984,
-          "type": "image/webp"
-        },
-        "cockle-2-light.webp": {
-          "name": "cockle-2-light.webp",
-          "blob": "cddb810344465522aa426684a338e10f",
-          "size": 23562,
-          "type": "image/webp"
-        },
-        "cockle-2-shade.webp": {
-          "name": "cockle-2-shade.webp",
-          "blob": "376971c3118103524559d0555c9cd748",
-          "size": 16312,
-          "type": "image/webp"
-        },
-        "cockle-3-light.webp": {
-          "name": "cockle-3-light.webp",
-          "blob": "a059c83283ca2ed6ce3bbeb526a88373",
-          "size": 21204,
-          "type": "image/webp"
-        },
-        "cockle-3-shade.webp": {
-          "name": "cockle-3-shade.webp",
-          "blob": "21e61c3fc1e4cf072144be9bfa81c572",
-          "size": 11934,
-          "type": "image/webp"
-        },
-        "cockle-4-light.webp": {
-          "name": "cockle-4-light.webp",
-          "blob": "6b279fb8a7a6635cfb627f8daf21049d",
-          "size": 26468,
-          "type": "image/webp"
-        },
-        "cockle-4-shade.webp": {
-          "name": "cockle-4-shade.webp",
-          "blob": "66065a8b2369297c75494ca4617c4b03",
-          "size": 12556,
-          "type": "image/webp"
-        },
-        "cockle-5-light.webp": {
-          "name": "cockle-5-light.webp",
-          "blob": "9163ba8a4daa7e6b6a20151c3e7fbed7",
-          "size": 29420,
-          "type": "image/webp"
-        },
-        "cockle-5-shade.webp": {
-          "name": "cockle-5-shade.webp",
-          "blob": "702870078808cd307e6a5759bbf62c0c",
-          "size": 13518,
-          "type": "image/webp"
-        },
-        "cockle-6-light.webp": {
-          "name": "cockle-6-light.webp",
-          "blob": "dfaba0c6a6d1fa3a647d4b7c7923e593",
-          "size": 24986,
-          "type": "image/webp"
-        },
-        "cockle-6-shade.webp": {
-          "name": "cockle-6-shade.webp",
-          "blob": "b5ca2abf0f4d6217d4012e1e759e607d",
-          "size": 12528,
-          "type": "image/webp"
-        },
-        "fox-1.webp": {
-          "name": "fox-1.webp",
-          "blob": "4523fdbc31d039bd61ce9b83dfe3d3a1",
-          "size": 3368,
-          "type": "image/webp"
-        },
-        "fox-10.webp": {
-          "name": "fox-10.webp",
-          "blob": "8562a4e817e65c7453eb280661d5a879",
-          "size": 2638,
-          "type": "image/webp"
-        },
-        "fox-11.webp": {
-          "name": "fox-11.webp",
-          "blob": "20c55382ae4aa214e063305acfa99349",
-          "size": 1838,
-          "type": "image/webp"
-        },
-        "fox-12.webp": {
-          "name": "fox-12.webp",
-          "blob": "e85f25dcd74e7e4d64550905c9c11949",
-          "size": 2494,
-          "type": "image/webp"
-        },
-        "fox-2.webp": {
-          "name": "fox-2.webp",
-          "blob": "d7ed2184cd02ba07607b769f87b2f4d5",
-          "size": 2882,
-          "type": "image/webp"
-        },
-        "fox-3.webp": {
-          "name": "fox-3.webp",
-          "blob": "6c6a61fea945686a77faa2d74fd12485",
-          "size": 2310,
-          "type": "image/webp"
-        },
-        "fox-4.webp": {
-          "name": "fox-4.webp",
-          "blob": "b2b025a2694ef02a5ce04bb212f49847",
-          "size": 2406,
-          "type": "image/webp"
-        },
-        "fox-5.webp": {
-          "name": "fox-5.webp",
-          "blob": "c26dce86a9ae0bb01e0e7e0ef4a26c1e",
-          "size": 3854,
-          "type": "image/webp"
-        },
-        "fox-6.webp": {
-          "name": "fox-6.webp",
-          "blob": "0c6a62e048d71818644bf4192cd5773b",
-          "size": 3630,
-          "type": "image/webp"
-        },
-        "fox-7.webp": {
-          "name": "fox-7.webp",
-          "blob": "7f5340007ee3c39ef1f5f3d7ab71c62a",
-          "size": 2648,
-          "type": "image/webp"
-        },
-        "fox-8.webp": {
-          "name": "fox-8.webp",
-          "blob": "24ebba59ecb68971ee22c618988fe391",
-          "size": 1958,
-          "type": "image/webp"
-        },
-        "fox-9.webp": {
-          "name": "fox-9.webp",
-          "blob": "e2402e180b6d3339e999f21579dbf5b3",
-          "size": 3874,
-          "type": "image/webp"
-        },
-        "tide-1.webp": {
-          "name": "tide-1.webp",
-          "blob": "eecff317c3573711fd333c145bcd0cf8",
-          "size": 17618,
-          "type": "image/webp"
-        },
-        "tide-2.webp": {
-          "name": "tide-2.webp",
-          "blob": "5352b084de49be23ba59355686c2e53e",
-          "size": 9914,
-          "type": "image/webp"
-        },
-        "tide-3.webp": {
-          "name": "tide-3.webp",
-          "blob": "483e3a7b0ecf5944b33a608bb03bba36",
-          "size": 7770,
-          "type": "image/webp"
-        },
-        "tide-4.webp": {
-          "name": "tide-4.webp",
-          "blob": "3af1f60ad22ee3f22d7ba3156d82048c",
-          "size": 24118,
-          "type": "image/webp"
-        },
-        "tide-5.webp": {
-          "name": "tide-5.webp",
-          "blob": "1d9b5e69ede7c5c32b982d6c329dd530",
-          "size": 4198,
-          "type": "image/webp"
-        }
-      }
-    },
-    "Scenes": {
-      "name": "Scènes vidéo",
-      "tile": "m",
-      "order": [
-        "julie/couleur.webp",
-        "julie/sepia.webp"
-      ],
-      "files": {
-        "julie/couleur.webp": {
-          "name": "julie/couleur.webp",
-          "blob": "2508f8a95b825d5d6553c96c75f58d58",
-          "size": 77032,
-          "type": "image/webp"
-        },
-        "julie/sepia.webp": {
-          "name": "julie/sepia.webp",
-          "blob": "3171824f532de06eac6fa80877b1f53c",
-          "size": 94628,
-          "type": "image/webp"
-        }
-      }
-    },
-    "Choix": {
-      "name": "Choix (aquarelle)",
-      "tile": "m",
-      "order": [
-        "intense/ecrins/cloche/a/back.webp",
-        "intense/ecrins/cloche/a/dome.webp",
-        "intense/ecrins/cloche/a/domeBack.webp",
-        "intense/ecrins/cloche/a/front.webp",
-        "intense/ecrins/cloche/a/glint.webp",
-        "intense/illustrations/essai/cake-citron.webp",
-        "intense/illustrations/portraits/julie.webp",
-        "intense/scenes/julie/sepia.webp",
-        "leger/ecrins/cloche/a/back.webp",
-        "leger/ecrins/cloche/a/dome.webp",
-        "leger/ecrins/cloche/a/domeBack.webp",
-        "leger/ecrins/cloche/a/front.webp",
-        "leger/ecrins/cloche/a/glint.webp",
-        "leger/illustrations/essai/cake-citron.webp",
-        "leger/illustrations/portraits/julie.webp",
-        "leger/scenes/julie/sepia.webp"
-      ],
-      "files": {
-        "intense/ecrins/cloche/a/back.webp": {
-          "name": "intense/ecrins/cloche/a/back.webp",
-          "blob": "27b5bf41a7a5e2b7a0055f5b50b916e2",
-          "size": 34844,
-          "type": "image/webp"
-        },
-        "intense/ecrins/cloche/a/dome.webp": {
-          "name": "intense/ecrins/cloche/a/dome.webp",
-          "blob": "2b12a6c7d7c0242f5c6e005b80d99aaa",
-          "size": 48280,
-          "type": "image/webp"
-        },
-        "intense/ecrins/cloche/a/domeBack.webp": {
-          "name": "intense/ecrins/cloche/a/domeBack.webp",
-          "blob": "6dbcc77d42e5780477dbd245f34114e3",
-          "size": 12984,
-          "type": "image/webp"
-        },
-        "intense/ecrins/cloche/a/front.webp": {
-          "name": "intense/ecrins/cloche/a/front.webp",
-          "blob": "725a66c18592ac2c928f4f20ea5307a0",
-          "size": 43168,
-          "type": "image/webp"
-        },
-        "intense/ecrins/cloche/a/glint.webp": {
-          "name": "intense/ecrins/cloche/a/glint.webp",
-          "blob": "be28eaed12b154b9182524577d66ca72",
-          "size": 7352,
-          "type": "image/webp"
-        },
-        "intense/illustrations/essai/cake-citron.webp": {
-          "name": "intense/illustrations/essai/cake-citron.webp",
-          "blob": "38ba61500b94837ee27a0a0ff7b82cca",
-          "size": 77722,
-          "type": "image/webp"
-        },
-        "intense/illustrations/portraits/julie.webp": {
-          "name": "intense/illustrations/portraits/julie.webp",
-          "blob": "b819f1aa4483a52c8b0030e8c6171953",
-          "size": 152498,
-          "type": "image/webp"
-        },
-        "intense/scenes/julie/sepia.webp": {
-          "name": "intense/scenes/julie/sepia.webp",
-          "blob": "fdeeaec6897d2f342fe26a1a7eb96174",
-          "size": 94278,
-          "type": "image/webp"
-        },
-        "leger/ecrins/cloche/a/back.webp": {
-          "name": "leger/ecrins/cloche/a/back.webp",
-          "blob": "74fbe887615d95d2ea806dc77c9d7f24",
-          "size": 29612,
-          "type": "image/webp"
-        },
-        "leger/ecrins/cloche/a/dome.webp": {
-          "name": "leger/ecrins/cloche/a/dome.webp",
-          "blob": "4c93a3dd9113032002d4fecd99658bd3",
-          "size": 45218,
-          "type": "image/webp"
-        },
-        "leger/ecrins/cloche/a/domeBack.webp": {
-          "name": "leger/ecrins/cloche/a/domeBack.webp",
-          "blob": "535ea67bb67e065aabb44329b2c8f648",
-          "size": 12106,
-          "type": "image/webp"
-        },
-        "leger/ecrins/cloche/a/front.webp": {
-          "name": "leger/ecrins/cloche/a/front.webp",
-          "blob": "bbad1beed336ee0b37753518d70a8153",
-          "size": 36856,
-          "type": "image/webp"
-        },
-        "leger/ecrins/cloche/a/glint.webp": {
-          "name": "leger/ecrins/cloche/a/glint.webp",
-          "blob": "bef79c086a9dd54a221f981cddcb8516",
-          "size": 7416,
-          "type": "image/webp"
-        },
-        "leger/illustrations/essai/cake-citron.webp": {
-          "name": "leger/illustrations/essai/cake-citron.webp",
-          "blob": "12928028ccc027d83c0eca05bf42b4db",
-          "size": 79796,
-          "type": "image/webp"
-        },
-        "leger/illustrations/portraits/julie.webp": {
-          "name": "leger/illustrations/portraits/julie.webp",
-          "blob": "e099b3242121533a29372135b738a866",
-          "size": 176540,
-          "type": "image/webp"
-        },
-        "leger/scenes/julie/sepia.webp": {
-          "name": "leger/scenes/julie/sepia.webp",
-          "blob": "25f0e40b06c60a0e65e4f3edc6599097",
-          "size": 91484,
           "type": "image/webp"
         }
       }

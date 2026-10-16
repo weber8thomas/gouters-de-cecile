@@ -29,7 +29,7 @@
       id: 'demo-soulever', kind: 'video', invite: 'julie', titre: 'Julie',
       render: function () {
         return {
-          left: h(G.PageCuite, { page: 'julie-gauche', slots: { ecrin: h(G.PhotoCollee, { video: VIDEO, graine: 4 }) } }),
+          left: h(G.PageCuite, { page: 'julie-gauche', slots: { photo: h(G.PhotoCollee, { video: VIDEO, graine: 4 }) } }),
           right: h('div', { className: 'demo-s-page' },
             h(G.PageCuite, { page: 'fin-droite' }),
             h('div', { className: 'demo-s-zone', style: { left: pct(VOLANT[0]), top: pct(VOLANT[1]), width: pct(VOLANT[2]), height: pct(VOLANT[3]) } },

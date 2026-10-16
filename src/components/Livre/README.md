@@ -45,7 +45,7 @@ Exporte `Livre`, `LivreProps`, `LivrePose`, `CotePage`, `ToucherPage`, et ré-ex
 | Début | revient au début (referme le carnet s'il a une couverture) |
 | Fin | dernière double page |
 | + / − | cran de caméra plus proche / plus loin (`CameraProvider keyboard`) |
-| ↑ / ↓ · Alt + « + » / « − » | zoom fin ± 1 % (95 % – 105 %) |
+| Alt + « + » / « − » | zoom fin ± 1 % (bornes par cran, `zoomBornes`, de 85 % à 115 %) ; ↑ est réservé au feuillet volant (CONTRACT § 12) |
 | 0 | zoom fin à 100 % |
 
 Les répétitions d'une touche maintenue sont ignorées ; Ctrl/Cmd/Alt + flèche est laissé au navigateur. Les deux flèches de la table sont des `<button>` (Entrée/Espace), anneau `:focus-visible` miel, aucun survol. En cadrage « page », ← / → et les flèches avancent d'**une page** (gauche → droite → gauche suivante).
