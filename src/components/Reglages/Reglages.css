@@ -1,0 +1,625 @@
+/* Reglages : le bouton ⚙ à l'encre et la fiche bristol du menu (CONTRACT § 12).
+   Tout vit en px d'écran (calque des contrôles de l'Ecran). La fiche est dessinée en em : son corps
+   (--gc-reglages-fs) et son pas de réglure (--gc-reglages-pas, jamais sous la cible au doigt) sont
+   calculés pour l'écran par le composant. Aucune animation ici : Motion déplace la fiche
+   (transform, opacity) ; le reste est statique. */
+
+.gc-reglages {
+  --gc-reglages-regle: color-mix(in srgb, var(--gc-ink-plume) 26%, transparent);
+  --gc-reglages-rouge: color-mix(in srgb, var(--gc-ink-rouge) 58%, transparent);
+  --gc-reglages-marge: 2em;
+  --gc-reglages-col: 9.3em;
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Hors d'un Ecran (rendu en place) : la boîte du parent positionné. */
+.gc-reglages--en-place {
+  z-index: 10;
+}
+
+/* ---- Le bouton ⚙ : en haut à gauche, dans les zones sûres ---------------------------------- */
+.gc-reglages__bouton {
+  position: absolute;
+  top: calc(var(--gc-ecran-haut, 0px) + var(--gc-ecran-bord-bas, var(--gc-space-2)));
+  left: calc(var(--gc-ecran-gauche, 0px) + var(--gc-ecran-bord-bas, var(--gc-space-2)));
+  display: grid;
+  place-items: center;
+  width: var(--gc-ecran-cible, var(--gc-nav-size));
+  height: var(--gc-ecran-cible, var(--gc-nav-size));
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gc-paper-lace);
+  opacity: calc(var(--gc-nav-alpha) * 0.8);
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gc-reglages__bouton:focus {
+  outline: none;
+}
+
+.gc-reglages__bouton:focus-visible {
+  outline: 3px solid var(--gc-honey-500);
+  outline-offset: 4px;
+}
+
+.gc-reglages__engrenage {
+  width: 60%;
+  height: 60%;
+  overflow: visible;
+}
+
+.gc-reglages__encre path,
+.gc-reglages__ombre path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gc-reglages__encre path {
+  stroke: currentColor;
+  stroke-width: 2.3;
+}
+
+.gc-reglages__encre .gc-reglages__repasse {
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+.gc-reglages__ombre {
+  transform: translate(1px, 1.5px);
+}
+
+.gc-reglages__ombre path {
+  stroke: color-mix(in srgb, var(--gc-wood-3) 55%, transparent);
+  stroke-width: 3;
+}
+
+/* ---- Voile sur le livre : le toucher referme la fiche ---------------------------------------- */
+.gc-reglages__voile {
+  position: absolute;
+  inset: 0;
+  /* Nommés : pendant la transition de vue d'un changement de cran (Livre), le livre passe sous le
+     voile et la fiche au lieu de remonter au-dessus. */
+  view-transition-name: gc-reglages-voile;
+  background: color-mix(in srgb, var(--gc-wood-3) 42%, transparent);
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.gc-reglages[data-gc-reglages-etat="fermeture"] .gc-reglages__voile,
+.gc-reglages[data-gc-reglages-etat="fermeture"] .gc-reglages__fiche {
+  pointer-events: none;
+}
+
+/* ---- Où se pose la fiche --------------------------------------------------------------------- */
+.gc-reglages__place {
+  position: absolute;
+  top: var(--gc-reglages-haut);
+  right: var(--gc-reglages-droite);
+  bottom: var(--gc-reglages-bas);
+  left: var(--gc-reglages-gauche);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.gc-reglages--feuille .gc-reglages__place {
+  align-items: flex-end;
+  justify-content: stretch;
+}
+
+/* ---- La fiche bristol ------------------------------------------------------------------------ */
+.gc-reglages__fiche {
+  position: relative;
+  box-sizing: border-box;
+  view-transition-name: gc-reglages-fiche;
+  display: flex;
+  flex-direction: column;
+  width: 22.5em;
+  max-width: 100%;
+  max-height: 100%;
+  font-family: var(--font-hand);
+  font-size: var(--gc-reglages-fs);
+  font-weight: 500;
+  line-height: var(--gc-reglages-pas);
+  color: var(--gc-ink);
+  /* Bristol crème un peu jauni : le papier cuit du carnet, un voile de miel, une rousseur dans un
+     coin, et les bords roussis en cadre (la partie restée à l'air). */
+  background-color: var(--gc-paper-lace);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--gc-honey-100) 34%, transparent), color-mix(in srgb, var(--gc-honey-100) 34%, transparent)),
+    var(--gc-reglages-papier, none);
+  background-size: auto, 26em auto;
+  background-position: 0 0, 37% 22%;
+  border-radius: 0.14em 0.34em 0.2em 0.42em / 0.3em 0.16em 0.4em 0.22em;
+  box-shadow:
+    var(--gc-sh-object),
+    inset 0 0 0.05em 0.03em color-mix(in srgb, var(--gc-paper-edge) 90%, transparent),
+    inset 0 0 0.9em color-mix(in srgb, var(--gc-sepia-1) 60%, transparent);
+  pointer-events: auto;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.gc-reglages__fiche:focus {
+  outline: none;
+}
+
+/* La marge rouge, imprimée sur la fiche, de haut en bas. */
+.gc-reglages__fiche::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--gc-reglages-marge) - 0.32em);
+  z-index: 1;
+  width: max(1px, 0.05em);
+  background: var(--gc-reglages-rouge);
+  pointer-events: none;
+}
+
+/* Un coin un peu corné en bas à droite (revers plus clair, pli plus sombre). */
+.gc-reglages__fiche::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 0.9em;
+  height: 0.9em;
+  border-radius: 0 0 0.42em 0;
+  background: linear-gradient(135deg, transparent 50%, color-mix(in srgb, var(--gc-paper-edge) 92%, var(--gc-sepia-2)) 50%);
+  pointer-events: none;
+}
+
+/* Téléphone : la feuille monte du bas, pleine largeur, encoche du bas comprise. */
+.gc-reglages--feuille .gc-reglages__fiche {
+  --gc-reglages-marge: 1.7em;
+  --gc-reglages-col: minmax(5.2em, 47%);
+  width: 100%;
+  padding-bottom: calc(var(--gc-reglages-encoche-bas) + 0.3em);
+  padding-left: var(--gc-reglages-encoche-cotes);
+  padding-right: var(--gc-reglages-encoche-cotes);
+  border-radius: 0.5em 0.7em 0 0 / 0.42em 0.6em 0 0;
+  box-shadow:
+    0 -6px 24px color-mix(in srgb, var(--gc-ink) 26%, transparent),
+    inset 0 0 0.9em color-mix(in srgb, var(--gc-sepia-1) 60%, transparent);
+}
+
+.gc-reglages--feuille .gc-reglages__fiche::after {
+  display: none;
+}
+
+/* ---- En-tête : le titre au-dessus du filet rouge --------------------------------------------- */
+.gc-reglages__tete {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  padding: 0.2em 0.3em 0.05em var(--gc-reglages-marge);
+  border-bottom: max(1px, 0.05em) solid var(--gc-reglages-rouge);
+  box-shadow: 0 0.12em 0 -0.07em var(--gc-reglages-rouge);
+}
+
+.gc-reglages__titre {
+  position: relative;
+  margin: 0;
+  font: inherit;
+  font-size: 1.5em;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--gc-ink);
+  transform: rotate(-1.4deg);
+  transform-origin: 0 100%;
+}
+
+/* Souligné au crayon rouge, un peu plus long que le mot (titre ≥ 48 px sur la TV). */
+.gc-reglages__souligne {
+  position: absolute;
+  left: -0.08em;
+  bottom: 0.04em;
+  width: calc(100% + 0.3em);
+  height: 0.16em;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.gc-reglages__souligne path {
+  fill: none;
+  stroke: var(--gc-ink-rouge);
+  stroke-width: max(1.5px, 0.045em);
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.85;
+}
+
+.gc-reglages__fermer {
+  display: grid;
+  place-items: center;
+  width: max(1.5em, var(--gc-reglages-cible));
+  height: max(1.5em, var(--gc-reglages-cible));
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gc-chocolate);
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* ---- Corps réglé (bleu pâle), qui défile si la fiche ne tient pas ---------------------------- */
+.gc-reglages__corps {
+  /* Chaque ligne d'écriture a la hauteur du pas ; le filet est posé juste sous la ligne de base
+     (Caveat : ligne de base à 0,33 em sous le milieu de la ligne). */
+  --gc-reglages-filet: calc(var(--gc-reglages-pas) / 2 + 0.45em);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  padding: 0 0.4em 0.35em 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent var(--gc-reglages-filet),
+    var(--gc-reglages-regle) var(--gc-reglages-filet),
+    var(--gc-reglages-regle) calc(var(--gc-reglages-filet) + max(1px, 0.04em)),
+    transparent calc(var(--gc-reglages-filet) + max(1px, 0.04em)),
+    transparent var(--gc-reglages-pas)
+  );
+  background-attachment: local;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--gc-chocolate) 40%, transparent) transparent;
+}
+
+/* ---- Une ligne : libellé de Cécile | valeurs ------------------------------------------------- */
+.gc-reglages__ligne {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--gc-reglages-col) minmax(0, 1fr);
+  align-items: start;
+  min-height: var(--gc-reglages-pas);
+  padding-left: var(--gc-reglages-marge);
+}
+
+.gc-reglages__ligne--large {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.gc-reglages__libelle {
+  padding-right: 0.3em;
+  color: var(--gc-chocolate);
+}
+
+.gc-reglages__ligne--attenuee .gc-reglages__libelle,
+.gc-reglages__ligne--attenuee .gc-reglages__nombre {
+  color: color-mix(in srgb, var(--gc-chocolate) 62%, var(--gc-paper));
+}
+
+.gc-reglages__valeurs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.14em;
+  min-width: 0;
+  min-height: var(--gc-reglages-pas);
+}
+
+/* Écrit à la main : rien n'est aligné au pixel. Chaque ligne penche et glisse un tout petit peu. */
+.gc-reglages__libelle,
+.gc-reglages__valeurs {
+  transform-origin: 0 75%;
+}
+
+.gc-reglages__ligne:nth-child(4n + 1) .gc-reglages__libelle { transform: rotate(-0.35deg); }
+.gc-reglages__ligne:nth-child(4n + 2) .gc-reglages__libelle { transform: translateX(0.08em) rotate(0.25deg); }
+.gc-reglages__ligne:nth-child(4n + 3) .gc-reglages__libelle { transform: translateX(0.03em) rotate(-0.15deg); }
+.gc-reglages__ligne:nth-child(4n) .gc-reglages__libelle { transform: translateX(0.12em) rotate(0.4deg); }
+.gc-reglages__ligne:nth-child(3n + 1) .gc-reglages__valeurs { transform: translateX(0.06em) rotate(0.3deg); }
+.gc-reglages__ligne:nth-child(3n + 2) .gc-reglages__valeurs { transform: translateX(0.18em) rotate(-0.3deg); }
+.gc-reglages__ligne:nth-child(3n) .gc-reglages__valeurs { transform: rotate(0.15deg); }
+
+/* La ligne où l'on est (clavier) : une petite flèche de crayon dans la marge. */
+.gc-reglages__marque {
+  position: absolute;
+  left: 0.3em;
+  top: calc(var(--gc-reglages-pas) / 2 - 0.22em);
+  width: 1.15em;
+  height: 0.62em;
+  overflow: visible;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gc-reglages__marque path {
+  fill: none;
+  stroke: var(--gc-graphite);
+  stroke-width: max(1.4px, 0.06em);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.gc-reglages__ligne:has(:focus-visible) .gc-reglages__marque {
+  opacity: 0.9;
+}
+
+/* ---- Boutons de la fiche : écrits à la main, sans fond ---------------------------------------- */
+.gc-reglages__option,
+.gc-reglages__pas,
+.gc-reglages__deplier,
+.gc-reglages__invite,
+.gc-reglages__lien {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--gc-reglages-cible);
+  height: var(--gc-reglages-pas);
+  margin: 0;
+  padding: 0 0.3em;
+  border: 0;
+  border-radius: 0.25em;
+  background: transparent;
+  color: var(--gc-chocolate);
+  font: inherit;
+  line-height: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gc-reglages__fiche :focus {
+  outline: none;
+}
+
+.gc-reglages__fiche :focus-visible {
+  outline: 3px solid var(--gc-honey-500);
+  outline-offset: 4px;
+}
+
+/* Les valeurs sont plus appuyées que les libellés ; le choix actif est à l'encre, entouré. */
+.gc-reglages__option {
+  padding: 0 0.36em;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--gc-chocolate) 88%, var(--gc-paper));
+}
+
+.gc-reglages__option--actif {
+  font-weight: 700;
+  color: var(--gc-ink);
+}
+
+.gc-reglages__entoure {
+  position: absolute;
+  left: -0.14em;
+  top: calc(50% - 0.63em);
+  width: calc(100% + 0.28em);
+  height: 1.3em;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.gc-reglages__entoure path {
+  fill: none;
+  stroke: var(--gc-graphite);
+  stroke-width: max(1.6px, 0.062em);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.92;
+}
+
+/* − et + du zoom fin, croix de fermeture, chevron */
+.gc-reglages__pas {
+  padding: 0;
+}
+
+.gc-reglages__signe {
+  width: 0.8em;
+  height: 0.8em;
+  overflow: visible;
+}
+
+.gc-reglages__signe path,
+.gc-reglages__chevron path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gc-reglages__pas[aria-disabled="true"] {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.gc-reglages__nombre {
+  min-width: 2.5em;
+  padding-left: 0.2em;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--gc-ink);
+}
+
+/* ---- Réglette : un trait de crayon, un pâté d'encre ------------------------------------------ */
+.gc-reglages__reglette {
+  position: relative;
+  display: flex;
+  flex: 1 1 4.5em;
+  align-items: center;
+  min-width: 4em;
+  max-width: 8em;
+  height: var(--gc-reglages-pas);
+  padding: 0 0.35em;
+  border-radius: 0.25em;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.gc-reglages__piste {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 0.6em;
+}
+
+.gc-reglages__trait,
+.gc-reglages__plein {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.gc-reglages__plein {
+  display: block;
+}
+
+.gc-reglages__trait path {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.gc-reglages__trait--crayon path {
+  stroke: color-mix(in srgb, var(--gc-graphite) 62%, transparent);
+  stroke-width: max(1.3px, 0.05em);
+}
+
+.gc-reglages__trait--encre path {
+  stroke: var(--gc-ink);
+  stroke-width: max(2px, 0.085em);
+}
+
+.gc-reglages__tic {
+  position: absolute;
+  top: 50%;
+  width: max(1px, 0.05em);
+  height: 0.62em;
+  background: color-mix(in srgb, var(--gc-graphite) 70%, transparent);
+  transform: translate(-50%, -50%) rotate(5deg);
+}
+
+.gc-reglages__curseur {
+  position: absolute;
+  top: 50%;
+  display: block;
+  width: 0.62em;
+  height: 0.62em;
+  transform: translate(-50%, -50%) rotate(-8deg);
+}
+
+.gc-reglages__pate {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.gc-reglages__pate path {
+  fill: var(--gc-ink);
+  stroke: var(--gc-ink);
+  stroke-width: 1.2;
+}
+
+.gc-reglages__reglette--attenuee .gc-reglages__trait--encre path,
+.gc-reglages__reglette--attenuee .gc-reglages__pate path {
+  fill: color-mix(in srgb, var(--gc-chocolate) 60%, var(--gc-paper));
+  stroke: color-mix(in srgb, var(--gc-chocolate) 60%, var(--gc-paper));
+}
+
+.gc-reglages__reglette--attenuee .gc-reglages__trait--encre path {
+  fill: none;
+}
+
+/* ---- « Aller à… » ------------------------------------------------------------------------------- */
+.gc-reglages__deplier {
+  gap: 0.2em;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+.gc-reglages__chevron {
+  width: 0.5em;
+  height: 0.6em;
+  overflow: visible;
+}
+
+.gc-reglages__deplier[aria-expanded="true"] .gc-reglages__chevron {
+  transform: rotate(90deg);
+}
+
+.gc-reglages__invite {
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+/* Les noms se suivent, séparés d'un point (en fin de ligne quand la liste passe à la ligne). */
+.gc-reglages__invite:not(:last-child)::after {
+  content: "·";
+  position: absolute;
+  right: -0.16em;
+  color: var(--gc-chocolate);
+  font-weight: 500;
+}
+
+/* ---- Dernière ligne : remettre par défaut · crédits -------------------------------------------- */
+.gc-reglages__lien {
+  font-size: 0.9em;
+  line-height: calc(var(--gc-reglages-pas));
+  height: auto;
+  min-height: var(--gc-reglages-pas);
+}
+
+.gc-reglages__souligne--lien {
+  left: 0.3em;
+  bottom: calc(var(--gc-reglages-pas) / 2 - 0.62em);
+  width: calc(100% - 0.6em);
+}
+
+.gc-reglages__souligne--lien path {
+  stroke: color-mix(in srgb, var(--gc-graphite) 70%, transparent);
+  stroke-width: max(1.2px, 0.04em);
+}
+
+.gc-reglages__point {
+  padding: 0 0.1em;
+  color: var(--gc-chocolate);
+}
+
+.gc-reglages__fait {
+  color: var(--gc-graphite);
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.gc-reglages__fait:empty {
+  display: none;
+}
+
+.gc-reglages__credits {
+  padding: 0 0.3em 0 var(--gc-reglages-marge);
+  color: var(--gc-chocolate);
+}
+
+.gc-reglages__credits p {
+  margin: 0;
+}

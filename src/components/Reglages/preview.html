@@ -1,0 +1,27 @@
+<!-- @dsCard group="Mouvement" width=1920 height=1080 page subtitle="Réglages : la fiche bristol du menu ⚙, ouverte sur le carnet (TV). M ou « , » ouvrent ; ↑ ↓ changent de ligne, ← → la valeur, Entrée active, Échap ferme ; tout se fait aussi au doigt" -->
+<div id="root"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    function cuite(nom) {
+      return function () { return { left: h(G.PageCuite, { page: nom + '-gauche' }), right: h(G.PageCuite, { page: nom + '-droite' }) }; };
+    }
+    var spreads = [
+      { id: 'p12-julie', kind: 'video', invite: 'julie', titre: 'Julie — cake au citron', folios: [12, 13], render: cuite('julie') },
+      { id: 'p14-rose', kind: 'recette', invite: 'rose', titre: 'Rose — sablés', folios: [14, 15], render: cuite('rose') },
+      { id: 'p16-mathis', kind: 'deux-recettes', invite: 'mathis', titre: 'Mathis et Bernard', folios: [16, 17], render: cuite('mathis') },
+      { id: 'p18-fin', kind: 'finale', titre: 'La fin du goûter', folios: [18, 19], render: cuite('fin') },
+    ];
+    var invites = spreads.map(function (s, i) { return { index: i, titre: s.titre }; });
+    function Demo() {
+      var st = React.useState(1);
+      return h(G.ViewportOverride.Provider, { value: { w: 1920, h: 1080, dpr: 1, tactile: false, pleinEcran: true } },
+        h(G.CameraProvider, { keyboard: true, persist: false },
+          h(G.Ecran, { pleinEcran: true },
+            h(G.Livre, { spreads: spreads, index: st[0], onIndexChange: st[1], keyboard: true }),
+            h(G.Reglages, { invites: invites, onAller: st[1], ouvertAuDepart: true }))));
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(h(Demo));
+  })();
+</script>
