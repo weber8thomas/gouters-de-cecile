@@ -1,0 +1,79 @@
+<!-- @dsCard group="Mouvement" width=1920 height=1080 page subtitle="Le carnet se feuillette au clavier : ← → (ou PageUp / PageDown), Début / Fin ; caméra + / − (crans), ↑ ↓ (zoom fin), 0 (zoom à 100 %)" -->
+<style>
+  .demo-page { display: flex; flex-direction: column; height: 100%; color: var(--gc-ink); }
+  .demo-visuel { position: relative; flex: 1; min-height: 0; }
+  .demo-tache { position: absolute; inset: 7% 5% 9% 3%; }
+  .demo-num { position: absolute; left: 50%; top: 48%; margin: 0; transform: translate(-50%, -50%) scale(3.4); color: var(--gc-ink); }
+  .demo-ligne { margin: 0; }
+  .demo-etiquette {
+    display: flex; flex-direction: column; align-items: center;
+    margin-bottom: 18%;
+    padding: var(--gc-space-4) var(--gc-space-7) var(--gc-space-5);
+    background: var(--gc-paper-lace);
+    border-radius: var(--gc-radius-paper);
+    box-shadow: var(--gc-sh-contact), inset 0 0 0 6px var(--gc-paper-lace), inset 0 0 0 7.5px var(--gc-terracotta-700), inset 0 0 0 10px var(--gc-paper-lace), inset 0 0 0 11px color-mix(in srgb, var(--gc-terracotta-700) 60%, transparent);
+    transform: rotate(-1.2deg);
+  }
+  .demo-sur { margin: 0; color: var(--gc-chocolate); }
+  .demo-titre { margin: 0; color: var(--gc-ink-title); }
+  .demo-de { margin: 0; color: var(--gc-ink-title); }
+</style>
+<div id="root"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    // Une couleur de décor par page, pour bien voir le geste.
+    var DECORS = ['terracotta-100', 'sage-100', 'honey-100', 'pink-100', 'terracotta-300', 'sage-300', 'honey-300', 'pink-300', 'sepia-1', 'sage-500', 'pink-500', 'honey-500'];
+    var FORMES = ['58% 42% 51% 49% / 46% 57% 43% 54%', '44% 56% 62% 38% / 52% 41% 59% 48%', '61% 39% 45% 55% / 38% 60% 40% 62%', '49% 51% 37% 63% / 57% 44% 56% 43%'];
+    var TEXTES = [
+      ['Ici commence le goûter :', 'tourne doucement la page.'],
+      ['Madeleines au miel,', 'la bosse bien dorée.'],
+      ['Le cake de Julie,', 'encore tiède, s’il te plaît.'],
+      ['Crêpes du dimanche,', 'une pincée de fleur de sel.'],
+      ['Tarte aux pommes,', 'les lamelles en rosace.'],
+      ['Cookies de Mathis,', 'de gros éclats de chocolat.'],
+      ['Clafoutis aux cerises,', 'on garde les noyaux !'],
+      ['Sablés de Mamie Rose,', 'à la cannelle.'],
+      ['Far breton,', 'les pruneaux au fond du plat.'],
+      ['Gâteau au yaourt,', 'le pot sert de mesure.'],
+      ['Chouquettes,', 'le sucre perlé qui craque.'],
+      ['Fin du goûter :', 'merci d’être venus !'],
+    ];
+    function page(num) {
+      var i = num - 1;
+      return h('div', { className: 'demo-page' },
+        h('div', { className: 'demo-visuel' },
+          h('div', { className: 'demo-tache', style: {
+            background: 'color-mix(in srgb, var(--gc-' + DECORS[i] + ') 78%, transparent)',
+            borderRadius: FORMES[i % FORMES.length],
+            transform: 'rotate(' + ((i % 3) - 1) * 2.5 + 'deg)',
+          } }),
+          h('p', { className: 'gc-hand-body demo-num' }, String(num))),
+        h('p', { className: 'gc-hand-body demo-ligne' }, TEXTES[i][0]),
+        h('p', { className: 'gc-hand-body demo-ligne' }, TEXTES[i][1]));
+    }
+    var KINDS = ['video', 'recette', 'video', 'deux-recettes', 'intercalaire', 'finale'];
+    var TABLES = ['bois', 'nappe', 'bois', 'nappe', 'nappe', 'bois'];
+    var spreads = KINDS.map(function (kind, s) {
+      return {
+        id: 'demo-' + s,
+        kind: kind,
+        table: TABLES[s],
+        folios: [2 * s + 1, 2 * s + 2],
+        render: function () { return { left: page(2 * s + 1), right: page(2 * s + 2) }; },
+      };
+    });
+    var cover = h('div', { className: 'demo-etiquette' },
+      h('p', { className: 'gc-hand-caption demo-sur' }, 'carnet de recettes'),
+      h('p', { className: 'gc-recipe-title demo-titre' }, 'Les goûters'),
+      h('p', { className: 'gc-section-label demo-de' }, 'de Cécile'));
+
+    function Carnet() {
+      var st = React.useState(-1);
+      return h(G.CameraProvider, { keyboard: true, persist: false },
+        h(G.Livre, { spreads: spreads, index: st[0], onIndexChange: st[1], keyboard: true, cover: cover }));
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(h(Carnet));
+  })();
+</script>

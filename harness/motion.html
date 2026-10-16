@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="fr" data-theme="carnet">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, initial-scale=1">
+<title>Banc d'essai du mouvement</title>
+<link rel="icon" href="data:,">
+<!-- Scénarios du livre (scripts/fps.mjs) :
+       ?scenario=turn     livre ouvert sur la double page `index` (défaut 1), on tourne la page
+       ?scenario=open     livre fermé sur sa couverture, on l'ouvre
+       ?scenario=camera   cran de distance (défaut moyenne) → on change de cran
+       ?scenario=zoom     zoom fin à 0,95 → on revient à 1
+       ?scenario=pose&index=1&vers=2&p=0.5   tourne-page figé (captures à mi-geste)
+     Options : &b=dist/ds-s4/components (bundle), &distance=proche|moyenne|loin, &index=N,
+               &tables=bois (toutes les tables en bois), &zoom=1.05, &persp=K (perspective = K largeurs de page, essais).
+     Instrumentation : window.__gcMotion { ready, arm(), waitEnd(type) } ; chaque début et fin
+     de geste (événement « gc-livre-geste ») pose performance.mark('gc-geste-<phase>-<type>'). -->
+<link rel="stylesheet" href="../design-system/tokens.css">
+<style>
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  .demo-page { display: flex; flex-direction: column; height: 100%; color: var(--gc-ink); }
+  .demo-visuel { position: relative; flex: 1; min-height: 0; }
+  .demo-tache { position: absolute; inset: 7% 5% 9% 3%; }
+  .demo-num { position: absolute; left: 50%; top: 48%; margin: 0; transform: translate(-50%, -50%) scale(3.4); color: var(--gc-ink); }
+  .demo-ligne { margin: 0; }
+  .demo-etiquette {
+    display: flex; flex-direction: column; align-items: center;
+    margin-bottom: 18%;
+    padding: var(--gc-space-4) var(--gc-space-7) var(--gc-space-5);
+    background: var(--gc-paper-lace);
+    border-radius: var(--gc-radius-paper);
+    box-shadow: var(--gc-sh-contact), inset 0 0 0 6px var(--gc-paper-lace), inset 0 0 0 7.5px var(--gc-terracotta-700), inset 0 0 0 10px var(--gc-paper-lace), inset 0 0 0 11px color-mix(in srgb, var(--gc-terracotta-700) 60%, transparent);
+    transform: rotate(-1.2deg);
+  }
+  .demo-sur { margin: 0; color: var(--gc-chocolate); }
+  .demo-titre { margin: 0; color: var(--gc-ink-title); }
+  .demo-de { margin: 0; color: var(--gc-ink-title); }
+</style>
+<script src="../node_modules/react/umd/react.production.min.js"></script>
+<script src="../node_modules/react-dom/umd/react-dom.production.min.js"></script>
+<script>
+  const B = '../' + (new URLSearchParams(location.search).get('b') || 'dist/ds-s4/components');
+  document.write('<link rel="stylesheet" href="' + B + '/bundle.css"><script src="' + B + '/bundle.js"><\/script>');
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+(async () => {
+  const q = new URLSearchParams(location.search);
+  const scenario = q.get('scenario') || 'turn';
+  const distance = q.get('distance') || 'moyenne';
+  // Réglage d'essai : perspective en multiple de la largeur de page (&persp=4.5).
+  if (q.get('persp')) {
+    const st = document.createElement('style');
+    st.textContent = `.gc-livre-camera{--gc-livre-perspective:calc(var(--gc-page-w) * ${Number(q.get('persp'))}) !important}`;
+    document.head.appendChild(st);
+  }
+
+  // Réglage de caméra de départ (CameraProvider le relit dans le stockage du navigateur).
+  try {
+    localStorage.setItem('gc:camera:v1', JSON.stringify({ distance, zoom: q.has('zoom') ? Number(q.get('zoom')) : scenario === 'zoom' ? 0.95 : 1 }));
+  } catch (e) { /* stockage indisponible : réglage par défaut */ }
+
+  // ---- Livre factice : 6 doubles pages, une couleur de décor par page ------------------------
+  const h = React.createElement;
+  const G = GoutersDeCecile;
+  const DECORS = ['terracotta-100', 'sage-100', 'honey-100', 'pink-100', 'terracotta-300', 'sage-300', 'honey-300', 'pink-300', 'sepia-1', 'sage-500', 'pink-500', 'honey-500'];
+  const FORMES = ['58% 42% 51% 49% / 46% 57% 43% 54%', '44% 56% 62% 38% / 52% 41% 59% 48%', '61% 39% 45% 55% / 38% 60% 40% 62%', '49% 51% 37% 63% / 57% 44% 56% 43%'];
+  const TEXTES = [
+    ['Ici commence le goûter :', 'tourne doucement la page.'], ['Madeleines au miel,', 'la bosse bien dorée.'],
+    ['Le cake de Julie,', 'encore tiède, s’il te plaît.'], ['Crêpes du dimanche,', 'une pincée de fleur de sel.'],
+    ['Tarte aux pommes,', 'les lamelles en rosace.'], ['Cookies de Mathis,', 'de gros éclats de chocolat.'],
+    ['Clafoutis aux cerises,', 'on garde les noyaux !'], ['Sablés de Mamie Rose,', 'à la cannelle.'],
+    ['Far breton,', 'les pruneaux au fond du plat.'], ['Gâteau au yaourt,', 'le pot sert de mesure.'],
+    ['Chouquettes,', 'le sucre perlé qui craque.'], ['Fin du goûter :', 'merci d’être venus !'],
+  ];
+  const page = (num) => {
+    const i = num - 1;
+    return h('div', { className: 'demo-page' },
+      h('div', { className: 'demo-visuel' },
+        h('div', { className: 'demo-tache', style: {
+          background: `color-mix(in srgb, var(--gc-${DECORS[i]}) 78%, transparent)`,
+          borderRadius: FORMES[i % FORMES.length],
+          transform: `rotate(${((i % 3) - 1) * 2.5}deg)`,
+        } }),
+        h('p', { className: 'gc-hand-body demo-num' }, String(num))),
+      h('p', { className: 'gc-hand-body demo-ligne' }, TEXTES[i][0]),
+      h('p', { className: 'gc-hand-body demo-ligne' }, TEXTES[i][1]));
+  };
+  const KINDS = ['video', 'recette', 'video', 'deux-recettes', 'intercalaire', 'finale'];
+  const TABLES = q.get('tables') === 'bois' ? KINDS.map(() => 'bois') : ['bois', 'nappe', 'bois', 'nappe', 'nappe', 'bois'];
+  const spreads = KINDS.map((kind, s) => ({
+    id: 'demo-' + s, kind, table: TABLES[s], folios: [2 * s + 1, 2 * s + 2],
+    render: () => ({ left: page(2 * s + 1), right: page(2 * s + 2) }),
+  }));
+  const cover = h('div', { className: 'demo-etiquette' },
+    h('p', { className: 'gc-hand-caption demo-sur' }, 'carnet de recettes'),
+    h('p', { className: 'gc-recipe-title demo-titre' }, 'Les goûters'),
+    h('p', { className: 'gc-section-label demo-de' }, 'de Cécile'));
+
+  const start = q.has('index') ? Number(q.get('index')) : scenario === 'open' ? -1 : 1;
+  const pose = scenario === 'pose' ? { vers: Number(q.get('vers') ?? start + 1), p: Number(q.get('p') ?? 0.5) } : undefined;
+
+  // ---- Instrumentation ----------------------------------------------------------------------
+  const M = (window.__gcMotion = { ready: false, scenario, gestes: [], journal: [], actifs: [], frames: [], index: start });
+  let sampling = false;
+  let generation = 0;
+  document.addEventListener('gc-livre-geste', (e) => {
+    const d = e.detail;
+    M.gestes.push(d);
+    M.journal.push(d);
+    if (d.phase === 'fin') M.actifs = M.actifs.filter((t) => t !== d.type);
+    else if (!M.actifs.includes(d.type)) M.actifs.push(d.type);
+    performance.mark(`gc-geste-${d.phase}-${d.type}`);
+  });
+  M.arm = () => {
+    M.frames = []; M.gestes = []; sampling = true;
+    const g = ++generation;
+    const loop = (t) => { if (g !== generation) return; M.frames.push(t); if (sampling) requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  };
+  M.waitEnd = (type, timeout = 20000) => new Promise((resolve) => {
+    const t0 = performance.now();
+    const check = () => {
+      const fin = M.gestes.find((g) => g.phase === 'fin' && (!type || g.type === type));
+      if (fin || performance.now() - t0 > timeout) {
+        setTimeout(() => { sampling = false; resolve({ frames: M.frames.slice(), gestes: M.gestes.slice(), timeout: !fin }); }, 250);
+        return;
+      }
+      setTimeout(check, 30);
+    };
+    check();
+  });
+
+  // Vidéo : attend qu'un geste démarre (au plus `debutMax` ms), puis qu'aucun ne soit en cours
+  // pendant `calme` ms.
+  M.attendreCalme = (calme = 700, debutMax = 6000) => new Promise((resolve) => {
+    const n0 = M.journal.length;
+    const t0 = performance.now();
+    let depuis = 0;
+    const tick = () => {
+      const now = performance.now();
+      const parti = M.journal.length > n0 || now - t0 > debutMax;
+      if (parti && M.actifs.length === 0) {
+        if (!depuis) depuis = now;
+        if (now - depuis >= calme) return resolve(now - t0);
+      } else depuis = 0;
+      setTimeout(tick, 40);
+    };
+    tick();
+  });
+
+  function Banc() {
+    const [i, setI] = React.useState(start);
+    M.index = i;
+    return h(G.CameraProvider, { keyboard: scenario !== 'pose', persist: true },
+      h(G.Livre, { spreads, index: i, onIndexChange: setI, keyboard: scenario !== 'pose', cover, pose }));
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(h(Banc));
+  await document.fonts.ready;
+  await new Promise((r) => setTimeout(r, 120));
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  M.ready = true;
+})().catch((e) => { window.__gcMotion = { ready: true, error: String(e) }; });
+</script>
+</body>
+</html>
