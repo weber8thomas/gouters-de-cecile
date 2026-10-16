@@ -1,0 +1,239 @@
+{
+  "lisa": {
+    "titre": "Le carrot cake de Lisa",
+    "duree": 12,
+    "video": "videos/lisa",
+    "affiche": "videos/lisa-affiche",
+    "tirage": "photos/lisa/tirage",
+    "coins": "photos/lisa/coins",
+    "angle": -2.4,
+    "credit": {
+      "auteur": "Taryn Elliott, AlRab M.R.",
+      "source": "https://www.pexels.com/video/topping-a-baked-cake-with-icing-using-a-wooden-spatula-3325991/",
+      "licence": "Licence Pexels (https://www.pexels.com/license/)"
+    },
+    "sources": [
+      {
+        "auteur": "Taryn Elliott",
+        "page": "https://www.pexels.com/video/topping-a-baked-cake-with-icing-using-a-wooden-spatula-3325991/"
+      },
+      {
+        "auteur": "AlRab M.R.",
+        "page": "https://www.pexels.com/video/person-grinding-carrots-4934312/"
+      },
+      {
+        "auteur": "Taryn Elliott",
+        "page": "https://www.pexels.com/video/a-person-straining-the-flour-to-be-used-in-baking-3325985/"
+      }
+    ],
+    "maintien": "scotch",
+    "geometrie": {
+      "taille": [
+        1400,
+        1040
+      ],
+      "papier": [
+        0.07143,
+        0.09615,
+        0.85714,
+        0.80769
+      ],
+      "photo": [
+        0.11286,
+        0.15,
+        0.77143,
+        0.69231
+      ],
+      "cadreVideo": [
+        0.03906,
+        0,
+        0.84375,
+        1
+      ]
+    }
+  },
+  "julie": {
+    "titre": "Le cake au citron de Julie",
+    "duree": 12,
+    "video": "videos/julie",
+    "affiche": "videos/julie-affiche",
+    "tirage": "photos/julie/tirage",
+    "coins": "photos/julie/coins",
+    "angle": 1.8,
+    "credit": {
+      "auteur": "SHVETS production",
+      "source": "https://www.pexels.com/video/a-woman-grating-lemon-into-the-batter-7525285/",
+      "licence": "Licence Pexels (https://www.pexels.com/license/)"
+    },
+    "sources": [
+      {
+        "auteur": "SHVETS production",
+        "page": "https://www.pexels.com/video/a-woman-grating-lemon-into-the-batter-7525285/"
+      },
+      {
+        "auteur": "SHVETS production",
+        "page": "https://www.pexels.com/video/a-person-using-a-hand-mixer-7525274/"
+      }
+    ],
+    "maintien": "coins-noir",
+    "geometrie": {
+      "taille": [
+        1400,
+        1040
+      ],
+      "papier": [
+        0.07143,
+        0.09615,
+        0.85714,
+        0.80769
+      ],
+      "photo": [
+        0.11286,
+        0.15,
+        0.77143,
+        0.69231
+      ],
+      "cadreVideo": [
+        0.28077,
+        0.14308,
+        0.64904,
+        0.76923
+      ]
+    }
+  },
+  "rose": {
+    "titre": "Les sablés de Rose",
+    "duree": 12,
+    "video": "videos/rose",
+    "affiche": "videos/rose-affiche",
+    "tirage": "photos/rose/tirage",
+    "coins": "photos/rose/coins",
+    "angle": -1.3,
+    "credit": {
+      "auteur": "Pavel Danilyuk",
+      "source": "https://www.pexels.com/video/a-person-making-cookies-6942576/",
+      "licence": "Licence Pexels (https://www.pexels.com/license/)"
+    },
+    "sources": [
+      {
+        "auteur": "Pavel Danilyuk",
+        "page": "https://www.pexels.com/video/a-person-making-cookies-6942576/"
+      }
+    ],
+    "maintien": "coins-kraft",
+    "geometrie": {
+      "taille": [
+        1400,
+        1040
+      ],
+      "papier": [
+        0.07143,
+        0.09615,
+        0.85714,
+        0.80769
+      ],
+      "photo": [
+        0.11286,
+        0.15,
+        0.77143,
+        0.69231
+      ],
+      "cadreVideo": [
+        0.06563,
+        0,
+        0.84375,
+        1
+      ]
+    }
+  },
+  "mathis": {
+    "titre": "Les cookies de Mathis",
+    "duree": 12,
+    "video": "videos/mathis",
+    "affiche": "videos/mathis-affiche",
+    "tirage": "photos/mathis/tirage",
+    "coins": "photos/mathis/coins",
+    "angle": 3.1,
+    "credit": {
+      "auteur": "Gustavo Fring",
+      "source": "https://www.pexels.com/video/cookies-on-a-tray-4267057/",
+      "licence": "Licence Pexels (https://www.pexels.com/license/)"
+    },
+    "sources": [
+      {
+        "auteur": "Gustavo Fring",
+        "page": "https://www.pexels.com/video/cookies-on-a-tray-4267057/"
+      }
+    ],
+    "maintien": "scotch",
+    "geometrie": {
+      "taille": [
+        1400,
+        1040
+      ],
+      "papier": [
+        0.07143,
+        0.09615,
+        0.85714,
+        0.80769
+      ],
+      "photo": [
+        0.11286,
+        0.15,
+        0.77143,
+        0.69231
+      ],
+      "cadreVideo": [
+        0.07813,
+        0,
+        0.84375,
+        1
+      ]
+    }
+  },
+  "bernard": {
+    "titre": "La tarte aux pommes de Bernard",
+    "duree": 12,
+    "video": "videos/bernard",
+    "affiche": "videos/bernard-affiche",
+    "tirage": "photos/bernard/tirage",
+    "coins": "photos/bernard/coins",
+    "angle": -3.4,
+    "credit": {
+      "auteur": "Frank Litschel",
+      "source": "https://www.pexels.com/video/slicing-homemade-apple-pie-on-wooden-table-34422463/",
+      "licence": "Licence Pexels (https://www.pexels.com/license/)"
+    },
+    "sources": [
+      {
+        "auteur": "Frank Litschel",
+        "page": "https://www.pexels.com/video/slicing-homemade-apple-pie-on-wooden-table-34422463/"
+      }
+    ],
+    "maintien": "coins-noir",
+    "geometrie": {
+      "taille": [
+        1400,
+        1040
+      ],
+      "papier": [
+        0.07143,
+        0.09615,
+        0.85714,
+        0.80769
+      ],
+      "photo": [
+        0.11286,
+        0.15,
+        0.77143,
+        0.69231
+      ],
+      "cadreVideo": [
+        0.09688,
+        0,
+        0.84375,
+        1
+      ]
+    }
+  }
+}

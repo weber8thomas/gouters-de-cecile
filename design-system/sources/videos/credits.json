@@ -1,0 +1,246 @@
+{
+  "description": "Clips exemples des invités de la démo (en attendant leurs vraies vidéos). Chaque entrée : page, fichier téléchargé (URL, taille, sha256), auteur, licence vérifiée. Lus par scripts/bake-videos.mjs, qui retrouve les originaux par leur nom et vérifie leur sha256.",
+  "licences": {
+    "pexels": {
+      "nom": "Licence Pexels (« Free Stock Photo & Video License »)",
+      "url": "https://www.pexels.com/license/",
+      "verifiee": "2026-10-16",
+      "permis": [
+        "All photos and videos on Pexels are free to use.",
+        "Attribution is not required.",
+        "You can modify the photos and videos from Pexels.",
+        "Utilisation sur un site web, un blog ou une application explicitement citée."
+      ],
+      "interdit": [
+        "Identifiable people may not appear in a bad light or in a way that is offensive.",
+        "Don't sell unaltered copies of a photo or video, e.g. as a poster, print or on a physical product without modifying it first.",
+        "Don't imply endorsement of your product by people or brands on the imagery.",
+        "Don't redistribute or sell the photos and videos on other stock photo or wallpaper platforms.",
+        "Don't use the photos or videos as part of your trade-mark, design-mark, trade-name, business name or service mark."
+      ],
+      "notre_usage": "Extraits recadrés, montés et réencodés (12 s, 720p), plus une image sépia retouchée, affichés dans un carnet en ligne gratuit (GitHub Pages) et dans le dépôt du site. Ni revente, ni plateforme de banque d'images, ni marque. Les fichiers originaux ne sont pas redistribués (hors dépôt). Crédit donné quand même (auteur + lien), dans videos.json et les crédits du menu."
+    }
+  },
+  "originaux": {
+    "emplacement": "verification/out/v/originaux/ (hors dépôt, ignoré par git)",
+    "raison": "180 Mo au total (12 fichiers), au-delà du plafond de 30 Mo pour le dépôt. scripts/bake-videos.mjs cherche d'abord design-system/sources/videos/originaux/, puis verification/out/v/originaux/, et à défaut retélécharge le fichier depuis « fichier.url » (curl) et vérifie son sha256."
+  },
+  "clips": {
+    "pexels-3325991": {
+      "role": "lisa",
+      "titre": "Topping A Baked Cake With icing Using A Wooden Spatula",
+      "description": "Glaçage d'un gâteau à étages à la spatule en bois, cuisine à la lumière de fenêtre.",
+      "page": "https://www.pexels.com/video/topping-a-baked-cake-with-icing-using-a-wooden-spatula-3325991/",
+      "auteur": { "nom": "Taryn Elliott", "page": "https://www.pexels.com/@taryn-elliott/" },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "3325991-hd_1920_1080_24fps.mp4",
+        "url": "https://videos.pexels.com/video-files/3325991/3325991-hd_1920_1080_24fps.mp4",
+        "octets": 1917597,
+        "sha256": "f01b0e9ed45b0d6cdd1b2c87a45262b422fba7dada715cf6f4b3b01bf19c404f",
+        "video": "H.264 1280×720 (malgré le nom), 24 i/s, bt709",
+        "duree": 11.52,
+        "son": "piste AAC muette (−91 dB)"
+      },
+      "telecharge": "2026-10-16"
+    },
+    "pexels-4934312": {
+      "role": "lisa",
+      "titre": "Person Grinding Carrots",
+      "description": "Carottes râpées qui tombent dans un saladier, une main racle la râpe.",
+      "page": "https://www.pexels.com/video/person-grinding-carrots-4934312/",
+      "auteur": { "nom": "AlRab M.R.", "page": "https://www.pexels.com/@alrab-m-r-2406762/" },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "4934312-hd_1920_1080_30fps.mp4",
+        "url": "https://videos.pexels.com/video-files/4934312/4934312-hd_1920_1080_30fps.mp4",
+        "octets": 75760354,
+        "sha256": "a7ee5001828ce0abd7742ebfd068e2cf672aeca2949df271db7e25bcc6c27342",
+        "video": "H.264 1920×1080, 30 i/s, bt709",
+        "duree": 104.87,
+        "son": "bruit de râpe électrique (−33 dB moyen), non repris"
+      },
+      "telecharge": "2026-10-16"
+    },
+    "pexels-3325985": {
+      "role": "lisa",
+      "titre": "A Person Straining The Flour To Be Used In Baking",
+      "description": "Farine tamisée au-dessus d'un bol, devant la fenêtre.",
+      "page": "https://www.pexels.com/video/a-person-straining-the-flour-to-be-used-in-baking-3325985/",
+      "auteur": { "nom": "Taryn Elliott", "page": "https://www.pexels.com/@taryn-elliott/" },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "3325985-hd_1920_1080_24fps.mp4",
+        "url": "https://videos.pexels.com/video-files/3325985/3325985-hd_1920_1080_24fps.mp4",
+        "octets": 8789807,
+        "sha256": "b48ee174e8763907790b558c8d8cd9f1d70a308e2e9cb079a548950ad4f9c655",
+        "video": "H.264 1920×1080, 24 i/s, bt709",
+        "duree": 13.89,
+        "son": "piste AAC muette (−91 dB)"
+      },
+      "telecharge": "2026-10-16"
+    },
+    "pexels-7525285": {
+      "role": "julie",
+      "titre": "A Woman Grating Lemon into the Batter",
+      "description": "Zeste de citron râpé au-dessus de la pâte à gâteau (visage hors champ).",
+      "page": "https://www.pexels.com/video/a-woman-grating-lemon-into-the-batter-7525285/",
+      "auteur": { "nom": "SHVETS production", "page": "https://www.pexels.com/@shvets-production/" },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "7525285-hd_1920_1080_25fps.mp4",
+        "url": "https://videos.pexels.com/video-files/7525285/7525285-hd_1920_1080_25fps.mp4",
+        "octets": 5234043,
+        "sha256": "4bd300588c27336cabe45afcb7a9cc1fe2fe5d0bb4e85ef98c1685bc3b3de0a5",
+        "video": "H.264 1920×1080, 25 i/s, bt709",
+        "duree": 8.32,
+        "son": "aucune piste"
+      },
+      "telecharge": "2026-10-16"
+    },
+    "pexels-7525274": {
+      "role": "julie",
+      "titre": "A Person Using a Hand Mixer",
+      "description": "Pâte à gâteau battue au batteur, œufs, farine et citron sur la table.",
+      "page": "https://www.pexels.com/video/a-person-using-a-hand-mixer-7525274/",
+      "auteur": { "nom": "SHVETS production", "page": "https://www.pexels.com/@shvets-production/" },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "7525274-hd_1920_1080_25fps.mp4",
+        "url": "https://videos.pexels.com/video-files/7525274/7525274-hd_1920_1080_25fps.mp4",
+        "octets": 4219730,
+        "sha256": "183ab3f3df42814015c0e0f81333591ca8070f4cf06e850b18a7a97eb66b93bd",
+        "video": "H.264 1920×1080, 25 i/s, bt709",
+        "duree": 6.84,
+        "son": "aucune piste"
+      },
+      "telecharge": "2026-10-16"
+    },
+    "pexels-6942576": {
+      "role": "rose",
+      "titre": "A Person Making Cookies",
+      "description": "Deux mains découpent des sablés à l'emporte-pièce sur une planche farinée, vue de dessus.",
+      "page": "https://www.pexels.com/video/a-person-making-cookies-6942576/",
+      "auteur": { "nom": "Pavel Danilyuk", "page": "https://www.pexels.com/@pavel-danilyuk/" },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "6942576-hd_1920_1080_25fps.mp4",
+        "url": "https://videos.pexels.com/video-files/6942576/6942576-hd_1920_1080_25fps.mp4",
+        "octets": 13618718,
+        "sha256": "8cee2c9f82e8f04c735b58119808d94dde2c2b1b19867a381d3052855cdb0529",
+        "video": "H.264 1920×1080, 25 i/s, bt709",
+        "duree": 19.8,
+        "son": "aucune piste"
+      },
+      "telecharge": "2026-10-16"
+    },
+    "pexels-4267057": {
+      "role": "mathis",
+      "titre": "Cookies On A Tray",
+      "description": "Des mains d'enfant et d'adulte rangent des cookies aux pépites de chocolat sur une planche (visages hors champ).",
+      "page": "https://www.pexels.com/video/cookies-on-a-tray-4267057/",
+      "auteur": { "nom": "Gustavo Fring", "page": "https://www.pexels.com/@gustavo-fring/" },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "4267057-hd_1920_1080_30fps.mp4",
+        "url": "https://videos.pexels.com/video-files/4267057/4267057-hd_1920_1080_30fps.mp4",
+        "octets": 8997439,
+        "sha256": "4a881f4cf1e7a162180a4f6bc6b8bb1fd160ed78a1bc21e94bfeed15d039251a",
+        "video": "H.264 1920×1080, 29,97 i/s, bt709",
+        "duree": 16.25,
+        "son": "aucune piste"
+      },
+      "telecharge": "2026-10-16"
+    },
+    "pexels-34422463": {
+      "role": "bernard",
+      "titre": "Slicing Homemade Apple Pie on Wooden Table",
+      "description": "Une main âgée sert une part de gâteau aux pommes maison dans une assiette à roses, sur une table en bois.",
+      "page": "https://www.pexels.com/video/slicing-homemade-apple-pie-on-wooden-table-34422463/",
+      "auteur": { "nom": "Frank Litschel", "page": "https://www.pexels.com/@frawali-studios/" },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "14582414_1920_1080_30fps.mp4",
+        "url": "https://videos.pexels.com/video-files/34422463/14582414_1920_1080_30fps.mp4",
+        "octets": 12011894,
+        "sha256": "2b771e4501f5d29fbbb07ab8569e8f74797d919cc293922e79b238e5b931acc3",
+        "video": "H.264 1920×1080 (rendu HD du master 4K), 29,97 i/s, bt709",
+        "duree": 23.89,
+        "son": "aucune piste audio (une piste de données)"
+      },
+      "telecharge": "2026-10-16"
+    },
+    "pexels-6823577": {
+      "role": "réserve (Bernard, crêpes)",
+      "titre": "A Person Putting Crepe on a Wood Board",
+      "description": "Des mains plient des crêpes de sarrasin sur une planche en bois.",
+      "page": "https://www.pexels.com/video/a-person-putting-crepe-on-a-wood-board-6823577/",
+      "auteur": { "nom": "Eva Bronzini", "page": "https://www.pexels.com/@eva-bronzini/" },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "6823577-hd_1920_1080_30fps.mp4",
+        "url": "https://videos.pexels.com/video-files/6823577/6823577-hd_1920_1080_30fps.mp4",
+        "octets": 15585382,
+        "sha256": "bef3d19b68f1fed5ce84737beda3cb49bb1b8848b531aaa5f124f83102ba0db8",
+        "video": "H.264 1920×1080, 29,97 i/s, bt709",
+        "duree": 29.87,
+        "son": "piste AAC muette (−91 dB)"
+      },
+      "telecharge": "2026-10-16"
+    },
+    "pexels-852375": {
+      "role": "réserve (Mathis, cookies)",
+      "titre": "Backing Cookies",
+      "description": "Cookies qui gonflent et dorent dans le four, lumière chaude (sans mains).",
+      "page": "https://www.pexels.com/video/backing-cookies-852375/",
+      "auteur": { "nom": "Distill", "page": "https://www.pexels.com/@distill/" },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "852375-hd_1920_1080_24fps.mp4",
+        "url": "https://videos.pexels.com/video-files/852375/852375-hd_1920_1080_24fps.mp4",
+        "octets": 7430892,
+        "sha256": "f9b97c5104be12152d3a5e34e452df9f044e6312c454e18a17c5720623490631",
+        "video": "H.264 1920×1080, 23,98 i/s, bt709",
+        "duree": 20.02,
+        "son": "aucune piste"
+      },
+      "telecharge": "2026-10-16"
+    },
+    "pexels-5540318": {
+      "role": "réserve (Julie, citron)",
+      "titre": "Person Slicing Lemons on a Chopping Board",
+      "description": "Des mains coupent des citrons sur une planche, torchon à carreaux.",
+      "page": "https://www.pexels.com/video/person-slicing-lemons-on-a-chopping-board-5540318/",
+      "auteur": { "nom": "Phillip Dillow", "page": "https://www.pexels.com/@phillip-dillow-3553939/" },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "5540318-hd_1920_1080_24fps.mp4",
+        "url": "https://videos.pexels.com/video-files/5540318/5540318-hd_1920_1080_24fps.mp4",
+        "octets": 21678134,
+        "sha256": "307a819a6cb8be105231d5facfa360f3e2b8a7da948ea3e895d74d00cd71d84e",
+        "video": "H.264 1920×1080, 23,98 i/s, bt709",
+        "duree": 29.78,
+        "son": "piste AAC muette (−91 dB)"
+      },
+      "telecharge": "2026-10-16"
+    },
+    "pexels-3325990": {
+      "role": "réserve (gâteau, ambiance)",
+      "titre": "Footage Of Someone Preparing A Cake",
+      "description": "Un gâteau décoré d'oranges sur un présentoir, près de la fenêtre (personne de dos).",
+      "page": "https://www.pexels.com/video/footage-of-someone-preparing-a-cake-3325990/",
+      "auteur": { "nom": "Taryn Elliott", "page": "https://www.pexels.com/@taryn-elliott/" },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "3325990-hd_1920_1080_24fps.mp4",
+        "url": "https://videos.pexels.com/video-files/3325990/3325990-hd_1920_1080_24fps.mp4",
+        "octets": 4464620,
+        "sha256": "ebb4eda3e7c8b40053ee17d5508c5bec1c821db25769ea40315aabb7c789bed0",
+        "video": "H.264 1920×1080, 24 i/s, bt709",
+        "duree": 12.35,
+        "son": "piste AAC muette (−91 dB)"
+      },
+      "telecharge": "2026-10-16"
+    }
+  }
+}

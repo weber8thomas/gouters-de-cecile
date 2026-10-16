@@ -39,8 +39,8 @@
       "city": "Lyon",
       "chapter": "gateaux",
       "video": {
-        "caption": "Julie, depuis Lyon",
-        "duration": 42
+        "id": "julie",
+        "caption": "Julie, depuis Lyon"
       }
     },
     {
@@ -81,8 +81,8 @@
       "city": "Lille",
       "chapter": "biscuits",
       "video": {
-        "caption": "Mathis, depuis Lille",
-        "duration": 31
+        "id": "mathis",
+        "caption": "Mathis, depuis Lille"
       }
     },
     {
@@ -95,7 +95,11 @@
       "slug": "bernard",
       "firstName": "Bernard",
       "city": "Dijon",
-      "chapter": "biscuits"
+      "chapter": "biscuits",
+      "video": {
+        "id": "bernard",
+        "caption": "Bernard et sa tarte aux pommes"
+      }
     },
     {
       "slug": "camille",
@@ -145,8 +149,8 @@
       "city": "Vannes",
       "chapter": "boissons",
       "video": {
-        "caption": "Mamie Rose, depuis Vannes",
-        "duration": 50
+        "id": "rose",
+        "caption": "Mamie Rose, depuis Vannes"
       }
     },
     {

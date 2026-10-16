@@ -45,7 +45,9 @@ export function generate({ outDir = join(ROOT, 'src/generated'), components, art
     }
     return target === 'site' ? `./design-system/${a.file}` : `/design-system/${a.file}`;
   };
-  const entriesA = Object.entries(inv).map(([n, a]) => `  ${JSON.stringify(n)}: { u: ${JSON.stringify(url(a))}, w: ${a.w}, h: ${a.h} }`);
+  // Les vidéos ne vont pas dans l'artifact du design system (CONTRACT § 12.3) : seulement sur le site.
+  const garder = ([, a]) => !(target === 'artifact' && String(a.type || '').startsWith('video/'));
+  const entriesA = Object.entries(inv).filter(garder).map(([n, a]) => `  ${JSON.stringify(n)}: { u: ${JSON.stringify(url(a))}, w: ${a.w}, h: ${a.h} }`);
   write('assets.gen.ts', `${HEAD}// Cible : ${target}\nexport const ASSETS: Record<string, { u: string; w: number; h: number }> = {\n${entriesA.join(',\n')}\n};\n`);
   if (missing.length) throw new Error(`Assets non téléversés (cible artifact) :\n  ${missing.join('\n  ')}`);
 
