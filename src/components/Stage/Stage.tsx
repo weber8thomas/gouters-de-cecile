@@ -1,5 +1,5 @@
 import React from 'react';
-import { SettingsContext, settingsAttrs, useSettings, type IdleLook, type Settings, type TableKind } from '../../lib/settings';
+import { SettingsContext, settingsAttrs, useSettings, type Distance, type IdleLook, type Settings, type TableKind } from '../../lib/settings';
 import './Stage.css';
 
 export interface StageProps {
@@ -7,6 +7,8 @@ export interface StageProps {
   table?: TableKind;
   /** Aspect des écrins avant lecture. */
   idle?: IdleLook;
+  /** Cran de distance de la caméra (géométrie du livre et tailles de texte). */
+  distance?: Distance;
   /** Met la scène 1920×1080 à l'échelle de la largeur du parent. */
   fit?: boolean;
   children?: React.ReactNode;
@@ -17,11 +19,11 @@ export interface StageProps {
 
 // Scène fixe 1920×1080 : la table (bois ou nappe), le contenu (le livre ouvert), la lumière dorée
 // de fin d'après-midi venant d'en haut à gauche, puis un calque libre. Fournit les réglages.
-export function Stage({ table, idle, fit = false, children, overlay, className }: StageProps) {
+export function Stage({ table, idle, distance, fit = false, children, overlay, className }: StageProps) {
   const parent = useSettings();
   const settings: Settings = React.useMemo(
-    () => ({ table: table ?? parent.table, idle: idle ?? parent.idle }),
-    [table, idle, parent.table, parent.idle],
+    () => ({ table: table ?? parent.table, idle: idle ?? parent.idle, distance: distance ?? parent.distance }),
+    [table, idle, distance, parent.table, parent.idle, parent.distance],
   );
 
   const outerRef = React.useRef<HTMLDivElement>(null);

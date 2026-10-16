@@ -1,123 +1,162 @@
-# Contrat de fabrication — « Les goûters de Cécile »
+# Contrat de fabrication — « Les goûters de Cécile » (v2)
 
 Ce contrat lie toutes les personnes et tous les agents qui fabriquent le design system.
-Il prime sur les habitudes : en cas de doute, demander au responsable (le « lead ») plutôt qu'inventer.
+En cas de doute, demander au responsable (le « lead ») plutôt qu'inventer.
 
-## 1. Le projet en une minute
+## 1. Le projet et sa direction
 
-Carnet de recettes de goûter sucré, projeté sur une TV 16:9 (scène fixe **1920×1080**, vue à **3 m**)
-pendant l'anniversaire de Cécile, puis imprimé en **A5**. Chaque double page = un livre ouvert posé sur
-une table (bois ou nappe), reliure visible au centre. Papier crème texturé, coins cornés, taches discrètes,
-fleurs séchées, lumière dorée de fin d'après-midi. Palette : crème, terracotta, rose poudré, sauge, chocolat.
-Typo : Caveat (manuscrit) + Playfair Display pour l'« imprimé » (choix de la planche comparative, voir `design-system/decisions.json`).
-Aucune interface au survol, aucune marque ni logo.
+- **Le carnet**
+  - Carnet de recettes de goûter sucré, projeté sur une TV 16:9 (scène fixe **1920×1080**, vue à **3 m**) pendant l'anniversaire de Cécile, puis imprimé en **A5**.
+  - Chaque écran est un livre ouvert posé sur une table : bois pour les pages vidéo, nappe pour les recettes seules, les intercalaires et le sommaire.
+- **Direction : un vrai livre de recettes de grand-mère**, naturel et humain, rien qui « fasse IA ».
+  - Chaque invité écrit sa page **de sa main**, avec son encre, ses ratures, ses annotations et ses soulignés à la règle.
+  - Papier **uni ancien** : jauni, rousseurs, fibres, léger gondolage. Chaque double page est différente.
+  - Illustrations au **crayon + aquarelle** : trait vivant et imparfait, lavis qui déborde, papier qui respire. Écrins compris.
+  - Playfair Display seulement pour ce qui est **imprimé** : étiquette de couverture, onglets de chapitre, folios, coupure de journal. Caveat est la main de Cécile : légendes, sommaire, repères.
+  - **Ce qu'il faut fuir** : la symétrie parfaite, les aplats propres, les dégradés lisses génériques, les mêmes décors répétés, l'alignement au pixel. Varier, déborder, pencher un peu.
+- **Mouvement** : doux, physique et fluide (60 i/s sur l'ordinateur relié à la TV). Pas de survol : seulement le clavier et deux flèches discrètes.
+- **Distance de caméra** : trois crans, proche / moyenne / loin, chacun avec une mise en page vérifiée, plus un zoom fin de ±5 %, réglés au clavier.
 
 ## 2. Où vit quoi
 
-| Chemin | Contenu | Remarques |
-|---|---|---|
-| `design-system/tokens.json` | **source unique** des couleurs, typo, espacements, ombres, géométrie | format du type Design System (listes de tokens). Seul le lead le modifie : demandez un token. |
-| `design-system/tokens.css` | généré (`npm run tokens`) | ne jamais modifier à la main |
-| `design-system/fonts/` | woff2 Caveat, Playfair | |
-| `design-system/metrics.json` | hauteur d'x mesurée de chaque police | |
-| `design-system/textures/` | sources SVG + WebP pré-rendus | |
-| `design-system/ecrins/<id>/` | écrins vidéo (§ 6) | SVG générés par `build.mjs` |
-| `design-system/illustrations/<zone>/` | illustrations SVG | générées par `build.mjs` ou écrites à la main si courtes |
-| `src/components/<Comp>/` | composant React : `<Comp>.tsx`, `<Comp>.css`, `index.ts`, `README.md`, `preview.html` | un dossier par composant |
-| `src/artboards/<Nom>/` | gabarit 1920×1080 (ou A5) : `<Nom>.tsx`, `index.ts` (export default), `preview.html` | |
-| `src/content/` | `roster.json` (invités, figé), `invites.ts` (recettes, mots), `types.ts` | |
-| `src/lib/` | utilitaires partagés (réglages, types d'écrin) | lead |
-| `src/generated/` | généré par `scripts/gen-entry.mjs` | ne jamais modifier |
-| `scripts/` | outillage Node | `scripts/lib/` = aides partagées |
+| Chemin | Contenu |
+|---|---|
+| `design-system/tokens.json` | **source unique** des valeurs (format du type DS). Familles `mains` (hauteurs d'x, interlignages, majorations) et `distance` (géométrie et hauteurs d'x visées par cran). Seul le lead le modifie : demandez un token. |
+| `design-system/tokens.css` | généré (`npm run tokens`) |
+| `design-system/motion.json` | ressorts du carnet (source unique ; Motion et les courbes CSS `gc-spring-*` en dérivent) |
+| `design-system/metrics.json` | hauteur d'x, ascendantes et glyphes manquants de chaque police (`npm run metrics`) |
+| `design-system/fonts/` | woff2 + licences OFL |
+| `design-system/baked/**` | **images cuites** (WebP/PNG) : papier, écrins, illustrations. Commitées, jamais modifiées à la main. |
+| `design-system/assets.json` | inventaire des images cuites (`npm run assets`) |
+| `design-system/ecrins/<id>/` | écrins : générateur, manifeste, SVG vectoriels (§ 7) |
+| `design-system/illustrations/<zone>/` | générateurs et sources d'illustrations |
+| `src/components/<Comp>/` | composant React : `<Comp>.tsx`, `<Comp>.css`, `index.ts`, `README.md`, `preview.html` |
+| `src/artboards/<Nom>/` | gabarits (`index.ts` export default) et leurs cartes |
+| `src/content/` | `roster.json` (figé), `invites.ts` (recettes et mots), `mains.ts` (style de chaque invité), `types.ts` |
+| `src/lib/` | partagé, propriété du lead : `settings.tsx`, `camera.tsx`, `motion.ts`, `hands.ts`, `assets.ts`, `spread.ts`, `typo.ts`, `ecrin-types.ts`, `distance.css` |
+| `scripts/lib/` | partagé : `bake.mjs` (cuisson), `organic.mjs` (formes faites main), `prng.mjs`, `tokens.mjs` (`c()`), `browser.mjs`, `serve.mjs` |
 
-Les exports sont **automatiques** : tout `src/components/<Comp>/index.ts` est ré-exporté dans
-`window.GoutersDeCecile`, tout `src/artboards/<Nom>/index.ts` (export default) dans
-`GoutersDeCecile.Artboards.<Nom>`, tout écrin et toute illustration dans `ECRINS` et `ILLUSTRATIONS`.
+Les exports sont **automatiques** (`scripts/gen-entry.mjs`) :
+- `src/components/<Comp>/index.ts` → `window.GoutersDeCecile` ;
+- `src/artboards/<Nom>/index.ts` → `Artboards.<Nom>` ;
+- les écrins, les illustrations SVG et les images cuites → `ECRINS`, `ILLUSTRATIONS`, `assetUrl()`.
+
 Personne ne modifie `src/index.ts`.
 
 ## 3. Règles de travail
 
-- **Périmètre** : chaque agent écrit uniquement dans les chemins qui lui sont attribués.
-  Besoin d'un changement ailleurs (token, utilitaire partagé, composant d'un autre) → le noter dans le compte rendu.
-- **Interdits** : git, `npm install`, `playwright install`, accès réseau (sauf Google Fonts déjà prévu), suppression de fichiers hors de son périmètre.
-- **Commandes utiles** :
-  - `npm run tokens` — régénère tokens.css et vérifie les contrastes ;
-  - `npm run gen` — exécute tous les `build.mjs` puis régénère les entrées (`node scripts/gen-svg.mjs ecrins/cloche` pour un seul) ;
-  - `npm run typecheck` — TypeScript strict ;
-  - `npm run bundle` — construit `dist/ds/components/bundle.{js,css}` ;
-  - `node scripts/shot.mjs src/components/<Comp>/preview.html [--w 1920 --h 1080] [--out verification/out/<zone>]`
-    — rend la carte dans le banc d'essai (identique au cadre de l'artifact) et l'enregistre en PNG.
-    **Regardez vos captures** (outil Read sur le PNG) : c'est le seul moyen de juger le rendu.
-- **Compte rendu attendu** : fichiers écrits, chemins des captures, sortie des commandes ci-dessus, points ouverts, demandes de tokens.
+- **Périmètre exclusif** : chaque agent n'écrit que dans ses chemins. Un besoin ailleurs se signale dans le compte rendu.
+- **Interdits** : git, `npm install`, `playwright install`, réseau, suppression hors périmètre.
+- **Commandes** :
+  - `npm run tokens`, `npm run metrics`, `npm run gen` (générateurs puis entrées), `npm run assets`, `npm run typecheck` ;
+  - `node scripts/build-bundle.mjs --only A,B --boards X --tag <vous>` : **build isolé** dans `dist/ds-<vous>/components` ;
+  - `node scripts/shot.mjs <carte>/preview.html [--w --h] --bundle dist/ds-<vous>/components --out verification/out/<vous>`.
+- **Regardez vos captures** (outil Read sur le PNG) et jugez-les en directeur artistique. Itérez jusqu'à ce que ce soit beau.
+- **Compte rendu** : fichiers écrits, captures, sortie des commandes, points ouverts, demandes de tokens.
 
-## 4. React et TypeScript
+## 4. React, TypeScript, Motion
 
-- React **18**, JSX **classique** : chaque `.tsx` commence par `import React from 'react';`. Aucune autre dépendance d'exécution.
-- Composants de présentation, pilotés par props ; état local seulement pour la lecture (horloge, tasse).
-- `index.ts` du dossier : `export { Comp } from './Comp'; export type { CompProps } from './Comp';`.
-- Le CSS du composant est importé par le composant (`import './Comp.css';`) et finit dans `bundle.css`.
-- Lire les réglages de scène avec `useSettings()` / `useTitleClass(role)` (`src/lib/settings.tsx`).
-- Lire le contenu avec `getGuest(slug)`, `chapters`, `guestsOf(chapterId)` (`src/content`).
+- React **18**, JSX classique (`import React from 'react';` en tête de chaque `.tsx`).
+- `index.ts` : `export { Comp } from './Comp'; export type { CompProps } from './Comp';`. Le CSS est importé par le composant.
+- **Mouvement** :
+  - importer **uniquement** depuis `src/lib/motion.ts` (`m`, `LazyMotion`, `domMax`, `AnimatePresence`, `useMotionValue`, `useTransform`, `useSpring`, `animate`, `SPRINGS`, `CUP_SPRING`, `STAGGER`) ;
+  - composants `m.div`, sous un `<LazyMotion features={domMax}>` ;
+  - ressorts nommés de `design-system/motion.json` : `SPRINGS.paper`, `.cover`, `.dome`, `.camera`, `.toast`, `.settle`. Aucune valeur de ressort en dur ;
+  - **aucun rendu React pendant un geste** : MotionValue + `useTransform` ;
+  - transitions CSS simples : `transition: transform var(--gc-dur-spring-settle) var(--gc-spring-settle)` (ou `cssSpring('settle')`).
+- **Réglages** :
+  - `useSettings()` donne `{ table, idle, distance }` ; `useCamera()` donne `{ distance, zoom, … }` ;
+  - les mises en page peuvent changer selon `distance` : par exemple, au cran « loin », le petit mot passe sous l'écrin.
+- **Contenu** : `getGuest(slug)`, `chapters`, `guestsOf()` dans `src/content`.
+- **Double page** : `SpreadSpec` et `useRenderMode()` dans `src/lib/spread.ts`. En mode `static`, aucune vidéo, aucun mouvement, images cuites seulement.
 
 ## 5. CSS
 
-- Préfixe **`gc-`** en BEM : `.gc-ecrin`, `.gc-ecrin__media`, `.gc-ecrin--playing`. Aucun sélecteur global (`body`, `p`, `*`).
-- **Couleurs : uniquement `var(--gc-…)`**. Aucune valeur hex, rgb ou nommée en dur. Transparence : `color-mix(in srgb, var(--gc-ink) 30%, transparent)`.
-- **Typographie : uniquement les classes de style des tokens** (`gc-hand-body`, `gc-recipe-title`, `gc-a5-hand-body`…), posées dans le balisage.
-  Aucune `font-size` en dur. Tailles planchers sur TV : Caveat 38 px, Playfair 27 px.
-- Espacements et géométrie : `var(--gc-space-N)`, `var(--gc-page-…)`, `var(--gc-safe-…)`. Ombres : `var(--gc-sh-…)`.
-- **Pas de `:hover`.** Focus clavier : `outline: 3px solid var(--gc-honey-500); outline-offset: 4px` sur `:focus-visible`.
-- Animations : `transform` et `opacity` seulement ; durées `var(--gc-dur-…)`, courbe `var(--gc-ease)` ;
-  toutes coupées sous `@media (prefers-reduced-motion: reduce)`.
-- Pas de `backdrop-filter`, pas de `mix-blend-mode` sur de grandes surfaces, pas de filtre animé.
+- Préfixe **`gc-`** en BEM. Aucun sélecteur global.
+- **Couleurs** : `var(--gc-…)` uniquement ; transparence via `color-mix(in srgb, var(--gc-…) 30%, transparent)`.
+- **Texte manuscrit** :
+  - **toujours** `handStyle(main, rôle, encre)` (`src/lib/hands.ts`), qui calcule la taille depuis `--gc-x-<rôle>` (fixé par le cran) / `--gc-xh-<main>` × `--gc-boost-<main>` ;
+  - **aucune `font-size` en dur** ; texte passé par `handText(texte, main)`.
+- **Texte imprimé** : classes de style des tokens (`gc-recipe-title`, `gc-folio`, `gc-section-label`, `gc-chapter-title`, `gc-cover-title`).
+- **Géométrie** : `var(--gc-page-…)`, `var(--gc-book-…)`, `var(--gc-safe-…)`, `var(--gc-space-N)`. Elles suivent le cran actif (`distance.css`).
+- **Images cuites** : par propriété personnalisée en ligne, `style={{ '--gc-tex': cssUrl('paper/base') }}` puis `background-image: var(--gc-tex)`. Aucune URL dans `bundle.css`.
+- **Interdits à l'exécution** : `filter:` (SVG ou CSS) sur du contenu vivant, `mix-blend-mode`, `backdrop-filter`, `box-shadow` animé, `:hover`.
+- **Animations** : `transform` et `opacity` seulement. Exceptions documentées : la toile WebGL de révélation et le masque d'écriture des titres. `will-change` seulement pendant un mouvement. Tout s'arrête sous `prefers-reduced-motion`.
+- **Focus** : `outline: 3px solid var(--gc-honey-500); outline-offset: 4px` sur `:focus-visible`.
 
-## 6. SVG (écrins et illustrations)
+## 6. Images et illustrations : crayon + aquarelle, cuites au build
 
-- Générés par un `build.mjs` (Node) qui s'appuie sur `scripts/lib/organic.mjs` (contours faits main, festons,
-  bords déchirés, taches) et `scripts/lib/prng.mjs` (aléatoire à graine). Couleurs **toujours** via
-  `c('gc-…')` de `scripts/lib/tokens.mjs` : le SVG porte des couleurs littérales, mais elles viennent des tokens.
-- Document autonome : `viewBox` à l'origine, **sans** `width`/`height`, **sans** `<style>`, `<text>`, commentaire,
-  référence externe ni `<image>`. Utiliser `svgDoc([w, h], corps)` de `organic.mjs`.
-- **Ids uniques dans tout le bundle** (les SVG sont insérés en ligne ensemble) : `gc-<zone>-<variante>-<partie>`,
-  ex. `gc-cloche-a-glass-grad`.
-- Classes autorisées pour l'animation : `gc-anim-<nom>` (définies dans le CSS du composant qui anime).
-- Ombres portées **dessinées comme des formes** (ellipse floue simulée par plusieurs ellipses à faible opacité,
-  ou dégradé radial), jamais par `<filter>` dans un écrin (les fichiers doivent rester exportables tels quels).
-- **Style d'illustration** (identique partout) :
-  - contour encre `gc-ink`, 3 unités à l'échelle d'affichage (1,5 pour les détails), bouts et jointures ronds ;
-  - aplats + **un** ton d'ombre ; hachures à 45° seulement dans les ombres (pas de 6, `gc-chocolate` à 30 %) ;
-  - dégradés réservés au verre, à la porcelaine et aux liquides ;
-  - lumière venant d'en haut à gauche : reflets en haut à gauche, ombres vers le bas à droite ;
-  - trait légèrement irrégulier (`wobbly…`), jamais de géométrie parfaite à la règle.
-- Taille raisonnable : répéter un motif avec `<use href="#…">` plutôt que dupliquer (dentelle, liseré).
+- **Chaîne** : un générateur Node (`build.mjs`) produit la géométrie en SVG, avec les helpers `organic.mjs` et les couleurs via `c('gc-…')`. Les groupes à traiter portent `data-fx="pencil|wash"` et une graine. La cuisson (`scripts/lib/bake.mjs` + recettes de filtres) rend l'image dans Chromium et l'écrit dans `design-system/baked/<zone>/…`. Les composants l'affichent par `assetUrl('<zone>/…')`.
+- **Rendu** :
+  - pendant la cuisson : filtres SVG à volonté (turbulence, déplacement, granulation) ;
+  - à l'exécution : jamais.
+  - Taille de cuisson : 1,25× la taille affichée (zoom fin et inclinaison 3D compris). Les masters d'export sont à 2×.
+- **Crayon** :
+  - trait graphite (`gc-graphite` / `gc-ink-crayon`), double passage décalé, pression variable ;
+  - débords aux angles, petits manques, grain du papier.
+- **Aquarelle** :
+  - lavis décalé de 3 à 6 px du trait, bords qui bavent et plus foncés, densité inégale, granulation ;
+  - papier visible par endroits, reflets laissés en blanc du papier.
+- **Retenue**, pour ne pas faire « faux » :
+  - saturation des lavis ≤ 70 % ;
+  - 3 amas de rousseurs au plus par double page, taches seulement en marge ;
+  - jamais de rousseur ni de tache sous du texte.
+- **Ids** des SVG sources : `gc-<zone>-<variante>-<partie>`. Pas de `<text>` ni de référence externe.
+- **Poids** : visez moins de 250 Ko par calque d'écrin et moins de 120 Ko par scène figée. `bundle.js` doit rester sous 3 Mo, donc aucune image cuite en data URI.
 
-## 7. Écrins vidéo
+## 7. Écrins vidéo (séparables : cadre + masque)
 
-Un écrin = un cadre décoratif autour d'une vidéo, réutilisable et **séparable** (exporté en PNG/SVG transparents
-pour être incrusté dans les vidéos). Dossier `design-system/ecrins/<id>/` :
+- **`design-system/ecrins/<id>/`** :
+  - `build.mjs` et `ecrin.json` (`EcrinManifest`, `src/lib/ecrin-types.ts`) ;
+  - `<v>/back.svg`, `front.svg`, `mask.svg`, `dome.svg` (cloche) : **SVG vectoriels propres**, sans filtre, au même viewBox. Ils forment l'**export SVG** et la géométrie de référence.
+- **Calques cuits**, sur la même grille de pixels : `design-system/baked/ecrins/<id>/<v>/{back,front,dome,domeBack,glint,mask-soft}.webp`, noms logiques `ecrins/<id>/<v>/<partie>`.
+- **Ouverture** : définie une seule fois. Le masque est l'ouverture + `bleed` (4) en blanc. Le `front` cuit couvre l'anneau de débord avec une opacité ≥ 0,98.
+- **Variantes** a, b, c : couleur du ruban ou du washi, angle, motif de dentelle, liseré.
+- **États** :
+  - `idle` : image figée sépia, cuite ;
+  - `playing` : couleur, révélation aquarelle, tasse qui se remplit.
+  - La cloche se soulève sur un ressort, avec un reflet qui balaie le verre.
 
-```
-build.mjs        générateur déterministe → écrit les fichiers ci-dessous
-ecrin.json       manifeste (type EcrinManifest, src/lib/ecrin-types.ts)
-<v>/back.svg     ce qui est DERRIÈRE la vidéo (napperon, assiette, présentoir, ombre portée)
-<v>/front.svg    ce qui est DEVANT la vidéo (bord, verre, washi, ruban) ; recouvre la bande de débord
-<v>/mask.svg     l'ouverture élargie de `bleed` unités, en blanc #fff opaque sur transparent, rien d'autre
-<v>/dome.svg     cloche uniquement : le dôme en place (soulevé par transformation CSS, cf. manifest.lift)
-```
+## 8. Mains et encres
 
-- `<v>` = `a`, `b`, `c` (variantes légères : couleur du ruban ou du washi, angle, motif de dentelle, liseré).
-- **Même viewBox pour tous les fichiers d'un écrin** et pour tous ses états ; la place du dôme soulevé est prévue dès le départ.
-- **L'ouverture est définie une seule fois** dans `build.mjs` et sert à la fois au trou du `front`, au masque et à `ecrin.json`.
-- Les sources vidéo sont en 16:9 : les ouvertures rondes ou ovales recadrent au centre (`focus`).
-- Deux états : `idle` (avant lecture : image figée traitée aquarelle ou sépia, comme dessinée) et `playing`
-  (couleur, la tasse-progression se remplit). La cloche se soulève en lecture.
+| Main | Police | Invités | Encre par défaut |
+|---|---|---|---|
+| `mamie` | Playwrite FR Trad | Rose, Odile | brune, plume |
+| `ecole` | Playwrite FR Moderne | Léa, Camille, Margaux, Élise | plume |
+| `soignee` | Kalam | Julie, Sophie, Anaïs, Inès | bic, crayon |
+| `feutre` | Shantell Sans | Mathis, Noé, Lucas | feutre, noire |
+| `capitales` | Patrick Hand SC | Bernard, Paul, Hugo, Karim | noire, crayon |
+| `pressee` | La Belle Aurore | Antoine, Victor, Yasmine | bic, plume |
+| `cecile` | Caveat | Cécile (légendes, sommaire, repères) | `gc-ink` |
 
-## 8. Contenu
+- **Encres** : `gc-ink-plume`, `-bic`, `-crayon`, `-brune`, `-noire`, `-feutre`, `-rouge`.
+- **Le rouge** est réservé aux corrections, aux soulignés et aux titres ≥ 48 px.
+- **Glyphes manquants** : `metrics.json` les liste ; `handText()` les remplace.
+- **Hauteur d'x** ≥ 14 px à l'écran pour tout texte courant, à tous les crans et à 0,95 de zoom. C'est garanti par les tokens `gc-x-*` si l'on passe par `handStyle()`.
 
-- Invités, chapitres, écrins et variantes : `src/content/roster.json` (figé ; ne pas renommer les slugs).
-- Budget d'une page vidéo (mesuré : 760×888 utiles) : titre ≤ 23 caractères (une ligne) ; ≤ 8 ingrédients
-  de ≤ 22 caractères ; ≤ 4 étapes tenant sur ≤ 5 lignes (~45 caractères par ligne, ≤ 180 caractères au total) ;
-  petit mot ≤ 90 caractères (2 lignes) + signature. Un débordement est une erreur :
-  on raccourcit le texte, on ne réduit jamais la taille.
-- Ton : tendre, simple, tutoiement entre proches ; recettes sucrées réalistes, vocabulaire français
-  (« th. 6 (180 °C) », « 1 c. à s. », « moule à manqué 24 cm », « une pincée de fleur de sel »).
+## 9. Contenu
+
+- **Fichiers** :
+  - `src/content/roster.json` : figé, ne pas renommer les slugs ;
+  - `invites.ts` : recettes et mots ;
+  - `mains.ts` : `GuestStyle` (main, encre, souligné, puces, mise en page, inclinaison, graine, papier) et annotations.
+- **Balisage dans les textes** :
+  - `~~150 g~~>120 g` : rature dessinée, correction en rouge au-dessus ;
+  - `__mot__` : souligné.
+- **Ton** : tendre, tutoiement, recettes sucrées réalistes, vocabulaire français (« th. 6 (180 °C) », « 1 c. à s. »).
+- **Budget d'une page vidéo**, mesuré au cran le plus serré qui s'applique :
+  - titre d'une ligne ;
+  - 8 ingrédients au plus ;
+  - 4 étapes au plus ;
+  - mot de 90 caractères au plus.
+  - Un débordement est une erreur : on raccourcit, on ne réduit jamais.
+
+## 10. Vérification
+
+- `[data-gc-fit="overflow"]` interdit.
+- Planchers de lisibilité respectés aux 3 crans et aux zooms 0,95 et 1,05.
+- Texte dans la zone de sécurité.
+- Glyphes présents dans la police.
+- Contraste mesuré sur les pixels réels du papier.
+- Écrins : alignement du masque, test magenta, transparence.
+- Mouvement : aucun recalcul de mise en page pendant un geste, 40 calques au plus.

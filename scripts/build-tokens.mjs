@@ -80,6 +80,10 @@ const PAIRS = [
   ['gc-ink-title', 'gc-paper', 4.5], ['gc-ink-title', 'gc-linen', 4.5],
   ['gc-terracotta-700', 'gc-paper', 4.5], ['gc-pink-700', 'gc-paper', 4.5], ['gc-sage-700', 'gc-paper', 4.5],
   ['gc-paper', 'gc-wood-2', 3], ['gc-paper', 'gc-wood-3', 3], ['gc-ink', 'gc-linen-shade', 4.5],
+  // Encres des mains, sur papier jauni
+  ['gc-ink-plume', 'gc-paper-aged', 7], ['gc-ink-bic', 'gc-paper-aged', 6.5], ['gc-ink-crayon', 'gc-paper-aged', 7],
+  ['gc-ink-brune', 'gc-paper-aged', 7], ['gc-ink-noire', 'gc-paper-aged', 7], ['gc-ink-feutre', 'gc-paper-aged', 7],
+  ['gc-ink-rouge', 'gc-paper-aged', 4.5], ['gc-ink-plume', 'gc-paper-foxed', 4.5], ['gc-ink-noire', 'gc-paper-foxed', 4.5],
 ];
 const report = PAIRS.map(([fg, bg, min]) => {
   const r = contrast(hex(fg), hex(bg));

@@ -1,0 +1,51 @@
+/* Crans de distance : le cran actif (data-gc-distance, posé par <Stage>) recopie sa géométrie
+   et ses hauteurs d'x visées dans les propriétés utilisées par les composants. Généré à la main
+   depuis la famille « distance » des tokens ; aucune valeur ici. */
+[data-gc-distance="proche"] {
+  --gc-book-x: var(--gc-d-proche-book-x);
+  --gc-book-y: var(--gc-d-proche-book-y);
+  --gc-page-w: var(--gc-d-proche-page-w);
+  --gc-page-h: var(--gc-d-proche-page-h);
+  --gc-page-pad-outer: var(--gc-d-proche-page-pad-outer);
+  --gc-page-pad-spine: var(--gc-d-proche-page-pad-spine);
+  --gc-page-pad-top: var(--gc-d-proche-page-pad-top);
+  --gc-page-pad-bottom: var(--gc-d-proche-page-pad-bottom);
+  --gc-x-title: var(--gc-d-proche-x-title);
+  --gc-x-body: var(--gc-d-proche-x-body);
+  --gc-x-note: var(--gc-d-proche-x-note);
+  --gc-x-meta: var(--gc-d-proche-x-meta);
+  --gc-x-signature: var(--gc-d-proche-x-signature);
+  --gc-x-annotation: var(--gc-d-proche-x-annotation);
+}
+[data-gc-distance="moyenne"] {
+  --gc-book-x: var(--gc-d-moyenne-book-x);
+  --gc-book-y: var(--gc-d-moyenne-book-y);
+  --gc-page-w: var(--gc-d-moyenne-page-w);
+  --gc-page-h: var(--gc-d-moyenne-page-h);
+  --gc-page-pad-outer: var(--gc-d-moyenne-page-pad-outer);
+  --gc-page-pad-spine: var(--gc-d-moyenne-page-pad-spine);
+  --gc-page-pad-top: var(--gc-d-moyenne-page-pad-top);
+  --gc-page-pad-bottom: var(--gc-d-moyenne-page-pad-bottom);
+  --gc-x-title: var(--gc-d-moyenne-x-title);
+  --gc-x-body: var(--gc-d-moyenne-x-body);
+  --gc-x-note: var(--gc-d-moyenne-x-note);
+  --gc-x-meta: var(--gc-d-moyenne-x-meta);
+  --gc-x-signature: var(--gc-d-moyenne-x-signature);
+  --gc-x-annotation: var(--gc-d-moyenne-x-annotation);
+}
+[data-gc-distance="loin"] {
+  --gc-book-x: var(--gc-d-loin-book-x);
+  --gc-book-y: var(--gc-d-loin-book-y);
+  --gc-page-w: var(--gc-d-loin-page-w);
+  --gc-page-h: var(--gc-d-loin-page-h);
+  --gc-page-pad-outer: var(--gc-d-loin-page-pad-outer);
+  --gc-page-pad-spine: var(--gc-d-loin-page-pad-spine);
+  --gc-page-pad-top: var(--gc-d-loin-page-pad-top);
+  --gc-page-pad-bottom: var(--gc-d-loin-page-pad-bottom);
+  --gc-x-title: var(--gc-d-loin-x-title);
+  --gc-x-body: var(--gc-d-loin-x-body);
+  --gc-x-note: var(--gc-d-loin-x-note);
+  --gc-x-meta: var(--gc-d-loin-x-meta);
+  --gc-x-signature: var(--gc-d-loin-x-signature);
+  --gc-x-annotation: var(--gc-d-loin-x-annotation);
+}

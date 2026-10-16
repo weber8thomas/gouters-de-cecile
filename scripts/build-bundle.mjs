@@ -5,6 +5,7 @@
 // Les SVG sont inclus comme texte, les textures WebP comme data URI.
 //
 //   node scripts/build-bundle.mjs                         → dist/ds/components (tout)
+//   node scripts/build-bundle.mjs --target artifact                 → URL des images en /_blob/<id>
 //   node scripts/build-bundle.mjs --only Ecrin,Scene --boards P00Specimen --tag f3
 //                                                         → dist/ds-f3/components (build isolé :
 //     seuls ces composants et artboards, registres régénérés dans dist/ds-f3/gen)
@@ -18,6 +19,8 @@ const opt = (k) => { const i = args.indexOf(`--${k}`); return i >= 0 ? args[i + 
 const only = opt('only')?.split(',').filter(Boolean);
 const boardsOpt = opt('boards')?.split(',').filter(Boolean);
 const tag = opt('tag');
+const target = opt('target') ?? 'harness';
+const BUDGET = 3 * 1024 * 1024; // bundle.js : échec au-delà de 3 Mo (plafond de l'artifact : 6 Mo)
 const isolated = Boolean(only || boardsOpt || tag);
 const base = join(root, isolated ? `dist/ds-${tag ?? 'partiel'}` : 'dist/ds');
 const out = join(base, 'components');
@@ -26,21 +29,26 @@ export const NAMESPACE = 'GoutersDeCecile';
 
 // Registres : partagés (src/generated) ou isolés (<base>/gen)
 const genDir = isolated ? join(base, 'gen') : join(root, 'src/generated');
-const gen = generate({ outDir: genDir, components: isolated ? only ?? [] : undefined, artboards: isolated ? boardsOpt ?? [] : undefined });
+const gen = generate({ outDir: genDir, components: isolated ? only ?? [] : undefined, artboards: isolated ? boardsOpt ?? [] : undefined, target });
 const redirectGenerated = {
   name: 'generated-dir',
   setup(b) {
     if (!isolated) return;
-    b.onResolve({ filter: /generated\/(components|ecrins|illustrations)\.gen$/ }, (a) => ({ path: join(genDir, a.path.split('/').pop() + '.ts') }));
+    b.onResolve({ filter: /generated\/(components|ecrins|illustrations|assets)\.gen$/ }, (a) => ({ path: join(genDir, a.path.split('/').pop() + '.ts') }));
   },
 };
 
-const GLOBALS = { react: 'window.React', 'react-dom': 'window.ReactDOM', 'react-dom/client': 'window.ReactDOM' };
+// React vient des globales du cadre d'aperçu (React 18 UMD). Motion importe aussi react/jsx-runtime :
+// on le reconstruit sur createElement (les props contiennent déjà children).
+const JSX_RUNTIME = `var R = window.React;
+function jsx(type, props, key) { return R.createElement(type, key === undefined ? props : Object.assign({}, props, { key: key })); }
+module.exports = { jsx: jsx, jsxs: jsx, jsxDEV: jsx, Fragment: R.Fragment };`;
+const GLOBALS = { react: 'module.exports = window.React;', 'react-dom': 'module.exports = window.ReactDOM;', 'react-dom/client': 'module.exports = window.ReactDOM;', 'react/jsx-runtime': JSX_RUNTIME, 'react/jsx-dev-runtime': JSX_RUNTIME };
 const reactGlobals = {
   name: 'react-globals',
   setup(b) {
-    b.onResolve({ filter: /^react(-dom)?(\/client)?$/ }, (a) => ({ path: a.path, namespace: 'react-global' }));
-    b.onLoad({ filter: /.*/, namespace: 'react-global' }, (a) => ({ contents: `module.exports = ${GLOBALS[a.path]};`, loader: 'js' }));
+    b.onResolve({ filter: /^react(-dom)?(\/client|\/jsx-runtime|\/jsx-dev-runtime)?$/ }, (a) => ({ path: a.path, namespace: 'react-global' }));
+    b.onLoad({ filter: /.*/, namespace: 'react-global' }, (a) => ({ contents: GLOBALS[a.path], loader: 'js' }));
   },
 };
 
@@ -82,5 +90,6 @@ const header = `/* @ds-bundle: ${JSON.stringify({ format: 4, namespace: NAMESPAC
 writeFileSync(jsPath, header + js);
 
 const kb = (p) => (existsSync(p) ? (readFileSync(p).length / 1024).toFixed(0) : '0');
-console.log(`${out.replace(root + '/', '')} : bundle.js ${kb(jsPath)} Ko · bundle.css ${kb(join(out, 'bundle.css'))} Ko · ${gen.comps.length} composants · ${gen.boards.length} artboards · ${gen.ecrins} écrins · ${gen.illustrations} illustrations`);
+if (readFileSync(jsPath).length > BUDGET) { console.error(`bundle.js dépasse le budget de ${BUDGET / 1048576} Mo`); process.exitCode = 1; }
+console.log(`${out.replace(root + '/', '')} [${target}] : bundle.js ${kb(jsPath)} Ko · bundle.css ${kb(join(out, 'bundle.css'))} Ko · ${gen.comps.length} composants · ${gen.boards.length} artboards · ${gen.ecrins} écrins · ${gen.illustrations} illustrations · ${gen.assets} images`);
 if (result.warnings.length) console.warn(`${result.warnings.length} avertissement(s) esbuild`);

@@ -1,13 +1,27 @@
 {
   "v": 3,
   "layout": "files",
-  "createdOnFiles": { "v": 1, "at": "2026-10-16T08:55:09Z" },
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-16T08:55:09Z"
+  },
   "title": "Les goûters de Cécile",
   "namespace": "GoutersDeCecile",
-  "libraries": [{ "name": "react", "version": "18" }, { "name": "react-dom", "version": "18" }],
+  "libraries": [
+    {
+      "name": "react",
+      "version": "18"
+    },
+    {
+      "name": "react-dom",
+      "version": "18"
+    }
+  ],
   "sections": {},
   "groups": [],
   "assetGroups": {},
   "blobs": {},
-  "docs": { "sections": [] }
+  "docs": {
+    "sections": []
+  }
 }

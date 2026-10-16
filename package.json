@@ -5,25 +5,34 @@
   "type": "module",
   "description": "Design system du carnet « Les goûters de Cécile » (TV 1920×1080 et A5).",
   "scripts": {
-    "dev": "npm run gen && vite",
-    "tokens": "node scripts/build-tokens.mjs --report",
+    "dev": "npm run gen && node scripts/gen-entry.mjs --target site && vite",
+    "tokens": "node scripts/gen-springs.mjs && node scripts/build-tokens.mjs --report",
     "gen": "node scripts/gen-svg.mjs && node scripts/gen-entry.mjs",
     "typecheck": "node scripts/gen-entry.mjs && tsc --noEmit",
-    "bundle": "node scripts/gen-entry.mjs && node scripts/build-bundle.mjs",
+    "bundle": "node scripts/assets.mjs && node scripts/build-bundle.mjs",
     "build": "node scripts/build-tokens.mjs && npm run gen && tsc --noEmit && node scripts/build-bundle.mjs && vite build",
     "shot": "node scripts/shot.mjs",
     "metrics": "node scripts/font-metrics.mjs",
     "textures": "node scripts/bake-textures.mjs",
-    "artifact": "node scripts/build-artifact.mjs"
+    "artifact": "node scripts/build-artifact.mjs",
+    "assets": "node scripts/assets.mjs"
   },
   "dependencies": {
+    "motion": "12.43.0",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
   "devDependencies": {
+    "@fontsource-variable/shantell-sans": "5.3.0",
     "@fontsource/caveat": "5.3.0",
     "@fontsource/cormorant-garamond": "5.3.0",
+    "@fontsource/gochi-hand": "5.3.0",
+    "@fontsource/kalam": "5.3.0",
+    "@fontsource/la-belle-aurore": "5.3.0",
+    "@fontsource/patrick-hand-sc": "5.3.0",
     "@fontsource/playfair-display": "5.3.0",
+    "@fontsource/playwrite-fr-moderne": "5.3.0",
+    "@fontsource/playwrite-fr-trad": "5.3.0",
     "@types/react": "18.3.31",
     "@types/react-dom": "18.3.7",
     "@vitejs/plugin-react": "5.2.0",

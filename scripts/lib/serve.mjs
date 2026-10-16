@@ -16,6 +16,16 @@ export async function serve(root = ROOT) {
     try {
       const path = normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname)).replace(/^(\.\.[/\\])+/, '');
       let file = join(root, path);
+      // /_blob/<id> : comme dans l'artifact, un asset téléversé (design-system/assets.lock.json : sha → id)
+      const blob = /^\/_blob\/([^/]+)$/.exec(path);
+      if (blob) {
+        const lock = JSON.parse(await readFile(join(root, 'design-system/assets.lock.json'), 'utf8'));
+        const assets = JSON.parse(await readFile(join(root, 'design-system/assets.json'), 'utf8'));
+        const sha = Object.keys(lock).find((k) => lock[k] === blob[1]);
+        const a = Object.values(assets).find((x) => x.sha === sha);
+        if (!a) throw new Error('blob inconnu');
+        file = join(root, 'design-system', a.file);
+      }
       if ((await stat(file)).isDirectory()) file = join(file, 'index.html');
       const body = await readFile(file);
       res.writeHead(200, { 'content-type': TYPES[extname(file)] ?? 'application/octet-stream', 'cache-control': 'no-store' });

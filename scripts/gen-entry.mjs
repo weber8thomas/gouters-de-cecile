@@ -4,16 +4,21 @@
 //                          + Artboards { <Nom>: composant } depuis src/artboards/<Nom>/index.ts
 //   ecrins.gen.ts        — tous les écrins (ecrin.json + SVG par variante)
 //   illustrations.gen.ts — tous les SVG de design-system/illustrations/**, clé = chemin sans .svg
-// Par défaut dans src/generated/ ; generate({ outDir, components, artboards }) pour un build isolé.
-import { readdirSync, existsSync, writeFileSync, mkdirSync, statSync } from 'node:fs';
+//   assets.gen.ts        — URL des images cuites (design-system/baked/**) selon la cible :
+//                          artifact → /_blob/<id> (design-system/assets.lock.json) · harness → /design-system/baked/…
+//                          · site → ./design-system/baked/…
+// Par défaut dans src/generated/ ; generate({ outDir, components, artboards, target }) pour un build isolé.
+//   node scripts/gen-entry.mjs [--target harness|site|artifact]
+import { readdirSync, existsSync, writeFileSync, mkdirSync, statSync, readFileSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { inventory } from './assets.mjs';
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dirs = (p) => (existsSync(p) ? readdirSync(p, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort() : []);
 const HEAD = '// Fichier généré par scripts/gen-entry.mjs — ne pas modifier.\n';
 
-export function generate({ outDir = join(ROOT, 'src/generated'), components, artboards } = {}) {
+export function generate({ outDir = join(ROOT, 'src/generated'), components, artboards, target = 'harness' } = {}) {
   mkdirSync(outDir, { recursive: true });
   const rel = (p) => { const r = relative(outDir, p).split('\\').join('/'); return r.startsWith('.') ? r : `./${r}`; };
   const write = (name, text) => writeFileSync(join(outDir, name), text);
@@ -63,10 +68,28 @@ export function generate({ outDir = join(ROOT, 'src/generated'), components, art
   il += `export const ILLUSTRATIONS: Record<string, string> = {\n${svgs.map((f, i) => `  ${JSON.stringify(relative(illRoot, f).replace(/\.svg$/, '').split('\\').join('/'))}: i${i}`).join(',\n')}\n};\n`;
   write('illustrations.gen.ts', il);
 
-  return { comps, boards, ecrins: entries.length, illustrations: svgs.length };
+  // Images cuites
+  const inv = inventory();
+  const lockFile = join(ROOT, 'design-system/assets.lock.json');
+  const lock = existsSync(lockFile) ? JSON.parse(readFileSync(lockFile, 'utf8')) : {};
+  const missing = [];
+  const url = (a) => {
+    if (target === 'artifact') {
+      const id = lock[a.sha];
+      if (!id) { missing.push(a.file); return ''; }
+      return `/_blob/${id}`;
+    }
+    return target === 'site' ? `./design-system/${a.file}` : `/design-system/${a.file}`;
+  };
+  const entriesA = Object.entries(inv).map(([n, a]) => `  ${JSON.stringify(n)}: { u: ${JSON.stringify(url(a))}, w: ${a.w}, h: ${a.h} }`);
+  write('assets.gen.ts', `${HEAD}// Cible : ${target}\nexport const ASSETS: Record<string, { u: string; w: number; h: number }> = {\n${entriesA.join(',\n')}\n};\n`);
+  if (missing.length) throw new Error(`Assets non téléversés (cible artifact) :\n  ${missing.join('\n  ')}`);
+
+  return { comps, boards, ecrins: entries.length, illustrations: svgs.length, assets: entriesA.length, target };
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const r = generate();
-  console.log(`entrées : ${r.comps.length} composants, ${r.boards.length} artboards, ${r.ecrins} écrins, ${r.illustrations} illustrations`);
+  const ti = process.argv.indexOf('--target');
+  const r = generate({ target: ti > 0 ? process.argv[ti + 1] : 'harness' });
+  console.log(`entrées (${r.target}) : ${r.comps.length} composants, ${r.boards.length} artboards, ${r.ecrins} écrins, ${r.illustrations} illustrations, ${r.assets} images`);
 }

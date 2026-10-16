@@ -2,19 +2,73 @@
   "Caveat": {
     "xHeight": 0.375,
     "capHeight": 0.719,
+    "ascender": 0.672,
+    "descender": 0.25,
     "avgCharWidth": 0.325,
-    "loaded": true
-  },
-  "Cormorant Garamond": {
-    "xHeight": 0.391,
-    "capHeight": 0.625,
-    "avgCharWidth": 0.372,
-    "loaded": true
+    "loaded": true,
+    "missing": ""
   },
   "Playfair Display": {
     "xHeight": 0.531,
     "capHeight": 0.719,
-    "avgCharWidth": 0.436,
-    "loaded": true
+    "ascender": 0.797,
+    "descender": 0.203,
+    "avgCharWidth": 0.435,
+    "loaded": true,
+    "missing": ""
+  },
+  "Playwrite FR Trad": {
+    "xHeight": 0.531,
+    "capHeight": 1.438,
+    "ascender": 1.438,
+    "descender": 0.938,
+    "avgCharWidth": 0.535,
+    "loaded": true,
+    "missing": "½¼¾"
+  },
+  "Playwrite FR Moderne": {
+    "xHeight": 0.516,
+    "capHeight": 1.125,
+    "ascender": 1.125,
+    "descender": 0.625,
+    "avgCharWidth": 0.506,
+    "loaded": true,
+    "missing": "½¼¾"
+  },
+  "Kalam": {
+    "xHeight": 0.516,
+    "capHeight": 0.734,
+    "ascender": 0.797,
+    "descender": 0.25,
+    "avgCharWidth": 0.422,
+    "loaded": true,
+    "missing": ""
+  },
+  "Shantell Sans": {
+    "xHeight": 0.516,
+    "capHeight": 0.719,
+    "ascender": 0.766,
+    "descender": 0.266,
+    "avgCharWidth": 0.492,
+    "loaded": true,
+    "missing": null
+  },
+  "Patrick Hand SC": {
+    "xHeight": 0.469,
+    "capHeight": 0.672,
+    "ascender": 0.469,
+    "descender": 0.016,
+    "avgCharWidth": 0.352,
+    "loaded": true,
+    "missing": ""
+  },
+  "La Belle Aurore": {
+    "xHeight": 0.453,
+    "capHeight": 0.672,
+    "ascender": 0.703,
+    "descender": 0.688,
+    "avgCharWidth": 0.414,
+    "loaded": true,
+    "missing": ""
   }
 }

@@ -19,6 +19,11 @@ export interface EcrinManifest {
   variants: { id: string; label: string }[];
 }
 
+// Calques cuits (crayon + aquarelle) : images de design-system/baked/ecrins/<id>/<variante>/,
+// noms logiques « ecrins/<id>/<v>/back|front|dome|domeBack|glint|mask-soft » (assetUrl, src/lib/assets.ts).
+// Mêmes cadrage et grille de pixels que les SVG vectoriels ci-dessous, qui restent l'export SVG.
+export const ECRIN_RASTER_PARTS = ['back', 'front', 'dome', 'domeBack', 'glint', 'mask-soft'] as const;
+
 export interface EcrinFiles {
   back?: string; // SVG derrière la vidéo
   front?: string; // SVG devant la vidéo (couvre la bande de débord)
