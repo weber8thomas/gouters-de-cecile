@@ -14,7 +14,8 @@ En cas de doute, demander au responsable (le « lead ») plutôt qu'inventer.
   - Illustrations au **crayon + aquarelle** : trait vivant et imparfait, lavis qui déborde, papier qui respire. Écrins compris.
   - Playfair Display seulement pour ce qui est **imprimé** : étiquette de couverture, onglets de chapitre, folios, coupure de journal. Caveat est la main de Cécile : légendes, sommaire, repères.
   - **Ce qu'il faut fuir** : la symétrie parfaite, les aplats propres, les dégradés lisses génériques, les mêmes décors répétés, l'alignement au pixel. Varier, déborder, pencher un peu.
-- **Mouvement** : doux, physique et fluide (60 i/s sur l'ordinateur relié à la TV). Pas de survol : seulement le clavier et deux flèches discrètes.
+- **Mouvement** : doux, physique et fluide (60 i/s sur l'ordinateur relié à la TV, sur un téléphone récent aussi). Pas de survol : le clavier, le doigt (ou la souris) et deux flèches discrètes.
+- **Tous les écrans** : le même carnet s'ouvre sur **téléphone, tablette, ordinateur et TV** (§ 11). Les invités le reçoivent par un lien ; le QR de la version papier ouvre directement leur page.
 - **Distance de caméra** : trois crans, proche / moyenne / loin, chacun avec une mise en page vérifiée, plus un zoom fin de ±5 %, réglés au clavier.
 
 ## 2. Où vit quoi
@@ -160,3 +161,32 @@ Personne ne modifie `src/index.ts`.
 - Contraste mesuré sur les pixels réels du papier.
 - Écrins : alignement du masque, test magenta, transparence.
 - Mouvement : aucun recalcul de mise en page pendant un geste, 40 calques au plus.
+
+## 11. Tous les écrans : téléphone, tablette, ordinateur, TV
+
+- **Une seule mise en page** : tout reste dessiné dans la scène logique 1920×1080 et ses trois crans. On ne recompose jamais une page pour un petit écran : la **caméra** cadre et met à l'échelle.
+- **Cadrage** (`src/lib/viewport.ts`, `useViewport()`), choisi selon la forme de l'écran :
+  - `double` (écran plus large que haut) : la double page entière, à l'échelle « contain ». La table déborde jusqu'aux bords de l'écran, sans bandes noires.
+  - `page` (portrait : téléphone, tablette debout) : **une page à la fois**, à la plus grande échelle possible. On passe de la page gauche à la page droite par un glissement de caméra. Quand la page droite tourne, **la caméra suit la feuille** et atterrit sur la page gauche suivante (en reculant, l'inverse). Deux points discrets indiquent la page de la double page.
+  - Changer d'orientation garde la double page et la page courantes, sans rechargement.
+- **Lisibilité** : à chaque taille d'écran, la hauteur d'x à l'écran, ramenée à l'angle de vue à la distance de lecture habituelle (TV 3 m, ordinateur 60 cm, tablette 40 cm, téléphone 30 cm), reste au moins celle de la TV : 14 px à 3 m sur 1920 px.
+- **Gestes** (pointeur : doigt, stylet, souris) :
+  - **glisser horizontalement** sur le livre : la feuille suit le doigt, puis le relâcher la laisse retomber sur un ressort en gardant sa vitesse (un geste vif suffit) ;
+  - **toucher l'écrin** : lecture / pause ;
+  - **toucher la marge** extérieure gauche ou droite : page précédente / suivante ;
+  - `touch-action: pinch-zoom` sur le livre : le pincement du navigateur reste permis (accessibilité). Aucun défilement vertical de la page.
+  - Aucune interaction ne dépend du survol.
+- **Contrôles** (flèches, plein écran, points de page, repère de distance) : en **px d'écran**, hors de la scène mise à l'échelle.
+  - Cibles d'au moins **44×44 px** sur écran tactile ; discrets sur la TV.
+  - Respect des zones sûres : `viewport-fit=cover`, `env(safe-area-inset-*)`.
+- **Clavier et télécommande** : inchangés (§ 1, README de `Livre`). Les crans de distance ne servent qu'en cadrage `double` ; sur un écran tactile, le cran par défaut est `proche`.
+- **Liens profonds** : `#<invité>` (par exemple `#julie`) ouvre sa double page, en cadrage `page` sur sa page vidéo. Le QR de l'A5 pointe là. L'URL suit la page affichée (`history.replaceState`), sans empiler l'historique.
+- **Vidéos** :
+  - MP4 H.264 + AAC, 720p, environ 5 à 10 Mo par vidéo d'une minute ;
+  - `playsinline`, `preload="metadata"`, affiche : l'image sépia cuite ;
+  - `play()` est appelé **dans** le geste (exigence d'iOS) ; le son est permis puisque c'est un geste.
+- **Performance** : sur un téléphone, 60 i/s pendant un tourne-page (même règle de calques que § 4). Les images cuites à 1,25 × servent partout ; en 4K (échelle 2), un léger flou est accepté pour l'instant.
+- **Vérification** (`scripts/verify-devices.mjs`, émulation Playwright) :
+  - écrans : iPhone 13 portrait et paysage, Pixel 7, iPad portrait et paysage, ordinateur 1440×900 et 1280×800, TV 1920×1080 et 3840×2160 ;
+  - pour chacun : aucun débordement hors cadre, contrôles visibles et dans les zones sûres, cibles ≥ 44 px sur tactile, hauteur d'x angulaire suffisante ;
+  - glisser du doigt pour tourner (vers l'avant et l'arrière, geste vif), toucher l'écrin, lien profond, rotation de l'écran.
