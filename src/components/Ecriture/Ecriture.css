@@ -1,0 +1,221 @@
+/* Écriture — texte manuscrit vivant : mots décalés et tournés (graine), ligne qui monte,
+   encre qui faiblit, ratures, soulignés et flèches dessinés à la main.
+   Taille : uniquement handStyle() (src/lib/hands.ts), jamais de font-size ici.
+   Couleurs : uniquement var(--gc-…) ou currentColor (l'encre posée par handStyle). */
+
+:where(.gc-ecriture) {
+  margin: 0;
+}
+
+.gc-ecriture {
+  position: relative;
+  font-kerning: normal;
+  overflow-wrap: break-word;
+  text-align: start;
+}
+
+/* Un mot : légèrement décalé, tourné, soulevé par la pente de la ligne (--gc-lift, mesuré). */
+.gc-ecriture__mot {
+  display: inline-block;
+  transform: translateY(calc(var(--gc-jy, 0em) + var(--gc-lift, 0px))) rotate(var(--gc-rot, 0deg));
+  transform-origin: 50% 66%;
+}
+
+/* Grain d'encre : tuile cuite (design-system/baked/ink/grain), posée en masque sur le texte.
+   Une couche uniforme (--gc-grain-lift, selon l'outil) en atténue l'effet : le feutre couvre,
+   le crayon accroche. Le masque n'est pas rogné à la boîte : les boucles des cursives qui
+   débordent gardent leur encre. */
+.gc-ecriture--grain {
+  --gc-grain-plein: color-mix(in srgb, var(--gc-ink) var(--gc-grain-lift, 30%), transparent);
+  -webkit-mask-image: linear-gradient(var(--gc-grain-plein), var(--gc-grain-plein)), var(--gc-ink-grain);
+  mask-image: linear-gradient(var(--gc-grain-plein), var(--gc-grain-plein)), var(--gc-ink-grain);
+  -webkit-mask-size: 100% 100%, 256px 256px;
+  mask-size: 100% 100%, 256px 256px;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+  mask-clip: no-clip;
+}
+
+/* ---- Ancre de ligne de base ----
+   Boîte vide posée sur la ligne de base : un tracé en position absolue à l'intérieur part de
+   la ligne de base (position statique), quelle que soit la main et son interlignage. */
+.gc-ancre {
+  display: inline-block;
+  inline-size: 0;
+  block-size: 0;
+  vertical-align: baseline;
+}
+
+/* ---- Soulignés ---- */
+
+.gc-souligne {
+  display: block;
+  inline-size: 100%;
+  block-size: 0.32em;
+  overflow: visible;
+  transform: rotate(var(--gc-souligne-rot, 0deg));
+  transform-origin: 0 50%;
+}
+
+.gc-souligne path,
+.gc-rature__gribouillis path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.gc-souligne__trait {
+  stroke-width: calc(var(--gc-trait-k, 1) * 0.055em);
+}
+
+/* La plume se pose : le trait est plus appuyé sur ses premiers millimètres. */
+.gc-souligne__appui {
+  stroke-width: calc(var(--gc-trait-k, 1) * 0.085em);
+}
+
+/* Souligné posé sous la ligne de base du texte qui précède l'ancre. */
+.gc-souligne--ancre {
+  position: absolute;
+  inset-inline-start: -0.06em;
+  inline-size: calc(100% + 0.14em);
+  margin-block-start: 0.1em;
+}
+
+/* Souligné d'un titre : la règle déborde un peu à droite, posée sous les jambages courts. */
+.gc-ecriture__trait-titre {
+  inset-inline-start: -0.12em;
+  inline-size: calc(100% + 0.4em);
+  margin-block-start: 0.16em;
+}
+
+.gc-ecriture__trait-titre .gc-souligne__trait {
+  stroke-width: calc(var(--gc-trait-k, 1) * 0.048em);
+}
+
+.gc-ecriture__trait-titre .gc-souligne__appui {
+  stroke-width: calc(var(--gc-trait-k, 1) * 0.07em);
+}
+
+.gc-ecriture__ligne,
+.gc-ecriture__souligne {
+  position: relative;
+  display: inline-block;
+}
+
+/* ---- Rature + correction ---- */
+
+/* La rature réserve au-dessus du mot la place de la correction : (reach − interlignage de la
+   main) em du texte raturé, jamais négatif. L'interligne s'ouvre juste ce qu'il faut. */
+.gc-rature {
+  position: relative;
+  display: inline-block;
+  padding-block-start: max(0em, calc((var(--gc-rature-reach, 0) - var(--gc-rature-lh, 1)) * 1em));
+}
+
+.gc-rature__base {
+  position: relative;
+  display: inline-block;
+}
+
+.gc-rature__barre,
+.gc-rature__correction {
+  text-decoration: none;
+}
+
+/* Gribouillis centré sur la hauteur d'x : de la ligne de base à un peu au-dessus des minuscules. */
+.gc-rature__gribouillis {
+  position: absolute;
+  inset-inline-start: -0.1em;
+  inline-size: calc(100% + 0.2em);
+  block-size: 0.86em;
+  margin-block-start: -0.8em;
+  overflow: visible;
+}
+
+.gc-rature__boucles {
+  stroke-width: calc(var(--gc-trait-k, 1) * 0.05em);
+}
+
+.gc-rature__retour {
+  stroke-width: calc(var(--gc-trait-k, 1) * 0.045em);
+}
+
+/* Place de la correction au-dessus : boîte de largeur nulle ramenée au début du mot raturé
+   (marge de −100 % de la rature), posée sur la ligne de base puis remontée (--gc-rature-lift,
+   en em du texte raturé). Sans hauteur : elle ne pousse pas la ligne. */
+.gc-rature--dessus > .gc-rature__place {
+  display: inline-block;
+  inline-size: 0;
+  margin-inline-start: -100%;
+  vertical-align: baseline;
+  white-space: nowrap;
+  transform: translateY(calc(-1 * var(--gc-rature-lift, 0.9em)));
+}
+
+/* Correction à la suite, sur la même ligne (mains à grandes boucles, pages serrées). */
+.gc-rature--apres > .gc-rature__place {
+  display: inline-block;
+  margin-inline-start: 0.28em;
+}
+
+.gc-rature__correction {
+  display: inline-block;
+  transform: translateX(var(--gc-dx, 0em)) rotate(var(--gc-rot, 0deg));
+  transform-origin: 0 100%;
+}
+
+/* ---- Annotation : petit mot dans un blanc, flèche tracée à la main ---- */
+
+.gc-annotation {
+  display: inline-block;
+}
+
+.gc-annotation__corps {
+  position: relative;
+  display: inline-block;
+  transform: rotate(var(--gc-tilt, 0deg));
+  transform-origin: 50% 60%;
+}
+
+.gc-annotation__depart {
+  position: absolute;
+  inline-size: 0;
+  block-size: 0;
+}
+
+.gc-annotation__depart--gauche {
+  inset-inline-start: -0.1em;
+  inset-block-start: 56%;
+}
+
+.gc-annotation__depart--droite {
+  inset-inline-end: -0.1em;
+  inset-block-start: 56%;
+}
+
+.gc-annotation__depart--haut {
+  inset-inline-start: 50%;
+  inset-block-start: 12%;
+}
+
+.gc-annotation__depart--bas {
+  inset-inline-start: 50%;
+  inset-block-end: 4%;
+}
+
+.gc-annotation__fleche {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  overflow: visible;
+}
+
+.gc-annotation__fleche path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: calc(var(--gc-trait-k, 1) * 2.2px);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

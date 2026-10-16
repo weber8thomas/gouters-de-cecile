@@ -1,0 +1,114 @@
+<!-- @dsCard group="Écriture" width=896 height=1000 subtitle="La recette de Julie écrite de sa main (Kalam, stylo bille bleu), titre souligné en rouge à la règle, une rature et deux annotations" -->
+<style>
+  .s2-page {
+    box-sizing: border-box;
+    width: var(--gc-page-w);
+    height: var(--gc-page-h);
+    padding: var(--gc-page-pad-top) var(--gc-page-pad-outer) var(--gc-page-pad-bottom) var(--gc-page-pad-spine);
+    background:
+      linear-gradient(to right, color-mix(in srgb, var(--gc-paper-edge) 85%, transparent), transparent var(--gc-gutter-shadow)),
+      radial-gradient(120% 90% at 0% 0%, var(--gc-paper-lit), var(--gc-paper) 60%);
+  }
+  .s2-zone {
+    position: relative;
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gc-space-3);
+  }
+  .s2-meta { margin-block-start: calc(-1 * var(--gc-space-2)); }
+  .s2-label { margin-block-start: var(--gc-space-2); }
+  .s2-ingredients {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 var(--gc-space-2);
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(4, auto);
+    grid-template-columns: minmax(max-content, 1fr) minmax(0, 1fr);
+    column-gap: var(--gc-space-5);
+    align-items: baseline;
+  }
+  .s2-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 var(--gc-space-2);
+    display: flex;
+    flex-direction: column;
+  }
+  .s2-step {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--gc-space-3);
+    align-items: baseline;
+  }
+  .s2-step__texte > .gc-annotation { margin-inline-start: var(--gc-space-7); }
+  .s2-label-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--gc-space-4);
+  }
+  .s2-mot {
+    margin-block-start: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .s2-signature { align-self: flex-end; margin-inline-end: var(--gc-space-6); }
+</style>
+<div id="root"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    // Paramètres facultatifs (vérification) : ?main=mamie&encre=brune&cran=loin
+    var q = new URLSearchParams(location.search);
+    var hand = q.get('main') || 'soignee';
+    var ink = q.get('encre') || 'bic';
+    var cran = q.get('cran') || 'proche';
+    var fonts = ['Kalam', 'Caveat', 'Playwrite FR Trad', 'Playwrite FR Moderne', 'Shantell Sans', 'Patrick Hand SC', 'La Belle Aurore'];
+    fonts.forEach(function (f) { document.fonts.load('400 40px "' + f + '"'); document.fonts.load('700 40px "' + f + '"'); });
+
+    var julie = G.getGuest('julie');
+    var r = julie.recipe;
+    var seed = 4127;
+    // Ce que Julie a vraiment écrit : elle a d'abord mis 150 g de sucre, puis corrigé.
+    var ingredients = r.ingredients.map(function (s) {
+      return /^150.g de sucre$/.test(s) ? '~~150 g~~>120 g de sucre' : s;
+    });
+    var steps = r.steps.map(function (s, i) {
+      return i === 1 ? s.replace('zestes', '__zestes__') : s;
+    });
+    var meta = 'Prép. ' + r.prep + ' · cuisson ' + r.cook + ' · ' + r.servings;
+    // pente de base de Julie (−0,6°), ± 0,3° d'une ligne à l'autre
+    var pente = function (i) { return -0.6 + [0.2, -0.25, 0.05, 0.3, -0.1, -0.3, 0.15, 0, 0.25, -0.2][i % 10]; };
+    var E = function (props, text) { return h(G.Ecriture, Object.assign({ hand: hand, ink: ink }, props), text); };
+
+    var page = h('section', { className: 's2-page', 'data-gc-distance': cran },
+      h('div', { className: 's2-zone', 'data-s2-zone': '' },
+        h(G.TitreMain, { hand: hand, ink: ink, underline: 'regle', underlineInk: 'rouge', seed: seed, slant: -0.7 }, r.title),
+        E({ role: 'meta', seed: seed + 1, slant: -0.4, className: 's2-meta' }, meta),
+        E({ role: 'body', seed: seed + 2, className: 's2-label', souligne: 'main' }, 'Ingrédients :'),
+        h('ul', { className: 's2-ingredients' },
+          ingredients.map(function (s, i) {
+            return E({ key: i, as: 'li', role: 'body', seed: seed + 10 + i, slant: pente(i), drift: 1 }, '– ' + s);
+          })),
+        h('div', { className: 's2-label-row s2-label' },
+          E({ role: 'body', seed: seed + 3, souligne: 'main' }, 'Préparation :'),
+          h(G.Annotation, { text: 'testé le 3 mars, un régal', hand: 'cecile', ink: 'crayon', tilt: -3, seed: seed + 41 })),
+        h('ol', { className: 's2-steps' },
+          steps.map(function (s, i) {
+            return h('li', { key: i, className: 's2-step', style: { marginInlineStart: 'calc(var(--gc-space-1) * ' + [0, 0.75, 0.25, 1.25][i] + ')' } },
+              E({ as: 'span', role: 'body', seed: seed + 30 + i }, (i + 1) + '.'),
+              h('span', { className: 's2-step__texte' },
+                E({ as: 'span', role: 'body', seed: seed + 20 + i, slant: pente(i + 3) }, s),
+                i === 3 ? h(G.Annotation, { text: 'pas plus !', hand: hand, ink: 'rouge', arrow: 'courbe', tilt: -6, to: { x: -40, y: -4 }, seed: seed + 40 }) : null));
+          })),
+        h('div', { className: 's2-mot', 'data-s2-mot': '' },
+          E({ role: 'note', seed: seed + 50, slant: -0.8 }, julie.note),
+          E({ role: 'signature', seed: seed + 51, slant: -3, className: 's2-signature' }, julie.signature))));
+
+    ReactDOM.createRoot(document.getElementById('root')).render(page);
+  })();
+</script>

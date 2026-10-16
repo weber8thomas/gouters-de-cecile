@@ -43,13 +43,29 @@ const metrics = await page.evaluate(async (fams) => {
     const ctx = document.createElement('canvas').getContext('2d');
     ctx.font = `${weight} 1000px "${family}"`;
     const m = (t) => ctx.measureText(t);
-    const x = m('x').actualBoundingBoxAscent / 1000;
+    // Hauteur d'x : médiane des lettres basses n, o, u (le « x » seul trompe : celui de La Belle
+    // Aurore est bien plus haut que ses autres lettres basses)
+    // Mesure au pixel (rendu à 400 px, seuil d'encre à 50 %) : le canvas arrondit au 1/64 d'em.
+    const inkTop = (ch) => {
+      const S = 400, cv = document.createElement('canvas');
+      cv.width = 600; cv.height = 900;
+      const c2 = cv.getContext('2d');
+      c2.font = `${weight} ${S}px "${family}"`;
+      c2.textBaseline = 'alphabetic';
+      c2.fillText(ch, 100, 600);
+      const d = c2.getImageData(0, 0, 600, 600).data;
+      for (let y = 0; y < 600; y++) for (let x = 0; x < 600; x++) if (d[(y * 600 + x) * 4 + 3] > 127) return (600 - y) / S;
+      return 0;
+    };
+    const lows = ['n', 'o', 'u'].map(inkTop).sort((a, b) => a - b);
+    const x = lows[1];
+    const stems = Math.max(...['b', 'd', 'f', 'h', 'k', 'l', 't', '0', '1', '4', '7', '8'].map((t) => m(t).actualBoundingBoxAscent / 1000));
     const cap = m('H').actualBoundingBoxAscent / 1000;
     const asc = m('dbklhf').actualBoundingBoxAscent / 1000;
     const desc = m('gjpqy').actualBoundingBoxDescent / 1000;
     const avg = m('Le cake citron de Julie, 200 g de farine').width / 1000 / 40;
     out[family] = {
-      xHeight: +x.toFixed(3), capHeight: +cap.toFixed(3), ascender: +asc.toFixed(3), descender: +desc.toFixed(3),
+      xHeight: +x.toFixed(3), capHeight: +cap.toFixed(3), ascender: +asc.toFixed(3), descender: +desc.toFixed(3), stems: +stems.toFixed(3),
       avgCharWidth: +avg.toFixed(3), loaded: document.fonts.check(`${weight} 20px "${family}"`),
     };
   }

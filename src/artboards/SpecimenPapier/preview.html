@@ -1,0 +1,63 @@
+<!-- @dsCard group="Spécimen" width=1920 height=3240 page subtitle="Papier ancien à l'échelle de la TV : une double page par âge (1, 2, 3), texte d'essai Caveat en plume, crayon et rouge" -->
+<div id="root"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    var W = 896, H = 1000, BX = 64, BY = 40;
+
+    // Lignes d'essai : [encre, texte]. Zone de texte à 72 px du bord extérieur, 64 px de la reliure.
+    function Lines(props) {
+      return h('div', { style: { position: 'absolute', left: props.x, top: props.y, width: 760 } },
+        props.lines.map(function (l, i) {
+          return h('p', { key: i, className: 'gc-hand-body', style: { margin: 0, color: 'var(--gc-ink-' + l[0] + ')' } }, l[1]);
+        }));
+    }
+
+    // Une double page : couverture, deux feuilles de Papier (même graine), ombre du pli au-dessus de l'encre.
+    function Spread(props) {
+      var seed = props.seed, age = props.age;
+      var left = [
+        ['plume', 'Âge ' + age + ' · Sablés à la fleur d’oranger'],
+        ['plume', '250 g de farine, 125 g de beurre mou,'],
+        ['crayon', '100 g de sucre glace, 1 jaune d’œuf,'],
+        ['rouge', '1 c. à s. d’eau de fleur d’oranger'],
+        ['crayon', '1 pincée de sel, un peu de zeste.'],
+      ];
+      var right = [
+        ['crayon', 'Sable le beurre et la farine du bout des doigts.'],
+        ['plume', 'Ajoute le sucre, le jaune, la fleur d’oranger.'],
+        ['rouge', 'Repos 1 h au frais : surtout ne pas l’oublier !'],
+        ['plume', 'Four th. 6 (180 °C), 12 minutes à peine.'],
+      ];
+      var note = [['plume', 'Pour Cécile, qui en volait toujours un de plus.']];
+      // zones de texte, en px de page (les taches restent ailleurs)
+      var keepLeft = [{ x: 64, y: 56, w: 776, h: 5 * 50 + 16 }];
+      var keepRight = [{ x: 56, y: 56, w: 776, h: 4 * 50 + 16 }, { x: 56, y: 836, w: 776, h: 66 }];
+      var page = function (side, x, keep, kids) {
+        return h('div', { style: { position: 'absolute', left: x, top: 0, width: W, height: H } },
+          h(G.Papier, { seed: seed, age: age, side: side, keepOut: keep }, kids));
+      };
+      return h('div', { style: { position: 'relative', width: 1920, height: 1080, overflow: 'hidden',
+        background: 'radial-gradient(ellipse 70% 80% at 30% 20%, var(--gc-wood-1), var(--gc-wood-2) 60%, var(--gc-wood-3))' } },
+        h('div', { style: { position: 'absolute', left: BX, top: BY, width: 2 * W, height: H } },
+          // couverture
+          h('div', { style: { position: 'absolute', left: -18, right: -18, top: -6, bottom: -16, borderRadius: 8,
+            background: 'var(--gc-linen-shade)', boxShadow: 'var(--gc-sh-book)' } }),
+          page('left', 0, keepLeft, h(Lines, { x: 72, y: 64, lines: left })),
+          page('right', W, keepRight, [
+            h(Lines, { key: 'a', x: 64, y: 64, lines: right }),
+            h(Lines, { key: 'b', x: 64, y: 846, lines: note }),
+          ]),
+          // pli de la reliure, au-dessus de l'encre comme dans DoublePage
+          h('div', { style: { position: 'absolute', left: W - 70, width: 140, top: 0, bottom: 0, pointerEvents: 'none',
+            background: 'linear-gradient(to right, transparent, color-mix(in srgb, var(--gc-chocolate) 10%, transparent) 40px, color-mix(in srgb, var(--gc-chocolate) 42%, transparent) 70px, color-mix(in srgb, var(--gc-chocolate) 14%, transparent) 78px, transparent 96px, color-mix(in srgb, var(--gc-paper-lace) 30%, transparent) 112px, transparent)' } })));
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      h('div', { style: { width: 1920 } },
+        h(Spread, { seed: 6, age: 1 }),
+        h(Spread, { seed: 14, age: 2 }),
+        h(Spread, { seed: 26, age: 3 })));
+  })();
+</script>

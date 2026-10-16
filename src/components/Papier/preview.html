@@ -1,0 +1,29 @@
+<!-- @dsCard group="Scène & livre" width=1920 height=1080 subtitle="Papier : quatre doubles pages vierges à mi-taille, âges 0 et 1 en haut, 2 et 3 en bas, chacune sa graine" -->
+<div id="root"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    var W = 896, H = 1000;
+
+    // Une double page vierge à l'échelle 1/2 : la mesure du papier ignore la mise à l'échelle.
+    function Spread(props) {
+      return h('div', { style: { position: 'absolute', left: props.x, top: props.y, width: W, height: H / 2 } },
+        h('div', { style: { position: 'absolute', left: 0, top: 0, width: 2 * W, height: H, transform: 'scale(0.5)', transformOrigin: '0 0' } },
+          h('div', { style: { position: 'absolute', left: -14, right: -14, top: -6, bottom: -14, borderRadius: 8, background: 'var(--gc-linen-shade)', boxShadow: 'var(--gc-sh-book)' } }),
+          ['left', 'right'].map(function (side, i) {
+            return h('div', { key: side, style: { position: 'absolute', left: i * W, top: 0, width: W, height: H } },
+              h(G.Papier, { seed: props.seed, age: props.age, side: side }));
+          }),
+          h('div', { style: { position: 'absolute', left: W - 60, width: 120, top: 0, bottom: 0,
+            background: 'linear-gradient(to right, transparent, color-mix(in srgb, var(--gc-chocolate) 36%, transparent) 60px, transparent 80px)' } })));
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      h('div', { style: { position: 'relative', width: 1920, height: 1080, background: 'var(--gc-wood-2)' } },
+        h(Spread, { x: 48, y: 22, seed: 9, age: 0 }),
+        h(Spread, { x: 976, y: 22, seed: 28, age: 1 }),
+        h(Spread, { x: 48, y: 558, seed: 22, age: 2 }),
+        h(Spread, { x: 976, y: 558, seed: 26, age: 3 })));
+  })();
+</script>

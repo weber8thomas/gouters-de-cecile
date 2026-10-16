@@ -139,27 +139,27 @@
   --gc-dur-spring-settle: 608ms;
   --gc-glow-alpha: 0.22;
   --gc-nav-alpha: 0.8;
-  --gc-xh-cecile: 0.375;
-  --gc-xh-mamie: 0.531;
-  --gc-xh-ecole: 0.516;
-  --gc-xh-soignee: 0.516;
-  --gc-xh-feutre: 0.516;
-  --gc-xh-capitales: 0.469;
-  --gc-xh-pressee: 0.453;
+  --gc-xh-cecile: 0.37;
+  --gc-xh-mamie: 0.517;
+  --gc-xh-ecole: 0.517;
+  --gc-xh-soignee: 0.51;
+  --gc-xh-feutre: 0.502;
+  --gc-xh-capitales: 0.46;
+  --gc-xh-pressee: 0.355;
   --gc-lh-cecile: 1.12;
-  --gc-lh-mamie: 1.75;
-  --gc-lh-ecole: 1.6;
+  --gc-lh-mamie: 1.45;
+  --gc-lh-ecole: 1.4;
   --gc-lh-soignee: 1.28;
-  --gc-lh-feutre: 1.25;
+  --gc-lh-feutre: 1.18;
   --gc-lh-capitales: 1.22;
   --gc-lh-pressee: 1.5;
   --gc-boost-cecile: 1;
-  --gc-boost-mamie: 1.12;
-  --gc-boost-ecole: 1.12;
+  --gc-boost-mamie: 1;
+  --gc-boost-ecole: 1;
   --gc-boost-soignee: 1;
   --gc-boost-feutre: 1;
   --gc-boost-capitales: 1;
-  --gc-boost-pressee: 1.12;
+  --gc-boost-pressee: 1.08;
   --gc-d-proche-book-x: 64px;
   --gc-d-proche-book-y: 40px;
   --gc-d-proche-page-w: 896px;
@@ -222,13 +222,13 @@
 .gc-hand-signature { font-family: var(--font-hand); font-size: 56px; line-height: 1; font-weight: 700; }
 .gc-hand-meta { font-family: var(--font-hand); font-size: 40px; line-height: 1.1; font-weight: 600; }
 .gc-hand-caption { font-family: var(--font-hand); font-size: 42px; line-height: 1.15; font-weight: 500; }
-.gc-main-cecile { font-family: var(--font-hand); font-size: 42.7px; line-height: 1.12; font-weight: 500; }
-.gc-main-mamie { font-family: var(--font-mamie); font-size: 33.7px; line-height: 1.75; font-weight: 400; }
-.gc-main-ecole { font-family: var(--font-ecole); font-size: 34.7px; line-height: 1.6; font-weight: 400; }
-.gc-main-soignee { font-family: var(--font-soignee); font-size: 31.0px; line-height: 1.28; font-weight: 400; }
-.gc-main-feutre { font-family: var(--font-feutre); font-size: 31.0px; line-height: 1.25; font-weight: 400; }
-.gc-main-capitales { font-family: var(--font-capitales); font-size: 34.1px; line-height: 1.22; font-weight: 400; }
-.gc-main-pressee { font-family: var(--font-pressee); font-size: 39.6px; line-height: 1.5; font-weight: 400; }
+.gc-main-cecile { font-family: var(--font-hand); font-size: 43.2px; line-height: 1.12; font-weight: 500; }
+.gc-main-mamie { font-family: var(--font-mamie); font-size: 30.9px; line-height: 1.45; font-weight: 400; }
+.gc-main-ecole { font-family: var(--font-ecole); font-size: 30.9px; line-height: 1.4; font-weight: 400; }
+.gc-main-soignee { font-family: var(--font-soignee); font-size: 31.4px; line-height: 1.28; font-weight: 400; }
+.gc-main-feutre { font-family: var(--font-feutre); font-size: 31.9px; line-height: 1.18; font-weight: 400; }
+.gc-main-capitales { font-family: var(--font-capitales); font-size: 34.8px; line-height: 1.22; font-weight: 400; }
+.gc-main-pressee { font-family: var(--font-pressee); font-size: 48.7px; line-height: 1.5; font-weight: 400; }
 .gc-a5-recipe-title { font-family: var(--font-serif); font-size: 29.33px; line-height: 1.05; font-weight: 600; }
 .gc-a5-section-label { font-family: var(--font-serif); font-size: 14.67px; line-height: 1.2; font-weight: 600; font-style: italic; }
 .gc-a5-hand-body { font-family: var(--font-hand); font-size: 17.33px; line-height: 1.15; font-weight: 500; }
