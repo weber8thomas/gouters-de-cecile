@@ -11,7 +11,7 @@ import { TasseProgression } from '../../components/TasseProgression';
 import { getGuest } from '../../content';
 import { assetUrl } from '../../lib/assets';
 import { ECRINS } from '../../generated/ecrins.gen';
-import type { Distance } from '../../lib/settings';
+import { useSettings, type Distance } from '../../lib/settings';
 import './SpecimenJulie.css';
 
 const SEED = 4127;
@@ -106,6 +106,35 @@ function RecetteMain({ withNote }: { withNote: boolean }) {
   );
 }
 
+/** Page de gauche de Julie : la cloche, la légende et, au cran loin, le petit mot. */
+export function JulieGauche({ playing = false, progress = 0.6 }: { playing?: boolean; progress?: number }) {
+  const g = getGuest('julie');
+  const { distance } = useSettings();
+  return (
+    <div className="gc-sj-isole">
+      <Feuille side="left" />
+      <div className="gc-sj-gauche">
+        <div className="gc-sj-ecrin">
+          <ClocheCuite playing={playing} progress={progress} />
+        </div>
+        <Ecriture hand="cecile" ink="crayon" role="meta" seed={SEED + 60} slant={-2} className="gc-sj-legende">{g.video!.caption}</Ecriture>
+        {distance === 'loin' && <PetitMotMain note={g.note!} signature={g.signature!} />}
+      </div>
+    </div>
+  );
+}
+
+/** Page de droite de Julie : sa recette, et son petit mot sauf au cran loin. */
+export function JulieDroite() {
+  const { distance } = useSettings();
+  return (
+    <div className="gc-sj-isole">
+      <Feuille side="right" />
+      <RecetteMain withNote={distance !== 'loin'} />
+    </div>
+  );
+}
+
 export interface SpecimenJulieProps {
   distance?: Distance;
   playing?: boolean;
@@ -113,34 +142,12 @@ export interface SpecimenJulieProps {
 }
 
 export function SpecimenJulie({ distance = 'moyenne', playing = false, progress = 0.6 }: SpecimenJulieProps) {
-  const g = getGuest('julie');
-  const noteLeft = distance === 'loin';
   return (
     <Stage table="bois" distance={distance}>
-      <DoublePage
-        folios={[12, 13]}
-        dogEars={['br']}
-        left={
-          <>
-            <Feuille side="left" />
-            <div className="gc-sj-gauche">
-              <div className="gc-sj-ecrin">
-                <ClocheCuite playing={playing} progress={progress} />
-              </div>
-              <Ecriture hand="cecile" ink="crayon" role="meta" seed={SEED + 60} slant={-2} className="gc-sj-legende">{g.video!.caption}</Ecriture>
-              {noteLeft && <PetitMotMain note={g.note!} signature={g.signature!} />}
-            </div>
-          </>
-        }
-        right={
-          <>
-            <Feuille side="right" />
-            <RecetteMain withNote={!noteLeft} />
-          </>
-        }
-      />
+      <DoublePage folios={[12, 13]} dogEars={['br']} left={<JulieGauche playing={playing} progress={progress} />} right={<JulieDroite />} />
     </Stage>
   );
 }
 
+export { Feuille, SEED as SEED_JULIE };
 export default SpecimenJulie;

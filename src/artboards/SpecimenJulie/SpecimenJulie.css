@@ -97,3 +97,7 @@
 /* Cran loin : colonnes d'ingrédients à leur largeur naturelle, plus serrées. */
 [data-gc-distance='loin'] .gc-sj-ingredients { grid-template-columns: max-content max-content; column-gap: var(--gc-space-5); padding-inline-start: 0; }
 [data-gc-distance='loin'] .gc-sj-legende { margin-top: 0; }
+
+/* Chaque page isole ses calques (papier en dessous, contenu au-dessus) : rien ne déborde sur la page
+   voisine ni sur les pages pré-rendues du livre animé. */
+.gc-sj-isole { position: relative; height: 100%; isolation: isolate; }
