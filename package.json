@@ -15,7 +15,8 @@
     "metrics": "node scripts/font-metrics.mjs",
     "textures": "node scripts/bake-textures.mjs",
     "artifact": "node scripts/build-artifact.mjs",
-    "assets": "node scripts/assets.mjs"
+    "assets": "node scripts/assets.mjs",
+    "build:site": "node scripts/build-tokens.mjs && npm run gen && node scripts/gen-entry.mjs --target site && tsc --noEmit && vite build"
   },
   "dependencies": {
     "motion": "12.43.0",
