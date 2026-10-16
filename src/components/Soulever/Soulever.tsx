@@ -202,9 +202,14 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   }, [p, pret, majSource]);
 
   // ---- Vidéo unique ------------------------------------------------------------------------
+  /** Dernière vidéo préparée : appliquée aussi quand l'élément arrive après coup (portail monté tard). */
+  const attenteRef = React.useRef<VideoInfo | null>(null);
   const brancherVideo = React.useCallback((el: HTMLVideoElement | null) => {
     videoRef.current = el;
     setVideoEl(el);
+    const info = attenteRef.current;
+    const url = info ? urlMedia(info.video) : null;
+    if (el && url && el.getAttribute('src') !== url) el.setAttribute('src', url); // preload="auto"
   }, []);
 
   /** Synchrone : à appeler dans le geste, avant tout rendu ou attente. */
@@ -354,6 +359,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   }, [vu, pret, finir, changerPhase, lancer]);
 
   const preparer = React.useCallback((info: VideoInfo | null) => {
+    attenteRef.current = info;
     const el = videoRef.current;
     const occupe = phaseRef.current !== 'ferme' && objetRef.current?.type === 'photo';
     if (occupe) return; // jamais pendant que la photo est soulevée

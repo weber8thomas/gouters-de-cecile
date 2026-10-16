@@ -55,6 +55,11 @@ export function Carnet({ ecran, liens = false, depart = -1, coteInitial }: Carne
   });
   useLienProfond(liens, spreads, index, setIndex);
   const [reglages] = useReglages();
+  // « Moins d'animations » : crochet CSS sur la racine (data-gc-mouvement="reduit"), en plus de MotionConfig.
+  React.useEffect(() => {
+    if (typeof document === 'undefined') return;
+    document.documentElement.setAttribute('data-gc-mouvement', reglages.mouvementReduit ? 'reduit' : 'normal');
+  }, [reglages.mouvementReduit]);
 
   const carnet = (
     <MotionConfig reducedMotion={reglages.mouvementReduit ? 'always' : 'user'}>
