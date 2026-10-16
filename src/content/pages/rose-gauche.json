@@ -1,0 +1,21 @@
+{
+ "id": "rose-gauche",
+ "double": "rose",
+ "cote": "gauche",
+ "folio": 14,
+ "graine": 811,
+ "gabarit": "A",
+ "main": "mamie",
+ "encre": "brune",
+ "blocs": [
+  { "id": "titre", "type": "titre", "texte": "Les sablés de Rose.", "position": "centre", "souligne": "trait" },
+  { "id": "ingredients", "type": "ingredients", "disposition": "texte", "avant": 0.2, "alinea": 0.05,
+    "intro": "Pour une boîte en fer :",
+    "lignes": ["250 g de farine", "~~150 g~~>{125 g} de beurre bien froid", "100 g de sucre glace", "1 jaune d'œuf", "1 pincée de sel^{ et 1 de cannelle}", "le zeste d'un citron"],
+    "correction": { "main": "mamie", "encre": "brune" },
+    "insertion": { "main": "cecile", "encre": "crayon" } },
+  { "id": "preparation", "type": "paragraphe", "alinea": 0.0,
+    "texte": "Sabler la farine et le beurre du bout des doigts, ajouter le sucre, le sel, le zeste puis le jaune. Faire une boule sans trop la travailler et la laisser une heure au frais. Étaler sur ½ cm, découper au verre, dorer au jaune et rayer à la fourchette. Cuire 12 min à th. 6, ils doivent rester blonds." },
+  { "id": "note", "type": "note", "texte": "__Les garder dans la boîte en fer.__", "avant": 0.15, "alinea": 0.12 }
+ ]
+}

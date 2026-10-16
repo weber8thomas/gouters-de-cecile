@@ -1,0 +1,45 @@
+/* Deux scènes 1920 × 1080 réduites de moitié côte à côte, étiquettes imprimées au-dessus. */
+.gc-avap {
+  box-sizing: border-box;
+  width: 1920px;
+  height: 1080px;
+  padding: 0 12px;
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  background-color: var(--gc-wood-3);
+}
+
+.gc-avap__col {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.gc-avap__etiquette {
+  margin: 0 0 0 24px;
+  color: var(--gc-paper);
+}
+
+.gc-avap__etiquette--maintenant {
+  color: var(--gc-honey-300);
+}
+
+.gc-avap__cadre {
+  position: relative;
+  width: 936px;
+  height: 526.5px;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.gc-avap__echelle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform: scale(0.4875);
+  transform-origin: 0 0;
+}

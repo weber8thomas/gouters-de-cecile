@@ -1,0 +1,40 @@
+{
+ "id": "julie-gauche",
+ "double": "julie",
+ "cote": "gauche",
+ "folio": 12,
+ "graine": 4128,
+ "gabarit": "C",
+ "main": "cecile",
+ "encre": "crayon",
+ "vivants": [
+  {
+   "nom": "ecrin",
+   "rect": [
+    0.212,
+    0.012,
+    0.5877,
+    0.8
+   ]
+  }
+ ],
+ "blocs": [
+  {
+   "id": "legende",
+   "type": "legende",
+   "role": "legende",
+   "texte": "Julie, depuis Lyon",
+   "pente": -2.2,
+   "places": [
+    {
+     "x": 0.23,
+     "y": 0.868
+    },
+    {
+     "x": 0.19,
+     "y": 0.885
+    }
+   ]
+  }
+ ]
+}

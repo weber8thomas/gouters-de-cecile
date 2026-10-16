@@ -1,0 +1,48 @@
+{
+ "id": "rose-droite",
+ "double": "rose",
+ "cote": "droite",
+ "folio": 15,
+ "graine": 812,
+ "gabarit": "B",
+ "main": "mamie",
+ "encre": "brune",
+ "blocs": [
+  {
+   "id": "titre",
+   "type": "titre",
+   "texte": "Pour Noël",
+   "position": "decale",
+   "souligne": "trait"
+  },
+  {
+   "id": "noel",
+   "type": "paragraphe",
+   "avant": 0.15,
+   "alinea": 0.05,
+   "texte": "Je remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.",
+   "graine": 812045
+  },
+  {
+   "type": "filet",
+   "longueur": 0.2
+  },
+  {
+   "id": "mot",
+   "type": "mot",
+   "encre": "noire",
+   "avant": 0.4,
+   "retrait": 0.14,
+   "pente": -1.6,
+   "texte": "Ma recette de toujours, pour ma Cécile qui en volait toujours un de plus."
+  },
+  {
+   "id": "signature",
+   "type": "signature",
+   "encre": "noire",
+   "texte": "Mamie Rose",
+   "x": 0.55,
+   "avant": 0.15
+  }
+ ]
+}

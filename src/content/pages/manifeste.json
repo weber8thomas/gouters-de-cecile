@@ -1,0 +1,130 @@
+{
+ "version": 1,
+ "largeur": 850.0,
+ "hauteur": 960.0,
+ "echelle": 2,
+ "pages": {
+  "fin-droite": {
+   "double": "fin",
+   "cote": "droite",
+   "folio": 19,
+   "papier": "pages/papier/f19",
+   "miroir": false,
+   "encre": "pages/fin-droite",
+   "papier1x": "pages/1x/papier/f19",
+   "encre1x": "pages/1x/fin-droite",
+   "texte": "La version papier arrive bientôt…\nMerci à tous pour vos recettes et vos petits mots.\nCécile",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 4
+  },
+  "fin-gauche": {
+   "double": "fin",
+   "cote": "gauche",
+   "folio": 18,
+   "papier": "pages/papier/f17",
+   "miroir": true,
+   "encre": "pages/fin-gauche",
+   "papier1x": "pages/1x/papier/f17",
+   "encre1x": "pages/1x/fin-gauche",
+   "texte": "À suivre…",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 1
+  },
+  "julie-droite": {
+   "double": "julie",
+   "cote": "droite",
+   "folio": 13,
+   "papier": "pages/papier/f13",
+   "miroir": false,
+   "encre": "pages/julie-droite",
+   "papier1x": "pages/1x/papier/f13",
+   "encre1x": "pages/1x/julie-droite",
+   "texte": "Le cake citron de Julie\n3 œufs 120 g de sucre 2 citrons non traités 180 g de farine\n½ sachet de levure 125 g de beurre 1 c. à s. de pavot 1 pincée de sel\nFour à th. 6 (180 °C). Fouette les œufs avec le sucre jusqu'à ce que ça blanchisse, ajoute les zestes et le jus des citrons, puis la farine, la levure, le sel, le pavot et enfin le beurre fondu. Moule à cake beurré, 40 min au four.\nPour toutes nos pauses goûter à refaire le monde. Joyeux anniversaire ma Cécile !\nJulie\n(testé le 3 mars, un régal !)",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 18,
+   "douteux": [
+    "Joyeux"
+   ]
+  },
+  "julie-gauche": {
+   "double": "julie",
+   "cote": "gauche",
+   "folio": 12,
+   "papier": "pages/papier/f11",
+   "miroir": true,
+   "encre": "pages/julie-gauche",
+   "papier1x": "pages/1x/papier/f11",
+   "encre1x": "pages/1x/julie-gauche",
+   "texte": "(Julie, depuis Lyon)",
+   "vivants": {
+    "ecrin": [
+     0.212,
+     0.012,
+     0.5877,
+     0.8
+    ]
+   },
+   "deborde": [],
+   "lignes": 0
+  },
+  "mathis-droite": {
+   "double": "mathis",
+   "cote": "droite",
+   "folio": 17,
+   "papier": "pages/papier/f17",
+   "miroir": false,
+   "encre": "pages/mathis-droite",
+   "papier1x": "pages/1x/papier/f17",
+   "encre1x": "pages/1x/mathis-droite",
+   "texte": "Ma tarte aux pommes\n1 pâte brisée, 5 pommes, 2 c. à s. de sucre, 1 noix de beurre. Étale la pâte dans le moule, pique-la, mets les pommes en lamelles, sucre et beurre en noisettes. 40 min à th. 7.\nJoyeux anniversaire Cécile, garde-moi une part de tarte !\nBernard",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 11
+  },
+  "mathis-gauche": {
+   "double": "mathis",
+   "cote": "gauche",
+   "folio": 16,
+   "papier": "pages/papier/f15",
+   "miroir": true,
+   "encre": "pages/mathis-gauche",
+   "papier1x": "pages/1x/papier/f15",
+   "encre1x": "pages/1x/mathis-gauche",
+   "texte": "Les cookies de Mathis\n1 œuf 100 g de beurre mou 75 g de sucre roux 50 g de sucre blanc 200 g de farine ½ sachet de levure 1 pincée de fleur de sel 150 g de pépites de chocolat\nMélange le beurre avec les sucres, ajoute l'œuf puis la farine, la levure et le sel. Mets beaucoup de pépites !! Fais des boules sur la plaque, 10 min à 170 °C. Ils doivent rester mous au milieu.\n(goûtés : trop bons !)",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 15
+  },
+  "rose-droite": {
+   "double": "rose",
+   "cote": "droite",
+   "folio": 15,
+   "papier": "pages/papier/f15",
+   "miroir": false,
+   "encre": "pages/rose-droite",
+   "papier1x": "pages/1x/papier/f15",
+   "encre1x": "pages/1x/rose-droite",
+   "texte": "Pour Noël\nJe remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.\nMa recette de toujours, pour ma Cécile qui en volait toujours un de plus.\nMamie Rose",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 9
+  },
+  "rose-gauche": {
+   "double": "rose",
+   "cote": "gauche",
+   "folio": 14,
+   "papier": "pages/papier/f13",
+   "miroir": true,
+   "encre": "pages/rose-gauche",
+   "papier1x": "pages/1x/papier/f13",
+   "encre1x": "pages/1x/rose-gauche",
+   "texte": "Les sablés de Rose.\nPour une boîte en fer : 250 g de farine, 125 g de beurre bien froid, 100 g de sucre glace, 1 jaune d'œuf, 1 pincée de sel et 1 de cannelle , le zeste d'un citron.\nSabler la farine et le beurre du bout des doigts, ajouter le sucre, le sel, le zeste puis le jaune. Faire une boule sans trop la travailler et la laisser une heure au frais. Étaler sur ½ cm, découper au verre, dorer au jaune et rayer à la fourchette. Cuire 12 min à th. 6, ils doivent rester blonds.\nLes garder dans la boîte en fer.",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 13
+  }
+ }
+}

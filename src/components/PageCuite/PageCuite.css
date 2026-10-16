@@ -1,0 +1,49 @@
+/* Page cuite : papier scanné + encre cuite, alignés au pixel, en plein cadre de la feuille. */
+.gc-page-cuite {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* la feuille est déjà le fond : la page cuite le recouvre entièrement */
+  background-color: var(--gc-paper-aged);
+}
+
+.gc-page-cuite__papier,
+.gc-page-cuite__encre {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Verso d'un feuillet : la même pâte, retournée (le bord extérieur reste le même bord). */
+.gc-page-cuite__papier--miroir {
+  transform: scaleX(-1);
+}
+
+/* Texte réel de la page : lu par les lecteurs d'écran, invisible. */
+.gc-page-cuite__texte {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: normal;
+}
+
+.gc-page-cuite__texte p {
+  margin: 0;
+}
+
+/* Emplacement d'un élément vivant (écrin vidéo) : la page cuite n'a aucune encre dessous. */
+.gc-page-cuite__vivant {
+  position: absolute;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}

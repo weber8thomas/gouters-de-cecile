@@ -199,6 +199,214 @@
     "bytes": 43778,
     "type": "image/webp"
   },
+  "pages/1x/fin-droite": {
+    "file": "baked/pages/1x/fin-droite.webp",
+    "sha": "fc1585b000809b7bd33c87c04a09e579d112a29a097b3748d8406076404566da",
+    "w": 850,
+    "h": 960,
+    "bytes": 12088,
+    "type": "image/webp"
+  },
+  "pages/1x/fin-gauche": {
+    "file": "baked/pages/1x/fin-gauche.webp",
+    "sha": "6fa987917240047cc26b0c3655129d7e4f674f9bcb69e8713e8bfc979fd8ffbe",
+    "w": 850,
+    "h": 960,
+    "bytes": 35662,
+    "type": "image/webp"
+  },
+  "pages/1x/julie-droite": {
+    "file": "baked/pages/1x/julie-droite.webp",
+    "sha": "0a3106bbabe02e3b8ced1a4f2e039360a0dad775e88677b0d45f24cf0fe96435",
+    "w": 850,
+    "h": 960,
+    "bytes": 78540,
+    "type": "image/webp"
+  },
+  "pages/1x/julie-gauche": {
+    "file": "baked/pages/1x/julie-gauche.webp",
+    "sha": "786fe5cf6c57ec8280e963c7e2eb4e2fb1cbb65a386506eab825e0e1f9d487d5",
+    "w": 850,
+    "h": 960,
+    "bytes": 4234,
+    "type": "image/webp"
+  },
+  "pages/1x/mathis-droite": {
+    "file": "baked/pages/1x/mathis-droite.webp",
+    "sha": "5f0c4508b534cdb03ae4ca1d003c996a92a7b7064c1f0c246089cb43c5ef62c5",
+    "w": 850,
+    "h": 960,
+    "bytes": 38026,
+    "type": "image/webp"
+  },
+  "pages/1x/mathis-gauche": {
+    "file": "baked/pages/1x/mathis-gauche.webp",
+    "sha": "f644fea7f34a7da33f3fb27706129d4facfa9a9cfbe606949bf435e08a750b01",
+    "w": 850,
+    "h": 960,
+    "bytes": 69652,
+    "type": "image/webp"
+  },
+  "pages/1x/papier/f11": {
+    "file": "baked/pages/1x/papier/f11.webp",
+    "sha": "0b70b160bf2978bcb3a2055926e39da56e18a55ab79433232c3708357d13fc58",
+    "w": 850,
+    "h": 960,
+    "bytes": 25676,
+    "type": "image/webp"
+  },
+  "pages/1x/papier/f13": {
+    "file": "baked/pages/1x/papier/f13.webp",
+    "sha": "393e589eba11ea04ae70c3d715fcd7b530a8275bd04c9d4eab575c24ce0e0f62",
+    "w": 850,
+    "h": 960,
+    "bytes": 21466,
+    "type": "image/webp"
+  },
+  "pages/1x/papier/f15": {
+    "file": "baked/pages/1x/papier/f15.webp",
+    "sha": "05983c7aedb969246c48c0fd0e8cb9398959cd8f89ea8b853050fa036fee8b12",
+    "w": 850,
+    "h": 960,
+    "bytes": 26336,
+    "type": "image/webp"
+  },
+  "pages/1x/papier/f17": {
+    "file": "baked/pages/1x/papier/f17.webp",
+    "sha": "84877ee0e1ba0a925941873d1d5b8b406b71bdbb311519ab1f79d12c96fffad7",
+    "w": 850,
+    "h": 960,
+    "bytes": 30598,
+    "type": "image/webp"
+  },
+  "pages/1x/papier/f19": {
+    "file": "baked/pages/1x/papier/f19.webp",
+    "sha": "b0fe752331e595b40ab0053c520ce1d7f002c6f34f4e03ebc43faa8002856407",
+    "w": 850,
+    "h": 960,
+    "bytes": 56198,
+    "type": "image/webp"
+  },
+  "pages/1x/rose-droite": {
+    "file": "baked/pages/1x/rose-droite.webp",
+    "sha": "a86c31b56589981600547f03c9b5e20e12d5a530ced44111231cf5c4d0d69bde",
+    "w": 850,
+    "h": 960,
+    "bytes": 64026,
+    "type": "image/webp"
+  },
+  "pages/1x/rose-gauche": {
+    "file": "baked/pages/1x/rose-gauche.webp",
+    "sha": "96f10ba9d17a7d3dd5f4e5d360436120c85da6a65052800efa85c9801bee857d",
+    "w": 850,
+    "h": 960,
+    "bytes": 81864,
+    "type": "image/webp"
+  },
+  "pages/fin-droite": {
+    "file": "baked/pages/fin-droite.webp",
+    "sha": "d87e0a72382f40a57a70d0c2d0c7e228894630f124ffc1bec6583b2f24fa57cd",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 33010,
+    "type": "image/webp"
+  },
+  "pages/fin-gauche": {
+    "file": "baked/pages/fin-gauche.webp",
+    "sha": "960d8a5b6fc7aae784481cd2993177aa15b1467557813ebe69e14bf1d178f418",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 92830,
+    "type": "image/webp"
+  },
+  "pages/julie-droite": {
+    "file": "baked/pages/julie-droite.webp",
+    "sha": "411eed29d5935ba229af0dd6edd18a3100f6c40beab352473138b5b9864005da",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 213080,
+    "type": "image/webp"
+  },
+  "pages/julie-gauche": {
+    "file": "baked/pages/julie-gauche.webp",
+    "sha": "e93fd3d1d17f2c4b3df135561c86420d8ce59cffba4a1d299687df13204742f2",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 13606,
+    "type": "image/webp"
+  },
+  "pages/mathis-droite": {
+    "file": "baked/pages/mathis-droite.webp",
+    "sha": "e6870c52a4f6667cb7941a29679fdb076a3cdbb1e4f367f4be840900ba11b420",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 97220,
+    "type": "image/webp"
+  },
+  "pages/mathis-gauche": {
+    "file": "baked/pages/mathis-gauche.webp",
+    "sha": "6983bb9d740d65b0a2ed6c56afd584126dc830b81ca0d5c0bbf29efa1b52e46c",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 204106,
+    "type": "image/webp"
+  },
+  "pages/papier/f11": {
+    "file": "baked/pages/papier/f11.webp",
+    "sha": "ccd11ba5883efa0d5726234b8e6ebc0b565c1adae868790bcb2962b5c4b2d632",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 170940,
+    "type": "image/webp"
+  },
+  "pages/papier/f13": {
+    "file": "baked/pages/papier/f13.webp",
+    "sha": "55a364826d292b6c61fbb1f108af363bd66e038fd015d290de0de318ee5033aa",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 154164,
+    "type": "image/webp"
+  },
+  "pages/papier/f15": {
+    "file": "baked/pages/papier/f15.webp",
+    "sha": "ec8354fb33ef25eefd996f8a48a1f26bcd27dd7bb525f3b81378d51d7ac7be3f",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 258728,
+    "type": "image/webp"
+  },
+  "pages/papier/f17": {
+    "file": "baked/pages/papier/f17.webp",
+    "sha": "a858cb565d315d3258d53bcabcdfa9e469a0bad9c222ff97b5de341922579619",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 254562,
+    "type": "image/webp"
+  },
+  "pages/papier/f19": {
+    "file": "baked/pages/papier/f19.webp",
+    "sha": "4751d568735968f49caa1d9eb44ff54472b4f40012d462a9e76aade40a802d1e",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 335284,
+    "type": "image/webp"
+  },
+  "pages/rose-droite": {
+    "file": "baked/pages/rose-droite.webp",
+    "sha": "aac4143fe862afa711799cd07e53273441c441bf9b0ad37237996694570685d6",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 189458,
+    "type": "image/webp"
+  },
+  "pages/rose-gauche": {
+    "file": "baked/pages/rose-gauche.webp",
+    "sha": "152750e4fb3ff245e7598417bf268d26f88302d17e2ee8757a888c5a8e450623",
+    "w": 1700,
+    "h": 1920,
+    "bytes": 254894,
+    "type": "image/webp"
+  },
   "paper/age": {
     "file": "baked/paper/age.webp",
     "sha": "499ccf4df3a80b2763a2e055809c05df286d3134203b14ba00202a70e33b5088",

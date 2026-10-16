@@ -1,0 +1,17 @@
+{
+ "id": "fin-droite",
+ "double": "fin",
+ "cote": "droite",
+ "folio": 19,
+ "graine": 1202,
+ "main": "cecile",
+ "encre": "chocolat",
+ "marges": { "haut": 0.1 },
+ "blocs": [
+  { "id": "papier", "type": "paragraphe", "role": "mot", "alinea": 0.06,
+    "texte": "La version papier arrive bientôt…" },
+  { "id": "merci", "type": "paragraphe", "role": "mot", "avant": 0.35, "alinea": 0.0,
+    "texte": "Merci à tous pour vos recettes et vos petits mots." },
+  { "id": "signature", "type": "signature", "texte": "Cécile", "x": 0.6, "avant": 0.2 }
+ ]
+}

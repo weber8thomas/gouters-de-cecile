@@ -1,0 +1,13 @@
+{
+ "id": "fin-gauche",
+ "double": "fin",
+ "cote": "gauche",
+ "folio": 18,
+ "graine": 1201,
+ "main": "cecile",
+ "encre": "chocolat",
+ "marges": { "haut": 0.3 },
+ "blocs": [
+  { "id": "suivre", "type": "titre", "texte": "À suivre…", "position": "decale", "souligne": "aucun" }
+ ]
+}

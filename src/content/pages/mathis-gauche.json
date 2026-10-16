@@ -1,0 +1,65 @@
+{
+ "id": "mathis-gauche",
+ "double": "mathis",
+ "cote": "gauche",
+ "folio": 16,
+ "graine": 905,
+ "gabarit": "A",
+ "main": "feutre",
+ "encre": "feutre",
+ "blocs": [
+  {
+   "id": "titre",
+   "type": "titre",
+   "texte": "Les cookies de Mathis",
+   "position": "fer",
+   "souligne": "double"
+  },
+  {
+   "id": "ingredients",
+   "type": "ingredients",
+   "disposition": "colonne",
+   "avant": 0.2,
+   "lignes": [
+    "1 œuf",
+    "100 g de beurre mou",
+    "75 g de sucre roux",
+    "50 g de sucre blanc",
+    "200 g de farine",
+    "½ sachet de levure",
+    "1 pincée de fleur de sel",
+    "150 g de pépites de chocolat"
+   ]
+  },
+  {
+   "id": "preparation",
+   "type": "paragraphe",
+   "avant": 0.25,
+   "alinea": 0.0,
+   "texte": "Mélange le beurre avec les sucres, ajoute l'œuf puis la farine, la levure et le sel. Mets __beaucoup__ de pépites !! Fais des boules sur la plaque, 10 min à 170 °C. Ils doivent rester mous au milieu.",
+   "graine": 905079
+  },
+  {
+   "id": "goute",
+   "type": "annotation",
+   "main": "cecile",
+   "encre": "crayon",
+   "pente": -4,
+   "texte": "goûtés : trop bons !",
+   "places": [
+    {
+     "x": 0.56,
+     "y": 0.3
+    },
+    {
+     "x": 0.55,
+     "y": 0.42
+    },
+    {
+     "x": 0.5,
+     "y": 0.9
+    }
+   ]
+  }
+ ]
+}

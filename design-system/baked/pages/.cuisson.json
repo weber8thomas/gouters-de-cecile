@@ -1,0 +1,158 @@
+{
+ "papier/f13": "b7cfa914b75a2ad73f3bd1a6a88297010d50af1457a1fa82855bf0a7d4337188",
+ "page/julie-droite": {
+  "cle": "db5066f3998171ede50476d4110484c160badb7fd25ad7b91097d44b6501a6b1",
+  "manifeste": {
+   "double": "julie",
+   "cote": "droite",
+   "folio": 13,
+   "papier": "pages/papier/f13",
+   "miroir": false,
+   "encre": "pages/julie-droite",
+   "papier1x": "pages/1x/papier/f13",
+   "encre1x": "pages/1x/julie-droite",
+   "texte": "Le cake citron de Julie\n3 œufs 120 g de sucre 2 citrons non traités 180 g de farine\n½ sachet de levure 125 g de beurre 1 c. à s. de pavot 1 pincée de sel\nFour à th. 6 (180 °C). Fouette les œufs avec le sucre jusqu'à ce que ça blanchisse, ajoute les zestes et le jus des citrons, puis la farine, la levure, le sel, le pavot et enfin le beurre fondu. Moule à cake beurré, 40 min au four.\nPour toutes nos pauses goûter à refaire le monde. Joyeux anniversaire ma Cécile !\nJulie\n(testé le 3 mars, un régal !)",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 18,
+   "douteux": [
+    "Joyeux"
+   ]
+  }
+ },
+ "papier/f19": "3c7838ce12d61e6187df8bca503c55324545db3edf96faeae1db7c2dcbdb37f8",
+ "page/fin-droite": {
+  "cle": "89f6035813f661de1dff939220a341b63b621b9dcfa390bb4a6f88186ed3f023",
+  "manifeste": {
+   "double": "fin",
+   "cote": "droite",
+   "folio": 19,
+   "papier": "pages/papier/f19",
+   "miroir": false,
+   "encre": "pages/fin-droite",
+   "papier1x": "pages/1x/papier/f19",
+   "encre1x": "pages/1x/fin-droite",
+   "texte": "La version papier arrive bientôt…\nMerci à tous pour vos recettes et vos petits mots.\nCécile",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 4
+  }
+ },
+ "papier/f17": "55639d98147c1bddee5bf807d005b102e382caa6f3436680d25f01e337c9e87d",
+ "page/fin-gauche": {
+  "cle": "ce7448ed154af11428a7e9360b8cc346531fa924012ad4a5657f791d9d829a5f",
+  "manifeste": {
+   "double": "fin",
+   "cote": "gauche",
+   "folio": 18,
+   "papier": "pages/papier/f17",
+   "miroir": true,
+   "encre": "pages/fin-gauche",
+   "papier1x": "pages/1x/papier/f17",
+   "encre1x": "pages/1x/fin-gauche",
+   "texte": "À suivre…",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 1
+  }
+ },
+ "papier/f11": "4c942a4a0f2cb7069f41814abfc1d3c078e3030ac364fed36c1940b79d107908",
+ "page/julie-gauche": {
+  "cle": "a6218f1d2a52a3e78d086a5bc7e4ab87e190729c89f2d758247ec98b68543699",
+  "manifeste": {
+   "double": "julie",
+   "cote": "gauche",
+   "folio": 12,
+   "papier": "pages/papier/f11",
+   "miroir": true,
+   "encre": "pages/julie-gauche",
+   "papier1x": "pages/1x/papier/f11",
+   "encre1x": "pages/1x/julie-gauche",
+   "texte": "(Julie, depuis Lyon)",
+   "vivants": {
+    "ecrin": [
+     0.212,
+     0.012,
+     0.5877,
+     0.8
+    ]
+   },
+   "deborde": [],
+   "lignes": 0
+  }
+ },
+ "page/mathis-droite": {
+  "cle": "ac5567ce2405f424e1bd50449d5bebc8422e8e0cbc0cf5b13bf07e008101d550",
+  "manifeste": {
+   "double": "mathis",
+   "cote": "droite",
+   "folio": 17,
+   "papier": "pages/papier/f17",
+   "miroir": false,
+   "encre": "pages/mathis-droite",
+   "papier1x": "pages/1x/papier/f17",
+   "encre1x": "pages/1x/mathis-droite",
+   "texte": "Ma tarte aux pommes\n1 pâte brisée, 5 pommes, 2 c. à s. de sucre, 1 noix de beurre. Étale la pâte dans le moule, pique-la, mets les pommes en lamelles, sucre et beurre en noisettes. 40 min à th. 7.\nJoyeux anniversaire Cécile, garde-moi une part de tarte !\nBernard",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 11
+  }
+ },
+ "papier/f15": "67cc2b732698db76b2228c39b6fe60f8379e607b3b25bc9655bfe7930fa1fbbf",
+ "page/mathis-gauche": {
+  "cle": "b7263527908979cde3e138007296563431c5278e78d65434d9a6b8d3ce5556bc",
+  "manifeste": {
+   "double": "mathis",
+   "cote": "gauche",
+   "folio": 16,
+   "papier": "pages/papier/f15",
+   "miroir": true,
+   "encre": "pages/mathis-gauche",
+   "papier1x": "pages/1x/papier/f15",
+   "encre1x": "pages/1x/mathis-gauche",
+   "texte": "Les cookies de Mathis\n1 œuf 100 g de beurre mou 75 g de sucre roux 50 g de sucre blanc 200 g de farine ½ sachet de levure 1 pincée de fleur de sel 150 g de pépites de chocolat\nMélange le beurre avec les sucres, ajoute l'œuf puis la farine, la levure et le sel. Mets beaucoup de pépites !! Fais des boules sur la plaque, 10 min à 170 °C. Ils doivent rester mous au milieu.\n(goûtés : trop bons !)",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 15
+  }
+ },
+ "page/rose-droite": {
+  "cle": "5f3ace3de1708b86850eca6e48b4cf918ae7096ad9f4aab8bca1af8afdf128b1",
+  "manifeste": {
+   "double": "rose",
+   "cote": "droite",
+   "folio": 15,
+   "papier": "pages/papier/f15",
+   "miroir": false,
+   "encre": "pages/rose-droite",
+   "papier1x": "pages/1x/papier/f15",
+   "encre1x": "pages/1x/rose-droite",
+   "texte": "Pour Noël\nJe remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.\nMa recette de toujours, pour ma Cécile qui en volait toujours un de plus.\nMamie Rose",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 9
+  }
+ },
+ "page/rose-gauche": {
+  "cle": "340154bd09b0dc6bb4ed3cc63d49b3a91dec5e5ca9a80c0e06ff1e208af84762",
+  "manifeste": {
+   "double": "rose",
+   "cote": "gauche",
+   "folio": 14,
+   "papier": "pages/papier/f13",
+   "miroir": true,
+   "encre": "pages/rose-gauche",
+   "papier1x": "pages/1x/papier/f13",
+   "encre1x": "pages/1x/rose-gauche",
+   "texte": "Les sablés de Rose.\nPour une boîte en fer : 250 g de farine, 125 g de beurre bien froid, 100 g de sucre glace, 1 jaune d'œuf, 1 pincée de sel et 1 de cannelle , le zeste d'un citron.\nSabler la farine et le beurre du bout des doigts, ajouter le sucre, le sel, le zeste puis le jaune. Faire une boule sans trop la travailler et la laisser une heure au frais. Étaler sur ½ cm, découper au verre, dorer au jaune et rayer à la fourchette. Cuire 12 min à th. 6, ils doivent rester blonds.\nLes garder dans la boîte en fer.",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 13
+  }
+ },
+ "papier1x/f19": "3c7838ce12d61e6187df8bca503c55324545db3edf96faeae1db7c2dcbdb37f8",
+ "papier1x/f17": "55639d98147c1bddee5bf807d005b102e382caa6f3436680d25f01e337c9e87d",
+ "papier1x/f13": "b7cfa914b75a2ad73f3bd1a6a88297010d50af1457a1fa82855bf0a7d4337188",
+ "papier1x/f11": "4c942a4a0f2cb7069f41814abfc1d3c078e3030ac364fed36c1940b79d107908",
+ "papier1x/f15": "67cc2b732698db76b2228c39b6fe60f8379e607b3b25bc9655bfe7930fa1fbbf"
+}
