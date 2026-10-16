@@ -1,0 +1,253 @@
+/* Soulever : calque en px d'écran (dans les contrôles de l'Ecran) où la photo ou le feuillet
+   soulevé grandit au-dessus du livre. On n'anime que transform et opacity ; will-change seulement en
+   vol (posé en ligne par le composant). z-index 3 : au-dessus des flèches du livre, sous le menu de
+   réglages (z-index 4), qui peut s'ouvrir par-dessus une photo soulevée. */
+.gc-soulever {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Sans Ecran : toute la fenêtre. */
+.gc-soulever--fenetre {
+  position: fixed;
+  z-index: 1000;
+}
+
+.gc-soulever[data-gc-phase="ferme"] {
+  visibility: hidden;
+}
+
+.gc-soulever[data-gc-soulever="ouvert"] {
+  pointer-events: auto;
+}
+
+.gc-soulever img {
+  -webkit-user-drag: none;
+}
+
+/* ---- Voile doux sur le livre (opacité seule) --------------------------------------------- */
+.gc-soulever__voile {
+  position: absolute;
+  inset: 0;
+  background-color: color-mix(in srgb, var(--gc-wood-3) 50%, transparent);
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* ---- L'objet soulevé (mis en page à sa pose d'arrivée ; le vol est une transformation) ----- */
+.gc-soulever__carte,
+.gc-soulever__ombre {
+  position: absolute;
+  box-sizing: border-box;
+  transform-origin: 50% 50%;
+  border-radius: var(--gc-radius-photo);
+}
+
+/* Ombre de l'objet en l'air : large, douce, décalée vers le bas ; elle naît en fondu. L'ombre de
+   contact (petite, dure) est celle de l'objet lui-même. */
+.gc-soulever__ombre {
+  pointer-events: none;
+  opacity: 0;
+  box-shadow:
+    calc(var(--gc-sl-w) * 0.012) calc(var(--gc-sl-h) * 0.055) calc(var(--gc-sl-h) * 0.11) color-mix(in srgb, var(--gc-ink) 62%, transparent),
+    calc(var(--gc-sl-w) * 0.004) calc(var(--gc-sl-h) * 0.016) calc(var(--gc-sl-h) * 0.03) color-mix(in srgb, var(--gc-ink) 40%, transparent);
+}
+
+.gc-soulever__carte {
+  cursor: pointer;
+  box-shadow: var(--gc-sh-contact);
+}
+
+/* Mesuré (trace devtools.timeline) : sans perspective, Chromium ré-enregistre la carte toutes les 2 ou
+   3 images du retour (sa zone à peindre grandit quand la carte rapetisse) ; avec une perspective, le
+   contenu est dans son propre espace 3D et rien n'est repeint pendant le vol, dans les deux sens. */
+.gc-soulever__carte--photo {
+  perspective: calc(var(--gc-sl-h) * 4);
+}
+
+.gc-soulever__carte--photo:not([data-gc-actif]) {
+  visibility: hidden;
+}
+
+/* ---- Photo : tirage sépia, puis couleur, puis vidéo (opacité) ------------------------------ */
+/* L'image du tirage peut déborder du papier (marge transparente : ombre cuite, scotch) : elle est posée
+   par le composant (left / top / width / height). */
+.gc-soulever__tirage {
+  position: absolute;
+  display: block;
+}
+
+.gc-soulever__carte[data-gc-ombre-cuite] {
+  box-shadow: none;
+}
+
+.gc-soulever__image {
+  position: absolute;
+  overflow: hidden;
+}
+
+/* Le cadre vidéo entier (16:9), posé par le composant : la photo n'en montre parfois qu'une partie. */
+.gc-soulever__affiche,
+.gc-soulever__video {
+  position: absolute;
+  display: block;
+  object-fit: cover;
+  opacity: 0;
+}
+
+/* En vol, la couleur revient sur un calque à part (sans repeindre le tirage). */
+.gc-soulever[data-gc-phase="envol"] .gc-soulever__affiche,
+.gc-soulever[data-gc-phase="retour"] .gc-soulever__affiche {
+  will-change: opacity;
+}
+
+/* ---- Avancement : un fin trait de crayon sur la marge blanche du tirage --------------------- */
+.gc-soulever__trait {
+  position: absolute;
+  pointer-events: none;
+}
+
+.gc-soulever__trait svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.gc-soulever__trait path {
+  fill: none;
+  stroke: var(--gc-graphite);
+  stroke-linecap: round;
+  stroke-width: max(1.1px, calc(var(--gc-sl-w) * 0.0021));
+  vector-effect: non-scaling-stroke;
+  opacity: 0.82;
+}
+
+.gc-soulever__trait .gc-soulever__trait-repasse {
+  stroke-width: max(0.7px, calc(var(--gc-sl-w) * 0.0012));
+  opacity: 0.38;
+}
+
+/* Le guide : le même trait à peine posé, sur toute la longueur. */
+.gc-soulever__trait .gc-soulever__trait-guide path {
+  opacity: 0.16;
+}
+
+/* Révélation sans peinture : la fenêtre glisse d'un côté, l'encre de l'autre. */
+.gc-soulever__trait-fenetre,
+.gc-soulever__trait-encre {
+  position: absolute;
+  inset: 0;
+}
+
+.gc-soulever__trait-fenetre {
+  overflow: hidden;
+  transform: translateX(-100%);
+}
+
+.gc-soulever__trait-encre {
+  transform: translateX(100%);
+}
+
+.gc-soulever__carte[data-gc-lecture] .gc-soulever__trait-fenetre,
+.gc-soulever__carte[data-gc-lecture] .gc-soulever__trait-encre {
+  will-change: transform;
+}
+
+/* ---- Feuillet : la feuille entière, recto et verso (rotateY) -------------------------------- */
+.gc-soulever__carte--feuillet {
+  perspective: calc(var(--gc-sl-h) * 6);
+  box-shadow: none;
+}
+
+.gc-soulever__retourne {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.gc-soulever__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--gc-radius-photo);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  box-shadow: var(--gc-sh-contact);
+}
+
+.gc-soulever__face--verso {
+  transform: rotateY(180deg);
+}
+
+/* ---- Fermer : une croix au crayon, discrète ----------------------------------------------- */
+.gc-soulever__fermer {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: var(--gc-ecran-cible, 44px);
+  height: var(--gc-ecran-cible, 44px);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gc-paper-lace);
+  opacity: calc(var(--gc-nav-alpha) * 0.85);
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+.gc-soulever__fermer:focus {
+  outline: none;
+}
+
+.gc-soulever__fermer:focus-visible {
+  outline: 3px solid var(--gc-honey-500);
+  outline-offset: 4px;
+}
+
+.gc-soulever__croix {
+  width: 58%;
+  height: 58%;
+  overflow: visible;
+}
+
+.gc-soulever__croix path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gc-soulever__croix-encre path {
+  stroke: currentColor;
+  stroke-width: 2.6;
+}
+
+.gc-soulever__croix-encre .gc-soulever__croix-repasse {
+  stroke-width: 1.1;
+  opacity: 0.55;
+}
+
+.gc-soulever__croix-ombre {
+  transform: translate(1px, 1.5px);
+}
+
+.gc-soulever__croix-ombre path {
+  stroke: color-mix(in srgb, var(--gc-wood-3) 60%, transparent);
+  stroke-width: 3.2;
+}
+
+/* Moins d'animations (système ou réglage, data-gc-reduit) : fondu sur place, aucune transformation ;
+   le feuillet change de face en fondu enchaîné. */
+.gc-soulever[data-gc-reduit] .gc-soulever__face--verso {
+  transform: none;
+}

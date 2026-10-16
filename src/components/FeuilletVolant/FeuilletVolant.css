@@ -1,0 +1,39 @@
+/* Feuillet volant : le coin d'une feuille glissée dans le carnet, découpé par sa zone. */
+.gc-feuillet-volant {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: pointer;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* La feuille entière, à l'échelle de la page ; on n'en voit que le coin. Ombre fine : elle est posée,
+   pas collée. */
+.gc-feuillet-volant__feuille {
+  position: absolute;
+  transform-origin: 0 0;
+  border-radius: 1px;
+  box-shadow:
+    -1px 1px 1.5px color-mix(in srgb, var(--gc-chocolate) 30%, transparent),
+    -3px 4px 10px color-mix(in srgb, var(--gc-chocolate) 14%, transparent);
+}
+
+.gc-feuillet-volant__feuille .gc-page-cuite {
+  border-radius: inherit;
+}
+
+/* Soulevée (attribut posé par le SoulevementProvider) : la feuille a quitté la page. */
+.gc-feuillet-volant__feuille[data-gc-souleve] {
+  opacity: 0;
+}
+
+.gc-feuillet-volant:focus {
+  outline: none;
+}
+
+/* Le cadre découpe tout, y compris un anneau extérieur : l'anneau est donc dessiné à l'intérieur. */
+.gc-feuillet-volant:focus-visible {
+  outline: 3px solid var(--gc-honey-500);
+  outline-offset: -3px;
+}
