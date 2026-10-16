@@ -7,13 +7,15 @@ export interface CameraProps {
   zoom: number;
   /** Opacité du contenu (repli du changement de cran sans View Transitions). */
   fondu?: MotionValue<number>;
+  /** Décalage horizontal (px de scène) : le livre résiste en butée quand on le glisse au doigt. */
+  x?: MotionValue<number>;
   children?: React.ReactNode;
 }
 
 // Caméra du livre : porte la perspective du tourne-page (--gc-livre-perspective) et applique le
 // zoom fin par un scale animé sur SPRINGS.camera. will-change n'est posé que pendant le mouvement
 // (posé avant, et l'on attend une cadence stable : la promotion du calque ne tombe pas dans le geste).
-export function Camera({ zoom, fondu, children }: CameraProps) {
+export function Camera({ zoom, fondu, x, children }: CameraProps) {
   const ref = React.useRef<HTMLDivElement>(null);
   const z = useMotionValue(zoom);
   const reduced = useReducedMotion();
@@ -58,7 +60,7 @@ export function Camera({ zoom, fondu, children }: CameraProps) {
   }, [zoom, reduced, z]);
 
   return (
-    <m.div ref={ref} className="gc-livre-camera" style={fondu ? { scale: z, opacity: fondu } : { scale: z }}>
+    <m.div ref={ref} className="gc-livre-camera" style={{ scale: z, ...(x ? { x } : null), ...(fondu ? { opacity: fondu } : null) }}>
       {children}
     </m.div>
   );

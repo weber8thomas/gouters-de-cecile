@@ -1,6 +1,6 @@
 # Livre
 
-Le carnet qui se feuillette sur la TV : un livre ouvert posé sur la table, dont les pages tournent comme une vraie feuille de papier épais (courbure, ombrage, ombre portée), qui s'ouvre depuis sa couverture cartonnée, et dont la caméra se règle au clavier (3 crans de distance + zoom fin). Navigation au clavier seulement ; deux flèches discrètes sur la table.
+Le carnet qui se feuillette : un livre ouvert posé sur la table, dont les pages tournent comme une vraie feuille de papier épais (courbure, ombrage, ombre portée), qui s'ouvre depuis sa couverture cartonnée, et dont la caméra se règle au clavier (3 crans de distance + zoom fin). Clavier, doigt, stylet ou souris ; deux flèches discrètes. Seul, il rend la scène TV 1920 × 1080 ; dans un `<Ecran>`, il s'adapte à tous les écrans (voir « Tous les écrans »).
 
 ## Utilisation
 
@@ -30,8 +30,11 @@ function Carnet({ spreads }: { spreads: SpreadSpec[] }) {
 | `cover` | `ReactNode` | Contenu du plat de couverture (étiquette). Le livre s'ouvre depuis lui. |
 | `className` | `string` | Classe ajoutée à la racine `.gc-stage`. |
 | `pose` | `{ vers: number; p: number }` | Fige un geste (aperçus, captures à mi-geste) : vers la double page `vers`, avancée `p` de 0 à 1. Ni mouvement ni clavier. |
+| `coteInitial` | `'gauche' \| 'droite'` | Cadrage « page » (dans un `Ecran` en portrait) : page cadrée au départ. Défaut : `gauche`. |
+| `onToucherPage` | `(t: ToucherPage) => boolean \| void` | Toucher (ou clic) sur une page sans glisser : `{ spreadId, side, x, y, cible }` (x, y en fractions de la page). Renvoyer `true` consomme le toucher (pas de navigation par la marge). Appelé **dans** le geste (`play()` y est permis sur iOS). |
+| `gestes` | `boolean` | Gestes au pointeur (glisser, toucher). Défaut : `true`. |
 
-Exporte `Livre`, `LivreProps`, `LivrePose`, et ré-exporte `CameraProvider`, `useCamera`, `CameraProviderProps` de `src/lib/camera.tsx` (absents de `src/index.ts`).
+Exporte `Livre`, `LivreProps`, `LivrePose`, `CotePage`, `ToucherPage`, et ré-exporte `CameraProvider`, `useCamera`, `CameraProviderProps` de `src/lib/camera.tsx` (absents de `src/index.ts`).
 
 ## Touches
 
@@ -45,7 +48,45 @@ Exporte `Livre`, `LivreProps`, `LivrePose`, et ré-exporte `CameraProvider`, `us
 | ↑ / ↓ · Alt + « + » / « − » | zoom fin ± 1 % (95 % – 105 %) |
 | 0 | zoom fin à 100 % |
 
-Les répétitions d'une touche maintenue sont ignorées ; Ctrl/Cmd/Alt + flèche est laissé au navigateur. Les deux flèches de la table sont des `<button>` (Entrée/Espace), anneau `:focus-visible` miel, aucun survol.
+Les répétitions d'une touche maintenue sont ignorées ; Ctrl/Cmd/Alt + flèche est laissé au navigateur. Les deux flèches de la table sont des `<button>` (Entrée/Espace), anneau `:focus-visible` miel, aucun survol. En cadrage « page », ← / → et les flèches avancent d'**une page** (gauche → droite → gauche suivante).
+
+## Gestes (doigt, stylet, souris — Pointer Events)
+
+| Geste | Effet |
+|---|---|
+| Glisser horizontalement | La feuille suit le doigt : `p` = déplacement ÷ largeur de page à l'écran, amorti au-delà de 0 et 1 (`pElastique`). Au lâcher, le ressort `SPRINGS.paper` repart **avec la vitesse du doigt** ; la page tourne si `p` a franchi 0,35 (depuis son départ) ou si le geste est vif (≥ 1 largeur de page par seconde). |
+| Glisser sur la page gauche vers la gauche (cadrage « page ») | La caméra glisse vers la page droite (suit le doigt, amortie aux bornes ; même règle 0,35 / geste vif, ressort `SPRINGS.camera`). Symétrique sur la page droite vers la droite. |
+| Glisser en butée (première ou dernière page) | Le livre résiste : il glisse un peu sur la table (`rebond`, amorti) et revient sur `SPRINGS.settle`. |
+| Toucher la couverture fermée | Elle s'ouvre. |
+| Toucher une page | `onToucherPage` puis l'événement `gc-livre-toucher` (en bulle, annulable) sur l'élément touché : la double page s'en sert (lecture / pause). |
+| Toucher la marge extérieure (12 % de la page) | Page précédente / suivante (en cadrage « page » : bord gauche / droit de la page cadrée). |
+| Glisser vertical, appui long, pincement | Rien (le pincement du navigateur reste permis). |
+
+- Toucher / glisser : seuil de 8 px ; un toucher dure moins de 600 ms. Dès 4 px horizontaux, le sens est connu et le **feuillet est monté** (préparation, comme au clavier) : il est prêt quand le glisser commence ; un simple toucher ne monte rien (la page vivante, vidéo comprise, n'est jamais remplacée par sa copie figée). Le doigt pilote `p` tout de suite, sans attendre la cadence stable.
+- Un geste clavier en cours : le doigt **rattrape** le ressort (il reprend `p` où il en est) ; un toucher de marge le relance comme un appui rapide. Pendant que le doigt tient la feuille, le clavier est ignoré.
+- `touch-action` : `pinch-zoom` dans un `Ecran` (aucun défilement), `pan-y pinch-zoom` seul (la carte vit dans une page qui défile). Pas de sélection de texte, de glisser d'image ni de menu d'appui long ; le clic qui suit un glisser est avalé (souris, clic fantôme).
+- Moins de mouvement : un glisser fait page suivante / précédente en fondu (aucun feuillet).
+
+## Tous les écrans (dans un `<Ecran>`)
+
+```
+Ecran (.gc-ecran, plein écran ; contexte : fenêtre, cadrage, calque des contrôles)
+├─ .gc-livre-ecran            surface des gestes (tout l'écran)
+│  └─ .gc-livre-monde         translate + scale (écran ← scène), origine 0 0 ; calque composité en cadrage page
+│     └─ Stage debord=…        table et lumière prolongées hors de la scène (multiple de 48 px)
+│        └─ Camera …          (inchangé ; zoom fin = 1 quand la caméra est fixe)
+└─ .gc-ecran__controles       px d'écran : flèches, points de page, repère (portail du livre), plein écran
+```
+
+- **Cadrage** (`useViewport().cadrage`, `src/lib/viewport.ts`) : `double` → `cadrerDouble` (la scène du cran en « contain » ; sur un petit écran, le livre seul, cartons compris) ; `page` → `cadrerPage` (une page + 3 %, la plus grande possible dans la zone sûre).
+- **Caméra fixe** (cadrage `page`, ou `double` sur un écran dont le côté court est < 720 px) : la page ou le livre remplit déjà l'écran, le cran ne change plus le cadrage. La mise en page est alors celle du cran **« loin »**, dont la hauteur d'x est la plus grande par rapport à la page (15 px pour 750 px de large, contre 15 pour 896 au cran proche : +19 % à l'écran) ; zoom fin à 1, pas de repère de distance. Les crans et le zoom fin ne servent que sur un grand écran (tablette couchée, ordinateur, TV).
+- **Position** = (double page, côté). Au repos, la caméra (abscisse de scène) est la MotionValue `glisse` : centre de la page cadrée. Suivant : gauche → droite (glissement `SPRINGS.camera`) ; droite → la feuille tourne et **la caméra suit la feuille** : `x = x₀ + (x₁ − x₀)·(1 − cos πp)/2` (le centre apparent de la feuille), dérivé de `p` par `useTransform`, de la page quittée (`coteLo` à p = 0) à la page d'arrivée (`coteHi` à p = 1). Précédent : symétrique. Un ressort relancé vers l'autre sens ramène aussi la caméra : tout est fonction de `p`.
+- **Couverture** en portrait : la caméra cadre le plat (centre du livre fermé, sur la reliure), puis suit l'ouverture jusqu'à la page gauche de la première double page.
+- Le **monde** (scène + table) est translaté : la table bouge avec le livre (vraie caméra). En cadrage page il est composité en permanence (`will-change: transform`), retiré puis remis à chaque changement d'échelle (rotation) pour être rastérisé net. Translation au pixel physique (`auPixel`), échelle à 4 décimales.
+- **Rotation** : la double page et la page restent ; le changement de mise en page qui l'accompagne (caméra fixe ↔ libre) s'applique tout de suite, sans transition de vue.
+- **Contrôles** : flèches en bas à droite (`place="coin"`, comme sur la TV) ou, sur un téléphone couché, une de chaque côté du livre (`place="cotes"`) ; deux points de page (cadrage page, boutons) ; repère de distance (quand les crans servent) à l'échelle de l'écran. Cibles `--gc-ecran-cible` (≥ 44 px au doigt).
+- Attributs de test sur `.gc-livre-ecran` : `data-gc-cadrage`, `data-gc-double`, `data-gc-cote`.
+- Événements : `gc-livre-geste` gagne les types `glisse` (caméra d'une page à l'autre) et `rebond` (butée au doigt).
 
 ## Architecture du tourne-page
 
@@ -88,14 +129,16 @@ Stage (cran, table de la double page affichée ; overlay : repère + flèches)
 - Pas de tri 3D entre plans non coplanaires qui se touchent (carton + chant dans un même contexte 3D) ; ne pas transformer le parent commun du corps et de l'espace 3D (il faudrait aplatir tout le livre à chaque image) ; les ombres portées ne font que glisser (une échelle changerait leur zone de découpe et forcerait une repeinture).
 - Perspective du papier = 10 largeurs de page (≈ 8 500 px au cran moyen) : à mi-geste, le bord libre ne grandit que de 11 % (mesuré ×1,108) ; à 2 400 px il grossissait de 50 % et sortait de la scène. Le relief que la perspective n'apporte plus est porté par l'ombrage (voiles 30 % / 38 %) et l'ombre portée.
 - ≤ 40 calques (37 au plus mesurés pendant un tourne-page).
-- Chaque geste émet `gc-livre-geste` (`{ phase: 'prepa' | 'debut' | 'fin', type: 'page' | 'couverture' | 'zoom' | 'distance' | 'table' | 'fondu' }`), en bulle jusqu'au document.
+- Chaque geste émet `gc-livre-geste` (`{ phase: 'prepa' | 'debut' | 'fin', type: 'page' | 'couverture' | 'zoom' | 'distance' | 'table' | 'fondu' | 'glisse' | 'rebond' }`), en bulle jusqu'au document.
+- Au doigt, aucun rendu React pendant le glisser : le feuillet est monté à l'amorce (4 px), puis `p.set()` à chaque `pointermove` ; le lâcher relance le ressort (aucun rendu non plus).
 
 ## Vérifier
 
 ```
-node scripts/build-bundle.mjs --only Livre,Stage,DoublePage,Page --tag s4
-node scripts/shot.mjs src/components/Livre/preview.html --bundle dist/ds-s4/components --out verification/out/s4
-node scripts/fps.mjs          # turn, open, camera, zoom, reduit ; rapport verification/out/s4/fps.json, vidéos .webm, captures
+node scripts/build-bundle.mjs --only Livre,Stage,Ecran,DoublePage,Page --boards Carnet,Formats,DemoCarnet --tag r1
+node scripts/shot.mjs src/components/Livre/preview.html --bundle dist/ds-r1/components --out verification/out/r1
+node scripts/fps.mjs --bundle dist/ds-r1/components --out verification/out/r1/fps   # turn, open, camera, zoom, reduit
+node scripts/verify-devices.mjs   # téléphones, tablettes, ordinateurs, TV : cadrage, zones sûres, cibles, hauteur d'x, gestes
 ```
 
 Banc d'essai : `harness/motion.html?scenario=turn|open|camera|zoom|pose` (`&index=`, `&vers=`, `&p=`, `&distance=`).

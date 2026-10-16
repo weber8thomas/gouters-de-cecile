@@ -1,0 +1,6 @@
+<!-- @dsCard group="Mouvement" width=1920 height=1080 page subtitle="Le carnet sur tous les écrans (ici la TV) : cliquez puis → / ← ; glissez à la souris pour tourner ; touchez la cloche de Julie pour la lecture, une marge pour la page voisine ; + / − et ↑ ↓ pour la caméra" -->
+<div id="root"></div>
+<script>
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    React.createElement(GoutersDeCecile.Artboards.Carnet, { ecran: { w: 1920, h: 1080, dpr: 1, tactile: false } }));
+</script>

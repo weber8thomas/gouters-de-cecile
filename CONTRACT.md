@@ -34,7 +34,7 @@ En cas de doute, demander au responsable (le « lead ») plutôt qu'inventer.
 | `src/components/<Comp>/` | composant React : `<Comp>.tsx`, `<Comp>.css`, `index.ts`, `README.md`, `preview.html` |
 | `src/artboards/<Nom>/` | gabarits (`index.ts` export default) et leurs cartes |
 | `src/content/` | `roster.json` (figé), `invites.ts` (recettes et mots), `mains.ts` (style de chaque invité), `types.ts` |
-| `src/lib/` | partagé, propriété du lead : `settings.tsx`, `camera.tsx`, `motion.ts`, `hands.ts`, `assets.ts`, `spread.ts`, `typo.ts`, `ecrin-types.ts`, `distance.css` |
+| `src/lib/` | partagé, propriété du lead : `settings.tsx`, `camera.tsx`, `viewport.ts`, `motion.ts`, `hands.ts`, `assets.ts`, `spread.ts`, `typo.ts`, `ecrin-types.ts`, `distance.css` |
 | `scripts/lib/` | partagé : `bake.mjs` (cuisson), `organic.mjs` (formes faites main), `prng.mjs`, `tokens.mjs` (`c()`), `browser.mjs`, `serve.mjs` |
 
 Les exports sont **automatiques** (`scripts/gen-entry.mjs`) :
@@ -171,7 +171,7 @@ Personne ne modifie `src/index.ts`.
   - Changer d'orientation garde la double page et la page courantes, sans rechargement.
 - **Lisibilité** : à chaque taille d'écran, la hauteur d'x à l'écran, ramenée à l'angle de vue à la distance de lecture habituelle (TV 3 m, ordinateur 60 cm, tablette 40 cm, téléphone 30 cm), reste au moins celle de la TV : 14 px à 3 m sur 1920 px.
 - **Gestes** (pointeur : doigt, stylet, souris) :
-  - **glisser horizontalement** sur le livre : la feuille suit le doigt, puis le relâcher la laisse retomber sur un ressort en gardant sa vitesse (un geste vif suffit) ;
+  - **glisser horizontalement** sur le livre (feuillet monté dès 4 px, geste à partir de 8 px) : la feuille suit le doigt, puis le relâcher la laisse retomber sur un ressort en gardant sa vitesse (un geste vif suffit) ;
   - **toucher l'écrin** : lecture / pause ;
   - **toucher la marge** extérieure gauche ou droite : page précédente / suivante ;
   - `touch-action: pinch-zoom` sur le livre : le pincement du navigateur reste permis (accessibilité). Aucun défilement vertical de la page.
@@ -179,7 +179,7 @@ Personne ne modifie `src/index.ts`.
 - **Contrôles** (flèches, plein écran, points de page, repère de distance) : en **px d'écran**, hors de la scène mise à l'échelle.
   - Cibles d'au moins **44×44 px** sur écran tactile ; discrets sur la TV.
   - Respect des zones sûres : `viewport-fit=cover`, `env(safe-area-inset-*)`.
-- **Clavier et télécommande** : inchangés (§ 1, README de `Livre`). Les crans de distance ne servent qu'en cadrage `double` ; sur un écran tactile, le cran par défaut est `proche`.
+- **Clavier et télécommande** : inchangés (§ 1, README de `Livre`). Les crans de distance ne servent que sur un grand écran. Quand la page (cadrage `page`) ou le livre (petit écran couché) remplit déjà l'écran, la caméra est fixe et on prend la **mise en page du cran `loin`** : c'est celle dont l'écriture est la plus grande par rapport à la page. Sur une tablette couchée, le cran par défaut est `proche`.
 - **Liens profonds** : `#<invité>` (par exemple `#julie`) ouvre sa double page, en cadrage `page` sur sa page vidéo. Le QR de l'A5 pointe là. L'URL suit la page affichée (`history.replaceState`), sans empiler l'historique.
 - **Vidéos** :
   - MP4 H.264 + AAC, 720p, environ 5 à 10 Mo par vidéo d'une minute ;

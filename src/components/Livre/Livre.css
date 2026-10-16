@@ -679,3 +679,182 @@ html[data-gc-livre-vt="distance"]::view-transition-old(root),
 html[data-gc-livre-vt="distance"]::view-transition-new(root) {
   animation-duration: var(--gc-dur-spring-camera);
 }
+
+/* ---- Gestes au pointeur ------------------------------------------------------------------- */
+/* Seul, sur la TV ou dans une carte : on glisse horizontalement pour tourner, la page défile encore
+   verticalement (la carte vit dans une page qui défile). Ni sélection de texte ni glisser d'image. */
+.gc-livre-scene {
+  touch-action: pan-y pinch-zoom;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.gc-livre-scene img {
+  -webkit-user-drag: none;
+}
+
+/* ---- Dans un Ecran : la scène 1920 × 1080 mise à l'échelle, la table jusqu'aux bords ------- */
+.gc-livre-ecran {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: pinch-zoom;
+}
+
+.gc-livre-ecran .gc-livre-scene {
+  touch-action: pinch-zoom;
+}
+
+/* Le monde : la scène, sa table débordante et la caméra (translate + scale, origine en haut à gauche).
+   En cadrage « page », calque composité (will-change posé par le livre, à l'échelle de l'écran). */
+.gc-livre-monde {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--gc-stage-w);
+  height: var(--gc-stage-h);
+  transform-origin: 0 0;
+}
+
+/* ---- Contrôles à l'écran (calque de l'Ecran, px d'écran, zones sûres) ------------------------ */
+.gc-livre-commandes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.gc-livre-nav--ecran {
+  right: calc(var(--gc-ecran-droite) + var(--gc-ecran-bord));
+  bottom: calc(var(--gc-ecran-bas) + var(--gc-ecran-bord-bas));
+  gap: calc(var(--gc-space-1) * var(--gc-ecran-u));
+  pointer-events: auto;
+}
+
+.gc-livre-nav--ecran .gc-livre-nav__fleche {
+  width: var(--gc-ecran-cible);
+  height: var(--gc-ecran-cible);
+  touch-action: manipulation;
+}
+
+/* Le tracé garde ses proportions de la TV (44 × 40 dans une cible de 56). */
+.gc-livre-nav--ecran .gc-livre-nav__trace {
+  width: calc(var(--gc-ecran-cible) * 44 / 56);
+  height: calc(var(--gc-ecran-cible) * 40 / 56);
+}
+
+/* Téléphone couché : une flèche de chaque côté du livre, au milieu de la bande de table, dans le bas. */
+.gc-livre-nav--cotes {
+  left: 0;
+  right: 0;
+  bottom: calc(var(--gc-ecran-bas) + var(--gc-ecran-cible) * 0.6);
+  height: var(--gc-ecran-cible);
+  pointer-events: none;
+}
+
+.gc-livre-nav--cotes .gc-livre-nav__fleche {
+  position: absolute;
+  bottom: 0;
+  pointer-events: auto;
+}
+
+.gc-livre-nav--cotes .gc-livre-nav__fleche--prec {
+  left: calc(var(--gc-ecran-gauche) + (var(--gc-livre-bande) - var(--gc-ecran-cible)) / 2);
+}
+
+.gc-livre-nav--cotes .gc-livre-nav__fleche--suiv {
+  right: calc(var(--gc-ecran-droite) + (var(--gc-livre-bande) - var(--gc-ecran-cible)) / 2);
+}
+
+/* Points de page (cadrage « page ») : sous la page, au centre. */
+.gc-livre-points {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--gc-ecran-bas) + var(--gc-ecran-bord-bas));
+  display: flex;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
+.gc-livre-points__point {
+  display: grid;
+  place-items: center;
+  width: var(--gc-ecran-cible);
+  height: var(--gc-ecran-cible);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gc-paper-lace);
+  opacity: var(--gc-nav-alpha);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+[data-gc-table="nappe"] .gc-livre-points__point { color: var(--gc-ink); }
+
+.gc-livre-points__point:focus { outline: none; }
+
+.gc-livre-points__point:focus-visible {
+  outline: 3px solid var(--gc-honey-500);
+  outline-offset: 4px;
+}
+
+.gc-livre-points__point svg {
+  width: calc(var(--gc-ecran-cible) * 0.4);
+  height: calc(var(--gc-ecran-cible) * 0.4);
+  overflow: visible;
+}
+
+.gc-livre-points__rond {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.gc-livre-points__point--actif .gc-livre-points__rond {
+  fill: currentColor;
+}
+
+.gc-livre-points__ombre {
+  fill: none;
+  stroke: color-mix(in srgb, var(--gc-wood-3) 55%, transparent);
+  stroke-width: 2.4;
+  transform: translate(0.8px, 1.2px);
+}
+
+[data-gc-table="nappe"] .gc-livre-points__ombre {
+  stroke: color-mix(in srgb, var(--gc-ink) 14%, transparent);
+}
+
+/* Repère de distance (cadrage « double ») : en bas à gauche, à l'échelle de l'écran. */
+.gc-livre-commandes__repere {
+  position: absolute;
+  left: calc(var(--gc-ecran-gauche) + var(--gc-ecran-bord) * 2);
+  bottom: calc(var(--gc-ecran-bas) + var(--gc-ecran-bord));
+  transform: scale(clamp(0.5, var(--gc-ecran-u), 2));
+  transform-origin: 0 100%;
+  pointer-events: none;
+}
+
+.gc-livre-commandes__repere .gc-livre-repere {
+  position: relative;
+  left: auto;
+  bottom: auto;
+}
+
+/* Petit écran sans table libre (ni en bas ni sur les côtés) : les flèches sont sur le papier, à l'encre,
+   centrées en bas (de part et d'autre de la reliure : les folios sont aux coins extérieurs). */
+.gc-livre-commandes[data-gc-sur="papier"] .gc-livre-nav {
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.gc-livre-commandes[data-gc-sur="papier"] .gc-livre-nav__fleche {
+  color: var(--gc-ink);
+}
+
+.gc-livre-commandes[data-gc-sur="papier"] .gc-livre-nav__ombre path {
+  stroke: color-mix(in srgb, var(--gc-ink) 14%, transparent);
+}

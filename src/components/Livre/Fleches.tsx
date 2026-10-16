@@ -5,6 +5,12 @@ export interface FlechesProps {
   onSuivante: () => void;
   debut: boolean;
   fin: boolean;
+  /**
+   * Où vivent les flèches : sur la table de la scène (TV, défaut), ou dans le calque de contrôles d'un
+   * <Ecran> (px d'écran) : groupées en bas à droite (« coin ») ou une de chaque côté du livre (« cotes »,
+   * téléphone couché : la table n'a de place qu'à gauche et à droite).
+   */
+  place?: 'scene' | 'coin' | 'cotes';
 }
 
 // Deux flèches tracées à la main, posées sur la table en bas à droite : un trait principal un peu
@@ -36,9 +42,10 @@ function Trace({ d }: { d: typeof GAUCHE }) {
   );
 }
 
-export function Fleches({ onPrecedente, onSuivante, debut, fin }: FlechesProps) {
+export function Fleches({ onPrecedente, onSuivante, debut, fin, place = 'scene' }: FlechesProps) {
+  const cls = place === 'scene' ? 'gc-livre-nav' : `gc-livre-nav gc-livre-nav--ecran gc-livre-nav--${place}`;
   return (
-    <nav className="gc-livre-nav" aria-label="Feuilleter le carnet">
+    <nav className={cls} aria-label="Feuilleter le carnet">
       <button type="button" className="gc-livre-nav__fleche gc-livre-nav__fleche--prec" aria-label="Page précédente" aria-disabled={debut || undefined} onClick={onPrecedente}>
         <Trace d={GAUCHE} />
       </button>

@@ -15,11 +15,16 @@ export interface StageProps {
   /** Calque au-dessus de tout, lumière comprise (navigation). */
   overlay?: React.ReactNode;
   className?: string;
+  /**
+   * Débord de la table (px de scène, des quatre côtés) : la table et la lumière se prolongent hors
+   * de la scène 1920 × 1080, pour un écran d'une autre forme (composant Ecran). 0 par défaut.
+   */
+  debord?: number;
 }
 
 // Scène fixe 1920×1080 : la table (bois ou nappe), le contenu (le livre ouvert), la lumière dorée
 // de fin d'après-midi venant d'en haut à gauche, puis un calque libre. Fournit les réglages.
-export function Stage({ table, idle, distance, fit = false, children, overlay, className }: StageProps) {
+export function Stage({ table, idle, distance, fit = false, children, overlay, className, debord = 0 }: StageProps) {
   const parent = useSettings();
   const settings: Settings = React.useMemo(
     () => ({ table: table ?? parent.table, idle: idle ?? parent.idle, distance: distance ?? parent.distance }),
@@ -43,13 +48,16 @@ export function Stage({ table, idle, distance, fit = false, children, overlay, c
     return () => ro.disconnect();
   }, [fit]);
 
-  const cls = ['gc-stage', `gc-stage--${settings.table}`, className].filter(Boolean).join(' ');
+  const cls = ['gc-stage', `gc-stage--${settings.table}`, debord > 0 && 'gc-stage--debord', className].filter(Boolean).join(' ');
+  const style: React.CSSProperties & Record<string, string> = {};
+  if (fit) Object.assign(style, { transform: `scale(${scale})`, transformOrigin: '0 0' });
+  if (debord > 0) style['--gc-stage-debord'] = `${debord}px`;
   const stage = (
     <div
       ref={stageRef}
       className={cls}
       {...settingsAttrs(settings)}
-      style={fit ? { transform: `scale(${scale})`, transformOrigin: '0 0' } : undefined}
+      style={fit || debord > 0 ? style : undefined}
     >
       <div className="gc-stage__table" aria-hidden="true">
         <div className="gc-stage__surface" />

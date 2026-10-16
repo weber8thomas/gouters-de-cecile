@@ -5,7 +5,8 @@
 export const GESTE_EVENT = 'gc-livre-geste';
 /** prepa : appui pris en compte (captures d'une transition de vue) ; debut / fin : le mouvement visible. */
 export type GestePhase = 'prepa' | 'debut' | 'fin';
-export type GesteType = 'page' | 'couverture' | 'zoom' | 'distance' | 'table' | 'fondu';
+/** glisse : la caméra passe d'une page à l'autre (cadrage « page ») ; rebond : butée au doigt. */
+export type GesteType = 'page' | 'couverture' | 'zoom' | 'distance' | 'table' | 'fondu' | 'glisse' | 'rebond';
 export interface GesteDetail {
   phase: GestePhase;
   type: GesteType;
@@ -56,4 +57,21 @@ export function pret(el: Element | null, maxMs = 300): Promise<void> {
   const taches: Promise<unknown>[] = imgs.map((i) => (i.decode ? i.decode().catch(() => undefined) : Promise.resolve()));
   if (typeof document !== 'undefined' && document.fonts) taches.push(document.fonts.ready);
   return Promise.race([Promise.all(taches).then(() => undefined), new Promise<void>((r) => setTimeout(r, maxMs))]);
+}
+
+/**
+ * Toucher (ou clic) sur une page, sans glisser : « gc-livre-toucher », émis sur l'élément touché (en
+ * bulle, annulable). Une double page s'en sert pour lire / mettre en pause sa vidéo ; preventDefault()
+ * le consomme (pas de navigation par la marge).
+ */
+export const TOUCHER_EVENT = 'gc-livre-toucher';
+export interface ToucherPage {
+  /** id de la double page touchée. */
+  spreadId: string;
+  side: 'left' | 'right';
+  /** Point touché dans la page, en fractions de sa largeur et de sa hauteur (0–1). */
+  x: number;
+  y: number;
+  /** Élément touché (pour un test d'appartenance : cible.closest('…')). */
+  cible: Element;
 }

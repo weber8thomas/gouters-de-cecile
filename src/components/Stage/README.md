@@ -12,6 +12,7 @@ Scène fixe 1920 × 1080 du carnet projeté : une table (bois ou nappe en lin à
 | `children` | `ReactNode` | — | Contenu de la scène, en général un `DoublePage`. |
 | `overlay` | `ReactNode` | — | Calque au-dessus de tout, lumière comprise (navigation). Seuls ses enfants captent le pointeur. |
 | `className` | `string` | — | Classe ajoutée à la racine `.gc-stage`. |
+| `debord` | `number` | `0` | Débord de la table (px de scène, des quatre côtés) : la table et la lumière se prolongent hors de la scène 1920 × 1080 pour un écran d'une autre forme (composant `Ecran`, via `Livre`). Multiple de 48 px conseillé (phase du vichy). |
 
 Exporte `StageProps`.
 
@@ -23,6 +24,7 @@ Exporte `StageProps`.
 - **Nappe** : lin `linen.webp` (`gc-linen`, `gc-linen-shade`) + vichy en bandes croisées `repeating-linear-gradient` de `gc-terracotta-500` translucide (`color-mix`), cellule de 48 px, posée un peu de biais ; deux grands plis doux (`gc-paper-lace` côté fenêtre, `gc-chocolate` côté ombre).
 - **Lumière** (au-dessus du contenu) : voile radial `var(--gc-glow)` à `var(--gc-glow-alpha)` depuis le haut à gauche, tache de soleil d'une fenêtre à croisillon (`gc-glow`, très légère), ombre chaude `gc-wood-3` dans le coin opposé.
 - Ordre des calques : table → contenu → lumière → `overlay`.
+- **Débord** (`debord > 0`, classe `gc-stage--debord`, variable `--gc-stage-debord`) : la scène ne rogne plus (`overflow: visible`) ; la table, le voile doré et l'ombre chaude s'étendent du débord, avec les mêmes dessins ancrés sur la scène en px (rien ne bouge dans les 1920 × 1080, tout se prolonge sans couture : bois et lin décalés du débord, dégradés linéaires repris en px de leur ligne d'origine). Sans débord, la scène est exactement celle d'avant.
 
 ## Règles d'usage
 
