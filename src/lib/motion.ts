@@ -38,3 +38,11 @@ export const cssSpring = (name: SpringName): string => `var(--gc-dur-spring-${na
 /** true si l'utilisateur a demandé moins de mouvement (lecture directe, hors React). */
 export const prefersReducedMotion = (): boolean =>
   typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/**
+ * Règle un ressort à l'exécution (planches de choix seulement : comparer des sensations).
+ * Le livre relit SPRINGS.paper / SPRINGS.cover à chaque geste ; ne pas l'utiliser ailleurs.
+ */
+export function regleRessort(name: SpringName, r: { visualDuration: number; bounce: number }): void {
+  SPRINGS[name] = { type: 'spring', visualDuration: r.visualDuration, bounce: r.bounce };
+}
