@@ -2,6 +2,7 @@ import React from 'react';
 import type { InkId } from '../../content/types';
 import { inkVar } from '../../lib/hands';
 import { ulDouble, ulMain, ulRegle, ulVague, UL_VIEW, type TraitPaths } from './traits';
+import { rng, r2 } from './rng';
 import './Ecriture.css';
 
 export type SouligneVariant = 'regle' | 'double' | 'vague' | 'main';
@@ -34,9 +35,20 @@ const GEN: Record<SouligneVariant, (seed: number) => TraitPaths> = {
 export function Souligne({ variant = 'regle', ink, seed = 1, slant = 0, mode = 'bloc', className }: SouligneProps) {
   const paths = React.useMemo(() => GEN[variant](seed), [variant, seed]);
   const classes = ['gc-souligne', `gc-souligne--${variant}`, `gc-souligne--${mode}`, className].filter(Boolean).join(' ');
+  // Sous un texte, le trait n'a jamais exactement la longueur du mot : il part un peu avant ou
+  // après, et s'arrête court ou déborde (la règle déborde plus volontiers qu'un trait à main levée).
+  let longueur: React.CSSProperties | null = null;
+  if (mode === 'ancre') {
+    const L = rng(seed ^ 0x6a09e667);
+    const regle = variant === 'regle' || variant === 'double';
+    const debut = regle ? L.range(-0.3, 0.06) : L.range(-0.12, 0.12);
+    const fin = regle ? L.range(-0.15, 0.6) : L.range(-0.28, 0.3);
+    longueur = { insetInlineStart: `${r2(debut)}em`, inlineSize: `calc(100% + ${r2(fin - debut)}em)` };
+  }
   const style = {
     ...(ink ? { color: inkVar(ink) } : null),
     ...(slant ? { '--gc-souligne-rot': `${slant}deg` } : null),
+    ...longueur,
   } as React.CSSProperties;
   return (
     <svg

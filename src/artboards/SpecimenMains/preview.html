@@ -1,4 +1,4 @@
-<!-- @dsCard group="Spécimen" width=1920 height=1080 page subtitle="Les sept mains du carnet : un ingrédient au cran proche et au cran loin, une rature corrigée, une annotation et les glyphes difficiles, chacune dans son encre" -->
+<!-- @dsCard group="Spécimen" width=1920 height=1080 page subtitle="Les sept mains du carnet : un ingrédient (puce tracée) au cran proche et au cran loin, une rature (trait, zigzag ou noirci) et sa correction, une annotation et les glyphes difficiles, chacune dans son encre" -->
 <style>
   .sp {
     box-sizing: border-box;
@@ -22,7 +22,7 @@
   .sp-tete__sous { flex: 1 1 auto; }
   .sp-grille {
     display: grid;
-    grid-template-columns: 380px 380px 345px 290px 200px minmax(0, 1fr);
+    grid-template-columns: 372px 482px 436px 352px minmax(0, 1fr);
     grid-template-rows: auto repeat(7, auto);
     column-gap: var(--gc-space-2);
     align-items: baseline;
@@ -66,6 +66,11 @@
     gap: var(--gc-space-6);
   }
   .sp-encre { display: inline-flex; }
+  .sp-glyphes {
+    display: flex;
+    align-items: baseline;
+    gap: var(--gc-space-6);
+  }
 </style>
 <div id="root"></div>
 <script>
@@ -77,13 +82,14 @@
     });
 
     var MAINS = [
-      { hand: 'mamie', name: 'Rose', ink: 'brune', label: 'mamie · brune', note: 'parfait', seed: 11 },
-      { hand: 'ecole', name: 'Léa', ink: 'plume', label: 'école · plume', note: 'trop bon !', seed: 23 },
-      { hand: 'soignee', name: 'Julie', ink: 'bic', label: 'soignée · bic', note: 'moins sucré', noteInk: 'rouge', seed: 37 },
-      { hand: 'feutre', name: 'Mathis', ink: 'feutre', label: 'feutre · violet', note: 'miam !!', seed: 41 },
-      { hand: 'capitales', name: 'Bernard', ink: 'noire', label: 'capitales · noire', note: 'vérifié', seed: 53 },
-      { hand: 'pressee', name: 'Antoine', ink: 'bic', label: 'pressée · bic', note: 'à tester', seed: 67 },
-      { hand: 'cecile', name: 'Cécile', ink: undefined, label: 'cecile · chocolat', note: 'goûté !', seed: 79 },
+      // puce des ingrédients et façon de raturer de chacun (les trois styles, et une correction de Cécile en rouge)
+      { hand: 'mamie', name: 'Rose', ink: 'brune', label: 'mamie · brune', note: 'parfait', seed: 11, puce: 'tiret', rature: 'trait' },
+      { hand: 'ecole', name: 'Léa', ink: 'plume', label: 'école · plume', note: 'trop bon !', seed: 23, puce: 'point', rature: 'zigzag' },
+      { hand: 'soignee', name: 'Julie', ink: 'bic', label: 'soignée · bic', note: 'moins sucré', seed: 37, puce: 'tiret', rature: 'trait', fix: { fixHand: 'cecile', fixInk: 'rouge', fixPlace: 'dessus' } },
+      { hand: 'feutre', name: 'Mathis', ink: 'feutre', label: 'feutre · violet', note: 'miam !!', seed: 41, puce: 'fleche', rature: 'zigzag', fix: { fixPlace: 'dessus' } },
+      { hand: 'capitales', name: 'Bernard', ink: 'noire', label: 'capitales · noire', note: 'vérifié', seed: 53, puce: 'case', rature: 'noirci', fix: { fixPlace: 'dessus' } },
+      { hand: 'pressee', name: 'Antoine', ink: 'bic', label: 'pressée · bic', note: 'à tester', seed: 67, puce: 'tiret', rature: 'trait', fix: { fixPlace: 'dessus' } },
+      { hand: 'cecile', name: 'Cécile', ink: undefined, label: 'cecile · chocolat', note: 'goûté !', seed: 79, puce: 'point', rature: 'trait', fix: { fixPlace: 'dessus' } },
     ];
     var E = function (props, text) { return h(G.Ecriture, props, text); };
     var legende = function (key, text, extra) {
@@ -94,9 +100,8 @@
     var cells = [
       h('div', { key: 'h1', className: 'sp-cell sp-entete' }, legende('l', 'qui · main · encre')),
       h('div', { key: 'h2', className: 'sp-cell sp-entete' }, legende('l', 'cran proche')),
-      h('div', { key: 'h4', className: 'sp-cell sp-entete' }, legende('l', 'une rature')),
+      h('div', { key: 'h4', className: 'sp-cell sp-entete' }, legende('l', 'trait · zigzag · noirci')),
       h('div', { key: 'h5', className: 'sp-cell sp-entete' }, legende('l', 'annotation')),
-      h('div', { key: 'h6', className: 'sp-cell sp-entete' }, legende('l', 'les glyphes')),
     ];
     var loin = [h('div', { key: 'lh', className: 'sp-cell sp-entete' }, legende('l', 'cran loin'))];
 
@@ -108,16 +113,15 @@
           E(Object.assign({}, base, { role: 'signature', as: 'span', slant: -2 }), m.name),
           legende('l', m.label)),
         h('div', { key: 'p' + i, className: 'sp-cell' },
-          E(Object.assign({}, base, { role: 'body', slant: slant, seed: m.seed + 1 }), '2 citrons non traités')),
+          E(Object.assign({}, base, { role: 'body', slant: slant, seed: m.seed + 1, puce: m.puce }), '2 citrons non traités')),
         h('div', { key: 'r' + i, className: 'sp-cell' },
-          E(Object.assign({}, base, { role: 'body', slant: slant, seed: m.seed + 2 }), '~~150 g~~>120 g de sucre')),
+          E(Object.assign({}, base, { role: 'body', slant: slant, seed: m.seed + 2, rature: m.rature }, m.fix || {}), '~~150~~>{120} g de sucre')),
         h('div', { key: 'a' + i, className: 'sp-cell sp-note' },
           h(G.Annotation, { text: m.note, hand: m.hand, ink: m.noteInk || m.ink, arrow: i % 2 ? 'droite' : 'courbe', tilt: [-6, 4, -3, 7, -2, -8, 5][i], to: { x: -30, y: [8, -6, 10, -4, 6, 12, -8][i] }, seed: m.seed + 3 })),
-        h('div', { key: 'g' + i, className: 'sp-cell' },
-          E(Object.assign({}, base, { role: 'body', seed: m.seed + 4 }), 'œ « » ’ ° ½')));
+);
       loin.push(
         h('div', { key: 'l' + i, className: 'sp-cell' },
-          E(Object.assign({}, base, { role: 'body', slant: slant, seed: m.seed + 1 }), '2 citrons non traités')));
+          E(Object.assign({}, base, { role: 'body', slant: slant, seed: m.seed + 1, puce: m.puce }), '2 citrons non traités')));
     });
 
     var ENCRES = ['plume', 'bic', 'crayon', 'brune', 'noire', 'feutre', 'rouge'];
@@ -131,6 +135,11 @@
         h('section', { className: 'sp-grille' },
           h('div', { className: 'sp-loin', 'data-gc-distance': 'loin' }, loin),
           cells),
+        h('section', { className: 'sp-glyphes' },
+          legende('g', 'les glyphes :', { role: 'note' }),
+          MAINS.map(function (m) {
+            return h(G.Ecriture, { key: m.hand, hand: m.hand, ink: m.ink, role: 'body', as: 'span', seed: m.seed + 4 }, 'œ « » ’ ° ½');
+          })),
         h('section', { className: 'sp-titres' },
           legende('t', 'les titres :', { role: 'note' }),
           h(G.TitreMain, { hand: 'soignee', ink: 'bic', underline: 'regle', underlineInk: 'rouge', seed: 201, slant: -0.6 }, 'Le cake de Julie'),

@@ -7,9 +7,9 @@ import { parseMarkup, type Segment } from './markup';
 import { hashSeed, rng, r2, type Rng } from './rng';
 import { Rature } from './Rature';
 import { Souligne, type SouligneVariant } from './Souligne';
+import { puce as tracePuce, type PuceDessin, type RatureStyle } from './traits';
+import { LETTRES, metriques } from './metriques';
 import './Ecriture.css';
-
-
 
 export interface EcritureProps {
   /** Main de l'invité (police + métriques : la taille découle du rôle et du cran de distance). */
@@ -28,21 +28,32 @@ export interface EcritureProps {
   className?: string;
   /** Encre des soulignés `__…__` (par défaut celle du texte). */
   markInk?: InkId;
-  /** Encre des corrections `~~…~~>…` (par défaut `rouge`). */
+  /** Encre des corrections : par défaut celle de l'auteur ; `rouge` quand quelqu'un d'autre corrige. */
   fixInk?: InkId;
-  /** Place des corrections : `dessus` (dans l'interligne, par défaut) ou `apres` (à la suite du mot raturé). */
-  fixPlace?: 'dessus' | 'apres';
+  /** Main de qui corrige, si ce n'est pas l'auteur (ex. `cecile` avec `fixInk="rouge"`). */
+  fixHand?: HandId;
+  /** Place des corrections : `auto` (selon la graine et la main), `dessus` ou `apres`. */
+  fixPlace?: 'auto' | 'dessus' | 'apres';
+  /** Façon de raturer : `trait`, `zigzag` ou `noirci`. Par défaut selon la graine de chaque rature. */
+  rature?: RatureStyle;
   /** Souligne tout le texte (titres, intitulés d'une ligne). */
   souligne?: SouligneVariant;
   /** Encre du souligné global (par défaut celle du texte). */
   souligneInk?: InkId;
+  /** Puce tracée à la main en tête du texte (`tiret`, `point`, `case`, `fleche`). Les numéros s'écrivent dans le texte. */
+  puce?: PuceDessin;
   /** Grain d'encre (tuile cuite `ink/grain`, en masque). Activé par défaut. */
   grain?: boolean;
   /**
-   * Dérive de la marge (0 à 1) : la ligne ne commence jamais exactement au même endroit
-   * (retrait de 0 à 0,16 em, écart vertical de −0,02 à 0,06 em, selon la graine). Blocs seulement.
+   * Dérive de la marge du bloc (0 à 1) : retrait de 0 à 0,16 em et écart vertical de −0,02 à
+   * 0,06 em selon la graine. Blocs seulement (une liste n'est jamais alignée au pixel).
    */
   drift?: number;
+  /**
+   * Vie de l'écriture, de 0 (la police telle quelle) à 1,5 ; 1 par défaut : lettres et mots qui
+   * bougent, espaces inégales, lignes en arc, fin de ligne serrée, interligne et marge qui dérivent.
+   */
+  wobble?: number;
   style?: React.CSSProperties;
 }
 
@@ -52,7 +63,7 @@ export interface EcritureProps {
 const NERF: Record<HandId, number> = {
   mamie: 0.8, // main ancienne, régulière mais un peu tremblée
   ecole: 0.55, // cursive d'écolier, sage
-  soignee: 0.7,
+  soignee: 0.8,
   feutre: 1,
   capitales: 0.85,
   pressee: 1,
@@ -153,31 +164,59 @@ function toUnits(segments: Segment[]): Unit[] {
   return units;
 }
 
-// --- Pente des lignes : chaque ligne part de la marge et monte un peu ------------------------
-// Mesure unique (après les polices) : la position de chaque mot dans sa ligne donne son
-// soulèvement (--gc-lift). Transformations seulement : la mise en page ne bouge pas.
+// --- Effets de ligne (mesurés une fois, transformations seulement) -------------------------
+// La position de chaque mot dans sa ligne donne : la pente (--gc-lift), un arc doux, un léger
+// décalage vertical et horizontal propre à chaque ligne (interligne ±4 %, marge qui dérive),
+// la fin de ligne serrée (on manque de place) et le début plus ample. La mise en page ne bouge pas.
 
-function useSlant(ref: React.RefObject<HTMLElement>, slant: number, key: string) {
+const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
+
+function useLignes(ref: React.RefObject<HTMLElement>, slant: number, vie: number, seed: number, key: string) {
   React.useLayoutEffect(() => {
     const root = ref.current;
     if (!root) return undefined;
     const words = Array.from(root.querySelectorAll<HTMLElement>('.gc-ecriture__mot')).filter(
       (w) => w.closest('.gc-ecriture') === root,
     );
-    if (!slant) {
-      for (const w of words) w.style.removeProperty('--gc-lift');
+    const props = ['--gc-lift', '--gc-lx', '--gc-ls'];
+    if (!slant && !vie) {
+      for (const w of words) for (const p of props) w.style.removeProperty(p);
       return undefined;
     }
     const tan = Math.tan((slant * Math.PI) / 180);
     const apply = () => {
-      let lineStart = 0;
-      let prev = Infinity;
+      const cs = getComputedStyle(root);
+      const fs = parseFloat(cs.fontSize) || 16;
+      const lh = (parseFloat(cs.lineHeight) || fs * 1.3) / fs;
+      let avail = root.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
+      if (avail <= 0) avail = root.parentElement?.clientWidth || 600;
+      let line = -1, lineStart = 0, prev = Infinity;
+      let arc = 0, offY = 0, offX = 0;
       words.forEach((w, i) => {
         const left = w.offsetLeft;
-        if (i === 0 || left < prev - 1) lineStart = left; // retour à la ligne
+        if (i === 0 || left < prev - 1) {
+          line++;
+          lineStart = left;
+          const L = rng((seed + 7349 * (line + 1)) >>> 0);
+          arc = L.range(-0.035, 0.055); // arc doux : bombé le plus souvent, parfois creusé
+          offY = L.jitter(0.04 * lh); // interligne ±4 %
+          offX = L.range(-0.05, 0.17); // marge qui dérive (≈ −2 à +6 px)
+        }
         prev = left;
-        const cx = left + w.offsetWidth / 2 - lineStart;
-        w.style.setProperty('--gc-lift', `${r2(cx * tan)}px`);
+        const x = left + w.offsetWidth / 2 - lineStart;
+        const p = clamp(x / avail, 0, 1);
+        let ls = 1, lx = 0;
+        if (p > 0.7) {
+          const q = (p - 0.7) / 0.3; // fin de ligne : les derniers mots se serrent
+          ls = 1 - 0.015 * q;
+          lx = -0.1 * Math.pow(q, 1.3);
+        } else if (p < 0.2) {
+          ls = 1.025 - 0.125 * p; // début de ligne un peu plus ample
+        }
+        const lift = x * tan + (-arc * 4 * p * (1 - p) + offY) * fs * vie;
+        w.style.setProperty('--gc-lift', `${r2(lift)}px`);
+        w.style.setProperty('--gc-lx', `${r2((lx + offX) * fs * vie)}px`);
+        w.style.setProperty('--gc-ls', `${Math.round((1 + (ls - 1) * vie) * 1000) / 1000}`);
       });
     };
     apply();
@@ -190,14 +229,15 @@ function useSlant(ref: React.RefObject<HTMLElement>, slant: number, key: string)
       alive = false;
       ro.disconnect();
     };
-  }, [slant, key]);
+  }, [slant, vie, seed, key]);
 }
 
 // --- Composant -------------------------------------------------------------------------------
 
 /**
- * Texte écrit à la main : chaque mot légèrement décalé et tourné (graine), la ligne qui monte,
- * l'encre qui faiblit, ratures et soulignés dessinés.
+ * Texte écrit à la main : lettres (mains non liées) et mots légèrement décalés, tournés et mis à
+ * l'échelle, espaces inégales, lignes qui montent en arc, encre qui faiblit, ratures, soulignés
+ * et puces tracés à la main. Tout est statique et déterministe (graine).
  */
 export function Ecriture({
   hand,
@@ -209,52 +249,82 @@ export function Ecriture({
   as = 'p',
   className,
   markInk,
-  fixInk = 'rouge',
-  fixPlace = 'dessus',
+  fixInk,
+  fixHand,
+  fixPlace = 'auto',
+  rature,
   souligne,
   souligneInk,
+  puce,
   grain = true,
   drift = 0,
+  wobble = 1,
   style,
 }: EcritureProps) {
   const ref = React.useRef<HTMLElement>(null);
   const text = React.useMemo(() => handText(frTypo(children), hand), [children, hand]);
   const baseSeed = seed ?? hashSeed(`${hand}|${role}|${text}`);
   const units = React.useMemo(() => toUnits(parseMarkup(text)), [text]);
-  useSlant(ref, slant, `${text}|${hand}|${role}`);
+  const vie = clamp(wobble, 0, 1.5);
+  useLignes(ref, slant, vie, baseSeed, `${text}|${hand}|${role}`);
 
   const words = units.filter((u) => u.kind === 'mot').length;
   const R = rng(baseSeed);
+  const RL = rng(baseSeed ^ 0x3c6ef372); // lettres
   const flow = inkFlow(ink, words, rng(baseSeed ^ 0x9e3779b9));
-  const nerf = NERF[hand];
+  const nerf = NERF[hand] * vie;
+  const lettres = LETTRES[hand] && vie > 0;
+  const k = TRAIT_K[ink ?? 'ink'];
+
+  /** Une lettre : rotation ±1,5°, ligne de base ±0,04 em, échelle 1–1,05 (jamais sous la hauteur d'x visée). */
+  const lettre = (ch: string, key: number) => (
+    <span
+      key={key}
+      className="gc-ecriture__l"
+      style={
+        {
+          '--gc-lr': `${r2(RL.jitter(1.5) * nerf)}deg`,
+          '--gc-ly': `${r2(RL.jitter(0.04) * nerf * 100) / 100}em`,
+          '--gc-lsc': `${Math.round((1 + RL.range(0, 0.05) * Math.min(1, vie)) * 1000) / 1000}`,
+          opacity: RL.next() < 0.25 ? r2(RL.range(0.92, 0.98)) : undefined,
+        } as React.CSSProperties
+      }
+    >
+      {ch}
+    </span>
+  );
+  const ecrire = (str: string) => (lettres ? Array.from(str).map((ch, i) => lettre(ch, i)) : str);
 
   let w = 0;
-  const nodes = units.map((u, i) => {
+  const nodes: React.ReactNode[] = units.map((u, i) => {
     if (u.kind === 'espace') return ' ';
     if (u.kind === 'ligne') return <br key={i} />;
-    const k = w++;
+    const kw = w++;
     const special = u.parts.some((p) => typeof p !== 'string');
     const hasFix = u.parts.some((p) => typeof p !== 'string' && p.kind === 'rature');
     const wordStyle = {
-      '--gc-jy': `${r2(R.jitter(0.046) * nerf)}em`,
+      '--gc-jy': `${r2(R.jitter(0.046) * nerf * 100) / 100}em`,
       '--gc-rot': `${r2(R.jitter(1) * nerf + slant)}deg`,
-      marginInlineEnd: `${r2(R.jitter(0.035))}em`,
-      opacity: hasFix ? undefined : flow[k],
+      // mains liées : la variation se fait au mot (échelle 0,985–1,025, jamais sous la hauteur d'x visée)
+      '--gc-ws': lettres ? 1 : Math.round((1 + R.range(-0.015, 0.025) * Math.min(1, vie)) * 1000) / 1000,
+      marginInlineEnd: `${r2(R.jitter(0.08) * nerf * 100) / 100}em`,
+      opacity: hasFix ? undefined : flow[kw],
+      ...(hand === 'feutre' ? { fontVariationSettings: `"BNCE" 40, "INFM" ${Math.round(R.range(80, 100))}` } : null),
     } as React.CSSProperties;
     return (
       <span key={i} className={`gc-ecriture__mot${special ? ' gc-ecriture__mot--trace' : ''}`} style={wordStyle}>
         {u.parts.map((p, j) => {
-          if (typeof p === 'string') return p;
-          const s = (baseSeed + 7919 * (k + 1) + j) >>> 0;
+          if (typeof p === 'string') return <React.Fragment key={j}>{ecrire(p)}</React.Fragment>;
+          const s = (baseSeed + 7919 * (kw + 1) + j) >>> 0;
           if (p.kind === 'rature')
             return (
-              <Rature key={j} hand={hand} ink={ink} fixInk={fixInk} fixPlace={fixPlace} correction={p.correction} seed={s}>
+              <Rature key={j} hand={hand} ink={ink} fixInk={fixInk} fixHand={fixHand} fixPlace={fixPlace} rature={rature} k={k} correction={p.correction} seed={s}>
                 {p.text}
               </Rature>
             );
           return (
             <span key={j} className="gc-ecriture__souligne">
-              {p.text}
+              {ecrire(p.text)}
               <span className="gc-ancre" aria-hidden="true">
                 <Souligne variant="main" ink={markInk ?? ink} seed={s} mode="ancre" />
               </span>
@@ -264,6 +334,34 @@ export function Ecriture({
       </span>
     );
   });
+
+  if (puce) {
+    const P = tracePuce(puce, baseSeed ^ 0x2f1);
+    const { xh } = metriques(hand);
+    nodes.unshift(
+      <span
+        key="puce"
+        className="gc-ecriture__mot gc-ecriture__puce"
+        style={{ '--gc-jy': `${r2(R.jitter(0.05))}em`, '--gc-rot': `${r2(R.jitter(6))}deg`, marginInlineEnd: `${r2(R.range(-0.02, 0.14))}em` } as React.CSSProperties}
+        aria-hidden="true"
+      >
+        <svg
+          className={`gc-puce gc-puce--${puce}`}
+          viewBox="0 0 40 20"
+          focusable="false"
+          style={{ verticalAlign: puce === 'case' ? '-0.02em' : `${r2(xh * 0.5 - 0.175)}em` }}
+        >
+          {P.fills.map((d, n) => (
+            <path key={`f${n}`} className="gc-puce__plein" d={d} />
+          ))}
+          {P.strokes.map((d, n) => (
+            <path key={`s${n}`} className="gc-puce__trait" d={d} />
+          ))}
+        </svg>
+      </span>,
+      ' ',
+    );
+  }
 
   const grainOn = grain && Boolean(assetInfo('ink/grain'));
   const D = rng(baseSeed ^ 0x51ed27);
@@ -275,7 +373,8 @@ export function Ecriture({
     ...handStyle(hand, role, ink),
     ...driftStyle,
     ...(ink ? null : { color: 'var(--gc-ink)' }),
-    '--gc-trait-k': TRAIT_K[ink ?? 'ink'],
+    ...(hand === 'feutre' ? { fontVariationSettings: '"BNCE" 40, "INFM" 90' } : null),
+    '--gc-trait-k': k,
     ...(grainOn ? { '--gc-ink-grain': cssUrl('ink/grain'), '--gc-grain-lift': grainLift(ink, role) } : null),
     ...style,
   } as React.CSSProperties;

@@ -1,4 +1,4 @@
-<!-- @dsCard group="Écriture" width=896 height=1000 subtitle="La recette de Julie écrite de sa main (Kalam, stylo bille bleu), titre souligné en rouge à la règle, une rature et deux annotations" -->
+<!-- @dsCard group="Écriture" width=896 height=1000 subtitle="La recette de Julie écrite de sa main (Kalam, stylo bille bleu), titre souligné en rouge à la règle ; elle a raturé le sucre, Cécile a corrigé la cuisson en rouge" -->
 <style>
   .s2-page {
     box-sizing: border-box;
@@ -77,8 +77,11 @@
     var ingredients = r.ingredients.map(function (s) {
       return /^150.g de sucre$/.test(s) ? '~~150 g~~>120 g de sucre' : s;
     });
+    // … et Cécile, qui l'a testée, a corrigé le temps de cuisson au stylo rouge.
     var steps = r.steps.map(function (s, i) {
-      return i === 1 ? s.replace('zestes', '__zestes__') : s;
+      if (i === 1) return s.replace('zestes', '__zestes__');
+      if (i === 3) return s.replace(/45.min/, '~~45 min~~>40 min');
+      return s;
     });
     var meta = 'Prép. ' + r.prep + ' · cuisson ' + r.cook + ' · ' + r.servings;
     // pente de base de Julie (−0,6°), ± 0,3° d'une ligne à l'autre
@@ -92,7 +95,7 @@
         E({ role: 'body', seed: seed + 2, className: 's2-label', souligne: 'main' }, 'Ingrédients :'),
         h('ul', { className: 's2-ingredients' },
           ingredients.map(function (s, i) {
-            return E({ key: i, as: 'li', role: 'body', seed: seed + 10 + i, slant: pente(i), drift: 1 }, '– ' + s);
+            return E({ key: i, as: 'li', role: 'body', seed: seed + 10 + i, slant: pente(i), drift: 1, puce: 'tiret', rature: 'trait' }, s);
           })),
         h('div', { className: 's2-label-row s2-label' },
           E({ role: 'body', seed: seed + 3, souligne: 'main' }, 'Préparation :'),
@@ -100,15 +103,27 @@
         h('ol', { className: 's2-steps' },
           steps.map(function (s, i) {
             return h('li', { key: i, className: 's2-step', style: { marginInlineStart: 'calc(var(--gc-space-1) * ' + [0, 0.75, 0.25, 1.25][i] + ')' } },
-              E({ as: 'span', role: 'body', seed: seed + 30 + i }, (i + 1) + '.'),
+              E({ as: 'span', role: 'body', seed: seed + 30 + i }, (i + 1) + ')'),
               h('span', { className: 's2-step__texte' },
-                E({ as: 'span', role: 'body', seed: seed + 20 + i, slant: pente(i + 3) }, s),
-                i === 3 ? h(G.Annotation, { text: 'pas plus !', hand: hand, ink: 'rouge', arrow: 'courbe', tilt: -6, to: { x: -40, y: -4 }, seed: seed + 40 }) : null));
+                E({ as: 'span', role: 'body', seed: seed + 20 + i, slant: pente(i + 3), fixHand: 'cecile', fixInk: 'rouge', fixPlace: 'dessus', rature: 'trait' }, s),
+                i === 0 ? h(G.Annotation, { text: 'bien chaud !', hand: hand, ink: ink, arrow: 'courbe', tilt: -5, to: { x: -26, y: -3 }, seed: seed + 40 }) : null));
           })),
         h('div', { className: 's2-mot', 'data-s2-mot': '' },
           E({ role: 'note', seed: seed + 50, slant: -0.8 }, julie.note),
           E({ role: 'signature', seed: seed + 51, slant: -3, className: 's2-signature' }, julie.signature))));
 
     ReactDOM.createRoot(document.getElementById('root')).render(page);
+
+    // Garde de débordement (CONTRACT § 10) : la pile de la page tient-elle dans la zone de texte ?
+    document.fonts.ready.then(function () {
+      requestAnimationFrame(function () {
+        var zone = document.querySelector('[data-s2-zone]');
+        if (!zone) return;
+        var gap = parseFloat(getComputedStyle(zone).rowGap) || 0;
+        var kids = Array.prototype.slice.call(zone.children);
+        var besoin = kids.reduce(function (s, k) { return s + k.getBoundingClientRect().height; }, 0) + gap * (kids.length - 1);
+        zone.setAttribute('data-gc-fit', besoin <= zone.getBoundingClientRect().height + 1 ? 'ok' : 'overflow');
+      });
+    });
   })();
 </script>

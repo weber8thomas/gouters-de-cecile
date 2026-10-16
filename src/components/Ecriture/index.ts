@@ -10,3 +10,5 @@ export { Rature } from './Rature';
 export type { RatureProps } from './Rature';
 export { parseMarkup } from './markup';
 export type { Segment as MarkupSegment } from './markup';
+export { ratureDe } from './traits';
+export type { RatureStyle, PuceDessin } from './traits';

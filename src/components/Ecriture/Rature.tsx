@@ -1,102 +1,148 @@
 import React from 'react';
 import type { HandId, InkId } from '../../content/types';
 import { handStyle, handText, inkVar } from '../../lib/hands';
-import { gribouillis, SCRIBBLE_VIEW } from './traits';
+import { chevron, rature as traceRature, ratureDe, RATURE_VIEW, type RatureStyle } from './traits';
+import { metriques } from './metriques';
 import { hashSeed, rng, r2 } from './rng';
 import './Ecriture.css';
 
+export type { RatureStyle };
+
 export interface RatureProps {
-  /** Texte raturé (déjà écrit, puis barré d'un gribouillis). */
+  /** Texte raturé (déjà écrit, puis barré). */
   children: string;
-  /** Correction, écrite au-dessus du mot raturé (ou juste après, voir `fixPlace`). */
+  /** Correction, écrite au-dessus du mot raturé ou juste après (voir `fixPlace`). */
   correction?: string;
   /** Main de l'invité (la correction est de la même main). */
   hand: HandId;
-  /** Encre du gribouillis : celle de l'invité (par défaut, la couleur du texte). */
+  /** Encre de l'auteur : la rature est toujours tracée avec. Sans encre, la couleur du texte. */
   ink?: InkId;
-  /** Encre de la correction : `rouge` par défaut (CONTRACT § 8). */
+  /**
+   * Encre de la correction : par défaut celle de l'auteur (on se corrige avec son propre stylo).
+   * `rouge` seulement si quelqu'un d'autre corrige (Cécile, par exemple).
+   */
   fixInk?: InkId;
-  /** `dessus` (par défaut) : dans l'interligne, au-dessus du mot ; `apres` : à la suite, sur la ligne. */
-  fixPlace?: 'dessus' | 'apres';
+  /** Main de qui corrige, si ce n'est pas l'auteur (Cécile qui corrige au stylo rouge). */
+  fixHand?: HandId;
+  /** `auto` (par défaut, selon la graine et la main), `dessus` (dans l'interligne) ou `apres` (à la suite). */
+  fixPlace?: 'auto' | 'dessus' | 'apres';
+  /** Façon de raturer : `trait` (≈ 70 %), `zigzag` (≈ 25 %), `noirci` (≈ 5 %, un mot court). Par défaut selon la graine. */
+  rature?: RatureStyle;
+  /** Épaisseur relative de l'outil (voir TRAIT_K dans Ecriture). */
+  k?: number;
   seed?: number;
 }
 
+/** Une correction au-dessus d'une cursive à grandes hampes coûterait presque une ligne : on l'écrit après. */
+const HAMPES_HAUTES = 1;
+
 /**
- * Hauteur à dégager au-dessus de la ligne de base, en em du texte raturé : la plus haute des
- * hampes et des chiffres de la main (« Hd », « 150 », mesurés à l'encre, au pixel, par
- * verification/out/s2/xheight-ink.mjs) + 0,05 em d'air. Les cursives Playwrite ont des chiffres
- * et des hampes très hauts (1,32 em pour FR Trad, 2,4 × la hauteur d'x).
+ * Où écrire la correction : au-dessus 72 % du temps, sinon juste après ; toujours après pour
+ * les mains dont les hampes dépassent 1 em (Playwrite), sauf demande expresse.
  */
-const HAMPE: Record<HandId, number> = {
-  mamie: 1.32,
-  ecole: 1.135,
-  soignee: 0.775,
-  feutre: 0.77,
-  capitales: 0.695,
-  pressee: 0.755,
-  cecile: 0.79,
-};
-/**
- * Correction posée au-dessus : sa ligne de base monte de HAMPE + 0,05 em (elle ne touche pas les
- * chiffres raturés). La rature réserve en haut (reach − interlignage) em, où reach = hauteur
- * atteinte par le haut de la correction + 0,1 em : la correction ne franchit pas la ligne de base
- * de la ligne d'au-dessus (seuls ses jambages peuvent la croiser, comme sur une vraie page).
- * L'interlignage est lu en CSS (--gc-lh-<main>) : la réserve suit les tokens.
- */
-export function placeCorrection(hand: HandId): { lift: number; reach: number } {
-  const lift = HAMPE[hand] + 0.05;
-  return { lift: r2(lift), reach: r2(lift + HAMPE[hand] + 0.1) };
+export function placeDe(seed: number, hand: HandId): 'dessus' | 'apres' {
+  if (metriques(hand).stems > HAMPES_HAUTES) return 'apres';
+  return rng(seed ^ 0x1b873593).next() < 0.72 ? 'dessus' : 'apres';
 }
 
 /**
- * Mot raturé d'un gribouillis tracé à la main, correction écrite au-dessus (ou à la suite).
- * S'utilise dans un texte manuscrit (<Ecriture> le génère depuis « ~~150 g~~>120 g »).
- *
- * Pourquoi pas <ruby> : Chromium réserve au-dessus d'un <rt> près d'une ligne entière, quels que
- * soient la taille et l'interligne de l'annotation (+40 px mesurés pour Kalam à 32 px). Ici la
- * correction est posée sur la ligne de base du mot raturé puis remontée (placeCorrection), et la
- * rature réserve en haut la hauteur nécessaire : l'interligne en tient compte, sans plus.
+ * Correction au-dessus : sa ligne de base se pose juste au-dessus des minuscules raturées
+ * (max(x + 0,2 em, hampes − 0,06 em) ; le haut des chiffres barrés peut l'effleurer). La rature
+ * réserve en haut (reach − interlignage) em, reach = haut de la correction (plus petite : ~0,92 ×
+ * ses hampes) + 0,28 em : elle reste sous les jambages de la ligne d'au-dessus. Interlignage lu en CSS.
  */
-export function Rature({ children, correction, hand, ink, fixInk = 'rouge', fixPlace = 'dessus', seed }: RatureProps) {
+export function placeCorrection(hand: HandId, fixHand: HandId = hand): { lift: number; reach: number } {
+  const m = metriques(hand);
+  const lift = Math.max(m.xh + 0.2, m.stems - 0.06);
+  return { lift: r2(lift), reach: r2(lift + 0.92 * metriques(fixHand).stems + 0.28) };
+}
+
+/**
+ * Mot raturé comme le font les vrais gens (trait qui dépasse, zigzag ou noirci), dans l'encre de
+ * l'auteur, avec sa correction plus petite et un peu penchée, au-dessus (parfois avec un chevron
+ * d'insertion) ou juste après. <Ecriture> le génère depuis « ~~150 g~~>120 g ».
+ *
+ * Pas de <ruby> : Chromium réserve au-dessus d'un <rt> près d'une ligne entière (+40 px mesurés).
+ */
+export function Rature({ children, correction, hand, ink, fixInk, fixHand, fixPlace = 'auto', rature, k = 1, seed }: RatureProps) {
   const s = seed ?? hashSeed(`${hand}|${children}|${correction ?? ''}`);
-  const paths = React.useMemo(() => gribouillis(s, [...children].length), [s, children]);
+  const style = rature ?? ratureDe(s, children);
+  const m = metriques(hand);
+  const chars = [...children].length;
+  // chiffres, majuscules et hampes : on barre au milieu de leur hauteur, pas des minuscules
+  const lettres = children.replace(/[\s\u00a0\u202f]/g, '');
+  const hauts = (lettres.match(/[0-9A-ZÀ-ÖØ-Þbdfhklt]/g) || []).length;
+  const corps = lettres && hauts / lettres.length >= 0.5 ? m.stems : m.xh;
+  const geo = React.useMemo(() => traceRature(style, s, chars * m.car, m.xh, k, corps), [style, s, chars, m.car, m.xh, k, corps]);
   const R = rng(s ^ 0x5bd1e995);
-  const dessus = fixPlace === 'dessus';
-  const { lift, reach } = placeCorrection(hand);
-  // la correction est jetée un peu de travers, légèrement décalée vers la droite
+  const place = correction ? (fixPlace === 'auto' ? placeDe(s, hand) : fixPlace) : 'seule';
+  const dessus = place === 'dessus';
+  const encreFix = fixInk ?? ink;
+  // la correction : plus petite (rôle annotation), un peu penchée, décalée
   const fixStyle = {
-    ...handStyle(hand, 'annotation', fixInk),
-    // interligne nul : la ligne de base de la correction tombe sur celle du mot raturé
+    ...handStyle(fixHand ?? hand, 'annotation', encreFix),
     ...(dessus ? { lineHeight: 0 } : null),
-    '--gc-rot': `${r2(dessus ? R.range(-4, 1.5) : R.range(-3, 2))}deg`,
-    '--gc-dx': `${r2(dessus ? R.range(0, 0.25) : 0)}em`,
+    '--gc-rot': `${r2(dessus ? R.range(-7, -1.5) : R.range(-4, 1))}deg`,
+    '--gc-dx': `${r2(dessus ? R.range(0.08, 0.45) : 0)}em`,
   } as React.CSSProperties;
+  // chevron d'insertion : « ^ » sous le mot, ou « v » au-dessus, une fois sur trois
+  const r = R.next();
+  const chev: '^' | 'v' | null = dessus && r < 0.34 ? (r < 0.2 ? '^' : 'v') : null;
+  const { lift, reach } = placeCorrection(hand, fixHand);
   const rootStyle =
-    dessus && correction
+    dessus
       ? ({ '--gc-rature-reach': reach, '--gc-rature-lh': `var(--gc-lh-${hand})`, '--gc-rature-lift': `${lift}em` } as React.CSSProperties)
       : undefined;
+  // on rature avec le stylo de qui corrige : l'auteur, ou l'autre (Cécile au rouge)
+  const traceInk = fixHand && fixHand !== hand ? encreFix : ink;
+  const traceStyle = {
+    insetInlineStart: `${-geo.over[0]}px`,
+    inlineSize: `calc(100% + ${r2(geo.over[0] + geo.over[1])}px)`,
+    '--gc-rature-rot': `${r2(geo.tilt)}deg`,
+    ...(traceInk ? { color: inkVar(traceInk) } : null),
+  } as React.CSSProperties;
   return (
-    <span className={`gc-rature gc-rature--${correction ? fixPlace : 'seule'}`} style={rootStyle}>
+    <span className={`gc-rature gc-rature--${place} gc-rature--${style}`} style={rootStyle}>
       <span className="gc-rature__base">
         <span className="gc-ancre" aria-hidden="true">
           <svg
-            className="gc-rature__gribouillis"
-            viewBox={`0 0 ${SCRIBBLE_VIEW.w} ${SCRIBBLE_VIEW.h}`}
+            className="gc-rature__trace"
+            viewBox={`0 0 ${RATURE_VIEW.w} ${RATURE_VIEW.h}`}
             preserveAspectRatio="none"
             focusable="false"
-            style={ink ? { color: inkVar(ink) } : undefined}
+            style={traceStyle}
           >
-            {paths.map((d, i) => (
-              <path key={i} className={i ? 'gc-rature__retour' : 'gc-rature__boucles'} d={d} />
+            {geo.fills.map((d, i) => (
+              <path key={`f${i}`} className="gc-rature__plein" d={d} />
+            ))}
+            {geo.strokes.map((d, i) => (
+              <path key={`s${i}`} className={`gc-rature__trait gc-rature__trait--${style}`} d={d} />
             ))}
           </svg>
         </span>
         <del className="gc-rature__barre">{handText(children, hand)}</del>
+        {chev ? (
+          <span className="gc-ancre" aria-hidden="true">
+            <svg
+              className={`gc-rature__chevron gc-rature__chevron--${chev === '^' ? 'dessous' : 'dessus'}`}
+              viewBox="0 0 20 16"
+              focusable="false"
+              style={{
+                insetInlineStart: `${r2(R.range(18, 48))}%`,
+                // « v » : entre la correction et le mot, juste au-dessus des minuscules
+                ...(chev === 'v' ? { marginBlockStart: `${r2(-(m.xh + 0.42))}em` } : null),
+                ...(encreFix ? { color: inkVar(encreFix) } : null),
+              }}
+            >
+              <path d={chevron(s, chev)} />
+            </svg>
+          </span>
+        ) : null}
       </span>
       {correction ? (
         <span className="gc-rature__place">
           <ins className="gc-rature__correction" style={fixStyle}>
-            {handText(correction, hand)}
+            {handText(correction, fixHand ?? hand)}
           </ins>
         </span>
       ) : null}

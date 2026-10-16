@@ -14,11 +14,44 @@
   text-align: start;
 }
 
-/* Un mot : légèrement décalé, tourné, soulevé par la pente de la ligne (--gc-lift, mesuré). */
+/* Un mot : légèrement décalé, tourné et mis à l'échelle (graine), puis placé dans sa ligne
+   (pente, arc, interligne et marge qui dérivent, fin de ligne serrée : --gc-lift, --gc-lx,
+   --gc-ls, mesurés une fois). Insécable : on ne coupe jamais un mot. */
 .gc-ecriture__mot {
   display: inline-block;
-  transform: translateY(calc(var(--gc-jy, 0em) + var(--gc-lift, 0px))) rotate(var(--gc-rot, 0deg));
+  white-space: nowrap;
+  transform: translate(var(--gc-lx, 0px), calc(var(--gc-jy, 0em) + var(--gc-lift, 0px))) rotate(var(--gc-rot, 0deg))
+    scale(calc(var(--gc-ws, 1) * var(--gc-ls, 1)));
   transform-origin: 50% 66%;
+}
+
+/* Une lettre (mains non liées) : chaque occurrence est un peu différente. */
+.gc-ecriture__l {
+  display: inline-block;
+  transform: translateY(var(--gc-ly, 0em)) rotate(var(--gc-lr, 0deg)) scale(var(--gc-lsc, 1));
+  transform-origin: 50% 75%;
+}
+
+/* ---- Puces tracées à la main ---- */
+
+.gc-puce {
+  display: inline-block;
+  inline-size: 0.7em;
+  block-size: 0.35em;
+  overflow: visible;
+}
+
+.gc-puce__plein {
+  fill: currentColor;
+  stroke: none;
+}
+
+.gc-puce__trait {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: calc(var(--gc-trait-k, 1) * 2.6px);
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Grain d'encre : tuile cuite (design-system/baked/ink/grain), posée en masque sur le texte.
@@ -57,8 +90,7 @@
   transform-origin: 0 50%;
 }
 
-.gc-souligne path,
-.gc-rature__gribouillis path {
+.gc-souligne path {
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -106,8 +138,8 @@
 
 /* ---- Rature + correction ---- */
 
-/* La rature réserve au-dessus du mot la place de la correction : (reach − interlignage de la
-   main) em du texte raturé, jamais négatif. L'interligne s'ouvre juste ce qu'il faut. */
+/* La rature réserve au-dessus du mot la place d'une correction écrite dessus :
+   (reach − interlignage de la main) em du texte raturé, jamais négatif. */
 .gc-rature {
   position: relative;
   display: inline-block;
@@ -124,27 +156,58 @@
   text-decoration: none;
 }
 
-/* Gribouillis centré sur la hauteur d'x : de la ligne de base à un peu au-dessus des minuscules. */
-.gc-rature__gribouillis {
+/* Tracé de la rature : de 0,9 em au-dessus de la ligne de base à 0,1 em dessous ; il dépasse le
+   mot de quelques px à chaque bout (posé en ligne) et penche d'un angle exact (rotation CSS). */
+.gc-rature__trace {
   position: absolute;
-  inset-inline-start: -0.1em;
-  inline-size: calc(100% + 0.2em);
-  block-size: 0.86em;
-  margin-block-start: -0.8em;
+  block-size: 1em;
+  margin-block-start: -0.9em;
+  overflow: visible;
+  transform: rotate(var(--gc-rature-rot, 0deg));
+  transform-origin: 50% 62%;
+}
+
+.gc-rature__plein {
+  fill: currentColor;
+  stroke: none;
+}
+
+.gc-rature__trait,
+.gc-rature__chevron path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-width: calc(var(--gc-trait-k, 1) * 0.03em);
+}
+
+.gc-rature__trait--zigzag {
+  stroke-width: calc(var(--gc-trait-k, 1) * 0.048em);
+}
+
+.gc-rature__trait--noirci {
+  stroke-width: calc(var(--gc-trait-k, 1) * 0.058em);
+}
+
+/* Chevron d'insertion : « ^ » sous la ligne, « v » entre le mot et sa correction. */
+.gc-rature__chevron {
+  position: absolute;
+  inline-size: 0.4em;
+  block-size: 0.32em;
   overflow: visible;
 }
 
-.gc-rature__boucles {
-  stroke-width: calc(var(--gc-trait-k, 1) * 0.05em);
+.gc-rature__chevron--dessous {
+  margin-block-start: 0.1em;
 }
 
-.gc-rature__retour {
+.gc-rature__chevron path {
   stroke-width: calc(var(--gc-trait-k, 1) * 0.045em);
 }
 
-/* Place de la correction au-dessus : boîte de largeur nulle ramenée au début du mot raturé
-   (marge de −100 % de la rature), posée sur la ligne de base puis remontée (--gc-rature-lift,
-   en em du texte raturé). Sans hauteur : elle ne pousse pas la ligne. */
+/* Correction au-dessus : boîte de largeur nulle ramenée au début du mot raturé (marge de −100 %
+   de la rature), posée sur la ligne de base puis remontée (--gc-rature-lift). Sans hauteur. */
 .gc-rature--dessus > .gc-rature__place {
   display: inline-block;
   inline-size: 0;
@@ -154,10 +217,10 @@
   transform: translateY(calc(-1 * var(--gc-rature-lift, 0.9em)));
 }
 
-/* Correction à la suite, sur la même ligne (mains à grandes boucles, pages serrées). */
+/* Correction à la suite, sur la même ligne. */
 .gc-rature--apres > .gc-rature__place {
   display: inline-block;
-  margin-inline-start: 0.28em;
+  margin-inline-start: 0.3em;
 }
 
 .gc-rature__correction {
