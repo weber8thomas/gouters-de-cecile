@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr" data-theme="carnet">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banc d'essai</title>
+<link rel="icon" href="data:,">
+<!-- Reproduit le cadre d'aperçu de l'artifact Design System :
+     tokens.css + polices, bundle.css, React 18, bundle.js, puis le contenu de preview.html. -->
+<link rel="stylesheet" href="../design-system/tokens.css">
+<link rel="stylesheet" href="../dist/ds/components/bundle.css">
+<style>html,body{margin:0;background:#fff}</style>
+<script src="../node_modules/react/umd/react.production.min.js"></script>
+<script src="../node_modules/react-dom/umd/react-dom.production.min.js"></script>
+<script src="../dist/ds/components/bundle.js"></script>
+</head>
+<body>
+<script>
+(async () => {
+  const card = new URLSearchParams(location.search).get('c');
+  const html = await (await fetch('../' + card)).text();
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  for (const el of doc.head.querySelectorAll('style, link[rel=stylesheet]')) document.head.appendChild(el.cloneNode(true));
+  for (const node of [...doc.body.childNodes]) {
+    if (node.nodeName === 'SCRIPT') {
+      const s = document.createElement('script');
+      s.textContent = node.textContent;
+      document.body.appendChild(s);
+    } else {
+      document.body.appendChild(document.importNode(node, true));
+    }
+  }
+  await document.fonts.ready;
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  window.__gcReady = true;
+})().catch((e) => { window.__gcError = String(e); window.__gcReady = true; });
+</script>
+</body>
+</html>

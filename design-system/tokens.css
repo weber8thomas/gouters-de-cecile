@@ -1,0 +1,154 @@
+/* Les goûters de Cécile — generated from tokens.json */
+:root, [data-theme="carnet"] {
+  --gc-paper: #f4ebda;
+  --gc-paper-lit: #f6eedd;
+  --gc-paper-edge: #e7d6b8;
+  --gc-paper-lace: #fbf6ec;
+  --gc-linen: #e8dfcf;
+  --gc-linen-shade: #d8ccb6;
+  --gc-kraft: #c49a6c;
+  --gc-wood-1: #8a5a3b;
+  --gc-wood-2: #6b4429;
+  --gc-wood-3: #4a2e1f;
+  --gc-ink: #3a2216;
+  --gc-chocolate: #5b3a28;
+  --gc-ink-night: #26324a;
+  --gc-ink-title: var(--gc-terracotta-700);
+  --gc-terracotta-100: #f2dacf;
+  --gc-terracotta-300: #d58a6e;
+  --gc-terracotta-500: #b4583b;
+  --gc-terracotta-700: #7f3322;
+  --gc-pink-100: #f6e4de;
+  --gc-pink-300: #e7c3b9;
+  --gc-pink-500: #c98f86;
+  --gc-pink-700: #7e3a45;
+  --gc-sage-100: #e3eadf;
+  --gc-sage-300: #b9c8b1;
+  --gc-sage-500: #8da285;
+  --gc-sage-700: #3d5739;
+  --gc-honey-100: #f8e7c4;
+  --gc-honey-300: #ebc57e;
+  --gc-honey-500: #d9a44e;
+  --gc-honey-700: #8a6220;
+  --gc-glow: #ffd89a;
+  --gc-sepia-0: #f3e6cc;
+  --gc-sepia-1: #e2c9a0;
+  --gc-sepia-2: #c29a6b;
+  --gc-sepia-3: #8e6643;
+  --gc-sepia-4: var(--gc-chocolate);
+  --gc-porcelain: #fdfbf6;
+  --gc-porcelain-shade: #e6e0d5;
+  --gc-glass-highlight: rgba(255, 255, 255, 0.55);
+  --gc-glass-tint: rgba(226, 236, 230, 0.16);
+  --gc-tea: #b9743a;
+  --gc-cafe-au-lait: #a0704a;
+  --gc-jam: #9e2f3a;
+  --gc-crust: #d9a15e;
+  --gc-crumb: #f1d9a8;
+  --gc-stain-tea: rgba(154, 107, 58, 0.14);
+  --gc-stain-jam: rgba(158, 47, 58, 0.10);
+  --gc-skin-1: #f6d7c3;
+  --gc-skin-2: #edc0a2;
+  --gc-skin-3: #d9a27e;
+  --gc-skin-4: #b97b56;
+  --gc-skin-5: #8d5a3b;
+  --gc-skin-6: #5e3a26;
+  --gc-hair-1: #2b1d16;
+  --gc-hair-2: #5a3a24;
+  --gc-hair-3: #9a6a3c;
+  --gc-hair-4: #d2a35e;
+  --gc-hair-5: #b5552f;
+  --gc-hair-6: #c9c3bc;
+  --gc-sh-contact: 1px 1px 1px rgba(58, 34, 22, 0.22);
+  --gc-sh-lift: 3px 5px 8px rgba(58, 34, 22, 0.16), 1px 1px 2px rgba(58, 34, 22, 0.18);
+  --gc-sh-object: 10px 16px 24px rgba(58, 34, 22, 0.22), 2px 3px 4px rgba(58, 34, 22, 0.2);
+  --gc-sh-book: 28px 36px 64px rgba(40, 22, 12, 0.45), 8px 10px 18px rgba(40, 22, 12, 0.3);
+}
+:root {
+  --gc-space-1: 4px;
+  --gc-space-2: 8px;
+  --gc-space-3: 12px;
+  --gc-space-4: 16px;
+  --gc-space-5: 24px;
+  --gc-space-6: 32px;
+  --gc-space-7: 48px;
+  --gc-space-8: 64px;
+  --gc-space-9: 96px;
+  --gc-space-10: 128px;
+  --gc-radius-none: 0;
+  --gc-radius-photo: 2px;
+  --gc-radius-paper: 3px;
+  --gc-radius-tag: 10px;
+  --gc-radius-round: 50%;
+  --gc-stage-w: 1920px;
+  --gc-stage-h: 1080px;
+  --gc-book-x: 64px;
+  --gc-book-y: 40px;
+  --gc-page-w: 896px;
+  --gc-page-h: 1000px;
+  --gc-page-pad-outer: 72px;
+  --gc-page-pad-spine: 64px;
+  --gc-page-pad-top: 52px;
+  --gc-page-pad-bottom: 60px;
+  --gc-gutter-shadow: 70px;
+  --gc-safe-x: 96px;
+  --gc-safe-y: 54px;
+  --gc-cup-size: 112px;
+  --gc-nav-size: 56px;
+  --gc-a5-w: 148mm;
+  --gc-a5-h: 210mm;
+  --gc-a5-bleed: 3mm;
+  --gc-a5-margin-top: 12mm;
+  --gc-a5-margin-outer: 12mm;
+  --gc-a5-margin-inner: 16mm;
+  --gc-a5-margin-bottom: 14mm;
+  --gc-a5-qr: 26mm;
+  --gc-a5-texture-opacity: 0.4;
+  --gc-dur-page: 500ms;
+  --gc-dur-state: 700ms;
+  --gc-dur-dome: 900ms;
+  --gc-ease: cubic-bezier(0.22, 0.8, 0.24, 1);
+  --gc-glow-alpha: 0.22;
+  --gc-nav-alpha: 0.8;
+  --font-hand: "Caveat", "Segoe Print", "Bradley Hand", cursive;
+  --font-serif: "Cormorant Garamond", "EB Garamond", Garamond, Georgia, serif;
+  --font-serif-alt: "Playfair Display", Didot, Georgia, serif;
+}
+.gc-cover-title { font-family: var(--font-serif); font-size: 170px; line-height: 1; font-weight: 600; }
+.gc-chapter-title { font-family: var(--font-serif); font-size: 132px; line-height: 1.05; font-weight: 600; }
+.gc-recipe-title { font-family: var(--font-serif); font-size: 84px; line-height: 1.05; font-weight: 600; }
+.gc-section-label { font-family: var(--font-serif); font-size: 40px; line-height: 1.2; font-weight: 600; font-style: italic; }
+.gc-folio { font-family: var(--font-serif); font-size: 32px; line-height: 1; font-weight: 600; }
+.gc-pf-cover-title { font-family: var(--font-serif-alt); font-size: 150px; line-height: 1; font-weight: 600; }
+.gc-pf-chapter-title { font-family: var(--font-serif-alt); font-size: 116px; line-height: 1.05; font-weight: 700; }
+.gc-pf-recipe-title { font-family: var(--font-serif-alt); font-size: 72px; line-height: 1.05; font-weight: 600; }
+.gc-pf-section-label { font-family: var(--font-serif-alt); font-size: 34px; line-height: 1.2; font-weight: 600; font-style: italic; }
+.gc-pf-folio { font-family: var(--font-serif-alt); font-size: 26px; line-height: 1; font-weight: 600; }
+.gc-hand-body { font-family: var(--font-hand); font-size: 44px; line-height: 1.12; font-weight: 500; }
+.gc-hand-compact { font-family: var(--font-hand); font-size: 40px; line-height: 1.12; font-weight: 500; }
+.gc-hand-note { font-family: var(--font-hand); font-size: 46px; line-height: 1.15; font-weight: 500; }
+.gc-hand-signature { font-family: var(--font-hand); font-size: 56px; line-height: 1; font-weight: 700; }
+.gc-hand-meta { font-family: var(--font-hand); font-size: 40px; line-height: 1.1; font-weight: 600; }
+.gc-hand-caption { font-family: var(--font-hand); font-size: 42px; line-height: 1.15; font-weight: 500; }
+.gc-a5-recipe-title { font-family: var(--font-serif); font-size: 34.67px; line-height: 1.05; font-weight: 600; }
+.gc-a5-section-label { font-family: var(--font-serif); font-size: 14.67px; line-height: 1.2; font-weight: 600; font-style: italic; }
+.gc-a5-hand-body { font-family: var(--font-hand); font-size: 17.33px; line-height: 1.15; font-weight: 500; }
+.gc-a5-hand-note { font-family: var(--font-hand); font-size: 18.67px; line-height: 1.18; font-weight: 500; }
+.gc-a5-hand-signature { font-family: var(--font-hand); font-size: 22.67px; line-height: 1; font-weight: 700; }
+.gc-a5-hand-meta { font-family: var(--font-hand); font-size: 16px; line-height: 1.1; font-weight: 600; }
+.gc-a5-scan { font-family: var(--font-hand); font-size: 21.33px; line-height: 1.1; font-weight: 600; }
+.gc-a5-folio { font-family: var(--font-serif); font-size: 12px; line-height: 1; font-weight: 600; }
+@font-face { font-family: "Caveat"; src: url("fonts/caveat-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Caveat"; src: url("fonts/caveat-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: block; }
+@font-face { font-family: "Caveat"; src: url("fonts/caveat-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: block; }
+@font-face { font-family: "Caveat"; src: url("fonts/caveat-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: block; }
+@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: block; }
+@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-latin-500-italic.woff2") format("woff2"); font-weight: 500; font-style: italic; font-display: block; }
+@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-latin-600-italic.woff2") format("woff2"); font-weight: 600; font-style: italic; font-display: block; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: block; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: block; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-600-italic.woff2") format("woff2"); font-weight: 600; font-style: italic; font-display: block; }

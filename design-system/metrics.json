@@ -1,0 +1,20 @@
+{
+  "Caveat": {
+    "xHeight": 0.375,
+    "capHeight": 0.719,
+    "avgCharWidth": 0.325,
+    "loaded": true
+  },
+  "Cormorant Garamond": {
+    "xHeight": 0.391,
+    "capHeight": 0.625,
+    "avgCharWidth": 0.372,
+    "loaded": true
+  },
+  "Playfair Display": {
+    "xHeight": 0.531,
+    "capHeight": 0.719,
+    "avgCharWidth": 0.436,
+    "loaded": true
+  }
+}
