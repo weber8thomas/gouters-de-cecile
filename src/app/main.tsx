@@ -10,7 +10,7 @@ import Carnet from '../artboards/Carnet';
 
 // Images cuites : Vite les publie avec le site (nom à empreinte) ; chaque nom logique est résolu vers
 // son URL publiée, quelle que soit la cible du manifeste généré.
-const publiees = import.meta.glob('../../design-system/baked/**/*.{webp,png}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
+const publiees = import.meta.glob('../../design-system/baked/**/*.{webp,png,mp4}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
 const fichiers = inventaire as Record<string, { file: string }>;
 setAssetResolver((name, info) => publiees[`../../design-system/${fichiers[name]?.file}`] ?? info.u);
 
