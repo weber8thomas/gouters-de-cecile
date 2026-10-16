@@ -4,8 +4,10 @@
 //
 //   node scripts/build-artifact.mjs
 //
-// L'index (project/design-system.json) n'est PAS écrit ici : il est publié en dernier, à la main,
-// avec les enregistrements des assets téléversés.
+// L'index (project/design-system.json) est écrit depuis design-system/artifact-index.json (qui garde
+// createdOnFiles et les enregistrements des assets téléversés) avec un lastChange daté de maintenant ;
+// il n'est PAS dans files.json : on le publie en dernier (file_path de l'appel).
+//   node scripts/build-artifact.mjs --note "ce qui a changé"
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, copyFileSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -82,5 +84,11 @@ if (total > 15 * 1024 * 1024) problems.push(`${(total / 1048576).toFixed(1)} Mio
 for (const p of paths) if (/(^|\/)\./.test(p) || p.includes('..')) problems.push(`chemin refusé : ${p}`);
 
 writeFileSync(join(outRoot, 'files.json'), JSON.stringify(files, null, 2) + '\n');
+
+// Index
+const ni = process.argv.indexOf('--note');
+const index = JSON.parse(readFileSync(join(root, 'design-system/artifact-index.json'), 'utf8'));
+index.lastChange = { by: 'Claude', at: new Date().toISOString().replace(/\.\d+Z$/, 'Z'), via: 'Claude Code', note: ni > 0 ? process.argv[ni + 1] : 'Mise à jour' };
+writeFileSync(join(proj, 'design-system.json'), JSON.stringify(index, null, 2) + '\n');
 console.log(`dist/artifact : ${paths.length} fichiers, ${(total / 1024).toFixed(0)} Ko, ${cards.length} cartes`);
 if (problems.length) { console.error(problems.map((p) => `✗ ${p}`).join('\n')); process.exit(1); }

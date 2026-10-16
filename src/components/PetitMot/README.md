@@ -12,7 +12,7 @@ Le petit mot d'un invité pour Cécile, écrit au stylo en bas de la page et sig
 
 | Prop | Valeurs | Rôle |
 |---|---|---|
-| `note` | chaîne, 120 caractères au plus | Le texte du mot, affiché tel quel. |
+| `note` | chaîne, 90 caractères au plus | Le texte du mot, affiché tel quel. |
 | `signature` | chaîne, ex. `'Julie'` | Prénom de l'invité, écrit en signature. |
 | `ink` | `'night'` (par défaut) ou `'chocolat'` | Encre du stylo : bleu nuit `--gc-ink-night` ou chocolat `--gc-ink`. |
 | `className` | chaîne | Classe ajoutée à la racine `.gc-petitmot`, par exemple pour `margin-top: auto`. |
@@ -48,4 +48,4 @@ Mesures réelles sur 760 px de large, la largeur d'une zone de texte de page :
 
 On compte environ 48 caractères par ligne.
 
-**Viser 90 caractères au plus** pour rester sur 2 lignes avec la signature au bout. Le plafond de 120 caractères de `CONTRACT.md` coûte une ligne de plus (+53 px) sur une page déjà très remplie (voir le budget de `Recette`).
+**90 caractères au plus** (budget de `CONTRACT.md`) pour rester sur 2 lignes avec la signature au bout : une troisième ligne coûte +53 px sur une page déjà très remplie (voir le budget de `Recette`).

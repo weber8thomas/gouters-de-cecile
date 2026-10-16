@@ -1,0 +1,271 @@
+/* Scène vidéo factice — deux copies superposées de la même illustration :
+   __live (couleur, animée) dessous, __still (figée, traitée aquarelle ou sépia) dessus.
+   État : data-state sur la racine (prop `state`), sinon l'ancêtre .gc-ecrin[data-state]. */
+
+.gc-scene-video {
+  --gc-scene-video-play: paused;
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--gc-paper);
+}
+
+.gc-scene-video__layer {
+  position: absolute;
+  inset: 0;
+}
+
+.gc-scene-video__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- avant lecture (par défaut) ---------- */
+.gc-scene-video__still {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--gc-dur-state) var(--gc-ease), visibility 0s linear 0s;
+}
+
+.gc-scene-video__live {
+  visibility: hidden;
+  transition: visibility 0s linear var(--gc-dur-state);
+}
+
+/* ---------- en lecture ---------- */
+.gc-scene-video[data-state='playing'],
+.gc-ecrin[data-state='playing'] .gc-scene-video:not([data-state]) {
+  --gc-scene-video-play: running;
+}
+
+.gc-scene-video[data-state='playing'] .gc-scene-video__still,
+.gc-ecrin[data-state='playing'] .gc-scene-video:not([data-state]) .gc-scene-video__still {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--gc-dur-state) var(--gc-ease), visibility 0s linear var(--gc-dur-state);
+}
+
+.gc-scene-video[data-state='playing'] .gc-scene-video__live,
+.gc-ecrin[data-state='playing'] .gc-scene-video:not([data-state]) .gc-scene-video__live {
+  visibility: visible;
+  transition: visibility 0s linear 0s;
+}
+
+/* ---------- animations de la copie en lecture ----------
+   Valeurs en unités du repère canonique du kit de personnages (people/kit.mjs) :
+   chaque groupe animé porte un rectangle-pivot sans fond centré sur son pivot,
+   d'où transform-box: fill-box + transform-origin: 50% 50%. */
+.gc-scene-video__live .gc-anim-breathe,
+.gc-scene-video__live .gc-anim-blink,
+.gc-scene-video__live .gc-anim-sip,
+.gc-scene-video__live .gc-anim-sip-left,
+.gc-scene-video__live .gc-anim-toast,
+.gc-scene-video__live .gc-anim-toast-left,
+.gc-scene-video__live .gc-anim-steam,
+.gc-scene-video__live .gc-anim-steam-sip,
+.gc-scene-video__live .gc-anim-sip-eyes {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation-play-state: var(--gc-scene-video-play);
+  animation-iteration-count: infinite;
+  animation-timing-function: var(--gc-ease);
+}
+
+.gc-scene-video__live .gc-anim-breathe {
+  animation-name: gc-scene-video-breathe;
+  animation-duration: calc(var(--gc-dur-state) * 8);
+}
+
+.gc-scene-video__live .gc-anim-blink {
+  animation-name: gc-scene-video-blink;
+  animation-duration: calc(var(--gc-dur-state) * 7);
+}
+
+.gc-scene-video__live .gc-anim-sip {
+  animation-name: gc-scene-video-sip;
+  animation-duration: calc(var(--gc-dur-state) * 11);
+}
+
+.gc-scene-video__live .gc-anim-sip-left {
+  animation-name: gc-scene-video-sip-left;
+  animation-duration: calc(var(--gc-dur-state) * 11);
+}
+
+.gc-scene-video__live .gc-anim-steam-sip {
+  animation-name: gc-scene-video-steam-sip;
+  animation-duration: calc(var(--gc-dur-state) * 11);
+}
+
+.gc-scene-video__live .gc-anim-sip-eyes {
+  animation-name: gc-scene-video-sip-eyes;
+  animation-duration: calc(var(--gc-dur-state) * 11);
+}
+
+.gc-scene-video__live .gc-anim-toast {
+  animation-name: gc-scene-video-toast;
+  animation-duration: calc(var(--gc-dur-state) * 5);
+}
+
+.gc-scene-video__live .gc-anim-toast-left {
+  animation-name: gc-scene-video-toast-left;
+  animation-duration: calc(var(--gc-dur-state) * 5);
+}
+
+.gc-scene-video__live .gc-anim-steam {
+  transform-origin: 50% 100%;
+  animation-name: gc-scene-video-steam;
+  animation-duration: calc(var(--gc-dur-state) * 4);
+}
+
+.gc-scene-video__live .gc-anim-steam:nth-child(2) {
+  animation-delay: calc(var(--gc-dur-state) * -1.3);
+}
+
+.gc-scene-video__live .gc-anim-steam:nth-child(3) {
+  animation-delay: calc(var(--gc-dur-state) * -2.6);
+}
+
+@keyframes gc-scene-video-breathe {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: rotate(-0.5deg) scale(1.006, 1.012);
+  }
+}
+
+@keyframes gc-scene-video-blink {
+  0%,
+  91%,
+  97%,
+  100% {
+    transform: none;
+  }
+  94% {
+    transform: scaleY(0.1);
+  }
+}
+
+/* La tasse (bord en 62, 214) monte jusqu'aux lèvres (≈ 16, 66), pivot sur la paume. */
+@keyframes gc-scene-video-sip {
+  0%,
+  16%,
+  80%,
+  100% {
+    transform: none;
+  }
+  36%,
+  60% {
+    transform: translate(-42px, -161px) rotate(-10deg);
+  }
+}
+
+@keyframes gc-scene-video-sip-left {
+  0%,
+  16%,
+  80%,
+  100% {
+    transform: none;
+  }
+  36%,
+  60% {
+    transform: translate(42px, -161px) rotate(10deg);
+  }
+}
+
+/* Pendant la gorgée : la vapeur s'efface, les yeux se ferment (même durée que gc-anim-sip). */
+@keyframes gc-scene-video-steam-sip {
+  0%,
+  16%,
+  84%,
+  100% {
+    opacity: 1;
+  }
+  26%,
+  72% {
+    opacity: 0;
+  }
+}
+
+@keyframes gc-scene-video-sip-eyes {
+  0%,
+  30%,
+  64%,
+  100% {
+    transform: none;
+  }
+  38%,
+  56% {
+    transform: scaleY(0.12);
+  }
+}
+
+/* Tasse levée : petit « tchin » autour du coude. */
+@keyframes gc-scene-video-toast {
+  0%,
+  60%,
+  100% {
+    transform: none;
+  }
+  24% {
+    transform: rotate(-6deg) translateY(-8px);
+  }
+  40% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes gc-scene-video-toast-left {
+  0%,
+  60%,
+  100% {
+    transform: none;
+  }
+  24% {
+    transform: rotate(6deg) translateY(-8px);
+  }
+  40% {
+    transform: rotate(-3deg);
+  }
+}
+
+@keyframes gc-scene-video-steam {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scaleX(0.9);
+  }
+  30% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-28px) scaleX(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gc-scene-video__live .gc-anim-breathe,
+  .gc-scene-video__live .gc-anim-blink,
+  .gc-scene-video__live .gc-anim-sip,
+  .gc-scene-video__live .gc-anim-sip-left,
+  .gc-scene-video__live .gc-anim-toast,
+  .gc-scene-video__live .gc-anim-toast-left,
+  .gc-scene-video__live .gc-anim-steam,
+  .gc-scene-video__live .gc-anim-steam-sip,
+  .gc-scene-video__live .gc-anim-sip-eyes {
+    animation: none;
+  }
+
+  .gc-scene-video__still,
+  .gc-scene-video__live,
+  .gc-scene-video[data-state='playing'] .gc-scene-video__still,
+  .gc-scene-video[data-state='playing'] .gc-scene-video__live,
+  .gc-ecrin[data-state='playing'] .gc-scene-video:not([data-state]) .gc-scene-video__still,
+  .gc-ecrin[data-state='playing'] .gc-scene-video:not([data-state]) .gc-scene-video__live {
+    transition: none;
+  }
+}

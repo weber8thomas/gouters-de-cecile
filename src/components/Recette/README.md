@@ -67,10 +67,8 @@ Ce qui tient sur une page vidéo, en densité normale :
 | Titre sur 1 ligne, 8 ingrédients, étapes sur 5 lignes, mot sur 2 lignes | 880 px, tient | 861 px, tient |
 | Titre sur 2 lignes, 8 ingrédients, 4 étapes d'une ligne, mot sur 2 lignes | 919 px, déborde | 888 px, tient tout juste |
 
-Le budget maximal de `CONTRACT.md` (titre de 28 caractères, 220 caractères d'étapes, mot de 120 caractères) **ne tient pas**, même en compact : il faut 1 169 px en Cormorant et 1 138 px en Playfair (1 088 et 1 056 px en compact) pour 888 disponibles.
-
-Repère sûr pour une page vidéo :
+Un budget plus large (titre de 28 caractères, 220 caractères d'étapes, mot de 120 caractères) **ne tient pas**, même en compact : il faut 1 169 px en Cormorant et 1 138 px en Playfair (1 088 et 1 056 px en compact) pour 888 disponibles. D'où le budget de `CONTRACT.md` pour une page vidéo :
 - titre de 23 caractères au plus ;
 - 8 ingrédients de 22 caractères au plus ;
 - 4 étapes sur 5 lignes au plus (environ 180 caractères) ;
-- petit mot d'environ 90 caractères au plus.
+- petit mot de 90 caractères au plus.
