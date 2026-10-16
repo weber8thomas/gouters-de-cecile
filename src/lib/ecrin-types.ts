@@ -15,7 +15,7 @@ export interface EcrinManifest {
   focus: [number, number]; // point focal du recadrage (0–1), ex. [0.5, 0.42]
   cup: { x: number; y: number } | null; // centre du bas de la soucoupe de la tasse-progression (taille fixe : --gc-cup-size)
   caption: { x: number; y: number; w: number; rotate?: number } | null; // légende manuscrite : coin haut-gauche + largeur (unités du viewBox)
-  lift?: { dx: number; dy: number; rotate: number }; // cloche : déplacement du dôme soulevé
+  lift?: { dx: number; dy: number; rotate: number }; // cloche : dôme soulevé (translation puis rotation en degrés, pivot = centre de l'ouverture)
   variants: { id: string; label: string }[];
 }
 

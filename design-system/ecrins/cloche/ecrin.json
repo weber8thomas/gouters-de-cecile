@@ -1,0 +1,15 @@
+{
+  "id": "cloche",
+  "label": "Cloche à gâteau",
+  "chapter": "gateaux",
+  "viewBox": [800, 1000],
+  "aperture": { "shape": "circle", "cx": 400, "cy": 470, "r": 220 },
+  "bleed": 4,
+  "focus": [0.5, 0.42],
+  "cup": { "x": 690, "y": 906 },
+  "caption": { "x": 96, "y": 878, "w": 470, "rotate": -2 },
+  "lift": { "dx": 22, "dy": -132, "rotate": 8 },
+  "variants": [
+    { "id": "a", "label": "Porcelaine et filet doré" }
+  ]
+}

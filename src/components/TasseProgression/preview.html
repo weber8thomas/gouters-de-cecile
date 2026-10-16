@@ -1,0 +1,23 @@
+<!-- @dsCard group="Écrins" height=240 -->
+<div id="root" style="box-sizing:border-box;min-height:240px;display:flex;align-items:center;justify-content:center;padding:var(--gc-space-4);background:var(--gc-paper);color:var(--gc-chocolate)"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var Tasse = GoutersDeCecile.TasseProgression;
+    var liquids = [
+      { id: 'the', label: 'Thé' },
+      { id: 'chocolat', label: 'Chocolat' },
+      { id: 'cafe-au-lait', label: 'Café au lait' },
+    ];
+    var levels = [0, 0.25, 0.6, 1];
+    function group(l) {
+      return h('figure', { key: l.id, style: { margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--gc-space-1)' } },
+        h('div', { style: { display: 'flex', gap: 'var(--gc-space-1)', alignItems: 'flex-end' } },
+          levels.map(function (p) { return h(Tasse, { key: p, progress: p, liquid: l.id, size: 80 }); })),
+        h('figcaption', { className: 'gc-hand-caption' }, l.label));
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      h('div', { style: { display: 'flex', flexWrap: 'wrap', justifyContent: 'center', columnGap: 'var(--gc-space-6)', rowGap: 'var(--gc-space-4)' } },
+        liquids.map(group)));
+  })();
+</script>

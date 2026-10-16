@@ -1,0 +1,142 @@
+/* Écrin vidéo : calques absolus au même viewBox, empilés dans l'ordre du DOM. */
+.gc-ecrin {
+  --gc-ecrin-still-filter: saturate(0.5) sepia(0.32) contrast(0.86) brightness(1.08);
+  position: relative;
+  display: block;
+  isolation: isolate;
+}
+.gc-ecrin[data-idle='sepia'] {
+  --gc-ecrin-still-filter: sepia(0.88) saturate(0.78) contrast(0.92) brightness(1.04);
+}
+.gc-ecrin--missing {
+  aspect-ratio: 4 / 5;
+}
+.gc-ecrin__layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.gc-ecrin__layer > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Média : masqué par mask.svg (ouverture + débord), étiré au calque comme les SVG. */
+.gc-ecrin__media {
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+}
+/* Slot : exactement la boîte englobante de l'ouverture ; son enfant le remplit. */
+.gc-ecrin__slot {
+  position: absolute;
+  overflow: hidden;
+  transform-origin: 50% 50%;
+}
+.gc-ecrin__slot > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Deux rendus superposés, à disposition de tout enfant du slot :
+   .gc-ecrin__still (avant lecture, traité comme dessiné) au-dessus de .gc-ecrin__live (en lecture, couleur),
+   .gc-ecrin__wash (voile de papier en vignette, avant lecture). Fondu en --gc-dur-state. */
+.gc-ecrin__still,
+.gc-ecrin__live,
+.gc-ecrin__wash {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.gc-ecrin__still {
+  filter: var(--gc-ecrin-still-filter);
+}
+.gc-ecrin__still,
+.gc-ecrin__wash {
+  opacity: 1;
+  transition: opacity var(--gc-dur-state) var(--gc-ease);
+}
+.gc-ecrin[data-state='playing'] .gc-ecrin__still,
+.gc-ecrin[data-state='playing'] .gc-ecrin__wash {
+  opacity: 0;
+}
+.gc-ecrin__wash {
+  pointer-events: none;
+  background: radial-gradient(closest-side, transparent 58%, color-mix(in srgb, var(--gc-paper) 42%, transparent) 100%);
+}
+.gc-ecrin__video > video,
+.gc-ecrin__video > img {
+  display: block;
+  object-fit: cover;
+  object-position: var(--gc-ecrin-focus);
+}
+/* Sans poster : la vidéo elle-même est traitée avant lecture (pas de fondu possible). */
+.gc-ecrin[data-state='idle'] .gc-ecrin__video--no-poster > .gc-ecrin__live {
+  filter: var(--gc-ecrin-still-filter);
+}
+
+/* Dôme (cloche) : se soulève en lecture. Le groupe .gc-anim-lift de back.svg (arrière du bord) suit
+   exactement le même mouvement, exprimé en unités du viewBox. */
+.gc-ecrin__dome {
+  transform-origin: var(--gc-ecrin-pivot);
+  transition: transform var(--gc-dur-dome) var(--gc-ease);
+}
+.gc-ecrin .gc-anim-lift {
+  transform-box: view-box;
+  transform-origin: var(--gc-ecrin-pivot-u);
+  transition: transform var(--gc-dur-dome) var(--gc-ease);
+}
+.gc-ecrin[data-lifted='true'] .gc-ecrin__dome {
+  transform: var(--gc-ecrin-lift);
+}
+.gc-ecrin[data-lifted='true'] .gc-anim-lift {
+  transform: var(--gc-ecrin-lift-u);
+}
+
+/* Tasse posée sur la table : ancrée par le centre du bas de sa soucoupe. */
+.gc-ecrin__cup {
+  position: absolute;
+  width: var(--gc-cup-size);
+  pointer-events: none;
+}
+
+/* Légende manuscrite sous l'écrin. */
+.gc-ecrin__caption {
+  position: absolute;
+  margin: 0;
+  color: var(--gc-chocolate);
+  text-align: center;
+  transform-origin: 0 0;
+  text-wrap: balance;
+  pointer-events: none;
+}
+
+/* Lecteur : toute la surface est un bouton (Entrée, Espace, clic). */
+.gc-ecrin-lecteur {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.gc-ecrin-lecteur:focus-visible {
+  outline: 3px solid var(--gc-honey-500);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gc-ecrin__dome,
+  .gc-ecrin .gc-anim-lift,
+  .gc-ecrin__still,
+  .gc-ecrin__wash {
+    transition: none;
+  }
+}

@@ -3,14 +3,14 @@
 //     [--bundle dist/ds-f3/components]  (bundle isolé construit avec build-bundle.mjs --tag f3) [--full]
 // Chaque capture est écrite dans <out>/<Dossier>.png ; les erreurs de la page sont affichées.
 import { mkdirSync } from 'node:fs';
-import { basename, dirname, join } from 'node:path';
+import { basename, dirname, join, resolve } from 'node:path';
 import { serve, ROOT } from './lib/serve.mjs';
 import { launch, openCard } from './lib/browser.mjs';
 
 const args = process.argv.slice(2);
 const opt = (k, d) => { const i = args.indexOf(`--${k}`); return i >= 0 ? args.splice(i, 2)[1] : d; };
 const width = Number(opt('w', 1920)), height = Number(opt('h', 1080)), dpr = Number(opt('dpr', 1));
-const outDir = join(ROOT, opt('out', 'verification/out'));
+const outDir = resolve(ROOT, opt('out', 'verification/out'));
 const bundle = opt('bundle');
 const full = args.includes('--full'); const cards = args.filter((a) => !a.startsWith('--'));
 mkdirSync(outDir, { recursive: true });
