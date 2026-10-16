@@ -1,6 +1,6 @@
 // Recettes et petits mots des invités (fictifs). Respecter le budget de contenu :
-// page vidéo → titre ≤ 28 car., ≤ 8 ingrédients de ≤ 22 car., ≤ 4 étapes et ≤ 220 car. au total,
-// petit mot ≤ 120 car. Vocabulaire de cuisine français : « th. 6 (180 °C) », « 1 c. à s. ».
+// page vidéo → titre ≤ 23 car., ≤ 8 ingrédients de ≤ 22 car., ≤ 4 étapes sur ≤ 5 lignes (≤ 180 car.),
+// petit mot ≤ 90 car. Vocabulaire de cuisine français : « th. 6 (180 °C) », « 1 c. à s. ».
 import type { Guest } from './types';
 
 export type GuestText = Pick<Guest, 'recipe' | 'note' | 'signature' | 'ink'>;

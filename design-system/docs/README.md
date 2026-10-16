@@ -5,7 +5,7 @@ Le carnet numérique de recettes de goûter offert à Cécile pour son anniversa
 - Écris en français, au tutoiement, comme entre proches. Phrases courtes et chaleureuses, sans emphase ni point d'exclamation en rafale.
 - Recettes : vocabulaire de cuisine français réel. Exemples : « Four à 180 °C (th. 6). », « 1 c. à s. de pavot », « moule à manqué 24 cm », « une pincée de fleur de sel ». Une étape commence par un verbe à l'impératif (« Fouette », « Ajoute »).
 - Titres de recette : « Le cake citron de Julie », « Les sablés de Léa ». Article, plat, prénom. Pas de majuscules décoratives.
-- Petits mots : la voix de l'invité, signés de son prénom. 120 caractères au plus.
+- Petits mots : la voix de l'invité, signés de son prénom. 90 caractères au plus.
 - Légendes de vidéo : « Prénom, depuis Ville » (« Julie, depuis Lyon »).
 - Typographie française : espace insécable avant « : », espace fine insécable avant « ; ! ? », guillemets « » avec espaces insécables. Une quantité reste collée à son unité (« 200 g », « 180 °C »). Le contenu passe par `frTypo` (dans `src/lib/typo.ts`).
 - Pas d'emoji, pas de logo, pas de marque.
@@ -14,10 +14,10 @@ Le carnet numérique de recettes de goûter offert à Cécile pour son anniversa
 
 Le texte doit tenir sans jamais réduire les tailles :
 
-- titre de 28 caractères au plus ;
+- titre de 23 caractères au plus, sur une seule ligne ;
 - 8 ingrédients au plus, de 22 caractères chacun au plus, sur deux colonnes ;
-- 4 étapes au plus, 220 caractères au total ;
-- un petit mot de 120 caractères au plus, plus la signature.
+- 4 étapes au plus, sur 5 lignes au plus (environ 45 caractères par ligne, 180 au total) ;
+- un petit mot de 90 caractères au plus (deux lignes), plus la signature.
 
 Si le texte déborde, raccourcis-le. Ne descends jamais sous les tailles de la grille.
 

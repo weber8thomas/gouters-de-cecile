@@ -115,8 +115,9 @@ ecrin.json       manifeste (type EcrinManifest, src/lib/ecrin-types.ts)
 ## 8. Contenu
 
 - Invités, chapitres, écrins et variantes : `src/content/roster.json` (figé ; ne pas renommer les slugs).
-- Budget d'une page vidéo : titre ≤ 28 caractères ; ≤ 8 ingrédients de ≤ 22 caractères ; ≤ 4 étapes,
-  ≤ 220 caractères au total ; petit mot ≤ 120 caractères + signature. Un débordement est une erreur :
+- Budget d'une page vidéo (mesuré : 760×888 utiles) : titre ≤ 23 caractères (une ligne) ; ≤ 8 ingrédients
+  de ≤ 22 caractères ; ≤ 4 étapes tenant sur ≤ 5 lignes (~45 caractères par ligne, ≤ 180 caractères au total) ;
+  petit mot ≤ 90 caractères (2 lignes) + signature. Un débordement est une erreur :
   on raccourcit le texte, on ne réduit jamais la taille.
 - Ton : tendre, simple, tutoiement entre proches ; recettes sucrées réalistes, vocabulaire français
   (« th. 6 (180 °C) », « 1 c. à s. », « moule à manqué 24 cm », « une pincée de fleur de sel »).

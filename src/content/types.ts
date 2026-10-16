@@ -12,13 +12,13 @@ export interface Chapter {
 }
 
 export interface Recipe {
-  title: string; // ≤ 28 caractères, ex. « Le cake citron de Julie »
+  title: string; // ≤ 23 caractères, ex. « Le cake citron de Julie »
   prep: string; // « 15 min »
   cook?: string; // « 45 min »
   rest?: string; // « 1 h »
   servings: string; // « 8 parts »
   ingredients: string[]; // ≤ 8 (page vidéo), ≤ 22 caractères chacun
-  steps: string[]; // ≤ 4 (page vidéo), ≤ 220 caractères au total
+  steps: string[]; // ≤ 4 (page vidéo), ≤ 5 lignes, ≤ 180 caractères au total
 }
 
 export interface Look {
@@ -48,7 +48,7 @@ export interface Guest {
   look: Look;
   video?: Video;
   recipe?: Recipe; // rempli par le contenu (invites.ts)
-  note?: string; // petit mot pour Cécile, ≤ 120 caractères
+  note?: string; // petit mot pour Cécile, ≤ 90 caractères
   signature?: string;
   ink?: Ink;
 }

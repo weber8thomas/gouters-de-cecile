@@ -122,8 +122,8 @@
 .gc-pf-cover-title { font-family: var(--font-serif-alt); font-size: 150px; line-height: 1; font-weight: 600; }
 .gc-pf-chapter-title { font-family: var(--font-serif-alt); font-size: 116px; line-height: 1.05; font-weight: 700; }
 .gc-pf-recipe-title { font-family: var(--font-serif-alt); font-size: 72px; line-height: 1.05; font-weight: 600; }
-.gc-pf-section-label { font-family: var(--font-serif-alt); font-size: 34px; line-height: 1.2; font-weight: 600; font-style: italic; }
-.gc-pf-folio { font-family: var(--font-serif-alt); font-size: 26px; line-height: 1; font-weight: 600; }
+.gc-pf-section-label { font-family: var(--font-serif-alt); font-size: 36px; line-height: 1.2; font-weight: 600; font-style: italic; }
+.gc-pf-folio { font-family: var(--font-serif-alt); font-size: 28px; line-height: 1; font-weight: 600; }
 .gc-hand-body { font-family: var(--font-hand); font-size: 44px; line-height: 1.12; font-weight: 500; }
 .gc-hand-compact { font-family: var(--font-hand); font-size: 40px; line-height: 1.12; font-weight: 500; }
 .gc-hand-note { font-family: var(--font-hand); font-size: 46px; line-height: 1.15; font-weight: 500; }

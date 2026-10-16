@@ -1,0 +1,90 @@
+/* PetitMot — le mot pour Cécile en bas de la page, à l'encre du stylo, signé.
+   Couleurs : uniquement var(--gc-…). Typographie : uniquement les classes de style des tokens. */
+
+/* Remise à zéro des marges de <figure> sans spécificité : une classe du consommateur
+   (ex. « margin-top: auto » pour descendre le mot en bas de page) l'emporte toujours. */
+:where(.gc-petitmot) {
+  margin: 0;
+}
+
+.gc-petitmot {
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-inline-size: 0;
+  /* Respiration minimale au-dessus des points : le mot ne colle jamais à la recette,
+     même quand le parent n'a plus de place à distribuer (margin-top: auto côté parent). */
+  padding-block-start: var(--gc-space-2);
+  display: flex;
+  flex-direction: column;
+  color: var(--gc-ink-night);
+}
+
+.gc-petitmot--chocolat {
+  color: var(--gc-ink);
+}
+
+.gc-petitmot__dots {
+  display: block;
+  align-self: center;
+  inline-size: 96px;
+  block-size: 12px;
+  margin-block-end: var(--gc-space-2);
+  overflow: visible;
+}
+
+.gc-petitmot__dots path {
+  fill: var(--gc-pink-500);
+  stroke: none;
+}
+
+.gc-petitmot__note {
+  margin: 0;
+  padding: 0;
+}
+
+.gc-petitmot__text {
+  display: flow-root;
+  margin: 0;
+}
+
+/* Flottant en fin de texte : au bout de la dernière ligne s'il y a la place, sinon dessous. */
+.gc-petitmot__signature {
+  float: right;
+  display: flex;
+  align-items: center;
+  gap: var(--gc-space-2);
+  margin-block-start: var(--gc-space-1);
+  margin-inline-start: var(--gc-space-6);
+  padding-inline-end: var(--gc-space-2);
+}
+
+.gc-petitmot__name {
+  display: inline-block;
+  transform: rotate(-4deg);
+  transform-origin: 100% 60%;
+}
+
+.gc-petitmot__heart {
+  flex: none;
+  inline-size: 50px;
+  block-size: 45px;
+  overflow: visible;
+  transform: rotate(10deg) translateY(-6px);
+}
+
+.gc-petitmot__heart-wash {
+  fill: var(--gc-pink-300);
+  stroke: none;
+}
+
+.gc-petitmot__heart-line {
+  fill: none;
+  stroke: var(--gc-ink-night);
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gc-petitmot--chocolat .gc-petitmot__heart-line {
+  stroke: var(--gc-ink);
+}

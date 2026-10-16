@@ -1,0 +1,54 @@
+<!-- @dsCard group="Typographie & recette" width=1792 height=1000 -->
+<div id="root"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    var julie = G.getGuest('julie');
+
+    // Une page du livre ouvert : 896 × 1000, zone de texte 760 × 888 (marges des tokens).
+    function Page(props) {
+      var left = props.side === 'left';
+      var spine = left ? 'to left' : 'to right';
+      return h(G.SettingsContext.Provider, { value: Object.assign({}, G.DEFAULT_SETTINGS, { serif: props.serif }) },
+        h('section', {
+          'data-gc-page': props.serif,
+          style: {
+            position: 'relative',
+            boxSizing: 'border-box',
+            width: 'var(--gc-page-w)',
+            height: 'var(--gc-page-h)',
+            paddingTop: 'var(--gc-page-pad-top)',
+            paddingBottom: 'var(--gc-page-pad-bottom)',
+            paddingLeft: left ? 'var(--gc-page-pad-outer)' : 'var(--gc-page-pad-spine)',
+            paddingRight: left ? 'var(--gc-page-pad-spine)' : 'var(--gc-page-pad-outer)',
+            display: 'flex',
+            flexDirection: 'column',
+            background:
+              'linear-gradient(' + spine + ', color-mix(in srgb, var(--gc-paper-edge) 85%, transparent), transparent var(--gc-gutter-shadow)),' +
+              'radial-gradient(120% 90% at 0% 0%, var(--gc-paper-lit), var(--gc-paper) 60%)'
+          }
+        },
+          h(G.Recette, { recipe: julie.recipe }),
+          h('div', { style: { marginTop: 'auto' } },
+            h(G.PetitMot, { note: julie.note, signature: julie.signature, ink: julie.ink })),
+          // Légende de comparaison, écrite dans la serif de la page (hors zone de texte).
+          h('span', {
+            className: props.serif === 'playfair' ? 'gc-pf-section-label' : 'gc-section-label',
+            style: {
+              position: 'absolute',
+              bottom: 'var(--gc-space-3)',
+              left: left ? 'var(--gc-page-pad-outer)' : 'var(--gc-page-pad-spine)',
+              right: left ? 'var(--gc-page-pad-spine)' : 'var(--gc-page-pad-outer)',
+              textAlign: 'center',
+              color: 'color-mix(in srgb, var(--gc-chocolate) 70%, transparent)'
+            }
+          }, props.caption)));
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      h('div', { style: { display: 'flex', width: 'calc(2 * var(--gc-page-w))', height: 'var(--gc-page-h)', background: 'var(--gc-paper)' } },
+        h(Page, { side: 'left', serif: 'cormorant', caption: 'Cormorant Garamond' }),
+        h(Page, { side: 'right', serif: 'playfair', caption: 'Playfair Display' })));
+  })();
+</script>
