@@ -1,6 +1,20 @@
 {
  "_": "Papier des pages cuites : un feuillet du carnet = une image (recto = folio impair ; le verso, folio pair suivant, est la même image en miroir). Sources : design-system/sources/papier/ (domaine public, voir les .licence.md). echelle : facteur appliqué au scan avant découpe (0,54 ≈ grain à 1,3 × l'échelle réelle d'un A5) ; x, y : position de la découpe dans la marge du scan (0–1) ; rotation : 0 ou 180 ; teinte : décalage R, V, B en niveaux ; transparence : force de la page au dos vue par transparence (assombrissement maximal).",
  "feuillets": {
+  "f9": {
+   "source": "wellcome-ms4489-i51-verge-creme",
+   "echelle": 0.54,
+   "x": 0.15,
+   "y": 0.55,
+   "rotation": 180,
+   "teinte": [
+    1,
+    1,
+    0
+   ],
+   "transparence": 0.055,
+   "graine": 9
+  },
   "f11": {
    "source": "wellcome-ms4489-i51-verge-creme",
    "echelle": 0.54,
@@ -70,6 +84,40 @@
    ],
    "transparence": 0.05,
    "graine": 19
+  }
+ },
+ "_cahiers": "Feuillets volants (feuille de cahier glissée dans le carnet, feuillets.cahier) : pâte prise sur un scan (source, echelle, x, y, rotation) puis éclaircie vers `ton` (R, V, B) avec un grain adouci (`grain`) ; petits carreaux de `carreau` px de page (l'écriture se pose une ligne tous les deux carreaux), réglure tournée de `angle` degrés et décalée de `phase` (fractions de carreau), marge saumon à `marge` × la largeur ; `pli` : la feuille a été pliée en deux ; `transparence` : l'écriture de l'autre face vue au travers.",
+ "cahiers": {
+  "c-lisa": {
+   "source": "wellcome-ms4489-i51-verge-creme",
+   "echelle": 0.54,
+   "x": 0.72,
+   "y": 0.4,
+   "rotation": 0,
+   "teinte": [
+    0,
+    0,
+    0
+   ],
+   "ton": [
+    243,
+    237,
+    221
+   ],
+   "grain": 0.55,
+   "carreau": 21.0,
+   "angle": 0.35,
+   "phase": [
+    0.37,
+    0.61
+   ],
+   "marge": 0.1,
+   "pli": true,
+   "pli_y": 0.53,
+   "pli_angle": -0.7,
+   "transparence": 0.07,
+   "transparence_reglure": 0.16,
+   "graine": 26
   }
  }
 }

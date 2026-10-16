@@ -4,7 +4,7 @@
  "cote": "gauche",
  "folio": 16,
  "graine": 905,
- "gabarit": "A",
+ "gabarit": "C",
  "main": "feutre",
  "encre": "feutre",
  "blocs": [
@@ -21,7 +21,7 @@
    "disposition": "colonne",
    "avant": 0.2,
    "lignes": [
-    "1 œuf",
+    "1 œuf :oeuf:",
     "100 g de beurre mou",
     "75 g de sucre roux",
     "50 g de sucre blanc",
@@ -37,7 +37,14 @@
    "avant": 0.25,
    "alinea": 0.0,
    "texte": "Mélange le beurre avec les sucres, ajoute l'œuf puis la farine, la levure et le sel. Mets __beaucoup__ de pépites !! Fais des boules sur la plaque, 10 min à 170 °C. Ils doivent rester mous au milieu.",
-   "graine": 905079
+   "graine": 905079,
+   "icones": [
+    {
+     "mot": "beurre",
+     "nom": "beurre",
+     "place": "marge"
+    }
+   ]
   },
   {
    "id": "goute",
@@ -48,17 +55,43 @@
    "texte": "goûtés : trop bons !",
    "places": [
     {
-     "x": 0.56,
-     "y": 0.3
+     "x": 0.6,
+     "y": 0.52
     },
     {
-     "x": 0.55,
-     "y": 0.42
+     "x": 0.56,
+     "y": 0.5
     },
     {
      "x": 0.5,
-     "y": 0.9
+     "y": 0.93
     }
+   ]
+  },
+  {
+   "id": "croquis-recette",
+   "type": "croquis",
+   "nom": [
+    "cookie"
+   ],
+   "taille": [
+    0.17,
+    0.17
+   ],
+   "pres": [
+    0.82,
+    0.9
+   ]
+  }
+ ],
+ "vivants": [
+  {
+   "nom": "photo",
+   "rect": [
+    0.6,
+    0.14,
+    0.3654,
+    0.25755
    ]
   }
  ]

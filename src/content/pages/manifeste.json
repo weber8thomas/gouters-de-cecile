@@ -1,5 +1,5 @@
 {
- "version": 1,
+ "version": 2,
  "largeur": 850.0,
  "hauteur": 960.0,
  "echelle": 2,
@@ -45,6 +45,41 @@
    "vivants": {},
    "deborde": [],
    "lignes": 18,
+   "croquis": [
+    {
+     "nom": "oeuf",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.2559,
+      0.1564,
+      0.0308,
+      0.0272
+     ]
+    },
+    {
+     "nom": "citron",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.4927,
+      0.2824,
+      0.0336,
+      0.0297
+     ]
+    },
+    {
+     "nom": "beurre",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.9093,
+      0.2019,
+      0.0362,
+      0.0321
+     ]
+    }
+   ],
    "douteux": [
     "Joyeux"
    ]
@@ -60,15 +95,300 @@
    "encre1x": "pages/1x/julie-gauche",
    "texte": "(Julie, depuis Lyon)",
    "vivants": {
-    "ecrin": [
-     0.212,
-     0.012,
-     0.5877,
-     0.8
+    "photo": [
+     0.17,
+     0.09,
+     0.67113,
+     0.46101
     ]
    },
    "deborde": [],
-   "lignes": 0
+   "lignes": 0,
+   "croquis": [
+    {
+     "nom": "gateau",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.5501,
+      0.7026,
+      0.2,
+      0.1594
+     ]
+    }
+   ]
+  },
+  "lisa-droite": {
+   "double": "lisa",
+   "cote": "droite",
+   "folio": 11,
+   "papier": "pages/papier/f11",
+   "miroir": false,
+   "encre": "pages/lisa-droite",
+   "papier1x": "pages/1x/papier/f11",
+   "encre1x": "pages/1x/lisa-droite",
+   "texte": "300g de carottes (3 à 4 grosses carottes)\n250g de farine fluide\n2 cuillères à café d’extrait de vanille\n2 cuillères de muscade\n2 à 3 cuillères à café de cannelle (moins selon les goûts)\n4 œufs\n120g de noix concassées\nÉtape 1 Mélanger au fouet électrique les 4 œufs et le sucre.\nÉtape 2 Incorporer l'extrait de vanille, la muscade, la cannelle et l'huile,\nsuite sur la feuille",
+   "vivants": {
+    "volant": [
+     0.83,
+     0.66,
+     0.17,
+     0.215
+    ]
+   },
+   "deborde": [],
+   "lignes": 14,
+   "volant": {
+    "recto": "lisa-feuillet-recto",
+    "verso": "lisa-feuillet-verso",
+    "angle": -7.0,
+    "rect": [
+     0.85,
+     0.685,
+     0.82,
+     0.88
+    ]
+   },
+   "suite": "lisa-feuillet-recto",
+   "recette": "lisa",
+   "croquis": [
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0971,
+      0.086,
+      0.0267,
+      0.0236
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0977,
+      0.2254,
+      0.0283,
+      0.0251
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0968,
+      0.2812,
+      0.0286,
+      0.0253
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0963,
+      0.3358,
+      0.0277,
+      0.0245
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0938,
+      0.3958,
+      0.0261,
+      0.0231
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.1,
+      0.5044,
+      0.0282,
+      0.025
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0963,
+      0.563,
+      0.0284,
+      0.0251
+     ]
+    }
+   ]
+  },
+  "lisa-feuillet-recto": {
+   "double": "lisa",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-recto",
+   "miroir": false,
+   "encre": "pages/lisa-feuillet-recto",
+   "papier1x": "pages/1x/papier/c-lisa-recto",
+   "encre1x": "pages/1x/lisa-feuillet-recto",
+   "texte": "(suite)\ntoujours à l'aide du fouet électrique.\nÉtape 3 Commencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer le fouet en augmentant de puissance progressivement jusqu'à obtention d'une pâte lisse.\nÉtape 4 Ajouter les carottes râpées et les noix concassées. Mélanger au fouet doucement jusqu'à ce que la pâte soit homogène.\nÉtape 5 Huiler et fariner légèrement le moule et verser la préparation.\nÉtape 6 Enfourner 40 à 45 minutes selon votre four à 175° (th 5/6). Perso sur mon four je vais même jusqu’à 1h,",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 19,
+   "type": "feuillet",
+   "taille": [
+    697,
+    845
+   ],
+   "face": "recto",
+   "dos": "lisa-feuillet-verso",
+   "suite": "lisa-feuillet-verso",
+   "recette": "lisa"
+  },
+  "lisa-feuillet-verso": {
+   "double": "lisa",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-verso",
+   "miroir": false,
+   "encre": "pages/lisa-feuillet-verso",
+   "papier1x": "pages/1x/papier/c-lisa-verso",
+   "encre1x": "pages/1x/lisa-feuillet-verso",
+   "texte": "mais vérifie tous les quarts d’heure quand même. Piquer pour vérifier que le gâteau soit cuit.\nLaisse le gâteau dans le moule jusqu’à ce qu’il refroidisse.\nOption avec le glaçage plutôt healthy, sans beurre quoi…\n3 cuillères à soupe de sucre glace\nJus de citron ou fleur d’oranger selon préférences\nBonus : Colorant alimentaire\nAttention le mélange ne doit pas trop être liquide, il faut qu’il soit crémeux. Il durcira au séchage !\nYummy après c’est la régalade\nLisa",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 16,
+   "type": "feuillet",
+   "taille": [
+    697,
+    845
+   ],
+   "face": "verso",
+   "dos": "lisa-feuillet-recto",
+   "recette": "lisa",
+   "croquis": [
+    {
+     "nom": "cupcake",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.1183,
+      0.4397,
+      0.0298,
+      0.0246
+     ]
+    },
+    {
+     "nom": "cupcake",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.1243,
+      0.4813,
+      0.0298,
+      0.0246
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.8853,
+      0.7839,
+      0.0349,
+      0.0288
+     ]
+    },
+    {
+     "nom": "sourire-lunettes",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.9234,
+      0.7846,
+      0.0368,
+      0.0304
+     ]
+    }
+   ]
+  },
+  "lisa-gauche": {
+   "double": "lisa",
+   "cote": "gauche",
+   "folio": 10,
+   "papier": "pages/papier/f9",
+   "miroir": true,
+   "encre": "pages/lisa-gauche",
+   "papier1x": "pages/1x/papier/f9",
+   "encre1x": "pages/1x/lisa-gauche",
+   "texte": "Carrot cake\n250g de sucre\n180g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n(tiptop pour la saison !)",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.57166,
+     0.39619
+    ]
+   },
+   "deborde": [],
+   "lignes": 5,
+   "recette": "lisa",
+   "croquis": [
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0582,
+      0.584,
+      0.0279,
+      0.0247
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0602,
+      0.6788,
+      0.0274,
+      0.0243
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0605,
+      0.7906,
+      0.0283,
+      0.0251
+     ]
+    },
+    {
+     "nom": "carrot-cake",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.7507,
+      0.1167,
+      0.19,
+      0.1505
+     ]
+    }
+   ]
   },
   "mathis-droite": {
    "double": "mathis",
@@ -80,9 +400,51 @@
    "papier1x": "pages/1x/papier/f17",
    "encre1x": "pages/1x/mathis-droite",
    "texte": "Ma tarte aux pommes\n1 pâte brisée, 5 pommes, 2 c. à s. de sucre, 1 noix de beurre. Étale la pâte dans le moule, pique-la, mets les pommes en lamelles, sucre et beurre en noisettes. 40 min à th. 7.\nJoyeux anniversaire Cécile, garde-moi une part de tarte !\nBernard",
-   "vivants": {},
+   "vivants": {
+    "photo": [
+     0.6,
+     0.03,
+     0.38407,
+     0.26901
+    ]
+   },
    "deborde": [],
-   "lignes": 11
+   "lignes": 13,
+   "croquis": [
+    {
+     "nom": "pomme",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.0473,
+      0.2745,
+      0.0364,
+      0.0323
+     ]
+    },
+    {
+     "nom": "beurre",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.838,
+      0.3221,
+      0.0353,
+      0.0313
+     ]
+    },
+    {
+     "nom": "pomme",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.4106,
+      0.7733,
+      0.17,
+      0.1505
+     ]
+    }
+   ]
   },
   "mathis-gauche": {
    "double": "mathis",
@@ -94,9 +456,51 @@
    "papier1x": "pages/1x/papier/f15",
    "encre1x": "pages/1x/mathis-gauche",
    "texte": "Les cookies de Mathis\n1 œuf 100 g de beurre mou 75 g de sucre roux 50 g de sucre blanc 200 g de farine ½ sachet de levure 1 pincée de fleur de sel 150 g de pépites de chocolat\nMélange le beurre avec les sucres, ajoute l'œuf puis la farine, la levure et le sel. Mets beaucoup de pépites !! Fais des boules sur la plaque, 10 min à 170 °C. Ils doivent rester mous au milieu.\n(goûtés : trop bons !)",
-   "vivants": {},
+   "vivants": {
+    "photo": [
+     0.6,
+     0.14,
+     0.3654,
+     0.25755
+    ]
+   },
    "deborde": [],
-   "lignes": 15
+   "lignes": 15,
+   "croquis": [
+    {
+     "nom": "oeuf",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.2451,
+      0.1597,
+      0.0378,
+      0.0335
+     ]
+    },
+    {
+     "nom": "beurre",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.817,
+      0.6248,
+      0.0397,
+      0.0351
+     ]
+    },
+    {
+     "nom": "cookie",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.7899,
+      0.4539,
+      0.17,
+      0.1505
+     ]
+    }
+   ]
   },
   "rose-droite": {
    "double": "rose",
@@ -107,10 +511,10 @@
    "encre": "pages/rose-droite",
    "papier1x": "pages/1x/papier/f15",
    "encre1x": "pages/1x/rose-droite",
-   "texte": "Pour Noël\nJe remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.\nMa recette de toujours, pour ma Cécile qui en volait toujours un de plus.\nMamie Rose",
+   "texte": "Faire une boule sans trop la travailler et la laisser une heure au frais. Étaler sur ½ cm, découper au verre, dorer au jaune et rayer à la fourchette. Cuire 12 min à th. 6, ils doivent rester blonds.\nLes garder dans la boîte en fer.\nPour Noël\nJe remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.\nMa recette de toujours, pour ma Cécile qui en volait toujours un de plus.\nMamie Rose",
    "vivants": {},
    "deborde": [],
-   "lignes": 9
+   "lignes": 15
   },
   "rose-gauche": {
    "double": "rose",
@@ -121,10 +525,63 @@
    "encre": "pages/rose-gauche",
    "papier1x": "pages/1x/papier/f13",
    "encre1x": "pages/1x/rose-gauche",
-   "texte": "Les sablés de Rose.\nPour une boîte en fer : 250 g de farine, 125 g de beurre bien froid, 100 g de sucre glace, 1 jaune d'œuf, 1 pincée de sel et 1 de cannelle , le zeste d'un citron.\nSabler la farine et le beurre du bout des doigts, ajouter le sucre, le sel, le zeste puis le jaune. Faire une boule sans trop la travailler et la laisser une heure au frais. Étaler sur ½ cm, découper au verre, dorer au jaune et rayer à la fourchette. Cuire 12 min à th. 6, ils doivent rester blonds.\nLes garder dans la boîte en fer.",
-   "vivants": {},
+   "texte": "Les sablés de Rose.\nPour une boîte en fer : 250 g de farine, 125 g de beurre bien froid, 100 g de sucre glace, 1 jaune d'œuf, 1 pincée de sel et 1 de cannelle , le zeste d'un citron.\nSabler la farine et le beurre du bout des doigts, ajouter le sucre, le sel, le zeste puis le jaune.",
+   "vivants": {
+    "photo": [
+     0.36,
+     0.03,
+     0.57468,
+     0.39991
+    ]
+   },
    "deborde": [],
-   "lignes": 13
+   "lignes": 7,
+   "croquis": [
+    {
+     "nom": "beurre",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.0208,
+      0.6221,
+      0.034,
+      0.0301
+     ]
+    },
+    {
+     "nom": "oeuf",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.0347,
+      0.7054,
+      0.0321,
+      0.0284
+     ]
+    },
+    {
+     "nom": "citron",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.1709,
+      0.7627,
+      0.0321,
+      0.0284
+     ]
+    },
+    {
+     "nom": "cookie",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.0739,
+      0.1369,
+      0.2,
+      0.1771
+     ]
+    }
+   ]
   }
  }
 }

@@ -1,13 +1,18 @@
-// Cuisson des pages du carnet : vrai papier ancien + écriture générée trait par trait, l'encre cuite
-// dans le papier (design-system/baked/pages/**), manifeste lu par <PageCuite>
+// Cuisson des pages du carnet : vrai papier ancien + écriture générée trait par trait + croquis à
+// l'aquarelle, l'encre cuite dans le papier (design-system/baked/pages/**), manifeste lu par <PageCuite>
 // (src/content/pages/manifeste.json), puis inventaire des images (scripts/assets.mjs).
 //
-//   node scripts/bake-pages.mjs [--only julie,rose] [--force] [--apercus]
+//   node scripts/bake-pages.mjs [--only lisa,julie] [--force] [--apercus]
 //
-// --only : doubles pages (julie, rose…) ou pages (julie-droite…) à recuire ; --force : ignore le cache ;
-// --apercus : écrit aussi la composition finale de chaque page dans verification/out/n3/pages/<id>.png.
+// Pages : les descriptions écrites à la main (src/content/pages/<id>.json) et les recettes reçues du plan
+// src/content/pages/recettes.json (src/content/recettes/<slug>.json → pagination automatique :
+// <slug>-gauche, <slug>-droite, et si besoin <slug>-feuillet-recto / -verso, le feuillet volant).
+// --only : doubles pages (lisa, julie…) ou pages (julie-droite…) à recuire ; --force : ignore le cache ;
+// --apercus : écrit aussi la composition finale (100 %, 2×) et la description de chaque page dans
+// verification/out/b/pages/. Code de sortie 1 si un mot ne tient pas (aucun mot n'est perdu en silence).
 // Le moteur est en Python (scripts/pages/, environnement de l'outil d'écriture tools/ecriture/.venv) :
-// mise en page naturelle, rastérisation des traits, composition encre × papier, WebP.
+// pagination, mise en page naturelle, croquis, rastérisation, composition encre × papier, WebP.
+// Tests : tools/ecriture/.venv/bin/python -m unittest discover -s scripts/pages/tests -v
 import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';

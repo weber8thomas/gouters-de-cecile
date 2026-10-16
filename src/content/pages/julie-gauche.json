@@ -8,15 +8,7 @@
  "main": "cecile",
  "encre": "crayon",
  "vivants": [
-  {
-   "nom": "ecrin",
-   "rect": [
-    0.212,
-    0.012,
-    0.5877,
-    0.8
-   ]
-  }
+  { "nom": "photo", "rect": [0.17, 0.09, 0.67113, 0.46101] }
  ],
  "blocs": [
   {
@@ -26,15 +18,19 @@
    "texte": "Julie, depuis Lyon",
    "pente": -2.2,
    "places": [
-    {
-     "x": 0.23,
-     "y": 0.868
-    },
-    {
-     "x": 0.19,
-     "y": 0.885
-    }
+    { "sous": "photo", "dx": 0.07, "dy": 0.045 },
+    { "sous": "photo", "dx": 0.16, "dy": 0.05 },
+    { "x": 0.22, "y": 0.62 }
    ]
+  },
+  {
+   "id": "croquis-recette",
+   "type": "croquis",
+   "nom": ["gateau", "citron"],
+   "main": "soignee",
+   "encre": "bic",
+   "taille": [0.2, 0.18],
+   "pres": [0.66, 0.78]
   }
  ]
 }

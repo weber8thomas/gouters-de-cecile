@@ -1,6 +1,35 @@
-<!-- @dsCard group="Scène & livre" width=1920 height=1080 subtitle="Page cuite : la double page de Julie posée sur la table — vrai papier ancien scanné, écriture tracée trait par trait, encre bue par le papier ; seule la cloche reste vivante" -->
+<!-- @dsCard group="Scène & livre" width=1920 height=1080 subtitle="Pages cuites : la double page de Lisa (vrai papier scanné, écriture tracée trait par trait, puces-croquis à l'aquarelle cuites dans le papier) ; zones vivantes « photo » et « volant » (ici des repères : la photo collée et le coin du feuillet volant sont posés par PhotoCollee et FeuilletVolant)" -->
 <div id="root"></div>
 <script>
-  ReactDOM.createRoot(document.getElementById('root')).render(
-    React.createElement(GoutersDeCecile.Artboards.AvantApres, { seul: 'maintenant', distance: 'moyenne' }));
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    // Repère de la zone « photo » : un tirage sépia de travers à bord blanc (le vrai : PhotoCollee).
+    var photo = h('div', {
+      style: {
+        position: 'absolute', inset: '5%', transform: 'rotate(-2.5deg)',
+        background: 'color-mix(in srgb, var(--gc-crust) 55%, var(--gc-paper))',
+        border: '10px solid var(--gc-paper-lit)', borderBottomWidth: '22px',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        color: 'var(--gc-paper-lit)', fontFamily: 'var(--font-serif)', fontSize: '28px',
+      },
+    }, '▶ photo');
+    // Repère de la zone « volant » : le coin du feuillet de cahier qui dépasse (le vrai : FeuilletVolant).
+    var info = G.PAGES_CUITES.pages['lisa-droite'];
+    var v = info.volant, z = info.vivants.volant;
+    var coin = h('div', { style: { position: 'absolute', inset: '0 -40% -10% 0', overflow: 'hidden' } },
+      h('div', {
+        style: {
+          position: 'absolute', left: ((v.rect[0] - z[0]) / z[2] * 100) + '%', top: ((v.rect[1] - z[1]) / z[3] * 100) + '%',
+          width: (v.rect[2] / z[2] * 100) + '%', transformOrigin: '0 0', transform: 'rotate(' + v.angle + 'deg)',
+        },
+      }, h(G.PageCuite, { page: v.recto, cadre: 'propre' })));
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      h(G.Stage, { distance: 'moyenne' },
+        h(G.DoublePage, {
+          left: h(G.PageCuite, { page: 'lisa-gauche', slots: { photo: photo } }),
+          right: h(G.PageCuite, { page: 'lisa-droite', slots: { volant: coin } }),
+          folios: [10, 11],
+        })));
+  })();
 </script>

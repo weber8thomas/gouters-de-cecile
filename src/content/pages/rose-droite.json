@@ -4,16 +4,30 @@
  "cote": "droite",
  "folio": 15,
  "graine": 812,
- "gabarit": "B",
+ "gabarit": "D",
  "main": "mamie",
  "encre": "brune",
  "blocs": [
+  {
+   "id": "preparation-suite",
+   "type": "paragraphe",
+   "alinea": 0.0,
+   "texte": "Faire une boule sans trop la travailler et la laisser une heure au frais. Étaler sur ½ cm, découper au verre, dorer au jaune et rayer à la fourchette. Cuire 12 min à th. 6, ils doivent rester blonds."
+  },
+  {
+   "id": "note",
+   "type": "note",
+   "texte": "__Les garder dans la boîte en fer.__",
+   "avant": 0.15,
+   "alinea": 0.12
+  },
   {
    "id": "titre",
    "type": "titre",
    "texte": "Pour Noël",
    "position": "decale",
-   "souligne": "trait"
+   "souligne": "trait",
+   "avant": 0.45
   },
   {
    "id": "noel",
@@ -21,7 +35,7 @@
    "avant": 0.15,
    "alinea": 0.05,
    "texte": "Je remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.",
-   "graine": 812045
+   "graine": 5
   },
   {
    "type": "filet",

@@ -90,6 +90,3 @@ export const CREDITS_VIDEOS: { titre: string; auteur: string; licence: string; s
 
 /** La double page de Julie (carte Formats). */
 export const JULIE: SpreadSpec = SPREADS_DEMO.find((s) => s.id === 'julie')!;
-/** Pages de Julie seules (carte AvantApres, en sursis). */
-export const JulieGaucheCuite = () => <Page id="julie-gauche" graine={4127} />;
-export const JulieDroiteCuite = () => <Page id="julie-droite" graine={4128} />;

@@ -1,7 +1,7 @@
 {
- "papier/f13": "b7cfa914b75a2ad73f3bd1a6a88297010d50af1457a1fa82855bf0a7d4337188",
+ "papier/f13": "6b31b9767772ad5173544f31b9d7c19ba4819aa291e7d592a3a7b812a9421c71",
  "page/julie-droite": {
-  "cle": "db5066f3998171ede50476d4110484c160badb7fd25ad7b91097d44b6501a6b1",
+  "cle": "e2287ca16a02a80464f559c4b6bc315fe51ed233e88be51ca12376a67cda98fa",
   "manifeste": {
    "double": "julie",
    "cote": "droite",
@@ -15,14 +15,49 @@
    "vivants": {},
    "deborde": [],
    "lignes": 18,
+   "croquis": [
+    {
+     "nom": "oeuf",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.2559,
+      0.1564,
+      0.0308,
+      0.0272
+     ]
+    },
+    {
+     "nom": "citron",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.4927,
+      0.2824,
+      0.0336,
+      0.0297
+     ]
+    },
+    {
+     "nom": "beurre",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.9093,
+      0.2019,
+      0.0362,
+      0.0321
+     ]
+    }
+   ],
    "douteux": [
     "Joyeux"
    ]
   }
  },
- "papier/f19": "3c7838ce12d61e6187df8bca503c55324545db3edf96faeae1db7c2dcbdb37f8",
+ "papier/f19": "b399511232022564ebef447875d032cf9873e3da74d918ae0d281552b93fac47",
  "page/fin-droite": {
-  "cle": "89f6035813f661de1dff939220a341b63b621b9dcfa390bb4a6f88186ed3f023",
+  "cle": "fa604581883c1e3ac4481764e2b200cca09cd722083d8f33cc3a586f57aefe9c",
   "manifeste": {
    "double": "fin",
    "cote": "droite",
@@ -38,9 +73,9 @@
    "lignes": 4
   }
  },
- "papier/f17": "55639d98147c1bddee5bf807d005b102e382caa6f3436680d25f01e337c9e87d",
+ "papier/f17": "0c0f43e27c14198330972b619b1c696dd7ec5c700d4dd8fd947e436586b9fc6b",
  "page/fin-gauche": {
-  "cle": "ce7448ed154af11428a7e9360b8cc346531fa924012ad4a5657f791d9d829a5f",
+  "cle": "3aa5305e182ba8c8d5e75ad1941dc007d1aa211f91f0d0aedd0682f605601a0c",
   "manifeste": {
    "double": "fin",
    "cote": "gauche",
@@ -56,9 +91,9 @@
    "lignes": 1
   }
  },
- "papier/f11": "4c942a4a0f2cb7069f41814abfc1d3c078e3030ac364fed36c1940b79d107908",
+ "papier/f11": "d209d79f59ec55c8c2f7fa50ec392efcc699c50048517fcfde626ce2bcd225cb",
  "page/julie-gauche": {
-  "cle": "a6218f1d2a52a3e78d086a5bc7e4ab87e190729c89f2d758247ec98b68543699",
+  "cle": "3afb2083ffbce8efddaaa95a41d8b7305bbbe032944a032b15faf763f5d92132",
   "manifeste": {
    "double": "julie",
    "cote": "gauche",
@@ -70,19 +105,32 @@
    "encre1x": "pages/1x/julie-gauche",
    "texte": "(Julie, depuis Lyon)",
    "vivants": {
-    "ecrin": [
-     0.212,
-     0.012,
-     0.5877,
-     0.8
+    "photo": [
+     0.17,
+     0.09,
+     0.67113,
+     0.46101
     ]
    },
    "deborde": [],
-   "lignes": 0
+   "lignes": 0,
+   "croquis": [
+    {
+     "nom": "gateau",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.5501,
+      0.7026,
+      0.2,
+      0.1594
+     ]
+    }
+   ]
   }
  },
  "page/mathis-droite": {
-  "cle": "ac5567ce2405f424e1bd50449d5bebc8422e8e0cbc0cf5b13bf07e008101d550",
+  "cle": "b7d53fbe597ca9b7608bc447435103ef2e1ef92ded8c77c805192a6000e36c23",
   "manifeste": {
    "double": "mathis",
    "cote": "droite",
@@ -93,14 +141,56 @@
    "papier1x": "pages/1x/papier/f17",
    "encre1x": "pages/1x/mathis-droite",
    "texte": "Ma tarte aux pommes\n1 pâte brisée, 5 pommes, 2 c. à s. de sucre, 1 noix de beurre. Étale la pâte dans le moule, pique-la, mets les pommes en lamelles, sucre et beurre en noisettes. 40 min à th. 7.\nJoyeux anniversaire Cécile, garde-moi une part de tarte !\nBernard",
-   "vivants": {},
+   "vivants": {
+    "photo": [
+     0.6,
+     0.03,
+     0.38407,
+     0.26901
+    ]
+   },
    "deborde": [],
-   "lignes": 11
+   "lignes": 13,
+   "croquis": [
+    {
+     "nom": "pomme",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.0473,
+      0.2745,
+      0.0364,
+      0.0323
+     ]
+    },
+    {
+     "nom": "beurre",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.838,
+      0.3221,
+      0.0353,
+      0.0313
+     ]
+    },
+    {
+     "nom": "pomme",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.4106,
+      0.7733,
+      0.17,
+      0.1505
+     ]
+    }
+   ]
   }
  },
- "papier/f15": "67cc2b732698db76b2228c39b6fe60f8379e607b3b25bc9655bfe7930fa1fbbf",
+ "papier/f15": "f90a70dbc161a5ae615c346a9e06fa629ac37dbc1b0f2dd7d0c6f786b9dc6580",
  "page/mathis-gauche": {
-  "cle": "b7263527908979cde3e138007296563431c5278e78d65434d9a6b8d3ce5556bc",
+  "cle": "a00222e0b0e24519215a302c2cc73aeba9ee36a1a1816ce730fb3ced32b48c18",
   "manifeste": {
    "double": "mathis",
    "cote": "gauche",
@@ -111,13 +201,55 @@
    "papier1x": "pages/1x/papier/f15",
    "encre1x": "pages/1x/mathis-gauche",
    "texte": "Les cookies de Mathis\n1 œuf 100 g de beurre mou 75 g de sucre roux 50 g de sucre blanc 200 g de farine ½ sachet de levure 1 pincée de fleur de sel 150 g de pépites de chocolat\nMélange le beurre avec les sucres, ajoute l'œuf puis la farine, la levure et le sel. Mets beaucoup de pépites !! Fais des boules sur la plaque, 10 min à 170 °C. Ils doivent rester mous au milieu.\n(goûtés : trop bons !)",
-   "vivants": {},
+   "vivants": {
+    "photo": [
+     0.6,
+     0.14,
+     0.3654,
+     0.25755
+    ]
+   },
    "deborde": [],
-   "lignes": 15
+   "lignes": 15,
+   "croquis": [
+    {
+     "nom": "oeuf",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.2451,
+      0.1597,
+      0.0378,
+      0.0335
+     ]
+    },
+    {
+     "nom": "beurre",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.817,
+      0.6248,
+      0.0397,
+      0.0351
+     ]
+    },
+    {
+     "nom": "cookie",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.7899,
+      0.4539,
+      0.17,
+      0.1505
+     ]
+    }
+   ]
   }
  },
  "page/rose-droite": {
-  "cle": "5f3ace3de1708b86850eca6e48b4cf918ae7096ad9f4aab8bca1af8afdf128b1",
+  "cle": "f1c1c4007ea4cf8ac8f4b17922ae59506704a3feb0a1059aad350af09dc3e22b",
   "manifeste": {
    "double": "rose",
    "cote": "droite",
@@ -127,14 +259,14 @@
    "encre": "pages/rose-droite",
    "papier1x": "pages/1x/papier/f15",
    "encre1x": "pages/1x/rose-droite",
-   "texte": "Pour Noël\nJe remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.\nMa recette de toujours, pour ma Cécile qui en volait toujours un de plus.\nMamie Rose",
+   "texte": "Faire une boule sans trop la travailler et la laisser une heure au frais. Étaler sur ½ cm, découper au verre, dorer au jaune et rayer à la fourchette. Cuire 12 min à th. 6, ils doivent rester blonds.\nLes garder dans la boîte en fer.\nPour Noël\nJe remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.\nMa recette de toujours, pour ma Cécile qui en volait toujours un de plus.\nMamie Rose",
    "vivants": {},
    "deborde": [],
-   "lignes": 9
+   "lignes": 15
   }
  },
  "page/rose-gauche": {
-  "cle": "340154bd09b0dc6bb4ed3cc63d49b3a91dec5e5ca9a80c0e06ff1e208af84762",
+  "cle": "7f8a232995b7d3628eea028a12d4c8d865e84ef8bc3fc959b210c45f2fb88e9e",
   "manifeste": {
    "double": "rose",
    "cote": "gauche",
@@ -144,15 +276,956 @@
    "encre": "pages/rose-gauche",
    "papier1x": "pages/1x/papier/f13",
    "encre1x": "pages/1x/rose-gauche",
-   "texte": "Les sablés de Rose.\nPour une boîte en fer : 250 g de farine, 125 g de beurre bien froid, 100 g de sucre glace, 1 jaune d'œuf, 1 pincée de sel et 1 de cannelle , le zeste d'un citron.\nSabler la farine et le beurre du bout des doigts, ajouter le sucre, le sel, le zeste puis le jaune. Faire une boule sans trop la travailler et la laisser une heure au frais. Étaler sur ½ cm, découper au verre, dorer au jaune et rayer à la fourchette. Cuire 12 min à th. 6, ils doivent rester blonds.\nLes garder dans la boîte en fer.",
-   "vivants": {},
+   "texte": "Les sablés de Rose.\nPour une boîte en fer : 250 g de farine, 125 g de beurre bien froid, 100 g de sucre glace, 1 jaune d'œuf, 1 pincée de sel et 1 de cannelle , le zeste d'un citron.\nSabler la farine et le beurre du bout des doigts, ajouter le sucre, le sel, le zeste puis le jaune.",
+   "vivants": {
+    "photo": [
+     0.36,
+     0.03,
+     0.57468,
+     0.39991
+    ]
+   },
    "deborde": [],
-   "lignes": 13
+   "lignes": 7,
+   "croquis": [
+    {
+     "nom": "beurre",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.0208,
+      0.6221,
+      0.034,
+      0.0301
+     ]
+    },
+    {
+     "nom": "oeuf",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.0347,
+      0.7054,
+      0.0321,
+      0.0284
+     ]
+    },
+    {
+     "nom": "citron",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.1709,
+      0.7627,
+      0.0321,
+      0.0284
+     ]
+    },
+    {
+     "nom": "cookie",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.0739,
+      0.1369,
+      0.2,
+      0.1771
+     ]
+    }
+   ]
   }
  },
- "papier1x/f19": "3c7838ce12d61e6187df8bca503c55324545db3edf96faeae1db7c2dcbdb37f8",
- "papier1x/f17": "55639d98147c1bddee5bf807d005b102e382caa6f3436680d25f01e337c9e87d",
- "papier1x/f13": "b7cfa914b75a2ad73f3bd1a6a88297010d50af1457a1fa82855bf0a7d4337188",
- "papier1x/f11": "4c942a4a0f2cb7069f41814abfc1d3c078e3030ac364fed36c1940b79d107908",
- "papier1x/f15": "67cc2b732698db76b2228c39b6fe60f8379e607b3b25bc9655bfe7930fa1fbbf"
+ "papier1x/f19": "b399511232022564ebef447875d032cf9873e3da74d918ae0d281552b93fac47",
+ "papier1x/f17": "0c0f43e27c14198330972b619b1c696dd7ec5c700d4dd8fd947e436586b9fc6b",
+ "papier1x/f13": "6b31b9767772ad5173544f31b9d7c19ba4819aa291e7d592a3a7b812a9421c71",
+ "papier1x/f11": "d209d79f59ec55c8c2f7fa50ec392efcc699c50048517fcfde626ce2bcd225cb",
+ "papier1x/f15": "f90a70dbc161a5ae615c346a9e06fa629ac37dbc1b0f2dd7d0c6f786b9dc6580",
+ "pagination/lisa": {
+  "cle": "4ebdaaaf1b827ec84c4a66e9506e6b6dc02dc7febe6978c75c69c92ef1f3f856",
+  "pages": {
+   "lisa-gauche": {
+    "double": "lisa",
+    "main": "ado",
+    "encre": "feutre",
+    "recette": "lisa",
+    "serrage_max": 1,
+    "id": "lisa-gauche",
+    "cote": "gauche",
+    "folio": 10,
+    "graine": 2612,
+    "gabarit": "C",
+    "vivants": [
+     {
+      "nom": "photo",
+      "rect": [
+       0.06,
+       0.035,
+       0.57166,
+       0.39619
+      ]
+     }
+    ],
+    "marges": {
+     "haut": 0.44119
+    },
+    "blocs": [
+     {
+      "type": "titre",
+      "id": "titre",
+      "segments": [
+       {
+        "texte": "Carrot cake",
+        "graine": 57713496
+       }
+      ],
+      "position": "fer",
+      "souligne": "double",
+      "avant": 0.0
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 56996669,
+      "avant": 0.3,
+      "lignes": [
+       {
+        "texte": "250g de sucre",
+        "graine": 1,
+        "puce": "carotte"
+       },
+       {
+        "texte": "180^{g} d’huile de coco (ou autre huile végétale)",
+        "graine": 2,
+        "puce": "carotte"
+       },
+       {
+        "texte": "1 sachet de levure chimique",
+        "graine": 26142831,
+        "puce": "carotte"
+       }
+      ]
+     },
+     {
+      "type": "annotation",
+      "id": "note-1",
+      "texte": "tiptop pour la saison !",
+      "main": "ado",
+      "encre": "feutre",
+      "graine": 54211690,
+      "pente": -4.0,
+      "places": [
+       {
+        "apres": "titre",
+        "dx": 1.6,
+        "dy": -0.5
+       },
+       {
+        "apres": "titre",
+        "dx": 1.1,
+        "dy": 0.4
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.25,
+        "dy": 1.2
+       }
+      ]
+     },
+     {
+      "type": "croquis",
+      "id": "croquis-1",
+      "nom": [
+       "carrot-cake",
+       "gateau-carottes",
+       "gateau",
+       "cake"
+      ],
+      "taille": [
+       0.19,
+       0.17
+      ],
+      "pres": [
+       0.84,
+       0.2
+      ],
+      "graine": 86564729
+     }
+    ],
+    "atomes": [
+     "titre",
+     "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
+     "ingredients-1/ligne-3"
+    ]
+   },
+   "lisa-droite": {
+    "double": "lisa",
+    "main": "ado",
+    "encre": "feutre",
+    "recette": "lisa",
+    "serrage_max": 1,
+    "id": "lisa-droite",
+    "cote": "droite",
+    "folio": 11,
+    "graine": 2613,
+    "gabarit": "D",
+    "vivants": [
+     {
+      "nom": "volant",
+      "rect": [
+       0.83,
+       0.66,
+       0.17,
+       0.215
+      ]
+     },
+     {
+      "nom": "suite",
+      "rect": [
+       0.08,
+       0.895,
+       0.7,
+       0.06
+      ],
+      "vivant": false
+     }
+    ],
+    "volant": {
+     "recto": "lisa-feuillet-recto",
+     "verso": "lisa-feuillet-verso",
+     "angle": -7.0,
+     "rect": [
+      0.85,
+      0.685,
+      0.82,
+      0.88
+     ]
+    },
+    "suite": "lisa-feuillet-recto",
+    "blocs": [
+     {
+      "type": "ingredients",
+      "id": "ingredients-1@ligne-4",
+      "disposition": "puces",
+      "graine_puces": 56996669,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "300g de carottes (3 à 4 grosses ~~carrières~~>{carottes})",
+        "graine": 3,
+        "puce": "carotte"
+       },
+       {
+        "texte": "250g de farine fluide",
+        "graine": 53728772,
+        "puce": "carotte"
+       },
+       {
+        "texte": "2 cuillères à café d’extrait de vanille",
+        "graine": 32447935,
+        "puce": "carotte"
+       },
+       {
+        "texte": "2 cuillères de muscade",
+        "graine": 34576742,
+        "puce": "carotte"
+       },
+       {
+        "texte": "2 à 3 cuillères à café de cannelle (moins selon les goûts)",
+        "graine": 64443171,
+        "puce": "carotte"
+       },
+       {
+        "texte": "4 œufs",
+        "graine": 8,
+        "puce": "carotte"
+       },
+       {
+        "texte": "120g de noix concassées",
+        "graine": 1,
+        "puce": "carotte"
+       }
+      ]
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "__Étape 1__",
+       "graine": 2
+      },
+      "segments": [
+       {
+        "texte": "Mélanger au fouet électrique les 4 œufs et le sucre.",
+        "graine": 2
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.45,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "__Étape 2__",
+       "graine": 2
+      },
+      "segments": [
+       {
+        "texte": "Incorporer l'extrait de vanille,",
+        "graine": 29548840
+       },
+       {
+        "texte": "la muscade, la cannelle et l'huile,",
+        "graine": 52072144
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "annotation",
+      "id": "suite-note",
+      "texte": "suite sur la feuille",
+      "main": "cecile",
+      "encre": "crayon",
+      "role": "annotation",
+      "graine": 5350062,
+      "pente": -2.5,
+      "dans": "suite",
+      "aligne": "droite",
+      "sans_parentheses": true,
+      "fleche": {
+       "depuis": "fin",
+       "vers_zone": "volant",
+       "fx": 0.16,
+       "fy": 0.8,
+       "courbure": 0.25
+      }
+     }
+    ],
+    "atomes": [
+     "ingredients-1/ligne-4",
+     "ingredients-1/ligne-5",
+     "ingredients-1/ligne-6",
+     "ingredients-1/ligne-7",
+     "ingredients-1/ligne-8",
+     "ingredients-1/ligne-9",
+     "ingredients-1/ligne-10",
+     "etape-1/phrase-1",
+     "etape-2/phrase-1.1",
+     "etape-2/phrase-1.2"
+    ]
+   },
+   "lisa-feuillet-recto": {
+    "double": "lisa",
+    "main": "ado",
+    "encre": "feutre",
+    "recette": "lisa",
+    "serrage_max": 1,
+    "type": "feuillet",
+    "taille": [
+     697,
+     845
+    ],
+    "papier": "c-lisa",
+    "xh_facteur": 0.83,
+    "cote": "droite",
+    "marges": {
+     "haut": 0.04,
+     "bas": 0.035
+    },
+    "id": "lisa-feuillet-recto",
+    "face": "recto",
+    "dos": "lisa-feuillet-verso",
+    "graine": 2614,
+    "suite": "lisa-feuillet-verso",
+    "grille": {
+     "carreau": 21.0,
+     "angle": 0.35,
+     "xc": 348.5,
+     "yc": 422.5,
+     "x0": 356.1994309078812,
+     "y0": 433.0789560011625,
+     "marge_x": 72.91864325266444
+    },
+    "blocs": [
+     {
+      "type": "paragraphe",
+      "id": "suite-tete",
+      "segments": [
+       {
+        "texte": "(suite)",
+        "graine": 84795257
+       }
+      ],
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "etape-2@phrase-1.3",
+      "source": "etape-2",
+      "segments": [
+       {
+        "texte": "toujours à l'aide du fouet électrique.",
+        "graine": 21958058
+       }
+      ],
+      "avant": 0.3,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-3",
+      "source": "etape-3",
+      "titre": {
+       "texte": "__Étape 3__",
+       "graine": 2
+      },
+      "segments": [
+       {
+        "texte": "Commencer à mélanger avec le fouet éteint (pour éviter les projections),",
+        "graine": 5913742
+       },
+       {
+        "texte": "puis allumer le fouet en augmentant de puissance progressivement jusqu'à obtention d'une pâte lisse.",
+        "graine": 40293936
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-4",
+      "source": "etape-4",
+      "titre": {
+       "texte": "__Étape 4__",
+       "graine": 2
+      },
+      "segments": [
+       {
+        "texte": "Ajouter les carottes râpées et les noix concassées.",
+        "graine": 55080857
+       },
+       {
+        "texte": "Mélanger au fouet doucement jusqu'à ce que la pâte soit homogène.",
+        "graine": 33751708
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-5",
+      "source": "etape-5",
+      "titre": {
+       "texte": "__Étape 5__",
+       "graine": 2
+      },
+      "segments": [
+       {
+        "texte": "Huiler et fariner légèrement le moule et verser la préparation.",
+        "graine": 52359955
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-6",
+      "source": "etape-6",
+      "titre": {
+       "texte": "__Étape 6__",
+       "graine": 2
+      },
+      "segments": [
+       {
+        "texte": "Enfourner 40 à 45 minutes selon votre four à 175° (th 5/6).",
+        "graine": 18
+       },
+       {
+        "texte": "Perso sur mon four je vais même jusqu’à 1h,",
+        "graine": 69477588
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     }
+    ],
+    "atomes": [
+     "etape-2/phrase-1.3",
+     "etape-3/phrase-1.1",
+     "etape-3/phrase-1.2",
+     "etape-4/phrase-1",
+     "etape-4/phrase-2",
+     "etape-5/phrase-1",
+     "etape-6/phrase-1",
+     "etape-6/phrase-2.1"
+    ]
+   },
+   "lisa-feuillet-verso": {
+    "double": "lisa",
+    "main": "ado",
+    "encre": "feutre",
+    "recette": "lisa",
+    "serrage_max": 1,
+    "type": "feuillet",
+    "taille": [
+     697,
+     845
+    ],
+    "papier": "c-lisa",
+    "xh_facteur": 0.83,
+    "cote": "droite",
+    "marges": {
+     "haut": 0.04,
+     "bas": 0.035
+    },
+    "id": "lisa-feuillet-verso",
+    "face": "verso",
+    "dos": "lisa-feuillet-recto",
+    "graine": 2615,
+    "grille": {
+     "carreau": 21.0,
+     "angle": 0.3793075408006112,
+     "xc": 348.5,
+     "yc": 422.5,
+     "x0": 352.4377127185676,
+     "y0": 431.27824852974345,
+     "marge_x": 67.16661933272653
+    },
+    "blocs": [
+     {
+      "type": "paragraphe",
+      "id": "etape-6@phrase-2.2",
+      "source": "etape-6",
+      "segments": [
+       {
+        "texte": "mais vérifie tous les quarts d’heure quand même.",
+        "graine": 18911334
+       },
+       {
+        "texte": "Piquer pour vérifier que le gâteau soit cuit.",
+        "graine": 8127725
+       }
+      ],
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "apres-1@phrase-1",
+      "source": "apres-1",
+      "segments": [
+       {
+        "texte": "Laisse le gâteau dans le moule jusqu’à ce qu’il refroidisse.",
+        "graine": 78214155
+       }
+      ],
+      "avant": 0.3,
+      "alinea": 0.04
+     },
+     {
+      "type": "paragraphe",
+      "id": "extra-1/titre",
+      "segments": [
+       {
+        "texte": "Option avec le glaçage plutôt healthy, sans beurre quoi…",
+        "graine": 34134513
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "ingredients",
+      "id": "extra-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 17377975,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "3 cuillères à soupe de sucre glace",
+        "graine": 89355445,
+        "puce": "cupcake"
+       },
+       {
+        "texte": "Jus de citron ou fleur d’oranger selon préférences",
+        "graine": 8734488,
+        "puce": "cupcake"
+       },
+       {
+        "texte": "Bonus : Colorant alimentaire",
+        "graine": 31960911,
+        "puce": null
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "extra-1/paragraphe-1@phrase-1.1",
+      "source": "extra-1/paragraphe-1",
+      "segments": [
+       {
+        "texte": "Attention le mélange ne doit pas trop être liquide,",
+        "graine": 34091275
+       },
+       {
+        "texte": "il faut qu’il soit crémeux.",
+        "graine": 86362204
+       },
+       {
+        "texte": "Il durcira au séchage !",
+        "graine": 56887225
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.04
+     },
+     {
+      "type": "paragraphe",
+      "id": "fin",
+      "segments": [
+       {
+        "texte": "__Yummy après c’est la régalade__ :carotte: :sourire-lunettes:",
+        "graine": 66760429
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.05
+     },
+     {
+      "type": "signature",
+      "id": "signature",
+      "texte": "Lisa",
+      "graine": 95011769,
+      "avant": 0.15
+     }
+    ],
+    "atomes": [
+     "etape-6/phrase-2.2",
+     "etape-6/phrase-3",
+     "apres-1/phrase-1",
+     "extra-1/titre",
+     "extra-1/ligne-1",
+     "extra-1/ligne-2",
+     "extra-1/ligne-3",
+     "extra-1/paragraphe-1/phrase-1.1",
+     "extra-1/paragraphe-1/phrase-1.2",
+     "extra-1/paragraphe-1/phrase-2",
+     "fin",
+     "signature"
+    ]
+   }
+  },
+  "ordre": [
+   "lisa-gauche",
+   "lisa-droite",
+   "lisa-feuillet-recto",
+   "lisa-feuillet-verso"
+  ],
+  "disposition": "tete"
+ },
+ "papier/f9": "41716e4acb2ee58aee42dab8708a252ffe4024265a38e0a69c5d9af468a71a2b",
+ "papier1x/f9": "41716e4acb2ee58aee42dab8708a252ffe4024265a38e0a69c5d9af468a71a2b",
+ "page/lisa-gauche": {
+  "cle": "5a493a4572d0c90ef9d07bf413780936e263194644dd42484d96240ab45469f2",
+  "manifeste": {
+   "double": "lisa",
+   "cote": "gauche",
+   "folio": 10,
+   "papier": "pages/papier/f9",
+   "miroir": true,
+   "encre": "pages/lisa-gauche",
+   "papier1x": "pages/1x/papier/f9",
+   "encre1x": "pages/1x/lisa-gauche",
+   "texte": "Carrot cake\n250g de sucre\n180g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n(tiptop pour la saison !)",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.57166,
+     0.39619
+    ]
+   },
+   "deborde": [],
+   "lignes": 5,
+   "recette": "lisa",
+   "croquis": [
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0582,
+      0.584,
+      0.0279,
+      0.0247
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0602,
+      0.6788,
+      0.0274,
+      0.0243
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0605,
+      0.7906,
+      0.0283,
+      0.0251
+     ]
+    },
+    {
+     "nom": "carrot-cake",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.7507,
+      0.1167,
+      0.19,
+      0.1505
+     ]
+    }
+   ]
+  }
+ },
+ "page/lisa-droite": {
+  "cle": "f3685dc001eeccf48d77adfddcbdc2cf0d009b43e444e3f0ddcd76565aeb2805",
+  "manifeste": {
+   "double": "lisa",
+   "cote": "droite",
+   "folio": 11,
+   "papier": "pages/papier/f11",
+   "miroir": false,
+   "encre": "pages/lisa-droite",
+   "papier1x": "pages/1x/papier/f11",
+   "encre1x": "pages/1x/lisa-droite",
+   "texte": "300g de carottes (3 à 4 grosses carottes)\n250g de farine fluide\n2 cuillères à café d’extrait de vanille\n2 cuillères de muscade\n2 à 3 cuillères à café de cannelle (moins selon les goûts)\n4 œufs\n120g de noix concassées\nÉtape 1 Mélanger au fouet électrique les 4 œufs et le sucre.\nÉtape 2 Incorporer l'extrait de vanille, la muscade, la cannelle et l'huile,\nsuite sur la feuille",
+   "vivants": {
+    "volant": [
+     0.83,
+     0.66,
+     0.17,
+     0.215
+    ]
+   },
+   "deborde": [],
+   "lignes": 14,
+   "volant": {
+    "recto": "lisa-feuillet-recto",
+    "verso": "lisa-feuillet-verso",
+    "angle": -7.0,
+    "rect": [
+     0.85,
+     0.685,
+     0.82,
+     0.88
+    ]
+   },
+   "suite": "lisa-feuillet-recto",
+   "recette": "lisa",
+   "croquis": [
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0971,
+      0.086,
+      0.0267,
+      0.0236
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0977,
+      0.2254,
+      0.0283,
+      0.0251
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0968,
+      0.2812,
+      0.0286,
+      0.0253
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0963,
+      0.3358,
+      0.0277,
+      0.0245
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0938,
+      0.3958,
+      0.0261,
+      0.0231
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.1,
+      0.5044,
+      0.0282,
+      0.025
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0963,
+      0.563,
+      0.0284,
+      0.0251
+     ]
+    }
+   ]
+  }
+ },
+ "papier/c-lisa-recto": "4553c34afd3597dc1d09d02e5ba7ccd7b398cbc68e366a4d21a9dc1ab1a69a9f",
+ "papier1x/c-lisa-recto": "4553c34afd3597dc1d09d02e5ba7ccd7b398cbc68e366a4d21a9dc1ab1a69a9f",
+ "papier/c-lisa-verso": "7d0028eb7a66f8265f19610fee6f5e3c73d21dadc613f7920354cb838da4d600",
+ "papier1x/c-lisa-verso": "7d0028eb7a66f8265f19610fee6f5e3c73d21dadc613f7920354cb838da4d600",
+ "page/lisa-feuillet-recto": {
+  "cle": "014f0ca741c79284b7e7e0b65422733d1ddcc305f37d99a5a7a7f510761d81a2",
+  "manifeste": {
+   "double": "lisa",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-recto",
+   "miroir": false,
+   "encre": "pages/lisa-feuillet-recto",
+   "papier1x": "pages/1x/papier/c-lisa-recto",
+   "encre1x": "pages/1x/lisa-feuillet-recto",
+   "texte": "(suite)\ntoujours à l'aide du fouet électrique.\nÉtape 3 Commencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer le fouet en augmentant de puissance progressivement jusqu'à obtention d'une pâte lisse.\nÉtape 4 Ajouter les carottes râpées et les noix concassées. Mélanger au fouet doucement jusqu'à ce que la pâte soit homogène.\nÉtape 5 Huiler et fariner légèrement le moule et verser la préparation.\nÉtape 6 Enfourner 40 à 45 minutes selon votre four à 175° (th 5/6). Perso sur mon four je vais même jusqu’à 1h,",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 19,
+   "type": "feuillet",
+   "taille": [
+    697,
+    845
+   ],
+   "face": "recto",
+   "dos": "lisa-feuillet-verso",
+   "suite": "lisa-feuillet-verso",
+   "recette": "lisa"
+  }
+ },
+ "page/lisa-feuillet-verso": {
+  "cle": "2819b6533264d4142e87a2c2d7e0afbc24cd57038072fb59305b9d263687c9df",
+  "manifeste": {
+   "double": "lisa",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-verso",
+   "miroir": false,
+   "encre": "pages/lisa-feuillet-verso",
+   "papier1x": "pages/1x/papier/c-lisa-verso",
+   "encre1x": "pages/1x/lisa-feuillet-verso",
+   "texte": "mais vérifie tous les quarts d’heure quand même. Piquer pour vérifier que le gâteau soit cuit.\nLaisse le gâteau dans le moule jusqu’à ce qu’il refroidisse.\nOption avec le glaçage plutôt healthy, sans beurre quoi…\n3 cuillères à soupe de sucre glace\nJus de citron ou fleur d’oranger selon préférences\nBonus : Colorant alimentaire\nAttention le mélange ne doit pas trop être liquide, il faut qu’il soit crémeux. Il durcira au séchage !\nYummy après c’est la régalade\nLisa",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 16,
+   "type": "feuillet",
+   "taille": [
+    697,
+    845
+   ],
+   "face": "verso",
+   "dos": "lisa-feuillet-recto",
+   "recette": "lisa",
+   "croquis": [
+    {
+     "nom": "cupcake",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.1183,
+      0.4397,
+      0.0298,
+      0.0246
+     ]
+    },
+    {
+     "nom": "cupcake",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.1243,
+      0.4813,
+      0.0298,
+      0.0246
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.8853,
+      0.7839,
+      0.0349,
+      0.0288
+     ]
+    },
+    {
+     "nom": "sourire-lunettes",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.9234,
+      0.7846,
+      0.0368,
+      0.0304
+     ]
+    }
+   ]
+  }
+ }
 }

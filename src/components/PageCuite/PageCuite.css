@@ -2,9 +2,23 @@
 .gc-page-cuite {
   position: absolute;
   inset: 0;
-  overflow: hidden;
+  /* les objets vivants (coin du feuillet volant) peuvent dépasser du bord de la page */
+  overflow: visible;
   /* la feuille est déjà le fond : la page cuite le recouvre entièrement */
   background-color: var(--gc-paper-aged);
+}
+
+/* Cadre propre : dans le flux, à la proportion de la page (feuillet volant soulevé, aperçus). */
+.gc-page-cuite--propre {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: auto;
+}
+
+/* Feuillet volant (feuille de cahier) : un papier plus clair que celui du carnet. */
+.gc-page-cuite--feuillet {
+  background-color: var(--gc-paper);
 }
 
 .gc-page-cuite__papier,
@@ -19,7 +33,7 @@
   -webkit-user-drag: none;
 }
 
-/* Verso d'un feuillet : la même pâte, retournée (le bord extérieur reste le même bord). */
+/* Verso d'un feuillet du carnet : la même pâte, retournée (le bord extérieur reste le même bord). */
 .gc-page-cuite__papier--miroir {
   transform: scaleX(-1);
 }
@@ -40,7 +54,7 @@
   margin: 0;
 }
 
-/* Emplacement d'un élément vivant (écrin vidéo) : la page cuite n'a aucune encre dessous. */
+/* Zone d'un élément vivant (photo collée, coin du feuillet) : la page cuite n'a aucune encre dessous. */
 .gc-page-cuite__vivant {
   position: absolute;
   display: flex;

@@ -190,6 +190,7 @@ def _redresser(traits: list) -> list:
 
 
 _LECTEUR = None
+SOSIES = {"0": "ocuC", "1": "l", "4": "y", "5": "s", "6": "b", "7": "t", "9": "g"}
 
 
 def _lecteur():
@@ -203,7 +204,9 @@ def _lecteur():
 def _chiffres_douteux(mot: Mot) -> str | None:
     """Les chiffres ne sont pas relus par N2 (« 180 » sorti « 100 », « 120 » sorti « 170 ») :
     on relit le mot avec le relecteur de N2 (TrOCR) en comparant le nombre voulu à toutes ses
-    variantes à un chiffre près. Renvoie la lecture préférée si ce n'est pas le nombre voulu."""
+    variantes à un chiffre près, et aux lettres qui lui ressemblent (« 300g » sorti « 3ccg » : 0 → c,
+    o, u ; 1 → l ; 4 → y ; 5 → s ; 6 → b ; 7 → t ; 9 → g). Renvoie la lecture préférée si ce n'est
+    pas le nombre voulu."""
     w = mot.texte
     if not any(c.isdigit() for c in w):
         return None
@@ -212,7 +215,11 @@ def _chiffres_douteux(mot: Mot) -> str | None:
         return None
     try:
         import lecteur as LM
-        alts = [w] + sorted({w[:i] + d + w[i + 1:] for i, c in enumerate(w) if c.isdigit() for d in "0123456789" if d != c})
+        alts = {w[:i] + d + w[i + 1:] for i, c in enumerate(w) if c.isdigit() for d in "0123456789" if d != c}
+        alts |= {w[:i] + d + w[i + 1:] for i, c in enumerate(w) if c in SOSIES for d in SOSIES[c]}
+        # deux chiffres semblables qui tournent mal ensemble (« 00 » → « cc »)
+        alts |= {w.replace(c * 2, d * 2) for c in "01" if c * 2 in w for d in SOSIES[c]}
+        alts = [w] + sorted(alts)
         img = L._image([[T[:, :2] for T in mot.traits]])
         h = L.enc.run(None, {"pixel_values": img[None]})[0]
         seqs = [L._jetons(t) + [2] for t in alts]
