@@ -29,15 +29,11 @@
   display: block;
   inline-size: 240px;
   block-size: 16px;
-  margin-block-start: calc(-1 * var(--gc-space-2));
+  margin-block-start: 0; /* Playfair : ligne de base basse dans sa boîte, le trait se pose juste dessous */
   margin-inline-start: var(--gc-space-1);
   overflow: visible;
 }
 
-/* Playfair a une ligne de base plus basse dans sa boîte : on descend le trait d'autant. */
-.gc-pf-recipe-title + .gc-recette__underline {
-  margin-block-start: 0;
-}
 
 /* Le trait passe ~12 px sous la ligne de base, ses crêtes ne touchent jamais les lettres. */
 

@@ -111,26 +111,20 @@
   --gc-glow-alpha: 0.22;
   --gc-nav-alpha: 0.8;
   --font-hand: "Caveat", "Segoe Print", "Bradley Hand", cursive;
-  --font-serif: "Cormorant Garamond", "EB Garamond", Garamond, Georgia, serif;
-  --font-serif-alt: "Playfair Display", Didot, Georgia, serif;
+  --font-serif: "Playfair Display", Didot, Georgia, serif;
 }
-.gc-cover-title { font-family: var(--font-serif); font-size: 170px; line-height: 1; font-weight: 600; }
-.gc-chapter-title { font-family: var(--font-serif); font-size: 132px; line-height: 1.05; font-weight: 600; }
-.gc-recipe-title { font-family: var(--font-serif); font-size: 84px; line-height: 1.05; font-weight: 600; }
-.gc-section-label { font-family: var(--font-serif); font-size: 40px; line-height: 1.2; font-weight: 600; font-style: italic; }
-.gc-folio { font-family: var(--font-serif); font-size: 32px; line-height: 1; font-weight: 600; }
-.gc-pf-cover-title { font-family: var(--font-serif-alt); font-size: 150px; line-height: 1; font-weight: 600; }
-.gc-pf-chapter-title { font-family: var(--font-serif-alt); font-size: 116px; line-height: 1.05; font-weight: 700; }
-.gc-pf-recipe-title { font-family: var(--font-serif-alt); font-size: 72px; line-height: 1.05; font-weight: 600; }
-.gc-pf-section-label { font-family: var(--font-serif-alt); font-size: 36px; line-height: 1.2; font-weight: 600; font-style: italic; }
-.gc-pf-folio { font-family: var(--font-serif-alt); font-size: 28px; line-height: 1; font-weight: 600; }
+.gc-cover-title { font-family: var(--font-serif); font-size: 150px; line-height: 1; font-weight: 600; }
+.gc-chapter-title { font-family: var(--font-serif); font-size: 116px; line-height: 1.05; font-weight: 700; }
+.gc-recipe-title { font-family: var(--font-serif); font-size: 72px; line-height: 1.05; font-weight: 600; }
+.gc-section-label { font-family: var(--font-serif); font-size: 36px; line-height: 1.2; font-weight: 600; font-style: italic; }
+.gc-folio { font-family: var(--font-serif); font-size: 28px; line-height: 1; font-weight: 600; }
 .gc-hand-body { font-family: var(--font-hand); font-size: 44px; line-height: 1.12; font-weight: 500; }
 .gc-hand-compact { font-family: var(--font-hand); font-size: 40px; line-height: 1.12; font-weight: 500; }
 .gc-hand-note { font-family: var(--font-hand); font-size: 46px; line-height: 1.15; font-weight: 500; }
 .gc-hand-signature { font-family: var(--font-hand); font-size: 56px; line-height: 1; font-weight: 700; }
 .gc-hand-meta { font-family: var(--font-hand); font-size: 40px; line-height: 1.1; font-weight: 600; }
 .gc-hand-caption { font-family: var(--font-hand); font-size: 42px; line-height: 1.15; font-weight: 500; }
-.gc-a5-recipe-title { font-family: var(--font-serif); font-size: 34.67px; line-height: 1.05; font-weight: 600; }
+.gc-a5-recipe-title { font-family: var(--font-serif); font-size: 29.33px; line-height: 1.05; font-weight: 600; }
 .gc-a5-section-label { font-family: var(--font-serif); font-size: 14.67px; line-height: 1.2; font-weight: 600; font-style: italic; }
 .gc-a5-hand-body { font-family: var(--font-hand); font-size: 17.33px; line-height: 1.15; font-weight: 500; }
 .gc-a5-hand-note { font-family: var(--font-hand); font-size: 18.67px; line-height: 1.18; font-weight: 500; }
@@ -142,11 +136,6 @@
 @font-face { font-family: "Caveat"; src: url("fonts/caveat-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: block; }
 @font-face { font-family: "Caveat"; src: url("fonts/caveat-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: block; }
 @font-face { font-family: "Caveat"; src: url("fonts/caveat-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
-@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: block; }
-@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: block; }
-@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
-@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-latin-500-italic.woff2") format("woff2"); font-weight: 500; font-style: italic; font-display: block; }
-@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond-latin-600-italic.woff2") format("woff2"); font-weight: 600; font-style: italic; font-display: block; }
 @font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
 @font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: block; }
 @font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }

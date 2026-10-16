@@ -8,13 +8,12 @@ import { SceneVideo } from '../../components/SceneVideo';
 import { Recette } from '../../components/Recette';
 import { PetitMot } from '../../components/PetitMot';
 import { getGuest } from '../../content';
-import type { IdleLook, Serif, TableKind } from '../../lib/settings';
+import type { IdleLook, TableKind } from '../../lib/settings';
 import './PageVideo.css';
 
 export interface PageVideoProps {
   guest?: string; // slug d'un invité qui a une vidéo
   table?: TableKind;
-  serif?: Serif;
   idle?: IdleLook;
   state?: 'idle' | 'playing';
   progress?: number; // 0–1, en lecture
@@ -26,7 +25,6 @@ export interface PageVideoProps {
 export function PageVideo({
   guest = 'julie',
   table,
-  serif,
   idle,
   state = 'idle',
   progress = 0.6,
@@ -38,7 +36,7 @@ export function PageVideo({
   if (!g.video || !g.recipe) throw new Error(`${guest} n'a pas de vidéo ou de recette`);
   const v = g.video;
   return (
-    <Stage table={table} serif={serif} idle={idle} fit={fit}>
+    <Stage table={table} idle={idle} fit={fit}>
       <DoublePage
         folios={folios}
         dogEars={['br']}

@@ -16,13 +16,13 @@ La recette manuscrite d'un invité, telle qu'on la lit en haut de la page de dro
 | `density` | `'normal'` (par défaut) ou `'compact'` | `normal` : ingrédients et étapes en `gc-hand-body` (44 px). `compact` : `gc-hand-compact` (40 px) et respirations resserrées, pour une recette longue ou une double page à deux recettes. |
 | `className` | chaîne | Classe ajoutée à la racine `.gc-recette` (placement dans la page). |
 
-La serif des titres suit les réglages de scène : `useTitleClass('recipe-title')` et `useTitleClass('section-label')` donnent `gc-recipe-title` / `gc-section-label` (Cormorant) ou `gc-pf-recipe-title` / `gc-pf-section-label` (Playfair), selon `SettingsContext`.
+Les titres sont en Playfair Display : `useTitleClass('recipe-title')` et `useTitleClass('section-label')` donnent les styles `gc-recipe-title` (72 px) et `gc-section-label` (36 px, italique).
 
 ## Règles d'usage
 
-- **Titre** : style de titre de la serif retenue, couleur `--gc-ink-title`. Dessous, une vague à la plume en `--gc-terracotta-500`, calée environ 12 px sous la ligne de base pour chaque serif.
+- **Titre** : `gc-recipe-title`, couleur `--gc-ink-title`, sur une seule ligne. Dessous, une vague à la plume en `--gc-terracotta-500`, calée environ 12 px sous la ligne de base.
 - **Méta** (préparation, cuisson, repos, parts) : `gc-hand-meta` en `--gc-chocolate`. Chaque valeur est précédée d'un pictogramme dessiné (horloge, flamme, sablier, part de gâteau) au trait de 3 unités en `--gc-chocolate` ; seule la fraise sur la part a une touche de `--gc-terracotta-300`. Les valeurs absentes (`cook`, `rest`) disparaissent avec leur pictogramme.
-- **Intitulés** : style `section-label` de la serif, en `--gc-chocolate`, prolongés par un filet tracé à la main en `--gc-terracotta-300`.
+- **Intitulés** : `gc-section-label`, en `--gc-chocolate`, prolongés par un filet tracé à la main en `--gc-terracotta-300`.
 - **Ingrédients** : deux colonnes lues de haut en bas, `--gc-ink`, chaque ligne précédée d'une feuille de sauge (`--gc-sage-300`, nervure et contour `--gc-sage-700`). Les colonnes sont égales tant que le contenu le permet ; sinon la colonne de gauche s'élargit et celle de droite prend le reste.
 - **Étapes** : chiffre Caveat `gc-hand-meta` en `--gc-chocolate` dans un cercle tracé d'un geste en `--gc-terracotta-500` (le raccord du cercle tourne d'une étape à l'autre) ; texte en `--gc-ink`.
 - **Espacements** : `--gc-space-5` entre l'en-tête et chaque section, `--gc-space-4` entre le numéro et le texte, `--gc-space-1` entre deux étapes.

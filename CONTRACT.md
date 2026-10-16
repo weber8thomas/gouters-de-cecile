@@ -9,7 +9,7 @@ Carnet de recettes de goûter sucré, projeté sur une TV 16:9 (scène fixe **19
 pendant l'anniversaire de Cécile, puis imprimé en **A5**. Chaque double page = un livre ouvert posé sur
 une table (bois ou nappe), reliure visible au centre. Papier crème texturé, coins cornés, taches discrètes,
 fleurs séchées, lumière dorée de fin d'après-midi. Palette : crème, terracotta, rose poudré, sauge, chocolat.
-Typo : Caveat (manuscrit) + une serif (Cormorant Garamond ou Playfair Display, choix en attente).
+Typo : Caveat (manuscrit) + Playfair Display pour l'« imprimé » (choix de la planche comparative, voir `design-system/decisions.json`).
 Aucune interface au survol, aucune marque ni logo.
 
 ## 2. Où vit quoi
@@ -18,7 +18,7 @@ Aucune interface au survol, aucune marque ni logo.
 |---|---|---|
 | `design-system/tokens.json` | **source unique** des couleurs, typo, espacements, ombres, géométrie | format du type Design System (listes de tokens). Seul le lead le modifie : demandez un token. |
 | `design-system/tokens.css` | généré (`npm run tokens`) | ne jamais modifier à la main |
-| `design-system/fonts/` | woff2 Caveat, Cormorant, Playfair | |
+| `design-system/fonts/` | woff2 Caveat, Playfair | |
 | `design-system/metrics.json` | hauteur d'x mesurée de chaque police | |
 | `design-system/textures/` | sources SVG + WebP pré-rendus | |
 | `design-system/ecrins/<id>/` | écrins vidéo (§ 6) | SVG générés par `build.mjs` |
@@ -64,7 +64,7 @@ Personne ne modifie `src/index.ts`.
 - Préfixe **`gc-`** en BEM : `.gc-ecrin`, `.gc-ecrin__media`, `.gc-ecrin--playing`. Aucun sélecteur global (`body`, `p`, `*`).
 - **Couleurs : uniquement `var(--gc-…)`**. Aucune valeur hex, rgb ou nommée en dur. Transparence : `color-mix(in srgb, var(--gc-ink) 30%, transparent)`.
 - **Typographie : uniquement les classes de style des tokens** (`gc-hand-body`, `gc-recipe-title`, `gc-a5-hand-body`…), posées dans le balisage.
-  Aucune `font-size` en dur. Tailles planchers sur TV : Caveat 38 px, Cormorant 36 px (32 px pour un folio), Playfair 27 px.
+  Aucune `font-size` en dur. Tailles planchers sur TV : Caveat 38 px, Playfair 27 px.
 - Espacements et géométrie : `var(--gc-space-N)`, `var(--gc-page-…)`, `var(--gc-safe-…)`. Ombres : `var(--gc-sh-…)`.
 - **Pas de `:hover`.** Focus clavier : `outline: 3px solid var(--gc-honey-500); outline-offset: 4px` sur `:focus-visible`.
 - Animations : `transform` et `opacity` seulement ; durées `var(--gc-dur-…)`, courbe `var(--gc-ease)` ;

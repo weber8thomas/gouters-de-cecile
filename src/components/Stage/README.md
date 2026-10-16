@@ -6,9 +6,8 @@ Scène fixe 1920 × 1080 du carnet projeté : une table (bois ou nappe en lin à
 
 | Prop | Type | Défaut | Rôle |
 |---|---|---|---|
-| `table` | `'bois' \| 'nappe'` | réglage parent, sinon `'bois'` | Fond de scène. |
-| `serif` | `'cormorant' \| 'playfair'` | réglage parent, sinon `'cormorant'` | Serif des titres, lue via `useTitleClass`. |
-| `idle` | `'aquarelle' \| 'sepia'` | réglage parent, sinon `'aquarelle'` | Aspect des écrins avant lecture. |
+| `table` | `'bois' \| 'nappe'` | réglage parent, sinon `'bois'` | Fond de scène : bois pour les pages vidéo, la couverture et la page finale ; nappe pour les recettes seules, les doubles recettes, les intercalaires et le sommaire. |
+| `idle` | `'aquarelle' \| 'sepia'` | réglage parent, sinon `'sepia'` | Aspect des écrins avant lecture (sépia crayonné retenu). |
 | `fit` | `boolean` | `false` | Met la scène à l'échelle de la largeur du parent (`transform: scale`, `ResizeObserver`) ; l'enveloppe `.gc-stage-fit` prend la hauteur mise à l'échelle. |
 | `children` | `ReactNode` | — | Contenu de la scène, en général un `DoublePage`. |
 | `overlay` | `ReactNode` | — | Calque au-dessus de tout, lumière comprise (navigation). Seuls ses enfants captent le pointeur. |
@@ -19,7 +18,7 @@ Exporte `StageProps`.
 ## Ce que fait la scène
 
 - Taille `var(--gc-stage-w)` × `var(--gc-stage-h)`, `overflow: hidden`, `isolation: isolate`.
-- Fournit `SettingsContext` : chaque prop absente reprend le réglage du contexte parent (donc `DEFAULT_SETTINGS` hors de tout fournisseur). Pose `data-gc-serif`, `data-gc-table` et `data-gc-idle` (`settingsAttrs`) sur sa racine, plus la classe `gc-stage--bois` ou `gc-stage--nappe`.
+- Fournit `SettingsContext` : chaque prop absente reprend le réglage du contexte parent (donc `DEFAULT_SETTINGS` hors de tout fournisseur). Pose `data-gc-table` et `data-gc-idle` (`settingsAttrs`) sur sa racine, plus la classe `gc-stage--bois` ou `gc-stage--nappe`.
 - **Bois** : texture pré-rendue `design-system/textures/wood.webp` (planches en `gc-wood-1/2/3`) + vignettage chaud vers `gc-wood-3`.
 - **Nappe** : lin `linen.webp` (`gc-linen`, `gc-linen-shade`) + vichy en bandes croisées `repeating-linear-gradient` de `gc-terracotta-500` translucide (`color-mix`), cellule de 48 px, posée un peu de biais ; deux grands plis doux (`gc-paper-lace` côté fenêtre, `gc-chocolate` côté ombre).
 - **Lumière** (au-dessus du contenu) : voile radial `var(--gc-glow)` à `var(--gc-glow-alpha)` depuis le haut à gauche, tache de soleil d'une fenêtre à croisillon (`gc-glow`, très légère), ombre chaude `gc-wood-3` dans le coin opposé.

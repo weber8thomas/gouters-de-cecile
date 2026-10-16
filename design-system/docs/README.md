@@ -44,7 +44,7 @@ Si le texte déborde, raccourcis-le. Ne descends jamais sous les tailles de la g
   - Petit mot en `gc-hand-note`, signature en `gc-hand-signature`.
   - Méta en `gc-hand-meta`, légendes et sommaire en `gc-hand-caption`.
 - **La serif** porte les titres : `gc-recipe-title`, `gc-chapter-title`, `gc-cover-title`, intitulés en `gc-section-label` (italique), folios en `gc-folio`.
-- **Planchers sur TV** (hauteur d'x de 14 px au moins, mesurée dans `metrics.json`) : Caveat 38 px, Cormorant Garamond 36 px (32 px pour un folio isolé), Playfair Display 27 px. Rien de plus petit ne s'affiche sur la TV.
+- **Planchers sur TV** (hauteur d'x de 14 px au moins, mesurée dans `metrics.json`) : Caveat 38 px, Playfair Display 27 px. Rien de plus petit ne s'affiche sur la TV.
 - **Impression A5** : utilise les styles `gc-a5-…` (corps manuscrit 13 pt, plancher 11 pt).
 - Utilise toujours les classes de style des tokens, jamais une taille écrite en dur.
 

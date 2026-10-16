@@ -35,7 +35,7 @@ Exporte `DoublePageProps` et `Stain`.
 - **Reliure** : ombre de pli dégradée sur `var(--gc-gutter-shadow)` de chaque côté — large à gauche (la pente tourne le dos à la fenêtre), étroite à droite avec un reflet `gc-paper-lace` —, courbure douce vers le pli, filet central `gc-chocolate`. Ces ombres passent au-dessus de l'encre, comme la vraie lumière.
 - **Coins cornés** : découpe `clip-path` en biais (jamais un carré), rabat SVG en dégradé (revers jauni, arrondi du pli éclairé), petite ombre aux valeurs de `--gc-sh-lift`. La découpe laisse voir le feuillet suivant. La pointe du rabat reste dans la marge et ne touche pas le folio.
 - **Taches** : SVG en ligne tracé côté client (`organic.ts`, mêmes algorithmes que `scripts/lib/organic.mjs`). Thé : cerne interrompu au bord plus dense, second passage décalé, lavis pâle, en `var(--gc-stain-tea)`. Confiture : goutte au bord séché, cœur plus épais, gouttelettes, en `var(--gc-stain-jam)`.
-- **Folios** : en bas, côté extérieur, alignés sur la marge `--gc-page-pad-outer`, classe `useTitleClass('folio')` (`gc-folio` ou `gc-pf-folio`), couleur `var(--gc-chocolate)`, chiffres alignés pour la lecture à 3 m.
+- **Folios** : en bas, côté extérieur, alignés sur la marge `--gc-page-pad-outer`, classe `useTitleClass('folio')` (`gc-folio`, Playfair Display 28 px), couleur `var(--gc-chocolate)`, chiffres alignés pour la lecture à 3 m.
 
 ## Règles d'usage
 
