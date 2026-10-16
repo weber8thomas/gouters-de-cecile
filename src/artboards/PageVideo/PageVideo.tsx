@@ -45,13 +45,13 @@ export function PageVideo({
           <div className="gc-page-video__left">
             <Ecrin
               className="gc-page-video__ecrin"
-              type={v.ecrin}
-              variant={v.variant}
+              type={v.ecrin!}
+              variant={v.variant!}
               state={state}
               progress={state === 'playing' ? progress : 0}
               liquid={v.liquid}
               caption={v.caption}
-              media={<SceneVideo scene={v.scene} />}
+              media={<SceneVideo scene={v.scene!} />}
             />
           </div>
         }

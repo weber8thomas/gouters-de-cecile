@@ -62,12 +62,15 @@ export interface Look {
 }
 
 export interface Video {
-  ecrin: EcrinId;
-  variant: string; // « a », « b », « c »
+  /** Identifiant de la vidéo dans src/content/videos.json (fichiers, affiche, tirage sépia, crédit). */
+  id?: string;
   caption: string; // « Julie, depuis Lyon »
-  duration: number; // secondes
-  liquid: Liquid; // contenu de la tasse-progression
-  scene: string; // slug de la scène illustrée de remplacement
+  duration?: number; // secondes
+  /** @deprecated écrins illustrés retirés (plan v3) ; champs supprimés par le nettoyage. */
+  ecrin?: EcrinId;
+  variant?: string;
+  liquid?: Liquid;
+  scene?: string;
 }
 
 export interface Guest {
@@ -75,7 +78,8 @@ export interface Guest {
   firstName: string;
   city: string;
   chapter: ChapterId;
-  look: Look;
+  /** @deprecated personnages illustrés retirés (plan v3). */
+  look?: Look;
   video?: Video;
   recipe?: Recipe; // rempli par le contenu (invites.ts)
   note?: string; // petit mot pour Cécile, ≤ 90 caractères
@@ -83,4 +87,55 @@ export interface Guest {
   ink?: Ink;
   style?: GuestStyle; // main, encre, mise en page (src/content/mains.ts)
   annotations?: Annotation[];
+}
+
+// ---- Recettes reçues (plan v3) -------------------------------------------------------------
+// Le texte reçu est gardé tel quel dans src/content/recettes/<slug>.txt ; sa version structurée
+// (<slug>.json) suit ce type et alimente la cuisson des pages (scripts/pages/recette.py).
+// Balisage dans les textes : ~~a~~>{b} rature + correction, __x__ souligné, ^{x} insertion avec ‸.
+
+/** Main de l'écriture générée (tools/ecriture/styles.py). */
+export type MainId = 'mamie' | 'ecole' | 'soignee' | 'ado' | 'papa' | 'pressee' | 'cecile';
+/** Encre de l'écriture générée (tools/ecriture/encre.py). */
+export type EncreId = 'plume' | 'brune' | 'noire' | 'bic' | 'rouge' | 'crayon' | 'feutre' | 'chocolat';
+
+export interface LigneRecette {
+  texte: string;
+  /** Croquis en guise de puce pour cette ligne (null = pas de puce même si le groupe en a une). */
+  puce?: string | null;
+}
+
+export interface GroupeRecette {
+  titre?: string;
+  /** Croquis en guise de puce pour toutes les lignes (« carotte » pour les 🥕 de Lisa). */
+  puce?: string | null;
+  lignes?: LigneRecette[];
+  paragraphes?: string[];
+}
+
+export interface RecetteRecue {
+  slug: string;
+  /** Chemin du texte reçu, gardé mot pour mot. */
+  source: string;
+  /** Ce qui a été adapté pour le carnet, et pourquoi. */
+  adaptations?: string[];
+  style: { main: MainId; encre: EncreId; graine: number };
+  /** Identifiant dans src/content/videos.json. */
+  video?: string;
+  titre: string;
+  titreSouligne?: 'trait' | 'double' | 'aucun';
+  notesMarge?: { texte: string; pres?: string; main?: MainId; encre?: EncreId }[];
+  ingredients: GroupeRecette[];
+  etapes: { titre?: string; texte: string }[];
+  /** Paragraphes après les étapes (« Laisse le gâteau dans le moule… »). */
+  apres?: string[];
+  /** Options, glaçage, variantes. */
+  extras?: GroupeRecette[];
+  /** Le mot de la fin, avec ses croquis (😎 → « lunettes-soleil »). */
+  fin?: { texte: string; croquis?: string[] };
+  /** Petit(s) dessin(s) de la recette, en marge. */
+  croquis?: string[];
+  /** Petit mot pour Cécile (pas encore reçu : null). */
+  mot?: string | null;
+  signature?: string;
 }

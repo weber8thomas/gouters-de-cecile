@@ -15,7 +15,12 @@ export type SpreadKind = 'couverture' | 'sommaire' | 'intercalaire' | 'video' | 
 export interface SpreadSpec {
   id: string; // « p04-julie »
   kind: SpreadKind;
-  table: TableKind;
+  /** @deprecated la table est toujours en bois (plan v3) ; champ retiré par le nettoyage. */
+  table?: TableKind;
+  /** Invité de la double page (slug du contenu) : « Aller à… » du menu, liens profonds, vidéo. */
+  invite?: string;
+  /** Nom affiché dans « Aller à… » (« Lisa — Carrot cake »). */
+  titre?: string;
   /** Rendu des deux pages (le mode est aussi disponible par useRenderMode()). */
   render: (mode: RenderMode) => { left: React.ReactNode; right: React.ReactNode };
   folios?: [number | null, number | null];

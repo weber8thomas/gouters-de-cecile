@@ -1,7 +1,9 @@
 // Mouvement du carnet : ressorts partagés (source unique : design-system/motion.json) et accès à Motion.
 // Règles : on n'anime que transform et opacity ; aucun filtre animé ; tout s'arrête avec
 // prefers-reduced-motion ; aucun rendu React pendant un geste (MotionValue + useTransform).
+import { useReducedMotion as useReducedMotionSysteme } from 'motion/react';
 import motionSpec from '../../design-system/motion.json';
+import { abonnerReglages, getReglages, useReglages, type Vitesse } from './reglages';
 
 export {
   LazyMotion,
@@ -13,7 +15,6 @@ export {
   useMotionValueEvent,
   useTransform,
   useSpring,
-  useReducedMotion,
   type MotionValue,
   type Transition,
 } from 'motion/react';
@@ -35,9 +36,16 @@ export const STAGGER = motionSpec.stagger;
 /** Équivalent CSS d'un ressort (easing + durée), pour les transitions CSS simples. */
 export const cssSpring = (name: SpringName): string => `var(--gc-dur-spring-${name}) var(--gc-spring-${name})`;
 
-/** true si l'utilisateur a demandé moins de mouvement (lecture directe, hors React). */
+/** true si l'utilisateur a demandé moins de mouvement : préférence du système OU réglage du carnet. */
+export function useReducedMotion(): boolean {
+  const systeme = useReducedMotionSysteme();
+  const [r] = useReglages();
+  return !!systeme || r.mouvementReduit;
+}
+
+/** Même chose, lecture directe hors React. */
 export const prefersReducedMotion = (): boolean =>
-  typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  getReglages().mouvementReduit || (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches);
 
 /**
  * Règle un ressort à l'exécution (planches de choix seulement : comparer des sensations).
@@ -46,3 +54,15 @@ export const prefersReducedMotion = (): boolean =>
 export function regleRessort(name: SpringName, r: { visualDuration: number; bounce: number }): void {
   SPRINGS[name] = { type: 'spring', visualDuration: r.visualDuration, bounce: r.bounce };
 }
+
+/** Vitesses des pages du menu de réglages (design-system/motion.json, « vitesses »). */
+export const VITESSES_PAGE: Record<Vitesse, { visualDuration: number; bounce: number }> = {
+  vive: motionSpec.vitesses.vive,
+  normale: motionSpec.vitesses.normale,
+  lente: motionSpec.vitesses.lente,
+};
+
+// La vitesse choisie dans le menu règle le ressort « paper », relu par le livre à chaque geste.
+const appliquerVitesse = () => regleRessort('paper', VITESSES_PAGE[getReglages().vitesse]);
+appliquerVitesse();
+abonnerReglages(appliquerVitesse);

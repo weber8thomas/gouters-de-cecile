@@ -190,3 +190,88 @@ Personne ne modifie `src/index.ts`.
   - écrans : iPhone 13 portrait et paysage, Pixel 7, iPad portrait et paysage, ordinateur 1440×900 et 1280×800, TV 1920×1080 et 3840×2160 ;
   - pour chacun : aucun débordement hors cadre, contrôles visibles et dans les zones sûres, cibles ≥ 44 px sur tactile, hauteur d'x angulaire suffisante ;
   - glisser du doigt pour tourner (vers l'avant et l'arrière, geste vif), toucher l'écrin, lien profond, rotation de l'écran.
+
+## 12. Plan v3 : bois seul, réglages, photo-vidéo, croquis, feuillet volant
+
+**Décisions prises avec l'utilisatrice.** Elles l'emportent sur les sections précédentes.
+
+- **Table** : le bois, et seulement le bois. La nappe disparaît du code, des cartes et de la charte.
+- **Illustrations** :
+  - plus de scènes ni de personnages à l'aquarelle, plus d'écrins illustrés (cloche…), plus de tasse ;
+  - l'aquarelle ne sert qu'à compléter les recettes, sous forme de **croquis à la main** (simples, un peu maladroits, comme griffonnés par l'invité, avec une touche d'aquarelle) **cuits dans le papier** comme l'encre ;
+  - une icône sert de puce là où l'invité avait mis un emoji, ou à côté d'un ingrédient ;
+  - un petit dessin par recette, en marge.
+- **Vidéo d'un invité : une photo collée.**
+  - Sur la page : un tirage **sépia** à bord blanc, un peu de travers, tenu par des coins photo ou du scotch jauni, avec un ▶ discret.
+  - Au toucher, au clic ou sur Entrée, la photo **se soulève et grandit au-dessus du livre**. La couleur revient et la vidéo joue en grand avec le son, selon les réglages.
+  - À la fin, ou au toucher, à Échap, à Retour arrière ou à ↓, elle redescend à sa place.
+- **Recette trop longue : un feuillet volant.**
+  - La suite est écrite sur une feuille de cahier glissée dans le carnet. Son coin dépasse de la page droite.
+  - On le soulève au toucher, en glissant vers le haut ou avec ↑, par la même mécanique que la photo. On le retourne (recto/verso) au toucher ou avec ← →.
+- **Contenu reçu : mot pour mot.**
+  - Le texte d'un invité est gardé tel quel dans `src/content/recettes/<slug>.txt`.
+  - La version structurée (`<slug>.json`, type `RecetteRecue`) liste ses `adaptations` : message adressé à quelqu'un d'autre retiré, majuscules d'emphase soulignées, coquilles montrées comme de vraies ratures ou insertions, emojis remplacés par des croquis.
+  - On ne réécrit pas les recettes.
+
+### 12.1 Clavier
+| Touche | Effet |
+|---|---|
+| ← → PageUp PageDown Début Fin | Pages |
+| Entrée / Espace | Vidéo de la double page |
+| ↑ | Feuillet volant |
+| ↓ / Échap / Retour arrière | Reposer |
+| `+` / `−` | Cran de distance |
+| Alt + `+` / `−` | Zoom fin |
+| `0` | Zoom à 100 % |
+| `M` ou `,` | Menu de réglages |
+
+Quand le menu ou un objet soulevé est ouvert, **lui seul** reçoit les touches (`src/lib/clavier.ts`, `useClavierModal`).
+
+### 12.2 Bibliothèques partagées (lead)
+- `src/lib/reglages.ts` : `useReglages()`, `getReglages()`, `setReglages()`, `resetReglages()`, `abonnerReglages()`.
+  - Champs : `son`, `volume`, `lectureAuto`, `vitesse` (`vive` | `normale` | `lente`), `mouvementReduit`.
+  - Clé de stockage : `gc:reglages:v1`.
+- `src/lib/motion.ts` :
+  - `useReducedMotion()` est vrai si le **système ou le réglage** le demande ;
+  - la vitesse choisie règle `SPRINGS.paper` ;
+  - nouveau ressort `SPRINGS.lift` pour soulever.
+- `src/lib/camera.tsx` : `zoomBornes(cran)`.
+  - Le zoom fin va de 0,85 à 1,15, borné par cran : la hauteur d'x reste ≥ 14 px et le livre entier visible.
+  - ↑ et ↓ ne zooment plus.
+- `src/lib/spread.ts` : `SpreadSpec.invite` (slug) et `SpreadSpec.titre`, pour « Aller à… ».
+
+### 12.3 Interfaces entre lots
+- **Vidéos** (`src/content/videos.json`, lot V) :
+  ```json
+  { "<id>": { "titre": "…", "duree": 12, "video": "videos/<id>", "affiche": "videos/<id>-affiche",
+              "tirage": "photos/<id>/tirage", "coins": "photos/<id>/coins", "angle": -2.5,
+              "credit": { "auteur": "…", "source": "url", "licence": "…" } } }
+  ```
+  - Les valeurs sont des **noms logiques** d'`assetUrl()`, fichiers sous `design-system/baked/` : mp4 H.264 720p `+faststart` ≤ 2 Mo, WebP pour les images.
+  - Les mp4 ne vont **pas** dans l'artifact du design system ; seulement sur le site.
+- **Soulever** (lot S) :
+  - `SoulevementProvider`, placé sous `Ecran`, dessine en portail dans `useEcran().controles` ;
+  - `useSoulevement()` renvoie `{ etat, soulever(objet), reposer() }` ;
+  - `objet` vaut `{ type: 'photo', video: id, source: HTMLElement }` ou `{ type: 'feuillet', recto, verso, source: HTMLElement }`.
+  - `soulever()` est appelé **dans le geste**. Pour une photo, il appelle `play()` de la vidéo unique de façon **synchrone**, avant tout `await` ou `setState`.
+  - Attributs pour les tests :
+
+| Élément | Attribut |
+|---|---|
+| Calque | `data-gc-soulever="ouvert\|ferme"` |
+| Photo posée | `data-gc-objet="photo"` |
+| Coin du feuillet | `data-gc-objet="feuillet"` |
+| Vidéo unique | `data-gc-video` |
+
+- **Photo et feuillet dans la page** : `PhotoCollee` et `FeuilletVolant` ne rendent que des `<img>`, en mode vivant comme statique. Ils se posent dans les zones `vivants.photo` et `vivants.volant` d'une `PageCuite` (props `slots`).
+- **Réglages** (lot R) :
+  - `<Reglages invites={[{ index, titre }]} onAller={(index) => …} />` dessine le bouton ⚙ et le panneau en portail dans `useEcran().controles` ;
+  - bouton `data-gc-reglages="bouton"`, panneau `data-gc-reglages="panneau"`.
+- **Croquis** (lot C, `scripts/pages/croquis.py`) :
+  - `disponibles()` renvoie la liste des noms.
+  - `dessiner(nom, *, boite=(x, y, w, h), encre, graine, lavis=True)` renvoie `{ 'traits': [[(x, y, pression, vitesse, encre), …], …], 'lavis': [...], 'boite': (x, y, w, h) }`, en px de page 850×960, avec les mêmes champs de point que `tools/ecriture`.
+  - `transmittance_lavis(lavis, forme, echelle, relief)` renvoie un `ndarray (H, W, 3)` de transmittance, que la cuisson multiplie avec celle de l'encre.
+- **Cuisson** (lot B) :
+  - une recette donne des pages `<slug>-gauche`, `<slug>-droite`, et si besoin `<slug>-feuillet-recto` et `-verso` ;
+  - dans le manifeste, chaque page porte `vivants: { photo?, volant? }` en fractions de page, et `volant: { recto, verso, angle }`. Les pages de feuillet ont `type: 'feuillet'` et leur propre `taille: [w, h]` ;
+  - plus aucun mot perdu : si le texte déborde, la cuisson échoue.

@@ -1,18 +1,28 @@
-// Caméra du carnet : cran de distance (proche / moyenne / loin, mises en page validées) et zoom fin
-// (0,95–1,05, pure transformation). Réglage au clavier le jour J, mémorisé dans le navigateur.
+// Caméra du carnet : cran de distance (proche / moyenne / loin) et zoom fin (pure transformation,
+// bornes propres à chaque cran : voir zoomBornes). Réglage au clavier ou dans le menu ⚙, mémorisé.
 //
 //   <CameraProvider keyboard>          ← fournit l'état et écoute le clavier
 //     <Stage distance={camera.distance}> … <Camera> (B1) applique scale(zoom) avec un ressort
 //
 // Touches (lues sur event.key, compatibles AZERTY et pavé numérique) :
 //   + ou =  → cran suivant (plus proche)      - → cran précédent (plus loin)
-//   Alt + « + » / « - », ou ↑ / ↓ → zoom fin ±0,01 ;  0 → zoom fin remis à 1
+//   Alt + « + » / « - » → zoom fin ±0,01 ;  0 → zoom fin remis à 1
+//   (↑ / ↓ sont réservés au feuillet volant ; le zoom se règle aussi dans le menu.)
 import React from 'react';
 import { DEFAULT_SETTINGS, DISTANCES, type Distance } from './settings';
 
-export const ZOOM_MIN = 0.95;
-export const ZOOM_MAX = 1.05;
+export const ZOOM_MIN = 0.85;
+export const ZOOM_MAX = 1.15;
 export const ZOOM_STEP = 0.01;
+
+/**
+ * Bornes du zoom fin pour un cran : en bas, l'écriture garde une hauteur d'x d'au moins 14 px à
+ * l'écran (pages cuites : 1,9 % de la largeur de page) ; en haut, le livre entier reste visible
+ * dans la scène 1920 × 1080.
+ */
+export function zoomBornes(d: Distance): [number, number] {
+  return d === 'proche' ? [0.85, 1.08] : d === 'moyenne' ? [0.87, 1.12] : [0.95, 1.15];
+}
 const STORAGE_KEY = 'gc:camera:v1';
 
 export interface CameraState {
@@ -30,7 +40,10 @@ export interface CameraApi extends CameraState {
   changedAt: number;
 }
 
-const clampZoom = (z: number) => Math.round(Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z)) * 100) / 100;
+const clampZoom = (z: number, d?: Distance) => {
+  const [lo, hi] = d ? zoomBornes(d) : [ZOOM_MIN, ZOOM_MAX];
+  return Math.round(Math.min(hi, Math.max(lo, z)) * 100) / 100;
+};
 export const CAMERA_DEFAULT: CameraState = { distance: DEFAULT_SETTINGS.distance, zoom: 1 };
 
 function load(): CameraState {
@@ -40,7 +53,7 @@ function load(): CameraState {
     const v = JSON.parse(raw);
     return {
       distance: DISTANCES.includes(v.distance) ? v.distance : CAMERA_DEFAULT.distance,
-      zoom: typeof v.zoom === 'number' ? clampZoom(v.zoom) : 1,
+      zoom: typeof v.zoom === 'number' ? clampZoom(v.zoom, DISTANCES.includes(v.distance) ? v.distance : CAMERA_DEFAULT.distance) : 1,
     };
   } catch {
     return CAMERA_DEFAULT;
@@ -65,8 +78,6 @@ export function cameraKey(e: Pick<KeyboardEvent, 'key' | 'altKey' | 'ctrlKey' | 
   if (e.ctrlKey || e.metaKey) return null; // laisser le zoom du navigateur tranquille
   const plus = e.key === '+' || e.key === '=' || e.key === 'Add';
   const minus = e.key === '-' || e.key === '_' || e.key === 'Subtract';
-  if (e.key === 'ArrowUp') return { kind: 'zoom', dir: 1 };
-  if (e.key === 'ArrowDown') return { kind: 'zoom', dir: -1 };
   if (e.key === '0') return { kind: 'reset', dir: 1 };
   if (plus) return { kind: e.altKey ? 'zoom' : 'distance', dir: 1 };
   if (minus) return { kind: e.altKey ? 'zoom' : 'distance', dir: -1 };
@@ -99,14 +110,15 @@ export function CameraProvider({ children, keyboard = false, persist = true, fix
   const api = React.useMemo<CameraApi>(() => ({
     ...(fixed ? { ...CAMERA_DEFAULT, ...fixed } : state),
     changedAt,
-    setDistance: (d) => update((s) => ({ ...s, distance: d })),
+    setDistance: (d) => update((s) => ({ distance: d, zoom: clampZoom(s.zoom, d) })),
     stepDistance: (dir) => update((s) => {
       // +1 = plus proche : moyenne → proche ; −1 = plus loin : moyenne → loin
       const i = DISTANCES.indexOf(s.distance) - dir;
-      return { ...s, distance: DISTANCES[Math.min(DISTANCES.length - 1, Math.max(0, i))] };
+      const d = DISTANCES[Math.min(DISTANCES.length - 1, Math.max(0, i))];
+      return { distance: d, zoom: clampZoom(s.zoom, d) };
     }),
-    setZoom: (z) => update((s) => ({ ...s, zoom: clampZoom(z) })),
-    stepZoom: (dir) => update((s) => ({ ...s, zoom: clampZoom(s.zoom + dir * ZOOM_STEP) })),
+    setZoom: (z) => update((s) => ({ ...s, zoom: clampZoom(z, s.distance) })),
+    stepZoom: (dir) => update((s) => ({ ...s, zoom: clampZoom(s.zoom + dir * ZOOM_STEP, s.distance) })),
   }), [state, changedAt, update, fixed]);
 
   React.useEffect(() => {
