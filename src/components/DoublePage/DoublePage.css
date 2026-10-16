@@ -1,0 +1,230 @@
+/* DoublePage : le carnet ouvert posé sur la table. Lumière en haut à gauche, ombres vers le bas à droite. */
+
+.gc-book {
+  /* texture papier, référencée une seule fois (inline dans bundle.css) */
+  --gc-dp-paper: url('../../../design-system/textures/paper-grain.webp');
+  /* débord de la couverture rigide autour du bloc de pages */
+  --gc-dp-board-out: 18px;
+  --gc-dp-board-top: 6px;
+  --gc-dp-board-bottom: 16px;
+
+  position: absolute;
+  left: var(--gc-book-x);
+  top: var(--gc-book-y);
+  width: calc(var(--gc-page-w) * 2);
+  height: var(--gc-page-h);
+  color: var(--gc-ink);
+}
+
+/* ---- Ombre portée et couverture --------------------------------------------------------- */
+.gc-book__shadow,
+.gc-book__board {
+  position: absolute;
+  top: calc(-1 * var(--gc-dp-board-top));
+  bottom: calc(-1 * var(--gc-dp-board-bottom));
+}
+
+.gc-book__shadow {
+  left: calc(-1 * var(--gc-dp-board-out));
+  right: calc(-1 * var(--gc-dp-board-out));
+  border-radius: 8px;
+  box-shadow: var(--gc-sh-book);
+}
+
+/* Cartons de couverture entoilés de lin écru, un peu plus grands que le bloc de pages. */
+.gc-book__board {
+  background-color: var(--gc-linen-shade);
+  background-image:
+    linear-gradient(to bottom, color-mix(in srgb, var(--gc-paper-lace) 18%, transparent), transparent 35%, color-mix(in srgb, var(--gc-chocolate) 12%, transparent)),
+    linear-gradient(color-mix(in srgb, var(--gc-kraft) 32%, transparent), color-mix(in srgb, var(--gc-kraft) 32%, transparent)),
+    url('../../../design-system/textures/cover-fabric.webp');
+}
+
+/* Épaisseur du carton : tranche éclairée côté fenêtre (haut, gauche), dans l'ombre en bas et à droite. */
+.gc-book__board--left {
+  left: calc(-1 * var(--gc-dp-board-out));
+  right: 50%;
+  border-radius: 7px 2px 2px 7px;
+  box-shadow:
+    inset 0 -4px 0 color-mix(in srgb, var(--gc-chocolate) 34%, transparent),
+    inset 3px 2px 0 color-mix(in srgb, var(--gc-paper-lace) 45%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent);
+}
+
+.gc-book__board--right {
+  left: 50%;
+  right: calc(-1 * var(--gc-dp-board-out));
+  border-radius: 2px 7px 7px 2px;
+  box-shadow:
+    inset -4px -4px 0 color-mix(in srgb, var(--gc-chocolate) 34%, transparent),
+    inset 0 2px 0 color-mix(in srgb, var(--gc-paper-lace) 45%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent);
+}
+
+/* ---- Bloc de pages : une demi-largeur par côté ------------------------------------------ */
+.gc-book__half {
+  position: absolute;
+  top: 0;
+  width: var(--gc-page-w);
+  height: var(--gc-page-h);
+}
+
+.gc-book__half--left { left: 0; }
+.gc-book__half--right { left: var(--gc-page-w); }
+
+/* Tranche : feuillets de plus en plus jaunis sous la page. */
+.gc-book__leaf {
+  position: absolute;
+  background-color: var(--gc-paper);
+}
+
+/* Le feuillet 1 se voit aussi dans la découpe d'un coin corné : vraie texture papier, un ton plus bas. */
+.gc-book__leaf--1 {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--gc-paper-edge) 45%, transparent), color-mix(in srgb, var(--gc-paper-edge) 45%, transparent)),
+    var(--gc-dp-paper);
+}
+.gc-book__leaf--2 { background-color: color-mix(in srgb, var(--gc-paper) 55%, var(--gc-paper-edge)); }
+.gc-book__leaf--3 { background-color: color-mix(in srgb, var(--gc-paper) 25%, var(--gc-paper-edge)); }
+.gc-book__leaf--4 { background-color: color-mix(in srgb, var(--gc-paper-edge) 88%, var(--gc-sepia-2)); }
+
+/* liseré entre deux feuillets, côté extérieur et en bas */
+.gc-book__half--left .gc-book__leaf { box-shadow: inset 1px -1px 0 color-mix(in srgb, var(--gc-chocolate) 24%, transparent); }
+.gc-book__half--right .gc-book__leaf { box-shadow: inset -1px -1px 0 color-mix(in srgb, var(--gc-chocolate) 24%, transparent); }
+
+/* Chaque feuillet déborde un peu plus vers l'extérieur et vers le bas, mais reste lié à la reliure
+   (son bord bas remonte vers le pli : voir sheetClip, LEAF_DY = 2 px par feuillet). */
+.gc-book__half--left .gc-book__leaf--1 { left: -2.5px; right: 0; top: 2px; bottom: -2px; }
+.gc-book__half--left .gc-book__leaf--2 { left: -5px; right: 0; top: 4px; bottom: -4px; }
+.gc-book__half--left .gc-book__leaf--3 { left: -7.5px; right: 0; top: 6px; bottom: -6px; }
+.gc-book__half--left .gc-book__leaf--4 { left: -10px; right: 0; top: 8px; bottom: -8px; }
+.gc-book__half--right .gc-book__leaf--1 { left: 0; right: -2.5px; top: 2px; bottom: -2px; }
+.gc-book__half--right .gc-book__leaf--2 { left: 0; right: -5px; top: 4px; bottom: -4px; }
+.gc-book__half--right .gc-book__leaf--3 { left: 0; right: -7.5px; top: 6px; bottom: -6px; }
+.gc-book__half--right .gc-book__leaf--4 { left: 0; right: -10px; top: 8px; bottom: -8px; }
+
+/* ---- La page ----------------------------------------------------------------------------- */
+.gc-book__sheet {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--gc-paper);
+  background-image:
+    /* papier un peu plus clair là où tombe la lumière */
+    radial-gradient(ellipse 80% 60% at 0% 0%, color-mix(in srgb, var(--gc-paper-lit) 80%, transparent), transparent 70%),
+    /* bords vieillis : vignette radiale très douce */
+    radial-gradient(ellipse 74% 68% at 50% 50%, transparent 64%, color-mix(in srgb, var(--gc-paper-edge) 75%, transparent) 100%),
+    var(--gc-dp-paper);
+  /* liseré jauni le long des bords */
+  box-shadow:
+    inset 0 0 18px color-mix(in srgb, var(--gc-paper-edge) 85%, transparent),
+    inset 0 0 3px color-mix(in srgb, var(--gc-sepia-2) 40%, transparent);
+}
+
+.gc-book__sheet--right {
+  background-position: 0 0, 0 0, -173px -241px;
+}
+
+/* Courbure vers la reliure, pli et reflet : au-dessus de l'encre, comme la vraie lumière. */
+.gc-book__shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Page de gauche : sa pente vers le pli tourne le dos à la fenêtre, l'ombre y est large. */
+.gc-book__sheet--left .gc-book__shade {
+  background:
+    linear-gradient(
+      to left,
+      color-mix(in srgb, var(--gc-chocolate) 50%, transparent) 0,
+      color-mix(in srgb, var(--gc-chocolate) 26%, transparent) 9px,
+      color-mix(in srgb, var(--gc-chocolate) 11%, transparent) 30px,
+      color-mix(in srgb, var(--gc-chocolate) 3%, transparent) 55px,
+      transparent var(--gc-gutter-shadow)
+    ),
+    linear-gradient(to left, color-mix(in srgb, var(--gc-chocolate) 9%, transparent), transparent 38%);
+}
+
+/* Page de droite : pli étroit, puis la pente qui regarde la fenêtre accroche un reflet. */
+.gc-book__sheet--right .gc-book__shade {
+  background:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--gc-chocolate) 46%, transparent) 0,
+      color-mix(in srgb, var(--gc-chocolate) 16%, transparent) 7px,
+      transparent 20px,
+      color-mix(in srgb, var(--gc-paper-lace) 70%, transparent) calc(var(--gc-gutter-shadow) * 0.5),
+      color-mix(in srgb, var(--gc-paper-lace) 25%, transparent) calc(var(--gc-gutter-shadow) * 0.8),
+      transparent var(--gc-gutter-shadow)
+    ),
+    linear-gradient(to right, transparent var(--gc-gutter-shadow), color-mix(in srgb, var(--gc-chocolate) 5%, transparent) 16%, transparent 42%);
+}
+
+/* ---- Coins cornés ------------------------------------------------------------------------ */
+/* Le rabat (SVG) repose sur la page ; son ombre (valeurs de --gc-sh-lift) tombe vers le bas à droite. */
+.gc-book__ear {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+  filter:
+    drop-shadow(3px 5px 4px color-mix(in srgb, var(--gc-ink) 16%, transparent))
+    drop-shadow(1px 1px 1px color-mix(in srgb, var(--gc-ink) 18%, transparent));
+}
+
+.gc-book__ear--tl { left: 0; top: 0; }
+.gc-book__ear--tr { right: 0; top: 0; }
+.gc-book__ear--bl { left: 0; bottom: 0; }
+.gc-book__ear--br { right: 0; bottom: 0; }
+
+/* revers du papier, de la pointe au pli : un peu jauni, puis l'arrondi du pli qui prend la lumière */
+.gc-book__ear-tip { stop-color: color-mix(in srgb, var(--gc-paper-edge) 70%, var(--gc-paper)); }
+.gc-book__ear-mid { stop-color: color-mix(in srgb, var(--gc-paper-edge) 35%, var(--gc-paper)); }
+.gc-book__ear-lit { stop-color: var(--gc-paper-lace); }
+.gc-book__ear-fold { stop-color: var(--gc-paper-edge); }
+
+.gc-book__ear-edge {
+  fill: none;
+  stroke: color-mix(in srgb, var(--gc-sepia-2) 45%, transparent);
+  stroke-width: 0.8;
+  stroke-linejoin: round;
+}
+
+/* ---- Taches ------------------------------------------------------------------------------ */
+.gc-book__stain {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.gc-book__stain--the path { fill: var(--gc-stain-tea); }
+.gc-book__stain--confiture path { fill: var(--gc-stain-jam); }
+.gc-book__stain .gc-book__stain-soft { fill-opacity: 0.6; }
+.gc-book__stain .gc-book__stain-wash { fill-opacity: 0.35; }
+
+/* ---- Folios ------------------------------------------------------------------------------ */
+.gc-book__folio {
+  position: absolute;
+  bottom: var(--gc-space-4);
+  color: var(--gc-chocolate);
+  font-variant-numeric: lining-nums;
+}
+
+.gc-book__folio--left { left: var(--gc-page-pad-outer); }
+.gc-book__folio--right { right: var(--gc-page-pad-outer); }
+
+/* ---- Reliure ------------------------------------------------------------------------------ */
+.gc-book__spine {
+  position: absolute;
+  left: calc(var(--gc-page-w) - 1px);
+  top: 6px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--gc-chocolate) 55%, transparent),
+    color-mix(in srgb, var(--gc-chocolate) 40%, transparent) 50%,
+    color-mix(in srgb, var(--gc-chocolate) 50%, transparent)
+  );
+  pointer-events: none;
+}

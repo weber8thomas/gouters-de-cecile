@@ -1,0 +1,34 @@
+<!-- @dsCard group="Scène & livre" width=1920 height=1080 -->
+<div id="root"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    var ink = { margin: 0, color: 'var(--gc-ink)' };
+    function lines(arr) {
+      return arr.map(function (t, i) { return h('p', { key: i, className: 'gc-hand-body', style: ink }, t); });
+    }
+    var left = h(React.Fragment, null, lines([
+      '200 g de farine',
+      '120 g de beurre demi-sel',
+      '3 œufs à température ambiante',
+      '1 c. à s. de miel de lavande',
+      'une pincée de fleur de sel',
+    ]));
+    var right = h(React.Fragment, null, lines([
+      'Préchauffe le four à th. 6 (180 °C).',
+      'Fouette les œufs et le sucre',
+      'jusqu’à ce que ça blanchisse.',
+      'Ajoute le beurre fondu, puis la farine.',
+    ]));
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      h(G.Stage, { table: 'bois' },
+        h(G.DoublePage, {
+          left: left,
+          right: right,
+          folios: [12, 13],
+          dogEars: ['tr'],
+          stains: [{ page: 'left', kind: 'the', x: 640, y: 780, r: 92, seed: 3 }],
+        })));
+  })();
+</script>

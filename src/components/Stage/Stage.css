@@ -1,0 +1,163 @@
+/* Stage : scène fixe 1920 × 1080 — table, contenu, lumière dorée, calque libre. */
+
+.gc-stage-fit {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.gc-stage {
+  position: relative;
+  width: var(--gc-stage-w);
+  height: var(--gc-stage-h);
+  overflow: hidden;
+  isolation: isolate;
+  background-color: var(--gc-wood-3);
+  color: var(--gc-ink);
+}
+
+.gc-stage__table,
+.gc-stage__surface,
+.gc-stage__folds,
+.gc-stage__falloff,
+.gc-stage__content,
+.gc-stage__light,
+.gc-stage__glow,
+.gc-stage__overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.gc-stage__table,
+.gc-stage__light {
+  pointer-events: none;
+}
+
+/* ---- Table en bois ----------------------------------------------------------------------- */
+.gc-stage--bois .gc-stage__surface {
+  background-color: var(--gc-wood-2);
+  background-image: url('../../../design-system/textures/wood.webp');
+  background-position: -236px -18px;
+}
+
+/* Vignettage chaud : le bois s'assombrit loin de la fenêtre. */
+.gc-stage--bois .gc-stage__falloff {
+  background:
+    radial-gradient(ellipse 95% 110% at 22% 12%, transparent 38%, color-mix(in srgb, var(--gc-wood-3) 55%, transparent) 100%),
+    linear-gradient(160deg, color-mix(in srgb, var(--gc-honey-300) 10%, transparent) 0%, transparent 45%);
+}
+
+/* ---- Nappe en lin à carreaux vichy -------------------------------------------------------- */
+.gc-stage--nappe {
+  background-color: var(--gc-linen);
+}
+
+/* Nappe posée un peu de biais : bandes croisées terracotta translucide, cellule de 48 px. */
+.gc-stage--nappe .gc-stage__surface {
+  inset: -64px;
+  transform: rotate(-1.4deg);
+  background-color: var(--gc-linen);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--gc-terracotta-500) 24%, transparent) 0 22px,
+      transparent 25px 45px,
+      color-mix(in srgb, var(--gc-terracotta-500) 24%, transparent) 48px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--gc-terracotta-500) 24%, transparent) 0 22px,
+      transparent 25px 45px,
+      color-mix(in srgb, var(--gc-terracotta-500) 24%, transparent) 48px
+    ),
+    url('../../../design-system/textures/linen.webp');
+  background-position: 11px 7px, 11px 7px, 0 0;
+}
+
+/* Deux grands plis doux : arête éclairée côté fenêtre, ombre de l'autre côté. */
+.gc-stage__folds {
+  background:
+    linear-gradient(
+      98deg,
+      transparent 9%,
+      color-mix(in srgb, var(--gc-paper-lace) 34%, transparent) 13%,
+      color-mix(in srgb, var(--gc-paper-lace) 10%, transparent) 15%,
+      color-mix(in srgb, var(--gc-chocolate) 12%, transparent) 17%,
+      transparent 22%
+    ),
+    linear-gradient(
+      62deg,
+      transparent 66%,
+      color-mix(in srgb, var(--gc-paper-lace) 28%, transparent) 71%,
+      color-mix(in srgb, var(--gc-chocolate) 14%, transparent) 75%,
+      transparent 80%
+    );
+}
+
+.gc-stage--nappe .gc-stage__falloff {
+  background: radial-gradient(ellipse 95% 110% at 22% 12%, transparent 45%, color-mix(in srgb, var(--gc-chocolate) 26%, transparent) 100%);
+}
+
+/* ---- Contenu et lumière ------------------------------------------------------------------- */
+.gc-stage__content {
+  z-index: 1;
+}
+
+.gc-stage__light {
+  z-index: 2;
+}
+
+/* Voile doré de fin d'après-midi, depuis le haut à gauche. */
+.gc-stage__glow {
+  background: radial-gradient(
+    ellipse 115% 130% at 0% 0%,
+    var(--gc-glow) 0%,
+    color-mix(in srgb, var(--gc-glow) 62%, transparent) 14%,
+    color-mix(in srgb, var(--gc-glow) 34%, transparent) 40%,
+    color-mix(in srgb, var(--gc-glow) 12%, transparent) 65%,
+    transparent 88%
+  );
+  opacity: var(--gc-glow-alpha);
+}
+
+/* Ombre chaude à l'opposé de la fenêtre. */
+.gc-stage__light::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 80% at 100% 100%, color-mix(in srgb, var(--gc-wood-3) 16%, transparent), transparent 70%);
+}
+
+/* Tache de soleil d'une fenêtre à petits carreaux : les croisillons y laissent deux bandes
+   à peine moins éclairées. Statique, rastérisée une fois. */
+.gc-stage__window {
+  position: absolute;
+  left: -6%;
+  top: -14%;
+  width: 52%;
+  height: 86%;
+  background-color: var(--gc-glow);
+  opacity: 0.2;
+  transform: rotate(-9deg) skewX(-22deg);
+  transform-origin: 0 0;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, var(--gc-ink) 12%, var(--gc-ink) 45%, transparent 49.5%, transparent 50.5%, var(--gc-ink) 55%, var(--gc-ink) 88%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, var(--gc-ink) 12%, var(--gc-ink) 44%, transparent 49%, transparent 51%, var(--gc-ink) 56%, var(--gc-ink) 88%, transparent 100%),
+    radial-gradient(closest-side, var(--gc-ink) 40%, transparent 100%);
+  -webkit-mask-composite: source-in, source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0%, var(--gc-ink) 12%, var(--gc-ink) 45%, transparent 49.5%, transparent 50.5%, var(--gc-ink) 55%, var(--gc-ink) 88%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, var(--gc-ink) 12%, var(--gc-ink) 44%, transparent 49%, transparent 51%, var(--gc-ink) 56%, var(--gc-ink) 88%, transparent 100%),
+    radial-gradient(closest-side, var(--gc-ink) 40%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* Calque libre (navigation) : seuls ses enfants captent le pointeur. */
+.gc-stage__overlay {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.gc-stage__overlay > * {
+  pointer-events: auto;
+}
