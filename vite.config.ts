@@ -13,9 +13,21 @@ const svgRaw = (): Plugin => ({
   },
 });
 
+// Version du site (date de build) : écrite dans version.json et compilée dans l'application, qui se
+// recharge d'elle-même quand une version plus récente est en ligne (GitHub Pages garde la page 10 min).
+const VERSION = new Date().toISOString().replace(/[-:]/g, '').slice(0, 15);
+const version = (): Plugin => ({
+  name: 'gc-version',
+  apply: 'build',
+  generateBundle() {
+    this.emitFile({ type: 'asset', fileName: 'version.json', source: JSON.stringify({ version: VERSION }) + '\n' });
+  },
+});
+
 export default defineConfig({
   base: './',
-  plugins: [svgRaw(), react({ jsxRuntime: 'classic' })],
+  define: { __GC_VERSION__: JSON.stringify(VERSION) },
+  plugins: [svgRaw(), react({ jsxRuntime: 'classic' }), version()],
   build: { outDir: 'dist/site', assetsInlineLimit: 0 },
   server: { host: true },
 });

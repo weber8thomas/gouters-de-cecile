@@ -16,3 +16,33 @@ setAssetResolver((name, info) => publiees[`../../design-system/${fichiers[name]?
 
 const racine = document.getElementById('carnet');
 if (racine) createRoot(racine).render(<Carnet liens />);
+
+// Mise à jour : GitHub Pages laisse le navigateur garder la page 10 min. À l'ouverture et au retour
+// sur l'onglet, on demande version.json sans cache ; si une version plus récente est en ligne, on
+// recharge une fois (le paramètre ?v= contourne le cache ; le drapeau évite toute boucle).
+async function verifierVersion(): Promise<void> {
+  if (import.meta.env.DEV) return;
+  try {
+    const r = await fetch(`version.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (!r.ok) return;
+    const { version } = (await r.json()) as { version?: string };
+    if (!version || version === __GC_VERSION__) return;
+    const cle = `gc:maj:${version}`;
+    try {
+      if (sessionStorage.getItem(cle)) return;
+      sessionStorage.setItem(cle, '1');
+    } catch {
+      /* stockage indisponible : on recharge quand même, une fois par chargement */
+    }
+    const url = new URL(location.href);
+    url.searchParams.set('v', version);
+    location.replace(url.toString());
+  } catch {
+    /* hors ligne : on garde la version en cache */
+  }
+}
+console.info(`Les goûters de Cécile · version ${__GC_VERSION__}`);
+verifierVersion();
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') verifierVersion();
+});
