@@ -160,9 +160,9 @@
   --gc-boost-feutre: 1;
   --gc-boost-capitales: 1;
   --gc-boost-pressee: 1.08;
-  --gc-d-proche-book-x: 64px;
+  --gc-d-proche-book-x: 75px;
   --gc-d-proche-book-y: 40px;
-  --gc-d-proche-page-w: 896px;
+  --gc-d-proche-page-w: 885px;
   --gc-d-proche-page-h: 1000px;
   --gc-d-proche-page-pad-outer: 72px;
   --gc-d-proche-page-pad-spine: 64px;
@@ -176,9 +176,9 @@
   --gc-d-moyenne-page-pad-spine: 56px;
   --gc-d-moyenne-page-pad-top: 48px;
   --gc-d-moyenne-page-pad-bottom: 52px;
-  --gc-d-loin-book-x: 210px;
+  --gc-d-loin-book-x: 174px;
   --gc-d-loin-book-y: 96px;
-  --gc-d-loin-page-w: 750px;
+  --gc-d-loin-page-w: 786px;
   --gc-d-loin-page-h: 888px;
   --gc-d-loin-page-pad-outer: 52px;
   --gc-d-loin-page-pad-spine: 44px;
