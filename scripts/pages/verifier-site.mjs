@@ -1,3 +1,5 @@
+// (Historique, lot N3 — la vérification complète du site est scripts/verify-site.mjs : #lisa, mp4 en 206,
+// photo, iPhone 13 + ordinateur 1440 + TV 1080, rapport et planche.)
 // Vérifie le site construit (vite build) avec les pages cuites : iPhone 13 portrait et ordinateur
 // 1440 × 900, liens profonds #julie et #rose ; aucune erreur de page, aucune requête en échec (404),
 // toutes les images des pages cuites décodées. Captures dans <out>/site-*.png.

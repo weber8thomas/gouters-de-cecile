@@ -10,7 +10,8 @@
      actifs (#julie, #rose…).
      Options : ?b=dist/ds-r1/components (bundle) · &insets=haut,droite,bas,gauche (encoches simulées, px)
                · &reduit (moins de mouvement, comme prefers-reduced-motion : géré par le navigateur).
-     Instrumentation : window.__gcDevices { ready, gestes[], actifs[], attendreCalme(), etat() }. -->
+     Instrumentation : window.__gcDevices { ready, gestes[], actifs[], attendreCalme(), etat() } ;
+     etat() : { double, cote, cadrage, hash, soulever, photo, menu }. -->
 <link rel="stylesheet" href="../design-system/tokens.css">
 <style>
   html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; background-color: var(--gc-wood-3); }
@@ -50,16 +51,20 @@
     };
     tick();
   });
-  // État lisible par les tests : double page, côté, cadrage, lecture de Julie.
+  // État lisible par les tests : double page, côté, cadrage, calque « soulever » (CONTRACT § 12.3 :
+  // ouvert | ferme, null s'il n'est pas encore intégré), photo posée sur une page visible, menu de réglages.
   D.etat = () => {
     const s = document.querySelector('.gc-livre-ecran');
-    const cloche = document.querySelector('.gc-livre__page--visible .gc-sj-cloche');
+    const sv = document.querySelector('[data-gc-soulever]');
+    const pan = document.querySelector('[data-gc-reglages="panneau"]');
     return {
       double: s ? Number(s.getAttribute('data-gc-double')) : null,
       cote: s ? s.getAttribute('data-gc-cote') : null,
       cadrage: s ? s.getAttribute('data-gc-cadrage') : null,
-      lecture: cloche ? cloche.getAttribute('data-state') : null,
       hash: location.hash,
+      soulever: sv ? sv.getAttribute('data-gc-soulever') : null,
+      photo: !!document.querySelector('.gc-livre__page--visible [data-gc-objet="photo"]'),
+      menu: !!pan && !pan.hidden && pan.getClientRects().length > 0,
     };
   };
   const ins = (q.get('insets') || '').split(',').map(Number);

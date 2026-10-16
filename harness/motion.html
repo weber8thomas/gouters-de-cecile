@@ -12,7 +12,11 @@
        ?scenario=zoom     zoom fin à 0,95 → on revient à 1
        ?scenario=pose&index=1&vers=2&p=0.5   tourne-page figé (captures à mi-geste)
      Options : &b=dist/ds-s4/components (bundle), &distance=proche|moyenne|loin, &index=N,
-               &tables=bois (toutes les tables en bois), &zoom=1.05, &persp=K (perspective = K largeurs de page, essais).
+               &zoom=1.05, &persp=K (perspective = K largeurs de page, essais). La table est toujours en bois.
+               &photo=1 : une photo collée sur la page gauche des doubles pages vidéo (scénario « turn-photo »
+               de fps.mjs) — le composant PhotoCollee s'il est dans le bundle et accepte { src }, sinon un
+               tirage factice (<img> sépia de verification/out/t/media, bord blanc, de travers,
+               [data-gc-objet="photo"]) : ce qui compte pour la mesure, c'est une image de plus sur la feuille.
      Instrumentation : window.__gcMotion { ready, arm(), waitEnd(type) } ; chaque début et fin
      de geste (événement « gc-livre-geste ») pose performance.mark('gc-geste-<phase>-<type>'). -->
 <link rel="stylesheet" href="../design-system/tokens.css">
@@ -35,6 +39,8 @@
   .demo-sur { margin: 0; color: var(--gc-chocolate); }
   .demo-titre { margin: 0; color: var(--gc-ink-title); }
   .demo-de { margin: 0; color: var(--gc-ink-title); }
+  .demo-photo { position: absolute; left: 14%; top: 16%; width: 64%; aspect-ratio: 16 / 9; padding: 2.4%; background: #fbf8f1; box-shadow: 0 1px 3px #0005; transform: rotate(-2.5deg); }
+  .demo-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 </style>
 <script src="../node_modules/react/umd/react.production.min.js"></script>
 <script src="../node_modules/react-dom/umd/react-dom.production.min.js"></script>
@@ -75,7 +81,11 @@
     ['Far breton,', 'les pruneaux au fond du plat.'], ['Gâteau au yaourt,', 'le pot sert de mesure.'],
     ['Chouquettes,', 'le sucre perlé qui craque.'], ['Fin du goûter :', 'merci d’être venus !'],
   ];
-  const page = (num) => {
+  const PHOTO = q.get('photo') === '1';
+  const TIRAGE = '../verification/out/t/media/essai-sepia.webp';
+  const photo = () => h('div', { className: 'demo-photo', 'data-gc-objet': 'photo', role: 'button', tabIndex: 0, 'aria-label': 'Vidéo' },
+    h('img', { src: TIRAGE, alt: '', decoding: 'async' }));
+  const page = (num, avecPhoto = false) => {
     const i = num - 1;
     return h('div', { className: 'demo-page' },
       h('div', { className: 'demo-visuel' },
@@ -84,15 +94,14 @@
           borderRadius: FORMES[i % FORMES.length],
           transform: `rotate(${((i % 3) - 1) * 2.5}deg)`,
         } }),
-        h('p', { className: 'gc-hand-body demo-num' }, String(num))),
+        avecPhoto ? photo() : h('p', { className: 'gc-hand-body demo-num' }, String(num))),
       h('p', { className: 'gc-hand-body demo-ligne' }, TEXTES[i][0]),
       h('p', { className: 'gc-hand-body demo-ligne' }, TEXTES[i][1]));
   };
   const KINDS = ['video', 'recette', 'video', 'deux-recettes', 'intercalaire', 'finale'];
-  const TABLES = q.get('tables') === 'bois' ? KINDS.map(() => 'bois') : ['bois', 'nappe', 'bois', 'nappe', 'nappe', 'bois'];
   const spreads = KINDS.map((kind, s) => ({
-    id: 'demo-' + s, kind, table: TABLES[s], folios: [2 * s + 1, 2 * s + 2],
-    render: () => ({ left: page(2 * s + 1), right: page(2 * s + 2) }),
+    id: 'demo-' + s, kind, folios: [2 * s + 1, 2 * s + 2],
+    render: () => ({ left: page(2 * s + 1, PHOTO && kind === 'video'), right: page(2 * s + 2) }),
   }));
   const cover = h('div', { className: 'demo-etiquette' },
     h('p', { className: 'gc-hand-caption demo-sur' }, 'carnet de recettes'),
