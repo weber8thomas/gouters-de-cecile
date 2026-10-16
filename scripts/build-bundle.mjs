@@ -6,7 +6,7 @@
 //
 //   node scripts/build-bundle.mjs                         → dist/ds/components (tout)
 //   node scripts/build-bundle.mjs --target artifact                 → URL des images en /_blob/<id>
-//   node scripts/build-bundle.mjs --only Ecrin,Scene --boards P00Specimen --tag f3
+//   node scripts/build-bundle.mjs --only Livre,Stage --boards DemoCarnet --tag f3
 //                                                         → dist/ds-f3/components (build isolé :
 //     seuls ces composants et artboards, registres régénérés dans dist/ds-f3/gen)
 import { build } from 'esbuild';
@@ -34,7 +34,7 @@ const redirectGenerated = {
   name: 'generated-dir',
   setup(b) {
     if (!isolated) return;
-    b.onResolve({ filter: /generated\/(components|ecrins|illustrations|assets)\.gen$/ }, (a) => ({ path: join(genDir, a.path.split('/').pop() + '.ts') }));
+    b.onResolve({ filter: /generated\/(components|assets)\.gen$/ }, (a) => ({ path: join(genDir, a.path.split('/').pop() + '.ts') }));
   },
 };
 
@@ -91,5 +91,5 @@ writeFileSync(jsPath, header + js);
 
 const kb = (p) => (existsSync(p) ? (readFileSync(p).length / 1024).toFixed(0) : '0');
 if (readFileSync(jsPath).length > BUDGET) { console.error(`bundle.js dépasse le budget de ${BUDGET / 1048576} Mo`); process.exitCode = 1; }
-console.log(`${out.replace(root + '/', '')} [${target}] : bundle.js ${kb(jsPath)} Ko · bundle.css ${kb(join(out, 'bundle.css'))} Ko · ${gen.comps.length} composants · ${gen.boards.length} artboards · ${gen.ecrins} écrins · ${gen.illustrations} illustrations · ${gen.assets} images`);
+console.log(`${out.replace(root + '/', '')} [${target}] : bundle.js ${kb(jsPath)} Ko · bundle.css ${kb(join(out, 'bundle.css'))} Ko · ${gen.comps.length} composants · ${gen.boards.length} artboards · ${gen.assets} images`);
 if (result.warnings.length) console.warn(`${result.warnings.length} avertissement(s) esbuild`);

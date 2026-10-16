@@ -73,7 +73,7 @@ Les répétitions d'une touche maintenue sont ignorées ; Ctrl/Cmd/Alt + flèche
 Ecran (.gc-ecran, plein écran ; contexte : fenêtre, cadrage, calque des contrôles)
 ├─ .gc-livre-ecran            surface des gestes (tout l'écran)
 │  └─ .gc-livre-monde         translate + scale (écran ← scène), origine 0 0 ; calque composité en cadrage page
-│     └─ Stage debord=…        table et lumière prolongées hors de la scène (multiple de 48 px)
+│     └─ Stage debord=…        table et lumière prolongées hors de la scène
 │        └─ Camera …          (inchangé ; zoom fin = 1 quand la caméra est fixe)
 └─ .gc-ecran__controles       px d'écran : flèches, points de page, repère (portail du livre), plein écran
 ```
@@ -91,7 +91,7 @@ Ecran (.gc-ecran, plein écran ; contexte : fenêtre, cadrage, calque des contr�
 ## Architecture du tourne-page
 
 ```
-Stage (cran, table de la double page affichée ; overlay : repère + flèches)
+Stage (cran, table en bois ; overlay : repère + flèches)
 └─ Camera  .gc-livre-camera   scale(zoom) sur SPRINGS.camera ; porte --gc-livre-perspective
    └─ .gc-livre               position du livre (--gc-book-x/y), 2 × --gc-page-w
       ├─ .gc-livre__corps     ombres, cartons, tranches, emplacements fixes, filet, ombres portées
@@ -109,7 +109,7 @@ Stage (cran, table de la double page affichée ; overlay : repère + flèches)
 - **Moteur** : une cible (`index` ou clavier). Appui pendant un geste → si la cible change de côté, le ressort est **relancé** vers 0 ou 1 en gardant sa vitesse ; sinon le geste continue et, à l'atterrissage, un seul nouveau geste va directement à la cible (pas de pile). La couverture s'ouvre toujours sur la première double page (et s'y referme).
 - **Pré-rendu** : la double page affichée (`live`) et ses voisines −1 / +1 (`static`, `RenderModeContext`) restent montées et mises en page, invisibles. Avant de lancer un geste : `img.decode()` + `document.fonts.ready` (300 ms au plus), puis attente d'une **cadence stable** (≥ 5 images dont 3 régulières) : les calques du feuillet sont rastérisés avant le mouvement, jamais pendant.
 - **Caméra** : le cran (`useCamera().distance`) est passé à `<Stage distance>` (vraie mise en page) via `document.startViewTransition(() => flushSync(…))` ; le livre et ses deux pages visibles portent `gc-livre`, `gc-livre-gauche`, `gc-livre-droite` le temps de la transition (glissement sur la courbe `--gc-spring-camera`, fondu des images deux fois plus court). Repli sans View Transitions : fondu sortant/entrant sur `SPRINGS.camera`. Le zoom fin est un `scale` de la caméra sur `SPRINGS.camera`, sans mise en page.
-- **Table** : nappe ↔ bois change en fondu enchaîné (transition de vue sur la racine) à l'atterrissage.
+- **Table** : toujours le bois (plan v3) ; elle ne change jamais d'une double page à l'autre.
 - **Repère** : étiquette `gc-hand-caption` (`--gc-ink` sur `--gc-paper-lace`, ombre `--gc-sh-lift`), posée de biais en bas à gauche : « loin · 97 % », apparaît au réglage et s'efface en 1,5 s.
 - **Moins de mouvement** (`prefers-reduced-motion`) : aucun feuillet, aucune courbure ; changement de page en fondu enchaîné court (transition de vue, 250 ms) ; zoom fin immédiat.
 
@@ -129,7 +129,7 @@ Stage (cran, table de la double page affichée ; overlay : repère + flèches)
 - Pas de tri 3D entre plans non coplanaires qui se touchent (carton + chant dans un même contexte 3D) ; ne pas transformer le parent commun du corps et de l'espace 3D (il faudrait aplatir tout le livre à chaque image) ; les ombres portées ne font que glisser (une échelle changerait leur zone de découpe et forcerait une repeinture).
 - Perspective du papier = 10 largeurs de page (≈ 8 500 px au cran moyen) : à mi-geste, le bord libre ne grandit que de 11 % (mesuré ×1,108) ; à 2 400 px il grossissait de 50 % et sortait de la scène. Le relief que la perspective n'apporte plus est porté par l'ombrage (voiles 30 % / 38 %) et l'ombre portée.
 - ≤ 40 calques (37 au plus mesurés pendant un tourne-page).
-- Chaque geste émet `gc-livre-geste` (`{ phase: 'prepa' | 'debut' | 'fin', type: 'page' | 'couverture' | 'zoom' | 'distance' | 'table' | 'fondu' | 'glisse' | 'rebond' }`), en bulle jusqu'au document.
+- Chaque geste émet `gc-livre-geste` (`{ phase: 'prepa' | 'debut' | 'fin', type: 'page' | 'couverture' | 'zoom' | 'distance' | 'fondu' | 'glisse' | 'rebond' }`), en bulle jusqu'au document.
 - Au doigt, aucun rendu React pendant le glisser : le feuillet est monté à l'amorce (4 px), puis `p.set()` à chaque `pointermove` ; le lâcher relance le ressort (aucun rendu non plus).
 
 ## Vérifier

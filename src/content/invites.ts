@@ -3,7 +3,7 @@
 // petit mot ≤ 90 car. Vocabulaire de cuisine français : « th. 6 (180 °C) », « 1 c. à s. ».
 import type { Guest } from './types';
 
-export type GuestText = Pick<Guest, 'recipe' | 'note' | 'signature' | 'ink'>;
+export type GuestText = Pick<Guest, 'recipe' | 'note' | 'signature'>;
 
 export const TEXTS: Record<string, GuestText> = {
   julie: {
@@ -31,6 +31,5 @@ export const TEXTS: Record<string, GuestText> = {
     },
     note: 'Pour toutes nos pauses goûter à refaire le monde. Joyeux anniversaire ma Cécile !',
     signature: 'Julie',
-    ink: 'night',
   },
 };

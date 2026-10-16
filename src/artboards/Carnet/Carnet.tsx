@@ -1,13 +1,13 @@
 // Le carnet, tel que les invités l'ouvrent : sur téléphone, tablette, ordinateur ou TV (CONTRACT § 11).
-// CameraProvider + Ecran (plein écran, cadrage « double » ou « page ») + Livre + lecture simulée de
-// Julie, avec les doubles pages de la démo. Racine de l'application (index.html → src/app/main.tsx)
-// et de la page autonome (harness/devices.html : React UMD + bundle.js, Artboards.Carnet).
+// CameraProvider + Ecran (plein écran, cadrage « double » ou « page ») + Livre, avec les doubles pages
+// de la démo. Racine de l'application (index.html → src/app/main.tsx) et de la page autonome
+// (harness/devices.html : React UMD + bundle.js, Artboards.Carnet).
 import React from 'react';
 import { Ecran } from '../../components/Ecran';
 import { Livre } from '../../components/Livre';
 import { CameraProvider } from '../../lib/camera';
 import { ViewportOverride, type ViewportForce } from '../../lib/viewport';
-import { COUVERTURE, LectureJulie, SPREADS_DEMO, toucherCloche, type LectureApi } from '../DemoCarnet/spreads';
+import { COUVERTURE, SPREADS_DEMO } from '../DemoCarnet/spreads';
 import { indexDuLien, useLienProfond } from './liens';
 
 export interface CarnetProps {
@@ -49,24 +49,13 @@ export function Carnet({ ecran, liens = false, depart = -1, coteInitial }: Carne
     return depart;
   });
   useLienProfond(liens, spreads, index, setIndex);
-  const lecture = React.useRef<LectureApi | null>(null);
 
   const carnet = (
-    <LectureJulie actif={index === 0} apiRef={lecture}>
-      <CameraProvider keyboard persist={!simule} fixed={simule && ecran?.tactile ? { distance: 'proche' } : undefined}>
-        <Ecran pleinEcran>
-          <Livre
-            spreads={spreads}
-            index={index}
-            onIndexChange={setIndex}
-            keyboard
-            cover={COUVERTURE}
-            coteInitial={coteInitial}
-            onToucherPage={(t) => toucherCloche(t, lecture.current)}
-          />
-        </Ecran>
-      </CameraProvider>
-    </LectureJulie>
+    <CameraProvider keyboard persist={!simule} fixed={simule && ecran?.tactile ? { distance: 'proche' } : undefined}>
+      <Ecran pleinEcran>
+        <Livre spreads={spreads} index={index} onIndexChange={setIndex} keyboard cover={COUVERTURE} coteInitial={coteInitial} />
+      </Ecran>
+    </CameraProvider>
   );
   return ecran ? <ViewportOverride.Provider value={ecran}>{carnet}</ViewportOverride.Provider> : carnet;
 }

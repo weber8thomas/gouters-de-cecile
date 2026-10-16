@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "npm run gen && node scripts/gen-entry.mjs --target site && vite",
     "tokens": "node scripts/gen-springs.mjs && node scripts/build-tokens.mjs --report",
-    "gen": "node scripts/gen-svg.mjs && node scripts/gen-entry.mjs",
+    "gen": "node scripts/gen-entry.mjs",
     "typecheck": "node scripts/gen-entry.mjs && tsc --noEmit",
     "bundle": "node scripts/assets.mjs && node scripts/build-bundle.mjs",
     "build": "node scripts/build-tokens.mjs && npm run gen && tsc --noEmit && node scripts/build-bundle.mjs && vite build",

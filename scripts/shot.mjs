@@ -1,5 +1,5 @@
 // Capture une ou plusieurs cartes du design system dans le banc d'essai.
-//   node scripts/shot.mjs src/components/Ecrin/preview.html [autre.html…] [--w 1920] [--h 1080] [--dpr 1] [--out verification/out]
+//   node scripts/shot.mjs src/components/Stage/preview.html [autre.html…] [--w 1920] [--h 1080] [--dpr 1] [--out verification/out]
 //     [--bundle dist/ds-f3/components]  (bundle isolé construit avec build-bundle.mjs --tag f3) [--full]
 // Chaque capture est écrite dans <out>/<Dossier>.png ; les erreurs de la page sont affichées.
 import { mkdirSync } from 'node:fs';

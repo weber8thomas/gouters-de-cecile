@@ -3,7 +3,7 @@ import { createPortal, flushSync } from 'react-dom';
 import { Stage } from '../Stage';
 import { useEcran } from '../Ecran/contexte';
 import { useCamera } from '../../lib/camera';
-import type { Distance, TableKind } from '../../lib/settings';
+import type { Distance } from '../../lib/settings';
 import type { RenderMode, SpreadSpec } from '../../lib/spread';
 import { LazyMotion, SPRINGS, animate, domMax, m, useMotionValue, useReducedMotion, useTransform } from '../../lib/motion';
 import { cadrerDouble, cadrerPage, centrePage, debordNecessaire, partScene, translationMonde, type CadreCamera, type GeometrieLivre } from '../../lib/viewport';
@@ -99,8 +99,6 @@ interface Doigt {
   coteDepart: CotePage;
   pts: Echantillon[];
 }
-
-const tableDe = (spreads: SpreadSpec[], i: number): TableKind => (i >= 0 ? spreads[i]?.table : spreads[0]?.table) ?? 'bois';
 
 /** Lance une transition de vue (repli : application immédiate) et l'annonce comme un geste. */
 function transitionDeVue(type: GesteType, maj: () => void, livre: HTMLElement | null, nommer: boolean): void {
@@ -220,8 +218,8 @@ export function Livre({ spreads, index, onIndexChange, keyboard = false, cover, 
   zoomRef.current = vp && (vp.cadrage === 'page' || partScene(vp) < 1) ? 1 : camera.zoom;
   const modePageRef = React.useRef(modePage);
   modePageRef.current = modePage;
-  const vivant = React.useRef({ spreads, reduced, onIndexChange, onToucherPage });
-  vivant.current = { spreads, reduced, onIndexChange, onToucherPage };
+  const vivant = React.useRef({ reduced, onIndexChange, onToucherPage });
+  vivant.current = { reduced, onIndexChange, onToucherPage };
 
   React.useLayoutEffect(() => { afficheRef.current = affiche; }, [affiche]);
   React.useEffect(() => () => { animSeq.current++; animRef.current?.stop(); glisseSeq.current++; glisseAnim.current?.stop(); }, []);
@@ -260,11 +258,10 @@ export function Livre({ spreads, index, onIndexChange, keyboard = false, cover, 
     afficheRef.current = nouvel;
     coteRef.current = coteNouveau;
     glisse.set(X(nouvel, coteNouveau));
-    const appliquer = () => { setAffiche(nouvel); setTour(null); setCote(coteNouveau); };
-    const { spreads: sp, reduced: rm, onIndexChange: cb } = vivant.current;
-    // Nappe ↔ bois : la table change en fondu enchaîné (transition de vue sur la racine).
-    if (tableDe(sp, avant) !== tableDe(sp, nouvel) && !rm) transitionDeVue('table', () => flushSync(appliquer), el, false);
-    else appliquer();
+    setAffiche(nouvel);
+    setTour(null);
+    setCote(coteNouveau);
+    const cb = vivant.current.onIndexChange;
     if (nouvel !== avant) { echo.current = nouvel; cb?.(nouvel); }
   }, [glisse, X]);
 
@@ -883,10 +880,6 @@ export function Livre({ spreads, index, onIndexChange, keyboard = false, cover, 
     );
   }
 
-  const table = tableDe(spreads, affiche);
-  const setTable = ecran?.setTable;
-  // (effet de mise en page : dans la même transition de vue que la table, nappe ↔ bois)
-  React.useLayoutEffect(() => { setTable?.(table); }, [setTable, table]);
   const annonce = affiche === -1
     ? 'Carnet fermé'
     : `Double page ${affiche + 1} sur ${n}${modePage ? `, page de ${cote}` : ''}`;
@@ -931,7 +924,6 @@ export function Livre({ spreads, index, onIndexChange, keyboard = false, cover, 
   const scene = (
     <Stage
       distance={distance}
-      table={table}
       debord={enEcran ? debord : 0}
       className={['gc-livre-scene', className].filter(Boolean).join(' ')}
       overlay={enEcran ? undefined : (
@@ -976,7 +968,6 @@ export function Livre({ spreads, index, onIndexChange, keyboard = false, cover, 
     ? createPortal(
       <div
         className="gc-livre-commandes"
-        data-gc-table={table}
         data-gc-sur={placeFleches.papier ? 'papier' : undefined}
         style={placeFleches.place === 'cotes' ? ({ '--gc-livre-bande': `${Math.round(placeFleches.bande)}px` } as React.CSSProperties) : undefined}
       >

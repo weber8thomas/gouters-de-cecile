@@ -1,6 +1,6 @@
 // Inventaire des images cuites (design-system/baked/**) → design-system/assets.json
 //   { "<nom logique>": { "file": "baked/…", "sha": "<sha256>", "w": 1024, "h": 1024, "bytes": 12345, "type": "image/webp" } }
-// Le nom logique est le chemin sous baked/ sans extension : « paper/base », « ecrins/cloche/a/front ».
+// Le nom logique est le chemin sous baked/ sans extension : « paper/base », « pages/julie-gauche ».
 // Utilisé par build-bundle (manifeste d'URL par cible) et par le téléversement vers l'artifact.
 import { readdirSync, statSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join, relative, extname, dirname } from 'node:path';

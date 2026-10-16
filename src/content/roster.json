@@ -2,28 +2,23 @@
   "chapters": [
     {
       "id": "gateaux",
-      "title": "Gâteaux & cakes",
-      "ecrin": "cloche"
+      "title": "Gâteaux & cakes"
     },
     {
       "id": "biscuits",
-      "title": "Biscuits",
-      "ecrin": "napperon"
+      "title": "Biscuits"
     },
     {
       "id": "tartes",
-      "title": "Tartes & confitures",
-      "ecrin": "etiquette"
+      "title": "Tartes & confitures"
     },
     {
       "id": "boissons",
-      "title": "Boissons chaudes",
-      "ecrin": "assiette"
+      "title": "Boissons chaudes"
     },
     {
       "id": "crepes",
-      "title": "Crêpes & gaufres",
-      "ecrin": "polaroid"
+      "title": "Crêpes & gaufres"
     }
   ],
   "guests": [
@@ -43,19 +38,9 @@
       "firstName": "Julie",
       "city": "Lyon",
       "chapter": "gateaux",
-      "look": {
-        "skin": 2,
-        "hair": 2,
-        "hairStyle": "carre",
-        "top": "gc-terracotta-300"
-      },
       "video": {
-        "ecrin": "cloche",
-        "variant": "a",
         "caption": "Julie, depuis Lyon",
-        "duration": 42,
-        "liquid": "the",
-        "scene": "julie"
+        "duration": 42
       }
     },
     {
@@ -63,67 +48,31 @@
       "firstName": "Hugo",
       "city": "Nantes",
       "chapter": "gateaux",
-      "look": {
-        "skin": 4,
-        "hair": 1,
-        "hairStyle": "court",
-        "beard": "barbe",
-        "top": "gc-sage-500"
-      },
       "video": {
-        "ecrin": "vitrine",
-        "variant": "a",
         "caption": "Hugo et sa tribu, depuis Nantes",
-        "duration": 55,
-        "liquid": "the",
-        "scene": "hugo-famille"
+        "duration": 55
       }
     },
     {
       "slug": "odile",
       "firstName": "Odile",
       "city": "Annecy",
-      "chapter": "gateaux",
-      "look": {
-        "skin": 1,
-        "hair": 6,
-        "hairStyle": "chignon",
-        "glasses": true,
-        "top": "gc-pink-300",
-        "age": "aine"
-      }
+      "chapter": "gateaux"
     },
     {
       "slug": "karim",
       "firstName": "Karim",
       "city": "Marseille",
-      "chapter": "gateaux",
-      "look": {
-        "skin": 4,
-        "hair": 1,
-        "hairStyle": "boucle-court",
-        "beard": "barbe",
-        "top": "gc-honey-300"
-      }
+      "chapter": "gateaux"
     },
     {
       "slug": "lea",
       "firstName": "Léa",
       "city": "Bordeaux",
       "chapter": "biscuits",
-      "look": {
-        "skin": 3,
-        "hair": 1,
-        "hairStyle": "long-boucle",
-        "top": "gc-sage-300"
-      },
       "video": {
-        "ecrin": "napperon",
-        "variant": "a",
         "caption": "Léa, depuis Bordeaux",
-        "duration": 38,
-        "liquid": "the",
-        "scene": "lea"
+        "duration": 38
       }
     },
     {
@@ -131,66 +80,31 @@
       "firstName": "Mathis",
       "city": "Lille",
       "chapter": "biscuits",
-      "look": {
-        "skin": 1,
-        "hair": 4,
-        "hairStyle": "court",
-        "top": "gc-terracotta-500"
-      },
       "video": {
-        "ecrin": "napperon",
-        "variant": "b",
         "caption": "Mathis, depuis Lille",
-        "duration": 31,
-        "liquid": "cafe-au-lait",
-        "scene": "mathis"
+        "duration": 31
       }
     },
     {
       "slug": "ines",
       "firstName": "Inès",
       "city": "Toulouse",
-      "chapter": "biscuits",
-      "look": {
-        "skin": 5,
-        "hair": 1,
-        "hairStyle": "queue",
-        "top": "gc-pink-500"
-      }
+      "chapter": "biscuits"
     },
     {
       "slug": "bernard",
       "firstName": "Bernard",
       "city": "Dijon",
-      "chapter": "biscuits",
-      "look": {
-        "skin": 2,
-        "hair": 6,
-        "hairStyle": "degarni",
-        "beard": "moustache",
-        "glasses": true,
-        "top": "gc-sage-700",
-        "age": "aine"
-      }
+      "chapter": "biscuits"
     },
     {
       "slug": "camille",
       "firstName": "Camille",
       "city": "Strasbourg",
       "chapter": "tartes",
-      "look": {
-        "skin": 2,
-        "hair": 5,
-        "hairStyle": "frange",
-        "top": "gc-sage-500"
-      },
       "video": {
-        "ecrin": "etiquette",
-        "variant": "a",
         "caption": "Camille, depuis Strasbourg",
-        "duration": 47,
-        "liquid": "the",
-        "scene": "camille"
+        "duration": 47
       }
     },
     {
@@ -198,64 +112,31 @@
       "firstName": "Antoine",
       "city": "Grenoble",
       "chapter": "tartes",
-      "look": {
-        "skin": 3,
-        "hair": 2,
-        "hairStyle": "court",
-        "beard": "barbe",
-        "top": "gc-honey-500"
-      },
       "video": {
-        "ecrin": "etiquette",
-        "variant": "b",
         "caption": "Antoine, depuis Grenoble",
-        "duration": 36,
-        "liquid": "cafe-au-lait",
-        "scene": "antoine"
+        "duration": 36
       }
     },
     {
       "slug": "sophie",
       "firstName": "Sophie",
       "city": "Tours",
-      "chapter": "tartes",
-      "look": {
-        "skin": 1,
-        "hair": 3,
-        "hairStyle": "carre",
-        "top": "gc-terracotta-100"
-      }
+      "chapter": "tartes"
     },
     {
       "slug": "yasmine",
       "firstName": "Yasmine",
       "city": "Montpellier",
-      "chapter": "tartes",
-      "look": {
-        "skin": 4,
-        "hair": 1,
-        "hairStyle": "foulard",
-        "top": "gc-pink-500"
-      }
+      "chapter": "tartes"
     },
     {
       "slug": "elise",
       "firstName": "Élise",
       "city": "Paris",
       "chapter": "boissons",
-      "look": {
-        "skin": 6,
-        "hair": 1,
-        "hairStyle": "boucle-court",
-        "top": "gc-honey-300"
-      },
       "video": {
-        "ecrin": "assiette",
-        "variant": "a",
         "caption": "Élise, depuis Paris",
-        "duration": 40,
-        "liquid": "chocolat",
-        "scene": "elise"
+        "duration": 40
       }
     },
     {
@@ -263,67 +144,31 @@
       "firstName": "Rose",
       "city": "Vannes",
       "chapter": "boissons",
-      "look": {
-        "skin": 2,
-        "hair": 6,
-        "hairStyle": "chignon",
-        "glasses": true,
-        "top": "gc-pink-300",
-        "age": "aine"
-      },
       "video": {
-        "ecrin": "tambour",
-        "variant": "a",
         "caption": "Mamie Rose, depuis Vannes",
-        "duration": 50,
-        "liquid": "the",
-        "scene": "rose"
+        "duration": 50
       }
     },
     {
       "slug": "noe",
       "firstName": "Noé",
       "city": "Rennes",
-      "chapter": "boissons",
-      "look": {
-        "skin": 2,
-        "hair": 3,
-        "hairStyle": "court",
-        "top": "gc-sage-300"
-      }
+      "chapter": "boissons"
     },
     {
       "slug": "paul",
       "firstName": "Paul",
       "city": "Biarritz",
-      "chapter": "boissons",
-      "look": {
-        "skin": 3,
-        "hair": 6,
-        "hairStyle": "court",
-        "beard": "barbe",
-        "top": "gc-terracotta-300",
-        "age": "aine"
-      }
+      "chapter": "boissons"
     },
     {
       "slug": "margaux",
       "firstName": "Margaux",
       "city": "Brest",
       "chapter": "crepes",
-      "look": {
-        "skin": 1,
-        "hair": 4,
-        "hairStyle": "tresse",
-        "top": "gc-pink-300"
-      },
       "video": {
-        "ecrin": "polaroid",
-        "variant": "a",
         "caption": "Margaux, depuis Brest",
-        "duration": 33,
-        "liquid": "cafe-au-lait",
-        "scene": "margaux"
+        "duration": 33
       }
     },
     {
@@ -331,45 +176,22 @@
       "firstName": "Lucas",
       "city": "Bruxelles",
       "chapter": "crepes",
-      "look": {
-        "skin": 5,
-        "hair": 1,
-        "hairStyle": "court",
-        "top": "gc-sage-500"
-      },
       "video": {
-        "ecrin": "polaroid",
-        "variant": "b",
         "caption": "Lucas, depuis Bruxelles",
-        "duration": 44,
-        "liquid": "chocolat",
-        "scene": "lucas"
+        "duration": 44
       }
     },
     {
       "slug": "anais",
       "firstName": "Anaïs",
       "city": "Caen",
-      "chapter": "crepes",
-      "look": {
-        "skin": 3,
-        "hair": 2,
-        "hairStyle": "queue",
-        "top": "gc-honey-100"
-      }
+      "chapter": "crepes"
     },
     {
       "slug": "victor",
       "firstName": "Victor",
       "city": "Clermont-Ferrand",
-      "chapter": "crepes",
-      "look": {
-        "skin": 2,
-        "hair": 2,
-        "hairStyle": "court",
-        "glasses": true,
-        "top": "gc-terracotta-500"
-      }
+      "chapter": "crepes"
     }
   ]
 }

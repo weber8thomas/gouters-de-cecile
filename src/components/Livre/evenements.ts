@@ -6,7 +6,7 @@ export const GESTE_EVENT = 'gc-livre-geste';
 /** prepa : appui pris en compte (captures d'une transition de vue) ; debut / fin : le mouvement visible. */
 export type GestePhase = 'prepa' | 'debut' | 'fin';
 /** glisse : la caméra passe d'une page à l'autre (cadrage « page ») ; rebond : butée au doigt. */
-export type GesteType = 'page' | 'couverture' | 'zoom' | 'distance' | 'table' | 'fondu' | 'glisse' | 'rebond';
+export type GesteType = 'page' | 'couverture' | 'zoom' | 'distance' | 'fondu' | 'glisse' | 'rebond';
 export interface GesteDetail {
   phase: GestePhase;
   type: GesteType;

@@ -20,7 +20,7 @@ export function assetInfo(name: string): AssetInfo | undefined {
   return ASSETS[name];
 }
 
-/** URL d'une image cuite par son nom logique (« paper/base », « ecrins/cloche/a/front »). */
+/** URL d'une image cuite par son nom logique (« paper/base », « pages/julie-gauche »). */
 export function assetUrl(name: string): string {
   const info = ASSETS[name];
   if (!info) {

@@ -163,8 +163,7 @@ export function cadrerDouble(vp: Pick<Viewport, 'w' | 'h' | 'insets'>, geo: Geom
 
 /**
  * Débord de table nécessaire (px de scène, le même des quatre côtés) pour que la table couvre tout
- * l'écran, pour chacune des abscisses de caméra possibles. Multiple de 48 px : le vichy de la nappe
- * (cellule de 48 px) garde sa phase.
+ * l'écran, pour chacune des abscisses de caméra possibles, plus une marge ; arrondi au px supérieur.
  */
 export function debordNecessaire(vp: Pick<Viewport, 'w' | 'h'>, cadre: CadreCamera, xs: number[], geo: Pick<GeometrieLivre, 'stageW' | 'stageH'>, marge = 64): number {
   if (!(cadre.s > 0)) return 0;
@@ -178,7 +177,7 @@ export function debordNecessaire(vp: Pick<Viewport, 'w' | 'h'>, cadre: CadreCame
   const bas = cadre.cy + (vp.h - cadre.oy) / cadre.s;
   d = Math.max(d, -haut, bas - geo.stageH);
   if (d <= 0) return 0;
-  return Math.ceil((d + marge) / 48) * 48;
+  return Math.ceil(d + marge);
 }
 
 /** Translation (px d'écran) qui pose le point (x, cy) de la scène en (ox, oy). */

@@ -22,10 +22,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.gc-ecran[data-gc-table="nappe"] {
-  background-color: var(--gc-linen);
-}
-
 .gc-ecran[data-gc-tactile] {
   --gc-ecran-cible: max(44px, calc(var(--gc-nav-size) * var(--gc-ecran-u)));
 }
@@ -70,10 +66,6 @@
   touch-action: manipulation;
 }
 
-.gc-ecran[data-gc-table="nappe"] .gc-ecran__plein {
-  color: var(--gc-ink);
-}
-
 .gc-ecran__plein:focus {
   outline: none;
 }
@@ -113,8 +105,4 @@
 .gc-ecran__ombre path {
   stroke: color-mix(in srgb, var(--gc-wood-3) 55%, transparent);
   stroke-width: 3.2;
-}
-
-.gc-ecran[data-gc-table="nappe"] .gc-ecran__ombre path {
-  stroke: color-mix(in srgb, var(--gc-ink) 14%, transparent);
 }

@@ -1,18 +1,6 @@
 {
   "serif": "playfair",
-  "tables": {
-    "bois": [
-      "pages vidéo",
-      "couverture",
-      "page finale"
-    ],
-    "nappe": [
-      "recette seule",
-      "deux recettes",
-      "intercalaires",
-      "sommaire"
-    ]
-  },
+  "table": "bois",
   "avantLecture": "sepia",
   "date": "2026-10-16"
 }

@@ -36,9 +36,8 @@
         h('p', { className: 'gc-hand-body demo-ligne' }, TEXTES[i][0]),
         h('p', { className: 'gc-hand-body demo-ligne' }, TEXTES[i][1]));
     }
-    var TABLES = ['bois', 'nappe', 'bois', 'nappe'];
-    var spreads = TABLES.map(function (table, s) {
-      return { id: 'demo-' + s, kind: 'video', table: table, folios: [2 * s + 1, 2 * s + 2], render: function () { return { left: page(2 * s + 1), right: page(2 * s + 2) }; } };
+    var spreads = [0, 1, 2, 3].map(function (s) {
+      return { id: 'demo-' + s, kind: 'video', folios: [2 * s + 1, 2 * s + 2], render: function () { return { left: page(2 * s + 1), right: page(2 * s + 2) }; } };
     });
     function Appareil(props) {
       var st = React.useState(0);

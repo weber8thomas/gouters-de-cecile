@@ -54,12 +54,10 @@
         h('p', { className: 'gc-hand-body demo-ligne' }, TEXTES[i][1]));
     }
     var KINDS = ['video', 'recette', 'video', 'deux-recettes', 'intercalaire', 'finale'];
-    var TABLES = ['bois', 'nappe', 'bois', 'nappe', 'nappe', 'bois'];
     var spreads = KINDS.map(function (kind, s) {
       return {
         id: 'demo-' + s,
         kind: kind,
-        table: TABLES[s],
         folios: [2 * s + 1, 2 * s + 2],
         render: function () { return { left: page(2 * s + 1), right: page(2 * s + 2) }; },
       };

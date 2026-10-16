@@ -1,4 +1,4 @@
-Le carnet numérique de recettes de goûter offert à Cécile pour son anniversaire. Il est projeté sur une TV 16:9, sur une scène fixe de 1920×1080 vue à 3 m, puis imprimé en A5. Chaque écran est un livre ouvert posé sur une table : papier crème, encre chocolat, lumière dorée de fin d'après-midi. Tout ce qui est décrit ici sert ce seul but : qu'une vingtaine de proches se reconnaissent, à distance, dans un objet tendre et fait main.
+Le carnet numérique de recettes de goûter offert à Cécile pour son anniversaire. Il est projeté sur une TV 16:9, sur une scène fixe de 1920×1080 vue à 3 m, puis imprimé en A5. Chaque écran est un livre ouvert posé sur une table en bois (la seule table du carnet) : papier crème, encre chocolat, lumière dorée de fin d'après-midi. Tout ce qui est décrit ici sert ce seul but : qu'une vingtaine de proches se reconnaissent, à distance, dans un objet tendre et fait main.
 
 ## Contenu et ton
 
@@ -7,6 +7,7 @@ Le carnet numérique de recettes de goûter offert à Cécile pour son anniversa
 - Titres de recette : « Le cake citron de Julie », « Les sablés de Léa ». Article, plat, prénom. Pas de majuscules décoratives.
 - Petits mots : la voix de l'invité, signés de son prénom. 90 caractères au plus.
 - Légendes de vidéo : « Prénom, depuis Ville » (« Julie, depuis Lyon »).
+- Recettes reçues : gardées mot pour mot (`src/content/recettes/<slug>.txt`) ; la version structurée liste ses adaptations. On ne réécrit pas les recettes.
 - Typographie française : espace insécable avant « : », espace fine insécable avant « ; ! ? », guillemets « » avec espaces insécables. Une quantité reste collée à son unité (« 200 g », « 180 °C »). Le contenu passe par `frTypo` (dans `src/lib/typo.ts`).
 - Pas d'emoji, pas de logo, pas de marque.
 
@@ -25,17 +26,16 @@ Si le texte déborde, raccourcis-le. Ne descends jamais sous les tailles de la g
 
 ### Couleur
 
-- Le fond de page est toujours `gc-paper`. Les objets en papier blanc cassé (napperon, Polaroid, cartes) utilisent `gc-paper-lace`, les tissus `gc-linen`.
+- Le fond de page est toujours `gc-paper`. Les objets en papier blanc cassé (bord des tirages photo, cartes) utilisent `gc-paper-lace` ; `gc-linen` et `gc-linen-shade` teintent la toile des cartons du livre.
 - **Recettes**
   - Texte manuscrit en `gc-ink`, à 12,5:1 sur `gc-paper`.
   - Méta (temps, parts), légendes et folios en `gc-chocolate`.
   - Petits mots et signatures en `gc-ink-night`, l'encre « personnelle » de l'invité.
 - **Titres** : titres serif en `gc-ink-title` (terracotta profond, 7,4:1 sur `gc-paper`).
-- **Couleurs de décor** : `gc-terracotta-500`, `gc-pink-300`, `gc-sage-500` et `gc-honey-500` habillent le décor (vichy, washi, rubans, feuillage, dorures). Elles ne portent **jamais** de texte. Leurs variantes `-700` servent aux accents de 48 px et plus.
+- **Couleurs de décor** : `gc-terracotta-500`, `gc-pink-300`, `gc-sage-500` et `gc-honey-500` habillent le décor (scotch, coins photo, touches d'aquarelle des croquis, dorures). Elles ne portent **jamais** de texte. Leurs variantes `-700` servent aux accents de 48 px et plus.
 - **Lumière** : `gc-glow` est la lumière de fin d'après-midi, en voile très léger, venant d'en haut à gauche.
 - **Taches** : `gc-stain-tea` et `gc-stain-jam` restent dans les marges, jamais sous du texte.
-- **Avant lecture** : la gamme `gc-sepia-0` à `gc-sepia-4` sert aux images figées traitées en sépia.
-- **Personnages** : uniquement `gc-skin-1…6` et `gc-hair-1…6`. Les vêtements prennent les couleurs du décor.
+- **Avant lecture** : la gamme `gc-sepia-0` à `gc-sepia-4` sert aux tirages photo sépia, avant que la vidéo ne joue.
 
 ### Typographie
 
@@ -60,36 +60,36 @@ Si le texte déborde, raccourcis-le. Ne descends jamais sous les tailles de la g
 - Papier crème texturé, coins cornés (un ou deux par double page au plus), tranche de feuillets, ombre de reliure de `gc-gutter-shadow` de chaque côté.
 - La lumière vient d'en haut à gauche ; les ombres tombent vers le bas à droite, toujours en brun chaud :
   - `gc-sh-contact` pour ce qui est collé ;
-  - `gc-sh-lift` pour le washi, les Polaroid et les étiquettes ;
-  - `gc-sh-object` pour les écrins et la tasse ;
+  - `gc-sh-lift` pour le scotch, les tirages photo et les étiquettes ;
+  - `gc-sh-object` pour ce qui se soulève au-dessus du livre (photo, feuillet volant) ;
   - `gc-sh-book` pour le livre.
 - Rayons : `gc-radius-paper` pour les pages, `gc-radius-photo` pour les tirages, `gc-radius-tag` pour les étiquettes et cartes, `gc-radius-round` pour les vidéos rondes.
 
 ### Images et illustrations
 
-- Style unique de carnet illustré :
-  - contour à l'encre `gc-ink` légèrement irrégulier ;
-  - aplats plus un seul ton d'ombre ;
-  - hachures seulement dans les ombres ;
-  - dégradés réservés au verre, à la porcelaine et aux liquides.
+- Plus de scènes ni de personnages à l'aquarelle, plus d'écrins illustrés (cloche…), plus de tasse.
+- L'aquarelle ne sert qu'à compléter les recettes, en **croquis à la main** (simples, un peu maladroits, comme griffonnés par l'invité, avec une touche d'aquarelle), **cuits dans le papier** comme l'encre :
+  - une icône sert de puce là où l'invité avait mis un emoji, ou à côté d'un ingrédient ;
+  - un petit dessin par recette, en marge.
 - Pas de photoréalisme, pas de clip-art.
-- **Vidéos** : elles vivent dans un écrin (voir la section Écrins). Avant lecture, l'image figée est traitée comme dessinée dans le carnet. En lecture, elle passe en couleur et une tasse se remplit à la place d'une barre de progression.
+- **Vidéos** : une **photo collée** sur la page, tirage sépia à bord blanc un peu de travers, tenu par des coins photo ou du scotch jauni, avec un ▶ discret. Au toucher ou sur Entrée, elle se soulève et grandit au-dessus du livre ; la couleur revient et la vidéo joue ; à la fin, elle redescend à sa place.
+- **Recette trop longue** : la suite est écrite sur un **feuillet volant** glissé dans le carnet, dont le coin dépasse de la page droite ; on le soulève et on le retourne (recto / verso).
 
 ### Mouvement
 
 - Lent et doux :
   - changement de page en `gc-dur-page` ;
   - passage avant lecture → en lecture en `gc-dur-state` ;
-  - soulèvement de la cloche en `gc-dur-dome` ;
+  - photo et feuillet qui se soulèvent sur le ressort `SPRINGS.lift` ;
   - le tout avec la courbe `gc-ease`.
 - On n'anime que la position et l'opacité. Tout s'arrête avec `prefers-reduced-motion`.
 
 ### Interaction
 
 - La scène est projetée : aucun état au survol, aucune interface visible hormis deux flèches discrètes en bas à droite, sur la table (`gc-nav-size`, opacité `gc-nav-alpha`).
-- Pilotage au clavier ou à la télécommande : flèches et PageUp/PageDown pour tourner les pages, Entrée pour lancer la vidéo.
+- Pilotage au clavier ou à la télécommande : flèches et PageUp/PageDown pour tourner les pages, Entrée pour lancer la vidéo, ↑ pour le feuillet volant, ↓ / Échap pour reposer, M pour le menu de réglages.
 - Le focus clavier est un anneau plein `gc-honey-500` de 3 px.
 
 ## Iconographie
 
-- Pas de jeu d'icônes ni d'emoji : les rares pictogrammes (horloge, four, part de gâteau, caméra du sommaire) sont dessinés à la main à l'encre `gc-chocolate`, au même trait que les illustrations.
+- Pas de jeu d'icônes ni d'emoji : les rares pictogrammes (horloge, four, part de gâteau, caméra du sommaire) sont dessinés à la main à l'encre `gc-chocolate`, au même trait que les croquis.

@@ -1,11 +1,9 @@
 import React from 'react';
-import { SettingsContext, settingsAttrs, useSettings, type Distance, type IdleLook, type Settings, type TableKind } from '../../lib/settings';
+import { SettingsContext, settingsAttrs, useSettings, type Distance, type IdleLook, type Settings } from '../../lib/settings';
 import './Stage.css';
 
 export interface StageProps {
-  /** Fond de scène : table en bois ('bois') ou nappe en lin à carreaux vichy ('nappe'). */
-  table?: TableKind;
-  /** Aspect des écrins avant lecture. */
+  /** Aspect des images figées avant lecture. */
   idle?: IdleLook;
   /** Cran de distance de la caméra (géométrie du livre et tailles de texte). */
   distance?: Distance;
@@ -22,13 +20,13 @@ export interface StageProps {
   debord?: number;
 }
 
-// Scène fixe 1920×1080 : la table (bois ou nappe), le contenu (le livre ouvert), la lumière dorée
-// de fin d'après-midi venant d'en haut à gauche, puis un calque libre. Fournit les réglages.
-export function Stage({ table, idle, distance, fit = false, children, overlay, className, debord = 0 }: StageProps) {
+// Scène fixe 1920×1080 : la table en bois, le contenu (le livre ouvert), la lumière dorée de fin
+// d'après-midi venant d'en haut à gauche, puis un calque libre. Fournit les réglages.
+export function Stage({ idle, distance, fit = false, children, overlay, className, debord = 0 }: StageProps) {
   const parent = useSettings();
   const settings: Settings = React.useMemo(
-    () => ({ table: table ?? parent.table, idle: idle ?? parent.idle, distance: distance ?? parent.distance }),
-    [table, idle, distance, parent.table, parent.idle, parent.distance],
+    () => ({ idle: idle ?? parent.idle, distance: distance ?? parent.distance }),
+    [idle, distance, parent.idle, parent.distance],
   );
 
   const outerRef = React.useRef<HTMLDivElement>(null);
@@ -48,7 +46,7 @@ export function Stage({ table, idle, distance, fit = false, children, overlay, c
     return () => ro.disconnect();
   }, [fit]);
 
-  const cls = ['gc-stage', `gc-stage--${settings.table}`, debord > 0 && 'gc-stage--debord', className].filter(Boolean).join(' ');
+  const cls = ['gc-stage', debord > 0 && 'gc-stage--debord', className].filter(Boolean).join(' ');
   const style: React.CSSProperties & Record<string, string> = {};
   if (fit) Object.assign(style, { transform: `scale(${scale})`, transformOrigin: '0 0' });
   if (debord > 0) style['--gc-stage-debord'] = `${debord}px`;
@@ -61,7 +59,6 @@ export function Stage({ table, idle, distance, fit = false, children, overlay, c
     >
       <div className="gc-stage__table" aria-hidden="true">
         <div className="gc-stage__surface" />
-        {settings.table === 'nappe' && <div className="gc-stage__folds" />}
         <div className="gc-stage__falloff" />
       </div>
       <div className="gc-stage__content">{children}</div>

@@ -1,4 +1,4 @@
-/* Formats : cinq écrans simulés côte à côte, à la même échelle, sur une nappe de lin claire. */
+/* Formats : cinq écrans simulés côte à côte, à la même échelle, sur un fond clair (tons lin). */
 .gc-formats {
   position: relative;
   width: var(--gc-stage-w);

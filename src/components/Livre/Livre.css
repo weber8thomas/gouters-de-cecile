@@ -581,9 +581,6 @@
   outline-offset: 4px;
 }
 
-/* Sur la nappe claire, la flèche est à l'encre. */
-[data-gc-table="nappe"] .gc-livre-nav__fleche { color: var(--gc-ink); }
-
 .gc-livre-nav__trace {
   width: 44px;
   height: 40px;
@@ -614,10 +611,6 @@
 .gc-livre-nav__ombre path {
   stroke: color-mix(in srgb, var(--gc-wood-3) 55%, transparent);
   stroke-width: 3.6;
-}
-
-[data-gc-table="nappe"] .gc-livre-nav__ombre path {
-  stroke: color-mix(in srgb, var(--gc-ink) 14%, transparent);
 }
 
 /* ---- Repère de distance, sur la table ------------------------------------------------------- */
@@ -672,9 +665,7 @@
   animation-timing-function: var(--gc-spring-camera);
 }
 
-/* Nappe ↔ bois et changement de cran : la table passe en fondu enchaîné. */
-html[data-gc-livre-vt="table"]::view-transition-old(root),
-html[data-gc-livre-vt="table"]::view-transition-new(root),
+/* Changement de cran : le reste de la scène (la table) passe en fondu enchaîné. */
 html[data-gc-livre-vt="distance"]::view-transition-old(root),
 html[data-gc-livre-vt="distance"]::view-transition-new(root) {
   animation-duration: var(--gc-dur-spring-camera);
@@ -791,8 +782,6 @@ html[data-gc-livre-vt="distance"]::view-transition-new(root) {
   touch-action: manipulation;
 }
 
-[data-gc-table="nappe"] .gc-livre-points__point { color: var(--gc-ink); }
-
 .gc-livre-points__point:focus { outline: none; }
 
 .gc-livre-points__point:focus-visible {
@@ -821,10 +810,6 @@ html[data-gc-livre-vt="distance"]::view-transition-new(root) {
   stroke: color-mix(in srgb, var(--gc-wood-3) 55%, transparent);
   stroke-width: 2.4;
   transform: translate(0.8px, 1.2px);
-}
-
-[data-gc-table="nappe"] .gc-livre-points__ombre {
-  stroke: color-mix(in srgb, var(--gc-ink) 14%, transparent);
 }
 
 /* Repère de distance (cadrage « double ») : en bas à gauche, à l'échelle de l'écran. */

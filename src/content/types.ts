@@ -1,9 +1,6 @@
 // Types du contenu du carnet. Toute donnée affichée passe par ces types.
 
 export type ChapterId = 'gateaux' | 'biscuits' | 'tartes' | 'boissons' | 'crepes';
-export type EcrinId = 'cloche' | 'napperon' | 'etiquette' | 'assiette' | 'polaroid' | 'vitrine' | 'tambour';
-export type Liquid = 'the' | 'chocolat' | 'cafe-au-lait';
-export type Ink = 'night' | 'chocolat'; // ancien réglage du PetitMot (remplacé par InkId)
 
 // Une main par invité (voir design-system/tokens.json, familles « mains » et type.families)
 export type HandId = 'cecile' | 'mamie' | 'ecole' | 'soignee' | 'feutre' | 'capitales' | 'pressee';
@@ -38,7 +35,6 @@ export interface Annotation {
 export interface Chapter {
   id: ChapterId;
   title: string; // « Gâteaux & cakes »
-  ecrin: EcrinId; // écrin du chapitre
 }
 
 export interface Recipe {
@@ -51,26 +47,11 @@ export interface Recipe {
   steps: string[]; // ≤ 4 (page vidéo), ≤ 5 lignes, ≤ 180 caractères au total
 }
 
-export interface Look {
-  skin: 1 | 2 | 3 | 4 | 5 | 6; // gc-skin-N
-  hair: 1 | 2 | 3 | 4 | 5 | 6; // gc-hair-N
-  hairStyle: 'court' | 'boucle-court' | 'carre' | 'long' | 'long-boucle' | 'queue' | 'chignon' | 'tresse' | 'frange' | 'foulard' | 'degarni';
-  top: string; // nom de token couleur, ex. « gc-sage-500 »
-  glasses?: boolean;
-  beard?: 'barbe' | 'moustache';
-  age?: 'enfant' | 'adulte' | 'aine';
-}
-
 export interface Video {
   /** Identifiant de la vidéo dans src/content/videos.json (fichiers, affiche, tirage sépia, crédit). */
   id?: string;
   caption: string; // « Julie, depuis Lyon »
   duration?: number; // secondes
-  /** @deprecated écrins illustrés retirés (plan v3) ; champs supprimés par le nettoyage. */
-  ecrin?: EcrinId;
-  variant?: string;
-  liquid?: Liquid;
-  scene?: string;
 }
 
 export interface Guest {
@@ -78,13 +59,10 @@ export interface Guest {
   firstName: string;
   city: string;
   chapter: ChapterId;
-  /** @deprecated personnages illustrés retirés (plan v3). */
-  look?: Look;
   video?: Video;
   recipe?: Recipe; // rempli par le contenu (invites.ts)
   note?: string; // petit mot pour Cécile, ≤ 90 caractères
   signature?: string;
-  ink?: Ink;
   style?: GuestStyle; // main, encre, mise en page (src/content/mains.ts)
   annotations?: Annotation[];
 }

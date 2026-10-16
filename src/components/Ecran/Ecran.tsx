@@ -1,6 +1,5 @@
 import React from 'react';
 import { ViewportOverride, useViewport } from '../../lib/viewport';
-import type { TableKind } from '../../lib/settings';
 import { EcranContext, type EcranInfo } from './contexte';
 import './Ecran.css';
 
@@ -86,8 +85,7 @@ export function Ecran({ children, className, pleinEcran = true }: EcranProps) {
   const force = React.useContext(ViewportOverride);
   const simule = !!force && force.w != null && force.h != null;
   const [controles, setControles] = React.useState<HTMLDivElement | null>(null);
-  const [table, setTable] = React.useState<TableKind | null>(null);
-  const info = React.useMemo<EcranInfo>(() => ({ vp, controles, simule, setTable }), [vp, controles, simule]);
+  const info = React.useMemo<EcranInfo>(() => ({ vp, controles, simule }), [vp, controles, simule]);
 
   const u = Math.min(vp.w / SCENE.w, vp.h / SCENE.h);
   const style: Vars = {
@@ -102,7 +100,7 @@ export function Ecran({ children, className, pleinEcran = true }: EcranProps) {
   const cls = ['gc-ecran', simule && 'gc-ecran--simule', className].filter(Boolean).join(' ');
   return (
     <EcranContext.Provider value={info}>
-      <div className={cls} data-gc-cadrage={vp.cadrage} data-gc-tactile={vp.tactile ? '' : undefined} data-gc-table={table ?? undefined} style={style}>
+      <div className={cls} data-gc-cadrage={vp.cadrage} data-gc-tactile={vp.tactile ? '' : undefined} style={style}>
         {children}
         <div ref={setControles} className="gc-ecran__controles">
           {pleinEcran && vp.pleinEcran && <BoutonPleinEcran />}

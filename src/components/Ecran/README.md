@@ -45,7 +45,7 @@ Fonctions pures (testables) : `cadrageDe(w, h, avant)`, `echelleContain(cadre, z
 - **double** : la scène du cran (livre entier + la table voulue par le cran) en « contain ». Sur un grand écran (côté court ≥ 720 px), c'est exactement la composition 1920 × 1080 validée sur la TV (échelle 1 sur une TV 1080p, 2 en 4K). Sur un téléphone couché (côté court ≤ 480 px), on se rapproche jusqu'au livre seul, cartons compris, à 4 px des bords ; entre les deux, mélange linéaire. Le livre peut passer sous la barre d'accueil, jamais sous une encoche.
 - **page** : une page (`--gc-page-w × --gc-page-h` + 3 % de marge : on voit le carton, un peu de table, le bord de la page voisine), à la plus grande échelle possible dans la zone sûre.
 - **Caméra fixe** (cadrage `page`, ou `double` quand le côté court est < 720 px) : la page ou le livre remplit l'écran, le cran ne change plus le cadrage ; le livre prend la mise en page du cran « loin », la plus lisible rapportée à la page (+19 % de hauteur d'x par rapport à « proche »). Les crans (+ / −) et le zoom fin ne servent que sur un grand écran.
-- La **table** déborde jusqu'aux bords de l'écran : `Stage debord` (multiple de 48 px, phase du vichy gardée ; dessins de la table et de la lumière ancrés sur la scène, sans couture).
+- La **table** (le bois) déborde jusqu'aux bords de l'écran : `Stage debord` (dessins de la table et de la lumière ancrés sur la scène, sans couture).
 - Échelle arrondie à 4 décimales, translation au pixel physique ; `transform` seulement.
 
 ## Contrôles (px d'écran)
@@ -55,7 +55,7 @@ Posés par le livre dans le calque `.gc-ecran__controles` (portail) : flèches, 
 - Cible : `--gc-ecran-cible` = `--gc-nav-size` à l'échelle de l'écran (`--gc-ecran-u` = min(l/1920, h/1080)), jamais sous 44 px au doigt (`data-gc-tactile`), 32 px à la souris. Sur une TV 1080p : 56 px, comme dans la scène.
 - Zones sûres : `--gc-ecran-haut/droite/bas/gauche` (px) + bords à l'échelle (`--gc-ecran-bord`, `--gc-ecran-bord-bas`).
 - Aucun survol, `:focus-visible` miel, `touch-action: manipulation` sur les boutons.
-- Couleur selon la table affichée (`data-gc-table` posé par le livre) : papier sur le bois, encre sur la nappe.
+- Couleur : papier sur le bois ; encre quand les flèches doivent se poser sur la page (`data-gc-sur="papier"`, posé par le livre).
 
 ## Ce que fait la coque
 

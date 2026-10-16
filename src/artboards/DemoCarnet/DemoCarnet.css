@@ -1,13 +1,4 @@
-.gc-demo-page {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: var(--gc-space-4);
-}
-.gc-demo-illu { width: 70%; align-self: center; margin-block: var(--gc-space-5); }
-.gc-demo-signature { align-self: flex-end; margin-top: auto; margin-inline-end: var(--gc-space-6); }
+/* Étiquette de la couverture du carnet de démo. */
 .gc-demo-couverture {
   display: flex;
   flex-direction: column;

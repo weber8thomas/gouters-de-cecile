@@ -1,4 +1,4 @@
-// Textures pré-rendues du carnet : papier, bois, lin, toile de couverture.
+// Textures pré-rendues du carnet : papier, bois, toile de couverture (la nappe en lin est retirée, plan v3).
 //   node scripts/bake-textures.mjs            (npm run textures)
 //
 // Chaque texture est décrite ici en SVG (feTurbulence + feColorMatrix + feComponentTransfer),
@@ -178,7 +178,7 @@ function wood() {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Lin : trame fine et irrégulière (gc-linen / gc-linen-shade), fils flammés.
+// Toile tissée : trame fine et irrégulière (gc-linen / gc-linen-shade), fils flammés.
 function weave(name, S, { pitch, thread, slub, mottle, seed }) {
   const R = rng(seed);
   const n = S / pitch;
@@ -223,13 +223,12 @@ function weave(name, S, { pitch, thread, slub, mottle, seed }) {
   return { name, W: S, H: S, svg: doc(S, S, defs, body) };
 }
 
-const linen = () => weave('linen', 256, { pitch: 4, thread: 2.4, slub: 6, mottle: 2, seed: 'gc-linen' });
 const coverFabric = () => weave('cover-fabric', 512, { pitch: 8, thread: 4.6, slub: 7, mottle: 3, seed: 'gc-cover-fabric' });
 
 // ---------------------------------------------------------------------------------------------
 // Rendu : Chromium dessine chaque SVG dans un canvas puis l'exporte en WebP.
 
-const textures = [paper(), wood(), linen(), coverFabric()];
+const textures = [paper(), wood(), coverFabric()];
 const browser = await launch();
 const page = await browser.newPage();
 await page.setContent('<!doctype html><html><body></body></html>');
