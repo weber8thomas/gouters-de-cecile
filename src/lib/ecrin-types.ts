@@ -13,8 +13,8 @@ export interface EcrinManifest {
   aperture: Aperture; // ouverture vidéo, définie une seule fois
   bleed: number; // débord du masque au-delà de l'ouverture (4)
   focus: [number, number]; // point focal du recadrage (0–1), ex. [0.5, 0.42]
-  cup: { x: number; y: number; w: number } | null; // coin haut-gauche et largeur de la tasse-progression
-  caption: { x: number; y: number; w: number; rotate?: number } | null; // emplacement de la légende manuscrite
+  cup: { x: number; y: number } | null; // centre du bas de la soucoupe de la tasse-progression (taille fixe : --gc-cup-size)
+  caption: { x: number; y: number; w: number; rotate?: number } | null; // légende manuscrite : coin haut-gauche + largeur (unités du viewBox)
   lift?: { dx: number; dy: number; rotate: number }; // cloche : déplacement du dôme soulevé
   variants: { id: string; label: string }[];
 }

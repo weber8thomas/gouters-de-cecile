@@ -1,17 +1,39 @@
 // Construit le bundle du design system tel que l'artifact l'attend :
-//   dist/ds/components/bundle.js  — UN script classique qui assigne window.GoutersDeCecile,
-//                                   lit window.React / window.ReactDOM, sans import ni réseau ;
-//   dist/ds/components/bundle.css — toutes les feuilles importées par src/.
+//   <out>/bundle.js  — UN script classique qui assigne window.GoutersDeCecile,
+//                      lit window.React / window.ReactDOM, sans import ni réseau ;
+//   <out>/bundle.css — toutes les feuilles importées par src/.
 // Les SVG sont inclus comme texte, les textures WebP comme data URI.
+//
+//   node scripts/build-bundle.mjs                         → dist/ds/components (tout)
+//   node scripts/build-bundle.mjs --only Ecrin,Scene --boards P00Specimen --tag f3
+//                                                         → dist/ds-f3/components (build isolé :
+//     seuls ces composants et artboards, registres régénérés dans dist/ds-f3/gen)
 import { build } from 'esbuild';
 import { readdirSync, existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
+import { generate, ROOT as root } from './gen-entry.mjs';
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const out = join(root, 'dist/ds/components');
+const args = process.argv.slice(2);
+const opt = (k) => { const i = args.indexOf(`--${k}`); return i >= 0 ? args[i + 1] : undefined; };
+const only = opt('only')?.split(',').filter(Boolean);
+const boardsOpt = opt('boards')?.split(',').filter(Boolean);
+const tag = opt('tag');
+const isolated = Boolean(only || boardsOpt || tag);
+const base = join(root, isolated ? `dist/ds-${tag ?? 'partiel'}` : 'dist/ds');
+const out = join(base, 'components');
 mkdirSync(out, { recursive: true });
 export const NAMESPACE = 'GoutersDeCecile';
+
+// Registres : partagés (src/generated) ou isolés (<base>/gen)
+const genDir = isolated ? join(base, 'gen') : join(root, 'src/generated');
+const gen = generate({ outDir: genDir, components: isolated ? only ?? [] : undefined, artboards: isolated ? boardsOpt ?? [] : undefined });
+const redirectGenerated = {
+  name: 'generated-dir',
+  setup(b) {
+    if (!isolated) return;
+    b.onResolve({ filter: /generated\/(components|ecrins|illustrations)\.gen$/ }, (a) => ({ path: join(genDir, a.path.split('/').pop() + '.ts') }));
+  },
+};
 
 const GLOBALS = { react: 'window.React', 'react-dom': 'window.ReactDOM', 'react-dom/client': 'window.ReactDOM' };
 const reactGlobals = {
@@ -30,38 +52,35 @@ const result = await build({
   globalName: NAMESPACE,
   platform: 'browser',
   target: 'es2020',
-  minify: !process.argv.includes('--dev'),
+  minify: !args.includes('--dev'),
   jsx: 'transform',
   jsxFactory: 'React.createElement',
   jsxFragment: 'React.Fragment',
   define: { 'process.env.NODE_ENV': '"production"' },
   loader: { '.svg': 'text', '.webp': 'dataurl', '.png': 'dataurl', '.woff2': 'empty' },
   legalComments: 'none',
-  plugins: [reactGlobals],
-  metafile: true,
+  plugins: [redirectGenerated, reactGlobals],
   logLevel: 'warning',
 });
 
-// Composants exposés (dossiers de src/components avec un aperçu ou un README), dans l'ordre alphabétique
+// Composants exposés : dossiers de src/components avec un aperçu ou un README (ordre alphabétique)
 const compDir = join(root, 'src/components');
-const components = existsSync(compDir)
-  ? readdirSync(compDir, { withFileTypes: true })
-      .filter((d) => d.isDirectory() && (existsSync(join(compDir, d.name, 'preview.html')) || existsSync(join(compDir, d.name, 'README.md'))))
-      .map((d) => ({ name: d.name }))
-  : [];
+const components = (existsSync(compDir) ? readdirSync(compDir, { withFileTypes: true }) : [])
+  .filter((d) => d.isDirectory() && gen.comps.includes(d.name) && (existsSync(join(compDir, d.name, 'preview.html')) || existsSync(join(compDir, d.name, 'README.md'))))
+  .map((d) => ({ name: d.name }));
 
 const jsPath = join(out, 'bundle.js');
 if (!existsSync(join(out, 'bundle.css'))) writeFileSync(join(out, 'bundle.css'), '');
 let js = readFileSync(jsPath, 'utf8');
 // Le bundle est parfois inséré en ligne par les consommateurs : neutraliser </script et <!--
 // (dans une chaîne JS, « <\/script » et « <\!-- » donnent exactement les mêmes caractères).
-const before = js.length;
+const before = js;
 js = js.replace(/<\/script/gi, '<\\/script').replace(/<!--/g, '<\\!--');
-if (js.length !== before) console.warn('bundle.js : séquences </script ou <!-- neutralisées');
+if (js !== before) console.warn('bundle.js : séquences </script ou <!-- neutralisées');
 js = js.replace(`var ${NAMESPACE}=`, `window.${NAMESPACE}=`).replace(`var ${NAMESPACE} =`, `window.${NAMESPACE} =`);
 const header = `/* @ds-bundle: ${JSON.stringify({ format: 4, namespace: NAMESPACE, components })} */\n`;
 writeFileSync(jsPath, header + js);
 
 const kb = (p) => (existsSync(p) ? (readFileSync(p).length / 1024).toFixed(0) : '0');
-console.log(`bundle.js ${kb(jsPath)} Ko · bundle.css ${kb(join(out, 'bundle.css'))} Ko · ${components.length} composants`);
+console.log(`${out.replace(root + '/', '')} : bundle.js ${kb(jsPath)} Ko · bundle.css ${kb(join(out, 'bundle.css'))} Ko · ${gen.comps.length} composants · ${gen.boards.length} artboards · ${gen.ecrins} écrins · ${gen.illustrations} illustrations`);
 if (result.warnings.length) console.warn(`${result.warnings.length} avertissement(s) esbuild`);

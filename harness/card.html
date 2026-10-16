@@ -8,11 +8,14 @@
 <!-- Reproduit le cadre d'aperçu de l'artifact Design System :
      tokens.css + polices, bundle.css, React 18, bundle.js, puis le contenu de preview.html. -->
 <link rel="stylesheet" href="../design-system/tokens.css">
-<link rel="stylesheet" href="../dist/ds/components/bundle.css">
 <style>html,body{margin:0;background:#fff}</style>
 <script src="../node_modules/react/umd/react.production.min.js"></script>
 <script src="../node_modules/react-dom/umd/react-dom.production.min.js"></script>
-<script src="../dist/ds/components/bundle.js"></script>
+<script>
+  // ?b=dist/ds-f3/components pour un build isolé (scripts/build-bundle.mjs --tag f3)
+  const B = '../' + (new URLSearchParams(location.search).get('b') || 'dist/ds/components');
+  document.write('<link rel="stylesheet" href="' + B + '/bundle.css"><script src="' + B + '/bundle.js"><\/script>');
+</script>
 </head>
 <body>
 <script>

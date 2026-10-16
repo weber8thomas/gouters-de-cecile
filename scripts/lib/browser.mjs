@@ -13,12 +13,12 @@ export async function launch() {
 }
 
 // Ouvre une carte (preview.html) dans le banc d'essai et attend fonts + rendu.
-export async function openCard(browser, baseUrl, cardPath, { width = 1920, height = 1080, dpr = 1 } = {}) {
+export async function openCard(browser, baseUrl, cardPath, { width = 1920, height = 1080, dpr = 1, bundle } = {}) {
   const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: dpr });
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
-  await page.goto(`${baseUrl}/harness/card.html?c=${encodeURIComponent(cardPath)}`);
+  await page.goto(`${baseUrl}/harness/card.html?c=${encodeURIComponent(cardPath)}${bundle ? `&b=${encodeURIComponent(bundle)}` : ''}`);
   await page.waitForFunction(() => window.__gcReady === true, null, { timeout: 30000 });
   const harnessError = await page.evaluate(() => window.__gcError);
   if (harnessError) errors.push(harnessError);
