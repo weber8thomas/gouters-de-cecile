@@ -1,4 +1,132 @@
 {
+  "choix/intense/ecrins/cloche/a/back": {
+    "file": "baked/choix/intense/ecrins/cloche/a/back.webp",
+    "sha": "625c2c7cb54832e4d5fc367405cfa2d480ad3c296e723ab1c30e2352db600827",
+    "w": 880,
+    "h": 1353,
+    "bytes": 34844,
+    "type": "image/webp"
+  },
+  "choix/intense/ecrins/cloche/a/dome": {
+    "file": "baked/choix/intense/ecrins/cloche/a/dome.webp",
+    "sha": "6a9d667a6da077c25ffaa26b51b71be16b5b0c4b6004bb5f8b55f37cdebb6192",
+    "w": 880,
+    "h": 1353,
+    "bytes": 48280,
+    "type": "image/webp"
+  },
+  "choix/intense/ecrins/cloche/a/domeBack": {
+    "file": "baked/choix/intense/ecrins/cloche/a/domeBack.webp",
+    "sha": "3a4e33d2116ef5e5cdd6713b47a4d2aa1a53a946b3a9b886917f73ef9242bd60",
+    "w": 880,
+    "h": 1353,
+    "bytes": 12984,
+    "type": "image/webp"
+  },
+  "choix/intense/ecrins/cloche/a/front": {
+    "file": "baked/choix/intense/ecrins/cloche/a/front.webp",
+    "sha": "ea867b7a1eae5046125e800c035058866ffc3230f652df7708c58bf1140f184f",
+    "w": 880,
+    "h": 1353,
+    "bytes": 43168,
+    "type": "image/webp"
+  },
+  "choix/intense/ecrins/cloche/a/glint": {
+    "file": "baked/choix/intense/ecrins/cloche/a/glint.webp",
+    "sha": "189e380b6fc6b122163786e632c417fb78d75b8235d2921ea09a2c2a4e02b068",
+    "w": 880,
+    "h": 1353,
+    "bytes": 7352,
+    "type": "image/webp"
+  },
+  "choix/intense/illustrations/essai/cake-citron": {
+    "file": "baked/choix/intense/illustrations/essai/cake-citron.webp",
+    "sha": "5ea3104aa67b06bff6fc40e94051c8ea47ebb9aed6f1f5495984369aa9cb06c1",
+    "w": 600,
+    "h": 425,
+    "bytes": 77722,
+    "type": "image/webp"
+  },
+  "choix/intense/illustrations/portraits/julie": {
+    "file": "baked/choix/intense/illustrations/portraits/julie.webp",
+    "sha": "8e3b7712c629dddb6f3fea41adaad8272ff35ccce87552f43b39292796353c84",
+    "w": 650,
+    "h": 750,
+    "bytes": 152498,
+    "type": "image/webp"
+  },
+  "choix/intense/scenes/julie/sepia": {
+    "file": "baked/choix/intense/scenes/julie/sepia.webp",
+    "sha": "3e39174405f60c792766c71a9ee4c4545fa26e82bd4149240ee050af80d779df",
+    "w": 960,
+    "h": 540,
+    "bytes": 94278,
+    "type": "image/webp"
+  },
+  "choix/leger/ecrins/cloche/a/back": {
+    "file": "baked/choix/leger/ecrins/cloche/a/back.webp",
+    "sha": "f845a7be9c790175aa7758ce968af66f14f076e1faa272c87a16cfa9af945df2",
+    "w": 880,
+    "h": 1353,
+    "bytes": 29612,
+    "type": "image/webp"
+  },
+  "choix/leger/ecrins/cloche/a/dome": {
+    "file": "baked/choix/leger/ecrins/cloche/a/dome.webp",
+    "sha": "e4fe90250da3236df03a1f6f0583ed40c774e47774439ffefb2ded3eee54466e",
+    "w": 880,
+    "h": 1353,
+    "bytes": 45218,
+    "type": "image/webp"
+  },
+  "choix/leger/ecrins/cloche/a/domeBack": {
+    "file": "baked/choix/leger/ecrins/cloche/a/domeBack.webp",
+    "sha": "a357a118524d5815c69996a7f497f98cc8464064a76fc7d5417807d8513d21a4",
+    "w": 880,
+    "h": 1353,
+    "bytes": 12106,
+    "type": "image/webp"
+  },
+  "choix/leger/ecrins/cloche/a/front": {
+    "file": "baked/choix/leger/ecrins/cloche/a/front.webp",
+    "sha": "6c8ce2e06079a6c18868c52d15357b4f63cef0882fa8e17e7e3fa3f78518be0a",
+    "w": 880,
+    "h": 1353,
+    "bytes": 36856,
+    "type": "image/webp"
+  },
+  "choix/leger/ecrins/cloche/a/glint": {
+    "file": "baked/choix/leger/ecrins/cloche/a/glint.webp",
+    "sha": "667c244c6e89bdcb7856e39f6cf56206524c841f4e86ea74c3747708a18a8adc",
+    "w": 880,
+    "h": 1353,
+    "bytes": 7416,
+    "type": "image/webp"
+  },
+  "choix/leger/illustrations/essai/cake-citron": {
+    "file": "baked/choix/leger/illustrations/essai/cake-citron.webp",
+    "sha": "3a379cc33cdcc515d5faa06d55b90c433b3ef13c9f373bb83bdd999d2344e914",
+    "w": 600,
+    "h": 425,
+    "bytes": 79796,
+    "type": "image/webp"
+  },
+  "choix/leger/illustrations/portraits/julie": {
+    "file": "baked/choix/leger/illustrations/portraits/julie.webp",
+    "sha": "e03e62000db21d8bd3ecdaed02ca56d2a05f09a9f3f09bc3854053181fe9f267",
+    "w": 650,
+    "h": 750,
+    "bytes": 176540,
+    "type": "image/webp"
+  },
+  "choix/leger/scenes/julie/sepia": {
+    "file": "baked/choix/leger/scenes/julie/sepia.webp",
+    "sha": "b009d42f08c8f1da53c0eae8823b309c1308d89d7c9a1c3a86dab6cd46edc61f",
+    "w": 960,
+    "h": 540,
+    "bytes": 91484,
+    "type": "image/webp"
+  },
   "ecrins/cloche/a/back": {
     "file": "baked/ecrins/cloche/a/back.webp",
     "sha": "2992312cce4269e79f06f0dd5414eee963571adac0b7336776ea377f14767ec2",

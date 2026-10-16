@@ -1,0 +1,54 @@
+/* Planche « Crayon et aquarelle » : trois feuilles, les mêmes dessins à trois intensités. */
+.gc-ca-colonne {
+  position: absolute;
+  top: 212px;
+  width: 584px;
+  height: 852px;
+  transform: rotate(var(--gc-choix-tilt, 0deg));
+}
+.gc-ca-feuille {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-shadow: var(--gc-sh-object);
+}
+.gc-ca-option {
+  top: 116px;
+  width: 548px;
+}
+
+/* Les dessins, au même cadrage dans chaque colonne (px de feuille). */
+.gc-ca-dessins { position: absolute; inset: 0; }
+.gc-ca-place { position: absolute; display: block; }
+/* La cloche garde en haut de son cadre une bande vide (prévue pour le dôme soulevé) : elle passe sous l'étiquette. */
+.gc-ca-place--cloche { left: 8px; top: -56px; width: 404px; }
+.gc-ca-place--julie { left: 324px; top: 108px; width: 254px; }
+.gc-ca-place--cake { left: 92px; top: 432px; width: 424px; }
+
+/* La cloche avant lecture : calques cuits empilés, scène sépia dans l'ouverture (masque adouci). */
+.gc-ca-cloche { position: relative; width: 100%; }
+.gc-ca-calque {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+.gc-ca-media {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: var(--gc-ca-masque);
+  mask-image: var(--gc-ca-masque);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+.gc-ca-ouverture { position: absolute; overflow: hidden; }
+.gc-ca-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+}

@@ -73,10 +73,10 @@ function getVariants() {
 // tint : % de la teinte d'âge posée sur la tuile ; foxed : part de gc-paper-foxed dans cette teinte ;
 // reach : largeur de l'usure des bords (× tirage de la graine).
 const AGE = [
-  { tint: 0, foxed: 0, mottle: 0.08, wear: 0.4, edge: 0.45, reach: 0.7, cockle: 0.5, thumb: 0.3 },
-  { tint: 12, foxed: 0, mottle: 0.15, wear: 0.65, edge: 0.7, reach: 0.85, cockle: 0.6, thumb: 0.6 },
-  { tint: 23, foxed: 15, mottle: 0.24, wear: 0.85, edge: 0.86, reach: 1, cockle: 0.65, thumb: 0.8 },
-  { tint: 35, foxed: 40, mottle: 0.34, wear: 1, edge: 1, reach: 1.25, cockle: 0.7, thumb: 1 },
+  { tint: 0, foxed: 0, mottle: 0.05, wear: 0.3, edge: 0.35, reach: 0.6, cockle: 0.45, thumb: 0.2 },
+  { tint: 14, foxed: 0, mottle: 0.15, wear: 0.65, edge: 0.7, reach: 0.85, cockle: 0.6, thumb: 0.6 },
+  { tint: 42, foxed: 35, mottle: 0.36, wear: 0.92, edge: 0.92, reach: 1.15, cockle: 0.7, thumb: 0.85 },
+  { tint: 68, foxed: 75, mottle: 0.55, wear: 1, edge: 1, reach: 1.5, cockle: 0.85, thumb: 1 },
 ] as const;
 
 interface Spot {

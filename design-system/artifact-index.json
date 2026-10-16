@@ -23,7 +23,8 @@
     "Illustrations",
     "Encre",
     "Papier",
-    "Scenes"
+    "Scenes",
+    "Choix"
   ],
   "assetGroups": {
     "Ecrins": {
@@ -356,6 +357,126 @@
           "name": "julie/sepia.webp",
           "blob": "3171824f532de06eac6fa80877b1f53c",
           "size": 94628,
+          "type": "image/webp"
+        }
+      }
+    },
+    "Choix": {
+      "name": "Choix (aquarelle)",
+      "tile": "m",
+      "order": [
+        "intense/ecrins/cloche/a/back.webp",
+        "intense/ecrins/cloche/a/dome.webp",
+        "intense/ecrins/cloche/a/domeBack.webp",
+        "intense/ecrins/cloche/a/front.webp",
+        "intense/ecrins/cloche/a/glint.webp",
+        "intense/illustrations/essai/cake-citron.webp",
+        "intense/illustrations/portraits/julie.webp",
+        "intense/scenes/julie/sepia.webp",
+        "leger/ecrins/cloche/a/back.webp",
+        "leger/ecrins/cloche/a/dome.webp",
+        "leger/ecrins/cloche/a/domeBack.webp",
+        "leger/ecrins/cloche/a/front.webp",
+        "leger/ecrins/cloche/a/glint.webp",
+        "leger/illustrations/essai/cake-citron.webp",
+        "leger/illustrations/portraits/julie.webp",
+        "leger/scenes/julie/sepia.webp"
+      ],
+      "files": {
+        "intense/ecrins/cloche/a/back.webp": {
+          "name": "intense/ecrins/cloche/a/back.webp",
+          "blob": "27b5bf41a7a5e2b7a0055f5b50b916e2",
+          "size": 34844,
+          "type": "image/webp"
+        },
+        "intense/ecrins/cloche/a/dome.webp": {
+          "name": "intense/ecrins/cloche/a/dome.webp",
+          "blob": "2b12a6c7d7c0242f5c6e005b80d99aaa",
+          "size": 48280,
+          "type": "image/webp"
+        },
+        "intense/ecrins/cloche/a/domeBack.webp": {
+          "name": "intense/ecrins/cloche/a/domeBack.webp",
+          "blob": "6dbcc77d42e5780477dbd245f34114e3",
+          "size": 12984,
+          "type": "image/webp"
+        },
+        "intense/ecrins/cloche/a/front.webp": {
+          "name": "intense/ecrins/cloche/a/front.webp",
+          "blob": "725a66c18592ac2c928f4f20ea5307a0",
+          "size": 43168,
+          "type": "image/webp"
+        },
+        "intense/ecrins/cloche/a/glint.webp": {
+          "name": "intense/ecrins/cloche/a/glint.webp",
+          "blob": "be28eaed12b154b9182524577d66ca72",
+          "size": 7352,
+          "type": "image/webp"
+        },
+        "intense/illustrations/essai/cake-citron.webp": {
+          "name": "intense/illustrations/essai/cake-citron.webp",
+          "blob": "38ba61500b94837ee27a0a0ff7b82cca",
+          "size": 77722,
+          "type": "image/webp"
+        },
+        "intense/illustrations/portraits/julie.webp": {
+          "name": "intense/illustrations/portraits/julie.webp",
+          "blob": "b819f1aa4483a52c8b0030e8c6171953",
+          "size": 152498,
+          "type": "image/webp"
+        },
+        "intense/scenes/julie/sepia.webp": {
+          "name": "intense/scenes/julie/sepia.webp",
+          "blob": "fdeeaec6897d2f342fe26a1a7eb96174",
+          "size": 94278,
+          "type": "image/webp"
+        },
+        "leger/ecrins/cloche/a/back.webp": {
+          "name": "leger/ecrins/cloche/a/back.webp",
+          "blob": "74fbe887615d95d2ea806dc77c9d7f24",
+          "size": 29612,
+          "type": "image/webp"
+        },
+        "leger/ecrins/cloche/a/dome.webp": {
+          "name": "leger/ecrins/cloche/a/dome.webp",
+          "blob": "4c93a3dd9113032002d4fecd99658bd3",
+          "size": 45218,
+          "type": "image/webp"
+        },
+        "leger/ecrins/cloche/a/domeBack.webp": {
+          "name": "leger/ecrins/cloche/a/domeBack.webp",
+          "blob": "535ea67bb67e065aabb44329b2c8f648",
+          "size": 12106,
+          "type": "image/webp"
+        },
+        "leger/ecrins/cloche/a/front.webp": {
+          "name": "leger/ecrins/cloche/a/front.webp",
+          "blob": "bbad1beed336ee0b37753518d70a8153",
+          "size": 36856,
+          "type": "image/webp"
+        },
+        "leger/ecrins/cloche/a/glint.webp": {
+          "name": "leger/ecrins/cloche/a/glint.webp",
+          "blob": "bef79c086a9dd54a221f981cddcb8516",
+          "size": 7416,
+          "type": "image/webp"
+        },
+        "leger/illustrations/essai/cake-citron.webp": {
+          "name": "leger/illustrations/essai/cake-citron.webp",
+          "blob": "12928028ccc027d83c0eca05bf42b4db",
+          "size": 79796,
+          "type": "image/webp"
+        },
+        "leger/illustrations/portraits/julie.webp": {
+          "name": "leger/illustrations/portraits/julie.webp",
+          "blob": "e099b3242121533a29372135b738a866",
+          "size": 176540,
+          "type": "image/webp"
+        },
+        "leger/scenes/julie/sepia.webp": {
+          "name": "leger/scenes/julie/sepia.webp",
+          "blob": "25f0e40b06c60a0e65e4f3edc6599097",
+          "size": 91484,
           "type": "image/webp"
         }
       }
