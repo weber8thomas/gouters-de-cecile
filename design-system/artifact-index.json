@@ -18,8 +18,349 @@
     }
   ],
   "sections": {},
-  "groups": [],
-  "assetGroups": {},
+  "groups": [
+    "Ecrins",
+    "Illustrations",
+    "Encre",
+    "Papier",
+    "Scenes"
+  ],
+  "assetGroups": {
+    "Ecrins": {
+      "name": "Écrins",
+      "tile": "m",
+      "order": [
+        "cloche/a/back.webp",
+        "cloche/a/dome.webp",
+        "cloche/a/domeBack.webp",
+        "cloche/a/front.webp",
+        "cloche/a/glint.webp",
+        "cloche/a/mask-soft.webp"
+      ],
+      "files": {
+        "cloche/a/back.webp": {
+          "name": "cloche/a/back.webp",
+          "blob": "86162858aa2ac50b9af9f0cbdda87dbe",
+          "size": 32792,
+          "type": "image/webp"
+        },
+        "cloche/a/dome.webp": {
+          "name": "cloche/a/dome.webp",
+          "blob": "0892aace203c466e1b9fa79197258881",
+          "size": 48240,
+          "type": "image/webp"
+        },
+        "cloche/a/domeBack.webp": {
+          "name": "cloche/a/domeBack.webp",
+          "blob": "425e9d872aeba5073f1b22104384e9e8",
+          "size": 12726,
+          "type": "image/webp"
+        },
+        "cloche/a/front.webp": {
+          "name": "cloche/a/front.webp",
+          "blob": "ba12db6f0ca677a97d4a6bb57f9d4cb4",
+          "size": 40448,
+          "type": "image/webp"
+        },
+        "cloche/a/glint.webp": {
+          "name": "cloche/a/glint.webp",
+          "blob": "1121f50b80534fb4ba6a7a7434961b6c",
+          "size": 7278,
+          "type": "image/webp"
+        },
+        "cloche/a/mask-soft.webp": {
+          "name": "cloche/a/mask-soft.webp",
+          "blob": "54f31dd4cb84bcbabe459d5ab0989d17",
+          "size": 6822,
+          "type": "image/webp"
+        }
+      }
+    },
+    "Illustrations": {
+      "name": "Illustrations",
+      "tile": "m",
+      "order": [
+        "essai/cake-citron.webp",
+        "portraits/julie.webp"
+      ],
+      "files": {
+        "essai/cake-citron.webp": {
+          "name": "essai/cake-citron.webp",
+          "blob": "11eccab1fdcd647155c3e3a078233446",
+          "size": 79278,
+          "type": "image/webp"
+        },
+        "portraits/julie.webp": {
+          "name": "portraits/julie.webp",
+          "blob": "6e9f0ec768da38d2f912297e5b5d3630",
+          "size": 175148,
+          "type": "image/webp"
+        }
+      }
+    },
+    "Encre": {
+      "name": "Encre",
+      "tile": "m",
+      "order": [
+        "grain.webp"
+      ],
+      "files": {
+        "grain.webp": {
+          "name": "grain.webp",
+          "blob": "2be83422e3f59555f939ca40c80c90ac",
+          "size": 43778,
+          "type": "image/webp"
+        }
+      }
+    },
+    "Papier": {
+      "name": "Papier ancien",
+      "tile": "m",
+      "order": [
+        "age.webp",
+        "base.webp",
+        "cockle-1-light.webp",
+        "cockle-1-shade.webp",
+        "cockle-2-light.webp",
+        "cockle-2-shade.webp",
+        "cockle-3-light.webp",
+        "cockle-3-shade.webp",
+        "cockle-4-light.webp",
+        "cockle-4-shade.webp",
+        "cockle-5-light.webp",
+        "cockle-5-shade.webp",
+        "cockle-6-light.webp",
+        "cockle-6-shade.webp",
+        "fox-1.webp",
+        "fox-10.webp",
+        "fox-11.webp",
+        "fox-12.webp",
+        "fox-2.webp",
+        "fox-3.webp",
+        "fox-4.webp",
+        "fox-5.webp",
+        "fox-6.webp",
+        "fox-7.webp",
+        "fox-8.webp",
+        "fox-9.webp",
+        "tide-1.webp",
+        "tide-2.webp",
+        "tide-3.webp",
+        "tide-4.webp",
+        "tide-5.webp"
+      ],
+      "files": {
+        "age.webp": {
+          "name": "age.webp",
+          "blob": "87d22759b7d849f8d890a289a238c7a6",
+          "size": 25164,
+          "type": "image/webp"
+        },
+        "base.webp": {
+          "name": "base.webp",
+          "blob": "f64423f22e27ad044f885cb81dd62c0d",
+          "size": 75854,
+          "type": "image/webp"
+        },
+        "cockle-1-light.webp": {
+          "name": "cockle-1-light.webp",
+          "blob": "8add065ad54cb294118dcd6171223104",
+          "size": 23550,
+          "type": "image/webp"
+        },
+        "cockle-1-shade.webp": {
+          "name": "cockle-1-shade.webp",
+          "blob": "6bfaffc16d19f9b97af94e9fb0d896d0",
+          "size": 9984,
+          "type": "image/webp"
+        },
+        "cockle-2-light.webp": {
+          "name": "cockle-2-light.webp",
+          "blob": "cddb810344465522aa426684a338e10f",
+          "size": 23562,
+          "type": "image/webp"
+        },
+        "cockle-2-shade.webp": {
+          "name": "cockle-2-shade.webp",
+          "blob": "376971c3118103524559d0555c9cd748",
+          "size": 16312,
+          "type": "image/webp"
+        },
+        "cockle-3-light.webp": {
+          "name": "cockle-3-light.webp",
+          "blob": "a059c83283ca2ed6ce3bbeb526a88373",
+          "size": 21204,
+          "type": "image/webp"
+        },
+        "cockle-3-shade.webp": {
+          "name": "cockle-3-shade.webp",
+          "blob": "21e61c3fc1e4cf072144be9bfa81c572",
+          "size": 11934,
+          "type": "image/webp"
+        },
+        "cockle-4-light.webp": {
+          "name": "cockle-4-light.webp",
+          "blob": "6b279fb8a7a6635cfb627f8daf21049d",
+          "size": 26468,
+          "type": "image/webp"
+        },
+        "cockle-4-shade.webp": {
+          "name": "cockle-4-shade.webp",
+          "blob": "66065a8b2369297c75494ca4617c4b03",
+          "size": 12556,
+          "type": "image/webp"
+        },
+        "cockle-5-light.webp": {
+          "name": "cockle-5-light.webp",
+          "blob": "9163ba8a4daa7e6b6a20151c3e7fbed7",
+          "size": 29420,
+          "type": "image/webp"
+        },
+        "cockle-5-shade.webp": {
+          "name": "cockle-5-shade.webp",
+          "blob": "702870078808cd307e6a5759bbf62c0c",
+          "size": 13518,
+          "type": "image/webp"
+        },
+        "cockle-6-light.webp": {
+          "name": "cockle-6-light.webp",
+          "blob": "dfaba0c6a6d1fa3a647d4b7c7923e593",
+          "size": 24986,
+          "type": "image/webp"
+        },
+        "cockle-6-shade.webp": {
+          "name": "cockle-6-shade.webp",
+          "blob": "b5ca2abf0f4d6217d4012e1e759e607d",
+          "size": 12528,
+          "type": "image/webp"
+        },
+        "fox-1.webp": {
+          "name": "fox-1.webp",
+          "blob": "4523fdbc31d039bd61ce9b83dfe3d3a1",
+          "size": 3368,
+          "type": "image/webp"
+        },
+        "fox-10.webp": {
+          "name": "fox-10.webp",
+          "blob": "8562a4e817e65c7453eb280661d5a879",
+          "size": 2638,
+          "type": "image/webp"
+        },
+        "fox-11.webp": {
+          "name": "fox-11.webp",
+          "blob": "20c55382ae4aa214e063305acfa99349",
+          "size": 1838,
+          "type": "image/webp"
+        },
+        "fox-12.webp": {
+          "name": "fox-12.webp",
+          "blob": "e85f25dcd74e7e4d64550905c9c11949",
+          "size": 2494,
+          "type": "image/webp"
+        },
+        "fox-2.webp": {
+          "name": "fox-2.webp",
+          "blob": "d7ed2184cd02ba07607b769f87b2f4d5",
+          "size": 2882,
+          "type": "image/webp"
+        },
+        "fox-3.webp": {
+          "name": "fox-3.webp",
+          "blob": "6c6a61fea945686a77faa2d74fd12485",
+          "size": 2310,
+          "type": "image/webp"
+        },
+        "fox-4.webp": {
+          "name": "fox-4.webp",
+          "blob": "b2b025a2694ef02a5ce04bb212f49847",
+          "size": 2406,
+          "type": "image/webp"
+        },
+        "fox-5.webp": {
+          "name": "fox-5.webp",
+          "blob": "c26dce86a9ae0bb01e0e7e0ef4a26c1e",
+          "size": 3854,
+          "type": "image/webp"
+        },
+        "fox-6.webp": {
+          "name": "fox-6.webp",
+          "blob": "0c6a62e048d71818644bf4192cd5773b",
+          "size": 3630,
+          "type": "image/webp"
+        },
+        "fox-7.webp": {
+          "name": "fox-7.webp",
+          "blob": "7f5340007ee3c39ef1f5f3d7ab71c62a",
+          "size": 2648,
+          "type": "image/webp"
+        },
+        "fox-8.webp": {
+          "name": "fox-8.webp",
+          "blob": "24ebba59ecb68971ee22c618988fe391",
+          "size": 1958,
+          "type": "image/webp"
+        },
+        "fox-9.webp": {
+          "name": "fox-9.webp",
+          "blob": "e2402e180b6d3339e999f21579dbf5b3",
+          "size": 3874,
+          "type": "image/webp"
+        },
+        "tide-1.webp": {
+          "name": "tide-1.webp",
+          "blob": "eecff317c3573711fd333c145bcd0cf8",
+          "size": 17618,
+          "type": "image/webp"
+        },
+        "tide-2.webp": {
+          "name": "tide-2.webp",
+          "blob": "5352b084de49be23ba59355686c2e53e",
+          "size": 9914,
+          "type": "image/webp"
+        },
+        "tide-3.webp": {
+          "name": "tide-3.webp",
+          "blob": "483e3a7b0ecf5944b33a608bb03bba36",
+          "size": 7770,
+          "type": "image/webp"
+        },
+        "tide-4.webp": {
+          "name": "tide-4.webp",
+          "blob": "3af1f60ad22ee3f22d7ba3156d82048c",
+          "size": 24118,
+          "type": "image/webp"
+        },
+        "tide-5.webp": {
+          "name": "tide-5.webp",
+          "blob": "1d9b5e69ede7c5c32b982d6c329dd530",
+          "size": 4198,
+          "type": "image/webp"
+        }
+      }
+    },
+    "Scenes": {
+      "name": "Scènes vidéo",
+      "tile": "m",
+      "order": [
+        "julie/couleur.webp",
+        "julie/sepia.webp"
+      ],
+      "files": {
+        "julie/couleur.webp": {
+          "name": "julie/couleur.webp",
+          "blob": "2508f8a95b825d5d6553c96c75f58d58",
+          "size": 77032,
+          "type": "image/webp"
+        },
+        "julie/sepia.webp": {
+          "name": "julie/sepia.webp",
+          "blob": "3171824f532de06eac6fa80877b1f53c",
+          "size": 94628,
+          "type": "image/webp"
+        }
+      }
+    }
+  },
   "blobs": {},
   "docs": {
     "sections": []
