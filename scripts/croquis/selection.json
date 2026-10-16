@@ -1,0 +1,1578 @@
+{
+ "_": "Dessins Quick, Draw! retenus à l'œil sur les planches contact (verification/out/c/quickdraw/planches/<categorie>.png, 48 candidats tirés parmi ceux qui passent le filtre : recognized, 2 à 10 traits, proportions, pas de trait parasite). `planche` = numéro sur la planche ; `lavis` = où poser l'aquarelle (indices des traits). Appliquer : tools/ecriture/.venv/bin/python -I scripts/croquis/quickdraw.py selection",
+ "retenus": [
+  {
+   "nom": "carotte",
+   "variante": "a",
+   "categorie": "carrot",
+   "key_id": "6278957420773376",
+   "pays": "US",
+   "planche": 18,
+   "pour": "dessin",
+   "lavis": [
+    {
+     "teinte": "carotte",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "tige",
+     "traits": [
+      1,
+      2,
+      3
+     ],
+     "mode": "trait",
+     "largeur": 0.08,
+     "couverture": 0.75,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "carotte",
+   "variante": "b",
+   "categorie": "carrot",
+   "key_id": "4913010361499648",
+   "pays": "IN",
+   "planche": 3,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "carotte",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "tige",
+     "traits": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "mode": "trait",
+     "largeur": 0.08,
+     "couverture": 0.75,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "carotte",
+   "variante": "c",
+   "categorie": "carrot",
+   "key_id": "5372508230385664",
+   "pays": "IN",
+   "planche": 26,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "carotte",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "tige",
+     "traits": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "mode": "trait",
+     "largeur": 0.08,
+     "couverture": 0.75,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "carotte",
+   "variante": "d",
+   "categorie": "carrot",
+   "key_id": "6232722970247168",
+   "pays": "RU",
+   "planche": 37,
+   "pour": "dessin",
+   "lavis": [
+    {
+     "teinte": "carotte",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "tige",
+     "traits": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "mode": "trait",
+     "largeur": 0.08,
+     "couverture": 0.75,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "cookie",
+   "variante": "a",
+   "categorie": "cookie",
+   "key_id": "5506785462976512",
+   "pays": "DE",
+   "planche": 29,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "biscuit",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "chocolat",
+     "traits": [
+      1,
+      2,
+      3
+     ],
+     "mode": "trait",
+     "largeur": 0.07,
+     "couverture": 0.95,
+     "reflet": false,
+     "decalage": 0.5
+    }
+   ]
+  },
+  {
+   "nom": "cookie",
+   "variante": "b",
+   "categorie": "cookie",
+   "key_id": "6364629951315968",
+   "pays": "US",
+   "planche": 44,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "biscuit",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "chocolat",
+     "traits": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "mode": "trait",
+     "largeur": 0.07,
+     "couverture": 0.95,
+     "reflet": false,
+     "decalage": 0.5
+    }
+   ]
+  },
+  {
+   "nom": "cookie",
+   "variante": "c",
+   "categorie": "cookie",
+   "key_id": "4742037108686848",
+   "pays": "GB",
+   "planche": 13,
+   "pour": "dessin",
+   "lavis": [
+    {
+     "teinte": "biscuit",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "chocolat",
+     "traits": [
+      1,
+      2,
+      3
+     ],
+     "mode": "trait",
+     "largeur": 0.06,
+     "couverture": 0.95,
+     "reflet": false,
+     "decalage": 0.5
+    }
+   ]
+  },
+  {
+   "nom": "tasse",
+   "variante": "a",
+   "categorie": "cup",
+   "key_id": "4950214643286016",
+   "pays": "FR",
+   "planche": 31,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "bleu",
+     "traits": [
+      1,
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.6
+    },
+    {
+     "teinte": "the",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.85,
+     "reflet": false
+    },
+    {
+     "teinte": "bleu",
+     "traits": [
+      3
+     ],
+     "mode": "trait",
+     "largeur": 0.06,
+     "couverture": 0.6,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "tasse",
+   "variante": "b",
+   "categorie": "coffee cup",
+   "key_id": "5491758681030656",
+   "pays": "DK",
+   "planche": 12,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "bleu",
+     "traits": [
+      1,
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.6
+    },
+    {
+     "teinte": "the",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.85,
+     "reflet": false
+    },
+    {
+     "teinte": "bleu",
+     "traits": [
+      3
+     ],
+     "mode": "trait",
+     "largeur": 0.06,
+     "couverture": 0.6,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "tasse",
+   "variante": "c",
+   "categorie": "coffee cup",
+   "key_id": "4929168116547584",
+   "pays": "US",
+   "planche": 1,
+   "pour": "dessin",
+   "lavis": [
+    {
+     "teinte": "rose",
+     "traits": [
+      1,
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.6
+    },
+    {
+     "teinte": "the",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.85,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "theiere",
+   "variante": "a",
+   "categorie": "teapot",
+   "key_id": "6550949709479936",
+   "pays": "US",
+   "planche": 1,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "bleu",
+     "traits": [
+      2,
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.7
+    }
+   ]
+  },
+  {
+   "nom": "theiere",
+   "variante": "b",
+   "categorie": "teapot",
+   "key_id": "4935028796555264",
+   "pays": "GB",
+   "planche": 23,
+   "pour": "dessin",
+   "lavis": [
+    {
+     "teinte": "rose",
+     "traits": [
+      0,
+      3
+     ],
+     "mode": "remplir",
+     "couverture": 0.7
+    }
+   ]
+  },
+  {
+   "nom": "theiere",
+   "variante": "c",
+   "categorie": "teapot",
+   "key_id": "4955924047331328",
+   "pays": "US",
+   "planche": 15,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "sauge",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.72
+    }
+   ]
+  },
+  {
+   "nom": "gateau",
+   "variante": "a",
+   "categorie": "birthday cake",
+   "key_id": "5493520506814464",
+   "pays": "GB",
+   "planche": 2,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "mie",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.65
+    },
+    {
+     "teinte": "rose",
+     "traits": [
+      0,
+      1
+     ],
+     "mode": "remplir",
+     "dans": [
+      [
+       0,
+       0.3
+      ],
+      [
+       1,
+       0.3
+      ],
+      [
+       1,
+       0.5
+      ],
+      [
+       0,
+       0.5
+      ]
+     ],
+     "couverture": 0.85,
+     "reflet": false
+    },
+    {
+     "teinte": "miel",
+     "traits": [
+      3
+     ],
+     "mode": "trait",
+     "largeur": 0.07,
+     "couverture": 0.9,
+     "reflet": false,
+     "decalage": 0.5
+    }
+   ]
+  },
+  {
+   "nom": "gateau",
+   "variante": "b",
+   "categorie": "birthday cake",
+   "key_id": "4887446330277888",
+   "pays": "CA",
+   "planche": 19,
+   "pour": "dessin",
+   "lavis": [
+    {
+     "teinte": "mie",
+     "traits": [
+      0,
+      1
+     ],
+     "mode": "remplir",
+     "couverture": 0.65
+    },
+    {
+     "teinte": "rose",
+     "traits": [
+      1
+     ],
+     "mode": "trait",
+     "largeur": 0.08,
+     "couverture": 0.8,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "gateau",
+   "variante": "c",
+   "categorie": "cake",
+   "key_id": "5213245033938944",
+   "pays": "FI",
+   "planche": 27,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "rose",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.7
+    },
+    {
+     "teinte": "miel",
+     "traits": [
+      2
+     ],
+     "mode": "remplir",
+     "couverture": 0.9,
+     "reflet": false,
+     "decalage": 0.5
+    },
+    {
+     "teinte": "miel",
+     "traits": [
+      3,
+      4
+     ],
+     "mode": "trait",
+     "largeur": 0.06,
+     "dans": [
+      [
+       0,
+       0
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       1,
+       0.2
+      ],
+      [
+       0,
+       0.2
+      ]
+     ],
+     "couverture": 0.9,
+     "reflet": false,
+     "decalage": 0.5
+    }
+   ]
+  },
+  {
+   "nom": "pomme",
+   "variante": "a",
+   "categorie": "apple",
+   "key_id": "6296667697446912",
+   "pays": "TH",
+   "planche": 4,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "pomme",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "feuille",
+     "traits": [
+      2
+     ],
+     "mode": "remplir",
+     "couverture": 0.85,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "pomme",
+   "variante": "b",
+   "categorie": "apple",
+   "key_id": "6689681800429568",
+   "pays": "US",
+   "planche": 39,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "pomme",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "feuille",
+     "traits": [
+      2
+     ],
+     "mode": "remplir",
+     "couverture": 0.85,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "pomme",
+   "variante": "c",
+   "categorie": "apple",
+   "key_id": "4569178218430464",
+   "pays": "US",
+   "planche": 13,
+   "pour": "dessin",
+   "lavis": [
+    {
+     "teinte": "pomme-verte",
+     "traits": [
+      0,
+      1
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "feuille",
+     "traits": [
+      3
+     ],
+     "mode": "remplir",
+     "couverture": 0.85,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "fraise",
+   "variante": "a",
+   "categorie": "strawberry",
+   "key_id": "4602413715554304",
+   "pays": "CA",
+   "planche": 47,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "fraise",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "dans": [
+      [
+       0,
+       0.2
+      ],
+      [
+       1,
+       0.2
+      ],
+      [
+       1,
+       1
+      ],
+      [
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "teinte": "feuille",
+     "traits": [
+      0
+     ],
+     "mode": "trait",
+     "largeur": 0.09,
+     "dans": [
+      [
+       0,
+       0
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       1,
+       0.3
+      ],
+      [
+       0,
+       0.3
+      ]
+     ],
+     "couverture": 0.9,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "fraise",
+   "variante": "b",
+   "categorie": "strawberry",
+   "key_id": "6606069759475712",
+   "pays": "DE",
+   "planche": 10,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "fraise",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "dans": [
+      [
+       0,
+       0.3
+      ],
+      [
+       1,
+       0.3
+      ],
+      [
+       1,
+       1
+      ],
+      [
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "teinte": "feuille",
+     "traits": [
+      1
+     ],
+     "mode": "remplir",
+     "couverture": 0.85,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "fraise",
+   "variante": "c",
+   "categorie": "strawberry",
+   "key_id": "5137318534971392",
+   "pays": "GB",
+   "planche": 44,
+   "pour": "dessin",
+   "lavis": [
+    {
+     "teinte": "fraise",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "dans": [
+      [
+       0,
+       0.26
+      ],
+      [
+       1,
+       0.26
+      ],
+      [
+       1,
+       1
+      ],
+      [
+       0,
+       1
+      ]
+     ]
+    },
+    {
+     "teinte": "feuille",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "dans": [
+      [
+       0,
+       0
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       1,
+       0.27
+      ],
+      [
+       0,
+       0.27
+      ]
+     ],
+     "couverture": 0.85,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "sourire",
+   "variante": "a",
+   "categorie": "smiley face",
+   "key_id": "5639940287234048",
+   "pays": "US",
+   "planche": 33,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "miel",
+     "traits": [
+      3
+     ],
+     "mode": "remplir",
+     "couverture": 0.45,
+     "densite": 0.55
+    }
+   ]
+  },
+  {
+   "nom": "sourire",
+   "variante": "b",
+   "categorie": "smiley face",
+   "key_id": "5983039978995712",
+   "pays": "US",
+   "planche": 14,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "miel",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.45,
+     "densite": 0.55
+    }
+   ]
+  },
+  {
+   "nom": "sourire",
+   "variante": "c",
+   "categorie": "smiley face",
+   "key_id": "5473438128930816",
+   "pays": "PT",
+   "planche": 9,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "miel",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.45,
+     "densite": 0.55
+    }
+   ]
+  },
+  {
+   "nom": "lunettes-soleil",
+   "variante": "a",
+   "categorie": "eyeglasses",
+   "key_id": "5041342595989504",
+   "pays": "US",
+   "planche": 14,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "verre-fume",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.8,
+     "densite": 1.35
+    }
+   ]
+  },
+  {
+   "nom": "lunettes-soleil",
+   "variante": "b",
+   "categorie": "eyeglasses",
+   "key_id": "5997117233430528",
+   "pays": "US",
+   "planche": 26,
+   "pour": "dessin",
+   "lavis": [
+    {
+     "teinte": "verre-fume",
+     "traits": [
+      0,
+      3
+     ],
+     "mode": "remplir",
+     "couverture": 0.8,
+     "densite": 1.35
+    }
+   ]
+  },
+  {
+   "nom": "glace",
+   "variante": "a",
+   "categorie": "ice cream",
+   "key_id": "5465068667928576",
+   "pays": "DE",
+   "planche": 3,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "biscuit",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "rose",
+     "traits": [
+      1,
+      0
+     ],
+     "mode": "remplir",
+     "dans": [
+      [
+       0,
+       0
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       1,
+       0.31
+      ],
+      [
+       0,
+       0.31
+      ]
+     ],
+     "couverture": 0.85,
+     "reflet": false
+    },
+    {
+     "teinte": "pomme-verte",
+     "traits": [
+      2,
+      0
+     ],
+     "mode": "remplir",
+     "dans": [
+      [
+       0,
+       0
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       1,
+       0.31
+      ],
+      [
+       0,
+       0.31
+      ]
+     ],
+     "couverture": 0.85,
+     "reflet": false
+    },
+    {
+     "teinte": "beurre",
+     "traits": [
+      3,
+      0
+     ],
+     "mode": "remplir",
+     "dans": [
+      [
+       0,
+       0
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       1,
+       0.31
+      ],
+      [
+       0,
+       0.31
+      ]
+     ],
+     "couverture": 0.85,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "glace",
+   "variante": "b",
+   "categorie": "ice cream",
+   "key_id": "6145025018691584",
+   "pays": "US",
+   "planche": 27,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "rose",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "pomme-verte",
+     "traits": [
+      1
+     ],
+     "mode": "remplir",
+     "couverture": 0.75
+    },
+    {
+     "teinte": "biscuit",
+     "traits": [
+      2,
+      3,
+      1
+     ],
+     "mode": "remplir",
+     "dans": [
+      [
+       0,
+       0.5
+      ],
+      [
+       1,
+       0.5
+      ],
+      [
+       1,
+       1
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "couverture": 0.8
+    }
+   ]
+  },
+  {
+   "nom": "glace",
+   "variante": "c",
+   "categorie": "ice cream",
+   "key_id": "4636874515677184",
+   "pays": "US",
+   "planche": 25,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "rose",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "biscuit",
+     "traits": [
+      1,
+      0
+     ],
+     "mode": "remplir",
+     "dans": [
+      [
+       0,
+       0.38
+      ],
+      [
+       1,
+       0.38
+      ],
+      [
+       1,
+       1
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "couverture": 0.8
+    }
+   ]
+  },
+  {
+   "nom": "donut",
+   "variante": "a",
+   "categorie": "donut",
+   "key_id": "4591677102620672",
+   "pays": "DE",
+   "planche": 33,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "biscuit",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "trous": [
+      1
+     ]
+    },
+    {
+     "teinte": "rose",
+     "traits": [
+      2
+     ],
+     "mode": "remplir",
+     "trous": [
+      1
+     ],
+     "couverture": 0.85
+    }
+   ]
+  },
+  {
+   "nom": "donut",
+   "variante": "b",
+   "categorie": "donut",
+   "key_id": "5502726182010880",
+   "pays": "ID",
+   "planche": 20,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "biscuit",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "trous": [
+      2
+     ]
+    },
+    {
+     "teinte": "rose",
+     "traits": [
+      1
+     ],
+     "mode": "remplir",
+     "trous": [
+      2
+     ],
+     "couverture": 0.85
+    }
+   ]
+  },
+  {
+   "nom": "donut",
+   "variante": "c",
+   "categorie": "donut",
+   "key_id": "6330402136391680",
+   "pays": "FR",
+   "planche": 0,
+   "pour": "dessin",
+   "lavis": [
+    {
+     "teinte": "biscuit",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "rose",
+     "traits": [
+      1
+     ],
+     "mode": "remplir",
+     "couverture": 0.8
+    }
+   ]
+  },
+  {
+   "nom": "banane",
+   "variante": "a",
+   "categorie": "banana",
+   "key_id": "6140782786379776",
+   "pays": "KR",
+   "planche": 10,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "banane",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    }
+   ]
+  },
+  {
+   "nom": "banane",
+   "variante": "b",
+   "categorie": "banana",
+   "key_id": "5601709738950656",
+   "pays": "JP",
+   "planche": 42,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "banane",
+     "traits": [
+      2
+     ],
+     "mode": "remplir"
+    }
+   ]
+  },
+  {
+   "nom": "banane",
+   "variante": "c",
+   "categorie": "banana",
+   "key_id": "5626953006579712",
+   "pays": "US",
+   "planche": 5,
+   "pour": "dessin",
+   "lavis": [
+    {
+     "teinte": "banane",
+     "traits": [
+      0,
+      2
+     ],
+     "mode": "remplir"
+    }
+   ]
+  },
+  {
+   "nom": "poire",
+   "variante": "a",
+   "categorie": "pear",
+   "key_id": "5380269232095232",
+   "pays": "IT",
+   "planche": 3,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "poire",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "feuille",
+     "traits": [
+      2
+     ],
+     "mode": "remplir",
+     "couverture": 0.85,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "poire",
+   "variante": "b",
+   "categorie": "pear",
+   "key_id": "5615532826951680",
+   "pays": "US",
+   "planche": 20,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "poire",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "feuille",
+     "traits": [
+      2
+     ],
+     "mode": "remplir",
+     "couverture": 0.85,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "poire",
+   "variante": "c",
+   "categorie": "pear",
+   "key_id": "6721046457614336",
+   "pays": "US",
+   "planche": 14,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "poire",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    }
+   ]
+  },
+  {
+   "nom": "cuillere",
+   "variante": "a",
+   "categorie": "spoon",
+   "key_id": "5642297720963072",
+   "pays": "US",
+   "planche": 1,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "metal",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.55,
+     "densite": 0.8
+    }
+   ]
+  },
+  {
+   "nom": "cuillere",
+   "variante": "b",
+   "categorie": "spoon",
+   "key_id": "6147516284272640",
+   "pays": "GB",
+   "planche": 6,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "metal",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.55,
+     "densite": 0.8
+    }
+   ]
+  },
+  {
+   "nom": "four",
+   "variante": "a",
+   "categorie": "oven",
+   "key_id": "5826587373076480",
+   "pays": "US",
+   "planche": 22,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "miel",
+     "traits": [
+      3
+     ],
+     "mode": "remplir",
+     "couverture": 0.75
+    },
+    {
+     "teinte": "metal",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.45,
+     "densite": 0.6,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "four",
+   "variante": "b",
+   "categorie": "oven",
+   "key_id": "6427840461406208",
+   "pays": "TR",
+   "planche": 32,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "miel",
+     "traits": [
+      1
+     ],
+     "mode": "remplir",
+     "couverture": 0.75
+    },
+    {
+     "teinte": "metal",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.45,
+     "densite": 0.6,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "fleur",
+   "variante": "a",
+   "categorie": "flower",
+   "key_id": "6523622111838208",
+   "pays": "US",
+   "planche": 9,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "rose",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "miel",
+     "traits": [
+      1
+     ],
+     "mode": "remplir",
+     "couverture": 0.9,
+     "reflet": false,
+     "decalage": 0.5
+    },
+    {
+     "teinte": "feuille",
+     "traits": [
+      3
+     ],
+     "mode": "remplir",
+     "couverture": 0.85,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "fleur",
+   "variante": "b",
+   "categorie": "flower",
+   "key_id": "5259202127724544",
+   "pays": "AE",
+   "planche": 6,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "rose",
+     "traits": [
+      1
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "miel",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.9,
+     "reflet": false,
+     "decalage": 0.5
+    },
+    {
+     "teinte": "feuille",
+     "traits": [
+      3
+     ],
+     "mode": "remplir",
+     "couverture": 0.85,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "fleur",
+   "variante": "c",
+   "categorie": "flower",
+   "key_id": "5908275771998208",
+   "pays": "BR",
+   "planche": 18,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "bleu",
+     "traits": [
+      0
+     ],
+     "mode": "remplir"
+    },
+    {
+     "teinte": "miel",
+     "traits": [
+      1
+     ],
+     "mode": "remplir",
+     "couverture": 0.9,
+     "reflet": false,
+     "decalage": 0.5
+    },
+    {
+     "teinte": "feuille",
+     "traits": [
+      3
+     ],
+     "mode": "trait",
+     "largeur": 0.07,
+     "couverture": 0.85,
+     "reflet": false
+    }
+   ]
+  },
+  {
+   "nom": "bougie",
+   "variante": "a",
+   "categorie": "candle",
+   "key_id": "5494167822139392",
+   "pays": "FI",
+   "planche": 15,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "rose",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.65
+    },
+    {
+     "teinte": "miel",
+     "traits": [
+      3
+     ],
+     "mode": "remplir",
+     "couverture": 0.9,
+     "reflet": false,
+     "decalage": 0.5
+    }
+   ]
+  },
+  {
+   "nom": "bougie",
+   "variante": "b",
+   "categorie": "candle",
+   "key_id": "6217371360428032",
+   "pays": "GB",
+   "planche": 19,
+   "pour": "tous",
+   "lavis": [
+    {
+     "teinte": "bleu",
+     "traits": [
+      0
+     ],
+     "mode": "remplir",
+     "couverture": 0.65
+    },
+    {
+     "teinte": "miel",
+     "traits": [
+      3
+     ],
+     "mode": "trait",
+     "largeur": 0.08,
+     "couverture": 0.9,
+     "reflet": false,
+     "decalage": 0.5
+    }
+   ]
+  }
+ ]
+}
