@@ -1,0 +1,19 @@
+.gc-page-video__left {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gc-page-video__ecrin {
+  max-height: 100%;
+  max-width: 100%;
+  height: 100%;
+}
+.gc-page-video__right {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.gc-page-video__mot {
+  margin-top: auto;
+}

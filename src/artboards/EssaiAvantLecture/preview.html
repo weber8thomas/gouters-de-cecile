@@ -1,0 +1,18 @@
+<!-- @dsCard group="Planche comparative" width=1920 height=1080 page subtitle="Avant lecture : aquarelle douce ou sépia crayonné ; en lecture : la tasse se remplit" -->
+<div id="root"></div>
+<script>
+  const h = React.createElement;
+  const { Stage, Ecrin, SceneVideo } = GoutersDeCecile;
+  const panels = [
+    { state: 'idle', look: 'aquarelle', label: 'Avant lecture · aquarelle douce' },
+    { state: 'idle', look: 'sepia', label: 'Avant lecture · sépia crayonné' },
+    { state: 'playing', look: 'aquarelle', label: 'En lecture · la tasse se remplit' },
+  ];
+  const panel = (p) => h('figure', { key: p.label, style: { margin: 0, width: 560, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--gc-space-4)' } },
+    h(Ecrin, { type: 'cloche', variant: 'a', state: p.state, progress: 0.6, liquid: 'the', style: { width: 560 },
+      media: h(SceneVideo, { scene: 'julie', look: p.look }) }),
+    h('figcaption', { className: 'gc-hand-caption', style: { color: 'var(--gc-ink)', background: 'var(--gc-paper-lace)', padding: '2px 18px', borderRadius: 'var(--gc-radius-tag)', boxShadow: 'var(--gc-sh-lift)' } }, p.label));
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    h(Stage, { table: 'nappe' },
+      h('div', { style: { position: 'absolute', inset: 0, display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', padding: '0 var(--gc-space-9)' } }, panels.map(panel))));
+</script>

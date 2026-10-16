@@ -1,0 +1,18 @@
+<!-- @dsCard group="Planche comparative" width=1920 height=1080 page subtitle="La même page vidéo : Cormorant ou Playfair, table en bois ou nappe" -->
+<div id="root"></div>
+<script>
+  const h = React.createElement;
+  const { Artboards } = GoutersDeCecile;
+  const cells = [
+    { serif: 'cormorant', table: 'bois', label: 'Cormorant Garamond · table en bois' },
+    { serif: 'cormorant', table: 'nappe', label: 'Cormorant Garamond · nappe' },
+    { serif: 'playfair', table: 'bois', label: 'Playfair Display · table en bois' },
+    { serif: 'playfair', table: 'nappe', label: 'Playfair Display · nappe' },
+  ];
+  const cell = (c) => h('div', { key: c.label, style: { position: 'relative', width: 960, height: 540, overflow: 'hidden' } },
+    h('div', { style: { width: 1920, height: 1080, transform: 'scale(0.5)', transformOrigin: '0 0' } },
+      h(Artboards.PageVideo, { serif: c.serif, table: c.table, state: 'playing', progress: 0.6 })),
+    h('div', { className: 'gc-hand-caption', style: { position: 'absolute', left: 16, top: 12, padding: '2px 14px', background: 'var(--gc-paper-lace)', color: 'var(--gc-ink)', boxShadow: 'var(--gc-sh-lift)', borderRadius: 'var(--gc-radius-tag)' } }, c.label));
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    h('div', { style: { display: 'grid', gridTemplateColumns: '960px 960px', width: 1920, height: 1080, background: 'var(--gc-wood-3)' } }, cells.map(cell)));
+</script>
