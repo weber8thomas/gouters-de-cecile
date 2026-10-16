@@ -1,13 +1,18 @@
-// Le carnet, tel que les invités l'ouvrent : sur téléphone, tablette, ordinateur ou TV (CONTRACT § 11).
-// CameraProvider + Ecran (plein écran, cadrage « double » ou « page ») + Livre, avec les doubles pages
-// de la démo. Racine de l'application (index.html → src/app/main.tsx) et de la page autonome
-// (harness/devices.html : React UMD + bundle.js, Artboards.Carnet).
+// Le carnet, tel que les invités l'ouvrent : sur téléphone, tablette, ordinateur ou TV (CONTRACT
+// §§ 11–12). MotionConfig (moins d'animations) › CameraProvider › Ecran (plein écran, cadrage « double »
+// ou « page ») › SoulevementProvider (photo-vidéo et feuillet volant soulevés au-dessus du livre) ›
+// Livre, avec le menu de réglages dans l'Ecran. Racine de l'application (index.html → src/app/main.tsx)
+// et de la page autonome (harness/devices.html : React UMD + bundle.js, Artboards.Carnet).
 import React from 'react';
 import { Ecran } from '../../components/Ecran';
 import { Livre } from '../../components/Livre';
+import { Reglages, CREDITS_REGLAGES } from '../../components/Reglages';
+import { SoulevementProvider, souleverObjet, useSoulevement } from '../../components/Soulever';
 import { CameraProvider } from '../../lib/camera';
+import { MotionConfig } from '../../lib/motion';
+import { useReglages } from '../../lib/reglages';
 import { ViewportOverride, type ViewportForce } from '../../lib/viewport';
-import { COUVERTURE, SPREADS_DEMO } from '../DemoCarnet/spreads';
+import { COUVERTURE, CREDITS_VIDEOS, SPREADS_DEMO, videoDe } from '../DemoCarnet/spreads';
 import { indexDuLien, useLienProfond } from './liens';
 
 export interface CarnetProps {
@@ -49,15 +54,79 @@ export function Carnet({ ecran, liens = false, depart = -1, coteInitial }: Carne
     return depart;
   });
   useLienProfond(liens, spreads, index, setIndex);
+  const [reglages] = useReglages();
 
   const carnet = (
-    <CameraProvider keyboard persist={!simule} fixed={simule && ecran?.tactile ? { distance: 'proche' } : undefined}>
-      <Ecran pleinEcran>
-        <Livre spreads={spreads} index={index} onIndexChange={setIndex} keyboard cover={COUVERTURE} coteInitial={coteInitial} />
-      </Ecran>
-    </CameraProvider>
+    <MotionConfig reducedMotion={reglages.mouvementReduit ? 'always' : 'user'}>
+      <CameraProvider keyboard persist={!simule} fixed={simule && ecran?.tactile ? { distance: 'proche' } : undefined}>
+        <Ecran pleinEcran>
+          <SoulevementProvider>
+            <CarnetLivre index={index} setIndex={setIndex} coteInitial={coteInitial} />
+          </SoulevementProvider>
+        </Ecran>
+      </CameraProvider>
+    </MotionConfig>
   );
   return ecran ? <ViewportOverride.Provider value={ecran}>{carnet}</ViewportOverride.Provider> : carnet;
+}
+
+const CREDITS = (
+  <>
+    <p>{CREDITS_REGLAGES}</p>
+    <ul>
+      {CREDITS_VIDEOS.map((c) => (
+        <li key={c.titre}>{c.titre} : {c.auteur} ({c.licence})</li>
+      ))}
+    </ul>
+  </>
+);
+
+/** Le livre, ses touches (Entrée : vidéo, ↑ : feuillet), la vidéo préparée à chaque page, le menu. */
+function CarnetLivre({ index, setIndex, coteInitial }: { index: number; setIndex: (i: number) => void; coteInitial?: 'gauche' | 'droite' }) {
+  const spreads = SPREADS_DEMO;
+  const { preparer, reposer } = useSoulevement();
+  const [reglages] = useReglages();
+  const lectureAuto = React.useRef(reglages.lectureAuto);
+  lectureAuto.current = reglages.lectureAuto;
+
+  // La vidéo de la double page affichée est préparée à l'atterrissage (jamais pendant un geste).
+  React.useEffect(() => {
+    preparer(index >= 0 ? videoDe(spreads[index]) : null);
+  }, [index, preparer, spreads]);
+
+  const changer = React.useCallback((i: number) => {
+    setIndex(i);
+    if (i >= 0 && lectureAuto.current && videoDe(spreads[i])) {
+      // Lecture automatique : la photo se soulève une fois la page posée (sans le son si le
+      // navigateur le refuse hors d'un geste ; le premier toucher le rend).
+      requestAnimationFrame(() => requestAnimationFrame(() => souleverObjet('photo')));
+    }
+  }, [setIndex, spreads]);
+
+  // Entrée / Espace : la vidéo de la double page ; ↑ : le feuillet volant. Appelé DANS le keydown.
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || index < 0) return;
+      const cible = e.target as HTMLElement | null;
+      if (cible && cible.closest('button, a, input, select, textarea, [role="slider"]')) return;
+      let fait = false;
+      if (e.key === 'Enter' || e.key === ' ') fait = souleverObjet('photo');
+      else if (e.key === 'ArrowUp') fait = souleverObjet('feuillet');
+      if (fait) e.preventDefault();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [index]);
+
+  const invites = React.useMemo(() => spreads.map((s, i) => ({ index: i, titre: s.titre ?? s.id })), [spreads]);
+  const aller = React.useCallback((i: number) => { reposer(); setIndex(i); }, [reposer, setIndex]);
+
+  return (
+    <>
+      <Livre spreads={spreads} index={index} onIndexChange={changer} keyboard cover={COUVERTURE} coteInitial={coteInitial} />
+      <Reglages invites={invites} onAller={aller} credits={CREDITS} />
+    </>
+  );
 }
 
 export default Carnet;
