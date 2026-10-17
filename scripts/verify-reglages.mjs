@@ -7,21 +7,22 @@
 //   - ouvrir par le bouton, par M et par « , » ; role=dialog, aria-modal ; focus sur un contrôle du panneau ;
 //   - focus piégé (Tab et Maj+Tab ne sortent pas) ; ↓ ↑ changent de ligne ; ← → changent une valeur ;
 //   - Échap ferme et rend le focus au bouton ;
-//   - son, lecture auto, moins d'animations (gc:reglages:v1 et [data-gc-mouvement]) ; vitesse vive /
+//   - son, lecture auto, moins d'animations (gc:reglages:v2 et [data-gc-mouvement]) ; vitesse vive /
 //     normale / lente choisie au menu, puis mesurée sur un tourne-page (gc-livre-geste debut → fin, deux
 //     tours entrelacés, le plus court gardé : vive < normale < lente ; écrans « double ») ; zoom borné
 //     par zoomBornes(cran) (src/lib/camera.tsx) ; « Aller à… » (double page, et l'URL #… si les liens
 //     profonds sont actifs) ; réglages par défaut ;
 //   - persistance après rechargement ; localStorage.setItem qui lève → aucun plantage ;
 //   - cibles ≥ 44 px au doigt, rien hors de la zone sûre.
-// Indépendamment du menu (valide dès maintenant) : la vitesse écrite dans gc:reglages:v1 règle bien la
+// Indépendamment du menu (valide dès maintenant) : la vitesse écrite dans gc:reglages:v2 règle bien la
 // durée d'un tourne-page (écrans « double »).
 // Plan v4 (CONTRACT § 13, lot B) : ligne « Loupe » (100 à 300 %, pas de 25) sur TOUS les écrans, téléphone
-// compris ; ligne « Sons du livre » (automatique / oui / non → sonsLivre null / true / false, mémorisé) ;
-// « remettre les réglages par défaut » remet aussi la loupe à 1× ([data-gc-loupe="repos"]).
+// compris ; ligne « Sons du livre » (automatique / oui / non → sonsLivre null / true / false, mémorisé ;
+// défaut « oui » depuis la clé v2) ; « remettre les réglages par défaut » remet aussi la loupe à 1×
+// ([data-gc-loupe="repos"]) et le zoom fin à 95 % (CAMERA_DEFAULT, src/lib/camera.tsx).
 // Section « Ambiance » (lots L et S) : « Sons du livre », « Feu de cheminée et cuisine » (automatique / oui /
-// non → ambiance null / true / false) et « Lumière du feu » (oui / non → feu, défaut oui) ; remis par
-// défaut avec le reste. Tant que src/lib/reglages.ts ne garde pas ambiance / feu (lot S) : ATTENTE.
+// non → ambiance null / true / false, défaut « oui ») et « Lumière du feu » (oui / non → feu, défaut oui) ;
+// ligne « Musique » (« aucune » ou un morceau de la banque, défaut : le premier) ; remis par défaut avec le reste.
 // Lignes cherchées par [data-gc-reglage="<champ>"] (banc factice) ou [data-gc-reglages-ligne="<id>"] (lot R :
 // taille, zoom, son, volume, auto, vitesse, mouvement, aller, invites, fin), puis par rôle et nom accessible.
 // Un oui / non est un groupe radio (lot R) ou un interrupteur (banc). Ce qui manque encore est ATTENTE
@@ -33,6 +34,7 @@
 //        [--only iphone13-portrait,ordi-1440,tv-1080] [--aller rose] [--lien julie] [--sans-vitesse-stockee]
 //        [--out verification/out/t/reglages]
 import { resolve, join } from 'node:path';
+import { readFileSync } from 'node:fs';
 import {
   ROOT, lireArgs, ecrans, tactile, lancer, ouvrirCible, ouvrirPage, Rapport, rectDe, zoneSure, dansZone, cibles44, stabiliser,
   etatLivre, attendreGeste, nbGestes, calme, capture, taper, initReglages, initStockageQuiLeve, zoomBornes,
@@ -49,8 +51,18 @@ const R = new Rapport('reglages', { dir: out, meta: { cible: cible.type, depart:
 const browser = await lancer();
 const insetsDe = (e) => (cible.type === 'site' || cible.type === 'url' ? null : e.insets);
 const BORNES = zoomBornes();
-/** Valeurs par défaut du contrat, plan v4 compris (sonsLivre et ambiance : null = automatique ; feu : oui). */
-const DEFAUT = { ...REGLAGES_DEFAUT, sonsLivre: null, ambiance: null, feu: true };
+/**
+ * Valeurs par défaut de la clé gc:reglages:v2 (src/lib/reglages.ts, REGLAGES_DEFAUT) : sons du livre,
+ * ambiance et lumière du feu actifs (« oui ») ; muet coupé ; musique = le premier morceau de la banque
+ * (lu dans design-system/baked/musique/banque.json, comme reglages.ts le lit par MUSIQUES_IDS[0]).
+ */
+const PREMIER_MORCEAU = JSON.parse(readFileSync(join(ROOT, 'design-system/baked/musique/banque.json'), 'utf8')).morceaux[0];
+const DEFAUT = { ...REGLAGES_DEFAUT, sonsLivre: true, ambiance: true, feu: true, muet: false, musique: PREMIER_MORCEAU.id };
+/** Clés de stockage : réglages (v2, src/lib/reglages.ts) et caméra (v2, src/lib/camera.tsx). */
+const CLE_REGLAGES = 'gc:reglages:v2';
+const CLE_CAMERA = 'gc:camera:v2';
+/** Zoom fin par défaut (CAMERA_DEFAULT.zoom, src/lib/camera.tsx). */
+const ZOOM_DEFAUT = 0.95;
 /**
  * Lumière du feu figée (lot L, window.__gcFeu) pendant ces essais : son vacillement repeint l'écran à
  * chaque image, ce qui, en rendu logiciel, retarde les animations du menu de plusieurs secondes. Le menu
@@ -89,13 +101,13 @@ const PANNEAU = '[data-gc-reglages="panneau"]';
 const FOCUSABLES = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [role="slider"], [role="switch"], [role="radio"], [role="checkbox"], [role="option"]';
 
 // ---- Lecture de l'état -------------------------------------------------------------------------------
-const lireReglages = (page) => page.evaluate((d) => { try { return { ...d, ...(JSON.parse(localStorage.getItem('gc:reglages:v1')) || {}) }; } catch { return { ...d }; } }, DEFAUT);
+const lireReglages = (page) => page.evaluate(([d, cle]) => { try { return { ...d, ...(JSON.parse(localStorage.getItem(cle)) || {}) }; } catch { return { ...d }; } }, [DEFAUT, CLE_REGLAGES]);
 /** État de la loupe lu sur l'écran : [data-gc-loupe] et la réglette « Loupe » du menu. */
 const lireLoupe = (page) => page.evaluate(() => {
   const r = document.querySelector('[data-gc-reglages-ligne="loupe"] [role="slider"]');
   return { attr: document.querySelector('.gc-ecran')?.getAttribute('data-gc-loupe') ?? null, valeur: r ? Number(r.getAttribute('aria-valuenow')) : null, texte: r?.getAttribute('aria-valuetext') ?? null };
 });
-const lireCamera = (page) => page.evaluate(() => { try { return JSON.parse(localStorage.getItem('gc:camera:v1')) || null; } catch { return null; } });
+const lireCamera = (page) => page.evaluate((cle) => { try { return JSON.parse(localStorage.getItem(cle)) || null; } catch { return null; } }, CLE_CAMERA);
 const panneauVisible = (page) => page.evaluate((s) => {
   const p = document.querySelector(s);
   if (!p || p.hidden || !p.getClientRects().length) return false;
@@ -133,7 +145,7 @@ const focusablesDuPanneau = (page) => page.evaluate(([p, f]) => {
 /** Instantané des valeurs : réglages, caméra, aria-checked / pressed / valuenow / value dans le panneau. */
 const instantane = (page) => page.evaluate((p) => {
   let s = '';
-  try { s = (localStorage.getItem('gc:reglages:v1') || '') + (localStorage.getItem('gc:camera:v1') || ''); } catch { /* rien */ }
+  try { s = (localStorage.getItem('gc:reglages:v2') || '') + (localStorage.getItem('gc:camera:v2') || ''); } catch { /* rien */ }
   const pan = document.querySelector(p);
   const aria = pan ? [...pan.querySelectorAll('[aria-checked], [aria-pressed], [aria-valuenow], [aria-selected], input, select')].map((el) => `${el.getAttribute('aria-checked')}${el.getAttribute('aria-pressed')}${el.getAttribute('aria-valuenow')}${el.getAttribute('aria-selected')}${el.value ?? ''}${el.checked ?? ''}`).join('|') : '';
   return s + '§' + aria;
@@ -279,7 +291,7 @@ async function mesurerVitesses(regler, mesurer) {
   return { m, detail: `vive ${m.vive} ms · normale ${m.normale} ms · lente ${m.lente} ms — le plus court de : vive ${liste_('vive')} · normale ${liste_('normale')} · lente ${liste_('lente')}` };
 }
 
-/** La vitesse écrite dans gc:reglages:v1 règle la durée d'un tourne-page (sans le menu). */
+/** La vitesse écrite dans gc:reglages:v2 règle la durée d'un tourne-page (sans le menu). */
 async function vitesseStockee(e) {
   let pageMode = false;
   const { m, detail } = await mesurerVitesses(async () => {}, async (v) => {
@@ -292,7 +304,7 @@ async function vitesseStockee(e) {
     }
   });
   if (pageMode) R.info(e.nom, 'vitesse (réglage stocké)', 'cadrage « page » : mesure faite sur les écrans « double »');
-  else R.ok(e.nom, 'vitesse (réglage stocké gc:reglages:v1) : tourne-page vive < normale < lente', ordonne(m), detail);
+  else R.ok(e.nom, 'vitesse (réglage stocké gc:reglages:v2) : tourne-page vive < normale < lente', ordonne(m), detail);
 }
 
 // ---- Suite du menu ----------------------------------------------------------------------------------
@@ -332,6 +344,18 @@ async function suiteMenu(e) {
     T('panneau : role="dialog" et aria-modal="true"', roles.dialog && roles.modal === 'true', `dialog ${roles.dialog}, aria-modal ${roles.modal}`);
     const a0 = await actif(page);
     T('ouvert : le focus est sur un contrôle du panneau', a0.controle, a0.nom);
+
+    // 1 bis. Défauts à l'ouverture, contexte neuf (rien n'a encore été changé) : sons du livre, ambiance et
+    // lumière du feu sur « oui », musique sur le premier morceau. Jugés ici, avant toute remise à zéro.
+    await bloc('défauts à l\'ouverture', async () => {
+      const coche = (cle, opts) => premier([ligne(page, cle).getByRole('radio', opts)]).then((l) => !!l && estChoisi(l));
+      const sons = await coche('sonsLivre', { name: /^oui$/i });
+      const amb = await coche('ambiance', { name: /^oui$/i });
+      const feu = await coche('feu', { name: /^oui$/i });
+      T('défauts : sons du livre, ambiance et lumière du feu sur « oui »', sons && amb && feu, `sons du livre ${sons}, ambiance ${amb}, lumière du feu ${feu}`);
+      const mus = await coche('musique', { name: PREMIER_MORCEAU.titre, exact: true });
+      T(`défaut : musique « ${PREMIER_MORCEAU.titre} » (premier morceau de la banque)`, mus);
+    }, { menu: false });
 
     // 2. Échap ferme et rend le focus au bouton
     await bloc('Échap', async () => {
@@ -412,7 +436,7 @@ async function suiteMenu(e) {
         const m0 = await page.evaluate(() => document.querySelector('[data-gc-mouvement]')?.getAttribute('data-gc-mouvement') ?? null);
         await basculer(page, e, cle);
         const r1 = await lireReglages(page);
-        T(`réglage « ${cle} » : ${r0[cle]} → ${r1[cle]} (gc:reglages:v1)`, r1[cle] === !r0[cle]);
+        T(`réglage « ${cle} » : ${r0[cle]} → ${r1[cle]} (gc:reglages:v2)`, r1[cle] === !r0[cle]);
         if (cle === 'mouvementReduit') {
           const m1 = await page.evaluate(() => document.querySelector('[data-gc-mouvement]')?.getAttribute('data-gc-mouvement') ?? null);
           if (m0 == null && m1 == null) R.info(e.nom, 'moins d\'animations : [data-gc-mouvement]', 'attribut absent');
@@ -438,7 +462,7 @@ async function suiteMenu(e) {
         await cliquer(page, e, loc);
         const ok = (await lireReglages(page)).vitesse === v;
         if (ok) vitesses++;
-        T(`vitesse « ${v} » choisie au menu (gc:reglages:v1)`, ok);
+        T(`vitesse « ${v} » choisie au menu (gc:reglages:v2)`, ok);
       }
     });
     if (vitesses === 3 && (await etatLivre(page)).cadrage !== 'page') {
@@ -476,9 +500,9 @@ async function suiteMenu(e) {
       };
       const haut = await pousser(1);
       const bas = await pousser(-1);
-      if (!haut || !bas) { R.info(e.nom, 'zoom', 'gc:camera:v1 non écrit (caméra non mémorisée : carte ou écran simulé)'); return; }
+      if (!haut || !bas) { R.info(e.nom, 'zoom', `${CLE_CAMERA} non écrit (caméra non mémorisée : carte ou écran simulé)`); return; }
       const cran = haut.distance ?? 'moyenne';
-      const [lo, hi] = BORNES[cran] ?? [0.85, 1.15];
+      const [lo, hi] = BORNES[cran] ?? [0.6, 1.15];
       const dedans = (c) => c.zoom >= lo - 1e-3 && c.zoom <= hi + 1e-3;
       T(`zoom borné par zoomBornes(${cran}) = [${lo}, ${hi}]`, dedans(haut) && dedans(bas), `max ${haut.zoom} · min ${bas.zoom}${Math.abs(haut.zoom - hi) < 0.006 && Math.abs(bas.zoom - lo) < 0.006 ? ' (bornes atteintes)' : ''}`);
       if (zs) { await zs.focus(); for (let i = 0; i < 100 && ((await lireCamera(page))?.zoom ?? 1) < 1; i++) await page.keyboard.press('ArrowRight'); }
@@ -492,11 +516,20 @@ async function suiteMenu(e) {
       if (lente) await cliquer(page, e, lente);
       if (!(await lireReglages(page)).lectureAuto) { if (!(await panneauVisible(page))) await ouvrirMenu(page, e); await basculer(page, e, 'lectureAuto'); }
       if (!(await panneauVisible(page))) await ouvrirMenu(page, e);
+      // Hors défaut avant la remise (sinon elle ne prouve rien pour ces réglages) : sons du livre, ambiance,
+      // lumière du feu coupés, musique « aucune ».
+      for (const [cle, re] of [['sonsLivre', /^non$/i], ['ambiance', /^non$/i], ['feu', /^non$/i], ['musique', /^aucune$/i]]) {
+        const l = await premier([ligne(page, cle).getByRole('radio', { name: re })]);
+        if (l) await cliquer(page, e, l);
+        if (!(await panneauVisible(page))) await ouvrirMenu(page, e);
+      }
       const d2 = await premier([ligne(page, 'defaut').getByRole('button', { name: NOMS.defaut }), ligne(page, 'defaut').locator('button'), pan(page).getByRole('button', { name: NOMS.defaut })]);
       await cliquer(page, e, d2);
       const r = await lireReglages(page);
       const ecarts = Object.entries(DEFAUT).filter(([k, v]) => r[k] !== v).map(([k]) => `${k}=${r[k]}`);
-      T('réglages par défaut : retour aux valeurs du contrat', !ecarts.length, ecarts.join(', '));
+      T('réglages par défaut : retour aux valeurs du contrat (gc:reglages:v2)', !ecarts.length, ecarts.join(', ') || `sonsLivre ${r.sonsLivre}, ambiance ${r.ambiance}, feu ${r.feu}, musique ${r.musique}`);
+      const cam = await lireCamera(page);
+      T(`réglages par défaut : zoom fin ${Math.round(ZOOM_DEFAUT * 100)} % (gc:camera:v2, CAMERA_DEFAULT)`, !!cam && Math.abs(cam.zoom - ZOOM_DEFAUT) < 1e-6, `zoom ${cam?.zoom ?? 'non écrit'}`);
     });
 
     // 10 bis. Loupe et sons du livre (plan v4) : sur tous les écrans, téléphone compris
@@ -508,9 +541,6 @@ async function suiteMenu(e) {
       if (!(await lg.count()) || !(await sl.count())) return;
       const l0 = await lireLoupe(page);
       T('loupe : 100 % par défaut, bornes 100 – 300 %', l0.valeur === 1 && l0.attr === 'repos' && await lg.getByRole('slider').evaluate((x) => x.getAttribute('aria-valuemin') === '1' && x.getAttribute('aria-valuemax') === '3'), `${l0.texte}, ${l0.attr}`);
-      const r0 = await lireReglages(page);
-      const auto = await premier([sl.getByRole('radio', { name: /auto/i })]);
-      T('sons du livre : « automatique » par défaut (sonsLivre null)', r0.sonsLivre === null && !!auto && await estChoisi(auto), `sonsLivre ${r0.sonsLivre}`);
       // Loupe : le + de la ligne (pas de 25 % ; sur la feuille du téléphone, la réglette seule), puis → sur la réglette
       const plus = await premier([lg.getByRole('button', { name: /plus/i })]);
       if (plus) await cliquer(page, e, plus);
@@ -527,20 +557,25 @@ async function suiteMenu(e) {
       await page.waitForTimeout(900);
       const l2 = await lireLoupe(page);
       T('loupe : → sur la réglette → 150 %', l2.valeur === 1.5, l2.texte);
-      // Sons du livre : oui, puis mémorisé
+      // Sons du livre (défaut « oui ») : « non », puis « oui », tous deux mémorisés (gc:reglages:v2)
+      const non0 = await premier([sl.getByRole('radio', { name: /^non$/i })]);
+      if (non0) await cliquer(page, e, non0);
+      T('sons du livre : « non » → sonsLivre false (gc:reglages:v2)', (await lireReglages(page)).sonsLivre === false);
       const oui = await premier([sl.getByRole('radio', { name: /^oui$/i })]);
       if (oui) await cliquer(page, e, oui);
-      T('sons du livre : « oui » → sonsLivre true (gc:reglages:v1)', (await lireReglages(page)).sonsLivre === true);
+      T('sons du livre : « oui » → sonsLivre true (gc:reglages:v2)', (await lireReglages(page)).sonsLivre === true);
       const vol = await premier([ligne(page, 'volume').getByRole('slider')]);
       T('volume visible quand les sons du livre sont actifs (Web Audio, iPhone compris)', !!vol);
       R.capturer(await capture(page, `${e.nom}-menu-loupe`, out), `${e.titre} — menu : Loupe et Sons du livre`);
-      // Remettre par défaut : loupe à 1× aussi
+      // Remettre par défaut : loupe à 1× aussi ; « non » d'abord, pour que le retour au « oui » se voie
+      const non1 = await premier([sl.getByRole('radio', { name: /^non$/i })]);
+      if (non1) await cliquer(page, e, non1);
       const def = await premier([ligne(page, 'defaut').getByRole('button', { name: NOMS.defaut })]);
       if (def) await cliquer(page, e, def);
       await attendreLoupe('repos');
       const l3 = await lireLoupe(page);
       const r3 = await lireReglages(page);
-      T('remettre par défaut : loupe à 100 % et sons du livre automatiques', l3.attr === 'repos' && l3.valeur === 1 && r3.sonsLivre === null, `${l3.texte}, ${l3.attr}, sonsLivre ${r3.sonsLivre}`);
+      T('remettre par défaut : loupe à 100 % et sons du livre « oui »', l3.attr === 'repos' && l3.valeur === 1 && r3.sonsLivre === true, `${l3.texte}, ${l3.attr}, sonsLivre ${r3.sonsLivre}`);
       // Persistance de sonsLivre : non, puis rechargement
       const non = await premier([sl.getByRole('radio', { name: /^non$/i })]);
       if (non) await cliquer(page, e, non);
@@ -553,8 +588,8 @@ async function suiteMenu(e) {
       if (await ouvrirMenu(page, e)) {
         const n2 = await premier([ligne(page, 'sonsLivre').getByRole('radio', { name: /^non$/i })]);
         montre = !!n2 && await estChoisi(n2);
-        const a2 = await premier([ligne(page, 'sonsLivre').getByRole('radio', { name: /auto/i })]);
-        if (a2) await cliquer(page, e, a2); // retour à l'automatique pour la suite
+        const a2 = await premier([ligne(page, 'sonsLivre').getByRole('radio', { name: /^oui$/i })]);
+        if (a2) await cliquer(page, e, a2); // retour au défaut (« oui ») pour la suite
       }
       T('sons du livre : « non » mémorisé après rechargement (sonsLivre false, menu)', r4.sonsLivre === false && montre === true, `sonsLivre ${r4.sonsLivre}, menu ${montre}`);
       T('loupe : 100 % après rechargement (rien n\'est mémorisé)', (await lireLoupe(page)).valeur === 1);
@@ -569,23 +604,22 @@ async function suiteMenu(e) {
       T('ligne « Feu de cheminée et cuisine » présente', (await la.count()) > 0);
       T('ligne « Lumière du feu » présente', (await lf.count()) > 0);
       if (!(await la.count()) || !(await lf.count())) return;
-      const a0 = await premier([la.getByRole('radio', { name: /auto/i })]);
-      const f0 = await premier([lf.getByRole('radio', { name: /^oui$/i })]);
-      T('ambiance : « automatique » et lumière du feu « oui » par défaut', !!a0 && await estChoisi(a0) && !!f0 && await estChoisi(f0));
-      const stocke = async (cle, v) => (await page.evaluate((k) => { try { return JSON.parse(localStorage.getItem('gc:reglages:v1') || '{}')[k]; } catch { return undefined; } }, cle)) === v;
+      // (Les défauts « oui » sont jugés à l'ouverture, bloc « défauts à l'ouverture ».)
+      const lireStocke = (cle) => page.evaluate(([k, c]) => { try { return JSON.parse(localStorage.getItem(k) || '{}')[c]; } catch { return undefined; } }, [CLE_REGLAGES, cle]);
       const non = await premier([la.getByRole('radio', { name: /^non$/i })]);
       if (non) await cliquer(page, e, non);
       const fnon = await premier([lf.getByRole('radio', { name: /^non$/i })]);
       if (fnon) await cliquer(page, e, fnon);
-      const ok = (await stocke('ambiance', false)) && (await stocke('feu', false));
-      if (ok) T('ambiance « non » et lumière « non » mémorisées (gc:reglages:v1)', true);
-      else R.attente(e.nom, 'ambiance et lumière du feu mémorisées', 'reglages.ts ne garde pas encore ambiance / feu (lot S)');
+      const mem = (await lireStocke('ambiance')) === false && (await lireStocke('feu')) === false;
+      T('ambiance « non » et lumière « non » mémorisées (gc:reglages:v2)', mem, `ambiance ${await lireStocke('ambiance')}, feu ${await lireStocke('feu')}`);
       const def = await premier([ligne(page, 'defaut').getByRole('button', { name: NOMS.defaut })]);
       if (def) await cliquer(page, e, def);
       await page.waitForTimeout(400);
-      const a1 = await premier([ligne(page, 'ambiance').getByRole('radio', { name: /auto/i })]);
+      const a1 = await premier([ligne(page, 'ambiance').getByRole('radio', { name: /^oui$/i })]);
       const f1 = await premier([ligne(page, 'feu').getByRole('radio', { name: /^oui$/i })]);
-      T('remettre par défaut : ambiance automatique, lumière du feu oui', !!a1 && await estChoisi(a1) && !!f1 && await estChoisi(f1));
+      const choisisRemis = !!a1 && await estChoisi(a1) && !!f1 && await estChoisi(f1);
+      T('remettre par défaut : ambiance et lumière du feu sur « oui » (affiché et mémorisé)', choisisRemis && (await lireStocke('ambiance')) === true && (await lireStocke('feu')) === true,
+        `ambiance stockée ${await lireStocke('ambiance')}, feu stocké ${await lireStocke('feu')}`);
       R.capturer(await capture(page, `${e.nom}-menu-ambiance`, out), `${e.titre} — menu : section Ambiance`);
     });
 

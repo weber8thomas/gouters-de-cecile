@@ -1,26 +1,28 @@
-// Lumière du feu (plan v4, lot L) : src/lib/feu.ts (horloge du feu), Stage + Lumiere (calques).
+// Lumière du feu (plan v4, lot L) : src/lib/feu.ts (horloge du feu), Stage + Lumiere (calques), et la bougie
+// (src/components/Bougie : halo et flamme animés, [data-gc-bougie]), qui compte comme une source de lumière.
 // Carte Carnet autonome (harness/devices.html + bundle), TV 1920 × 1080 au clavier, téléphones émulés.
 //
 // Vérifie :
 //   - présence des calques [data-gc-lumiere] (bain, ombre, ambiance, voile) ; aucun ne capte le pointeur
-//     (pointer-events: none sur eux et leurs conteneurs ; elementFromPoint ne tombe jamais dessus) ;
-//   - le feu est vivant : l'opacité des calques varie dans le temps (valeurs distinctes, amplitude) ;
+//     (pointer-events: none sur eux et leurs conteneurs ; elementFromPoint ne tombe jamais dessus), bougie comprise ;
+//   - le feu est vivant : l'opacité des calques varie dans le temps (valeurs distinctes, amplitude), et la
+//     flamme de la bougie aussi ;
 //   - pause quand l'onglet est caché (visibilitychange) : le moteur ne calcule plus d'image, reprise ensuite ;
 //   - mouvement réduit (prefers-reduced-motion) et réglage feu: false : lumière statique (mode « statique »,
-//     intensité 1, opacités constantes) ; feu: false en ATTENTE tant que reglages.ts (lot S) ne le garde pas ;
+//     intensité 1, opacités constantes, flamme de la bougie fixe) ;
 //   - performance (trace Chrome, CPU ×4) : 5 s au repos, puis un tour de page (→ sur la page du carnet) :
 //     0 Layout et 0 Paint attribuables au feu (Paint sur un calque de lumière, ou écart feu vivant / feu figé),
-//     calques composités en plus dus à la lumière (CDP LayerTree, lumière retirée par CSS) ≤ 4 ;
+//     calques composités en plus dus à la lumière, bougie comprise (CDP LayerTree, lumière retirée par CSS) ≤ BUDGET_LUMIERE ;
 //   - téléphone milieu de gamme émulé (Pixel 7, CPU ×4) : temps de script et cadence, feu vivant / figé ;
 //   - contraste de l'encre d'une page cuite (Julie) : ≥ 90 % du contraste sans voile, sur chaque tuile
-//     de la page qui porte de l'encre, feu figé au plus bas, à la moyenne et au plus fort.
+//     de la page qui porte de l'encre, feu figé aux bornes (0,6 et 1,6) et au milieu (1).
 // Captures dans verification/out/v4-l : TV à 3 instants du vacillement, couverture, téléphone debout,
 // avant / après (bundle --avant), planche ; vidéo feu.mp4 (H.264, ffmpeg) : le feu vivant puis un tour de page.
 //
 //   node scripts/verify-lumiere.mjs [--bundle dist/ds-v4-l/components] [--avant dist/ds-v4-l-avant/components]
 //        [--only presence,pointeur,vivant,pause,reduit,feu-off,perf,telephone,contraste,captures,video]
 //        [--out verification/out/v4-l] [--lien julie] [--throttle 4]
-import { mkdirSync, readFileSync, existsSync, rmSync, readdirSync } from 'node:fs';
+import { mkdirSync, existsSync, rmSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { PNG } from 'pngjs';
@@ -50,9 +52,15 @@ const TV = ecran('tv-1080');
 const TEL = ecran('iphone13-portrait');
 const PIXEL = ecran('pixel7');
 const CALQUES = '[data-gc-lumiere]';
+// La bougie (src/components/Bougie) : seuls ses deux calques animés (halo, flamme) sont échantillonnés ; la cire est fixe.
+const CALQUES_BOUGIE = '[data-gc-bougie="halo"], [data-gc-bougie="flamme"]';
 const NOMS = ['bain', 'ombre', 'ambiance', 'voile'];
 const CATEGORIES = ['devtools.timeline', 'disabled-by-default-devtools.timeline', 'disabled-by-default-devtools.timeline.frame', 'blink.user_timing'];
-const SANS_LUMIERE = '.gc-lumiere { display: none !important; }';
+// Lumière retirée : le feu (calques du lot L) et la bougie, qui est une source de lumière comme les autres.
+const SANS_LUMIERE = '.gc-lumiere, .gc-bougie { display: none !important; }';
+const SANS_BOUGIE = '.gc-bougie { display: none !important; }';
+// Budget de calques composités ajoutés par la lumière (CSS retiré, LayerTree), voir la section « Performance ».
+const BUDGET_LUMIERE = 4;
 const SANS_VOILE = '.gc-lumiere--livre { visibility: hidden !important; }';
 // Mesure de l'encre : les objets vivants (photo, feuillet, invitation) bougent avec les indices du lot S
 // et ne sont pas de l'encre ; on les cache pendant la mesure.
@@ -82,7 +90,7 @@ async function ouvrir(e, hash = lien, options = {}) {
   return r;
 }
 
-/** Opacités des calques de lumière, échantillonnées à chaque image pendant `ms`. */
+/** Opacités des calques de lumière (et des calques animés de la bougie), échantillonnées à chaque image pendant `ms`. */
 const echantillonner = (page, ms) => page.evaluate(([sel, duree]) => new Promise((resolve) => {
   const par = {};
   const t0 = performance.now();
@@ -90,7 +98,7 @@ const echantillonner = (page, ms) => page.evaluate(([sel, duree]) => new Promise
   const tick = () => {
     images++;
     for (const el of document.querySelectorAll(sel)) {
-      const k = el.getAttribute('data-gc-lumiere');
+      const k = el.getAttribute('data-gc-lumiere') ?? el.getAttribute('data-gc-bougie');
       const cs = getComputedStyle(el);
       const p = (par[k] ??= { op: [], tr: new Set() });
       p.op.push(Number(cs.opacity));
@@ -108,7 +116,7 @@ const echantillonner = (page, ms) => page.evaluate(([sel, duree]) => new Promise
     }
   };
   requestAnimationFrame(tick);
-}), [CALQUES, ms]);
+}), [`${CALQUES}, ${CALQUES_BOUGIE}`, ms]);
 
 const r3 = (v) => Math.round(v * 1000) / 1000;
 const pc = (v) => `${Math.round(v * 1000) / 10} %`;
@@ -133,19 +141,19 @@ if (tests.has('presence') || tests.has('pointeur')) {
   if (tests.has('pointeur')) {
     const pe = await page.evaluate((s) => {
       const mauvais = [];
-      for (const el of document.querySelectorAll(`${s}, .gc-lumiere, .gc-stage__light`)) {
+      for (const el of document.querySelectorAll(`${s}, .gc-lumiere, .gc-stage__light, .gc-bougie`)) {
         if (getComputedStyle(el).pointerEvents !== 'none') mauvais.push(el.className);
       }
-      // elementFromPoint sur une grille de l'écran : jamais un calque de lumière.
+      // elementFromPoint sur une grille de l'écran : jamais un calque de lumière (ni la bougie).
       const touches = [];
       for (let y = 20; y < innerHeight; y += 90) for (let x = 20; x < innerWidth; x += 120) {
         const t = document.elementFromPoint(x, y);
-        if (t && t.closest('.gc-lumiere, .gc-stage__light')) touches.push([x, y]);
+        if (t && t.closest('.gc-lumiere, .gc-stage__light, .gc-bougie')) touches.push([x, y]);
       }
       return { mauvais, touches };
     }, CALQUES);
-    R.ok('tv-1080', 'pointer-events: none sur tous les calques de lumière', pe.mauvais.length === 0, pe.mauvais.join(', '));
-    R.ok('tv-1080', 'elementFromPoint ne tombe jamais sur la lumière (grille 120 × 90 px)', pe.touches.length === 0, pe.touches.slice(0, 5).map((p) => p.join(',')).join(' '));
+    R.ok('tv-1080', 'pointer-events: none sur tous les calques de lumière (bougie comprise)', pe.mauvais.length === 0, pe.mauvais.join(', '));
+    R.ok('tv-1080', 'elementFromPoint ne tombe jamais sur la lumière, bougie comprise (grille 120 × 90 px)', pe.touches.length === 0, pe.touches.slice(0, 5).map((p) => p.join(',')).join(' '));
     // Le tour de page au clic dans la marge et la photo restent atteignables.
     const photo = await rectDe(page, '[data-gc-objet="photo"]');
     if (photo) {
@@ -170,6 +178,8 @@ if (tests.has('vivant') || tests.has('pause')) {
       R.ok('tv-1080', `opacité du calque « ${n} » qui varie (4 s)`, !!p && p.distinctes >= assez && p.max - p.min >= 0.015, p ? `${p.distinctes} valeurs sur ${e.images} images (seuil ${assez}), ${r3(p.min)} → ${r3(p.max)}, ${p.transforms} transforms` : 'absent');
     }
     R.ok('tv-1080', 'la source bouge (transform du bain)', (e.par.bain?.transforms ?? 0) >= assez, `${e.par.bain?.transforms} valeurs`);
+    const flamme = e.par.flamme;
+    R.ok('tv-1080', 'bougie : la flamme vacille (opacité, 4 s)', !!flamme && flamme.distinctes >= assez, flamme ? `${flamme.distinctes} valeurs sur ${e.images} images (seuil ${assez}), ${r3(flamme.min)} → ${r3(flamme.max)}` : 'absente');
   }
   if (tests.has('pause')) {
     const cacher = (cache) => page.evaluate((h) => {
@@ -193,22 +203,20 @@ if (tests.has('vivant') || tests.has('pause')) {
 }
 
 // ---- 3. Mouvement réduit, feu: false ------------------------------------------------------------------
-async function statique(nom, options, attenteSi) {
+async function statique(nom, options) {
   const { ctx, page } = await ouvrir(TV, lien, options);
+  // Calques de lumière et flamme de la bougie : tous immobiles (opacité et transformation constantes).
   const e = await echantillonner(page, 1800);
   const f = await etatFeu(page);
   const fixe = Object.values(e.par).every((p) => p.distinctes === 1 && p.transforms === 1);
   const detail = `mode ${f?.mode}, intensité ${f?.intensite}, ${Object.entries(e.par).map(([k, p]) => `${k} ${p.distinctes}×${r3(p.max)}`).join(', ')}`;
-  if (attenteSi && f?.mode !== 'statique') R.attente('tv-1080', `${nom} : lumière statique`, attenteSi);
-  else R.ok('tv-1080', `${nom} : lumière statique, à l'intensité moyenne`, f?.mode === 'statique' && f?.intensite === 1 && fixe, detail);
+  R.ok('tv-1080', `${nom} : lumière statique, à l'intensité moyenne (bougie comprise)`, f?.mode === 'statique' && f?.intensite === 1 && fixe, detail);
   await ctx.close();
 }
 if (tests.has('reduit')) await statique('mouvement réduit (système)', { contexteExtra: { reducedMotion: 'reduce' } });
 if (tests.has('reduit')) await statique('moins d\'animations (réglage du carnet)', { init: [initReglages({ mouvementReduit: true })] });
-if (tests.has('feu-off')) {
-  const garde = /\bfeu\b\s*[:?]/.test(readFileSync(join(ROOT, 'src/lib/reglages.ts'), 'utf8'));
-  await statique('réglage feu: false', { init: [initReglages({ feu: false })] }, garde ? null : 'reglages.ts (lot S) ne garde pas encore le champ « feu » : à relancer après intégration');
-}
+// Réglage « Lumière du feu » : non (feu: false, reglages.ts). La bougie suit ce réglage.
+if (tests.has('feu-off')) await statique('réglage feu: false', { init: [initReglages({ feu: false })] });
 
 // ---- 4. Performance : trace (CPU ×4) au repos et pendant un tour de page, calques -----------------------
 async function tracer(page, cdp, fn) {
@@ -240,7 +248,7 @@ async function compter(cdp, ev, debut, fin) {
       noeuds[id] = `${n?.nodeName ?? '?'}${cls ? '.' + cls.split(' ')[0] : ''}`;
     }
   } catch { /* DOM indisponible */ }
-  const lumiere = paints.filter((e) => /gc-lumiere|gc-ombre-feu/.test(noeuds[e.args?.data?.nodeId] ?? ''));
+  const lumiere = paints.filter((e) => /gc-lumiere|gc-ombre-feu|gc-bougie/.test(noeuds[e.args?.data?.nodeId] ?? ''));
   const parNoeud = {};
   for (const e of paints) { const k = noeuds[e.args?.data?.nodeId] ?? '?'; parNoeud[k] = (parNoeud[k] ?? 0) + 1; }
   return {
@@ -312,7 +320,7 @@ if (tests.has('perf')) {
   }
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
 
-  // Calques : au repos et pendant un tour de page, avec puis sans lumière.
+  // Calques : au repos et pendant un tour de page, avec puis sans lumière (feu et bougie), puis sans la bougie seule.
   const repos = await calques(page, cdp, () => page.waitForTimeout(700));
   const tour = await calques(page, cdp, () => tourDePage(page, 'ArrowRight'));
   await styleEnPlus(page, SANS_LUMIERE);
@@ -320,8 +328,14 @@ if (tests.has('perf')) {
   const reposSans = await calques(page, cdp, () => page.waitForTimeout(700));
   const tourSans = await calques(page, cdp, () => tourDePage(page, 'ArrowLeft'));
   await retirerStyles(page);
+  await styleEnPlus(page, SANS_BOUGIE);
+  await page.waitForTimeout(300);
+  const reposSansBougie = await calques(page, cdp, () => page.waitForTimeout(700));
+  await retirerStyles(page);
   const enPlus = Math.max(repos.dernier - reposSans.dernier, tour.max - tourSans.max);
-  R.ok('tv-1080', 'calques composités en plus dus à la lumière ≤ 4', enPlus <= 4, `repos ${repos.dernier} (sans lumière ${reposSans.dernier}) · tour de page max ${tour.max} (sans ${tourSans.max})`);
+  const deLaBougie = repos.dernier - reposSansBougie.dernier;
+  R.ok('tv-1080', `calques composités en plus dus à la lumière (feu et bougie) ≤ ${BUDGET_LUMIERE}`, enPlus <= BUDGET_LUMIERE,
+    `repos ${repos.dernier} (sans lumière ${reposSans.dernier}, dont bougie ${deLaBougie} : sans bougie ${reposSansBougie.dernier}) · tour de page max ${tour.max} (sans ${tourSans.max})`);
   R.ok('tv-1080', 'calques pendant un tour de page ≤ 40 (CONTRACT § 10)', tour.max <= 40, `${tour.max}`);
   await ctx.close();
 }
@@ -420,7 +434,8 @@ async function mesurerContraste(page, label, e) {
     const r = await rectDe(page, `.gc-livre__emplacement--${cote}`);
     if (!r?.visible) continue;
     const clip = { x: Math.max(0, r.x), y: Math.max(0, r.y), width: Math.min(r.w, e.ctx.viewport.width - Math.max(0, r.x)), height: Math.min(r.h, e.ctx.viewport.height - Math.max(0, r.y)) };
-    for (const i of [0.8, 1, 1.4]) {
+    // Intensités du feu figé : les bornes de feu.ts (0,6 et 1,6) et le milieu (1).
+    for (const i of [0.6, 1, 1.6]) {
       await figer(page, { intensite: i });
       await deuxImages(page);
       await page.waitForTimeout(120);
@@ -446,7 +461,7 @@ if (tests.has('contraste')) {
       const rs = res.filter((x) => x.cote === cote);
       if (!rs.length) continue;
       const pire = rs.reduce((a, b) => (b.pire.rapport < a.pire.rapport ? b : a));
-      R.ok(e.nom, `contraste de l'encre, page ${cote} : ≥ 90 % du contraste sans voile (tuile la plus touchée, feu figé 0,8 / 1 / 1,4)`,
+      R.ok(e.nom, `contraste de l'encre, page ${cote} : ≥ 90 % du contraste sans voile (tuile la plus touchée, feu figé 0,6 / 1 / 1,6)`,
         pire.pire.rapport >= 0.9,
         `pire ${pc(pire.pire.rapport)} (tuile ${pire.pire.tx},${pire.pire.ty}, intensité ${pire.i} : ${r3(pire.pire.sans)}:1 → ${r3(pire.pire.avec)}:1) · moyenne ${rs.map((x) => `${x.i} → ${pc(x.moyenne)}`).join(', ')}`);
     }
@@ -493,8 +508,8 @@ if (tests.has('captures')) {
       R.capturer(c, `TV, instant ${k} : intensité ${r3(f.intensite)}, source ${Math.round(f.dx)},${Math.round(f.dy)} px`);
       planches.push([c, `TV instant ${k} — intensité ${r3(f.intensite)}`]);
     }
-    // Contraste des instants extrêmes, pour l'œil : figé au plus bas et au plus fort.
-    for (const i of [0.85, 1.35]) {
+    // Contraste des instants extrêmes, pour l'œil : figé aux bornes de l'intensité (0,6 et 1,6).
+    for (const i of [0.6, 1.6]) {
       await figer(page, { intensite: i });
       await deuxImages(page);
       const c = await capture(page, `tv-fige-${String(i).replace('.', '_')}`, out);
