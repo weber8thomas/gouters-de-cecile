@@ -25,6 +25,7 @@
     {
       "slug": "lisa",
       "firstName": "Lisa",
+      "genre": "f",
       "city": "",
       "chapter": "gateaux",
       "video": {
@@ -36,6 +37,7 @@
     {
       "slug": "julie",
       "firstName": "Julie",
+      "genre": "f",
       "city": "Lyon",
       "chapter": "gateaux",
       "video": {
@@ -46,6 +48,7 @@
     {
       "slug": "hugo",
       "firstName": "Hugo",
+      "genre": "m",
       "city": "Nantes",
       "chapter": "gateaux",
       "video": {
@@ -56,18 +59,21 @@
     {
       "slug": "odile",
       "firstName": "Odile",
+      "genre": "f",
       "city": "Annecy",
       "chapter": "gateaux"
     },
     {
       "slug": "karim",
       "firstName": "Karim",
+      "genre": "m",
       "city": "Marseille",
       "chapter": "gateaux"
     },
     {
       "slug": "lea",
       "firstName": "Léa",
+      "genre": "f",
       "city": "Bordeaux",
       "chapter": "biscuits",
       "video": {
@@ -78,6 +84,7 @@
     {
       "slug": "mathis",
       "firstName": "Mathis",
+      "genre": "m",
       "city": "Lille",
       "chapter": "biscuits",
       "video": {
@@ -88,12 +95,14 @@
     {
       "slug": "ines",
       "firstName": "Inès",
+      "genre": "f",
       "city": "Toulouse",
       "chapter": "biscuits"
     },
     {
       "slug": "bernard",
       "firstName": "Bernard",
+      "genre": "m",
       "city": "Dijon",
       "chapter": "biscuits",
       "video": {
@@ -104,6 +113,7 @@
     {
       "slug": "camille",
       "firstName": "Camille",
+      "genre": "f",
       "city": "Strasbourg",
       "chapter": "tartes",
       "video": {
@@ -114,6 +124,7 @@
     {
       "slug": "antoine",
       "firstName": "Antoine",
+      "genre": "m",
       "city": "Grenoble",
       "chapter": "tartes",
       "video": {
@@ -124,18 +135,21 @@
     {
       "slug": "sophie",
       "firstName": "Sophie",
+      "genre": "f",
       "city": "Tours",
       "chapter": "tartes"
     },
     {
       "slug": "yasmine",
       "firstName": "Yasmine",
+      "genre": "f",
       "city": "Montpellier",
       "chapter": "tartes"
     },
     {
       "slug": "elise",
       "firstName": "Élise",
+      "genre": "f",
       "city": "Paris",
       "chapter": "boissons",
       "video": {
@@ -146,6 +160,7 @@
     {
       "slug": "rose",
       "firstName": "Rose",
+      "genre": "f",
       "city": "Vannes",
       "chapter": "biscuits",
       "video": {
@@ -156,18 +171,21 @@
     {
       "slug": "noe",
       "firstName": "Noé",
+      "genre": "m",
       "city": "Rennes",
       "chapter": "boissons"
     },
     {
       "slug": "paul",
       "firstName": "Paul",
+      "genre": "m",
       "city": "Biarritz",
       "chapter": "boissons"
     },
     {
       "slug": "margaux",
       "firstName": "Margaux",
+      "genre": "f",
       "city": "Brest",
       "chapter": "crepes",
       "video": {
@@ -178,6 +196,7 @@
     {
       "slug": "lucas",
       "firstName": "Lucas",
+      "genre": "m",
       "city": "Bruxelles",
       "chapter": "crepes",
       "video": {
@@ -188,12 +207,14 @@
     {
       "slug": "anais",
       "firstName": "Anaïs",
+      "genre": "f",
       "city": "Caen",
       "chapter": "crepes"
     },
     {
       "slug": "victor",
       "firstName": "Victor",
+      "genre": "m",
       "city": "Clermont-Ferrand",
       "chapter": "crepes"
     }
