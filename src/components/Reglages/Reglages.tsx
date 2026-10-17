@@ -15,6 +15,7 @@ import { useCamera, zoomBornes, ZOOM_STEP } from '../../lib/camera';
 import type { Distance } from '../../lib/settings';
 import { resetReglages, useReglages, type Reglages as ReglagesValeurs, type Vitesse } from '../../lib/reglages';
 import * as son from '../../lib/son';
+import { MORCEAUX } from '../../lib/musique';
 import { LOUPE_MAX, LOUPE_MIN, demanderLoupe, useLoupe } from '../../lib/loupe';
 import { useClavierModal } from '../../lib/clavier';
 import { LazyMotion, SPRINGS, animate, domMax, m, useMotionValue, useReducedMotion, useTransform } from '../../lib/motion';
@@ -301,6 +302,8 @@ const AUTO_OUI_NON: Option<ChoixAuto>[] = [{ v: 'auto', texte: 'automatique' }, 
 const AUTO_OUI_NON_COURT: Option<ChoixAuto>[] = [{ v: 'auto', texte: 'auto' }, { v: 'oui', texte: 'oui' }, { v: 'non', texte: 'non' }];
 const versChoixAuto = (v: boolean | null): ChoixAuto => (v === null ? 'auto' : v ? 'oui' : 'non');
 const deChoixAuto = (c: ChoixAuto): boolean | null => (c === 'auto' ? null : c === 'oui');
+/** Musique de fond (src/lib/musique.ts) : « aucune », puis chaque morceau de la banque par son titre. */
+const OPTIONS_MUSIQUE: Option<string>[] = [{ v: 'aucune', texte: 'aucune' }, ...MORCEAUX.map((m) => ({ v: m.id, texte: m.titre }))];
 
 // ---- Ambiance (lots L et S) : lue de façon défensive tant que reglages.ts n'a pas ses champs ----------
 /** Champs de l'ambiance : `ambiance` (feu de cheminée et cuisine, null = automatique) et `feu` (la lumière vacille). */
@@ -376,8 +379,9 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   // Audio, réglable partout, iPhone compris) ; la ligne reste dès que l'un d'eux peut servir.
   const sonsLivre = son.sonsLivreEffectif(r);
   const ambiance = ambianceActive(r);
-  const avecVolume = volumeReglable() || sonsLivre || ambiance;
-  const volumeActif = r.son || sonsLivre || ambiance;
+  const musique = r.musique !== 'aucune';
+  const avecVolume = volumeReglable() || sonsLivre || ambiance || musique;
+  const volumeActif = r.son || sonsLivre || ambiance || musique;
 
   // Loupe : l'état au repos ; pendant qu'elle s'anime vers la valeur choisie, la réglette montre déjà
   // cette valeur (le pâté suit le doigt).
@@ -686,6 +690,9 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                   <Ligne id="feu" libelle="Lumière du feu" role="radiogroup">
                     <Choix options={OUI_NON} valeur={feuDe(r)} onChoisir={(feu) => setR(partielAmbiance({ feu }))} graine={g()} />
                   </Ligne>
+                  <Ligne id="musique" libelle="Musique" role="radiogroup" large>
+                    <Choix options={OPTIONS_MUSIQUE} valeur={r.musique} onChoisir={(musique) => setR({ musique })} graine={g()} />
+                  </Ligne>
                   {invites.length > 0 && (
                     <Ligne id="aller" libelle="Aller à…">
                       <button
@@ -726,6 +733,14 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                   {voirCredits && (
                     <div id={creditsId} className="gc-reglages__credits">
                       {credits ?? <p>{CREDITS_REGLAGES}</p>}
+                      <p>Musique de fond (Kevin MacLeod, incompetech.com), sous licence Creative Commons Attribution 4.0 :</p>
+                      <ul>
+                        {MORCEAUX.map((m) => (
+                          <li key={m.id}>
+                            « <a href={m.url} target="_blank" rel="noopener noreferrer">{m.titre}</a> » : {m.auteur}, <a href={m.licenceUrl} target="_blank" rel="noopener noreferrer">{m.licence}</a>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   )}
                 </div>
