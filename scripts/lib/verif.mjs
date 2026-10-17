@@ -732,7 +732,7 @@ export function zoomBornes() {
   }
 }
 
-export const REGLAGES_DEFAUT = { v: 1, son: true, volume: 1, lectureAuto: false, vitesse: 'normale', mouvementReduit: false };
+export const REGLAGES_DEFAUT = { v: 1, son: true, volume: 1, volumeBruitages: 0.8, lectureAuto: false, vitesse: 'normale', mouvementReduit: false, volumeMusique: 0.5 };
 
 /** Script d'init : écrit des réglages (gc:reglages:v3) avant le chargement de l'application. */
 export const initReglages = (r) => ({

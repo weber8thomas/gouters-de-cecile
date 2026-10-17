@@ -5,6 +5,8 @@
 // Clé v3 : la musique est coupée par défaut (musiqueActive, absent de la clé v2 : coupée). Les réglages
 // v2 sont repris tels quels, sauf la musique ; la clé v2 sert de repli, puis la v1 (son « automatique »
 // ramené au défaut, comme avant).
+// Les volumes des bruitages et de la musique (volumeBruitages, volumeMusique) n'ont pas de clé à part :
+// absents d'une clé v3, ils prennent leur défaut (0,8 et 0,5), comme les autres champs ajoutés.
 import React from 'react';
 import banqueMusique from '../../design-system/baked/musique/banque.json';
 
@@ -17,6 +19,11 @@ export interface Reglages {
   son: boolean;
   /** Volume des vidéos, 0 à 1 (sans effet là où il est en lecture seule, comme sur iPhone). */
   volume: number;
+  /**
+   * Volume des bruitages, 0 à 1 : pages, couverture, feuillets, photo (src/lib/son.ts), feu et bruits de
+   * cuisine (src/lib/ambiance.ts). Indépendant du volume des vidéos et de celui de la musique. Défaut : 0,8.
+   */
+  volumeBruitages: number;
   /** Lancer la vidéo en arrivant sur la double page d'un invité. */
   lectureAuto: boolean;
   /** Vitesse des pages qui tournent (ressort « paper »). */
@@ -53,6 +60,11 @@ export interface Reglages {
    * Éteindre le bouton garde le morceau choisi ; le rallumer le reprend.
    */
   musiqueActive: boolean;
+  /**
+   * Volume de la musique de fond, 0 à 1, toujours sous le feu (src/lib/musique.ts). Réglable musique
+   * coupée : le niveau attend le prochain départ. Défaut : 0,5.
+   */
+  volumeMusique: number;
 }
 
 /** Identifiants des morceaux de musique de fond (la banque cuite par scripts/bake-musique.mjs). */
@@ -62,6 +74,7 @@ export const REGLAGES_DEFAUT: Reglages = {
   v: 1,
   son: true,
   volume: 1,
+  volumeBruitages: 0.8,
   lectureAuto: false,
   vitesse: 'normale',
   mouvementReduit: false,
@@ -71,6 +84,7 @@ export const REGLAGES_DEFAUT: Reglages = {
   muet: false,
   musique: MUSIQUES_IDS[0] ?? 'aucune',
   musiqueActive: false,
+  volumeMusique: 0.5,
 };
 const CLE = 'gc:reglages:v3';
 const CLE_V2 = 'gc:reglages:v2';
@@ -82,6 +96,7 @@ function valider(x: unknown): Reglages {
   const o = x as Record<string, unknown>;
   if (typeof o.son === 'boolean') r.son = o.son;
   if (typeof o.volume === 'number' && Number.isFinite(o.volume)) r.volume = Math.min(1, Math.max(0, o.volume));
+  if (typeof o.volumeBruitages === 'number' && Number.isFinite(o.volumeBruitages)) r.volumeBruitages = Math.min(1, Math.max(0, o.volumeBruitages));
   if (typeof o.lectureAuto === 'boolean') r.lectureAuto = o.lectureAuto;
   if (typeof o.vitesse === 'string' && (VITESSES as string[]).includes(o.vitesse)) r.vitesse = o.vitesse as Vitesse;
   if (typeof o.mouvementReduit === 'boolean') r.mouvementReduit = o.mouvementReduit;
@@ -91,6 +106,7 @@ function valider(x: unknown): Reglages {
   if (typeof o.muet === 'boolean') r.muet = o.muet;
   if (typeof o.musique === 'string' && (o.musique === 'aucune' || MUSIQUES_IDS.includes(o.musique))) r.musique = o.musique;
   if (typeof o.musiqueActive === 'boolean') r.musiqueActive = o.musiqueActive;
+  if (typeof o.volumeMusique === 'number' && Number.isFinite(o.volumeMusique)) r.volumeMusique = Math.min(1, Math.max(0, o.volumeMusique));
   // « aucune » ne joue pas : le bouton musique repart du premier morceau.
   if (r.musique === 'aucune') r.musiqueActive = false;
   return r;

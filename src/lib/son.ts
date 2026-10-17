@@ -305,7 +305,7 @@ function demarrer(c: Ctx, b: AudioBuffer, debit: number, gain: number, delai: nu
   src.start(c.currentTime + Math.max(0, delai));
 }
 
-/** Le moteur par défaut : variante, débit et gain d'après la vitesse du geste, le volume et la vidéo. */
+/** Le moteur par défaut : variante, débit et gain d'après la vitesse du geste, le volume des bruitages et la vidéo. */
 function moteur(nom: NomSon, o?: OptionsSon): void {
   const variantes = BANQUE_SONS[nom];
   if (!variantes?.length || !actifs() || getReglages().muet) return;
@@ -318,7 +318,7 @@ function moteur(nom: NomSon, o?: OptionsSon): void {
   const v = clamp01(Number.isFinite(o?.vitesse) ? (o!.vitesse as number) : 0.5);
   const debit = (0.9 + 0.25 * v) * (1 + (Math.random() * 2 - 1) * 0.03);
   const r = getReglages();
-  let gain = clamp01(r.volume) * (0.35 + 0.65 * v) * Math.max(0, Number.isFinite(o?.gain) ? (o!.gain as number) : 1);
+  let gain = clamp01(r.volumeBruitages) * (0.35 + 0.65 * v) * Math.max(0, Number.isFinite(o?.gain) ? (o!.gain as number) : 1);
   if (videoEnCours) gain *= 0.3;
   const k = choisir(nom, variantes.length);
   gain *= variantes[k].g;

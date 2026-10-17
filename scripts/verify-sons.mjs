@@ -8,7 +8,7 @@
 //   banc      jouerSon() appelé directement (page de test construite ici, esbuild : src/lib/son.ts) :
 //             suspendu / aucun contexte avant le premier geste, actif après (resume dans le geste) ;
 //             geste vif → débit plus élevé qu'un geste lent (bornes 0,9 + 0,25 v, ± 3 %) ; variantes
-//             jamais deux fois de suite ; gain = volume × (0,35 + 0,65 v) × gain × mixage ; × 0,3 pendant
+//             jamais deux fois de suite ; gain = volume des bruitages × (0,35 + 0,65 v) × gain × mixage ; × 0,3 pendant
 //             une vidéo ; sons coupés → rien ; un 404 est sans effet (pas d'erreur, un seul essai) ;
 //   iphone    iPhone 13 émulé, réglages par défaut (sons actifs, téléphone compris) : rien avant le premier
 //             toucher, puis la banque se charge et les sons jouent ; « Sons du livre » coupés → rien ;
@@ -193,7 +193,7 @@ async function suiteBanc() {
     R.ok(nom, `banque décodée après le déverrouillage (${TOTAL} fichiers)`, dec, `${(await espion(page)).decodes} décodés · ${(await espion(page)).fetchs.length} MP3 chargés`);
 
     // 3. Vitesse → débit
-    await page.evaluate(() => window.__banc.reglages({ volume: 1, sonsLivre: true }));
+    await page.evaluate(() => window.__banc.reglages({ volumeBruitages: 1, sonsLivre: true }));
     const jouerN = async (nomSon, o, n) => {
       const n0 = await nbStarts(page);
       for (let i = 0; i < n; i++) {
@@ -221,12 +221,12 @@ async function suiteBanc() {
     // 4. Gain : volume, vitesse, gain, mixage, vidéo
     const riffle = banque.sons.riffle[0];
     const gainDe = async (o, reglages = {}) => {
-      await page.evaluate((r) => window.__banc.reglages(r), { volume: 1, ...reglages });
+      await page.evaluate((r) => window.__banc.reglages(r), { volumeBruitages: 1, ...reglages });
       const s = await jouerN('riffle', o, 1);
       return s[0]?.gain ?? null;
     };
     const g1 = await gainDe({ vitesse: 1 });
-    const gV = await gainDe({ vitesse: 1 }, { volume: 0.5 });
+    const gV = await gainDe({ vitesse: 1 }, { volumeBruitages: 0.5 });
     const gLent = await gainDe({ vitesse: 0 });
     const gOpt = await gainDe({ vitesse: 1, gain: 0.5 });
     await page.evaluate(() => window.__banc.video(true));
@@ -235,7 +235,7 @@ async function suiteBanc() {
     const proche = (a, b) => a != null && Math.abs(a - b) < 0.002;
     R.ok(nom, 'gain = volume × (0,35 + 0,65 × vitesse) × gain × mixage (banque.json)', proche(g1, riffle.g) && proche(gLent, 0.35 * riffle.g) && proche(gOpt, 0.5 * riffle.g),
       `riffle (mixage ${riffle.g}) : v 1 → ${g1?.toFixed(4)} · v 0 → ${gLent?.toFixed(4)} · gain 0,5 → ${gOpt?.toFixed(4)}`);
-    R.ok(nom, 'le volume des réglages règle le gain', proche(gV, 0.5 * g1), `volume 1 → ${g1?.toFixed(4)} · volume 0,5 → ${gV?.toFixed(4)}`);
+    R.ok(nom, 'le volume des bruitages règle le gain', proche(gV, 0.5 * g1), `volume 1 → ${g1?.toFixed(4)} · volume 0,5 → ${gV?.toFixed(4)}`);
     R.ok(nom, 'pendant une vidéo : × 0,3', proche(gVideo, 0.3 * g1), `${gVideo?.toFixed(4)} (attendu ${(0.3 * g1).toFixed(4)})`);
     await page.evaluate(() => window.__banc.reglages({ sonsLivre: false }));
     const coupes = await jouerN('page', { vitesse: 1 }, 3);
@@ -284,6 +284,9 @@ async function suiteBanc() {
   }
 }
 
+/** Volume des bruitages par défaut (src/lib/reglages.ts, REGLAGES_DEFAUT) : le niveau plein de l'ambiance. */
+const VOLUME_BRUITAGES_DEFAUT = 0.8;
+
 async function suiteAmbiance() {
   const e = ecran('tv-1080');
   const nom = e.nom;
@@ -303,7 +306,7 @@ async function suiteAmbiance() {
       echant.push(await page.evaluate(() => window.__banc.ambiance().niveau));
     }
     const feu = (await espion(page)).starts.filter((s) => s.f === 'ambiance-feu.mp3');
-    R.ok(nom, 'ambiance : le feu démarre après le geste, en fondu sur 3 s', marche && feu.length >= 1 && echant[0] > 0.02 && echant[0] < 0.6 && echant[1] > echant[0] && Math.abs(echant[2] - 1) < 0.02,
+    R.ok(nom, 'ambiance : le feu démarre après le geste, en fondu sur 3 s', marche && feu.length >= 1 && echant[0] > 0.02 && echant[0] < 0.6 && echant[1] > echant[0] && Math.abs(echant[2] - VOLUME_BRUITAGES_DEFAUT) < 0.02,
       `niveau à 0,7 / 1,6 / 3,8 s : ${echant.map((v) => v?.toFixed(3)).join(' / ')} · ${feu.length} passage(s) du feu (gain du passage ${feu[0]?.gain ?? '—'})`);
     const sync = await page.evaluate(async () => {
       const s = window.__gcFeuSync;
@@ -321,13 +324,13 @@ async function suiteAmbiance() {
     await page.evaluate(() => window.__banc.video(false));
     await attendre(2600);
     const apres = await page.evaluate(() => window.__banc.ambiance().niveau);
-    R.ok(nom, 'ambiance : × 0,15 pendant une vidéo, puis retour', Math.abs(enVideo - 0.15) < 0.01 && Math.abs(apres - 1) < 0.02, `pendant ${enVideo?.toFixed(3)} · après ${apres?.toFixed(3)}`);
+    R.ok(nom, 'ambiance : × 0,15 pendant une vidéo, puis retour', Math.abs(enVideo - 0.15 * VOLUME_BRUITAGES_DEFAUT) < 0.01 && Math.abs(apres - VOLUME_BRUITAGES_DEFAUT) < 0.02, `pendant ${enVideo?.toFixed(3)} · après ${apres?.toFixed(3)}`);
     // Volume
-    await page.evaluate(() => window.__banc.reglages({ volume: 0.5 }));
+    await page.evaluate(() => window.__banc.reglages({ volumeBruitages: 0.5 }));
     await attendre(1200);
     const vol = await page.evaluate(() => window.__banc.ambiance().niveau);
-    await page.evaluate(() => window.__banc.reglages({ volume: 1 }));
-    R.ok(nom, 'ambiance : suit le volume des réglages', Math.abs(vol - 0.5) < 0.02, `volume 0,5 → niveau ${vol?.toFixed(3)}`);
+    await page.evaluate(() => window.__banc.reglages({ volumeBruitages: 1 }));
+    R.ok(nom, 'ambiance : suit le volume des bruitages', Math.abs(vol - 0.5) < 0.02, `volume des bruitages 0,5 → niveau ${vol?.toFixed(3)}`);
     // « Couper tous les sons » : le gain maître de l'ambiance tombe à 0 (le feu tourne en silence), aucun
     // bruit de cuisine ; rétabli ensuite
     await page.evaluate(() => window.__banc.reglages({ muet: true }));
@@ -394,7 +397,7 @@ async function suiteAmbiance() {
     const apres = await a.page.evaluate(() => window.__banc.ambiance().niveau);
     const E = await espion(a.page);
     const feu = E.starts.filter((s) => s.f === 'ambiance-feu.mp3' && s.duree > 0.01);
-    R.ok(ip.nom, 'iPhone (réglage par défaut) : l\'ambiance joue après le premier toucher (feu en fondu sur 3 s)', marche && feu.length >= 1 && Math.abs(apres - 1) < 0.02,
+    R.ok(ip.nom, 'iPhone (réglage par défaut) : l\'ambiance joue après le premier toucher (feu en fondu sur 3 s)', marche && feu.length >= 1 && Math.abs(apres - VOLUME_BRUITAGES_DEFAUT) < 0.02,
       `${E.contextes.map((c) => c.etats.join('→')).join(', ')} · niveau 3,8 s après le geste ${apres?.toFixed(3)} · ${feu.length} passage(s) du feu`);
   } finally {
     await a.ctx.close();
