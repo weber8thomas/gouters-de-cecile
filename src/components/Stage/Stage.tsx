@@ -1,6 +1,6 @@
 import React from 'react';
 import { SettingsContext, settingsAttrs, useSettings, type Distance, type IdleLook, type Settings } from '../../lib/settings';
-import { LumiereLivre, LumiereTable } from '../Lumiere';
+import { LumiereLivre, LumiereTable, LUMIERE_TRACEE } from '../Lumiere';
 import { Bougie } from '../Bougie';
 import './Stage.css';
 
@@ -50,7 +50,7 @@ export function Stage({ idle, distance, fit = false, children, overlay, classNam
     return () => ro.disconnect();
   }, [fit]);
 
-  const cls = ['gc-stage', debord > 0 && 'gc-stage--debord', className].filter(Boolean).join(' ');
+  const cls = ['gc-stage', debord > 0 && 'gc-stage--debord', LUMIERE_TRACEE && 'gc-stage--tracee', className].filter(Boolean).join(' ');
   const style: React.CSSProperties & Record<string, string> = {};
   if (fit) Object.assign(style, { transform: `scale(${scale})`, transformOrigin: '0 0' });
   if (debord > 0) style['--gc-stage-debord'] = `${debord}px`;
@@ -63,7 +63,8 @@ export function Stage({ idle, distance, fit = false, children, overlay, classNam
     >
       <div className="gc-stage__table" aria-hidden="true">
         <div className="gc-stage__surface" />
-        <div className="gc-stage__falloff" />
+        {/* éclairage tracé : la pénombre de la table est dans ses calques */}
+        {!LUMIERE_TRACEE && <div className="gc-stage__falloff" />}
       </div>
       <LumiereTable />
       <div className="gc-stage__content">{children}</div>

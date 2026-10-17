@@ -74,6 +74,12 @@ const FEU: Feu = {
   dy: motionValue(0),
 };
 
+/**
+ * La flamme de la bougie (éclat × étirement, ≈ 0,85 à 1,07 ; 1 au repos), posée à chaque image par
+ * Bougie.tsx : l'éclairage tracé (Lumiere.tsx) y règle la lumière de la bougie sur le livre.
+ */
+export const flammeBougie: MotionValue<number> = motionValue(1);
+
 // ---- Bruit lissé : une valeur au hasard par nœud, interpolation de Catmull-Rom entre les nœuds ----
 // Chaque octave avance à sa fréquence (Hz) ; amplitude en unités d'intensité (ou de px pour dx, dy).
 class Octave {

@@ -188,3 +188,45 @@
       color-mix(in srgb, var(--gc-feu-flamme) 0.3%, transparent) 90%,
       transparent 100%);
 }
+
+/* ---- 5. Éclairage tracé (scripts/lumiere3d, Lumiere.tsx LumiereTracee) --------------------------------
+   Un groupe de calques par état du livre ; seul celui de l'état courant se voit, avec un fondu quand le
+   livre s'ouvre, se ferme, ou arrive sur la table vide. Les calques sont en px de scène et débordent de la
+   scène (marge du rendu) ; au-delà, l'ombre portée du fond prolonge la couleur de son bord. */
+.gc-lumiere-tracee {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.9s ease, visibility 0s linear 0.9s;
+}
+
+.gc-lumiere-tracee__fond,
+.gc-lumiere-tracee__voile {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+.gc-lumiere-tracee__voile {
+  will-change: opacity;
+  backface-visibility: hidden;
+}
+
+.gc-stage:not(:has(.gc-livre)) .gc-lumiere-tracee[data-gc-lumiere-etat="vide"],
+.gc-stage:has(.gc-livre[data-gc-arrivee="en-cours"]) .gc-lumiere-tracee[data-gc-lumiere-etat="vide"],
+.gc-stage:has(.gc-livre[data-gc-etat="couverture"]:not([data-gc-arrivee="en-cours"])) .gc-lumiere-tracee[data-gc-lumiere-etat="couverture"],
+.gc-stage:has(.gc-livre[data-gc-etat="arriere"]:not([data-gc-arrivee="en-cours"])) .gc-lumiere-tracee[data-gc-lumiere-etat="arriere"],
+.gc-stage:has(.gc-livre[data-gc-etat="ouvert"]:not([data-gc-arrivee="en-cours"])) .gc-lumiere-tracee[data-gc-lumiere-etat="ouvert"] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.9s ease, visibility 0s;
+}
+
+/* Les ombres génériques du livre posé sont dans les calques tracés (elles restent pendant l'arrivée). */
+.gc-stage--tracee .gc-livre:not([data-gc-arrivee="en-cours"]) .gc-livre__ombre--gauche,
+.gc-stage--tracee .gc-livre:not([data-gc-arrivee="en-cours"]) .gc-livre__ombre--droite,
+.gc-stage--tracee .gc-livre:not([data-gc-arrivee="en-cours"]) .gc-livre__ombre--epaisseur {
+  visibility: hidden;
+}
