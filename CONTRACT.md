@@ -288,6 +288,7 @@ Quand le menu ou un objet soulevé est ouvert, **lui seul** reçoit les touches 
   - Les clips d'exemple sont libres de droits (personnes de banques d'images). **Aucune vraie vidéo d'invité en ligne** tant que l'hébergement n'est pas décidé avec l'utilisatrice.
 - **Mots importants** : les nombres, les unités (`g`, `kg`, `cl`, `ml`, `°`, `°C`, `min`, `h`, `c. à s.`…), les noms (roster, Cécile) et les ingrédients.
   - **Aucune** correction voulue (insertion `^{}`, rature `~~a~~>{b}`) ne tombe à l'intérieur d'un mot important.
+  - **Pas de fausse faute** dans le texte d'un invité. L'utilisatrice trouve ça irréaliste (« 180^{g} », « ~~carrières~~>{carottes} »). Une coquille du message reçu est corrigée sans rature. Restent permis : un ajout après coup qui ajoute du sens, et un ajustement de Cécile au stylo rouge s'il est parfaitement lisible.
   - La cuisson les relit **sur l'encre rendue**. Un mot important douteux fait **échouer** la cuisson (code 1).
 - **Couverture cuite** comme les pages : toile ou carton scannés, étiquette manuscrite, garde. Plus de texte en police web sur la couverture.
 - **Ordre du carnet** : `src/content/carnet.json`, source unique pour la cuisson et l'application.
