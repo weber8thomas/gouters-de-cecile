@@ -217,10 +217,10 @@
   },
   "pages/1x/dedicace": {
     "file": "baked/pages/1x/dedicace.webp",
-    "sha": "4bb95a704b30a9e789f2dc7f83dc9eb489769173143d2cd7d763497f2aded7f0",
+    "sha": "d832d5c82c68ffa2d8f271ace3cc374b558345fc576f78f410666428f5730234",
     "w": 850,
     "h": 960,
-    "bytes": 28692,
+    "bytes": 28688,
     "type": "image/webp"
   },
   "pages/1x/fin-droite": {
@@ -257,10 +257,10 @@
   },
   "pages/1x/gateaux-droite": {
     "file": "baked/pages/1x/gateaux-droite.webp",
-    "sha": "b0dd85073532b03877749b856393ecf43a0af8b943ab3a0b07ae1319bd182f78",
+    "sha": "2dae1c75412f3ad28cad94c82fa68c657e22007cc50fec76938fc114a6f33bdd",
     "w": 850,
     "h": 960,
-    "bytes": 34850,
+    "bytes": 34960,
     "type": "image/webp"
   },
   "pages/1x/gateaux-gauche": {
@@ -289,10 +289,10 @@
   },
   "pages/1x/lisa-droite": {
     "file": "baked/pages/1x/lisa-droite.webp",
-    "sha": "3b8be17d1197938dffa2743574f5a3242983af2ae8b236dd5147d9a814a0e559",
+    "sha": "2a74f2d9de29f6c9b2fc32dd7b28f7e5ed3518ecb82a31a86515fb9f8e499189",
     "w": 850,
     "h": 960,
-    "bytes": 71912,
+    "bytes": 72122,
     "type": "image/webp"
   },
   "pages/1x/lisa-feuillet-recto": {
@@ -313,26 +313,26 @@
   },
   "pages/1x/lisa-gauche": {
     "file": "baked/pages/1x/lisa-gauche.webp",
-    "sha": "68e79a4b57f4a356290f65a4ffd9d5c4a2e47572294e63bea96b7dc080d3da07",
+    "sha": "bf0823516311264c1e2de5b22bed065565fe43f13b013f13fe0f1fba54698bc1",
     "w": 850,
     "h": 960,
-    "bytes": 70682,
+    "bytes": 71110,
     "type": "image/webp"
   },
   "pages/1x/mathis-droite": {
     "file": "baked/pages/1x/mathis-droite.webp",
-    "sha": "d60a532008d0db220a76e61835172f5c4323838f06ef9f71608eef387a4116a8",
+    "sha": "382dfc16483019b1352992d8713a983bb7fd2f1aedc30a8b71a64fd293061315",
     "w": 850,
     "h": 960,
-    "bytes": 69970,
+    "bytes": 69732,
     "type": "image/webp"
   },
   "pages/1x/mathis-gauche": {
     "file": "baked/pages/1x/mathis-gauche.webp",
-    "sha": "a72b6b372b72043de4f7169fdd4bd9ae9737ae0bda1e2eedc8871b9658bbf7b5",
+    "sha": "7222e3a6bb3bda9fd17901b8e7d5debec3a715bb18f3930b87067643cf06c7cd",
     "w": 850,
     "h": 960,
-    "bytes": 111030,
+    "bytes": 111428,
     "type": "image/webp"
   },
   "pages/1x/papier/c-lisa-recto": {
@@ -377,10 +377,10 @@
   },
   "pages/1x/papier/f17": {
     "file": "baked/pages/1x/papier/f17.webp",
-    "sha": "5c6a86bc7fe5eeb5c3f49f726fa92c1b210ef8e26d29f3da18546fcd3411d10a",
+    "sha": "84fc8527f615fd4038174b61843426a6b6e9854427b7fc174683fdedec8ac8ab",
     "w": 850,
     "h": 960,
-    "bytes": 27482,
+    "bytes": 27506,
     "type": "image/webp"
   },
   "pages/1x/papier/f19": {
@@ -497,10 +497,10 @@
   },
   "pages/dedicace": {
     "file": "baked/pages/dedicace.webp",
-    "sha": "484773b341dc5336a56f84ff9cae9f751ec93e58dd739fd036b89169c0989370",
+    "sha": "de1437c5a606ea47d70a923876db10e020723401bebf5547d7e84e5758eabe45",
     "w": 1700,
     "h": 1920,
-    "bytes": 82952,
+    "bytes": 82884,
     "type": "image/webp"
   },
   "pages/fin-droite": {
@@ -537,10 +537,10 @@
   },
   "pages/gateaux-droite": {
     "file": "baked/pages/gateaux-droite.webp",
-    "sha": "700eba8cc0a74f0cd82ffe5f2784dc5487db196ecd378eed52c239e97aa63305",
+    "sha": "131b7ad7dc8e9a9c56e82b5d3b58a5927b119729140f1e59811d90931fce8073",
     "w": 1700,
     "h": 1920,
-    "bytes": 98304,
+    "bytes": 98858,
     "type": "image/webp"
   },
   "pages/gateaux-gauche": {
@@ -569,10 +569,10 @@
   },
   "pages/lisa-droite": {
     "file": "baked/pages/lisa-droite.webp",
-    "sha": "328820eb4b7e467a8fb783a2113da6197bdfb0d6761344bae895fbd5ea78119f",
+    "sha": "c07965655d4c4b2783f7a85c6e8b287160116ad2a6c99443a97ededa425fcadd",
     "w": 1700,
     "h": 1920,
-    "bytes": 179662,
+    "bytes": 180158,
     "type": "image/webp"
   },
   "pages/lisa-feuillet-recto": {
@@ -593,26 +593,26 @@
   },
   "pages/lisa-gauche": {
     "file": "baked/pages/lisa-gauche.webp",
-    "sha": "b303ce862f31783aa46322b120cc94b74b4d16975f8ee903f1b6aa53fdec01d6",
+    "sha": "5357d52c3d78c471766140908cf57b5f0f12b7e54f3caeda4b45ca776da8e56a",
     "w": 1700,
     "h": 1920,
-    "bytes": 180516,
+    "bytes": 181382,
     "type": "image/webp"
   },
   "pages/mathis-droite": {
     "file": "baked/pages/mathis-droite.webp",
-    "sha": "7ef1041ae965d9bc1d9a768c2aafd7c4820b0793f8591bdac7d4d6c1e3cc5cc9",
+    "sha": "3772b2b8722ed6013f166fe0ceef4fc1e2e913c7bf33932c1ca8d1f132edb533",
     "w": 1700,
     "h": 1920,
-    "bytes": 181296,
+    "bytes": 181468,
     "type": "image/webp"
   },
   "pages/mathis-gauche": {
     "file": "baked/pages/mathis-gauche.webp",
-    "sha": "4f4107fb55bd1ad3273344ead1ac95d05fa71437cbf9f30916ee44596c7fe8a4",
+    "sha": "e3968b2ff78e36523ccb4b4b27289663fb2015f1a3b8cbd58e6f47eff923082e",
     "w": 1700,
     "h": 1920,
-    "bytes": 255792,
+    "bytes": 254898,
     "type": "image/webp"
   },
   "pages/papier/c-lisa-recto": {
@@ -657,10 +657,10 @@
   },
   "pages/papier/f17": {
     "file": "baked/pages/papier/f17.webp",
-    "sha": "9462168c0514135a7bedaf11b089605ceb7d0c5e9a61333a0a4df02d09d27bce",
+    "sha": "0716fa745a1111a53ea718483b3e642e96e96fab4f113dc0364698948944e94f",
     "w": 1700,
     "h": 1920,
-    "bytes": 243088,
+    "bytes": 243102,
     "type": "image/webp"
   },
   "pages/papier/f19": {

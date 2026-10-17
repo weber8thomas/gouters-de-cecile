@@ -88,7 +88,7 @@
    "relu": true
   }
  },
- "papier/f17": "3e9798b413ded46cae94e03959de9bfc0ab9fc0e22cfb1465a8a59982f59402b",
+ "papier/f17": "11d602ce7ab27c54ec2d89c49a906b089a5370f568e4b0fe90549ca2bc53aa35",
  "page/fin-gauche": {
   "cle": "153e8de71c2b6705969a07346b67fedd20cf58d1e92a8d226c7bd1d6a60a41c1",
   "manifeste": {
@@ -147,7 +147,7 @@
   }
  },
  "page/mathis-droite": {
-  "cle": "947cbc7550365e9e27b5527d11208ca5123e57f346b5cc302a75ce01d91281aa",
+  "cle": "b953f10a0847220da79e6428ffcc781fda29c95444ce38619935dc6381539e70",
   "manifeste": {
    "double": "mathis",
    "cote": "droite",
@@ -174,10 +174,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.0481,
-      0.3815,
-      0.0361,
-      0.0319
+      0.0488,
+      0.3766,
+      0.0355,
+      0.0314
      ]
     },
     {
@@ -185,10 +185,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.0545,
-      0.4724,
-      0.0328,
-      0.029
+      0.0457,
+      0.4607,
+      0.0367,
+      0.0325
      ]
     }
    ],
@@ -196,31 +196,35 @@
     "tasse"
    ],
    "douteux": [
-    "Cécile, (encre rendue lue « Cecile »)",
-    "1 (encre rendue lue « 1 »)",
-    "pommes, (encre rendue lue « pownes . »)",
-    "2 c. à s. (encre rendue lue « 2'c a s »)",
-    "sucre, (encre rendue lue « su cre. »)",
-    "pommes (encre rendue lue « P om mes . »)",
-    "beurre (encre rendue lue « Leisure »)",
-    "th. 7. (encre rendue lue « ft. 7 »)"
+    "Bernard (encre rendue lue « B\"erinard »)",
+    "pommes, (encre rendue lue « pomp mesi »)",
+    "2 c. à s. (encre rendue lue « 2'c. d. S. »)",
+    "noix (encre rendue lue « naix »)",
+    "beurre. (encre rendue lue « beirre . »)",
+    "sucre (encre rendue lue « su cre »)",
+    "beurre (encre rendue lue « beioire »)",
+    "noisettes. (encre rendue lue « noise ttes . »)",
+    "40 min (encre rendue lue « 40 min »)",
+    "th. 7. (encre rendue lue « th . I »)"
    ],
    "douteux_importants": [
-    "1",
     "2 c. à s.",
-    "Cécile,",
+    "40 min",
+    "Bernard",
     "beurre",
-    "pommes",
+    "beurre.",
+    "noisettes.",
+    "noix",
     "pommes,",
-    "sucre,",
+    "sucre",
     "th. 7."
    ],
    "relu": true
   }
  },
- "papier/f15": "9abd1ee84188593b49b85b2524d9f0879a4a85c4f032741ca6dbf6c1c7117c4a",
+ "papier/f15": "fb0f67e4d35b010110f8066657b76a05307ff02f9d78d8310e8bb04b15bf7b78",
  "page/mathis-gauche": {
-  "cle": "f63099f512742c6bc79b8865392b94661ffd75193fd97013947d4ca74fb011e6",
+  "cle": "81182cc6935452e3e7500b30d1f6574edcedaffa20780e3211c7681e258c984c",
   "manifeste": {
    "double": "mathis",
    "cote": "gauche",
@@ -247,7 +251,7 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.2296,
+      0.2314,
       0.3872,
       0.0385,
       0.0341
@@ -258,8 +262,8 @@
      "role": "dessin",
      "dessine": true,
      "boite": [
-      0.0674,
-      0.1548,
+      0.0742,
+      0.1516,
       0.16,
       0.1417
      ]
@@ -270,26 +274,20 @@
    ],
    "douteux": [
     "1 (groupe « 1 » lu « A »)",
-    "Mathis (encre rendue lue « Mattis »)",
-    "1 (encre rendue lue « t »)",
-    "100 g (encre rendue lue « 100 kg »)",
-    "roux, (encre rendue lue « row , »)",
-    "200 g (encre rendue lue « 200 9 »)",
-    "½ (encre rendue lue « Mr. »)",
-    "levure, (encre rendue lue « levire . »)",
-    "choco. (encre rendue lue « chico . »)",
-    "10 min (encre rendue lue « 1C.min »)"
+    "1 (groupe « 1 » lu « \" I »)",
+    "1 (encre rendue lue « A »)",
+    "75 g (encre rendue lue « FRG »)",
+    "200 g (encre rendue lue « 200 g »)",
+    "1 (encre rendue lue « \" I »)",
+    "pépites (encre rendue lue « recites »)",
+    "10 min (encre rendue lue « 10 inin- »)"
    ],
    "douteux_importants": [
     "1",
     "10 min",
-    "100 g",
     "200 g",
-    "Mathis",
-    "choco.",
-    "levure,",
-    "roux,",
-    "½"
+    "75 g",
+    "pépites"
    ],
    "relu": true
   }
@@ -406,12 +404,12 @@
   }
  },
  "papier1x/f19": "433f95b7ed1bdf4e908696fd7e17aa53053536306b5a52acb6f5d26f10697ad1",
- "papier1x/f17": "3e9798b413ded46cae94e03959de9bfc0ab9fc0e22cfb1465a8a59982f59402b",
+ "papier1x/f17": "11d602ce7ab27c54ec2d89c49a906b089a5370f568e4b0fe90549ca2bc53aa35",
  "papier1x/f13": "d0393b1bfb7e1552f9d45f218db620dc0f03156ac43dde194b38d1c284f00253",
  "papier1x/f11": "5f4215481aa9ca8b04fa4ec450247c12751b833f6ff0220f4fb4bcdc84a0b69a",
- "papier1x/f15": "9abd1ee84188593b49b85b2524d9f0879a4a85c4f032741ca6dbf6c1c7117c4a",
+ "papier1x/f15": "fb0f67e4d35b010110f8066657b76a05307ff02f9d78d8310e8bb04b15bf7b78",
  "pagination/lisa": {
-  "cle": "3db227e05ad9cf5a9967cf797db2bc7171f479f1565e7180b43473ae19bfddde",
+  "cle": "ddd9436f41aa79a2889858028243954ea6babdc4cabcfbcc33d12ce83afdc334",
   "pages": {
    "lisa-gauche": {
     "double": "lisa",
@@ -468,7 +466,8 @@
       "segments": [
        {
         "texte": "Carrot cake",
-        "graine": 57713496
+        "graine": 57713496,
+        "atome": "titre"
        }
       ],
       "position": "fer",
@@ -484,28 +483,33 @@
       "lignes": [
        {
         "texte": "250g de sucre",
-        "graine": 1,
-        "puce": "carotte"
+        "graine": 23758,
+        "puce": "carotte",
+        "atome": "ingredients-1/ligne-1"
        },
        {
         "texte": "180 g d’huile de coco (ou autre huile végétale)",
-        "graine": 2,
-        "puce": "carotte"
+        "graine": 23759,
+        "puce": "carotte",
+        "atome": "ingredients-1/ligne-2"
        },
        {
         "texte": "1 sachet de levure chimique",
-        "graine": 26142831,
-        "puce": "carotte"
+        "graine": 26166588,
+        "puce": "carotte",
+        "atome": "ingredients-1/ligne-3"
        },
        {
         "texte": "300g de carottes (3 à 4 grosses carottes)",
-        "graine": 3,
-        "puce": "carotte"
+        "graine": 23760,
+        "puce": "carotte",
+        "atome": "ingredients-1/ligne-4"
        },
        {
         "texte": "250g de farine fluide",
-        "graine": 53728772,
-        "puce": "carotte"
+        "graine": 53752529,
+        "puce": "carotte",
+        "atome": "ingredients-1/ligne-5"
        }
       ]
      },
@@ -642,27 +646,32 @@
        {
         "texte": "2 cuillères à café d’extrait de vanille",
         "graine": 32447935,
-        "puce": "carotte"
+        "puce": "carotte",
+        "atome": "ingredients-1/ligne-6"
        },
        {
         "texte": "2 cuillères de muscade",
         "graine": 34576742,
-        "puce": "carotte"
+        "puce": "carotte",
+        "atome": "ingredients-1/ligne-7"
        },
        {
         "texte": "2 à 3 cuillères à café de cannelle (moins selon les goûts)",
         "graine": 64443171,
-        "puce": "carotte"
+        "puce": "carotte",
+        "atome": "ingredients-1/ligne-8"
        },
        {
         "texte": "4 œufs",
         "graine": 8,
-        "puce": "carotte"
+        "puce": "carotte",
+        "atome": "ingredients-1/ligne-9"
        },
        {
         "texte": "120g de noix concassées",
         "graine": 1,
-        "puce": "carotte"
+        "puce": "carotte",
+        "atome": "ingredients-1/ligne-10"
        }
       ]
      },
@@ -677,7 +686,8 @@
       "segments": [
        {
         "texte": "Mélanger au fouet électrique les 4 œufs et le sucre.",
-        "graine": 2
+        "graine": 2,
+        "atome": "etape-1/phrase-1"
        }
       ],
       "disposition": "ligne",
@@ -695,15 +705,18 @@
       "segments": [
        {
         "texte": "Incorporer l'extrait de vanille,",
-        "graine": 29548840
+        "graine": 29548840,
+        "atome": "etape-2/phrase-1.1"
        },
        {
         "texte": "la muscade, la cannelle et l'huile,",
-        "graine": 52072144
+        "graine": 52072144,
+        "atome": "etape-2/phrase-1.2"
        },
        {
         "texte": "toujours à l'aide du fouet électrique.",
-        "graine": 21958058
+        "graine": 21958058,
+        "atome": "etape-2/phrase-1.3"
        }
       ],
       "disposition": "ligne",
@@ -815,11 +828,13 @@
       "segments": [
        {
         "texte": "Commencer à mélanger avec le fouet éteint (pour éviter les projections),",
-        "graine": 5913742
+        "graine": 5913742,
+        "atome": "etape-3/phrase-1.1"
        },
        {
         "texte": "puis allumer le fouet en augmentant de puissance progressivement jusqu'à obtention d'une pâte lisse.",
-        "graine": 40293936
+        "graine": 40293936,
+        "atome": "etape-3/phrase-1.2"
        }
       ],
       "disposition": "ligne",
@@ -837,11 +852,13 @@
       "segments": [
        {
         "texte": "Ajouter les carottes râpées et les noix concassées.",
-        "graine": 55080857
+        "graine": 55080857,
+        "atome": "etape-4/phrase-1"
        },
        {
         "texte": "Mélanger au fouet doucement jusqu'à ce que la pâte soit homogène.",
-        "graine": 33751708
+        "graine": 33751708,
+        "atome": "etape-4/phrase-2"
        }
       ],
       "disposition": "ligne",
@@ -859,7 +876,8 @@
       "segments": [
        {
         "texte": "Huiler et fariner légèrement le moule et verser la préparation.",
-        "graine": 52359955
+        "graine": 52359955,
+        "atome": "etape-5/phrase-1"
        }
       ],
       "disposition": "ligne",
@@ -877,11 +895,13 @@
       "segments": [
        {
         "texte": "Enfourner 40 à 45 minutes selon votre four à 175° (th 5/6).",
-        "graine": 18
+        "graine": 18,
+        "atome": "etape-6/phrase-1"
        },
        {
         "texte": "Perso sur mon four je vais même jusqu’à 1h,",
-        "graine": 69477588
+        "graine": 69477588,
+        "atome": "etape-6/phrase-2.1"
        }
       ],
       "disposition": "ligne",
@@ -955,11 +975,13 @@
       "segments": [
        {
         "texte": "mais vérifie tous les quarts d’heure quand même.",
-        "graine": 18911334
+        "graine": 18911334,
+        "atome": "etape-6/phrase-2.2"
        },
        {
         "texte": "Piquer pour vérifier que le gâteau soit cuit.",
-        "graine": 8127725
+        "graine": 8127725,
+        "atome": "etape-6/phrase-3"
        }
       ],
       "avant": 0.0,
@@ -972,7 +994,8 @@
       "segments": [
        {
         "texte": "Laisse le gâteau dans le moule jusqu’à ce qu’il refroidisse.",
-        "graine": 78214155
+        "graine": 78214155,
+        "atome": "apres-1/phrase-1"
        }
       ],
       "avant": 0.3,
@@ -984,7 +1007,8 @@
       "segments": [
        {
         "texte": "Option avec le glaçage plutôt healthy, sans beurre quoi…",
-        "graine": 34134513
+        "graine": 34134513,
+        "atome": "extra-1/titre"
        }
       ],
       "alinea": 0.0,
@@ -1000,17 +1024,20 @@
        {
         "texte": "3 cuillères à soupe de sucre glace",
         "graine": 89355445,
-        "puce": "cupcake"
+        "puce": "cupcake",
+        "atome": "extra-1/ligne-1"
        },
        {
         "texte": "Jus de citron ou fleur d’oranger selon préférences",
         "graine": 8734488,
-        "puce": "cupcake"
+        "puce": "cupcake",
+        "atome": "extra-1/ligne-2"
        },
        {
         "texte": "Bonus : Colorant alimentaire",
         "graine": 31960911,
-        "puce": null
+        "puce": null,
+        "atome": "extra-1/ligne-3"
        }
       ]
      },
@@ -1021,15 +1048,18 @@
       "segments": [
        {
         "texte": "Attention le mélange ne doit pas trop être liquide,",
-        "graine": 34091275
+        "graine": 34091275,
+        "atome": "extra-1/paragraphe-1/phrase-1.1"
        },
        {
         "texte": "il faut qu’il soit crémeux.",
-        "graine": 86362204
+        "graine": 86362204,
+        "atome": "extra-1/paragraphe-1/phrase-1.2"
        },
        {
         "texte": "Il durcira au séchage !",
-        "graine": 56887225
+        "graine": 56887225,
+        "atome": "extra-1/paragraphe-1/phrase-2"
        }
       ],
       "avant": 0.45,
@@ -1041,7 +1071,8 @@
       "segments": [
        {
         "texte": "__Yummy après c’est la régalade__ :carotte: :sourire-lunettes:",
-        "graine": 66760429
+        "graine": 66760429,
+        "atome": "fin"
        }
       ],
       "avant": 0.45,
@@ -1085,10 +1116,10 @@
    "lisa-feuillet-recto": 0.16
   }
  },
- "papier/f9": "975d1513a20958a32946a17009c9a67829483252cd01cb0fe41d77ba0a4e97bd",
- "papier1x/f9": "975d1513a20958a32946a17009c9a67829483252cd01cb0fe41d77ba0a4e97bd",
+ "papier/f9": "9a2ba6364128e0899d72c0ce3a03de082c797730f9428ec9c91197bed2860a12",
+ "papier1x/f9": "9a2ba6364128e0899d72c0ce3a03de082c797730f9428ec9c91197bed2860a12",
  "page/lisa-gauche": {
-  "cle": "4e64d6b6cebe112d48fdd4855835ca72f92c4e40e45dba8e98e9f011a2692713",
+  "cle": "cff3a29898de0201b69590cf8973124e646db87f733b5a48bfa0934c47113271",
   "manifeste": {
    "double": "lisa",
    "cote": "gauche",
@@ -1179,26 +1210,22 @@
     }
    ],
    "douteux": [
-    "1 (groupe « 1 » lu « \" I »)",
-    "250g (encre rendue lue « 2SOG »)",
-    "1 (encre rendue lue « \" I »)",
-    "levure (encre rendue lue « leisure »)",
-    "300g (encre rendue lue « 2009 »)",
-    "carottes) (encre rendue lue « caroffs ) »)",
-    "250g (encre rendue lue « L.Sog. »)"
+    "1 (groupe « 1 » lu « . I »)",
+    "250g (encre rendue lue « 2509 »)",
+    "300g (encre rendue lue « 3000 000 »)",
+    "(3 (encre rendue lue « C3 »)"
    ],
    "douteux_importants": [
+    "(3",
     "1",
     "250g",
-    "300g",
-    "carottes)",
-    "levure"
+    "300g"
    ],
    "relu": true
   }
  },
  "page/lisa-droite": {
-  "cle": "4794dd6f1bdf706c582c57f2719535a12bf2aef810697052ef1c2fee72746340",
+  "cle": "2964673b44fdfcf7c3932f05f13bac220659f7a7da497cfd279c1afcb3ebeba2",
   "manifeste": {
    "double": "lisa",
    "cote": "droite",
@@ -1301,12 +1328,12 @@
    "relu": true
   }
  },
- "papier/c-lisa-recto": "878ff921a145b03365c9bb97f357159cc314af5fa820b1cd535840c51946cea1",
- "papier1x/c-lisa-recto": "878ff921a145b03365c9bb97f357159cc314af5fa820b1cd535840c51946cea1",
- "papier/c-lisa-verso": "0d5c943692a0999d1fc9a4d9e31ace5e1735f0b869cce7393d749de5aa9fc816",
- "papier1x/c-lisa-verso": "0d5c943692a0999d1fc9a4d9e31ace5e1735f0b869cce7393d749de5aa9fc816",
+ "papier/c-lisa-recto": "d42d22b242f72d0e37d795f826a8b297d526bd60f914359ad72002aab4d7f232",
+ "papier1x/c-lisa-recto": "d42d22b242f72d0e37d795f826a8b297d526bd60f914359ad72002aab4d7f232",
+ "papier/c-lisa-verso": "a9c16f712b51eab8172a74f234a6e50e15aacb98065fc32da53ff13f56fa8d5b",
+ "papier1x/c-lisa-verso": "a9c16f712b51eab8172a74f234a6e50e15aacb98065fc32da53ff13f56fa8d5b",
  "page/lisa-feuillet-recto": {
-  "cle": "211fab586a16b4ca99325b4e7c3360a92a61b4aee8b1a3b9ab6927504474434b",
+  "cle": "6d94ff0e1f067397ec1c8efb507b0c8a7144d33fa569da7de8dd970507a7840c",
   "manifeste": {
    "double": "lisa",
    "cote": "droite",
@@ -1349,7 +1376,7 @@
   }
  },
  "page/lisa-feuillet-verso": {
-  "cle": "dd72eb1873ea1c85c04fe8798c19f160b07f2df54e570592147223591724c066",
+  "cle": "f476a3f4d364a4fa0c9115b8ca936984d1ffd68124449c39538152d3af303102",
   "manifeste": {
    "double": "lisa",
    "cote": "droite",
@@ -1511,12 +1538,12 @@
    "relu": true
   }
  },
- "papier/f3": "16c70b18a5e905268d869cbfd9a3ea44fcb3083b2f25ec9d68c3770a3a10926e",
- "papier1x/f3": "16c70b18a5e905268d869cbfd9a3ea44fcb3083b2f25ec9d68c3770a3a10926e",
- "papier/f5": "be78d5459058214ebdea39cfa056514b736377334746c2cae8868f78d763a208",
- "papier1x/f5": "be78d5459058214ebdea39cfa056514b736377334746c2cae8868f78d763a208",
+ "papier/f3": "e44001e3eb78294f86bae5faffb38fb79fe3f28105f6fbfa74058066766689df",
+ "papier1x/f3": "e44001e3eb78294f86bae5faffb38fb79fe3f28105f6fbfa74058066766689df",
+ "papier/f5": "889185b5ca75ec028d7c9a668b2cd39dadbce46f774b9aa292917f5723bef0f3",
+ "papier1x/f5": "889185b5ca75ec028d7c9a668b2cd39dadbce46f774b9aa292917f5723bef0f3",
  "page/dedicace": {
-  "cle": "3e57fbcc64b89ef93c1b0cc9e6bb4a8ef7bf8b962c799dd515c2807684731a21",
+  "cle": "83060078426fc6f4067c085ce65a6f0d042451189d2329cf7442140ea7c64369",
   "manifeste": {
    "double": "sommaire",
    "cote": "gauche",
@@ -1542,12 +1569,6 @@
       0.1328
      ]
     }
-   ],
-   "douteux": [
-    "Cécile, (encre rendue lue « Ceciler »)"
-   ],
-   "douteux_importants": [
-    "Cécile,"
    ],
    "relu": true
   }
@@ -1596,10 +1617,10 @@
    "relu": true
   }
  },
- "papier/f7": "1489b79427137266410ba03f99bb94cf2a36fe7e07818fa7ae624b33282f17cc",
- "papier1x/f7": "1489b79427137266410ba03f99bb94cf2a36fe7e07818fa7ae624b33282f17cc",
+ "papier/f7": "dce379e7c2502cd71c510899e8854f3f1dc8e9a757a80824acd004d4988be02e",
+ "papier1x/f7": "dce379e7c2502cd71c510899e8854f3f1dc8e9a757a80824acd004d4988be02e",
  "page/gateaux-droite": {
-  "cle": "52699b253c02d02921c686a30d12f48ee871d5725a4314b256e611c466928157",
+  "cle": "70823e7de6829a5eea1a6bf4a29ea2cd3ecd5ce5e9c533f747546aa6b4df9394",
   "manifeste": {
    "double": "gateaux",
    "cote": "droite",

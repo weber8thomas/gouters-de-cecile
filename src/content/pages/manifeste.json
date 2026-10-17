@@ -104,12 +104,6 @@
      ]
     }
    ],
-   "douteux": [
-    "Cécile, (encre rendue lue « Ceciler »)"
-   ],
-   "douteux_importants": [
-    "Cécile,"
-   ],
    "relu": true
   },
   "fin-droite": {
@@ -630,20 +624,16 @@
     }
    ],
    "douteux": [
-    "1 (groupe « 1 » lu « \" I »)",
-    "250g (encre rendue lue « 2SOG »)",
-    "1 (encre rendue lue « \" I »)",
-    "levure (encre rendue lue « leisure »)",
-    "300g (encre rendue lue « 2009 »)",
-    "carottes) (encre rendue lue « caroffs ) »)",
-    "250g (encre rendue lue « L.Sog. »)"
+    "1 (groupe « 1 » lu « . I »)",
+    "250g (encre rendue lue « 2509 »)",
+    "300g (encre rendue lue « 3000 000 »)",
+    "(3 (encre rendue lue « C3 »)"
    ],
    "douteux_importants": [
+    "(3",
     "1",
     "250g",
-    "300g",
-    "carottes)",
-    "levure"
+    "300g"
    ],
    "relu": true
   },
@@ -673,10 +663,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.0481,
-      0.3815,
-      0.0361,
-      0.0319
+      0.0488,
+      0.3766,
+      0.0355,
+      0.0314
      ]
     },
     {
@@ -684,10 +674,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.0545,
-      0.4724,
-      0.0328,
-      0.029
+      0.0457,
+      0.4607,
+      0.0367,
+      0.0325
      ]
     }
    ],
@@ -695,23 +685,27 @@
     "tasse"
    ],
    "douteux": [
-    "Cécile, (encre rendue lue « Cecile »)",
-    "1 (encre rendue lue « 1 »)",
-    "pommes, (encre rendue lue « pownes . »)",
-    "2 c. à s. (encre rendue lue « 2'c a s »)",
-    "sucre, (encre rendue lue « su cre. »)",
-    "pommes (encre rendue lue « P om mes . »)",
-    "beurre (encre rendue lue « Leisure »)",
-    "th. 7. (encre rendue lue « ft. 7 »)"
+    "Bernard (encre rendue lue « B\"erinard »)",
+    "pommes, (encre rendue lue « pomp mesi »)",
+    "2 c. à s. (encre rendue lue « 2'c. d. S. »)",
+    "noix (encre rendue lue « naix »)",
+    "beurre. (encre rendue lue « beirre . »)",
+    "sucre (encre rendue lue « su cre »)",
+    "beurre (encre rendue lue « beioire »)",
+    "noisettes. (encre rendue lue « noise ttes . »)",
+    "40 min (encre rendue lue « 40 min »)",
+    "th. 7. (encre rendue lue « th . I »)"
    ],
    "douteux_importants": [
-    "1",
     "2 c. à s.",
-    "Cécile,",
+    "40 min",
+    "Bernard",
     "beurre",
-    "pommes",
+    "beurre.",
+    "noisettes.",
+    "noix",
     "pommes,",
-    "sucre,",
+    "sucre",
     "th. 7."
    ],
    "relu": true
@@ -742,7 +736,7 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.2296,
+      0.2314,
       0.3872,
       0.0385,
       0.0341
@@ -753,8 +747,8 @@
      "role": "dessin",
      "dessine": true,
      "boite": [
-      0.0674,
-      0.1548,
+      0.0742,
+      0.1516,
       0.16,
       0.1417
      ]
@@ -765,26 +759,20 @@
    ],
    "douteux": [
     "1 (groupe « 1 » lu « A »)",
-    "Mathis (encre rendue lue « Mattis »)",
-    "1 (encre rendue lue « t »)",
-    "100 g (encre rendue lue « 100 kg »)",
-    "roux, (encre rendue lue « row , »)",
-    "200 g (encre rendue lue « 200 9 »)",
-    "½ (encre rendue lue « Mr. »)",
-    "levure, (encre rendue lue « levire . »)",
-    "choco. (encre rendue lue « chico . »)",
-    "10 min (encre rendue lue « 1C.min »)"
+    "1 (groupe « 1 » lu « \" I »)",
+    "1 (encre rendue lue « A »)",
+    "75 g (encre rendue lue « FRG »)",
+    "200 g (encre rendue lue « 200 g »)",
+    "1 (encre rendue lue « \" I »)",
+    "pépites (encre rendue lue « recites »)",
+    "10 min (encre rendue lue « 10 inin- »)"
    ],
    "douteux_importants": [
     "1",
     "10 min",
-    "100 g",
     "200 g",
-    "Mathis",
-    "choco.",
-    "levure,",
-    "roux,",
-    "½"
+    "75 g",
+    "pépites"
    ],
    "relu": true
   },
