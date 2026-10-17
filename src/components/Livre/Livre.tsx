@@ -279,10 +279,13 @@ const Emplacement = React.memo(function Emplacement({ spread, side, mode, visibl
   );
 });
 
+/** Feuilles de la tranche d'un côté : 1 = la plus proche de la page, FEUILLES = la plus extérieure. */
+const FEUILLES = 8;
+
 function Tranche({ side, n }: { side: 'gauche' | 'droite'; n: number }) {
   return (
     <div className={`gc-livre__tranche gc-livre__tranche--${side}`} aria-hidden="true">
-      {[4, 3, 2, 1].map((k) => (
+      {Array.from({ length: FEUILLES }, (_, i) => FEUILLES - i).map((k) => (
         <div key={k} className={`gc-livre__feuille gc-livre__feuille--${k}${k <= n ? '' : ' gc-livre__feuille--absente'}`} />
       ))}
     </div>
@@ -1769,8 +1772,8 @@ export function Livre({
   const modeDe = (k: number): RenderMode => (k === affiche ? 'live' : 'static');
 
   const frac = n > 1 ? clamp(affiche, 0, n - 1) / (n - 1) : 0;
-  const nG = affiche <= 0 ? 0 : Math.max(1, Math.round(4 * frac));
-  const nD = affiche >= n - 1 ? 0 : Math.max(1, Math.round(4 * (1 - frac)));
+  const nG = affiche <= 0 ? 0 : Math.max(1, Math.round(FEUILLES * frac));
+  const nD = affiche >= n - 1 ? 0 : Math.max(1, Math.round(FEUILLES * (1 - frac)));
 
   const faceD = (k: number) => (spreads[k] ? <Face spread={spreads[k]} side="right" mode="static" /> : null);
   const faceG = (k: number) => (spreads[k] ? <Face spread={spreads[k]} side="left" mode="static" /> : null);

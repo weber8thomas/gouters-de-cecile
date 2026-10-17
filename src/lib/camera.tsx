@@ -13,19 +13,19 @@ import React from 'react';
 import { DEFAULT_SETTINGS, DISTANCES, type Distance } from './settings';
 import { demanderLoupe, loupeVisee, palierVoisin } from './loupe';
 
-export const ZOOM_MIN = 0.85;
+export const ZOOM_MIN = 0.6;
 export const ZOOM_MAX = 1.15;
 export const ZOOM_STEP = 0.01;
 
 /**
- * Bornes du zoom fin pour un cran : en bas, l'écriture garde une hauteur d'x d'au moins 14 px à
- * l'écran (pages cuites : 1,9 % de la largeur de page) ; en haut, le livre entier reste visible
- * dans la scène 1920 × 1080.
+ * Bornes du zoom fin pour un cran : en bas (0,6), le livre rétrécit pour laisser voir la table autour
+ * de lui ; en haut, le livre entier reste visible dans la scène 1920 × 1080 (maxima inchangés).
  */
 export function zoomBornes(d: Distance): [number, number] {
-  return d === 'proche' ? [0.85, 1.08] : d === 'moyenne' ? [0.87, 1.12] : [0.95, 1.15];
+  return d === 'proche' ? [0.6, 1.08] : d === 'moyenne' ? [0.6, 1.12] : [0.6, 1.15];
 }
-const STORAGE_KEY = 'gc:camera:v1';
+// v2 : le zoom par défaut passe à 0,95 et le plancher à 0,6 ; l'ancien réglage (v1) n'est plus relu.
+const STORAGE_KEY = 'gc:camera:v2';
 
 export interface CameraState {
   distance: Distance;
@@ -46,7 +46,7 @@ const clampZoom = (z: number, d?: Distance) => {
   const [lo, hi] = d ? zoomBornes(d) : [ZOOM_MIN, ZOOM_MAX];
   return Math.round(Math.min(hi, Math.max(lo, z)) * 100) / 100;
 };
-export const CAMERA_DEFAULT: CameraState = { distance: DEFAULT_SETTINGS.distance, zoom: 1 };
+export const CAMERA_DEFAULT: CameraState = { distance: DEFAULT_SETTINGS.distance, zoom: 0.95 };
 
 function load(): CameraState {
   try {
@@ -55,7 +55,7 @@ function load(): CameraState {
     const v = JSON.parse(raw);
     return {
       distance: DISTANCES.includes(v.distance) ? v.distance : CAMERA_DEFAULT.distance,
-      zoom: typeof v.zoom === 'number' ? clampZoom(v.zoom, DISTANCES.includes(v.distance) ? v.distance : CAMERA_DEFAULT.distance) : 1,
+      zoom: typeof v.zoom === 'number' ? clampZoom(v.zoom, DISTANCES.includes(v.distance) ? v.distance : CAMERA_DEFAULT.distance) : CAMERA_DEFAULT.zoom,
     };
   } catch {
     return CAMERA_DEFAULT;

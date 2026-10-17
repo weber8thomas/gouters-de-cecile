@@ -4,7 +4,7 @@
 // Livre, avec le menu de réglages dans l'Ecran. Racine de l'application (index.html → src/app/main.tsx)
 // et de la page autonome (harness/devices.html : React UMD + bundle.js, Artboards.Carnet).
 // Plan v4 : le livre arrive sur la table ; un lien profond (QR de l'A5) l'ouvre et feuillette jusqu'à la
-// page de l'invité ; Entrée ou Espace ouvre le livre fermé ; il se referme sur son plat arrière.
+// page de l'invité ; Entrée ou Espace ouvre le livre fermé. Pas de plat arrière : la fin du livre est une butée.
 import React from 'react';
 import { EtiquetteCouverture, couvertureVars } from '../../components/Couverture';
 import { Ecran } from '../../components/Ecran';
@@ -12,7 +12,7 @@ import { InvitationOuvrir } from '../../components/Invitation';
 import { Livre, type LivreProps } from '../../components/Livre';
 import { Reglages, CREDITS_REGLAGES } from '../../components/Reglages';
 import { SoulevementProvider, souleverObjet, useSoulevement } from '../../components/Soulever';
-import { CameraProvider } from '../../lib/camera';
+import { CAMERA_DEFAULT, CameraProvider } from '../../lib/camera';
 import { MotionConfig, type MotionValue } from '../../lib/motion';
 import { useReglages } from '../../lib/reglages';
 import { ViewportOverride, type ViewportForce } from '../../lib/viewport';
@@ -33,13 +33,13 @@ export interface CarnetProps {
   coteInitial?: 'gauche' | 'droite';
 }
 
-const CLE_CAMERA = 'gc:camera:v1';
+const CLE_CAMERA = 'gc:camera:v2';
 
 /** Sur un écran tactile, le cran par défaut est « proche » (s'il n'a jamais été réglé). */
 function cranTactileParDefaut(tactile: boolean): void {
   if (!tactile) return;
   try {
-    if (!localStorage.getItem(CLE_CAMERA)) localStorage.setItem(CLE_CAMERA, JSON.stringify({ distance: 'proche', zoom: 1 }));
+    if (!localStorage.getItem(CLE_CAMERA)) localStorage.setItem(CLE_CAMERA, JSON.stringify({ distance: 'proche', zoom: CAMERA_DEFAULT.zoom }));
   } catch { /* stockage indisponible : cran par défaut du fournisseur */ }
 }
 
@@ -88,8 +88,6 @@ export function Carnet({ ecran, liens = false, depart = -1, coteInitial }: Carne
   return ecran ? <ViewportOverride.Provider value={ecran}>{carnet}</ViewportOverride.Provider> : carnet;
 }
 
-/** Le livre se referme sur son plat arrière en fin de carnet (après validation du prototype). */
-const PLAT_ARRIERE = false;
 const ETIQUETTE = <EtiquetteCouverture />;
 
 const CREDITS = (
@@ -115,9 +113,7 @@ function CarnetLivre({ index, setIndex, coteInitial, arrivee }: CarnetLivreProps
   const spreads = SPREADS_DEMO;
   // Couverture cuite (lot C) : images posées par variables CSS sur le livre, étiquette en <img>.
   const couverture = React.useMemo(() => couvertureVars(), []);
-  // Plat arrière : le livre peut se refermer derrière (prop couvertureArriere du Livre) ; reporté après
-  // validation du prototype : en fin de carnet, une butée (le livre résiste au doigt).
-  const dos = PLAT_ARRIERE && spreads[spreads.length - 1]?.kind === 'colophon';
+  // Fin du livre : la dernière double page fait butée (le livre résiste au doigt), sans plat arrière.
   const { preparer, reposer } = useSoulevement();
   const [reglages] = useReglages();
   const lectureAuto = React.useRef(reglages.lectureAuto);
@@ -138,17 +134,16 @@ function CarnetLivre({ index, setIndex, coteInitial, arrivee }: CarnetLivreProps
   }, [setIndex, spreads]);
 
   // Entrée / Espace : la vidéo de la double page ; ↑ : le feuillet volant. Appelé DANS le keydown.
-  // Livre fermé (devant ou derrière) : Entrée / Espace l'ouvre. Une touche déjà consommée (loupe, menu)
-  // n'est pas reprise.
+  // Livre fermé : Entrée / Espace l'ouvre. Une touche déjà consommée (loupe, menu) n'est pas reprise.
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.defaultPrevented || e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
       const cible = e.target as HTMLElement | null;
       if (cible && cible.closest('button, a, input, select, textarea, [role="slider"]')) return;
-      if (index < 0 || index >= spreads.length) {
+      if (index < 0) {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          setIndex(index < 0 ? 0 : spreads.length - 1);
+          setIndex(0);
         }
         return;
       }
@@ -159,7 +154,7 @@ function CarnetLivre({ index, setIndex, coteInitial, arrivee }: CarnetLivreProps
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [index, setIndex, spreads.length]);
+  }, [index, setIndex]);
 
   const invites = React.useMemo(() => spreads.map((s, i) => ({ index: i, titre: s.titre ?? s.id })), [spreads]);
   const invitation = React.useCallback((o: MotionValue<number>) => <InvitationOuvrir opacite={o} />, []);
@@ -176,7 +171,6 @@ function CarnetLivre({ index, setIndex, coteInitial, arrivee }: CarnetLivreProps
         couverture={couverture}
         coteInitial={coteInitial}
         arrivee={arrivee}
-        couvertureArriere={dos ? true : undefined}
         // Invitation à ouvrir (lot S) : l'étiquette cuite « … pour ouvrir », selon la modalité.
         invitation={invitation}
       />
