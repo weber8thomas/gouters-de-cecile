@@ -1,4 +1,6 @@
-/* Stage : scène fixe 1920 × 1080 — table en bois, contenu, lumière dorée, calque libre. */
+/* Stage : scène fixe 1920 × 1080 — un soir au coin du feu. Table en bois, lumière du feu sur la table
+   (Lumiere : bain, reflet, ombre), contenu, ambiance et voile chaud (Lumiere), calque libre.
+   La cheminée est hors champ à gauche (Lumiere.css : --gc-feu-x, --gc-feu-y). */
 
 .gc-stage-fit {
   position: relative;
@@ -21,7 +23,6 @@
 .gc-stage__falloff,
 .gc-stage__content,
 .gc-stage__light,
-.gc-stage__glow,
 .gc-stage__overlay {
   position: absolute;
   inset: 0;
@@ -32,72 +33,37 @@
   pointer-events: none;
 }
 
-/* ---- Table en bois ----------------------------------------------------------------------- */
+/* ---- Table en bois, le soir ---------------------------------------------------------------------- */
 .gc-stage__surface {
   background-color: var(--gc-wood-2);
   background-image: url('../../../design-system/textures/wood.webp');
-  background-position: -236px -18px;
+  background-position: calc(-236px + var(--gc-stage-debord, 0px)) calc(-18px + var(--gc-stage-debord, 0px));
 }
 
-/* Vignettage chaud : le bois s'assombrit loin de la fenêtre. */
+/* Le bois du soir : plus profond et plus chaud (une pénombre brun-rouge sur toute la table), et qui
+   s'enfonce dans la nuit loin du feu (vers la droite et les bords). Statique : le bain du feu
+   (Lumiere, sous le contenu) le rallume côté gauche. Ancré sur la scène en px : le débord prolonge
+   le même dessin sans couture. */
 .gc-stage__falloff {
   background:
-    radial-gradient(ellipse 95% 110% at 22% 12%, transparent 38%, color-mix(in srgb, var(--gc-wood-3) 55%, transparent) 100%),
-    linear-gradient(160deg, color-mix(in srgb, var(--gc-honey-300) 10%, transparent) 0%, transparent 45%);
+    radial-gradient(calc(var(--gc-stage-w) * 1.55) calc(var(--gc-stage-h) * 1.5) at calc(var(--gc-feu-x) + var(--gc-stage-debord, 0px)) calc(var(--gc-feu-y) + var(--gc-stage-debord, 0px)),
+      transparent 18%,
+      color-mix(in srgb, var(--gc-feu-nuit) 24%, transparent) 40%,
+      color-mix(in srgb, var(--gc-feu-nuit) 50%, transparent) 70%,
+      color-mix(in srgb, var(--gc-feu-nuit) 64%, transparent) 100%,
+      color-mix(in srgb, var(--gc-feu-nuit) 72%, transparent) 140%),
+    linear-gradient(color-mix(in srgb, var(--gc-feu-nuit) 32%, transparent), color-mix(in srgb, var(--gc-feu-nuit) 32%, transparent));
 }
 
-/* ---- Contenu et lumière ------------------------------------------------------------------- */
+/* ---- Contenu et lumière --------------------------------------------------------------------------- */
 .gc-stage__content {
   z-index: 1;
 }
 
+/* Lumière au-dessus du livre (ambiance, voile) : sous l'overlay, et sous les contrôles de l'Ecran, la
+   photo soulevée et le menu (en portail hors de la scène). */
 .gc-stage__light {
   z-index: 2;
-}
-
-/* Voile doré de fin d'après-midi, depuis le haut à gauche. */
-.gc-stage__glow {
-  background: radial-gradient(
-    ellipse 115% 130% at 0% 0%,
-    var(--gc-glow) 0%,
-    color-mix(in srgb, var(--gc-glow) 62%, transparent) 14%,
-    color-mix(in srgb, var(--gc-glow) 34%, transparent) 40%,
-    color-mix(in srgb, var(--gc-glow) 12%, transparent) 65%,
-    transparent 88%
-  );
-  opacity: var(--gc-glow-alpha);
-}
-
-/* Ombre chaude à l'opposé de la fenêtre. */
-.gc-stage__light::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 70% 80% at 100% 100%, color-mix(in srgb, var(--gc-wood-3) 16%, transparent), transparent 70%);
-}
-
-/* Tache de soleil d'une fenêtre à petits carreaux : les croisillons y laissent deux bandes
-   à peine moins éclairées. Statique, rastérisée une fois. */
-.gc-stage__window {
-  position: absolute;
-  left: -6%;
-  top: -14%;
-  width: 52%;
-  height: 86%;
-  background-color: var(--gc-glow);
-  opacity: 0.2;
-  transform: rotate(-9deg) skewX(-22deg);
-  transform-origin: 0 0;
-  -webkit-mask-image:
-    linear-gradient(90deg, transparent 0%, var(--gc-ink) 12%, var(--gc-ink) 45%, transparent 49.5%, transparent 50.5%, var(--gc-ink) 55%, var(--gc-ink) 88%, transparent 100%),
-    linear-gradient(180deg, transparent 0%, var(--gc-ink) 12%, var(--gc-ink) 44%, transparent 49%, transparent 51%, var(--gc-ink) 56%, var(--gc-ink) 88%, transparent 100%),
-    radial-gradient(closest-side, var(--gc-ink) 40%, transparent 100%);
-  -webkit-mask-composite: source-in, source-in;
-  mask-image:
-    linear-gradient(90deg, transparent 0%, var(--gc-ink) 12%, var(--gc-ink) 45%, transparent 49.5%, transparent 50.5%, var(--gc-ink) 55%, var(--gc-ink) 88%, transparent 100%),
-    linear-gradient(180deg, transparent 0%, var(--gc-ink) 12%, var(--gc-ink) 44%, transparent 49%, transparent 51%, var(--gc-ink) 56%, var(--gc-ink) 88%, transparent 100%),
-    radial-gradient(closest-side, var(--gc-ink) 40%, transparent 100%);
-  mask-composite: intersect;
 }
 
 /* Calque libre (navigation) : seuls ses enfants captent le pointeur. */
@@ -111,44 +77,13 @@
 }
 
 /* ---- Débord (composant Ecran) : la table et la lumière se prolongent hors de la scène ---------
-   Sur un écran d'une autre forme que 16:9, la table couvre tout l'écran. Les mêmes dessins, mais
-   ancrés sur la scène en px (et non en % de la boîte agrandie) : rien ne bouge dans la scène, tout se
-   prolonge au-delà sans couture. */
+   Sur un écran d'une autre forme que 16:9, la table couvre tout l'écran. Les mêmes dessins, ancrés sur
+   la scène en px (--gc-stage-debord) : rien ne bouge dans la scène, tout se prolonge au-delà sans
+   couture. Les calques de lumière (Lumiere.css) s'étendent d'eux-mêmes. */
 .gc-stage--debord {
   overflow: visible;
 }
 
-.gc-stage--debord .gc-stage__table,
-.gc-stage--debord .gc-stage__glow,
-.gc-stage--debord .gc-stage__light::after {
+.gc-stage--debord .gc-stage__table {
   inset: calc(-1 * var(--gc-stage-debord));
-}
-
-.gc-stage--debord .gc-stage__surface {
-  background-position: calc(-236px + var(--gc-stage-debord)) calc(-18px + var(--gc-stage-debord));
-}
-
-/* Dégradés linéaires : la ligne de dégradé de la boîte agrandie commence plus tôt de
-   D·(|sin a| + |cos a|) ; les arrêts sont repris en px de la ligne d'origine (L = W·|sin a| + H·|cos a|). */
-.gc-stage--debord .gc-stage__falloff {
-  --gc-stage-tl-o: calc(var(--gc-stage-debord) * 1.281713);
-  --gc-stage-tl-l: calc(var(--gc-stage-w) * 0.34202 + var(--gc-stage-h) * 0.939693);
-  background:
-    radial-gradient(calc(var(--gc-stage-w) * 0.95) calc(var(--gc-stage-h) * 1.1) at calc(var(--gc-stage-w) * 0.22 + var(--gc-stage-debord)) calc(var(--gc-stage-h) * 0.12 + var(--gc-stage-debord)), transparent 38%, color-mix(in srgb, var(--gc-wood-3) 55%, transparent) 100%),
-    linear-gradient(160deg, color-mix(in srgb, var(--gc-honey-300) 10%, transparent) var(--gc-stage-tl-o), transparent calc(var(--gc-stage-tl-o) + var(--gc-stage-tl-l) * 0.45));
-}
-
-.gc-stage--debord .gc-stage__glow {
-  background: radial-gradient(
-    calc(var(--gc-stage-w) * 1.15) calc(var(--gc-stage-h) * 1.3) at var(--gc-stage-debord) var(--gc-stage-debord),
-    var(--gc-glow) 0%,
-    color-mix(in srgb, var(--gc-glow) 62%, transparent) 14%,
-    color-mix(in srgb, var(--gc-glow) 34%, transparent) 40%,
-    color-mix(in srgb, var(--gc-glow) 12%, transparent) 65%,
-    transparent 88%
-  );
-}
-
-.gc-stage--debord .gc-stage__light::after {
-  background: radial-gradient(calc(var(--gc-stage-w) * 0.7) calc(var(--gc-stage-h) * 0.8) at calc(var(--gc-stage-w) + var(--gc-stage-debord)) calc(var(--gc-stage-h) + var(--gc-stage-debord)), color-mix(in srgb, var(--gc-wood-3) 16%, transparent), transparent 70%);
 }

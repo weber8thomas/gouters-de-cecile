@@ -1,5 +1,6 @@
 import React from 'react';
 import { SettingsContext, settingsAttrs, useSettings, type Distance, type IdleLook, type Settings } from '../../lib/settings';
+import { LumiereLivre, LumiereTable } from '../Lumiere';
 import './Stage.css';
 
 export interface StageProps {
@@ -10,7 +11,7 @@ export interface StageProps {
   /** Met la scène 1920×1080 à l'échelle de la largeur du parent. */
   fit?: boolean;
   children?: React.ReactNode;
-  /** Calque au-dessus de tout, lumière comprise (navigation). */
+  /** Calque au-dessus de tout, lumière comprise (navigation) : la lumière passe dessous. */
   overlay?: React.ReactNode;
   className?: string;
   /**
@@ -20,8 +21,10 @@ export interface StageProps {
   debord?: number;
 }
 
-// Scène fixe 1920×1080 : la table en bois, le contenu (le livre ouvert), la lumière dorée de fin
-// d'après-midi venant d'en haut à gauche, puis un calque libre. Fournit les réglages.
+// Scène fixe 1920×1080, un soir au coin du feu (plan v4) : la table en bois, la lumière du feu sur la
+// table (bain, reflet, ombre portée), le contenu (le livre ouvert), l'ambiance et le voile chaud sur le
+// livre, puis un calque libre. La cheminée est hors champ à gauche ; sa lumière vacille en direct
+// (src/lib/feu.ts : opacité et transformation de calques précalculés). Fournit les réglages.
 export function Stage({ idle, distance, fit = false, children, overlay, className, debord = 0 }: StageProps) {
   const parent = useSettings();
   const settings: Settings = React.useMemo(
@@ -61,10 +64,10 @@ export function Stage({ idle, distance, fit = false, children, overlay, classNam
         <div className="gc-stage__surface" />
         <div className="gc-stage__falloff" />
       </div>
+      <LumiereTable />
       <div className="gc-stage__content">{children}</div>
       <div className="gc-stage__light" aria-hidden="true">
-        <div className="gc-stage__window" />
-        <div className="gc-stage__glow" />
+        <LumiereLivre />
       </div>
       {overlay != null && <div className="gc-stage__overlay">{overlay}</div>}
     </div>

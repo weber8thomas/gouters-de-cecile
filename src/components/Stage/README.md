@@ -1,43 +1,30 @@
 # Stage
 
-Scène fixe 1920 × 1080 du carnet projeté : une table en bois (la seule table du carnet, plan v3) éclairée par une lumière dorée de fin d'après-midi venant d'en haut à gauche, qui fournit aussi les réglages de scène à tous les composants.
+Scène fixe 1920 × 1080 du carnet projeté : une table en bois, un soir au coin du feu (plan v4). Une cheminée hors champ, **à gauche**, éclaire la table et le livre d'une lumière chaude qui vacille en direct. La scène fournit aussi les réglages de scène à tous les composants.
 
-## Props
+## Props (inchangées)
 
 | Prop | Type | Défaut | Rôle |
 |---|---|---|---|
-| `idle` | `'aquarelle' \| 'sepia'` | réglage parent, sinon `'sepia'` | Aspect des images figées avant lecture (sépia retenu). |
-| `fit` | `boolean` | `false` | Met la scène à l'échelle de la largeur du parent (`transform: scale`, `ResizeObserver`) ; l'enveloppe `.gc-stage-fit` prend la hauteur mise à l'échelle. |
-| `children` | `ReactNode` | — | Contenu de la scène, en général un `DoublePage`. |
+| `idle` | `'aquarelle' \| 'sepia'` | réglage parent, sinon `'sepia'` | Aspect des images figées avant lecture. |
+| `distance` | `Distance` | réglage parent | Cran de distance (géométrie du livre, tailles de texte). |
+| `fit` | `boolean` | `false` | Met la scène à l'échelle de la largeur du parent. |
+| `children` | `ReactNode` | — | Contenu de la scène (le livre). |
 | `overlay` | `ReactNode` | — | Calque au-dessus de tout, lumière comprise (navigation). Seuls ses enfants captent le pointeur. |
 | `className` | `string` | — | Classe ajoutée à la racine `.gc-stage`. |
-| `debord` | `number` | `0` | Débord de la table (px de scène, des quatre côtés) : la table et la lumière se prolongent hors de la scène 1920 × 1080 pour un écran d'une autre forme (composant `Ecran`, via `Livre`). Calculé par `debordNecessaire` (`src/lib/viewport.ts`). |
+| `debord` | `number` | `0` | Débord de la table (px de scène) pour un écran d'une autre forme (`Ecran`). |
 
-Exporte `StageProps`.
+## Calques
 
-## Ce que fait la scène
+Table (bois du soir) → **lumière de table** (`LumiereTable` : bain orangé côté feu, reflet sur le vernis, ombre portée du livre) → contenu → **ambiance et voile** (`LumiereLivre`) → `overlay`. Les contrôles de l'`Ecran`, la photo soulevée et le menu sont en portail hors de la scène : la lumière passe dessous.
 
-- Taille `var(--gc-stage-w)` × `var(--gc-stage-h)`, `overflow: hidden`, `isolation: isolate`.
-- Fournit `SettingsContext` : chaque prop absente reprend le réglage du contexte parent (donc `DEFAULT_SETTINGS` hors de tout fournisseur). Pose `data-gc-idle` et `data-gc-distance` (`settingsAttrs`) sur sa racine.
-- **Bois** : texture pré-rendue `design-system/textures/wood.webp` (planches en `gc-wood-1/2/3`) + vignettage chaud vers `gc-wood-3`.
-- **Lumière** (au-dessus du contenu) : voile radial `var(--gc-glow)` à `var(--gc-glow-alpha)` depuis le haut à gauche, tache de soleil d'une fenêtre à croisillon (`gc-glow`, très légère), ombre chaude `gc-wood-3` dans le coin opposé.
-- Ordre des calques : table → contenu → lumière → `overlay`.
-- **Débord** (`debord > 0`, classe `gc-stage--debord`, variable `--gc-stage-debord`) : la scène ne rogne plus (`overflow: visible`) ; la table, le voile doré et l'ombre chaude s'étendent du débord, avec les mêmes dessins ancrés sur la scène en px (rien ne bouge dans les 1920 × 1080, tout se prolonge sans couture : bois décalé du débord, dégradés linéaires repris en px de leur ligne d'origine). Sans débord, la scène est exactement celle d'avant.
-
-## Règles d'usage
-
-- Une seule `Stage` par écran ; le livre (`DoublePage`) se place dedans, positionné par `--gc-book-x` / `--gc-book-y`.
-- Les composants lisent les réglages avec `useSettings()` ou `useTitleClass(role)`, jamais avec des props recopiées.
-- Le voile doré éclaircit un peu l'encre dans le coin haut gauche (≈ 8:1 au lieu de 10:1 pour `gc-ink` sur `gc-paper`) : c'est voulu et mesuré. Ne pas ajouter d'autre voile par-dessus.
-- Tout est statique : textures pré-rendues, dégradés et masques calculés une fois. Rien n'est animé.
-
-## À faire
-
-- Utiliser `fit` pour un aperçu dans une colonne étroite ; laisser la scène à 1:1 sur la TV.
-- Placer la navigation dans `overlay` (cible `var(--gc-nav-size)`, opacité `var(--gc-nav-alpha)`).
+- Le feu (`src/lib/feu.ts`) n'anime que l'opacité et la translation de **deux** calques (bain, voile) : 0 Layout, 0 Paint, +4 calques composités au plus (mesuré par `scripts/verify-lumiere.mjs`).
+- Mouvement réduit ou réglage `feu: false` : la lumière reste chaude mais immobile.
+- Rien ne capte le pointeur.
+- Débord : tous les dessins sont ancrés sur la scène en px et se prolongent sans couture ; avec un débord, l'ambiance passe des bandes de bord (TV) à un vignettage elliptique.
+- Loupe : la lumière est dans la scène, donc dans le calque de la loupe ; elle grossit avec la page (c'est la lumière posée sur la table et le papier, pas un filtre d'écran).
 
 ## À éviter
 
-- Poser du texte directement sur la table : le texte ne va que sur le papier.
-- Ajouter `mix-blend-mode`, `backdrop-filter` ou un filtre animé sur la scène.
-- Changer la taille de la scène : la géométrie vient des tokens `gc-stage-*`.
+- Ajouter un autre voile clair sur le livre : le budget de contraste de l'encre (≥ 90 %) est partagé.
+- `mix-blend-mode`, `backdrop-filter`, filtre animé.
