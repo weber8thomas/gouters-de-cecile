@@ -9,7 +9,7 @@ import React from 'react';
 import { EtiquetteCouverture, couvertureVars } from '../../components/Couverture';
 import { Ecran } from '../../components/Ecran';
 import { InvitationOuvrir } from '../../components/Invitation';
-import { Livre, type LivreProps } from '../../components/Livre';
+import { Livre, type LivreApi, type LivreProps } from '../../components/Livre';
 import { Reglages, CREDITS_REGLAGES } from '../../components/Reglages';
 import { SoulevementProvider, souleverObjet, useSoulevement } from '../../components/Soulever';
 import { CAMERA_DEFAULT, CameraProvider } from '../../lib/camera';
@@ -67,6 +67,9 @@ export function Carnet({ ecran, liens = false, depart = -1, coteInitial }: Carne
     return initial.index === -1 ? true : undefined;
   });
   useLienProfond(liens, spreads, index, setIndex);
+  // Fermer le carnet (bouton, Échap) : le livre revient à sa couverture par son tourne-page (aller(-1)).
+  const livreRef = React.useRef<LivreApi | null>(null);
+  const fermerCarnet = React.useCallback(() => livreRef.current?.aller(-1, 'gauche'), []);
   const [reglages] = useReglages();
   // « Moins d'animations » : crochet CSS sur la racine (data-gc-mouvement="reduit"), en plus de MotionConfig.
   React.useEffect(() => {
@@ -77,9 +80,9 @@ export function Carnet({ ecran, liens = false, depart = -1, coteInitial }: Carne
   const carnet = (
     <MotionConfig reducedMotion={reglages.mouvementReduit ? 'always' : 'user'}>
       <CameraProvider keyboard persist={!simule} fixed={simule && ecran?.tactile ? { distance: 'proche' } : undefined}>
-        <Ecran pleinEcran>
+        <Ecran pleinEcran onFermerCarnet={index >= 0 ? fermerCarnet : undefined}>
           <SoulevementProvider>
-            <CarnetLivre index={index} setIndex={setIndex} coteInitial={coteInitial} arrivee={arrivee} />
+            <CarnetLivre index={index} setIndex={setIndex} coteInitial={coteInitial} arrivee={arrivee} apiRef={livreRef} />
           </SoulevementProvider>
         </Ecran>
       </CameraProvider>
@@ -106,10 +109,11 @@ interface CarnetLivreProps {
   setIndex: (i: number) => void;
   coteInitial?: 'gauche' | 'droite';
   arrivee?: LivreProps['arrivee'];
+  apiRef: React.MutableRefObject<LivreApi | null>;
 }
 
 /** Le livre, ses touches (Entrée : vidéo, ↑ : feuillet), la vidéo préparée à chaque page, le menu. */
-function CarnetLivre({ index, setIndex, coteInitial, arrivee }: CarnetLivreProps) {
+function CarnetLivre({ index, setIndex, coteInitial, arrivee, apiRef }: CarnetLivreProps) {
   const spreads = SPREADS_DEMO;
   // Couverture cuite (lot C) : images posées par variables CSS sur le livre, étiquette en <img>.
   const couverture = React.useMemo(() => couvertureVars(), []);
@@ -171,6 +175,9 @@ function CarnetLivre({ index, setIndex, coteInitial, arrivee }: CarnetLivreProps
         couverture={couverture}
         coteInitial={coteInitial}
         arrivee={arrivee}
+        apiRef={apiRef}
+        // 4e de couverture : tourner la dernière page referme le carnet sur son plat arrière, ← le rouvre
+        couvertureArriere
         // Invitation à ouvrir (lot S) : l'étiquette cuite « … pour ouvrir », selon la modalité.
         invitation={invitation}
       />

@@ -379,7 +379,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   // Audio, réglable partout, iPhone compris) ; la ligne reste dès que l'un d'eux peut servir.
   const sonsLivre = son.sonsLivreEffectif(r);
   const ambiance = ambianceActive(r);
-  const musique = r.musique !== 'aucune';
+  const musique = r.musiqueActive;
   const avecVolume = volumeReglable() || sonsLivre || ambiance || musique;
   const volumeActif = r.son || sonsLivre || ambiance || musique;
 
@@ -690,7 +690,13 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                     <Choix options={OUI_NON} valeur={feuDe(r)} onChoisir={(feu) => setR(partielAmbiance({ feu }))} graine={g()} />
                   </Ligne>
                   <Ligne id="musique" libelle="Musique" role="radiogroup" large>
-                    <Choix options={OPTIONS_MUSIQUE} valeur={r.musique} onChoisir={(musique) => setR({ musique })} graine={g()} />
+                    {/* « aucune » coupe la musique ; un morceau la joue (le bouton musique la rallume). */}
+                    <Choix
+                      options={OPTIONS_MUSIQUE}
+                      valeur={r.musiqueActive ? r.musique : 'aucune'}
+                      onChoisir={(m) => setR(m === 'aucune' ? { musique: 'aucune', musiqueActive: false } : { musique: m, musiqueActive: true })}
+                      graine={g()}
+                    />
                   </Ligne>
                   {invites.length > 0 && (
                     <Ligne id="aller" libelle="Aller à…">

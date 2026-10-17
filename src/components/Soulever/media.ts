@@ -83,6 +83,12 @@ export function proportionDe(v: VideoInfo): number {
   return i && i.w > 0 && i.h > 0 ? i.w / i.h : PROPORTION_TIRAGE;
 }
 
+/** Proportion (largeur / hauteur) d'une image cuite (taille de l'inventaire) ; à défaut, 3 / 2. */
+export function proportionImage(nom: string | null | undefined): number {
+  const i = nom ? infoDe(nom) : undefined;
+  return i && i.w > 0 && i.h > 0 ? i.w / i.h : 3 / 2;
+}
+
 export const cadreDe = (v: VideoInfo): Fractions => v.cadre ?? CADRE_TIRAGE;
 
 export function debordCoinsDe(v: VideoInfo): [number, number] {

@@ -53,7 +53,7 @@ Le composant exporte aussi `ReglagesInvite` (type) et `CREDITS_REGLAGES` (texte 
 
 La loupe n'est pas mémorisée (elle revient à 1× au rechargement). Au clavier, + / − règlent la loupe (paliers 1 · 1,5 · 2 · 3) ; les crans de distance (« Taille du livre ») ne se règlent plus que dans ce menu.
 
-Les réglages sont mémorisés par `src/lib/reglages.ts` (clé `gc:reglages:v1`) et la caméra par `src/lib/camera.tsx` (clé `gc:camera:v1`). Si le stockage est indisponible, les réglages restent en mémoire.
+Les réglages sont mémorisés par `src/lib/reglages.ts` (clé `gc:reglages:v3`, repli sur v2 puis v1 ; la musique est coupée par défaut, le bouton musique de la barre la rallume) et la caméra par `src/lib/camera.tsx` (clé `gc:camera:v1`). Si le stockage est indisponible, les réglages restent en mémoire.
 
 ## Clavier
 

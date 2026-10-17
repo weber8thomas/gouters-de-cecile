@@ -108,6 +108,59 @@
   will-change: opacity;
 }
 
+/* ---- Tirage (photo fixe, sans vidéo) : ses coins, puis sa légende au crayon sous la photo --------- */
+.gc-soulever__coins {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+/* Sous la carte, dans la carte : elle suit le vol (même transformation), en encre claire sur le voile. */
+.gc-soulever__legende {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  margin-top: calc(var(--gc-sl-h) * 0.035);
+  padding: 0 4%;
+  box-sizing: border-box;
+  text-align: center;
+  pointer-events: none;
+  text-shadow: 0 1px 2px color-mix(in srgb, var(--gc-wood-3) 80%, transparent);
+}
+
+/* Le tirage posé dans la page (TirageColle, album) : une photo qui se soulève comme PhotoCollee. */
+.gc-tirage__photo {
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gc-tirage__photo img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Soulevé (attribut posé par le provider) : le tirage a quitté la page, les coins restent. */
+.gc-tirage__photo[data-gc-souleve] .gc-tirage__image {
+  opacity: 0;
+}
+
+.gc-tirage__photo:focus {
+  outline: none;
+}
+
+.gc-tirage__photo:focus-visible {
+  outline: 3px solid var(--gc-honey-500);
+  outline-offset: 4px;
+}
+
 /* ---- Avancement : un fin trait de crayon sur la marge blanche du tirage --------------------- */
 .gc-soulever__trait {
   position: absolute;

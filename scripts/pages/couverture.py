@@ -2,6 +2,7 @@
 
     tools/ecriture/.venv/bin/python scripts/pages/couverture.py [--variantes a,b,c] [--indices] [--planche]
                                                               [--reecrire] [--sans-cuisson] [--sources]
+    tools/ecriture/.venv/bin/python scripts/pages/couverture.py --plat-arriere   (4e de couverture seule, variante retenue)
 
 La couverture est faite des mêmes matières que les pages : de VRAIES reliures anciennes scannées
 (Wellcome Collection, Public Domain Mark, voir design-system/sources/couverture/*.licence.md), une
@@ -28,6 +29,9 @@ Produit, pour chaque variante v (2× = netteté ; 1× = écrans de densité 1), 
   tranche-pied la même vue d'en bas (largeur de page × bloc), RGBA
   etiquette    étiquette collée (a, b) : papier découpé, cadre imprimé, titre, croquis, ombre cuite, déjà
                tournée ; posée par <EtiquetteCouverture> au rectangle du manifeste (fractions du plat)
+  plat-arriere 4e de couverture (a) : même toile, même patine et même lumière que le plat, mors à droite, sans
+               étiquette ni tache de tasse ; seul décor, un médaillon doré (double filet et théière) estampé
+               dans le tiers bas. Cuit seul (--plat-arriere) ou avec la variante ; inscrit dans le manifeste.
 et 1x/<partie>.webp. Indices « … pour ouvrir » au crayon (main `cecile`) : design-system/baked/indices/
 {toucher,cliquer,entree}.webp (un petit billet de papier écrit au crayon, fond transparent autour, ombre cuite)
 et {…}-crayon.webp (le crayon seul, fond transparent, pour un fond de papier clair).
@@ -828,6 +832,96 @@ def plat_marbre(v: str, cfg: dict, cote="plat") -> np.ndarray:
     return out
 
 
+def medaillon_masque(D: float, ss: int = 4) -> np.ndarray:
+    """Masque 0–255 du médaillon, D × D px de référence : double filet, théière pleine (bec, anse, couvercle,
+    pied) et deux volutes de vapeur. Dessiné ss× puis réduit à la netteté de 2× : bords lissés."""
+    N = int(round(D * ss))
+    k = N / D
+    c = N / 2
+    g = 1.22  # échelle de la théière (ses cotes ci-dessous sont en px de référence à 124 px de médaillon)
+    ty = 3.0  # la théière descend un peu : le bloc (vapeur comprise) reste centré dans le médaillon
+
+    def P(x, y):  # px de référence, origine au centre du médaillon
+        return (c + x * g * k, c + (y + ty) * g * k)
+
+    def box(x0, y0, x1, y1):
+        return [*P(x0, y0), *P(x1, y1)]
+
+    im = Image.new("L", (N, N), 0)
+    d = ImageDraw.Draw(im)
+    r = D / 2
+    d.ellipse([c - (r - 1.5) * k, c - (r - 1.5) * k, c + (r - 1.5) * k, c + (r - 1.5) * k], outline=255, width=max(1, round(3.0 * k)))
+    ri = r - 7.0
+    d.ellipse([c - ri * k, c - ri * k, c + ri * k, c + ri * k], outline=255, width=max(1, round(1.2 * k)))
+    # théière
+    d.ellipse(box(-19, -11, 19, 20), fill=255)                                  # corps
+    d.ellipse(box(-10.5, -13.5, 10.5, -4.5), fill=255)                          # couvercle
+    d.ellipse(box(-2.8, -18.5, 2.8, -12.9), fill=255)                           # bouton
+    d.rounded_rectangle(box(-10, 16.5, 10, 22.5), radius=max(1, round(2 * g * k)), fill=255)  # pied
+    P0, P1, P2 = np.array([-15.0, 4.0]), np.array([-27.0, 6.0]), np.array([-33.0, -14.0])  # bec : tube effilé
+    t = np.linspace(0, 1, 48)[:, None]
+    C = (1 - t) ** 2 * P0 + 2 * (1 - t) * t * P1 + t ** 2 * P2
+    demi = (6.8 + (2.4 - 6.8) * t) / 2
+    tg = np.gradient(C, axis=0)
+    tg /= np.linalg.norm(tg, axis=1, keepdims=True) + 1e-9
+    nm = np.column_stack([-tg[:, 1], tg[:, 0]])
+    bec = np.vstack([C + nm * demi, (C - nm * demi)[::-1]])
+    d.polygon([P(x, y) for x, y in bec], fill=255)
+    d.arc(box(20 - 10.5, 1 - 12, 20 + 10.5, 1 + 12), start=-90, end=90, fill=255, width=max(1, round(3.6 * g * k)))  # anse
+    d.ellipse(box(-10.5, -13.5, 10.5, -4.5), outline=0, width=max(1, round(0.9 * g * k)))  # joint du couvercle (creux)
+    for x0 in (-5.5, 5.5):  # vapeur
+        s = np.linspace(0, 1, 30)
+        d.line([P(x0 + 1.6 * np.sin(2 * np.pi * u), -23 - 9 * u) for u in s], fill=255, width=max(1, round(1.8 * k)), joint="curve")
+    return np.asarray(im.resize((int(round(D * ECH)), int(round(D * ECH))), Image.LANCZOS), np.float32)
+
+
+def medaillon(T: np.ndarray, m: dict, v: str) -> np.ndarray:
+    """Le médaillon estampé à chaud dans la toile : or passé, qui prend sur les crêtes de la trame (la dorure
+    manque dans les creux), léger relief éclairé de haut gauche comme le reste, la toile pressée autour."""
+    h, w = T.shape[:2]
+    D = m["diametre"]
+    Dp = int(round(D * ECH))
+    x0 = int(round(m["centre"][0] * PLAT_W * ECH - Dp / 2))
+    y0 = int(round(m["centre"][1] * PLAT_H * ECH - Dp / 2))
+    F = np.zeros((h, w), np.float32)
+    F[y0:y0 + Dp, x0:x0 + Dp] = medaillon_masque(D) / 255
+    rng = rng_de("medaillon", v)
+    H = flou(F, 1.0 * ECH)  # hauteur du relief : le masque adouci
+    gy, gx = np.gradient(H)
+    relief = np.clip(-(gx * 0.7 + gy * 0.7) * 2.5, -1, 1)
+    crete = np.clip(R.relief(u8(T)), 0, 3) / 3
+    fin = bruit(rng, h, w, 1.2 * ECH)
+    couv = np.clip(0.55 + 0.5 * crete + 0.12 * fin, 0, 1)
+    couv *= 1 - 0.7 * np.clip(bruit(rng, h, w, 2.5 * ECH) - 1.6, 0, 1)  # petits manques de dorure
+    a = F * couv
+    or_ = desaturer(hexrgb(m["or"])[None, None, :], 0.92)
+    dore = or_ * (1 + 0.2 * relief + 0.02 * fin)[..., None]
+    # la toile pressée autour du cliché : une auréole plus sombre, très légère
+    presse = flou(F, 2.2 * ECH)
+    T = T * (1 - 0.07 * presse * (1 - F))[..., None]
+    return T + (dore - T) * a[..., None]
+
+
+def plat_arriere(v: str, cfg: dict) -> np.ndarray:
+    """4e de couverture : la toile du plat (même teinte, même patine, même lumière), mors à droite, sans
+    étiquette ni tache de tasse ; le médaillon doré, estampé avant la patine (le temps passe dessus aussi)."""
+    pa = cfg["plat_arriere"]
+    T = fenetre(charger(pa.get("toile", cfg["toile_arriere"])), PW, PH, **pa["fenetre"])
+    T = grade(T, cfg.get("grade"))
+    T = medaillon(T, pa["medaillon"], v)
+    pat = dict(cfg.get("patine", {}))
+    pat.pop("taches_arriere", None)
+    pat["taches"] = ()
+    return patiner(T, rng_de("patine", v, "plat-arriere"), dos="droite", **pat)
+
+
+def meta_plat_arriere(cfg: dict) -> dict:
+    """Ce que l'app doit savoir du 4e de couverture (inscrit dans le manifeste, à côté de ses dimensions)."""
+    pa = cfg["plat_arriere"]
+    m = pa["medaillon"]
+    return {"nom": pa["nom"], "medaillon": {"centre": [m["centre"][0], m["centre"][1]], "diametre": m["diametre"]}}
+
+
 def dos(v: str, cfg: dict) -> np.ndarray:
     """Dos arrondi : toile du livre, plus passée (le soleil de l'étagère), coiffes usées."""
     w, h = DOS_W * ECH, PH
@@ -1090,6 +1184,11 @@ VARIANTES = {
                   "graisse": 1.15, "lignes": [(0.065, 0.4, "g", -1.0), (0.17, 0.75, "g", -0.6)]},
         "croquis": {"nom": "theiere", "variante": "a", "boite": (0.755, 0.18, 0.195, 0.56), "graine": 5, "xh": 0.62},
         "garde": "uni",
+        # 4e de couverture (plat-arriere) : la toile du plat (même teinte que l'avant), sans étiquette ni
+        # tache de tasse ; le seul décor, un médaillon doré dans le tiers bas (centre et diamètre en px de référence)
+        "plat_arriere": {"nom": "4e de couverture : toile et médaillon doré", "toile": "wellcome-beeton1899-toile-sauge-plat",
+                         "fenetre": {"cx": 0.5, "cy": 0.92, "zoom": 1.0},
+                         "medaillon": {"centre": (0.5, 0.73), "diametre": 136, "or": "#d6ae62"}},
     },
     "b": {
         "nom": "Carton marbré, dos et coins toilés",
@@ -1188,6 +1287,9 @@ def cuire_variante(v: str) -> dict:
     rac = dossier_de(v)
     for partie, img in (("plat", plat), ("arriere", arr)):
         journal.append(ecrire_image(f"{base}/{partie}", img, racine=rac))
+    if "plat_arriere" in cfg:
+        journal.append(ecrire_image(f"{base}/plat-arriere", plat_arriere(v, cfg), racine=rac))
+        man["plat_arriere"] = meta_plat_arriere(cfg)
     cp, origine = contreplat(v, cfg, "avant")
     journal.append(ecrire_image(f"{base}/contreplat", cp, q=82, racine=rac))
     cpa, _ = contreplat(v, cfg, "arriere")
@@ -1213,6 +1315,24 @@ def cuire_variante(v: str) -> dict:
     print(f"  {v} — {cfg['nom']} : " + ", ".join(f"{j['nom'].rpartition('/')[2]} {j['ko']} Ko" for j in journal)
           + f" ({time.time() - t0:.1f} s)")
     return man
+
+
+def cuire_plat_arriere(v: str) -> dict:
+    """Seulement le 4e de couverture (plat-arriere) de la variante : les autres images ne sont pas touchées."""
+    cfg = VARIANTES[v]
+    t0 = time.time()
+    info = ecrire_image(f"couverture/{v}/plat-arriere", plat_arriere(v, cfg), racine=dossier_de(v))
+    print(f"  {v} — {cfg['plat_arriere']['nom']} : plat-arriere {info['ko']} Ko, 1x {info['ko1x']} Ko ({time.time() - t0:.1f} s)")
+    return info
+
+
+def maj_manifeste_plat_arriere(v: str, info: dict):
+    """Inscrit le 4e de couverture dans le manifeste, sans toucher au reste (même forme que cuire_variante)."""
+    man = json.loads(MANIFESTE.read_text())
+    var = man["variantes"][v]
+    var.setdefault("parties", {})["plat-arriere"] = {k: info[k] for k in ("w", "h", "ko", "ko1x") if k in info}
+    var["plat_arriere"] = meta_plat_arriere(VARIANTES[v])
+    MANIFESTE.write_text(json.dumps(man, indent=1, ensure_ascii=False) + "\n")
 
 
 def cuire_indices() -> dict:
@@ -1458,10 +1578,16 @@ def main(argv=None):
     ap.add_argument("--planche", action="store_true", help="capture verification/out/v4-c/couvertures.png")
     ap.add_argument("--sans-cuisson", action="store_true", help="planche seule (images déjà cuites)")
     ap.add_argument("--reecrire", action="store_true", help="refait l'écriture et les croquis figés (sources/couverture)")
+    ap.add_argument("--plat-arriere", action="store_true",
+                    help="cuit seulement le 4e de couverture (plat-arriere) de la variante retenue, et l'inscrit au manifeste")
     a = ap.parse_args(argv)
     REECRIRE = a.reecrire
     vs = [v for v in a.variantes.split(",") if v]
     t0 = time.time()
+    if a.plat_arriere:
+        maj_manifeste_plat_arriere(ACTIVE, cuire_plat_arriere(ACTIVE))
+        print(f"couverture : {time.time() - t0:.1f} s")
+        return 0
     if not a.sans_cuisson:
         faites = {v: cuire_variante(v) for v in vs}
         ind = cuire_indices() if a.indices else None

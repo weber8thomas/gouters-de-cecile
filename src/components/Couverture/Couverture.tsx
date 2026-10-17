@@ -12,6 +12,7 @@ import './Couverture.css';
 export type PartieCouverture =
   | 'plat'
   | 'arriere'
+  | 'plat-arriere'
   | 'contreplat'
   | 'contreplat-arriere'
   | 'dos'
@@ -146,7 +147,8 @@ export function couvertureVars(variante?: string, densite: DensiteCouverture = '
   const url = (p: PartieCouverture) => cssUrl(nomCouverture(p, v, d));
   return {
     '--gc-couv-plat': url('plat'),
-    '--gc-couv-arriere': url('arriere'),
+    // le plat arrière cuit avec son petit médaillon (4e de couverture), sinon la toile seule
+    '--gc-couv-arriere': url(assetInfo(nomCouverture('plat-arriere', v, d)) ? 'plat-arriere' : 'arriere'),
     '--gc-couv-contreplat': url('contreplat'),
     '--gc-couv-contreplat-arriere': url('contreplat-arriere'),
     '--gc-couv-dos': url('dos'),

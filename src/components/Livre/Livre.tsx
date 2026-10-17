@@ -22,6 +22,7 @@ import { TOUCHER_EVENT, cadenceStable, emettre, pret, type GesteType, type Touch
 import { CARTON, PLANCHER, clamp, lisse, r3, reculCouverture } from './geometrie';
 import { MARGE_TOUCHER, SEUIL_AMORCE, SEUIL_GLISSER, SEUIL_P, TOUCHER_MAX_MS, VIF, elastique, entreElastique, garder, pElastique, vitesse, type Echantillon } from './doigt';
 import { RELAIS_COIN, angleSaisi, leve, pRelais, plier, zoneCoin, type Coin as AngleCoin } from './coin';
+import { traineeDoree } from './etincelles';
 import './Livre.css';
 
 export type { ToucherPage };
@@ -982,6 +983,8 @@ export function Livre({
   }, [apiRef, aller, allerA, sauter]);
 
   // ---- Clavier ---------------------------------------------------------------------------
+  /** La main invisible (gestes au pointeur) : vrai si elle tourne la page, sinon le clavier fait un pas. */
+  const mainRef = React.useRef<((dir: 1 | -1) => boolean) | null>(null);
   React.useEffect(() => {
     if (!keyboard || pose) return;
     const onKey = (e: KeyboardEvent) => {
@@ -990,8 +993,8 @@ export function Livre({
       const t = e.target as HTMLElement | null;
       if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
       switch (e.key) {
-        case 'ArrowRight': case 'PageDown': e.preventDefault(); pas(1); break;
-        case 'ArrowLeft': case 'PageUp': e.preventDefault(); pas(-1); break;
+        case 'ArrowRight': case 'PageDown': e.preventDefault(); if (!mainRef.current?.(1)) pas(1); break;
+        case 'ArrowLeft': case 'PageUp': e.preventDefault(); if (!mainRef.current?.(-1)) pas(-1); break;
         case 'Home': e.preventDefault(); allerA(min, 'gauche'); break;
         case 'End': e.preventDefault(); allerA(maxOuvert, 'gauche'); break;
         default:
@@ -1739,6 +1742,87 @@ export function Livre({
     const onDragStart = (e: Event) => e.preventDefault();
     const onMenu = (e: Event) => { if (dernierType !== 'mouse') e.preventDefault(); };
 
+    // ---- Main invisible (clavier) ------------------------------------------------------------
+    // → ou ← : une main invisible tourne la page par le même chemin qu'un doigt (coin saisi, rabat, relais
+    // au feuillet 3D, lancer) : le coin bas se soulève, suit un arc en accélérant, puis la page part sur
+    // son élan. Une traînée d'étincelles dorées suit la main. Faux si elle ne peut pas (fermé, cadrage
+    // « page », mouvement réduit, bout du livre…) : le clavier fait alors un pas ordinaire.
+    let main = 0;
+    const mainInvisible = (dir: 1 | -1): boolean => {
+      if (main) return true; // une main tourne déjà la page : la touche est bue
+      if (doigtRef.current || tourRef.current || glisseAnim.current || enArrivee() || getLoupe().zoome) return false;
+      if (!COIN_2D || vivant.current.reduced || modePageRef.current || ferme(afficheRef.current)) return false;
+      const c: CotePage = dir > 0 ? 'droite' : 'gauche';
+      const vers = afficheRef.current + dir;
+      if (vers < min || vers > max || !coinMonte.current[c] || !actions.current.coteSaisissable(c)) return false;
+      const g = geoRef.current;
+      const L = pageAEcran();
+      const rc = livreRef.current?.querySelector(`.gc-livre__emplacement--${c}`)?.getBoundingClientRect();
+      if (!g || !rc || !(L > 0)) return false;
+      const sx = c === 'droite' ? 1 : -1;
+      const x0 = c === 'droite' ? rc.right - 0.03 * rc.width : rc.left + 0.03 * rc.width;
+      const y0 = rc.bottom - 0.03 * rc.height;
+      const t0 = performance.now();
+      const d: Doigt = {
+        id: -1, x0, y0, t0, etat: 'attente', intention: null, dir: 0, L, k: L / g.W, p0: 0, g0: 0, r0: 0,
+        reprise: false, amorce: null, coteDepart: coteRef.current, pts: [{ t: t0, x: x0 }], zoome: false, coin: null,
+      };
+      doigtRef.current = d;
+      saisirCoin(d, c, 'bas');
+      if (!d.coin) { annulerAmorce(d); doigtRef.current = null; return false; }
+      const trainee = traineeDoree();
+      const LEVER = 170; // ms : le coin se soulève sous la main
+      const TIRER = 520; // ms : la main tire le coin en arc
+      const D = 0.8 * L; // course de la main vers le dos du livre
+      const H = 0.14 * rc.height; // hauteur de l'arc
+      const image = () => {
+        main = 0;
+        const now = performance.now();
+        if (doigtRef.current !== d) { trainee.finir(); return; } // abandonnée (la loupe a pris la main)
+        const ecoule = now - t0;
+        if (ecoule < LEVER) {
+          trainee.ajouter(x0, y0, ecoule / LEVER / 2);
+          main = requestAnimationFrame(image);
+          return;
+        }
+        const co = d.coin;
+        if (d.etat === 'attente' && co) {
+          const R = rabats.current[c];
+          R.anim.forEach((a) => a.stop());
+          R.anim = [];
+          co.fx0 = R.fx.get();
+          co.fy0 = R.fy.get();
+          co.xc = x0;
+          co.yc = y0;
+          d.etat = 'coin';
+          emettre(livreRef.current, 'debut', 'coin');
+        }
+        const u = Math.min(1, (ecoule - LEVER) / TIRER);
+        // part doucement, accélère : la page s'en va sur l'élan, comme lancée d'un geste
+        const x = x0 - sx * D * u * u * (1.6 - 0.6 * u);
+        const y = y0 - H * Math.sin(Math.PI * Math.min(1, u * 1.15));
+        d.pts.push({ t: now, x });
+        garder(d.pts, now);
+        if (d.etat === 'coin') piloterCoin(d, { clientX: x, clientY: y } as PointerEvent);
+        else if (d.etat === 'tour') piloter(d, x - d.x0);
+        trainee.ajouter(x, y, 1);
+        if (u < 1) {
+          main = requestAnimationFrame(image);
+          return;
+        }
+        doigtRef.current = null;
+        if (d.etat === 'coin' && d.coin) {
+          const R = rabats.current[c];
+          relayer(d, x, plier(d.coin.angle, R.fx.get(), R.fy.get(), g.W, g.H).ex);
+        }
+        relacherTour(d, vitesse(d.pts, now));
+        trainee.finir();
+      };
+      main = requestAnimationFrame(image);
+      return true;
+    };
+    mainRef.current = mainInvisible;
+
     surface.addEventListener('pointerdown', onDown);
     surface.addEventListener('pointerleave', onLeave);
     window.addEventListener('pointermove', onMove);
@@ -1759,6 +1843,8 @@ export function Livre({
       surface.removeEventListener('dragstart', onDragStart);
       surface.removeEventListener('contextmenu', onMenu);
       surface.removeAttribute('data-gc-curseur');
+      cancelAnimationFrame(main);
+      mainRef.current = null;
       doigtRef.current = null;
     };
   }, [gestes, pose, enEcran, min, max, p, r, glisse, rebond, X]);

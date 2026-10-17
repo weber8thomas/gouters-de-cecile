@@ -145,26 +145,26 @@
   },
   "bougie/flamme": {
     "file": "baked/bougie/flamme.webp",
-    "sha": "0c0f7a00fe3fe1c6951ad716936c13e1064afed7c20059b3069812634961ef40",
-    "w": 60,
-    "h": 100,
-    "bytes": 2096,
+    "sha": "aa73e99bc195cab3684f3dd50158de38be10e9057ee0d6752ae24175f22a7648",
+    "w": 162,
+    "h": 124,
+    "bytes": 4876,
     "type": "image/webp"
   },
   "bougie/goutte-1": {
     "file": "baked/bougie/goutte-1.webp",
-    "sha": "52bd93c32b9b85ca313267e845a08b172590525b67a7e446f177a6195fe5583c",
-    "w": 832,
-    "h": 427,
-    "bytes": 19490,
+    "sha": "da882645ff47987cfadc155457c24558105718de556a4112e4ab893186a85f80",
+    "w": 1200,
+    "h": 585,
+    "bytes": 38518,
     "type": "image/webp"
   },
   "bougie/goutte-3": {
     "file": "baked/bougie/goutte-3.webp",
-    "sha": "da5ae8fc835fdd638676e165ce982eeb10af8d1b07e137828ec8189bd4e7d210",
-    "w": 856,
-    "h": 448,
-    "bytes": 19580,
+    "sha": "9bffe81b8f04485a6d6c1820e49bffe2e5973dfe891ff2b2507d2d30d78bdaae",
+    "w": 1016,
+    "h": 963,
+    "bytes": 39370,
     "type": "image/webp"
   },
   "bougie/halo": {
@@ -229,6 +229,14 @@
     "w": 539,
     "h": 302,
     "bytes": 34710,
+    "type": "image/webp"
+  },
+  "couverture/a/1x/plat-arriere": {
+    "file": "baked/couverture/a/1x/plat-arriere.webp",
+    "sha": "15dc14c9b802dcc57ac30f274aa8666eb25ec391a4ebbaa04ae8a31dc467109e",
+    "w": 868,
+    "h": 1222,
+    "bytes": 282004,
     "type": "image/webp"
   },
   "couverture/a/1x/plat": {
@@ -301,6 +309,14 @@
     "w": 1078,
     "h": 604,
     "bytes": 94974,
+    "type": "image/webp"
+  },
+  "couverture/a/plat-arriere": {
+    "file": "baked/couverture/a/plat-arriere.webp",
+    "sha": "acd8038e7924155ccaabf6710363a1294f6b8e17daf6a61568b422e624fee6b0",
+    "w": 1736,
+    "h": 2444,
+    "bytes": 625540,
     "type": "image/webp"
   },
   "couverture/a/plat": {

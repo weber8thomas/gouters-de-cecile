@@ -1,9 +1,10 @@
 // Réglages de la personne qui regarde le carnet (menu ⚙) : un petit magasin de module, sans provider,
-// lu par useSyncExternalStore. Mémorisé dans le navigateur (clé gc:reglages:v2), relu champ par champ :
+// lu par useSyncExternalStore. Mémorisé dans le navigateur (clé gc:reglages:v3), relu champ par champ :
 // une valeur abîmée ou inconnue retombe sur sa valeur par défaut. Le cran et le zoom restent dans la
 // caméra (src/lib/camera.tsx, clé gc:camera:v1).
-// Clé v2 : les sons sont actifs par défaut, téléphone compris ; l'ancien « automatique » (null) de la clé
-// v1 ne revient pas (il passe au défaut), les autres réglages et les choix « oui » / « non » sont repris.
+// Clé v3 : la musique est coupée par défaut (musiqueActive, absent de la clé v2 : coupée). Les réglages
+// v2 sont repris tels quels, sauf la musique ; la clé v2 sert de repli, puis la v1 (son « automatique »
+// ramené au défaut, comme avant).
 import React from 'react';
 import banqueMusique from '../../design-system/baked/musique/banque.json';
 
@@ -42,10 +43,16 @@ export interface Reglages {
    */
   muet: boolean;
   /**
-   * Musique de fond (src/lib/musique.ts) : « aucune », ou l'identifiant d'un morceau de la banque
-   * (design-system/baked/musique/banque.json). Défaut : le premier morceau.
+   * Morceau de musique de fond (src/lib/musique.ts) : l'identifiant d'un morceau de la banque
+   * (design-system/baked/musique/banque.json), ou « aucune » (le bouton musique joue alors le premier).
+   * Défaut : le premier morceau, qui ne joue pas tant que musiqueActive est faux.
    */
   musique: string;
+  /**
+   * La musique joue (bouton musique, src/components/Haut-parleur/BoutonMusique.tsx). Défaut : coupée.
+   * Éteindre le bouton garde le morceau choisi ; le rallumer le reprend.
+   */
+  musiqueActive: boolean;
 }
 
 /** Identifiants des morceaux de musique de fond (la banque cuite par scripts/bake-musique.mjs). */
@@ -63,8 +70,10 @@ export const REGLAGES_DEFAUT: Reglages = {
   feu: true,
   muet: false,
   musique: MUSIQUES_IDS[0] ?? 'aucune',
+  musiqueActive: false,
 };
-const CLE = 'gc:reglages:v2';
+const CLE = 'gc:reglages:v3';
+const CLE_V2 = 'gc:reglages:v2';
 const CLE_V1 = 'gc:reglages:v1';
 
 function valider(x: unknown): Reglages {
@@ -81,16 +90,23 @@ function valider(x: unknown): Reglages {
   if (typeof o.feu === 'boolean') r.feu = o.feu;
   if (typeof o.muet === 'boolean') r.muet = o.muet;
   if (typeof o.musique === 'string' && (o.musique === 'aucune' || MUSIQUES_IDS.includes(o.musique))) r.musique = o.musique;
+  if (typeof o.musiqueActive === 'boolean') r.musiqueActive = o.musiqueActive;
+  // « aucune » ne joue pas : le bouton musique repart du premier morceau.
+  if (r.musique === 'aucune') r.musiqueActive = false;
   return r;
 }
 
 function charger(): Reglages {
   try {
-    const brut = typeof localStorage !== 'undefined' ? localStorage.getItem(CLE) : null;
+    const lire = (cle: string): string | null => (typeof localStorage !== 'undefined' ? localStorage.getItem(cle) : null);
+    const brut = lire(CLE);
     if (brut) return valider(JSON.parse(brut));
-    // Première visite de cette version : on reprend la clé v1, sauf les « automatique » (null) de
-    // sonsLivre et d'ambiance, qui retombent sur le défaut (actif).
-    const ancien = typeof localStorage !== 'undefined' ? localStorage.getItem(CLE_V1) : null;
+    // Première visite de cette version : on reprend la clé v2 (sans musiqueActive : la musique reste
+    // coupée), puis la v1, sauf les « automatique » (null) de sonsLivre et d'ambiance, qui retombent
+    // sur le défaut (actif).
+    const v2 = lire(CLE_V2);
+    if (v2) return valider(JSON.parse(v2));
+    const ancien = lire(CLE_V1);
     if (ancien) {
       const o = { ...(JSON.parse(ancien) as Record<string, unknown>) };
       if (o.sonsLivre === null) delete o.sonsLivre;

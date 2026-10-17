@@ -24,8 +24,9 @@ import { useClavierModal } from '../../lib/clavier';
 import { jouerSon, marquerVideo } from '../../lib/son';
 import { useAmbiance } from '../../lib/ambiance';
 import { AUCUNE_MARGE, type Insets } from '../../lib/viewport';
+import { handStyle } from '../../lib/hands';
 import { ActionsContext, EtatContext, type EtatSoulevement, type ObjetSoulevable, type SoulevementActions } from './contexte';
-import { geometrieDe, urlMedia, type Fractions, type VideoInfo } from './media';
+import { geometrieDe, proportionImage, urlMedia, type Fractions, type VideoInfo } from './media';
 import { lisse, mesurerPose, placeBouton, poseCible, transformDe, versLocal, type Pose } from './geometrie';
 import './Soulever.css';
 
@@ -36,10 +37,23 @@ export interface SoulevementProviderProps {
 type Vars = React.CSSProperties & Record<`--${string}`, string>;
 type Arret = { stop: () => void };
 
+/**
+ * Pose de départ d'un objet posé : mesurée dans la page. Pour un tirage, la hauteur suit la proportion
+ * de son image (pas d'étirement pendant le vol, même si le cadre posé n'a pas tout à fait la sienne).
+ */
+function poseDepart(o: ObjetSoulevable, calque: HTMLElement): Pose {
+  const s = versLocal(mesurerPose(o.source, o.angle), calque);
+  if (o.type !== 'tirage') return s;
+  const a = o.proportion && o.proportion > 0 ? o.proportion : proportionImage(o.tirage);
+  return { ...s, h: s.w / a };
+}
+
 /** Feuillet : avancée à partir de laquelle la feuille entière est opaque (et le coin caché dans la page). */
 const SEUIL_FEUILLET = 0.2;
 const POSE_NULLE: Pose = { cx: 0, cy: 0, w: 0, h: 0, angle: 0 };
 const FONDU = { duration: 0.25, ease: 'linear' } as const;
+/** Légende d'un tirage : la main de Cécile, en encre claire (elle est posée sur le voile de bois, pas sur le papier). */
+const LEGENDE: React.CSSProperties = { ...handStyle('cecile', 'annotation'), color: 'var(--gc-paper-lace)' };
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const pc = (v: number) => `${+(v * 100).toFixed(4)}%`;
@@ -117,6 +131,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   const calqueRef = React.useRef<HTMLDivElement>(null);
   const cartePhotoRef = React.useRef<HTMLDivElement>(null);
   const carteFeuilletRef = React.useRef<HTMLDivElement>(null);
+  const carteTirageRef = React.useRef<HTMLDivElement>(null);
   const retourneRef = React.useRef<HTMLDivElement>(null);
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
   const boutonRef = React.useRef<HTMLButtonElement>(null);
@@ -186,7 +201,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   const doitCacher = React.useCallback(() => {
     const o = objetRef.current;
     if (!o || phaseRef.current === 'ferme' || pret.get() < 0.5) return false;
-    if (o.type === 'photo' || reduitRef.current || geoRef.current.fondu || !o.fenetre) return true;
+    if (o.type !== 'feuillet' || reduitRef.current || geoRef.current.fondu || !o.fenetre) return true;
     return p.get() >= SEUIL_FEUILLET;
   }, [p, pret]);
   const majSource = React.useCallback(() => {
@@ -217,7 +232,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     poseSonnee.current = true;
     const o = objetRef.current;
     const vif = Math.min(1, Math.abs(p.getVelocity()) / 6);
-    if (o?.type === 'photo') jouerSon('photo-poser', { vitesse: 0.4 + 0.5 * vif });
+    if (o?.type === 'photo' || o?.type === 'tirage') jouerSon('photo-poser', { vitesse: 0.4 + 0.5 * vif });
     else if (o) jouerSon('feuillet', { vitesse: 0.3 + 0.4 * vif, gain: 0.6 });
   }), [p]);
 
@@ -327,9 +342,9 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
       if (o.type === 'photo') videoRef.current?.pause();
       return false;
     }
-    jouerSon(o.type === 'photo' ? 'photo-lever' : 'feuillet', { vitesse: 0.55 });
+    jouerSon(o.type === 'feuillet' ? 'feuillet' : 'photo-lever', { vitesse: 0.55 });
     const v0 = vpRef.current ?? { w: window.innerWidth, h: window.innerHeight, insets: AUCUNE_MARGE as Insets, tactile: false };
-    const S = versLocal(mesurerPose(o.source, o.angle), calque);
+    const S = poseDepart(o, calque);
     const T = poseCible(v0, S.w / (S.h || 1));
     geoRef.current = { S, T, fondu: false };
     objetRef.current = o;
@@ -371,7 +386,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     }
     const calque = calqueRef.current;
     if (calque && o.source.isConnected) {
-      geoRef.current = { ...geoRef.current, S: versLocal(mesurerPose(o.source, o.angle), calque), fondu: false };
+      geoRef.current = { ...geoRef.current, S: poseDepart(o, calque), fondu: false };
     } else {
       // L'objet a quitté la page : fondu sur place.
       geoRef.current = { ...geoRef.current, S: { ...geoRef.current.T }, fondu: true };
@@ -384,7 +399,8 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   const preparer = React.useCallback((info: VideoInfo | null) => {
     attenteRef.current = info;
     const el = videoRef.current;
-    const occupe = phaseRef.current !== 'ferme' && objetRef.current?.type === 'photo';
+    const t = objetRef.current?.type;
+    const occupe = phaseRef.current !== 'ferme' && (t === 'photo' || t === 'tirage');
     if (occupe) return; // jamais pendant que la photo est soulevée
     if (!info) {
       if (el && el.hasAttribute('src')) {
@@ -431,7 +447,9 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     const id = seqRef.current;
     let annule = false;
     // Ce qui se voit au départ : le tirage (photo), le recto (feuillet). Le verso se décode pendant le vol.
-    const carte = objet?.type === 'feuillet' ? carteFeuilletRef.current?.querySelector('.gc-soulever__face--recto') ?? null : cartePhotoRef.current;
+    const carte = objet?.type === 'feuillet'
+      ? carteFeuilletRef.current?.querySelector('.gc-soulever__face--recto') ?? null
+      : objet?.type === 'tirage' ? carteTirageRef.current : cartePhotoRef.current;
     void (async () => {
       await deuxImages();
       await decoder(carte, 250);
@@ -632,6 +650,10 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     }
     reposer();
   };
+  const toucherTirage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (appuiValide(e)) reposer();
+  };
   const toucherFeuillet = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!appuiValide(e)) return;
@@ -673,8 +695,11 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   const marge = 1 - basImage;
   const place = (r: Fractions | undefined): React.CSSProperties => (r ? { left: pc(r[0]), top: pc(r[1]), width: pc(r[2]), height: pc(r[3]) } : {});
   const photo = objet?.type === 'photo';
+  const tirage = objet?.type === 'tirage' ? objet : null;
   const feuillet = objet?.type === 'feuillet' ? objet : null;
-  const libelle = photo && objet?.type === 'photo' ? `Vidéo : ${objet.video.titre}` : feuillet ? `Feuillet volant, ${face}` : undefined;
+  const libelle = photo && objet?.type === 'photo' ? `Vidéo : ${objet.video.titre}`
+    : tirage ? `Photo${tirage.legende ? ` : ${tirage.legende}` : ''}`
+    : feuillet ? `Feuillet volant, ${face}` : undefined;
   const conteneur = ecran?.controles ?? (typeof document !== 'undefined' ? document.body : null);
 
   const calque = (
@@ -723,6 +748,22 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
             </m.div>
           </div>
         </m.div>
+        {tirage && (
+          // Une photo fixe, en grand : le tirage à sa proportion (sans marge en plus), sa légende au crayon
+          // sous lui, dans la carte (elle suit le vol). Pas de vidéo, pas de trait d'avancement.
+          <m.div
+            ref={carteTirageRef}
+            className="gc-soulever__carte gc-soulever__carte--photo"
+            data-gc-actif=""
+            data-gc-ombre-cuite=""
+            style={{ ...boite, transform: carteT, opacity: carteO, willChange: wc }}
+            onClick={toucherTirage}
+          >
+            <img className="gc-soulever__tirage" src={urlMedia(tirage.tirage) || undefined} alt="" draggable={false} style={place([0, 0, 1, 1])} />
+            {tirage.coins && <img className="gc-soulever__coins" src={urlMedia(tirage.coins)} alt="" draggable={false} style={place([0, 0, 1, 1])} />}
+            {tirage.legende && <div className="gc-soulever__legende" style={LEGENDE}>{tirage.legende}</div>}
+          </m.div>
+        )}
         {feuillet && (
           <m.div
             ref={carteFeuilletRef}
