@@ -11,9 +11,33 @@
  },
  "_": "Album « Cécile en cuisine », 1re double page (gauche) : titre manuscrit en haut, trois photos collées (photo-1 à photo-3) de tailles et d'inclinaisons variées ; une légende au crayon sous chaque photo (« Cécile, … ans », l'âge en pointillés).",
  "vivants": [
-  { "nom": "photo-1", "rect": [0.09, 0.22, 0.46, 0.3] },
-  { "nom": "photo-2", "rect": [0.6, 0.25, 0.29, 0.22] },
-  { "nom": "photo-3", "rect": [0.22, 0.66, 0.52, 0.22] }
+  {
+   "nom": "photo-1",
+   "rect": [
+    0.08,
+    0.22,
+    0.48,
+    0.253
+   ]
+  },
+  {
+   "nom": "photo-2",
+   "rect": [
+    0.6,
+    0.3,
+    0.32,
+    0.168
+   ]
+  },
+  {
+   "nom": "photo-3",
+   "rect": [
+    0.24,
+    0.6,
+    0.54,
+    0.284
+   ]
+  }
  ],
  "blocs": [
   {
@@ -36,7 +60,13 @@
    "texte": "Cécile, ……… ans",
    "sans_parentheses": true,
    "pente": -1.5,
-   "places": [{ "sous": "photo-1", "dx": 0.01, "dy": 0.04 }],
+   "places": [
+    {
+     "sous": "photo-1",
+     "dx": 0.01,
+     "dy": 0.015
+    }
+   ],
    "graine": 4031
   },
   {
@@ -48,7 +78,13 @@
    "texte": "Cécile, ……… ans",
    "sans_parentheses": true,
    "pente": -2.0,
-   "places": [{ "sous": "photo-2", "dx": 0.0, "dy": 0.04 }],
+   "places": [
+    {
+     "sous": "photo-2",
+     "dx": 0.0,
+     "dy": 0.015
+    }
+   ],
    "graine": 4032
   },
   {
@@ -60,7 +96,13 @@
    "texte": "Cécile, ……… ans",
    "sans_parentheses": true,
    "pente": -1.0,
-   "places": [{ "sous": "photo-3", "dx": 0.02, "dy": 0.04 }],
+   "places": [
+    {
+     "sous": "photo-3",
+     "dx": 0.02,
+     "dy": 0.015
+    }
+   ],
    "graine": 4033
   }
  ]

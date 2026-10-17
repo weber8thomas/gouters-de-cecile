@@ -1014,7 +1014,7 @@ class Mise:
                 xa, ya = part[0].base[0], part[0].base[1]
                 xb, yb = part[-1].base[2], part[-1].base[3]
                 if mq["genre"] == "souligne":
-                    ch = TR.souligne(xa, ya, xb, yb, r, xh, double=b.get("souligne_double", False))
+                    ch = TR.souligne(xa, ya, xb, yb, r, xh, double=b.get("souligne_double", False), dy=0.5)
                     enc = encre if not b.get("souligne_encre") else ECR.nuances(b["souligne_encre"])
                     self.tracer(ch, xh, enc, bloc.epaisseur * 0.95, graine + 50 + k, main)
                 else:  # rature

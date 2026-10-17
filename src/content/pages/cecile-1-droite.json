@@ -8,8 +8,24 @@
  "encre": "crayon",
  "_": "Album « Cécile en cuisine », 1re double page (droite) : deux photos (photo-4 grande, photo-5 plus petite, en diagonale), chacune avec sa légende au crayon.",
  "vivants": [
-  { "nom": "photo-4", "rect": [0.16, 0.1, 0.56, 0.34] },
-  { "nom": "photo-5", "rect": [0.44, 0.56, 0.34, 0.26] }
+  {
+   "nom": "photo-4",
+   "rect": [
+    0.14,
+    0.1,
+    0.56,
+    0.295
+   ]
+  },
+  {
+   "nom": "photo-5",
+   "rect": [
+    0.4,
+    0.55,
+    0.5,
+    0.263
+   ]
+  }
  ],
  "blocs": [
   {
@@ -21,7 +37,13 @@
    "texte": "Cécile, ……… ans",
    "sans_parentheses": true,
    "pente": -1.8,
-   "places": [{ "sous": "photo-4", "dx": 0.0, "dy": 0.04 }],
+   "places": [
+    {
+     "sous": "photo-4",
+     "dx": 0.0,
+     "dy": 0.015
+    }
+   ],
    "graine": 4041
   },
   {
@@ -33,7 +55,13 @@
    "texte": "Cécile, ……… ans",
    "sans_parentheses": true,
    "pente": -2.4,
-   "places": [{ "sous": "photo-5", "dx": 0.0, "dy": 0.04 }],
+   "places": [
+    {
+     "sous": "photo-5",
+     "dx": 0.0,
+     "dy": 0.015
+    }
+   ],
    "graine": 4042
   }
  ]
