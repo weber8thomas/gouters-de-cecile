@@ -63,7 +63,7 @@
    "relu": true
   }
  },
- "papier/f17": "8c0d8e82c1dd1ed99296914c0010d5b4441d0bbfbbfda45e02d9024474cd1ba8",
+ "papier/f17": "4172e15fc90000fbcde4ed4e9b6b4b32f2e060022d112bc0a365791b0e4f6b96",
  "page/fin-gauche": {
   "cle": "ee563e83c8e3c4f033894d7aaffdae3ec183b17f4f66b01e6fac1f411b47313a",
   "manifeste": {
@@ -242,7 +242,7 @@
    "relu": true
   }
  },
- "papier/f15": "aab05f8e8d469739c82431ef70ec5326cfe58f391c06a9fa583fdce2ccd1b496",
+ "papier/f15": "94020aa90e1490e0b157c253afa507c5ebad0eb1d0a3becd16524950261e9795",
  "page/mathis-gauche": {
   "cle": "7f84383deab0dd96934f16cafeeabce10860790fc01be866a862ed08aa46db1a",
   "manifeste": {
@@ -442,12 +442,12 @@
   }
  },
  "papier1x/f19": "c3d4984eef585509e50ba11255e344b90690e78c366e3f94bb64f1df818afe86",
- "papier1x/f17": "8c0d8e82c1dd1ed99296914c0010d5b4441d0bbfbbfda45e02d9024474cd1ba8",
+ "papier1x/f17": "4172e15fc90000fbcde4ed4e9b6b4b32f2e060022d112bc0a365791b0e4f6b96",
  "papier1x/f13": "6874b1b0894762f6d6269fab777a94c1476a7e165ae3cbfb379c2619394e81b4",
  "papier1x/f11": "ab5432c0294b0070dee522c9521acfbdb05265091ac543e2d68a9c10b3f4747c",
- "papier1x/f15": "aab05f8e8d469739c82431ef70ec5326cfe58f391c06a9fa583fdce2ccd1b496",
+ "papier1x/f15": "94020aa90e1490e0b157c253afa507c5ebad0eb1d0a3becd16524950261e9795",
  "pagination/lisa": {
-  "cle": "d93d9d490f24efc8ba8475cbf50158e4aed484c0f6fa887f07d286c6d0879290",
+  "cle": "fcef5e65c1f768ef3affbd0b7cbb84cc6662536f1bb7d1bcef03c0985e25c384",
   "pages": {
    "lisa-gauche": {
     "double": "lisa",
@@ -844,22 +844,22 @@
       "segments": [
        {
         "texte": "Enfourner 40 à 45 minutes selon votre four à 175° (th 5/6).",
-        "graine": 18,
+        "graine": 31694,
         "atome": "etape-6/phrase-1"
        },
        {
         "texte": "Perso sur mon four je vais même jusqu’à 1h,",
-        "graine": 69477588,
+        "graine": 69509264,
         "atome": "etape-6/phrase-2.1"
        },
        {
         "texte": "mais vérifie tous les quarts d’heure quand même.",
-        "graine": 18911334,
+        "graine": 18943010,
         "atome": "etape-6/phrase-2.2"
        },
        {
         "texte": "Piquer pour vérifier que le gâteau soit cuit.",
-        "graine": 8127725,
+        "graine": 8159401,
         "atome": "etape-6/phrase-3"
        }
       ],
@@ -903,19 +903,19 @@
       "lignes": [
        {
         "texte": "3 cuillères à soupe de sucre glace",
-        "graine": 89355445,
+        "graine": 89363364,
         "puce": "cupcake",
         "atome": "extra-1/ligne-1"
        },
        {
         "texte": "Jus de citron ou fleur d’oranger selon préférences",
-        "graine": 8734488,
+        "graine": 8742407,
         "puce": "cupcake",
         "atome": "extra-1/ligne-2"
        },
        {
         "texte": "Bonus : Colorant alimentaire",
-        "graine": 31960911,
+        "graine": 31968830,
         "puce": null,
         "atome": "extra-1/ligne-3"
        }
@@ -1388,7 +1388,7 @@
   }
  },
  "page/biscuits-droite": {
-  "cle": "8f45942811a74f2329c9e82ff4ada48021ccb423bd35687209c81f2a94005e79",
+  "cle": "6c1d49d8ed5388011125e80e5388e5a4593dfc3fef568d27c0b28631180db8bd",
   "manifeste": {
    "double": "biscuits",
    "cote": "droite",
@@ -1399,6 +1399,49 @@
    "encre": "pages/biscuits-droite",
    "papier1x": "pages/1x/papier/f17",
    "encre1x": "pages/1x/biscuits-droite",
+   "encre4x": {
+    "base": "pages/4x/biscuits-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
    "texte": "Biscuits\nMamie Rose, Mathis et Bernard",
    "vivants": {},
    "deborde": [],
@@ -1426,7 +1469,7 @@
   }
  },
  "page/biscuits-gauche": {
-  "cle": "2a6df58b99e261def855ae0bd6a862bc8dd98d0cd4b049c64f00ac5f95e14293",
+  "cle": "051f4b22d9955532a49d0865c551a4e5fa8ad45a5f0f6cacaaa3d7cba8257709",
   "manifeste": {
    "double": "biscuits",
    "cote": "gauche",
@@ -1437,6 +1480,49 @@
    "encre": "pages/biscuits-gauche",
    "papier1x": "pages/1x/papier/f15",
    "encre1x": "pages/1x/biscuits-gauche",
+   "encre4x": {
+    "base": "pages/4x/biscuits-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
    "texte": "",
    "vivants": {},
    "deborde": [],
@@ -1476,10 +1562,10 @@
    "relu": true
   }
  },
- "papier/f3": "9605de4234a9453ab3fe73b5a27a8fee74bd04714c9a73eaf7a0ddd544362557",
- "papier1x/f3": "9605de4234a9453ab3fe73b5a27a8fee74bd04714c9a73eaf7a0ddd544362557",
- "papier/f5": "ff7b37e59fb5fa107b5dbae6afbe4537341e4b5da431fa20d94fbb6eeb2c1cb4",
- "papier1x/f5": "ff7b37e59fb5fa107b5dbae6afbe4537341e4b5da431fa20d94fbb6eeb2c1cb4",
+ "papier/f3": "6c83e0812c09db06b0dad3a0ae6386d6b93a31fceb77a83a02211998e3ec0f03",
+ "papier1x/f3": "6c83e0812c09db06b0dad3a0ae6386d6b93a31fceb77a83a02211998e3ec0f03",
+ "papier/f5": "e6e7095eff7271270620a108f65b22dd932dcf0ba9dbc398e0770576f54d2fd9",
+ "papier1x/f5": "e6e7095eff7271270620a108f65b22dd932dcf0ba9dbc398e0770576f54d2fd9",
  "page/dedicace": {
   "cle": "956eb7b517591d2a1a5ba28b80c361de6e048525a694e2ba27c3802959253928",
   "manifeste": {
@@ -1767,7 +1853,7 @@
   }
  },
  "page/cecile-1-droite": {
-  "cle": "c1de7145c4ed79a93f6a233a72808313b624d768dfd7ae919c720aa6a6941223",
+  "cle": "16b9bfd663704f8fb5881db3848fd08e38f7da9eab5274b38a9479aefd0bcdec",
   "manifeste": {
    "double": "cecile-1",
    "cote": "droite",
@@ -1777,19 +1863,62 @@
    "encre": "pages/cecile-1-droite",
    "papier1x": "pages/1x/papier/f5",
    "encre1x": "pages/1x/cecile-1-droite",
+   "encre4x": {
+    "base": "pages/4x/cecile-1-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
    "texte": "Cécile, ……… ans\nCécile, ……… ans",
    "vivants": {
     "photo-4": [
-     0.16,
+     0.14,
      0.1,
      0.56,
-     0.34
+     0.295
     ],
     "photo-5": [
-     0.44,
-     0.56,
-     0.34,
-     0.26
+     0.4,
+     0.55,
+     0.5,
+     0.263
     ]
    },
    "deborde": [],
