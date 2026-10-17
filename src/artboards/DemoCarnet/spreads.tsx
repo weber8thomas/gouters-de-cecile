@@ -18,6 +18,8 @@ import { FeuilletVolant } from '../../components/FeuilletVolant';
 import type { SpreadSpec } from '../../lib/spread';
 import videosJson from '../../content/videos.json';
 import carnetJson from '../../content/carnet.json';
+import photosCecileJson from '../../content/photos-cecile.json';
+import { assetUrl } from '../../lib/assets';
 import type { Carnet, DoubleCarnet } from '../../content/types';
 
 const VIDEOS = videosJson as unknown as Record<string, Omit<VideoInfo, 'id'>>;
@@ -41,12 +43,31 @@ const videoDePage = (page: string): string | null => {
 
 interface VolantInfo { recto: string; verso?: string | null; angle?: number }
 
+/** Tirages de l'album « Cécile en cuisine » (src/content/photos-cecile.json), dans l'ordre des zones photo-1…photo-10. */
+const PHOTOS_CECILE = photosCecileJson as { id: string; age: string; tirage: string; coins: string; angle?: number }[];
+
+/** Un tirage collé sans vidéo (album « Cécile en cuisine ») : le tirage et ses coins, un peu de travers. */
+function TirageColle({ tirage, coins, angle = 0 }: { tirage: string; coins: string; angle?: number }) {
+  const img: React.CSSProperties = { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' };
+  return (
+    <div style={{ position: 'absolute', inset: '3%', transform: `rotate(${angle}deg)` }}>
+      <img src={assetUrl(tirage)} alt="" draggable={false} style={img} />
+      <img src={assetUrl(coins)} alt="" draggable={false} style={img} />
+    </div>
+  );
+}
+
 /** Une page cuite, avec sa photo collée et son feuillet volant s'il y en a. */
 function Page({ id, graine }: { id: string; graine: number }) {
   const info = PAGES_CUITES.pages[id] as (typeof PAGES_CUITES.pages)[string] & { volant?: VolantInfo };
   const slots: Record<string, React.ReactNode> = {};
   const video = videoInfo(videoDePage(id));
   if (video) slots.photo = <PhotoCollee video={video} graine={graine} />;
+  for (const nom of Object.keys(info?.vivants ?? {})) {
+    const n = /^photo-(\d+)$/.exec(nom);
+    const t = n ? PHOTOS_CECILE[Number(n[1]) - 1] : undefined;
+    if (t) slots[nom] = <TirageColle tirage={t.tirage} coins={t.coins} angle={t.angle} />;
+  }
   if (info?.vivants?.volant && info.volant) {
     slots.volant = <FeuilletVolant recto={info.volant.recto} verso={info.volant.verso ?? null} angle={info.volant.angle} graine={graine} />;
   }
