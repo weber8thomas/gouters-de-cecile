@@ -1,0 +1,18 @@
+{
+  "gateau": {
+    "sujet": "part de gâteau au chocolat et bougie, aquarelle (anniversaire)",
+    "source": "https://pixabay.com/illustrations/birthday-cake-chocolate-birthday-1320366/",
+    "auteur": "fineartdaily (Pixabay)",
+    "publiee": "2016-04-12",
+    "licence": "Pixabay Content License (usage libre, modification permise)",
+    "fichier": "gateau.png"
+  },
+  "tarte-pommes": {
+    "sujet": "tarte aux pommes en rosace, peinture à la main (style numérique, pas aquarelle pure) ; légende « Apple pie » du bas coupée",
+    "source": "https://pixabay.com/illustrations/apple-pie-dessert-pastry-6618095/",
+    "auteur": "auteur non indiqué sur la page (Pixabay)",
+    "publiee": "2021-09-15",
+    "licence": "Pixabay Content License (usage libre, modification permise)",
+    "fichier": "tarte-pommes.png"
+  }
+}
