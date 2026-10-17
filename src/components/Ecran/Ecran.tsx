@@ -3,6 +3,7 @@ import { ViewportOverride, useViewport } from '../../lib/viewport';
 import { LazyMotion, domMax, m, useMotionValue, useTransform } from '../../lib/motion';
 import { LOUPE_ZOOME, brancherLoupe, useLoupe } from '../../lib/loupe';
 import { BoutonLoupe } from '../Loupe/BoutonLoupe';
+import { BoutonHautParleur } from '../Haut-parleur/BoutonHautParleur';
 import { creerControleur, transformLoupe, type ControleurEcran } from '../Loupe/controleur';
 import { EcranContext, type EcranInfo } from './contexte';
 import './Ecran.css';
@@ -87,7 +88,7 @@ function BoutonPleinEcran() {
 
 // Coque plein écran du carnet : occupe toute la fenêtre (100dvh, zones sûres), donne au livre la
 // fenêtre d'affichage et son cadrage (contexte), et porte le calque des contrôles en px d'écran
-// (flèches, points de page, repère de distance : posés par le livre ; plein écran et loupe : ici).
+// (flèches, points de page, repère de distance : posés par le livre ; barre du haut, plein écran et loupe : ici).
 // Le livre est posé dans le calque de la LOUPE (.gc-ecran__loupe : translate3d + scale, plan v4) ; les
 // contrôles, la photo soulevée et le menu sont en portail hors de ce calque : ils ne zooment jamais.
 // Sous un ViewportOverride (cartes, tests), l'écran est une boîte de la taille imposée.
@@ -158,14 +159,17 @@ export function Ecran({ children, className, pleinEcran = true, loupe = true }: 
           </m.div>
         </LazyMotion>
         <div ref={setControles} className="gc-ecran__controles">
-          {loupe && (
-            <BoutonLoupe
-              z={z}
-              onBasculer={() => ctrlRef.current?.basculer()}
-              className={`gc-loupe-bouton--ecran${plein ? ' gc-loupe-bouton--decale' : ''}`}
-            />
-          )}
-          {plein && <BoutonPleinEcran />}
+          <div className="gc-ecran__barre">
+            <BoutonHautParleur />
+            {loupe && (
+              <BoutonLoupe
+                z={z}
+                onBasculer={() => ctrlRef.current?.basculer()}
+                className="gc-loupe-bouton--ecran"
+              />
+            )}
+            {plein && <BoutonPleinEcran />}
+          </div>
         </div>
       </div>
     </EcranContext.Provider>

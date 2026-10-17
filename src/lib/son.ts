@@ -14,7 +14,10 @@
 //   - banque chargée paresseusement (octets dès que le navigateur est libre, décodage après le
 //     déverrouillage), par assetUrl('sons/<fichier>') ;
 //   - jouerSon() ne lève jamais d'erreur : son inconnu, fichier introuvable (404), contexte bloqué,
-//     sons coupés → rien.
+//     sons coupés → rien ;
+//   - « muet » (bouton haut-parleur, reglages.muet) : rien de nouveau ne se joue, et le gain maître des
+//     sons (maitreSons) va à 0, y compris pour un son déjà commencé. L'ambiance coupe son propre gain
+//     maître (src/lib/ambiance.ts).
 import banqueJson from '../../design-system/baked/sons/banque.json';
 import { assetInfo, assetNames, assetUrl } from './assets';
 import { abonnerReglages, getReglages, useReglages, type Reglages } from './reglages';
@@ -110,6 +113,8 @@ const RETARD_MAX = 0.3;
 const PREMIER_DELAI_MS = 2500;
 
 let ctx: Ctx | null = null;
+/** Gain maître des sons du livre (vers la sortie) : 0 quand « muet ». */
+let maitreSons: GainNode | null = null;
 /** Autres besoins d'audio (l'ambiance, src/lib/ambiance.ts) : le contexte se déverrouille aussi pour eux. */
 const besoins = new Set<() => boolean>();
 const abonnesAudio = new Set<() => void>();
@@ -164,12 +169,32 @@ function contexte(): Ctx | null {
     try { ctx = new C(); } catch { return null; }
   }
   const c = ctx;
+  try {
+    maitreSons = c.createGain();
+    maitreSons.gain.value = getReglages().muet ? 0 : 1;
+    maitreSons.connect(c.destination);
+  } catch {
+    maitreSons = null; // pas de gain maître : les sons vont directement à la sortie
+  }
   c.onstatechange = () => {
     if (c.state === 'running') charger();
     prevenir(abonnesAudio);
   };
   prevenir(abonnesAudio);
   return c;
+}
+
+/**
+ * Coupe ou rétablit tous les sons du livre (réglage « muet ») : gain maître posé à 0 ou à 1, d'un coup.
+ * Pas de rampe ici : une rampe (ou une setTargetAtTime) sur ce gain ne prenait pas effet de façon fiable
+ * dans les essais (horloge audio par paliers, deux réglages dans la même tick) ; le gain ne porte donc
+ * aucune automatisation, et sa valeur suit le réglage à chaque fois.
+ */
+function appliquerMuet(): void {
+  if (!maitreSons) return;
+  try {
+    maitreSons.gain.value = getReglages().muet ? 0 : 1;
+  } catch { /* rien */ }
 }
 
 /** Tampon muet d'un échantillon : achève le déverrouillage sur iOS. */
@@ -271,7 +296,7 @@ function demarrer(c: Ctx, b: AudioBuffer, debit: number, gain: number, delai: nu
   const g = c.createGain();
   g.gain.value = gain;
   src.connect(g);
-  g.connect(c.destination);
+  g.connect(maitreSons ?? c.destination);
   voix++;
   src.onended = () => {
     voix = Math.max(0, voix - 1);
@@ -283,7 +308,7 @@ function demarrer(c: Ctx, b: AudioBuffer, debit: number, gain: number, delai: nu
 /** Le moteur par défaut : variante, débit et gain d'après la vitesse du geste, le volume et la vidéo. */
 function moteur(nom: NomSon, o?: OptionsSon): void {
   const variantes = BANQUE_SONS[nom];
-  if (!variantes?.length || !actifs()) return;
+  if (!variantes?.length || !actifs() || getReglages().muet) return;
   const c = ctx;
   if (!c || c.state !== 'running') {
     precharger();
@@ -329,6 +354,7 @@ function installer(): void {
       c.resume().catch(() => undefined); // sinon : au prochain geste
     }
   });
+  abonnerReglages(appliquerMuet);
   // « Sons du livre » ou « Ambiance » activés dans le menu : le clic du menu est encore un geste.
   abonnerReglages(() => {
     if (!audioUtile()) return;
@@ -399,11 +425,16 @@ export const decoderSon = (f: string): Promise<AudioBuffer | null> => (ctx ? dec
 export const prechargerSon = (f: string): void => { void telecharger(f); };
 
 /** État du moteur, pour les tests et le débogage. */
-export function etatSons(): { actifs: boolean; contexte: string; decodes: number; total: number; voix: number; video: boolean } {
+export function etatSons(): {
+  actifs: boolean; contexte: string; decodes: number; total: number; voix: number; video: boolean; muet: boolean; maitre: number | null;
+} {
   let decodes = 0;
   tampons.forEach((b) => { if (b) decodes++; });
   const total = NOMS_SONS.reduce((s, n) => s + (BANQUE_SONS[n]?.length ?? 0), 0);
-  return { actifs: actifs(), contexte: ctx ? ctx.state : 'aucun', decodes, total, voix, video: videoEnCours };
+  return {
+    actifs: actifs(), contexte: ctx ? ctx.state : 'aucun', decodes, total, voix, video: videoEnCours,
+    muet: getReglages().muet, maitre: maitreSons ? maitreSons.gain.value : null,
+  };
 }
 
 installer();

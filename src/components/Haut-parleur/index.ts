@@ -1,0 +1,1 @@
+export { BoutonHautParleur } from './BoutonHautParleur';

@@ -240,7 +240,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     if (url && el.getAttribute('src') !== url) el.setAttribute('src', url);
     const r = getReglages();
     try {
-      el.muted = !r.son;
+      el.muted = !r.son || !!r.muet; // bouton haut-parleur : coupe aussi la vidéo
       el.volume = clamp01(r.volume);
     } catch { /* volume en lecture seule (iOS) */ }
     sansSon.current = false;
@@ -625,7 +625,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     e.stopPropagation();
     if (!appuiValide(e)) return;
     const v = videoRef.current;
-    if (v && sansSon.current && getReglages().son) {
+    if (v && sansSon.current && getReglages().son && !getReglages().muet) {
       v.muted = false; // lecture partie sans le son : ce toucher le rend
       sansSon.current = false;
       return;

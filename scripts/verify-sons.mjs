@@ -10,8 +10,9 @@
 //             geste vif → débit plus élevé qu'un geste lent (bornes 0,9 + 0,25 v, ± 3 %) ; variantes
 //             jamais deux fois de suite ; gain = volume × (0,35 + 0,65 v) × gain × mixage ; × 0,3 pendant
 //             une vidéo ; sons coupés → rien ; un 404 est sans effet (pas d'erreur, un seul essai) ;
-//   iphone    iPhone 13 émulé : coupés par défaut (aucun contexte, aucun MP3 chargé) ; « Sons du livre »
-//             forcés : ils jouent ;
+//   iphone    iPhone 13 émulé, réglages par défaut (sons actifs, téléphone compris) : rien avant le premier
+//             toucher, puis la banque se charge et les sons jouent ; « Sons du livre » coupés → rien ;
+//             « muet » → rien, gain maître à 0 ;
 //   soulever  carte Soulever (bundle) : photo-lever à l'envol, photo-poser à l'atterrissage, feuillet
 //             soulevé, retourné, reposé ;
 //   livre     carnet (harness/devices.html) : glisser lent / vif → débit des sons « page » (lot A ;
@@ -19,10 +20,11 @@
 //             lead, après intégration (--suites livre) ;
 //   ambiance  le feu et la cuisine (src/lib/ambiance.ts, branchée comme dans le SoulevementProvider) :
 //             rien avant le premier geste, fondu d'entrée de 3 s après ; sourdine × 0,15 pendant une
-//             vidéo ; volume ; un bruit de cuisine prévu dans 20 à 60 s, au gain de la banque, un peu à
-//             gauche ou à droite ; pause quand l'onglet est caché ; coupée par le réglage ; la lumière du
-//             feu reçoit ses crépitements (window.__gcFeuSync, « gc-feu-sync ») ; iPhone : coupée en
-//             automatique, jouée si on la force ;
+//             vidéo ; volume ; « muet » : gain maître à 0, le feu continue en silence ; un bruit de cuisine
+//             prévu dans 8 à 25 s, au gain de la banque × 2, un peu à gauche ou à droite ; pause quand
+//             l'onglet est caché ; coupée par le réglage ; la lumière du feu reçoit ses crépitements
+//             (window.__gcFeuSync, « gc-feu-sync ») ; iPhone (réglage par défaut) : jouée après le premier
+//             toucher ; coupée par le réglage : rien ;
 //   licences  chaque MP3 de la banque : source CC0 vérifiée (ou « synthese »), sha256, ≤ 30 Ko (sons du
 //             livre) ou ≈ 96 kb/s (ambiance), et chaque son de banque.json a ses fichiers.
 // Rapport : verification/out/v4-s/sons/sons.json + .md.
@@ -123,13 +125,13 @@ async function construireBanc() {
   await build({
     stdin: {
       contents: `import { jouerSon, etatSons, marquerVideo, sonsLivreEffectif } from './src/lib/son';
-import { brancherAmbiance, etatAmbiance, jouerCuisine, ambianceEffective } from './src/lib/ambiance';
+import { brancherAmbiance, etatAmbiance, jouerCuisine, ambianceEffective, GAIN_CUISINE, CUISINE_MIN_S, CUISINE_MAX_S } from './src/lib/ambiance';
 import { setReglages, getReglages } from './src/lib/reglages';
 // Comme le SoulevementProvider (useAmbiance) : l'ambiance est branchée dès le chargement.
 brancherAmbiance();
 window.__banc = { jouer: jouerSon, etat: etatSons, video: marquerVideo, reglages: setReglages, lire: getReglages,
   effectif: () => sonsLivreEffectif(getReglages()), ambiance: etatAmbiance, cuisine: jouerCuisine,
-  ambianceEffective: () => ambianceEffective(getReglages()), pret: true };`,
+  ambianceEffective: () => ambianceEffective(getReglages()), gainCuisine: GAIN_CUISINE, cuisineBornes: [CUISINE_MIN_S, CUISINE_MAX_S], pret: true };`,
       resolveDir: ROOT, loader: 'ts', sourcefile: 'banc-sons.ts',
     },
     bundle: true, format: 'iife', platform: 'browser', target: 'es2020', outfile: join(BANC_DIR, 'banc-sons.js'),
@@ -239,6 +241,19 @@ async function suiteBanc() {
     const coupes = await jouerN('page', { vitesse: 1 }, 3);
     R.ok(nom, '« Sons du livre » coupés → aucun son', !coupes.length, `${coupes.length} start()`);
     await page.evaluate(() => window.__banc.reglages({ sonsLivre: null }));
+    // « Couper tous les sons » (muet) : rien de nouveau ne joue, le gain maître des sons tombe à 0 ; rétabli ensuite
+    // Attente de la cible (horloge audio : elle peut prendre du retard sur le temps réel quand la machine est chargée).
+    await page.evaluate(() => window.__banc.reglages({ muet: true }));
+    const coupe = await page.waitForFunction(() => window.__banc.etat().maitre < 0.01, null, { timeout: 8000 }).then(() => true, () => false);
+    const maitreMuet = await page.evaluate(() => window.__banc.etat().maitre);
+    const pendantMuet = await jouerN('page', { vitesse: 1 }, 3);
+    await page.evaluate(() => window.__banc.reglages({ muet: false }));
+    const rendu = await page.waitForFunction(() => window.__banc.etat().maitre > 0.99, null, { timeout: 8000 }).then(() => true, () => false);
+    const maitreRetour = await page.evaluate(() => window.__banc.etat().maitre);
+    const apresMuet = await jouerN('page', { vitesse: 1 }, 2);
+    R.ok(nom, 'muet : aucun son du livre, gain maître à 0 ; rétabli ensuite (gain 1, les sons reviennent)',
+      coupe && maitreMuet < 0.01 && !pendantMuet.length && rendu && Math.abs(maitreRetour - 1) < 0.01 && apresMuet.length === 2,
+      `gain maître ${maitreMuet?.toFixed(3)} · ${pendantMuet.length} son(s) pendant le muet · après : gain ${maitreRetour?.toFixed(3)}, ${apresMuet.length} son(s)`);
     const inconnu = await page.evaluate(() => { try { window.__banc.jouer('inconnu'); window.__banc.jouer('page', { vitesse: NaN, gain: -2, delai: Infinity }); return 'aucune exception'; } catch (x) { return `exception ${x}`; } });
     R.ok(nom, 'jouerSon ne lève jamais d\'erreur (son inconnu, options absurdes)', inconnu === 'aucune exception', inconnu);
     R.ok(nom, 'banc : aucune erreur de page', !erreurs.length, erreurs.slice(0, 3).join(' | '));
@@ -313,7 +328,22 @@ async function suiteAmbiance() {
     const vol = await page.evaluate(() => window.__banc.ambiance().niveau);
     await page.evaluate(() => window.__banc.reglages({ volume: 1 }));
     R.ok(nom, 'ambiance : suit le volume des réglages', Math.abs(vol - 0.5) < 0.02, `volume 0,5 → niveau ${vol?.toFixed(3)}`);
-    // Cuisine : prévue dans 20 à 60 s ; jouée au gain de la banque, un peu à gauche ou à droite
+    // « Couper tous les sons » : le gain maître de l'ambiance tombe à 0 (le feu tourne en silence), aucun
+    // bruit de cuisine ; rétabli ensuite
+    await page.evaluate(() => window.__banc.reglages({ muet: true }));
+    await page.waitForFunction(() => window.__banc.ambiance().niveau < 0.01, null, { timeout: 8000 }).catch(() => undefined);
+    const muetAmb = await page.evaluate(() => ({ niveau: window.__banc.ambiance().niveau, marche: window.__banc.ambiance().enMarche }));
+    const n0m = await nbStarts(page);
+    await page.evaluate(() => { window.__banc.cuisine('cuisine-tasse'); window.__banc.cuisine('cuisine-the'); });
+    await attendre(500);
+    const cuisineMuet = (await joues(page, n0m)).filter((x) => /^cuisine-/.test(x.f || ''));
+    await page.evaluate(() => window.__banc.reglages({ muet: false }));
+    await page.waitForFunction(() => window.__banc.ambiance().niveau > 0.98, null, { timeout: 8000 }).catch(() => undefined);
+    const retourAmb = await page.evaluate(() => window.__banc.ambiance().niveau);
+    R.ok(nom, 'muet : ambiance à 0 (le feu tourne en silence), aucun bruit de cuisine ; rétabli ensuite',
+      muetAmb.niveau < 0.01 && muetAmb.marche && !cuisineMuet.length && Math.abs(retourAmb - 1) < 0.02,
+      `niveau pendant le muet ${muetAmb.niveau?.toFixed(3)} (en marche ${muetAmb.marche}) · ${cuisineMuet.length} bruit(s) de cuisine · après : ${retourAmb?.toFixed(3)}`);
+    // Cuisine : prévue dans 8 à 25 s ; jouée au gain de la banque × 2, un peu à gauche ou à droite
     const prevue = await page.evaluate(() => window.__banc.ambiance().prochaineCuisineS);
     const n0 = await nbStarts(page);
     await page.evaluate(() => window.__banc.cuisine('cuisine-tasse'));
@@ -321,9 +351,12 @@ async function suiteAmbiance() {
     const tasse = (await joues(page, n0)).filter((x) => /^cuisine-tasse/.test(x.f || ''));
     const j = await page.evaluate(() => window.__banc.ambiance().cuisine.at(-1));
     const gTasse = Object.fromEntries((AMB?.cuisine['cuisine-tasse'] ?? []).map((v) => [`${v.f}.mp3`, v.g]));
-    R.ok(nom, 'ambiance : un bruit de cuisine prévu dans 20 à 60 s', prevue != null && prevue > 0 && prevue <= 60, `prochain dans ${prevue?.toFixed(1)} s`);
-    R.ok(nom, 'ambiance : bruit de cuisine très bas, un peu à gauche ou à droite (StereoPanner)', tasse.length === 1 && Math.abs(tasse[0].gain - gTasse[tasse[0].f]) < 1e-3 && j && Math.abs(j.pan) >= 0.25 && Math.abs(j.pan) <= 0.7,
-      tasse.length ? `${tasse[0].f} gain ${tasse[0].gain?.toFixed(3)} (banque ${gTasse[tasse[0].f]}) · panoramique ${j?.pan?.toFixed(2)}` : 'aucun son');
+    const gCuisine = await page.evaluate(() => window.__banc.gainCuisine);
+    const [sMin, sMax] = await page.evaluate(() => window.__banc.cuisineBornes);
+    R.ok(nom, `ambiance : un bruit de cuisine prévu dans ${sMin} à ${sMax} s`, sMin === 8 && sMax === 25 && prevue != null && prevue > 0 && prevue <= sMax, `prochain dans ${prevue?.toFixed(1)} s`);
+    R.ok(nom, `ambiance : bruit de cuisine relevé (banque × ${gCuisine}), un peu à gauche ou à droite (StereoPanner)`,
+      gCuisine === 2 && tasse.length === 1 && Math.abs(tasse[0].gain - gTasse[tasse[0].f] * gCuisine) < 1e-3 && j && Math.abs(j.pan) >= 0.25 && Math.abs(j.pan) <= 0.7,
+      tasse.length ? `${tasse[0].f} gain ${tasse[0].gain?.toFixed(3)} (banque ${gTasse[tasse[0].f]} × ${gCuisine}) · panoramique ${j?.pan?.toFixed(2)}` : 'aucun son');
     // Onglet caché : le contexte est suspendu, puis repris
     const cache = await page.evaluate(async () => {
       const etat = () => window.__banc.etat().contexte;
@@ -346,27 +379,34 @@ async function suiteAmbiance() {
   } finally {
     await ctx.close();
   }
-  // iPhone : coupée en automatique, jouée si on la force
+  // iPhone, réglages par défaut (ambiance active, téléphone compris) : rien avant le premier toucher ; puis
+  // le feu se met en marche, en fondu sur 3 s. Ambiance coupée par le réglage : rien.
   const ip = ecran('iphone13-portrait');
   const a = await ouvrir(ip, 'verification/out/v4-s/banc/index.html');
   try {
     await a.page.waitForFunction(() => window.__banc?.pret === true);
+    const avant = await a.page.evaluate(() => ({ eff: window.__banc.ambianceEffective(), ...window.__banc.ambiance() }));
+    const E0 = await espion(a.page);
+    R.ok(ip.nom, 'iPhone (réglage par défaut) : ambiance voulue, rien en marche avant le premier toucher', avant.eff && !avant.enMarche && !E0.contextes.length, `effective ${avant.eff} · en marche ${avant.enMarche} · ${E0.contextes.length} contexte(s)`);
     await geste(a.page, ip);
-    await attendre(1500);
-    const st = await a.page.evaluate(() => ({ eff: window.__banc.ambianceEffective(), ...window.__banc.ambiance() }));
+    const marche = await a.page.waitForFunction(() => window.__banc.ambiance().enMarche, null, { timeout: 15000 }).then(() => true, () => false);
+    await attendre(3800); // fondu d'entrée de 3 s
+    const apres = await a.page.evaluate(() => window.__banc.ambiance().niveau);
     const E = await espion(a.page);
-    R.ok(ip.nom, 'iPhone (automatique) : ambiance coupée, rien de chargé ni de joué', !st.eff && !st.enMarche && !E.fetchs.length && !E.contextes.length, `effective ${st.eff} · ${E.fetchs.length} MP3 · ${E.contextes.length} contexte(s)`);
+    const feu = E.starts.filter((s) => s.f === 'ambiance-feu.mp3' && s.duree > 0.01);
+    R.ok(ip.nom, 'iPhone (réglage par défaut) : l\'ambiance joue après le premier toucher (feu en fondu sur 3 s)', marche && feu.length >= 1 && Math.abs(apres - 1) < 0.02,
+      `${E.contextes.map((c) => c.etats.join('→')).join(', ')} · niveau 3,8 s après le geste ${apres?.toFixed(3)} · ${feu.length} passage(s) du feu`);
   } finally {
     await a.ctx.close();
   }
-  const b = await ouvrir(ip, 'verification/out/v4-s/banc/index.html', { init: [initReglages({ son: true, volume: 1, lectureAuto: false, vitesse: 'normale', mouvementReduit: false, sonsLivre: null, ambiance: true, feu: true })] });
+  const b = await ouvrir(ip, 'verification/out/v4-s/banc/index.html', { init: [initReglages({ ambiance: false })] });
   try {
     await b.page.waitForFunction(() => window.__banc?.pret === true);
     await geste(b.page, ip);
-    const ok = await b.page.waitForFunction(() => window.__banc.ambiance().enMarche, null, { timeout: 15000 }).then(() => true, () => false);
+    await attendre(1500);
+    const st = await b.page.evaluate(() => window.__banc.ambiance());
     const E = await espion(b.page);
-    R.ok(ip.nom, 'iPhone, ambiance forcée : le feu démarre au toucher (sons du livre toujours coupés)', ok && E.starts.some((s) => s.f === 'ambiance-feu.mp3') && !E.fetchs.some((x) => /^page-/.test(x.f)),
-      `${E.contextes.map((c) => c.etats.join('→')).join(', ')} · MP3 : ${[...new Set(E.fetchs.map((x) => x.f))].join(', ')}`);
+    R.ok(ip.nom, 'iPhone, ambiance coupée par le réglage : ni feu ni bruit de cuisine', !st.enMarche && !E.starts.some((s) => s.f === 'ambiance-feu.mp3'), `en marche ${st.enMarche} · ${E.starts.length} start()`);
   } finally {
     await b.ctx.close();
   }
@@ -378,29 +418,54 @@ async function suiteIphone() {
   try {
     await page.waitForFunction(() => window.__banc?.pret === true);
     const eff = await page.evaluate(() => window.__banc.effectif());
-    await geste(page, e);
+    // Réglage par défaut (sons actifs, téléphone compris) : avant le toucher, rien ; après, les sons jouent.
+    await page.evaluate(() => window.__banc.jouer('page', { vitesse: 1 }));
     await page.waitForTimeout(300);
+    const avant = await espion(page);
+    await geste(page, e);
+    const dec = await attendreDecodes(page, TOTAL, 15000);
+    await page.waitForTimeout(500);
+    const n0 = await nbStarts(page);
     for (const s of ['page', 'photo-lever', 'couverture-ouvrir']) await page.evaluate((s) => window.__banc.jouer(s, { vitesse: 1 }), s);
     await page.waitForTimeout(1500);
     const E = await espion(page);
-    R.ok(e.nom, 'iPhone (réglage automatique) : sons coupés, aucun contexte, aucun MP3 chargé', eff === false && !E.contextes.length && !E.fetchs.length && !E.starts.length,
-      `effectif ${eff} · ${E.contextes.length} contexte(s) · ${E.fetchs.length} MP3 · ${E.starts.length} start()`);
+    const jeux = (await joues(page, n0)).filter((x) => /^(page|photo-lever|couverture-ouvrir)/.test(x.f || ''));
+    R.ok(e.nom, 'iPhone (réglage par défaut) : sons du livre actifs, rien avant le premier toucher, puis ils jouent', eff === true && !avant.contextes.length && !avant.starts.length && jeux.length === 3,
+      `effectif ${eff} · avant le toucher : ${avant.contextes.length} contexte(s), ${avant.starts.length} son(s) · après : ${E.contextes.map((c) => c.etats.join('→')).join(', ')} · ${jeux.map((x) => x.f).join(', ')} · banque ${dec ? 'décodée' : 'pas entièrement décodée'}`);
     R.ok(e.nom, 'iPhone : aucune erreur de page', !erreurs.length, erreurs.slice(0, 3).join(' | '));
   } finally {
     await ctx.close();
   }
-  const f = await ouvrir(e, 'verification/out/v4-s/banc/index.html', { init: [initReglages({ son: true, volume: 1, lectureAuto: false, vitesse: 'normale', mouvementReduit: false, sonsLivre: true })] });
+  // « Sons du livre » et ambiance coupés par le réglage : aucun contexte, aucun MP3, aucun son.
+  const f = await ouvrir(e, 'verification/out/v4-s/banc/index.html', { init: [initReglages({ sonsLivre: false, ambiance: false })] });
   try {
     await f.page.waitForFunction(() => window.__banc?.pret === true);
     await geste(f.page, e);
-    const ok = await attendreDecodes(f.page, TOTAL, 15000);
-    const n0 = await nbStarts(f.page);
-    await f.page.evaluate(() => window.__banc.jouer('page', { vitesse: 0.6 }));
-    await f.page.waitForTimeout(400);
-    const s = await joues(f.page, n0);
-    R.ok(e.nom, 'iPhone, « Sons du livre » activés : déverrouillés au toucher, ils jouent', ok && s.length === 1, `${(await espion(f.page)).contextes.map((c) => c.etats.join('→')).join(', ')} · ${s.map((x) => x.f).join(', ')}`);
+    await f.page.evaluate(() => window.__banc.jouer('page', { vitesse: 1 }));
+    await f.page.waitForTimeout(1000);
+    const E = await espion(f.page);
+    R.ok(e.nom, 'iPhone, « Sons du livre » et ambiance coupés : aucun contexte, aucun MP3, aucun son', !E.contextes.length && !E.fetchs.length && !E.starts.length,
+      `${E.contextes.length} contexte(s) · ${E.fetchs.length} MP3 · ${E.starts.length} start()`);
   } finally {
     await f.ctx.close();
+  }
+  // « Couper tous les sons » (muet) : rien ne joue, le gain maître des sons est à 0 (l'ambiance aussi).
+  const h = await ouvrir(e, 'verification/out/v4-s/banc/index.html', { init: [initReglages({ muet: true })] });
+  try {
+    await h.page.waitForFunction(() => window.__banc?.pret === true);
+    await geste(h.page, e);
+    await attendreDecodes(h.page, TOTAL, 15000);
+    await h.page.waitForFunction(() => window.__banc.ambiance().enMarche, null, { timeout: 15000 }).catch(() => undefined);
+    const n0 = await nbStarts(h.page);
+    for (const s of ['page', 'photo-lever']) await h.page.evaluate((s) => window.__banc.jouer(s, { vitesse: 1 }), s);
+    await h.page.waitForTimeout(1200);
+    const maitre = await h.page.evaluate(() => window.__banc.etat().maitre);
+    const jeux = (await joues(h.page, n0)).filter((x) => /^(page|photo-lever)/.test(x.f || ''));
+    const niveau = await h.page.evaluate(() => window.__banc.ambiance().niveau);
+    R.ok(e.nom, 'iPhone, « Couper tous les sons » : aucun son, gain maître à 0 (sons du livre et ambiance)', maitre === 0 && !jeux.length && niveau === 0,
+      `gain maître ${maitre} · ${jeux.length} son(s) du livre · niveau de l'ambiance ${niveau}`);
+  } finally {
+    await h.ctx.close();
   }
 }
 

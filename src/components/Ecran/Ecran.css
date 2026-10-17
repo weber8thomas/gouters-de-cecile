@@ -71,11 +71,28 @@
   pointer-events: none;
 }
 
-/* ---- Plein écran : coins tracés à la main, en haut à droite --------------------------------- */
-.gc-ecran__plein {
+/* ---- Barre du haut, à droite : haut-parleur, loupe, plein écran (une rangée, dans les zones sûres) ---- */
+.gc-ecran__barre {
   position: absolute;
   top: calc(var(--gc-ecran-haut) + var(--gc-ecran-bord-bas));
   right: calc(var(--gc-ecran-droite) + var(--gc-ecran-bord-bas));
+  display: flex;
+  align-items: center;
+  gap: var(--gc-ecran-bord-bas);
+  pointer-events: none;
+}
+
+/* Dans la barre, la loupe et le plein écran sont en flux (la barre les aligne) : la position absolue
+   que leur donne Loupe.css est annulée ici. */
+.gc-ecran__barre > .gc-loupe-bouton--ecran,
+.gc-ecran__barre > .gc-ecran__plein {
+  position: relative;
+  top: auto;
+  right: auto;
+}
+
+/* ---- Plein écran : coins tracés à la main, à droite de la barre ------------------------------ */
+.gc-ecran__plein {
   display: grid;
   place-items: center;
   width: var(--gc-ecran-cible);

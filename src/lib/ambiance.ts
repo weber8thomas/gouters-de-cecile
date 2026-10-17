@@ -9,8 +9,11 @@
 //     l'onglet est caché (le contexte est suspendu) ;
 //   - le feu : une boucle de `boucle` s jouée en fondu croisé à puissance constante (`fondu` s : la fin
 //     d'un passage se mêle au début du suivant), deux sources à la fois au plus ;
-//   - la cuisine : un bruit au hasard toutes les 20 à 60 s, jamais le même deux fois de suite, très bas,
-//     un peu à gauche ou à droite (StereoPanner), jamais pendant une vidéo ;
+//   - la cuisine : un bruit au hasard toutes les 8 à 25 s, jamais le même deux fois de suite, un peu à
+//     gauche ou à droite (StereoPanner), jamais pendant une vidéo ; relevé de GAIN_CUISINE (× 2, + 6 dB)
+//     pour passer par-dessus le feu, sans être au premier plan ;
+//   - « muet » (bouton haut-parleur, reglages.muet) : le gain maître de l'ambiance va à 0 ; le feu continue
+//     en silence (la lumière suit toujours ses crépitements) ;
 //   - la lumière du feu (lot L, src/lib/feu.ts) suit les crépitements : voir publierFeu().
 // Branché par useAmbiance() (monté dans le SoulevementProvider : le carnet, la carte Soulever).
 // Banque : design-system/baked/sons/banque.json, clé « ambiance » (scripts/bake-sons.mjs).
@@ -46,8 +49,10 @@ export function ambianceEffective(r: Pick<Reglages, 'ambiance'>): boolean {
 
 export const FONDU_ENTREE = 3;
 export const SOURDINE_VIDEO = 0.15;
-export const CUISINE_MIN_S = 20;
-export const CUISINE_MAX_S = 60;
+export const CUISINE_MIN_S = 8;
+export const CUISINE_MAX_S = 25;
+/** Relevé des bruits de cuisine (multiplie le gain de la banque) : le feu est à −36 dB RMS en sortie. */
+export const GAIN_CUISINE = 2;
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 
@@ -73,14 +78,18 @@ function voulue(): boolean {
 }
 
 function niveau(): number {
-  return clamp01(getReglages().volume) * (videoEnLecture() ? SOURDINE_VIDEO : 1);
+  const r = getReglages();
+  if (r.muet) return 0;
+  return clamp01(r.volume) * (videoEnLecture() ? SOURDINE_VIDEO : 1);
 }
 
-/** Va vers le niveau voulu en `duree` s. */
+let derniereRegle = 0;
+/** Va vers le niveau voulu en `duree` s. Chaque réglage a son instant, strictement après le précédent. */
 function regler(duree: number): void {
   const c = contexteAudio();
   if (!c || !maitre) return;
-  const t = c.currentTime;
+  const t = Math.max(c.currentTime, derniereRegle + 0.005);
+  derniereRegle = t;
   const g = maitre.gain;
   g.cancelScheduledValues(t);
   g.setValueAtTime(g.value, t);
@@ -186,7 +195,7 @@ function planifierCuisine(): void {
 export function jouerCuisine(nom?: NomCuisine): void {
   try {
     const c = contexteAudio();
-    if (!c || c.state !== 'running' || !enMarche || !busCuisine || !AMBIANCE) return;
+    if (!c || c.state !== 'running' || !enMarche || !busCuisine || !AMBIANCE || getReglages().muet) return;
     const noms = Object.keys(AMBIANCE.cuisine).filter((n) => AMBIANCE.cuisine[n]?.length);
     const choix = nom && noms.includes(nom) ? nom : noms.filter((n) => n !== derniereCuisine)[Math.floor(Math.random() * Math.max(1, noms.length - 1))];
     if (!choix) return;
@@ -201,7 +210,7 @@ export function jouerCuisine(nom?: NomCuisine): void {
       src.buffer = b;
       src.playbackRate.value = 1 + (Math.random() * 2 - 1) * 0.03;
       const g = c.createGain();
-      g.gain.value = v.g;
+      g.gain.value = v.g * GAIN_CUISINE;
       src.connect(g);
       let fin: AudioNode = g;
       if (typeof c.createStereoPanner === 'function') {
