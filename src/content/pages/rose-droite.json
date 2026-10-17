@@ -52,14 +52,14 @@
    "angle": 5
   },
   {
-   "nom": "aq-ble",
+   "nom": "aq-sables",
    "rect": [
     0.2,
     0.48,
     0.13,
     0.171
    ],
-   "aquarelle": "ble",
+   "aquarelle": "sables-etoiles",
    "anime": "balance",
    "angle": -4
   }

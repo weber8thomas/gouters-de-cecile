@@ -15,6 +15,8 @@ export const EFFETS: Record<string, Effets> = {
   ble: { vent: 1 },
   vanille: { vent: 0.3 },
   cannelle: { vent: 0.25 },
+  // des miettes tombent du bord du cookie de devant
+  cookies: { miettes: [0.467, 0.878, 0.3] },
   // un reflet glisse sur les fruits
   citron: { reflet: 1 },
   'citron-2': { reflet: 1 },
