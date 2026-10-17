@@ -40,7 +40,8 @@ export interface Trainee {
 
 export function traineeDoree(): Trainee {
   const cv = document.createElement('canvas');
-  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  // des lueurs floues : la définition de l'écran n'apporte rien, et le canvas plein écran coûte 4× moins à 1
+  const dpr = 1;
   const W = window.innerWidth;
   const H = window.innerHeight;
   cv.width = Math.round(W * dpr);

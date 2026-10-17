@@ -19,7 +19,7 @@ Variantes (planche du GATE) :
       (main `cecile`), un petit cupcake au même feutre.
 
 Produit, pour chaque variante v (2× = netteté ; 1× = écrans de densité 1), dans design-system/baked/couverture/v/ :
-  plat         plat avant (868 × 982 px de référence = page 850 × 960 + débords du carton 18 / 6 / 16), RGBA
+  plat         plat avant (878 × 998 px de référence = page 850 × 960 + débords du carton 28 / 12 / 26), RGBA
   arriere      plat arrière (vu de l'extérieur : dos à droite), RGBA
   contreplat   intérieur du plat, livre ouvert (bord extérieur à gauche, mors à droite) : rempli de toile
                et garde collée (garde-uni / garde-marbre de papiers.json si Pa les fournit, sinon sources)
@@ -77,7 +77,7 @@ VERIF = RACINE / "verification/out/v4-c"
 # ---- géométrie (px de la page de référence, comme les pages cuites) -------------------------
 ECH = 2
 PAGE_W, PAGE_H = 850, 1200
-OUT, HAUT, BAS, EP = 18, 6, 16, 10  # débords du carton (Livre.css --gc-livre-carton-*), épaisseur du carton
+OUT, HAUT, BAS, EP = 28, 12, 26, 10  # débords du carton (Livre.css --gc-livre-carton-*), épaisseur du carton
 PLAT_W, PLAT_H = PAGE_W + OUT, PAGE_H + HAUT + BAS  # 868 × 982
 BLOC = 40  # épaisseur du bloc de pages (≈ 80 feuillets d'un papier épais : 8 mm pour un plat de 17 cm)
 DOS_W = int(round(1.18 * (BLOC + 2 * EP)))  # dos arrondi : un peu plus large que l'épaisseur
