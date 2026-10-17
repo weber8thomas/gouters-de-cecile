@@ -26,7 +26,8 @@
    "texte": "Joyeux anniv Cécile !!",
    "signature": "Mathis",
    "largeur": 0.74,
-   "_": "Mot d'exemple : Mathis est un invité fictif de démonstration (aucun vrai message)."
+   "_": "Mot d'exemple : Mathis est un invité fictif de démonstration (aucun vrai message).",
+   "graine": 35981
   },
   {
    "id": "titre",
@@ -51,7 +52,8 @@
     "150 g de pépites de choco"
    ],
    "fin": ".",
-   "alinea": 0.0
+   "alinea": 0.0,
+   "graine": 67671
   },
   {
    "id": "preparation",

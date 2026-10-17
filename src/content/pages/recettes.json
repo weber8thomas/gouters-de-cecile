@@ -73,9 +73,9 @@
    },
    "serrage_max": 1,
    "graines": {
-    "ingredients-1/ligne-1": 1,
-    "ingredients-1/ligne-2": 2,
-    "ingredients-1/ligne-4": 3,
+    "ingredients-1/ligne-1": 23758,
+    "ingredients-1/ligne-2": 23759,
+    "ingredients-1/ligne-4": 23760,
     "ingredients-1/ligne-9": 8,
     "ingredients-1/ligne-10": 1,
     "etape-1/phrase-1": 2,
@@ -85,7 +85,9 @@
     "etape-3/titre": 2,
     "etape-4/titre": 2,
     "etape-5/titre": 2,
-    "etape-6/titre": 2
+    "etape-6/titre": 2,
+    "ingredients-1/ligne-3": 26166588,
+    "ingredients-1/ligne-5": 53752529
    }
   }
  }
