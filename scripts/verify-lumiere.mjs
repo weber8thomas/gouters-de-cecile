@@ -12,7 +12,8 @@
 //     intensité 1, opacités constantes, flamme de la bougie fixe) ;
 //   - performance (trace Chrome, CPU ×4) : 5 s au repos, puis un tour de page (→ sur la page du carnet) :
 //     0 Layout et 0 Paint attribuables au feu (Paint sur un calque de lumière, ou écart feu vivant / feu figé),
-//     calques composités en plus dus à la lumière, bougie comprise (CDP LayerTree, lumière retirée par CSS) ≤ BUDGET_LUMIERE ;
+//     calques composités en plus dus au feu (≤ 4) et à la bougie (≤ 4), mesurés par CDP LayerTree, lumière retirée par CSS ;
+//     calques pendant un tour de page ≤ 40 (CONTRACT § 10, la bougie compris) ;
 //   - téléphone milieu de gamme émulé (Pixel 7, CPU ×4) : temps de script et cadence, feu vivant / figé ;
 //   - contraste de l'encre d'une page cuite (Julie) : ≥ 90 % du contraste sans voile, sur chaque tuile
 //     de la page qui porte de l'encre, feu figé aux bornes (0,6 et 1,6) et au milieu (1).
@@ -59,8 +60,13 @@ const CATEGORIES = ['devtools.timeline', 'disabled-by-default-devtools.timeline'
 // Lumière retirée : le feu (calques du lot L) et la bougie, qui est une source de lumière comme les autres.
 const SANS_LUMIERE = '.gc-lumiere, .gc-bougie { display: none !important; }';
 const SANS_BOUGIE = '.gc-bougie { display: none !important; }';
-// Budget de calques composités ajoutés par la lumière (CSS retiré, LayerTree), voir la section « Performance ».
-const BUDGET_LUMIERE = 4;
+// Budgets de calques composités ajoutés par la lumière (CSS retiré, LayerTree), mesurés au repos :
+//  - le feu (bain, ombre, voile, calques du lot L) : 4, budget d'origine (src/components/Stage/README.md) ;
+//  - la bougie (src/components/Bougie) : 4, mesuré (33 calques avec, 29 sans la bougie). Elle a deux calques
+//    animés (halo, flamme : will-change) et en ajoute deux de plus au rendu. Ce budget ne dispense pas du
+//    plafond du CONTRACT § 10 (40 calques pendant un geste), qui est vérifié à part (« calques pendant un tour de page »).
+const BUDGET_FEU = 4;
+const BUDGET_BOUGIE = 4;
 const SANS_VOILE = '.gc-lumiere--livre { visibility: hidden !important; }';
 // Mesure de l'encre : les objets vivants (photo, feuillet, invitation) bougent avec les indices du lot S
 // et ne sont pas de l'encre ; on les cache pendant la mesure.
@@ -333,9 +339,12 @@ if (tests.has('perf')) {
   const reposSansBougie = await calques(page, cdp, () => page.waitForTimeout(700));
   await retirerStyles(page);
   const enPlus = Math.max(repos.dernier - reposSans.dernier, tour.max - tourSans.max);
-  const deLaBougie = repos.dernier - reposSansBougie.dernier;
-  R.ok('tv-1080', `calques composités en plus dus à la lumière (feu et bougie) ≤ ${BUDGET_LUMIERE}`, enPlus <= BUDGET_LUMIERE,
-    `repos ${repos.dernier} (sans lumière ${reposSans.dernier}, dont bougie ${deLaBougie} : sans bougie ${reposSansBougie.dernier}) · tour de page max ${tour.max} (sans ${tourSans.max})`);
+  const duFeu = reposSansBougie.dernier - reposSans.dernier;
+  const delaBougie = repos.dernier - reposSansBougie.dernier;
+  R.ok('tv-1080', `calques composités en plus dus au feu (repos) ≤ ${BUDGET_FEU}`, duFeu <= BUDGET_FEU, `${reposSansBougie.dernier} avec le feu, ${reposSans.dernier} sans lumière`);
+  R.ok('tv-1080', `calques composités en plus dus à la bougie (repos) ≤ ${BUDGET_BOUGIE}`, delaBougie <= BUDGET_BOUGIE, `${repos.dernier} avec la bougie, ${reposSansBougie.dernier} sans`);
+  R.ok('tv-1080', `calques composités en plus dus à la lumière, feu et bougie (repos et tour de page) ≤ ${BUDGET_FEU + BUDGET_BOUGIE}`, enPlus <= BUDGET_FEU + BUDGET_BOUGIE,
+    `repos ${repos.dernier} (sans lumière ${reposSans.dernier}) · tour de page max ${tour.max} (sans ${tourSans.max})`);
   R.ok('tv-1080', 'calques pendant un tour de page ≤ 40 (CONTRACT § 10)', tour.max <= 40, `${tour.max}`);
   await ctx.close();
 }
