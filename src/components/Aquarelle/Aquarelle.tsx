@@ -1,6 +1,6 @@
 import React from 'react';
 import { useReducedMotion } from '../../lib/motion';
-import { assetUrl } from '../../lib/assets';
+import { assetInfo, assetUrl } from '../../lib/assets';
 import { useRenderMode } from '../../lib/spread';
 import { animer, webglOk } from './vivante';
 import { EFFETS } from './effets';
@@ -71,8 +71,11 @@ export function Aquarelle({ nom, anime = 'fleurit', angle = 0, ordre = 0, page }
     const s = Math.min(1, 1100 / Math.max(cv.offsetWidth * k, cv.offsetHeight * k));
     cv.width = Math.round(cv.offsetWidth * k * s);
     cv.height = Math.round(cv.offsetHeight * k * s);
+    // avec sa carte du tracé, elle se dessine trait à trait (≈ 7 s), puis se colore (≈ 5 s)
+    const trace = assetInfo(`aquarelles/trace/${nom}`) ? assetUrl(`aquarelles/trace/${nom}`) : undefined;
     const v = animer(cv, src, EFFETS[nom] ?? {}, {
-      peindre: page && !peintes.has(cle) ? 3600 : 0,
+      peindre: page && !peintes.has(cle) ? (trace ? 12000 : 3600) : 0,
+      trace,
       delai: 650 + ordre * 450,
       peinte: () => marquer(cle),
       echec: () => {
