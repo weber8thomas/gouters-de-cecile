@@ -31,6 +31,8 @@
 .gc-stage__table,
 .gc-stage__light {
   pointer-events: none;
+  /* Curseur figé : le curseur du livre (data-gc-curseur, hérité) ne recalcule pas ces calques. */
+  cursor: auto;
 }
 
 /* ---- Table en bois, le soir ---------------------------------------------------------------------- */

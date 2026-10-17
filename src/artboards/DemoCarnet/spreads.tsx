@@ -19,16 +19,6 @@ import type { SpreadSpec } from '../../lib/spread';
 import videosJson from '../../content/videos.json';
 import carnetJson from '../../content/carnet.json';
 import type { Carnet, DoubleCarnet } from '../../content/types';
-import './DemoCarnet.css';
-
-/** Étiquette collée sur le plat de couverture. */
-export const COUVERTURE = (
-  <div className="gc-demo-couverture">
-    <p className="gc-hand-caption gc-demo-couverture__sur">carnet de recettes</p>
-    <p className="gc-recipe-title gc-demo-couverture__titre">Les goûters</p>
-    <p className="gc-section-label gc-demo-couverture__de">de Cécile</p>
-  </div>
-);
 
 const VIDEOS = videosJson as unknown as Record<string, Omit<VideoInfo, 'id'>>;
 
