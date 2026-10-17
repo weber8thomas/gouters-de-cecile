@@ -1,12 +1,12 @@
 {
-  "description": "Bougie du carnet (composant Bougie, lot L, v5) : une vraie photo de bougie de cire crème allumée, sur fond sombre, détourée puis cuite par scripts/bake-bougie.py (corps, flamme, halo). Original hors dépôt dans verification/out/v5-bougie2/originaux/ (vérifié par sha256).",
+  "description": "Bougie du carnet (composant Bougie, v5) : la cire (corps, coulures, flaque au pied, gouttes qui coulent, ombre) est un rendu 3D fait ici (scripts/bougie3d/scene.py, Blender, aucune source tierce). Seule la flamme vient d'une vraie photo de bougie allumée, détourée puis mise en perspective par scripts/bake-bougie.py. Original de la photo hors dépôt dans verification/out/v5-bougie2/originaux/ (vérifié par sha256).",
   "licence": {
     "nom": "Licence Pexels (« Free Stock Photo & Video License »)",
     "url": "https://www.pexels.com/license/",
     "verifiee": "2026-10-17",
     "methode": "page de licence lue le 2026-10-17 ; page de la photo lue le 2026-10-17 (mention « Free », auteur, dimensions, URL du fichier)",
     "permis": "Gratuit, sans attribution obligatoire, modification permise ; interdit : vendre une copie non modifiée, revente sur une autre plateforme de photos, usage de marque ou de nom commercial, personne identifiable présentée de façon défavorable.",
-    "notre_usage": "Photo modifiée (détourage, flou de profondeur de champ, assombrissement, recadrage, cuisson en calques) et intégrée à une œuvre (carnet en ligne). Aucune copie vendue, aucun usage de marque."
+    "notre_usage": "Flamme de la photo seule, modifiée (détourage, mise en perspective vue d'en haut, assombrissement, cuisson en calque) et intégrée à une œuvre (carnet en ligne). Aucune copie vendue, aucun usage de marque."
   },
   "photos": [
     {
@@ -22,8 +22,16 @@
     }
   ],
   "cuisson": {
-    "script": "scripts/bake-bougie.py",
-    "sorties": ["design-system/baked/bougie/bougie.webp", "design-system/baked/bougie/flamme.webp", "design-system/baked/bougie/halo.webp"],
-    "remarque": "Le halo n'est pas une photo : c'est une lueur chaude dessinée par le script à partir de la position de la flamme."
+    "script": "scripts/bake-bougie.py (à partir du rendu de scripts/bougie3d/scene.py)",
+    "sorties": [
+      "design-system/baked/bougie/cire.webp",
+      "design-system/baked/bougie/cire-vive.webp",
+      "design-system/baked/bougie/ombre.webp",
+      "design-system/baked/bougie/goutte-1.webp",
+      "design-system/baked/bougie/goutte-3.webp",
+      "design-system/baked/bougie/flamme.webp",
+      "design-system/baked/bougie/halo.webp"
+    ],
+    "remarque": "Cire, ombre et gouttes : rendu 3D original. Flamme : la photo ci-dessus. Halo : une lueur chaude dessinée par le script à partir de la position de la flamme."
   }
 }

@@ -17,6 +17,23 @@
   object-fit: contain;
 }
 
+/* ---- Aquarelle vivante (WebGL, vivante.ts) : la toile déborde de la zone (DEBORD : 15 % à gauche et à
+   droite, 50 % au-dessus pour la vapeur, 5 % dessous) et remplace l'image dès qu'elle est prête. ------ */
+.gc-aquarelle__toile {
+  position: absolute;
+  left: -15%;
+  top: -50%;
+  width: 130%;
+  height: 155%;
+  pointer-events: none;
+}
+
+.gc-aquarelle[data-gc-aq='cachee'] img,
+.gc-aquarelle[data-gc-aq='cachee'] .gc-aquarelle__toile,
+.gc-aquarelle[data-gc-aq='toile'] img {
+  visibility: hidden;
+}
+
 /* La couleur encore mouillée : une copie floue, un peu plus large, qui s'étale puis sèche. Le flou est
    fixe (dessiné une fois), seule son opacité et son échelle bougent. */
 .gc-aquarelle__mouille {

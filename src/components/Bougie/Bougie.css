@@ -1,17 +1,10 @@
-/* Une vraie bougie, au premier plan et hors du plan de netteté, dans le coin bas gauche de la scène. La photo
-   est détourée, floutée et assombrie par scripts/bake-bougie.py ; elle sort du cadre à gauche et en bas
-   (le bas de la pose dépasse sous le bord de la scène). Géométrie en px de scène 1920 × 1080 (la scène est
-   fixe). Les valeurs ci-dessous sont celles qu'imprime bake-bougie.py : ECHELLE = --gc-bougie-ks (px de
-   scène par px de la photo), 1 / CUISSON = --gc-bougie-k (px de scène par px cuit). Animation : transform
-   et opacity seulement (Bougie.tsx). Rien ne capte le pointeur. */
+/* Une bougie posée sur la table, dans le coin bas gauche de la scène, à gauche du livre, vue presque d'en
+   haut comme toute la table (rendu 3D, scripts/bougie3d/scene.py ; calques cuits par scripts/bake-bougie.py).
+   La géométrie de chaque calque (px de scène 1920 × 1080, la scène est fixe) vient de geometrie.json et
+   est posée en ligne par Bougie.tsx ; ce fichier ne fait que l'habillage. Animation : transform et opacity
+   seulement. Rien ne capte le pointeur. */
 
 .gc-bougie {
-  --gc-bougie-ks: 0.142px;      /* px de scène par px de la photo (ECHELLE du script) */
-  --gc-bougie-k: 0.8px;         /* px de scène par px cuit (1 / CUISSON du script) */
-  --gc-bougie-x: -57px;         /* bord gauche de la pose : la bougie dépasse à gauche */
-  --gc-bougie-fx: 41.3px;       /* centre de la flamme, en scène (centre de la lueur) */
-  --gc-bougie-fy: 811.3px;
-  --gc-bougie-pivot: 49.15% 61.55%;   /* la mèche : point de rotation de la flamme */
   position: absolute;
   inset: 0;
   z-index: 2;
@@ -20,54 +13,43 @@
   cursor: auto;
 }
 
-/* ---- Lueur : une lumière chaude, large et douce (halo.webp, 1000 × 1125 px cuits), centrée sur la flamme.
-   Son opacité et son échelle suivent le feu (Bougie.tsx). ---------------------------------------- */
-.gc-bougie__halo {
-  position: absolute;
-  left: calc(var(--gc-bougie-fx) - 400px);
-  top: calc(var(--gc-bougie-fy) - 450px);
-  width: calc(1000 * var(--gc-bougie-k));
-  height: calc(1125 * var(--gc-bougie-k));
-  background-image: var(--gc-bougie-halo, none);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  pointer-events: none;
-  will-change: opacity, transform;
-}
-
-/* ---- La pose : bougie (cire, floue, assombrie) et flamme, sur la même grille (250 × 515 px cuits).
-   Le bas de la pose dépasse de 52 px de photo sous le bord de la scène (la cire continue, sombre). ---- */
-.gc-bougie__pose {
-  position: absolute;
-  left: var(--gc-bougie-x);
-  bottom: calc(-52 * var(--gc-bougie-ks));
-  width: calc(250 * var(--gc-bougie-k));
-  height: calc(515 * var(--gc-bougie-k));
-  pointer-events: none;
-}
-
+.gc-bougie__ombre,
+.gc-bougie__halo,
 .gc-bougie__cire,
 .gc-bougie__flamme {
   position: absolute;
-  inset: 0;
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  pointer-events: none;
 }
 
-.gc-bougie__cire {
-  background-image: var(--gc-bougie-cire, none);
+.gc-bougie__ombre,
+.gc-bougie__halo,
+.gc-bougie__flamme,
+.gc-bougie__cire[data-gc-bougie='vive'] {
+  will-change: opacity, transform;
 }
 
-/* La flamme pivote autour de la mèche, comme une vraie flamme ; la photo n'est jamais déplacée. */
-.gc-bougie__flamme {
-  background-image: var(--gc-bougie-flamme, none);
-  transform-origin: var(--gc-bougie-pivot);
-  will-change: transform, opacity;
+/* ---- Les gouttes : une fenêtre sur la planche des images, qui défile par paliers (Bougie.tsx). ---- */
+.gc-bougie__goutte {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gc-bougie__feuille {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  will-change: transform;
 }
 
 /* ---- Téléphone en portrait : la bougie gêne, on ne garde que la lueur (le halo). ---------------- */
 @media (orientation: portrait) and (max-width: 760px) {
-  .gc-bougie__pose {
+  .gc-bougie__pose,
+  .gc-bougie__goutte {
     display: none;
   }
 }

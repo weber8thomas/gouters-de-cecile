@@ -70,7 +70,7 @@ function Page({ id, graine }: { id: string; graine: number }) {
     if (t) slots[nom] = <TirageColle tirage={t.tirage} coins={t.coins} angle={t.angle} />;
   }
   Object.entries(info?.aquarelles ?? {}).forEach(([nom, a], i) => {
-    slots[nom] = <Aquarelle nom={a.aquarelle} anime={a.anime} angle={a.angle} ordre={i} />;
+    slots[nom] = <Aquarelle nom={a.aquarelle} anime={a.anime} angle={a.angle} ordre={i} page={id} />;
   });
   if (info?.vivants?.volant && info.volant) {
     slots.volant = <FeuilletVolant recto={info.volant.recto} verso={info.volant.verso ?? null} angle={info.volant.angle} graine={graine} />;

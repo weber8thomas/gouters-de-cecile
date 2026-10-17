@@ -1,31 +1,32 @@
 #!/usr/bin/env python3
-"""Bougie du carnet (composant Bougie, lot L, v5) : une vraie photo de bougie allumée, détourée sur fond
-transparent, floutée comme un premier plan hors du plan de netteté, puis cuite en trois calques.
+"""Bougie du carnet (v5, bougie en 3D) : cuisson des calques du composant Bougie.
 
   tools/ecriture/.venv/bin/python -I scripts/bake-bougie.py
 
-Entrée (hors dépôt, vérifiée par sha256) :
-  verification/out/v5-bougie2/originaux/pexels-9299394.jpeg   photo de Numan Gilgil (licence Pexels)
-  détails, licence et choix de la photo : design-system/sources/bougie/credits.json
+La bougie est modélisée et rendue dans Blender par scripts/bougie3d/scene.py, avec la caméra de la scène :
+une table vue d'en haut, donc une bougie verticale vue presque du dessus, un peu en fuite vers le coin de
+l'écran, sa flaque de cire figée au pied. Ce script en cuit les calques :
 
-Sorties (design-system/baked/bougie/, WebP à alpha, même grille de pixels pour la bougie et la flamme) :
-  bougie.webp   la bougie seule : cire crème assombrie, floue (flou gaussien de 11 px de scène)
-  flamme.webp   la flamme seule, floue (8 px de scène) ; son point de pivot est la mèche
-  halo.webp     une lueur chaude et très douce, centrée sur la flamme (800 × 900 px de scène)
+  cire.webp        la bougie, flamme basse (la cire est éclairée par sa flamme)
+  cire-vive.webp   la même, flamme haute : l'application fond l'une dans l'autre au rythme de la flamme
+  ombre.webp       l'ombre portée par la cheminée (hors champ à gauche) sur la table, en alpha
+  goutte-<n>.webp  planche des images d'une goutte de cire liquide qui coule le long d'une coulure
+  flamme.webp      la flamme : la photo d'une vraie flamme (Pexels, Numan Gilgil), détourée, puis mise en
+                   perspective (vue d'en haut, elle se raccourcit et pointe vers le coin de l'écran)
+  halo.webp        la lueur chaude de la flamme sur la table (dessinée)
 
-Détourage : le corps est géométrique (un cylindre dont les bords sont mesurés sur la photo ; la cire tombe
-dans l'ombre vers le bas, où la luminance ne suffit plus). La flamme est sélectionnée par seuil de
-luminance ; le halo de la photo est remplacé par halo.webp. La photo est prolongée de PROLONGE px sous le
-cadre (répétition de la dernière ligne, très sombre) pour que le flou ne dessine pas de bord au bas de
-l'écran.
+et écrit leur géométrie (px de scène 1920 × 1080) dans src/components/Bougie/geometrie.json.
 
-Échelle : ECHELLE px de scène par px de la photo ; cuisson à CUISSON × la taille affichée (CONTRACT § 6).
-Bougie.css reprend ces valeurs : --gc-bougie-ks = ECHELLE, --gc-bougie-k = 1 / CUISSON, et les dimensions
-cuites (250 × 515 px pour la pose, 1000 × 1125 px pour le halo). Le script affiche les positions à reporter.
+Entrées (hors dépôt) :
+  verification/out/v5-bougie3d/rendu/   rendu Blender : bougie.png, bougie-vive.png, ombre.png,
+                                         goutte-<n>/<image>.png, reperes.json
+  verification/out/v5-bougie2/originaux/pexels-9299394.jpeg   la photo de la flamme (sha256 vérifié)
+Licence et choix de la photo : design-system/sources/bougie/credits.json.
 
-Déterministe, sans réseau. PIL et numpy seulement (pas de scipy : le flou est écrit ici).
+Déterministe, sans réseau. PIL et numpy seulement.
 """
 import hashlib
+import json
 import math
 import os
 
@@ -33,55 +34,36 @@ import numpy as np
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RENDU = os.path.join(ROOT, 'verification', 'out', 'v5-bougie3d', 'rendu')
 ORIG = os.path.join(ROOT, 'verification', 'out', 'v5-bougie2', 'originaux', 'pexels-9299394.jpeg')
 SHA256 = 'a88c958b0677589e33d038777566782ecb6b245179a6629cfe3d3563a1f0e1d2'
 OUT = os.path.join(ROOT, 'design-system', 'baked', 'bougie')
+GEOMETRIE = os.path.join(ROOT, 'src', 'components', 'Bougie', 'geometrie.json')
 
+CUISSON = 1.25          # px cuits par px de scène (le rendu Blender est fait à cette échelle)
+FLOU_CIRE = 0.7         # px de scène : la bougie est un peu plus haute que le livre, à peine hors du net
+OMBRE_R0, OMBRE_R1 = 90.0, 230.0   # l'ombre s'efface entre ces distances au pied (px de scène)
+ASSOMBRI = 0.9          # la pièce est sombre : la cire reste devinée plutôt que montrée
+COLONNES_GOUTTE = 8
+IMAGES_PAR_SECONDE = 16
+
+# Photo de la flamme (repère de la photo) : canevas, mèche (pivot), seuils de détourage.
 SRC_W, SRC_H = 4272, 2848
-ECHELLE = 0.142        # px de scène par px de la photo (Bougie.css : --gc-bougie-ks)
-CUISSON = 1.25         # px cuits par px de scène (Bougie.css : --gc-bougie-k = 1 / CUISSON)
-PROLONGE = 52          # px de photo répétés sous le cadre
-SCENE_H = 1080         # hauteur de la scène (Bougie.css, bas de l'écran)
-GAUCHE_SCENE = -57     # bord gauche du canevas, en px de scène : la bougie dépasse à gauche
-
-# Canevas de cuisson, en repère de la photo : la cire, la flamme et la mèche.
-X0, X1 = 2560, 3968
-Y0, Y1 = 0, SRC_H + PROLONGE
-MECHE = (3252, 1785)          # pied de la flamme : point de pivot de l'animation
-FLAMME_SOMMET = 130           # pointe de la flamme (repère de la photo)
-
-# Bords du corps, mesurés sur la photo (x en fonction de y) ; sommet de la cire : arc.
-BORD_GAUCHE_Y = [1880, 2000, 2200, 2400, 2500, 2900]
-BORD_GAUCHE_X = [2815, 2790, 2820, 2835, 2847, 2885]
-BORD_DROIT_Y = [1880, 2000, 2200, 2300, 2900]
-BORD_DROIT_X = [3705, 3715, 3722, 3726, 3732]
-SOMMET_X, SOMMET_Y, SOMMET_COURBE, SOMMET_RAYON = 3265, 1796, 50, 460
-
-# Flamme : seuil de luminance, fondue vers la mèche (sous FLAMME_FONDU, rien).
+X0, X1, Y0, Y1 = 2560, 3968, 0, 2848
+ECHELLE_PHOTO = 0.142   # px de scène par px de la photo, pour une flamme debout de 235 px
+MECHE = (3252, 1785)
 FLAMME_BAS, FLAMME_HAUT = 30, 140
 FLAMME_FONDU = (1735, 1792)
-
-# Flou (px de scène), assombrissement de la cire, halo.
-FLOU_BOUGIE = 11
-FLOU_FLAMME = 8
-ASSOMBRI = 0.90
-DESATURE = 0.30       # cire crème : on retire 30 % de saturation (la lumière du feu la rend orangée)
+FLOU_FLAMME = 4         # px de scène, avant la mise en perspective (qui la réduit encore)
+FLAMME_LARGEUR = 0.5    # échelle en travers (la largeur d'une flamme ne fuit pas)
+FLAMME_RACCOURCI_MIN = 0.5   # vue presque d'en haut, la flamme se raccourcit, mais on la garde lisible
 HALO_SCENE = (800, 900)
-HALO_CENTRE_Y_SRC = (FLAMME_SOMMET + MECHE[1]) / 2   # milieu de la flamme
 
 
 def marche(x, a, b):
     """Passage doux de 0 (x ≤ a) à 1 (x ≥ b)."""
     t = np.clip((x - a) / (b - a), 0.0, 1.0)
     return t * t * (3.0 - 2.0 * t)
-
-
-def masque_corps(xs, yv):
-    """Corps de la bougie (1 dedans, 0 dehors), en repère de la photo."""
-    xl = np.interp(yv, BORD_GAUCHE_Y, BORD_GAUCHE_X)[:, None]
-    xr = np.interp(yv, BORD_DROIT_Y, BORD_DROIT_X)[:, None]
-    sommet = SOMMET_Y + SOMMET_COURBE * ((xs - SOMMET_X) / SOMMET_RAYON) ** 2
-    return ((xs >= xl) & (xs <= xr) & (yv[:, None] >= sommet)).astype(np.float32)
 
 
 def masque_flamme(src, yv):
@@ -145,57 +127,159 @@ def halo(w, h):
     return rgb, alpha.astype(np.float32)
 
 
-def main():
+def lire(chemin):
+    """PNG du rendu → (rgb, alpha) float, rgb non prémultiplié 0..255, alpha 0..1."""
+    a = np.asarray(Image.open(chemin).convert('RGBA'), dtype=np.float32)
+    return a[..., :3], a[..., 3] / 255.0
+
+
+def adoucir(rgb, alpha, sigma):
+    if sigma <= 0:
+        return rgb, alpha
+    return flou_premultiplie(rgb * alpha[..., None], alpha, sigma, 'constant')
+
+
+def boite_alpha(alpha, seuil=1 / 255, marge=4):
+    ys, xs = np.nonzero(alpha > seuil)
+    h, w = alpha.shape
+    return (max(0, xs.min() - marge), max(0, ys.min() - marge), min(w, xs.max() + 1 + marge),
+            min(h, ys.max() + 1 + marge))
+
+
+def en_scene(boite_cuite, origine):
+    """Boîte en px cuits (dans une image dont le coin est origine, en px de scène) → px de scène."""
+    x0, y0, x1, y1 = boite_cuite
+    return {'x': round(origine[0] + x0 / CUISSON, 2), 'y': round(origine[1] + y0 / CUISSON, 2),
+            'w': round((x1 - x0) / CUISSON, 2), 'h': round((y1 - y0) / CUISSON, 2)}
+
+
+def flamme_photo():
+    """La flamme de la photo, détourée, sur le canevas (px cuits pour une flamme debout), et son pivot."""
     with open(ORIG, 'rb') as f:
-        sha = hashlib.sha256(f.read()).hexdigest()
-    if sha != SHA256:
-        raise SystemExit(f'sha256 inattendu pour {ORIG} : {sha}')
+        if hashlib.sha256(f.read()).hexdigest() != SHA256:
+            raise SystemExit(f'sha256 inattendu pour {ORIG}')
     im = Image.open(ORIG).convert('RGB')
     assert im.size == (SRC_W, SRC_H), im.size
-    src = np.asarray(im, dtype=np.float32)
-    src = np.pad(src, ((0, PROLONGE), (0, 0), (0, 0)), mode='edge')[Y0:Y1, X0:X1]
-    h_src, w_src = src.shape[:2]
-    xv = np.arange(X0, X1, dtype=np.float32)
+    src = np.asarray(im, dtype=np.float32)[Y0:Y1, X0:X1]
     yv = np.arange(Y0, Y1, dtype=np.float32)
-
-    taille = (round(w_src * ECHELLE * CUISSON), round(h_src * ECHELLE * CUISSON))
-    w_cuit, h_cuit = taille
-    os.makedirs(OUT, exist_ok=True)
-
-    # Bougie : cire assombrie, prémultipliée, floue ; le bas reste plein (répétition de la dernière ligne).
-    mc = masque_corps(xv[None, :], yv)
-    cire_pm = reechantillonne(src * mc[..., None], taille)
-    cire_a = reechantillonne(mc, taille)
-    cire_rgb, cire_alpha = flou_premultiplie(cire_pm, cire_a, FLOU_BOUGIE * CUISSON, 'edge')
-    vers_webp(desature(cire_rgb, DESATURE) * ASSOMBRI, cire_alpha, os.path.join(OUT, 'bougie.webp'))
-
-    # Flamme : seuil de luminance, prémultipliée, floue (pas de bord au pied : la mèche est fondue).
+    taille = (round((X1 - X0) * ECHELLE_PHOTO * CUISSON), round((Y1 - Y0) * ECHELLE_PHOTO * CUISSON))
     mf = masque_flamme(src, yv)
-    flamme_pm = reechantillonne(src * mf[..., None], taille)
-    flamme_a = reechantillonne(mf, taille)
-    flamme_rgb, flamme_alpha = flou_premultiplie(flamme_pm, flamme_a, FLOU_FLAMME * CUISSON, 'constant')
-    vers_webp(flamme_rgb, flamme_alpha, os.path.join(OUT, 'flamme.webp'))
+    pm = reechantillonne(src * mf[..., None], taille)
+    a = reechantillonne(mf, taille)
+    rgb, a = flou_premultiplie(pm, a, FLOU_FLAMME * CUISSON, 'constant')
+    pivot = ((MECHE[0] - X0) * ECHELLE_PHOTO * CUISSON, (MECHE[1] - Y0) * ECHELLE_PHOTO * CUISSON)
+    sommet = ((MECHE[1] - 130) * ECHELLE_PHOTO * CUISSON)   # longueur debout, mèche → pointe (px cuits)
+    return rgb, a, pivot, sommet
 
-    # Halo : une lueur dessinée, centrée sur le milieu de la flamme.
+
+def perspective(rgb, alpha, pivot, angle, sx, sy, cote=320):
+    """Met la flamme en perspective : échelle (sx en travers, sy le long), puis rotation (degrés, sens
+    horaire, comme CSS) autour du pivot. Sortie : carré de `cote` px cuits, pivot au centre."""
+    c, s = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+    # sortie (x, y) relative au centre → entrée : S⁻¹ R⁻¹ (q) + pivot
+    a = c / sx
+    b = s / sx
+    d = -s / sy
+    e = c / sy
+    cx = cy = cote / 2
+    data = (a, b, pivot[0] - a * cx - b * cy, d, e, pivot[1] - d * cx - e * cy)
+    plans = [Image.fromarray(np.ascontiguousarray(p, dtype=np.float32), 'F').transform(
+        (cote, cote), Image.AFFINE, data, resample=Image.BICUBIC) for p in
+        [rgb[..., k] * alpha for k in range(3)] + [alpha]]
+    pa = np.clip(np.asarray(plans[3]), 0, 1)
+    pm = np.stack([np.asarray(p) for p in plans[:3]], axis=-1)
+    return np.clip(pm / np.maximum(pa, 1e-4)[..., None], 0, 255), pa
+
+
+def planche_goutte(dossier, n):
+    """Images d'une goutte → planche (COLONNES_GOUTTE colonnes), plus une image vide à la fin (repos)."""
+    images = []
+    for i in range(n):
+        rgb, a = lire(os.path.join(dossier, f'{i:03d}.png'))
+        images.append(adoucir(rgb, a, FLOU_CIRE * CUISSON))
+    h, w = images[0][1].shape
+    total = n + 1
+    lignes = math.ceil(total / COLONNES_GOUTTE)
+    rgb = np.zeros((lignes * h, COLONNES_GOUTTE * w, 3), np.float32)
+    al = np.zeros((lignes * h, COLONNES_GOUTTE * w), np.float32)
+    for i, (r, a) in enumerate(images):
+        y, x = (i // COLONNES_GOUTTE) * h, (i % COLONNES_GOUTTE) * w
+        rgb[y:y + h, x:x + w] = r
+        al[y:y + h, x:x + w] = a
+    return rgb, al, w, h, total, lignes
+
+
+def main():
+    rep = json.load(open(os.path.join(RENDU, 'reperes.json')))
+    os.makedirs(OUT, exist_ok=True)
+    geo = {'cuisson': CUISSON}
+    bx0, by0 = rep['boite'][0], rep['boite'][1]
+
+    # 1. la cire, flamme basse et flamme haute : même boîte (l'union des deux)
+    cire = [lire(os.path.join(RENDU, f)) for f in ('bougie.png', 'bougie-vive.png')]
+    b = boite_alpha(np.maximum(cire[0][1], cire[1][1]))
+    for (rgb, a), nom in zip(cire, ('cire', 'cire-vive')):
+        rgb, a = adoucir(rgb, a, FLOU_CIRE * CUISSON)
+        rgb, a = rgb[b[1]:b[3], b[0]:b[2]], a[b[1]:b[3], b[0]:b[2]]
+        vers_webp(rgb * ASSOMBRI, a, os.path.join(OUT, f'{nom}.webp'))
+    geo['cire'] = en_scene(b, (bx0, by0))
+
+    # 2. l'ombre de la cheminée : du noir, l'alpha est l'ombre
+    _, a = lire(os.path.join(RENDU, 'ombre.png'))
+    # elle s'efface en s'éloignant du pied (pénombre), bien avant le bord de la boîte rendue
+    yy, xx = np.mgrid[0:a.shape[0], 0:a.shape[1]].astype(np.float32)
+    d = np.hypot(xx / CUISSON + bx0 - rep['pied'][0], yy / CUISSON + by0 - rep['pied'][1])
+    a = a * (1 - marche(d, OMBRE_R0, OMBRE_R1))
+    b = boite_alpha(a, 2 / 255)
+    a = a[b[1]:b[3], b[0]:b[2]]
+    vers_webp(np.zeros(a.shape + (3,), np.float32), a, os.path.join(OUT, 'ombre.webp'))
+    geo['ombre'] = en_scene(b, (bx0, by0))
+
+    # 3. les gouttes qui coulent
+    geo['gouttes'] = []
+    for g in rep['gouttes']:
+        rgb, a, w, h, total, lignes = planche_goutte(os.path.join(RENDU, f"goutte-{g['coulure']}"), g['images'])
+        nom = f"goutte-{g['coulure']}"
+        vers_webp(rgb, a, os.path.join(OUT, f'{nom}.webp'))
+        x0, y0, x1, y1 = g['boite']
+        geo['gouttes'].append({'nom': f'bougie/{nom}', 'x': x0, 'y': y0, 'w': round(w / CUISSON, 2),
+                               'h': round(h / CUISSON, 2), 'colonnes': COLONNES_GOUTTE, 'lignes': lignes,
+                               'images': total, 'parSeconde': IMAGES_PAR_SECONDE})
+
+    # 4. la flamme, mise en perspective : de la mèche vers la pointe projetée
+    rgb, a, pivot, longueur = flamme_photo()
+    mx, my = rep['meche']
+    px, py = rep['flamme_pointe']
+    vx, vy = px - mx, py - my
+    angle = math.degrees(math.atan2(vx, -vy))            # 0 = debout ; sens horaire
+    sy = max(FLAMME_RACCOURCI_MIN, math.hypot(vx, vy) * CUISSON / longueur)
+    rgb, a = perspective(rgb, a, pivot, angle, FLAMME_LARGEUR, sy)
+    b = boite_alpha(a, 1 / 255, 6)
+    cote = a.shape[0]
+    vers_webp(rgb[b[1]:b[3], b[0]:b[2]], a[b[1]:b[3], b[0]:b[2]], os.path.join(OUT, 'flamme.webp'))
+    f = en_scene(b, (mx - cote / 2 / CUISSON, my - cote / 2 / CUISSON))
+    f['pivot'] = [round((cote / 2 - b[0]) / (b[2] - b[0]) * 100, 2), round((cote / 2 - b[1]) / (b[3] - b[1]) * 100, 2)]
+    geo['flamme'] = f
+
+    # 5. le halo, centré sur le milieu de la flamme
     hw, hh = round(HALO_SCENE[0] * CUISSON), round(HALO_SCENE[1] * CUISSON)
     h_rgb, h_alpha = halo(hw, hh)
     vers_webp(h_rgb, h_alpha, os.path.join(OUT, 'halo.webp'))
+    cx, cy = rep['flamme']
+    geo['halo'] = {'x': round(cx - HALO_SCENE[0] / 2, 2), 'y': round(cy - HALO_SCENE[1] / 2, 2),
+                   'w': HALO_SCENE[0], 'h': HALO_SCENE[1]}
 
-    # Positions à reporter dans Bougie.css (repère de la scène 1920 × 1080).
-    hauteur_scene = h_cuit / CUISSON
-    haut_scene = SCENE_H + PROLONGE * ECHELLE - hauteur_scene
-    pivot_x = (MECHE[0] - X0) / w_src * 100
-    pivot_y = (MECHE[1] - Y0) / h_src * 100
-    flamme_x = GAUCHE_SCENE + (MECHE[0] - X0) * ECHELLE
-    flamme_y_mi = haut_scene + (HALO_CENTRE_Y_SRC - Y0) * ECHELLE
-    for nom in ('bougie.webp', 'flamme.webp', 'halo.webp'):
+    for vieux in ('bougie.webp',):
+        p = os.path.join(OUT, vieux)
+        if os.path.exists(p):
+            os.remove(p)
+    with open(GEOMETRIE, 'w') as fj:
+        json.dump(geo, fj, indent=2, ensure_ascii=False)
+        fj.write('\n')
+    for nom in sorted(os.listdir(OUT)):
         chemin = os.path.join(OUT, nom)
-        print(f'{os.path.relpath(chemin, ROOT)} {Image.open(chemin).size} {os.path.getsize(chemin)} o')
-    print(f'pose : {w_cuit} × {h_cuit} px cuits, {w_cuit / CUISSON:.1f} × {h_cuit / CUISSON:.1f} px de scène')
-    print(f'--gc-bougie-x: {GAUCHE_SCENE}px ; haut de la pose : {haut_scene:.1f}px ; bas : {PROLONGE * ECHELLE:.2f}px sous le cadre')
-    print(f'pivot de la flamme : {pivot_x:.2f}% {pivot_y:.2f}%')
-    print(f'centre de la flamme (scène) : x {flamme_x:.1f}px, y {flamme_y_mi:.1f}px')
-    print(f'halo : {hw} × {hh} px cuits ; à placer centré sur ({flamme_x:.1f}px, {flamme_y_mi:.1f}px)')
+        print(f'{os.path.relpath(chemin, ROOT)} {Image.open(chemin).size} {os.path.getsize(chemin) // 1024} Ko')
+    print(json.dumps(geo, ensure_ascii=False))
 
 
 if __name__ == '__main__':
