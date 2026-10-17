@@ -637,8 +637,18 @@ export async function attendrePret(page, timeout = 30000) {
     || window.__gcReady === true || window.__gcMotion?.ready === true
     || (!!document.querySelector('.gc-livre-ecran') && document.readyState === 'complete'), null, { timeout });
   await page.evaluate(() => document.fonts?.ready);
+  // Plan v4 : le livre arrive sur la table (et, avec un lien profond, s'ouvre et feuillette jusqu'à la
+  // page) ; on n'interagit et on ne mesure qu'une fois posé.
+  await attendreArrivee(page, timeout);
   await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
   return page.evaluate(() => window.__gcDevices?.error ?? window.__gcBanc?.error ?? window.__gcError ?? window.__gcMotion?.error ?? null);
+}
+
+/** Attend la fin de l'arrivée du livre ([data-gc-arrivee="en-cours"] absent) ; true si elle a eu lieu. */
+export async function attendreArrivee(page, timeout = 30000) {
+  const avait = await page.evaluate(() => !!document.querySelector('[data-gc-arrivee]')).catch(() => false);
+  await page.waitForFunction(() => !document.querySelector('[data-gc-arrivee="en-cours"]'), null, { timeout, polling: 50 }).catch(() => {});
+  return avait;
 }
 
 /** Ouvre une page instrumentée dans un nouveau contexte de l'écran e. */

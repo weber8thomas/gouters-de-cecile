@@ -20,6 +20,13 @@
   --gc-livre-carton-haut: 6px;
   --gc-livre-carton-bas: 16px;
   --gc-livre-epaisseur: 10px;
+  /* Toile de lin écru teintée kraft, trame fine, éclairée par le haut : le repli des cartons tant que la
+     couverture cuite (lot C, couvertureVars()) n'est pas posée. */
+  --gc-livre-toile:
+    linear-gradient(to bottom, color-mix(in srgb, var(--gc-paper-lace) 18%, transparent), transparent 35%, color-mix(in srgb, var(--gc-chocolate) 12%, transparent)),
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--gc-chocolate) 6%, transparent) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--gc-paper-lace) 8%, transparent) 0 1px, transparent 1px 4px),
+    linear-gradient(color-mix(in srgb, var(--gc-kraft) 32%, transparent), color-mix(in srgb, var(--gc-kraft) 32%, transparent));
 
   position: absolute;
   left: var(--gc-book-x);
@@ -43,8 +50,12 @@
   will-change: transform;
 }
 
-.gc-livre[data-gc-geste] .gc-livre__ombre--gauche,
-.gc-livre[data-gc-geste] .gc-livre__ombre--epaisseur {
+/* Seule l'ouverture fait varier ces ombres : un tourne-page de papier n'en fait pas des calques (trois
+   calques de moins, ce qui laisse la place au rabat du coin). */
+.gc-livre[data-gc-geste="couverture"] .gc-livre__ombre--gauche,
+.gc-livre[data-gc-geste="couverture"] .gc-livre__ombre--droite,
+.gc-livre[data-gc-geste="couverture"] .gc-livre__ombre--epaisseur,
+.gc-livre[data-gc-geste="couverture"] .gc-livre__ombre--pouls {
   will-change: opacity;
 }
 
@@ -74,6 +85,24 @@
   box-shadow: var(--gc-sh-object), 4px 6px 3px color-mix(in srgb, var(--gc-wood-3) 45%, transparent);
 }
 
+/* Livre refermé sur son plat arrière : l'épaisseur est à gauche. */
+.gc-livre__ombre--epaisseur-gauche {
+  left: calc(-1 * var(--gc-livre-carton-out));
+  right: 50%;
+  border-radius: 8px 0 0 8px;
+  box-shadow: var(--gc-sh-object), -4px 6px 3px color-mix(in srgb, var(--gc-wood-3) 45%, transparent);
+}
+
+/* Ouverture lestée : quand la couverture se pose, l'air chassé sous le carton fait respirer l'ombre
+   de gauche (un contact plus dense, en opacité seulement). */
+.gc-livre__ombre--pouls {
+  left: calc(-1 * var(--gc-livre-carton-out));
+  right: 50%;
+  border-radius: 8px 0 0 8px;
+  opacity: 0.002;
+  box-shadow: var(--gc-sh-object), -3px 5px 4px color-mix(in srgb, var(--gc-wood-3) 55%, transparent);
+}
+
 /* ---- Cartons entoilés -------------------------------------------------------------------- */
 .gc-livre__carton {
   position: absolute;
@@ -91,14 +120,10 @@
   right: calc(-1 * var(--gc-livre-carton-out));
 }
 
-/* Toile de lin écru teintée kraft, trame fine, éclairée par le haut. */
+/* Toile des cartons (repli) ; la couverture cuite est posée plus bas, élément par élément. */
 .gc-livre__carton-toile {
-  background-color: var(--gc-linen-shade);
-  background-image:
-    linear-gradient(to bottom, color-mix(in srgb, var(--gc-paper-lace) 18%, transparent), transparent 35%, color-mix(in srgb, var(--gc-chocolate) 12%, transparent)),
-    repeating-linear-gradient(90deg, color-mix(in srgb, var(--gc-chocolate) 6%, transparent) 0 1px, transparent 1px 3px),
-    repeating-linear-gradient(0deg, color-mix(in srgb, var(--gc-paper-lace) 8%, transparent) 0 1px, transparent 1px 4px),
-    linear-gradient(color-mix(in srgb, var(--gc-kraft) 32%, transparent), color-mix(in srgb, var(--gc-kraft) 32%, transparent));
+  background-color: var(--gc-couv-fond, var(--gc-linen-shade));
+  background-image: var(--gc-livre-toile);
 }
 
 /* Épaisseur du carton : arête éclairée côté fenêtre, dans l'ombre en bas et à droite. */
@@ -118,10 +143,38 @@
     inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent);
 }
 
-/* Livre fermé ou couverture en mouvement : la moitié gauche n'existe pas encore. */
+/* Couverture cuite (lot C) : les cartons du livre ouvert montrent l'INTÉRIEUR des plats (remplis de
+   toile autour des gardes). Intérieur du plat avant : carton gauche, et verso de la couverture qui
+   tourne ; intérieur du plat arrière : carton droit, et recto du plat arrière qui se referme. Arêtes,
+   usure et lumière sont cuites (--gc-couv-biseau : none) ; replis : la toile et les arêtes ci-dessus. */
+.gc-livre__carton--gauche,
+.gc-livre-couv__carton {
+  background-image: var(--gc-couv-contreplat, var(--gc-livre-toile));
+  background-size: var(--gc-couv-plat-taille, auto);
+  box-shadow: var(--gc-couv-biseau,
+    inset 0 -4px 0 color-mix(in srgb, var(--gc-chocolate) 34%, transparent),
+    inset 3px 2px 0 color-mix(in srgb, var(--gc-paper-lace) 45%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent));
+}
+
+.gc-livre__carton--droite,
+.gc-livre-couv__carton--arriere {
+  background-image: var(--gc-couv-contreplat-arriere, var(--gc-livre-toile));
+  background-size: var(--gc-couv-plat-taille, auto);
+  box-shadow: var(--gc-couv-biseau,
+    inset -4px -4px 0 color-mix(in srgb, var(--gc-chocolate) 34%, transparent),
+    inset 0 2px 0 color-mix(in srgb, var(--gc-paper-lace) 45%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent));
+}
+
+/* Livre fermé ou couverture en mouvement : la moitié gauche n'existe pas encore. Plat arrière qui se
+   lève ou livre refermé derrière : la moitié droite, c'est lui (il n'y a plus rien dessous). */
 .gc-livre[data-gc-etat="couverture"] .gc-livre__carton--gauche,
 .gc-livre[data-gc-etat="couverture"] .gc-livre__tranche--gauche,
-.gc-livre[data-gc-etat="couverture"] .gc-livre__dos {
+.gc-livre[data-gc-etat="couverture"] .gc-livre__dos,
+.gc-livre[data-gc-etat="arriere"] .gc-livre__carton--droite,
+.gc-livre[data-gc-etat="arriere"] .gc-livre__tranche--droite,
+.gc-livre[data-gc-etat="arriere"] .gc-livre__dos {
   visibility: hidden;
 }
 
@@ -151,14 +204,15 @@
 .gc-livre__tranche--gauche .gc-livre__feuille { box-shadow: inset 1px -1px 0 color-mix(in srgb, var(--gc-chocolate) 24%, transparent); }
 .gc-livre__tranche--droite .gc-livre__feuille { box-shadow: inset -1px -1px 0 color-mix(in srgb, var(--gc-chocolate) 24%, transparent); }
 
-.gc-livre__tranche--gauche .gc-livre__feuille--1 { left: -2.5px; right: 0; top: 2px; bottom: -2px; }
-.gc-livre__tranche--gauche .gc-livre__feuille--2 { left: -5px; right: 0; top: 4px; bottom: -4px; }
-.gc-livre__tranche--gauche .gc-livre__feuille--3 { left: -7.5px; right: 0; top: 6px; bottom: -6px; }
-.gc-livre__tranche--gauche .gc-livre__feuille--4 { left: -10px; right: 0; top: 8px; bottom: -8px; }
-.gc-livre__tranche--droite .gc-livre__feuille--1 { left: 0; right: -2.5px; top: 2px; bottom: -2px; }
-.gc-livre__tranche--droite .gc-livre__feuille--2 { left: 0; right: -5px; top: 4px; bottom: -4px; }
-.gc-livre__tranche--droite .gc-livre__feuille--3 { left: 0; right: -7.5px; top: 6px; bottom: -6px; }
-.gc-livre__tranche--droite .gc-livre__feuille--4 { left: 0; right: -10px; top: 8px; bottom: -8px; }
+/* Feuilles un peu inégales (le carnet a été feuilleté, rogné à la main) : pas deux décalages pareils. */
+.gc-livre__tranche--gauche .gc-livre__feuille--1 { left: -2.2px; right: 0; top: 1.6px; bottom: -2.3px; }
+.gc-livre__tranche--gauche .gc-livre__feuille--2 { left: -4.9px; right: 0; top: 4.3px; bottom: -3.6px; }
+.gc-livre__tranche--gauche .gc-livre__feuille--3 { left: -7.3px; right: 0; top: 5.8px; bottom: -6.4px; }
+.gc-livre__tranche--gauche .gc-livre__feuille--4 { left: -10.4px; right: 0; top: 8.4px; bottom: -7.7px; }
+.gc-livre__tranche--droite .gc-livre__feuille--1 { left: 0; right: -2.6px; top: 2.3px; bottom: -1.8px; }
+.gc-livre__tranche--droite .gc-livre__feuille--2 { left: 0; right: -4.7px; top: 3.7px; bottom: -4.4px; }
+.gc-livre__tranche--droite .gc-livre__feuille--3 { left: 0; right: -7.9px; top: 6.4px; bottom: -5.9px; }
+.gc-livre__tranche--droite .gc-livre__feuille--4 { left: 0; right: -9.8px; top: 7.9px; bottom: -8.3px; }
 
 /* ---- Emplacements fixes ------------------------------------------------------------------ */
 .gc-livre__emplacement {
@@ -187,7 +241,7 @@
   top: 6px;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(
+  background-image: linear-gradient(
     to bottom,
     color-mix(in srgb, var(--gc-chocolate) 55%, transparent),
     color-mix(in srgb, var(--gc-chocolate) 40%, transparent) 50%,
@@ -310,8 +364,9 @@
   perspective-origin: calc(var(--gc-stage-w) / 2 - var(--gc-book-x)) calc(var(--gc-stage-h) / 2 - var(--gc-book-y));
 }
 
-/* Couverture fermée ou en mouvement : carton rigide, perspective plus plate. */
-.gc-livre[data-gc-etat="couverture"] .gc-livre__espace {
+/* Couverture (ou plat arrière) fermée ou en mouvement : carton rigide, perspective plus plate. */
+.gc-livre[data-gc-etat="couverture"] .gc-livre__espace,
+.gc-livre[data-gc-etat="arriere"] .gc-livre__espace {
   perspective: var(--gc-livre-perspective-couverture);
 }
 
@@ -465,28 +520,60 @@
 
 .gc-livre-couv__plat {
   border-radius: 2px 7px 7px 2px;
-  /* toile du plat : plus claire là où tombe la lumière, patinée aux coins et le long du mors */
-  background-image:
+  /* toile du plat : plus claire là où tombe la lumière, patinée aux coins et le long du mors
+     (couverture cuite du lot C : --gc-couv-plat, arêtes et usure cuites : --gc-couv-biseau) */
+  background-color: var(--gc-couv-fond, var(--gc-linen-shade));
+  background-image: var(--gc-couv-plat,
     radial-gradient(ellipse 90% 70% at 18% 12%, color-mix(in srgb, var(--gc-paper-lace) 26%, transparent), transparent 70%),
     radial-gradient(ellipse 120% 100% at 50% 50%, transparent 62%, color-mix(in srgb, var(--gc-chocolate) 16%, transparent) 100%),
     linear-gradient(to right, color-mix(in srgb, var(--gc-chocolate) 10%, transparent) 0, transparent 40px),
     linear-gradient(to bottom, color-mix(in srgb, var(--gc-paper-lace) 18%, transparent), transparent 35%, color-mix(in srgb, var(--gc-chocolate) 12%, transparent)),
     repeating-linear-gradient(90deg, color-mix(in srgb, var(--gc-chocolate) 6%, transparent) 0 1px, transparent 1px 3px),
     repeating-linear-gradient(0deg, color-mix(in srgb, var(--gc-paper-lace) 8%, transparent) 0 1px, transparent 1px 4px),
-    linear-gradient(color-mix(in srgb, var(--gc-kraft) 32%, transparent), color-mix(in srgb, var(--gc-kraft) 32%, transparent));
-  box-shadow:
+    linear-gradient(color-mix(in srgb, var(--gc-kraft) 32%, transparent), color-mix(in srgb, var(--gc-kraft) 32%, transparent)));
+  background-size: var(--gc-couv-plat-taille, auto);
+  box-shadow: var(--gc-couv-biseau,
     inset -4px -4px 0 color-mix(in srgb, var(--gc-chocolate) 30%, transparent),
     inset 3px 3px 0 color-mix(in srgb, var(--gc-paper-lace) 45%, transparent),
     inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent),
-    inset 14px 0 18px -10px color-mix(in srgb, var(--gc-chocolate) 22%, transparent);
+    inset 14px 0 18px -10px color-mix(in srgb, var(--gc-chocolate) 22%, transparent));
 }
 
 .gc-livre-couv__carton {
   border-radius: 7px 2px 2px 7px;
-  box-shadow:
-    inset 0 -4px 0 color-mix(in srgb, var(--gc-chocolate) 34%, transparent),
-    inset 3px 2px 0 color-mix(in srgb, var(--gc-paper-lace) 45%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent);
+}
+
+/* Plat arrière : intérieur du carton (à droite, la garde arrière collée dessus) et toile du plat
+   (couverture cuite du lot C : --gc-couv-arriere, sinon la même toile que l'avant, sans patine). */
+.gc-livre-couv__carton.gc-livre-couv__carton--arriere {
+  border-radius: 2px 7px 7px 2px;
+}
+
+.gc-livre-couv__garde {
+  position: absolute;
+  left: 0;
+  top: var(--gc-livre-carton-haut);
+  width: var(--gc-page-w);
+  height: var(--gc-page-h);
+}
+
+.gc-livre-couv__plat--arriere {
+  border-radius: 7px 2px 2px 7px;
+  background-color: var(--gc-couv-fond, var(--gc-linen-shade));
+  background-image: var(--gc-couv-arriere, var(--gc-couv-plat,
+    radial-gradient(ellipse 90% 70% at 18% 12%, color-mix(in srgb, var(--gc-paper-lace) 22%, transparent), transparent 70%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, transparent 60%, color-mix(in srgb, var(--gc-chocolate) 18%, transparent) 100%),
+    linear-gradient(to left, color-mix(in srgb, var(--gc-chocolate) 10%, transparent) 0, transparent 40px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--gc-paper-lace) 18%, transparent), transparent 35%, color-mix(in srgb, var(--gc-chocolate) 12%, transparent)),
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--gc-chocolate) 6%, transparent) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--gc-paper-lace) 8%, transparent) 0 1px, transparent 1px 4px),
+    linear-gradient(color-mix(in srgb, var(--gc-kraft) 32%, transparent), color-mix(in srgb, var(--gc-kraft) 32%, transparent))));
+  background-size: var(--gc-couv-plat-taille, auto);
+  box-shadow: var(--gc-couv-biseau,
+    inset 0 -4px 0 color-mix(in srgb, var(--gc-chocolate) 30%, transparent),
+    inset 3px 3px 0 color-mix(in srgb, var(--gc-paper-lace) 45%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent),
+    inset -14px 0 18px -10px color-mix(in srgb, var(--gc-chocolate) 22%, transparent));
 }
 
 .gc-livre-couv__contreplat {
@@ -510,9 +597,11 @@
 .gc-livre-couv-chant {
   width: var(--gc-livre-epaisseur);
   border-radius: 2px;
-  background:
+  background-color: var(--gc-couv-teinte, var(--gc-kraft));
+  background-image: var(--gc-couv-chant,
     linear-gradient(to right, color-mix(in srgb, var(--gc-chocolate) 28%, transparent), transparent 30%, transparent 70%, color-mix(in srgb, var(--gc-paper-lace) 30%, transparent)),
-    linear-gradient(var(--gc-kraft), color-mix(in srgb, var(--gc-kraft) 80%, var(--gc-chocolate)));
+    linear-gradient(var(--gc-kraft), color-mix(in srgb, var(--gc-kraft) 80%, var(--gc-chocolate))));
+  background-size: 100% 100%;
 }
 
 .gc-livre-couv__lumiere,
@@ -544,6 +633,165 @@
 
 .gc-livre-couv__ombre {
   background-image: linear-gradient(to left, color-mix(in srgb, var(--gc-sepia-3) 70%, var(--gc-chocolate)), color-mix(in srgb, var(--gc-sepia-3) 40%, var(--gc-chocolate)));
+}
+
+/* ---- Coin qui suit le doigt : rabat plat (Coin.tsx) ------------------------------------------- */
+/* Repère normalisé : la page qu'on plie, reliure à gauche. La page de gauche est vue en miroir (fixe). */
+.gc-livre-coin {
+  --gc-coin-pli-ombre: color-mix(in srgb, var(--gc-sepia-3) 60%, var(--gc-chocolate));
+  --gc-coin-pli-lumiere: var(--gc-porcelain);
+  --gc-coin-ombre: var(--gc-chocolate);
+  position: absolute;
+  top: 0;
+  width: var(--gc-page-w);
+  height: var(--gc-page-h);
+  pointer-events: none;
+  /* Le curseur de la surface (data-gc-curseur, hérité) ne descend pas jusqu'ici : sinon, chaque
+     changement de curseur recalculerait le style du rabat, et ses calques sous découpe tournée
+     (la courbure du pli) se repeindraient. Il ne reçoit aucun pointeur : son curseur n'importe pas. */
+  cursor: auto;
+}
+
+/* Pendant un geste de coin (data-gc-coin, posé au doigt posé), le rabat peut s'effacer (relais) : son
+   opacité est préparée d'avance (au repos, il reste à 1 : aucune passe hors écran). */
+.gc-livre[data-gc-coin] .gc-livre-coin { will-change: opacity; }
+
+.gc-livre-coin--droite { left: var(--gc-page-w); }
+
+.gc-livre-coin--gauche {
+  left: 0;
+  transform: scaleX(-1);
+}
+
+/* La page découverte et son ombre restent dans la page (découpe alignée, sans masque). */
+.gc-livre-coin__cadre {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Demi-plan : un grand carré tourné dont un bord est sur le pli (origine 0 0, matrice complète). */
+.gc-livre-coin__demi {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.gc-livre-coin__page {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--gc-page-w);
+  height: var(--gc-page-h);
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+/* Le rabat : le verso de la feuille, un peu plus sourd que la page posée, et son ombre portée sur la
+   page de dessous (fixe : peinte une fois avec lui ; découpée au pli par le demi-plan). */
+.gc-livre-coin__page--rabat {
+  box-shadow:
+    0 0 3px color-mix(in srgb, var(--gc-chocolate) 30%, transparent),
+    0 0 22px 2px color-mix(in srgb, var(--gc-chocolate) 22%, transparent);
+}
+
+.gc-livre-coin__teinte {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(135deg, color-mix(in srgb, var(--gc-sepia-2) 9%, transparent), color-mix(in srgb, var(--gc-chocolate) 7%, transparent));
+}
+
+/* Ombre jetée par le rabat soulevé sur la page découverte : une bande fixe le long du pli, dans le
+   demi-plan du dessous (coupée par lui et par la page) ; seule son opacité varie. */
+.gc-livre-coin__ombre {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  opacity: 0.002;
+  background-image: linear-gradient(to left,
+    color-mix(in srgb, var(--gc-coin-ombre) 46%, transparent) 0,
+    color-mix(in srgb, var(--gc-coin-ombre) 24%, transparent) 14%,
+    color-mix(in srgb, var(--gc-coin-ombre) 8%, transparent) 42%,
+    transparent 100%);
+  will-change: opacity;
+}
+
+/* Courbure du papier au pli, sur le rabat : la moitié gauche de la bande est sur le rabat (le pli au
+   milieu) ; la moitié droite tombe de l'autre côté du pli, coupée par le demi-plan. Le papier qui
+   s'enroule s'assombrit au ras du pli, puis accroche la lumière avant de se poser à plat. */
+.gc-livre-coin__page--rabat { overflow: hidden; }
+
+.gc-livre-coin__pli {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.002;
+  transform-origin: 0 0;
+  background-image: linear-gradient(to right,
+    transparent 0,
+    color-mix(in srgb, var(--gc-coin-pli-lumiere) 10%, transparent) 14%,
+    color-mix(in srgb, var(--gc-coin-pli-lumiere) 42%, transparent) 33%,
+    color-mix(in srgb, var(--gc-coin-pli-ombre) 10%, transparent) 43%,
+    color-mix(in srgb, var(--gc-coin-pli-ombre) 34%, transparent) 50%,
+    transparent 50.5%);
+  will-change: transform, opacity;
+}
+
+/* ---- Feuilles légères du feuilletage (FeuilletLeger.tsx) ------------------------------------ */
+.gc-livre-leger {
+  position: absolute;
+  left: var(--gc-page-w);
+  top: 0;
+  width: var(--gc-page-w);
+  height: var(--gc-page-h);
+  overflow: hidden;
+  transform-origin: 0 50%;
+  will-change: transform, opacity;
+}
+
+/* Ombrage fixe d'une feuille qui file : un peu plus sombre vers son bord libre (recto), vers la
+   reliure une fois retournée (verso). */
+.gc-livre-leger__voile {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.gc-livre-leger--recto .gc-livre-leger__voile {
+  background-image: linear-gradient(to right, color-mix(in srgb, var(--gc-chocolate) 10%, transparent), transparent 30%, color-mix(in srgb, var(--gc-chocolate) 8%, transparent));
+}
+
+.gc-livre-leger--verso .gc-livre-leger__voile {
+  background-image: linear-gradient(to left, color-mix(in srgb, var(--gc-sepia-3) 16%, transparent), transparent 40%, color-mix(in srgb, var(--gc-chocolate) 10%, transparent));
+}
+
+/* ---- Invitation à ouvrir (lot S) : tiers bas de la couverture fermée ------------------------ */
+/* L'étiquette prend la largeur de son emplacement : 55 % du plat, centrée sur lui, dans le tiers bas. */
+.gc-livre__invitation {
+  position: absolute;
+  left: calc(var(--gc-page-w) + (var(--gc-page-w) + var(--gc-livre-carton-out)) * 0.225);
+  top: calc(var(--gc-page-h) * 2 / 3);
+  width: calc((var(--gc-page-w) + var(--gc-livre-carton-out)) * 0.55);
+  height: calc(var(--gc-page-h) / 3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.gc-livre__invitation-repli {
+  position: absolute;
+  inset: 0;
+  opacity: 0.002;
+}
+
+/* Livre fermé : l'invitation est un calque (un seul, petit) ; son opacité suit l'arrivée et l'ouverture
+   sans mise en page (le passage d'une opacité de 1 à moins de 1 en créerait une) ni repeinture. */
+.gc-livre[data-gc-etat="couverture"] .gc-livre__invitation > * {
+  will-change: opacity;
 }
 
 /* ---- Flèches de navigation, sur la table ---------------------------------------------------- */
@@ -665,6 +913,12 @@
   animation-timing-function: var(--gc-spring-camera);
 }
 
+/* Lien profond sauté (toucher ou touche pendant l'arrivée) : fondu de 150 ms vers la page d'arrivée. */
+html[data-gc-livre-vt="saut"]::view-transition-old(root),
+html[data-gc-livre-vt="saut"]::view-transition-new(root) {
+  animation-duration: 150ms;
+}
+
 /* Changement de cran : le reste de la scène (la table) passe en fondu enchaîné. */
 html[data-gc-livre-vt="distance"]::view-transition-old(root),
 html[data-gc-livre-vt="distance"]::view-transition-new(root) {
@@ -690,12 +944,21 @@ html[data-gc-livre-vt="distance"]::view-transition-new(root) {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  touch-action: pinch-zoom;
+  /* La loupe du carnet remplace le pincement du navigateur (CONTRACT § 13.2). */
+  touch-action: none;
 }
 
 .gc-livre-ecran .gc-livre-scene {
-  touch-action: pinch-zoom;
+  touch-action: none;
 }
+
+/* Curseurs : posés en JS au survol (pointermove), jamais par :hover. L'attribut ne change qu'avec l'état. */
+.gc-livre-ecran[data-gc-curseur="grab"],
+.gc-livre-scene[data-gc-curseur="grab"] { cursor: grab; }
+.gc-livre-ecran[data-gc-curseur="grabbing"],
+.gc-livre-scene[data-gc-curseur="grabbing"] { cursor: grabbing; }
+.gc-livre-ecran[data-gc-curseur="pointer"],
+.gc-livre-scene[data-gc-curseur="pointer"] { cursor: pointer; }
 
 /* Le monde : la scène, sa table débordante et la caméra (translate + scale, origine en haut à gauche).
    En cadrage « page », calque composité (will-change posé par le livre, à l'échelle de l'écran). */

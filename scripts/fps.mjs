@@ -24,17 +24,25 @@
 //   - envol : --banc-envol <url>, défaut le carnet harness/devices.html#julie (photo [data-gc-objet="photo"]
 //     cliquée ; --envol-objet feuillet pour le coin du feuillet) ; harness/banc-soulever.html pour le banc
 //     factice. Sans l'objet : ATTENTE.
+// Plan v4 (lot A, livre vivant), en KO aussi :
+//   - coin : glisser tactile CDP en diagonale depuis l'angle bas droit (le coin suit le doigt, puis le
+//     tourne-page 3D prend le relais) ; fenêtre = du début du « coin » à la fin de la « page » ;
+//   - survol : la souris entre dans l'angle (le coin se lève), puis en sort (il retombe) ;
+//   - riffle : touche Fin depuis la double page 1 (feuilles légères + feuille finale) ;
+//   - arrivee : le livre glisse sur la table et se pose (banc motion.html?scenario=arrivee, Entrée le monte) ;
+//   - lien : harness/devices.html#bernard chargé à froid : arrivée, ouverture, feuilletage ; ≤ 2,2 s du
+//     premier début à la dernière fin ; puis, à part, un toucher à 0,5 s doit atterrir en ≤ 300 ms.
 // Chromium sans GPU : --use-angle=swiftshader --enable-unsafe-swiftshader. Les i/s absolus y sont peu
 // fiables ; ce qui compte : aucun Layout pendant le geste, des frames régulières.
 //
-//   node scripts/fps.mjs [--scenarios turn,open,camera,zoom,reduit,turn-photo,envol] [--throttle 4]
+//   node scripts/fps.mjs [--scenarios turn,open,camera,zoom,reduit,turn-photo,envol,coin,survol,riffle,arrivee,lien] [--throttle 4]
 //        [--bundle dist/ds-t/components] [--banc-photo url] [--touche-photo ArrowLeft] [--banc-envol url]
 //        [--envol-objet photo|feuillet] [--banc url (les deux)]
-//        [--out verification/out/t/fps] [--no-video] [--no-poses]
+//        [--out verification/out/t/fps] [--no-video] [--no-poses] [--banc-lien 'harness/devices.html#bernard']
 import { chromium } from 'playwright';
 import { existsSync, mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { serve, ROOT, lireArgs, Rapport, rectDe, attendrePret, bundleParDefaut, rel } from './lib/verif.mjs';
+import { serve, ROOT, lireArgs, Rapport, rectDe, attendrePret, bundleParDefaut, rel, cdpDe } from './lib/verif.mjs';
 
 const { opt, drapeau, liste } = lireArgs();
 const scenarios = liste('scenarios', 'turn,open,camera,zoom,reduit');
@@ -58,6 +66,10 @@ const OBJET_ENVOL = `[data-gc-objet="${opt('envol-objet', 'photo')}"]`;
 const bancPhoto = opt('banc-photo', opt('banc', 'harness/motion.html?scenario=turn&index=1&photo=1'));
 const touchePhoto = opt('touche-photo', 'ArrowRight');
 const bancEnvol = opt('banc-envol', opt('banc', 'harness/devices.html#julie'));
+const bancLien = opt('banc-lien', 'harness/devices.html#bernard');
+/** Lien profond : durée maximale de la séquence et de l'atterrissage après un toucher (ms). */
+const LIEN_MAX_MS = 2200;
+const SAUT_MAX_MS = 300;
 
 // Scénarios : banc, déclencheur (touche ou clic sur un sélecteur), type du geste, chorégraphie vidéo.
 // [touche] : appui puis attente du calme · [touche, ms] : appui puis pause · [ms] : pause · ['@'] : déclencheur.
@@ -90,6 +102,23 @@ const SCENARIOS = {
     titre: `Envol ${OBJET_ENVOL === PHOTO ? 'de la photo' : 'du feuillet'} (Soulever)`, banc: bancEnvol, clic: OBJET_ENVOL, type: 'envol', exigences: true, requiert: OBJET_ENVOL,
     video: [[600], ['@'], [1600], ['Escape'], [1400], ['@'], [1200], ['Escape'], [1200]],
   },
+  // ---- Plan v4 : le livre vivant (lot A) ----
+  coin: {
+    titre: 'Coin qui suit le doigt (diagonale tactile, relais vers le tourne-page 3D)', banc: 'harness/motion.html?scenario=turn&index=1', geste: 'coin', type: ['coin', 'page'], exigences: true, tactile: true,
+    video: [[700], ['@'], [1300], ['@'], [1300]],
+  },
+  survol: {
+    titre: 'Survol d\'un coin à la souris (il se lève, puis retombe)', banc: 'harness/motion.html?scenario=turn&index=1', geste: 'survol', type: 'coin', exigences: true,
+    video: [[700], ['@'], [900], ['@'], [900]],
+  },
+  riffle: {
+    titre: 'Feuilletage (Fin depuis la double page 1)', banc: 'harness/motion.html?scenario=turn&index=0', touche: 'End', type: 'riffle', exigences: true,
+    video: [[600], ['End'], ['Home'], ['ArrowRight'], ['End']],
+  },
+  arrivee: {
+    titre: 'Arrivée du livre sur la table', banc: 'harness/motion.html?scenario=arrivee', touche: 'Enter', type: 'arrivee', exigences: true,
+    video: [[500], ['Enter'], [900], ['ArrowRight']],
+  },
 };
 
 const POSES = [
@@ -105,6 +134,18 @@ const POSES = [
   ['repos-proche', 'scenario=turn&index=1&distance=proche'],
   ['repos-moyenne', 'scenario=turn&index=1&distance=moyenne'],
   ['repos-loin', 'scenario=turn&index=1&distance=loin'],
+  // Plan v4 : coin, arrivée, feuilletage figés.
+  ['coin-leve', 'scenario=pose&index=1&coin=droite,bas,0.975,0.98'],
+  ['coin-bas', 'scenario=pose&index=1&coin=droite,bas,0.74,0.82'],
+  ['coin-diagonale', 'scenario=pose&index=1&coin=droite,bas,0.56,0.6'],
+  ['coin-relais', 'scenario=pose&index=1&coin=droite,bas,0.46,0.55'],
+  ['coin-haut-gauche', 'scenario=pose&index=2&coin=gauche,haut,0.7,0.14'],
+  ['arrivee-20', 'scenario=pose&index=-1&arrivee=0.2'],
+  ['arrivee-60', 'scenario=pose&index=-1&arrivee=0.6'],
+  ['arrivee-95', 'scenario=pose&index=-1&arrivee=0.95'],
+  ['riffle-r35', 'scenario=pose&index=0&vers=5&p=0.05&r=0.35'],
+  ['riffle-r70', 'scenario=pose&index=0&vers=5&p=0.25&r=0.7'],
+  ['riffle-r100', 'scenario=pose&index=0&vers=5&p=0.6&r=1'],
 ];
 
 // ---- Instrumentation (addInitScript) --------------------------------------------------------------
@@ -258,8 +299,43 @@ async function ouvrir(context, srv, banc, extra) {
   return { page, errors };
 }
 
+/** Glisser tactile (CDP) en diagonale depuis l'angle bas droit de la page de droite : le coin suit le doigt. */
+async function diagonaleCoin(page, { pose = 220, ms = 650, n = 26 } = {}) {
+  const r = await rectDe(page, '.gc-livre__emplacement--droite');
+  if (!r) return false;
+  const cdp = await cdpDe(page);
+  const [x0, y0] = [r.r - r.w * 0.035, r.b - r.h * 0.035];
+  const [x1, y1] = [r.x + r.w * 0.1, r.y + r.h * 0.42];
+  const t0 = Date.now() / 1000;
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: x0, y: y0, id: 1 }], timestamp: t0 });
+  await page.waitForTimeout(pose); // le doigt se pose : le coin se lève
+  for (let i = 1; i <= n; i++) {
+    const t = i / n;
+    const e = t * t * (3 - 2 * t);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x0 + (x1 - x0) * e, y: y0 + (y1 - y0) * e, id: 1 }], timestamp: t0 + (pose + (i * ms) / n) / 1000 });
+    await page.waitForTimeout(ms / n);
+  }
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [], timestamp: t0 + (pose + ms) / 1000 + 0.008 });
+  return true;
+}
+
+/** Souris : du milieu de la page vers l'angle bas droit (le coin se lève), puis on en sort (il retombe). */
+async function survolCoin(page, { tenir = 700 } = {}) {
+  const r = await rectDe(page, '.gc-livre__emplacement--droite');
+  if (!r) return false;
+  const [xa, ya] = [r.x + r.w * 0.5, r.y + r.h * 0.5];
+  const [xc, yc] = [r.r - r.w * 0.05, r.b - r.h * 0.05];
+  await page.mouse.move(xa, ya);
+  for (let i = 1; i <= 10; i++) { await page.mouse.move(xa + ((xc - xa) * i) / 10, ya + ((yc - ya) * i) / 10); await page.waitForTimeout(16); }
+  await page.waitForTimeout(tenir);
+  for (let i = 1; i <= 6; i++) { await page.mouse.move(xc - ((xc - xa) * i) / 6, yc - ((yc - ya) * i) / 6); await page.waitForTimeout(16); }
+  return true;
+}
+
 async function declencher(page, sc) {
   if (sc.type === 'envol') await page.evaluate(() => window.__gcFps.armerEnvol());
+  if (sc.geste === 'coin') return diagonaleCoin(page);
+  if (sc.geste === 'survol') return survolCoin(page);
   if (sc.clic) {
     const r = await rectDe(page, sc.clic);
     if (!r) return false;
@@ -278,8 +354,11 @@ const r1 = (v) => (Number.isFinite(v) ? Math.round(v * 10) / 10 : null);
 const metrics = (res) => Object.fromEntries(res.metrics.map((m) => [m.name, m.value]));
 
 // ---- 1. Mesure ------------------------------------------------------------------------------
+const typesDe = (sc) => (Array.isArray(sc.type) ? sc.type : [sc.type]);
+const contexteDe = (browser, sc, extra = {}) => browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, reducedMotion: sc.reduced ? 'reduce' : 'no-preference', ...(sc.tactile ? { hasTouch: true } : null), ...extra });
+
 async function mesurer(browser, srv, nom, sc) {
-  const context = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, reducedMotion: sc.reduced ? 'reduce' : 'no-preference' });
+  const context = await contexteDe(browser, sc);
   const { page, errors } = await ouvrir(context, srv, sc.banc);
   if (sc.requiert && !(await rectDe(page, sc.requiert))?.visible) {
     await context.close();
@@ -292,8 +371,9 @@ async function mesurer(browser, srv, nom, sc) {
   const m0 = metrics(await cdp.send('Performance.getMetrics'));
   await browser.startTracing(page, { categories: CATEGORIES });
   await page.evaluate(() => window.__gcFps.arm());
+  const types = typesDe(sc);
   await declencher(page, sc);
-  const res = await page.evaluate((type) => window.__gcFps.waitEnd(type), sc.type);
+  const res = await page.evaluate((type) => window.__gcFps.waitEnd(type), types[types.length - 1]);
   const buf = await browser.stopTracing();
   const m1 = metrics(await cdp.send('Performance.getMetrics'));
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
@@ -316,17 +396,19 @@ async function mesurer(browser, srv, nom, sc) {
   // Bornes du geste : marques gc-geste-debut/fin-<type> (horloge de la trace, µs).
   const ev = evTrace;
   const marque = (n) => ev.filter((e) => e.name === n && String(e.cat).includes('blink.user_timing')).map((e) => e.ts).sort((a, b) => a - b);
-  const t0 = marque(`gc-geste-debut-${sc.type}`)[0];
-  const fins = marque(`gc-geste-fin-${sc.type}`);
-  const t1 = fins.find((t) => t > t0) ?? fins[fins.length - 1];
+  // Plusieurs types (coin puis page) : du premier début au dernier fin.
+  const debuts = types.map((ty) => marque(`gc-geste-debut-${ty}`)[0]).filter((x) => x != null);
+  const t0 = debuts.length ? Math.min(...debuts) : undefined;
+  const fins = types.flatMap((ty) => marque(`gc-geste-fin-${ty}`)).sort((a, b) => a - b);
+  const t1 = types.length > 1 ? fins.filter((t) => t > t0).pop() : (fins.find((t) => t > t0) ?? fins[fins.length - 1]);
   const dans = (e) => t0 != null && t1 != null && e.ts >= t0 && e.ts <= t1 && (e.ph === 'X' || e.ph === 'B');
   const compte = (n) => ev.filter((e) => e.name === n && dans(e)).length;
   const details = (n) => ev.filter((e) => e.name === n && dans(e)).map((e) => r1((e.ts - t0) / 1000));
 
   // Temps de frame (rAF) et propriétés modifiées pendant le geste (horloge de la page).
-  const d = res.gestes.find((g) => g.phase === 'debut' && g.type === sc.type);
-  const prepa = res.gestes.find((g) => g.phase === 'prepa' && g.type === sc.type);
-  const f = res.gestes.find((g) => g.phase === 'fin' && g.type === sc.type);
+  const d = res.gestes.find((g) => g.phase === 'debut' && types.includes(g.type));
+  const prepa = res.gestes.find((g) => g.phase === 'prepa' && types.includes(g.type));
+  const f = types.length > 1 ? res.gestes.filter((g) => g.phase === 'fin' && types.includes(g.type)).pop() : res.gestes.find((g) => g.phase === 'fin' && g.type === sc.type);
   const frames = d && f ? res.frames.filter((t) => t >= d.t && t <= f.t) : [];
   const dt = frames.slice(1).map((t, i) => t - frames[i]);
   const proprietes = {};
@@ -350,7 +432,8 @@ async function mesurer(browser, srv, nom, sc) {
     expire: res.timeout,
     echec: f?.echec ?? null,
     dureeGesteMs: d && f ? r1(f.t - d.t) : null,
-    bornes: d?.bornes ?? 'gc-livre-geste',
+    bornes: d?.bornes ?? (types.length > 1 ? `gc-livre-geste (${types.join(' → ')})` : 'gc-livre-geste'),
+    types: res.gestes.filter((g) => types.includes(g.type)).map((g) => `${g.phase}:${g.type}@${Math.round(g.t - (d?.t ?? g.t))}`),
     preparationMs: prepa && d ? r1(d.t - prepa.t) : null,
     frames: dt.length,
     frameMs: { p50: r1(quantile(dt, 0.5)), p95: r1(quantile(dt, 0.95)), p99: r1(quantile(dt, 0.99)), max: r1(dt.length ? Math.max(...dt) : NaN) },
@@ -381,7 +464,7 @@ async function mesurer(browser, srv, nom, sc) {
 
 // ---- 2. Calques (CDP LayerTree, passe à part : le domaine ralentit le compositeur) ----------
 async function compterCalques(browser, srv, sc) {
-  const context = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, reducedMotion: sc.reduced ? 'reduce' : 'no-preference' });
+  const context = await contexteDe(browser, sc);
   const { page } = await ouvrir(context, srv, sc.banc);
   const cdp = await context.newCDPSession(page);
   let calques = 0, dessines = 0;
@@ -402,10 +485,7 @@ async function compterCalques(browser, srv, sc) {
 async function filmer(browser, srv, nom, sc) {
   if (!video || !browser) return { video: null };
   const tmp = join(outDir, '.video-tmp');
-  const context = await browser.newContext({
-    viewport: { width: W, height: H }, deviceScaleFactor: 1, reducedMotion: sc.reduced ? 'reduce' : 'no-preference',
-    recordVideo: { dir: tmp, size: { width: W / 2, height: H / 2 } },
-  });
+  const context = await contexteDe(browser, sc, { recordVideo: { dir: tmp, size: { width: W / 2, height: H / 2 } } });
   const { page, errors } = await ouvrir(context, srv, sc.banc);
   for (const etape of sc.video) {
     if (typeof etape[0] === 'number') { await page.waitForTimeout(etape[0]); continue; }
@@ -421,6 +501,104 @@ async function filmer(browser, srv, nom, sc) {
   await v.saveAs(chemin);
   await v.delete();
   return { video: rel(chemin), erreursVideo: errors };
+}
+
+// ---- Lien profond à froid (plan v4) : le carnet chargé sur #bernard ------------------------------
+// Le banc ne compte pas son propre chargement (le livre saute son arrivée au-delà de 1,5 s : en
+// émulation ralentie, ce serait toujours le cas) ; la mesure est armée dès le premier octet.
+function INIT_LIEN() {
+  window.__gcArriveeToujours = true;
+  window.__gcToucher = null;
+  window.addEventListener('pointerdown', (e) => { if (e.isTrusted && window.__gcToucher == null) window.__gcToucher = performance.now(); }, true);
+  const armer = () => window.__gcFps?.arm();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', armer);
+  else armer();
+}
+
+async function lienFroid(browser, srv, { toucherA = null, trace = false, calques = false, ralenti = true } = {}) {
+  const context = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, hasTouch: true });
+  await context.addInitScript(INIT_FPS);
+  await context.addInitScript(INIT_LIEN);
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(String(e)));
+  page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+  const cdp = await context.newCDPSession(page);
+  if (ralenti) await cdp.send('Emulation.setCPUThrottlingRate', { rate: throttle });
+  let calquesMax = 0;
+  let dessinesMax = 0;
+  if (calques) {
+    cdp.on('LayerTree.layerTreeDidChange', ({ layers }) => {
+      if (!layers) return;
+      calquesMax = Math.max(calquesMax, layers.length);
+      dessinesMax = Math.max(dessinesMax, layers.filter((l) => l.drawsContent).length);
+    });
+    await cdp.send('LayerTree.enable');
+  }
+  if (trace) await browser.startTracing(page, { categories: CATEGORIES });
+  await page.goto(urlDe(srv, bancLien));
+  let touche = null;
+  if (toucherA != null) {
+    await page.waitForFunction(() => (window.__gcFps?.gestes ?? []).some((g) => g.phase === 'debut'), null, { timeout: 60000, polling: 10 });
+    const t = await page.evaluate(() => window.__gcFps.gestes.find((g) => g.phase === 'debut').t);
+    await page.waitForFunction((x) => performance.now() >= x, t + toucherA, { timeout: 10000, polling: 5 });
+    const c = await cdpDe(page);
+    const vp = page.viewportSize();
+    await c.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: vp.width * 0.5, y: vp.height * 0.55, id: 1 }] });
+    await page.waitForTimeout(50);
+    await c.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    touche = t + toucherA;
+  }
+  await page.waitForFunction(() => document.querySelector('[data-gc-arrivee="fini"]'), null, { timeout: 60000, polling: 20 }).catch(() => {});
+  await page.evaluate(() => window.__gcFps.attendreCalme(400, 400));
+  const buf = trace ? await browser.stopTracing() : null;
+  if (calques) await cdp.send('LayerTree.disable').catch(() => {});
+  const etat = await page.evaluate(() => ({
+    gestes: window.__gcFps.gestes.slice(),
+    frames: window.__gcFps.frames.slice(),
+    toucher: window.__gcToucher,
+    double: Number(document.querySelector('.gc-livre-ecran')?.getAttribute('data-gc-double')),
+    hash: location.hash,
+    spreads: [...new Set([...document.querySelectorAll('.gc-livre__page--visible [data-gc-spread]')].map((e) => e.getAttribute('data-gc-spread')))],
+  }));
+  await context.close();
+  return { etat, buf, errors, calquesMax, dessinesMax, touche };
+}
+
+async function mesurerLien(browser, srv) {
+  const sc = { titre: `Lien profond à froid (${bancLien}) : arrivée, ouverture, feuilletage`, banc: bancLien };
+  const a = await lienFroid(browser, srv, { trace: true });
+  const g = a.etat.gestes;
+  const debuts = g.filter((x) => x.phase === 'debut');
+  const finsG = g.filter((x) => x.phase === 'fin');
+  const tA = debuts.length ? Math.min(...debuts.map((x) => x.t)) : null;
+  const tB = finsG.length ? Math.max(...finsG.map((x) => x.t)) : null;
+  const ev = JSON.parse(a.buf.toString()).traceEvents;
+  const marques = ev.filter((e) => String(e.cat).includes('blink.user_timing') && /^gc-geste-(debut|fin)-/.test(e.name));
+  const m0 = Math.min(...marques.filter((e) => e.name.startsWith('gc-geste-debut-')).map((e) => e.ts));
+  const m1 = Math.max(...marques.filter((e) => e.name.startsWith('gc-geste-fin-')).map((e) => e.ts));
+  const dans = (e) => Number.isFinite(m0) && Number.isFinite(m1) && e.ts >= m0 && e.ts <= m1 && (e.ph === 'X' || e.ph === 'B');
+  const compte = (n) => ev.filter((e) => e.name === n && dans(e)).length;
+  const aMs = (n) => ev.filter((e) => e.name === n && dans(e)).map((e) => r1((e.ts - m0) / 1000));
+  const frames = tA != null && tB != null ? a.etat.frames.filter((t) => t >= tA && t <= tB) : [];
+  const dt = frames.slice(1).map((t, i) => t - frames[i]);
+  const c = await lienFroid(browser, srv, { calques: true });
+  const b = await lienFroid(browser, srv, { toucherA: 500 });
+  const finsB = b.etat.gestes.filter((x) => x.phase === 'fin');
+  const tFinB = finsB.length ? Math.max(...finsB.map((x) => x.t)) : null;
+  const saut = b.etat.toucher != null && tFinB != null ? tFinB - b.etat.toucher : null;
+  return {
+    scenario: 'lien', titre: sc.titre, banc: sc.banc, erreurs: [...a.errors, ...b.errors, ...c.errors],
+    sequenceMs: tA != null && tB != null ? r1(tB - tA) : null,
+    gestes: g.map((x) => `${x.phase}:${x.type}@${Math.round(x.t - (tA ?? 0))}`),
+    frames: dt.length,
+    frameMs: { p50: r1(quantile(dt, 0.5)), p95: r1(quantile(dt, 0.95)), p99: r1(quantile(dt, 0.99)), max: r1(dt.length ? Math.max(...dt) : NaN) },
+    framesPlusDe25ms: dt.filter((x) => x > 25).length,
+    pendantLeGeste: { Layout: compte('Layout'), Paint: compte('Paint'), LayoutA_ms: aMs('Layout'), PaintA_ms: aMs('Paint') },
+    calquesMax: c.calquesMax, calquesDessinesMax: c.dessinesMax,
+    arrivee: { double: a.etat.double, hash: a.etat.hash, spreads: a.etat.spreads },
+    saut: { ms: saut != null ? r1(saut) : null, double: b.etat.double, spreads: b.etat.spreads, gestes: b.etat.gestes.map((x) => `${x.phase}:${x.type}@${Math.round(x.t - (b.etat.toucher ?? 0))}`) },
+  };
 }
 
 // ---- 4. Captures à mi-geste (banc harness/motion.html) ---------------------------------------
@@ -457,6 +635,27 @@ const browserVideo = video ? await lancer(ARGS_VIDEO) : null;
 const R = new Rapport('fps', { dir: outDir, meta: { throttle, bundle, navigateur: browser.version(), args: ARGS, argsVideo: ARGS_VIDEO } });
 const resultats = [];
 for (const nom of scenarios) {
+  if (nom === 'lien') {
+    let r;
+    try { r = await mesurerLien(browser, srv); } catch (x) { R.ajouter(nom, 'mesure', 'KO', `plantage : ${String(x).split('\n')[0]}`); continue; }
+    resultats.push(r);
+    const g = r.pendantLeGeste;
+    const surBernard = (sp) => sp.some((x) => /mathis|bernard/.test(x));
+    console.log(`\n■ ${r.titre}`);
+    console.log(`  séquence ${r.sequenceMs} ms · ${r.frames} frames · p50 ${r.frameMs.p50} / p95 ${r.frameMs.p95} / max ${r.frameMs.max} ms · Layout ${g.Layout} · Paint ${g.Paint} · calques ${r.calquesMax}`);
+    console.log(`  gestes : ${r.gestes.join(', ')}`);
+    console.log(`  toucher à 0,5 s : posé en ${r.saut.ms} ms (${r.saut.gestes.join(', ')})`);
+    R.ajouter(nom, `séquence ≤ ${LIEN_MAX_MS} ms (premier début → dernière fin)`, r.sequenceMs != null && r.sequenceMs <= LIEN_MAX_MS ? 'OK' : 'KO', `${r.sequenceMs} ms`);
+    R.ajouter(nom, 'arrive sur la double page de Bernard', surBernard(r.arrivee.spreads) ? 'OK' : 'KO', `double ${r.arrivee.double} (${r.arrivee.spreads.join(', ')}) ${r.arrivee.hash}`);
+    R.ajouter(nom, '0 Layout pendant la séquence', g.Layout === 0 ? 'OK' : 'KO', `${g.Layout}${g.Layout ? ` (à ${g.LayoutA_ms.join(', ')} ms)` : ''}`);
+    R.ajouter(nom, '≤ 2 Paint pendant la séquence', g.Paint <= 2 ? 'OK' : 'KO', `${g.Paint}${g.Paint ? ` (à ${g.PaintA_ms.join(', ')} ms)` : ''}`);
+    R.ajouter(nom, '≤ 40 calques', r.calquesMax <= 40 ? 'OK' : 'KO', `${r.calquesMax} (dont ${r.calquesDessinesMax} dessinés)`);
+    R.ajouter(nom, `toucher à 0,5 s : posé en ≤ ${SAUT_MAX_MS} ms`, r.saut.ms != null && r.saut.ms <= SAUT_MAX_MS ? 'OK' : 'KO', `${r.saut.ms} ms`);
+    R.ajouter(nom, 'toucher à 0,5 s : sur la double page de Bernard', surBernard(r.saut.spreads) ? 'OK' : 'KO', `double ${r.saut.double} (${r.saut.spreads.join(', ')})`);
+    R.info(nom, 'temps de frame', `p50 ${r.frameMs.p50} · p95 ${r.frameMs.p95} · max ${r.frameMs.max} ms · ${r.framesPlusDe25ms} > 25 ms · ${r.frames} images`);
+    if (r.erreurs.length) R.ajouter(nom, 'aucune erreur de page', 'KO', r.erreurs.slice(0, 3).join(' | '));
+    continue;
+  }
   const sc = SCENARIOS[nom];
   if (!sc) { console.warn(`scénario inconnu : ${nom}`); continue; }
   let r;

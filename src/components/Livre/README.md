@@ -33,8 +33,17 @@ function Carnet({ spreads }: { spreads: SpreadSpec[] }) {
 | `coteInitial` | `'gauche' \| 'droite'` | Cadrage « page » (dans un `Ecran` en portrait) : page cadrée au départ. Défaut : `gauche`. |
 | `onToucherPage` | `(t: ToucherPage) => boolean \| void` | Toucher (ou clic) sur une page sans glisser : `{ spreadId, side, x, y, cible }` (x, y en fractions de la page). Renvoyer `true` consomme le toucher (pas de navigation par la marge). Appelé **dans** le geste (`play()` y est permis sur iOS). |
 | `gestes` | `boolean` | Gestes au pointeur (glisser, toucher). Défaut : `true`. |
+| `arrivee` | `true \| { vers: number; cote?: 'gauche' \| 'droite' }` | **Plan v4.** Au montage, le livre glisse sur la table et se pose (`true`). Avec `vers` (lien profond, QR de l'A5) : il arrive, s'ouvre, puis feuillette jusqu'à cette double page (≈ 2,1 s). Un toucher ou une touche saute à la fin (fondu de 150 ms) ; onglet caché : tout est sauté. Sautée en mouvement réduit ou si la page a mis plus de 1,5 s à se charger (`window.__gcArriveeToujours = true` l'impose : bancs de mesure). Attribut `data-gc-arrivee="en-cours\|fini"` sur `.gc-livre`. |
+| `invitation` | `(opacite: MotionValue<number>) => ReactNode` | **Plan v4.** L'invitation à ouvrir du lot S (`(o) => <InvitationOuvrir opacite={o} />`), posée sur le tiers bas de la couverture fermée. Le livre en pilote l'opacité : arrivée finie × (1 − lisse(0, 0,06, p)). Sans elle : un emplacement vide et invisible. |
+| `couverture` | `CSSProperties` | **Plan v4.** Variables de la couverture cuite (lot C, `couvertureVars()`), posées sur `.gc-livre` et lues élément par élément (README de `Couverture`) : `--gc-couv-plat` (plat avant), `--gc-couv-contreplat` (carton gauche, verso de la couverture), `--gc-couv-contreplat-arriere` (carton droit, intérieur du plat arrière), `--gc-couv-arriere` (plat arrière fermé), `--gc-couv-chant`, `--gc-couv-fond`, `--gc-couv-biseau`, `--gc-couv-teinte`, `--gc-couv-plat-taille`. Sans elles : les dégradés actuels. Le filet de reliure reste chocolat (`--gc-couv-dos` est l'extérieur du dos). |
+| `couvertureArriere` | `ReactNode` | **Plan v4** (prêt, pas encore branché dans `Carnet` : `PLAT_ARRIERE = false`, une butée en fin de carnet pour le prototype). La dernière double page est le colophon et la garde arrière : tourner sa page (→, glisser, marge) **referme le livre sur son plat arrière** (index `spreads.length`), symétrique de l'ouverture (ressort `cover`, caméra recentrée, tassement, son `couverture-fermer`). ← (ou toucher le plat) le rouvre ; « Aller à… » ou un lien le rouvrent. `true` : la toile seule ; un nœud : ce qui est posé sur le plat. Fin reste la dernière double page ouverte. |
+| `apiRef` | `MutableRefObject<LivreApi \| null>` | **Plan v4.** Commandes impératives : `aller(i, cote?)` (même navigation que `index`), `sauter()` (fin immédiate de l'arrivée / du lien profond). |
 
-Exporte `Livre`, `LivreProps`, `LivrePose`, `CotePage`, `ToucherPage`, et ré-exporte `CameraProvider`, `useCamera`, `CameraProviderProps` de `src/lib/camera.tsx` (absents de `src/index.ts`).
+Exporte `Livre`, `COIN_2D`, `LivreProps`, `LivrePose`, `LivreApi`, `CotePage`, `ToucherPage`, et ré-exporte `CameraProvider`, `useCamera`, `CameraProviderProps` de `src/lib/camera.tsx` (absents de `src/index.ts`).
+
+### Sauter à une double page (sommaire cliquable, « Aller à… », liens)
+
+Une seule navigation : changer `index` (ou `apiRef.current.aller(i)`). Le livre va à la double page **par le plus court geste** : un seul feuillet tourne de la page affichée à la cible (avec `FEUILLETAGE = true`, dès 2 doubles pages d'écart, il feuillette : jusqu'à 3 feuilles légères en décalé, puis la feuille finale — reporté après validation du prototype) ; livre fermé, il s'ouvre d'abord. Le sommaire n'a donc qu'à appeler `setIndex(cible)` (ou `aller(cible)`) depuis ses boutons ; aucune autre API.
 
 ## Touches
 
@@ -43,12 +52,14 @@ Exporte `Livre`, `LivreProps`, `LivrePose`, `CotePage`, `ToucherPage`, et ré-ex
 | → · PageDown | double page suivante (télécommandes de présentation : PageDown) |
 | ← · PageUp | double page précédente |
 | Début | revient au début (referme le carnet s'il a une couverture) |
-| Fin | dernière double page |
+| Fin | dernière double page (ouverte) |
+| → sur la dernière double page | avec `couvertureArriere` : le livre se referme sur son plat arrière (← le rouvre) |
+| Entrée / Espace, livre fermé | l'ouvre (`Carnet`, CONTRACT § 13.1 ; sinon : vidéo de la double page) |
 | + / − | cran de caméra plus proche / plus loin (`CameraProvider keyboard`) |
 | Alt + « + » / « − » | zoom fin ± 1 % (bornes par cran, `zoomBornes`, de 85 % à 115 %) ; ↑ est réservé au feuillet volant (CONTRACT § 12) |
 | 0 | zoom fin à 100 % |
 
-Les répétitions d'une touche maintenue sont ignorées ; Ctrl/Cmd/Alt + flèche est laissé au navigateur. Les deux flèches de la table sont des `<button>` (Entrée/Espace), anneau `:focus-visible` miel, aucun survol. En cadrage « page », ← / → et les flèches avancent d'**une page** (gauche → droite → gauche suivante).
+Les répétitions d'une touche maintenue sont ignorées ; Ctrl/Cmd/Alt + flèche est laissé au navigateur ; **une touche déjà consommée (`defaultPrevented`) est ignorée** : sous la loupe, le contrôleur du lot B prend les flèches pour déplacer la vue et ne laisse passer ← → qu'au bord (la page tourne alors en fondu, et la vue revient en haut de la nouvelle page, `ancrerLoupe('haut')`). Les deux flèches de la table sont des `<button>` (Entrée/Espace), anneau `:focus-visible` miel, aucun survol. En cadrage « page », ← / → et les flèches avancent d'**une page** (gauche → droite → gauche suivante).
 
 ## Gestes (doigt, stylet, souris — Pointer Events)
 
@@ -60,11 +71,15 @@ Les répétitions d'une touche maintenue sont ignorées ; Ctrl/Cmd/Alt + flèche
 | Toucher la couverture fermée | Elle s'ouvre. |
 | Toucher une page | `onToucherPage` puis l'événement `gc-livre-toucher` (en bulle, annulable) sur l'élément touché : la double page s'en sert (lecture / pause). |
 | Toucher la marge extérieure (12 % de la page) | Page précédente / suivante (en cadrage « page » : bord gauche / droit de la page cadrée). |
-| Glisser vertical, appui long, pincement | Rien (le pincement du navigateur reste permis). |
+| Glisser vertical, appui long | Rien. |
+| **Doigt posé dans un angle** (14 % W × 14 % H, angles extérieurs) | Le coin se lève de 2,5 % (`settle`, son `coin` très doux). Un simple toucher d'angle le repose : **la page ne tourne pas**. |
+| **Glisser depuis un angle** (vers l'intérieur, en diagonale) | **Le coin suit le doigt** en x et en y : rabat plat (le pli est la médiatrice angle–doigt, contraintes anti-déchirure, il se redresse en s'enfonçant). Au-delà d'une profondeur de 0,28, ou sur un lancer, le tourne-page 3D prend le relais sans saut (p résolu par `bordProjete`) et le rabat s'efface en 120 ms. Lâché avant : le rabat retombe, rien ne tourne. |
+| **Survol d'un angle** (souris) | Le coin se lève (et retombe en sortant). Curseurs posés en JS (`pointermove`, **aucune règle `:hover`**) par `data-gc-curseur` sur la surface : `grab` dans un angle, `grabbing` en glissant, `pointer` sur une marge qui tourne la page ou la couverture fermée ; l'attribut ne change qu'avec l'état. |
+| Pincement, double toucher, ctrl + molette | La loupe du carnet (lot B). Zoomé : **aucun glisser ne tourne la page** ; les touchers d'objets (photo, feuillet) marchent, pas ceux de marge. Au début d'un geste de loupe (`gc-loupe`), le doigt en cours est abandonné (la feuille retombe). |
 
 - Toucher / glisser : seuil de 8 px ; un toucher dure moins de 600 ms. Dès 4 px horizontaux, le sens est connu et le **feuillet est monté** (préparation, comme au clavier) : il est prêt quand le glisser commence ; un simple toucher ne monte rien (la page vivante, vidéo comprise, n'est jamais remplacée par sa copie figée). Le doigt pilote `p` tout de suite, sans attendre la cadence stable.
 - Un geste clavier en cours : le doigt **rattrape** le ressort (il reprend `p` où il en est) ; un toucher de marge le relance comme un appui rapide. Pendant que le doigt tient la feuille, le clavier est ignoré.
-- `touch-action` : `pinch-zoom` dans un `Ecran` (aucun défilement), `pan-y pinch-zoom` seul (la carte vit dans une page qui défile). Pas de sélection de texte, de glisser d'image ni de menu d'appui long ; le clic qui suit un glisser est avalé (souris, clic fantôme).
+- `touch-action` : `none` dans un `Ecran` (la loupe du carnet remplace le pincement du navigateur, CONTRACT § 13.2), `pan-y pinch-zoom` seul (la carte vit dans une page qui défile). Pas de sélection de texte, de glisser d'image ni de menu d'appui long ; le clic qui suit un glisser est avalé (souris, clic fantôme).
 - Moins de mouvement : un glisser fait page suivante / précédente en fondu (aucun feuillet).
 
 ## Tous les écrans (dans un `<Ecran>`)
@@ -113,6 +128,31 @@ Stage (cran, table en bois ; overlay : repère + flèches)
 - **Repère** : étiquette `gc-hand-caption` (`--gc-ink` sur `--gc-paper-lace`, ombre `--gc-sh-lift`), posée de biais en bas à gauche : « loin · 97 % », apparaît au réglage et s'efface en 1,5 s.
 - **Moins de mouvement** (`prefers-reduced-motion`) : aucun feuillet, aucune courbure ; changement de page en fondu enchaîné court (transition de vue, 250 ms) ; zoom fin immédiat.
 
+## Plan v4 : le livre vivant
+
+### Coin qui suit le doigt (`coin.ts`, `CoinRabat.tsx`)
+- `coin.ts` : géométrie **pure** (testable sans DOM) dans le repère de la page qu'on plie (reliure en x = 0) : `plier(angle, fx, fy, W, H)` (doigt contraint : |F − dos| ≤ W, |F − dos opposé| ≤ √(W² + H²), pas au-delà du bord ; profondeur λ ; le pli se redresse entre λ = 0,15 et 0,3 ; corde), `matrices()` (demi-plans et contenus), `matricePli()`, `pRelais()` (dichotomie sur `bordProjete(angles(p))`), `zoneCoin()`.
+- `CoinRabat.tsx` (composant `Coin`, nommé ainsi parce qu'esbuild confond `./coin` et `./Coin`) : **six calques**, transformations seulement : dessous (demi-plan tourné `overflow: hidden` + la page suivante contre-tournée + ombre jetée, bande fixe en opacité), rabat (demi-plan + verso réfléchi, ombre portée fixe sur ses bords) et la courbure du pli **dans** la page du rabat (rotation + translation, jamais d'échelle : une échelle sous une découpe se repeint). La page de gauche est vue en miroir (racine en `scaleX(−1)`).
+- Monté 500 ms après que la page s'est posée (les deux côtés en cadrage double, la page cadrée sinon) ; démonté pendant un tour (sauf celui qu'il a lancé), sous la loupe et en mouvement réduit. Au repos, son pli est de taille nulle à opacité 1 : rien ne se voit, et aucune passe hors écran ne tourne.
+- Au doigt posé : le feuillet 3D du tour est monté **tout de suite** (mise en page et peinture avant le geste), un seul rabat reste monté. Événements `gc-livre-geste` : `coin` (début au premier glisser, fin quand le rabat est retombé ou effacé), puis `page` au relais. `data-gc-coin="gauche|droite"` sur `.gc-livre` pendant le geste.
+- Cadrage « page » : la caméra ne suit la feuille qu'à partir du relais (aucun saut).
+- **Repli** : `COIN_2D = false` (constante exportée) : le coin se lève à p = 0,03 sur le feuillet 3D et seul le suivi horizontal reste.
+
+### Arrivée, ouverture lestée, lien profond
+- Arrivée : la MotionValue `arr` (ressort `SPRINGS.arrivee`) pilote `y` (+70 % de la scène → 0) et `rotate` (5° → 0) de la caméra (`Camera.tsx`), calque promu le temps du mouvement. Elle part après le cadrage, `pret()` et `cadenceStable()`.
+- Ouverture lestée : p monte à 0,015 en 90 ms, puis le ressort `cover` part avec de la vitesse ; quand le carton se pose, le livre se tasse de 2,5 px (`settle`), l'ombre gauche respire (calque `.gc-livre__ombre--pouls`, opacité) et l'on entend `couverture-poser`. Même chose, inversée, pour le plat arrière (`couverture-fermer`).
+- Lien profond (prototype, `FEUILLETAGE = false`) : l'arrivée, puis le moteur ordinaire ouvre le livre (ouverture lestée) et tourne un feuillet jusqu'à la page ; `data-gc-arrivee` reste `en-cours` jusqu'à la page. Avec `FEUILLETAGE = true` : la couverture et toutes les feuilles sont montées et peintes **avant** l'arrivée, la couverture part à 0,45 s (lancée à 3 p/s), le feuilletage dès qu'elle passe 60 % (≈ 2,1 s en tout). Dans les deux cas, un `pointerdown` ou `keydown` (en capture) appelle `sauter()` : fondu de 150 ms (`html[data-gc-livre-vt="saut"]`) vers la page d'arrivée ; ce geste est avalé (aucune page ne tourne, aucune photo ne se lève).
+
+### Feuilletage (`FeuilletLeger.tsx`) — prêt, désactivé (`FEUILLETAGE = false`) jusqu'à validation du prototype
+- Un saut d'au moins 2 doubles pages (Aller à…, Début, Fin, lien, sommaire) : `Tour.feuilles` = jusqu'à 3 doubles pages intermédiaires réparties ; chacune est une **feuille légère** (plan rigide, recto et verso : 2 calques, copies statiques) pilotée par `r` (ressort `SPRINGS.riffle`, décalage `STAGGER.sommaire`), puis le `Feuillet` final, piloté par p (ressort `riffle`, parti après les légères) : `atterrir` est inchangé. Une feuille posée s'efface quand la suivante se pose dessus (elles sont peintes dans l'ordre inverse). Un feuilletage va au bout (ni reprise au doigt, ni relance).
+- Événement `riffle` (début, fin).
+
+### Sons (`jouerSon`, lot S)
+`page` au lâcher du doigt (avec la vitesse du geste) et pour un tour au clavier ; `couverture-ouvrir` / `couverture-poser` / `couverture-fermer` ; `riffle` ; `coin` (gain 0,35) à la levée.
+
+### Loupe (lot B)
+Au repos, le livre publie le rectangle de son contenu (px d'écran du document, à z = 1 ; couverture fermée centrée, page cadrée en cadrage « page ») et la page cadrée : `publierContenuLoupe(rect, cote)`. Zoomé : pas de glisser de page, pas de rabat, flèches de l'écran en style « papier » (‹ ›), page tournée en fondu + `ancrerLoupe('haut')` dans la même mise à jour. Le facteur de repos de la loupe re-promeut le monde composité (rendu net).
+
 ## Contrat des faces
 
 - Une face = `.gc-livre-face` : surface `var(--gc-paper)` + `<Page side>` avec le contenu de `spread.render(mode)[side]` + folio (`gc-folio`) + ombre de pli vers la reliure (`.gc-livre-face__pli`). La même face sert aux emplacements et, en copies découpées, au feuillet.
@@ -122,7 +162,8 @@ Stage (cran, table en bois ; overlay : repère + flèches)
 
 ## Règles de performance (mesurées, voir `scripts/fps.mjs`)
 
-- Pendant un geste : `transform` et `opacity` seulement, sur des calques déjà composités ; **0 Layout, ≤ 4 Paint**.
+- Pendant un geste : `transform` et `opacity` seulement, sur des calques déjà composités ; **0 Layout, ≤ 2 Paint**.
+- Les ombres du livre (`ombre--gauche`, `--droite`, `--epaisseur`, `--pouls`) ne sont des calques que pendant un geste de carton (`data-gc-geste="couverture"`) : un tourne-page de papier en compte trois de moins, ce qui laisse la place au rabat du coin (38 calques au plus mesurés pendant un coin relayé).
 - `will-change` seulement pendant un geste (feuillet monté le temps du geste ; attributs `data-gc-geste` / style en ligne pour la caméra et la couverture).
 - **Jamais d'opacité 0 sur un calque qui va servir** : une face cachée ou un voile éteint garde 0,002 (imperceptible), sinon le navigateur ne le rastérise qu'en plein geste. Pour la même raison, pas de `backface-visibility` : la face qui tourne le dos passe à 0,002 au passage des 90°, quand elle est vue par la tranche.
 - Les voiles sont des **frères** coplanaires des faces, pas leurs enfants : une face à opacité variable contenant des calques imposerait une passe hors écran à chaque image.
@@ -138,10 +179,11 @@ Stage (cran, table en bois ; overlay : repère + flèches)
 node scripts/build-bundle.mjs --only Livre,Stage,Ecran,DoublePage,Page --boards Carnet,Formats,DemoCarnet --tag r1
 node scripts/shot.mjs src/components/Livre/preview.html --bundle dist/ds-r1/components --out verification/out/r1
 node scripts/fps.mjs --bundle dist/ds-r1/components --out verification/out/r1/fps   # turn, open, camera, zoom, reduit
+node scripts/fps.mjs --scenarios coin,survol,riffle,arrivee,lien --bundle … --out …   # plan v4
 node scripts/verify-devices.mjs   # téléphones, tablettes, ordinateurs, TV : cadrage, zones sûres, cibles, hauteur d'x, gestes
 ```
 
-Banc d'essai : `harness/motion.html?scenario=turn|open|camera|zoom|pose` (`&index=`, `&vers=`, `&p=`, `&distance=`).
+Banc d'essai : `harness/motion.html?scenario=turn|open|camera|zoom|pose|arrivee` (`&index=`, `&vers=`, `&p=`, `&r=`, `&distance=`, `&coin=droite,bas,0.6,0.7`, `&arrivee=0.4`, `&dos=1`).
 
 ## À éviter
 

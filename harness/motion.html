@@ -11,6 +11,12 @@
        ?scenario=camera   cran de distance (défaut moyenne) → on change de cran
        ?scenario=zoom     zoom fin à 0,95 → on revient à 1
        ?scenario=pose&index=1&vers=2&p=0.5   tourne-page figé (captures à mi-geste)
+       ?scenario=arrivee  rien sur la table ; Entrée monte le livre, qui arrive et se pose (plan v4)
+     Poses du plan v4 (scenario=pose) :
+       &coin=droite,bas,0.62,0.8   coin figé : côté, angle, doigt en fractions de page (0 = reliure)
+       &arrivee=0.4                arrivée figée (0 = en bas de la table, 1 = posé), livre fermé
+       &index=0&vers=5&p=0.3&r=0.7 feuilletage figé (saut ≥ 2 doubles pages : r = feuilles légères)
+     &dos=1 : plat arrière (la dernière double page se referme dessus ; index 6 = refermé derrière).
      Options : &b=dist/ds-s4/components (bundle), &distance=proche|moyenne|loin, &index=N,
                &zoom=1.05, &persp=K (perspective = K largeurs de page, essais). La table est toujours en bois.
                &photo=1 : une photo collée sur la page gauche des doubles pages vidéo (scénario « turn-photo »
@@ -108,8 +114,21 @@
     h('p', { className: 'gc-recipe-title demo-titre' }, 'Les goûters'),
     h('p', { className: 'gc-section-label demo-de' }, 'de Cécile'));
 
-  const start = q.has('index') ? Number(q.get('index')) : scenario === 'open' ? -1 : 1;
-  const pose = scenario === 'pose' ? { vers: Number(q.get('vers') ?? start + 1), p: Number(q.get('p') ?? 0.5) } : undefined;
+  const start = q.has('index') ? Number(q.get('index')) : scenario === 'open' || scenario === 'arrivee' ? -1 : 1;
+  let pose;
+  if (scenario === 'pose') {
+    pose = { vers: Number(q.get('vers') ?? start + 1), p: Number(q.get('p') ?? 0.5) };
+    if (q.has('r')) pose.r = Number(q.get('r'));
+    if (q.has('arrivee')) { pose.arrivee = Number(q.get('arrivee')); pose.vers = start; pose.p = 0; }
+    if (q.has('coin')) {
+      const [cote, angle, x, y] = q.get('coin').split(',');
+      pose.coin = { cote, angle, x: Number(x), y: Number(y) };
+      pose.vers = start;
+      pose.p = 0;
+    }
+  }
+  // Arrivée : le banc ne compte pas son propre chargement (règle des 1,5 s du livre).
+  if (scenario === 'arrivee') window.__gcArriveeToujours = true;
 
   // ---- Instrumentation ----------------------------------------------------------------------
   const M = (window.__gcMotion = { ready: false, scenario, gestes: [], journal: [], actifs: [], frames: [], index: start });
@@ -162,9 +181,18 @@
 
   function Banc() {
     const [i, setI] = React.useState(start);
+    // Arrivée : le livre n'est monté qu'à l'appui sur Entrée (la mesure commence avant lui).
+    const [monte, setMonte] = React.useState(scenario !== 'arrivee');
+    React.useEffect(() => {
+      if (monte) return;
+      const onKey = (e) => { if (e.key === 'Enter') { e.preventDefault(); setMonte(true); } };
+      window.addEventListener('keydown', onKey);
+      return () => window.removeEventListener('keydown', onKey);
+    }, [monte]);
     M.index = i;
+    if (!monte) return h('div', { className: 'gc-stage', style: { position: 'fixed', inset: 0, background: 'var(--gc-wood-3)' } });
     return h(G.CameraProvider, { keyboard: scenario !== 'pose', persist: true },
-      h(G.Livre, { spreads, index: i, onIndexChange: setI, keyboard: scenario !== 'pose', cover, pose }));
+      h(G.Livre, { spreads, index: i, onIndexChange: setI, keyboard: scenario !== 'pose', cover, pose, arrivee: scenario === 'arrivee' ? true : undefined, couvertureArriere: q.get('dos') === '1' ? true : undefined }));
   }
   ReactDOM.createRoot(document.getElementById('root')).render(h(Banc));
   await document.fonts.ready;

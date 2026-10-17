@@ -3,16 +3,20 @@
 // ou « page ») › SoulevementProvider (photo-vidéo et feuillet volant soulevés au-dessus du livre) ›
 // Livre, avec le menu de réglages dans l'Ecran. Racine de l'application (index.html → src/app/main.tsx)
 // et de la page autonome (harness/devices.html : React UMD + bundle.js, Artboards.Carnet).
+// Plan v4 : le livre arrive sur la table ; un lien profond (QR de l'A5) l'ouvre et feuillette jusqu'à la
+// page de l'invité ; Entrée ou Espace ouvre le livre fermé ; il se referme sur son plat arrière.
 import React from 'react';
+import { EtiquetteCouverture, couvertureVars } from '../../components/Couverture';
 import { Ecran } from '../../components/Ecran';
-import { Livre } from '../../components/Livre';
+import { InvitationOuvrir } from '../../components/Invitation';
+import { Livre, type LivreProps } from '../../components/Livre';
 import { Reglages, CREDITS_REGLAGES } from '../../components/Reglages';
 import { SoulevementProvider, souleverObjet, useSoulevement } from '../../components/Soulever';
 import { CameraProvider } from '../../lib/camera';
-import { MotionConfig } from '../../lib/motion';
+import { MotionConfig, type MotionValue } from '../../lib/motion';
 import { useReglages } from '../../lib/reglages';
 import { ViewportOverride, type ViewportForce } from '../../lib/viewport';
-import { COUVERTURE, CREDITS_VIDEOS, SPREADS_DEMO, videoDe } from '../DemoCarnet/spreads';
+import { CREDITS_VIDEOS, SPREADS_DEMO, videoDe } from '../DemoCarnet/spreads';
 import { indexDuLien, useLienProfond } from './liens';
 
 export interface CarnetProps {
@@ -42,16 +46,25 @@ function cranTactileParDefaut(tactile: boolean): void {
 export function Carnet({ ecran, liens = false, depart = -1, coteInitial }: CarnetProps) {
   const spreads = SPREADS_DEMO;
   const simule = !!ecran && ecran.w != null && ecran.h != null;
-  const [index, setIndex] = React.useState(() => {
+  // Départ : le lien profond (ou la double page imposée), lu une seule fois.
+  const [initial] = React.useState(() => {
     if (!simule) {
       const tactile = ecran?.tactile ?? (typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches);
       cranTactileParDefaut(tactile);
     }
     if (liens && typeof location !== 'undefined') {
       const i = indexDuLien(spreads, location.hash);
-      if (i >= 0 || location.hash) return i; // id inconnu : couverture
+      if (i >= 0 || location.hash) return { index: i, lien: i >= 0 }; // id inconnu : couverture
     }
-    return depart;
+    return { index: depart, lien: false };
+  });
+  const [index, setIndex] = React.useState(initial.index);
+  // Arrivée (application seulement, pas les cartes figées) : le livre glisse sur la table et se pose ;
+  // avec un lien profond, il s'ouvre et feuillette jusqu'à la page (le livre gère tout, ≈ 2,1 s).
+  const [arrivee] = React.useState<CarnetLivreProps['arrivee']>(() => {
+    if (simule) return undefined;
+    if (initial.lien) return { vers: initial.index, cote: coteInitial ?? 'gauche' };
+    return initial.index === -1 ? true : undefined;
   });
   useLienProfond(liens, spreads, index, setIndex);
   const [reglages] = useReglages();
@@ -66,7 +79,7 @@ export function Carnet({ ecran, liens = false, depart = -1, coteInitial }: Carne
       <CameraProvider keyboard persist={!simule} fixed={simule && ecran?.tactile ? { distance: 'proche' } : undefined}>
         <Ecran pleinEcran>
           <SoulevementProvider>
-            <CarnetLivre index={index} setIndex={setIndex} coteInitial={coteInitial} />
+            <CarnetLivre index={index} setIndex={setIndex} coteInitial={coteInitial} arrivee={arrivee} />
           </SoulevementProvider>
         </Ecran>
       </CameraProvider>
@@ -74,6 +87,10 @@ export function Carnet({ ecran, liens = false, depart = -1, coteInitial }: Carne
   );
   return ecran ? <ViewportOverride.Provider value={ecran}>{carnet}</ViewportOverride.Provider> : carnet;
 }
+
+/** Le livre se referme sur son plat arrière en fin de carnet (après validation du prototype). */
+const PLAT_ARRIERE = false;
+const ETIQUETTE = <EtiquetteCouverture />;
 
 const CREDITS = (
   <>
@@ -86,9 +103,21 @@ const CREDITS = (
   </>
 );
 
+interface CarnetLivreProps {
+  index: number;
+  setIndex: (i: number) => void;
+  coteInitial?: 'gauche' | 'droite';
+  arrivee?: LivreProps['arrivee'];
+}
+
 /** Le livre, ses touches (Entrée : vidéo, ↑ : feuillet), la vidéo préparée à chaque page, le menu. */
-function CarnetLivre({ index, setIndex, coteInitial }: { index: number; setIndex: (i: number) => void; coteInitial?: 'gauche' | 'droite' }) {
+function CarnetLivre({ index, setIndex, coteInitial, arrivee }: CarnetLivreProps) {
   const spreads = SPREADS_DEMO;
+  // Couverture cuite (lot C) : images posées par variables CSS sur le livre, étiquette en <img>.
+  const couverture = React.useMemo(() => couvertureVars(), []);
+  // Plat arrière : le livre peut se refermer derrière (prop couvertureArriere du Livre) ; reporté après
+  // validation du prototype : en fin de carnet, une butée (le livre résiste au doigt).
+  const dos = PLAT_ARRIERE && spreads[spreads.length - 1]?.kind === 'colophon';
   const { preparer, reposer } = useSoulevement();
   const [reglages] = useReglages();
   const lectureAuto = React.useRef(reglages.lectureAuto);
@@ -109,11 +138,20 @@ function CarnetLivre({ index, setIndex, coteInitial }: { index: number; setIndex
   }, [setIndex, spreads]);
 
   // Entrée / Espace : la vidéo de la double page ; ↑ : le feuillet volant. Appelé DANS le keydown.
+  // Livre fermé (devant ou derrière) : Entrée / Espace l'ouvre. Une touche déjà consommée (loupe, menu)
+  // n'est pas reprise.
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || index < 0) return;
+      if (e.defaultPrevented || e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
       const cible = e.target as HTMLElement | null;
       if (cible && cible.closest('button, a, input, select, textarea, [role="slider"]')) return;
+      if (index < 0 || index >= spreads.length) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setIndex(index < 0 ? 0 : spreads.length - 1);
+        }
+        return;
+      }
       let fait = false;
       if (e.key === 'Enter' || e.key === ' ') fait = souleverObjet('photo');
       else if (e.key === 'ArrowUp') fait = souleverObjet('feuillet');
@@ -121,14 +159,27 @@ function CarnetLivre({ index, setIndex, coteInitial }: { index: number; setIndex
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [index]);
+  }, [index, setIndex, spreads.length]);
 
   const invites = React.useMemo(() => spreads.map((s, i) => ({ index: i, titre: s.titre ?? s.id })), [spreads]);
+  const invitation = React.useCallback((o: MotionValue<number>) => <InvitationOuvrir opacite={o} />, []);
   const aller = React.useCallback((i: number) => { reposer(); setIndex(i); }, [reposer, setIndex]);
 
   return (
     <>
-      <Livre spreads={spreads} index={index} onIndexChange={changer} keyboard cover={COUVERTURE} coteInitial={coteInitial} />
+      <Livre
+        spreads={spreads}
+        index={index}
+        onIndexChange={changer}
+        keyboard
+        cover={ETIQUETTE}
+        couverture={couverture}
+        coteInitial={coteInitial}
+        arrivee={arrivee}
+        couvertureArriere={dos ? true : undefined}
+        // Invitation à ouvrir (lot S) : l'étiquette cuite « … pour ouvrir », selon la modalité.
+        invitation={invitation}
+      />
       <Reglages invites={invites} onAller={aller} credits={CREDITS} />
     </>
   );

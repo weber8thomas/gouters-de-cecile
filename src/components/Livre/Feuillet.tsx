@@ -1,5 +1,5 @@
 import React from 'react';
-import { m, useTransform, type MotionValue } from '../../lib/motion';
+import { m, useMotionValue, useTransform, type MotionValue } from '../../lib/motion';
 import {
   angleCouverture,
   angles,
@@ -110,10 +110,27 @@ export function Feuillet({ p, recto, verso, sens }: FeuilletProps) {
 
 export interface FeuilletCouvertureProps {
   p: MotionValue<number>;
-  /** Le plat de couverture (contenu fourni par la prop cover du livre). */
+  /**
+   * Plat avant (défaut) : le plat de couverture (contenu fourni par la prop cover du livre).
+   * Plat arrière : la garde arrière (page de droite de la dernière double page), collée au carton.
+   */
   recto: React.ReactNode;
-  /** Le contreplat : la page de gauche de la première double page, collée au carton. */
+  /**
+   * Plat avant : le contreplat (page de gauche de la première double page), collé au carton.
+   * Plat arrière : ce qui est posé sur la toile du plat arrière (rien par défaut).
+   */
   verso: React.ReactNode;
+  /**
+   * Plat arrière (plan v4) : le livre se referme sur lui quand on tourne la dernière page. Même moteur,
+   * faces inversées : à plat à droite (p = 0), on voit la garde arrière sur l'intérieur du carton ;
+   * posé à gauche (p = 1), la toile du plat arrière.
+   */
+  arriere?: boolean;
+  /**
+   * Fondu du contreplat posé à gauche (lien profond : les feuilles du feuilletage se posent dessus,
+   * mais sont peintes dessous) : 1 → 0. Défaut : toujours visible.
+   */
+  fondu?: MotionValue<number>;
 }
 
 /**
@@ -122,24 +139,44 @@ export interface FeuilletCouvertureProps {
  * à son dessous (ouvert) : le contreplat se pose exactement au niveau des pages. Le chant de 10 px,
  * qu'on voit quand la couverture se dresse, est un plan frère qui suit la même rotation.
  */
-export function FeuilletCouverture({ p, recto, verso }: FeuilletCouvertureProps) {
+export function FeuilletCouverture({ p, recto, verso, fondu, arriere = false }: FeuilletCouvertureProps) {
   const t = useTransform(p, (v) => `${rot(angleCouverture(v))} translateZ(calc(var(--gc-livre-epaisseur) * ${r3(1 - clamp(v, 0, 1))}))`);
   const chant = useTransform(p, (v) => `${rot(angleCouverture(v))} translateX(calc(var(--gc-page-w) + var(--gc-livre-carton-out))) rotateY(-90deg)`);
+  const un = useMotionValue(1);
+  const f = fondu ?? un;
   const vr = useTransform(p, (v) => rectoVisible(angleCouverture(v)));
-  const vv = useTransform(p, (v) => versoVisible(angleCouverture(v)));
+  const vv = useTransform([p, f], ([v, k]: number[]) => Math.max(PLANCHER, versoVisible(angleCouverture(v)) * k));
   const l = useTransform(p, (v) => voile(lumiereRecto(angleCouverture(v)), rectoVisible(angleCouverture(v))));
-  const o = useTransform(p, (v) => voile(ombreVerso(angleCouverture(v)), versoVisible(angleCouverture(v))));
+  const o = useTransform([p, f], ([v, k]: number[]) => voile(ombreVerso(angleCouverture(v)), versoVisible(angleCouverture(v)) * k));
   return (
     <>
       <m.div className="gc-livre-couv" style={{ transform: t }}>
         <m.div className="gc-livre-couv__verso" style={{ opacity: vv }} aria-hidden="true">
-          <div className="gc-livre-couv__carton gc-livre__carton-bord--gauche gc-livre__carton-toile" />
-          <div className="gc-livre-couv__contreplat">{verso}</div>
+          {arriere ? (
+            <>
+              <div className="gc-livre-couv__plat gc-livre-couv__plat--arriere gc-livre__carton-toile" />
+              {verso != null && verso !== true && <div className="gc-livre-couv__contenu">{verso}</div>}
+            </>
+          ) : (
+            <>
+              <div className="gc-livre-couv__carton gc-livre__carton-bord--gauche gc-livre__carton-toile" />
+              <div className="gc-livre-couv__contreplat">{verso}</div>
+            </>
+          )}
         </m.div>
         <m.div className="gc-livre-couv__ombre" style={{ opacity: o }} aria-hidden="true" />
-        <m.div className="gc-livre-couv__recto" style={{ opacity: vr }}>
-          <div className="gc-livre-couv__plat gc-livre__carton-toile" />
-          <div className="gc-livre-couv__contenu">{recto}</div>
+        <m.div className="gc-livre-couv__recto" style={{ opacity: vr }} aria-hidden={arriere ? true : undefined}>
+          {arriere ? (
+            <>
+              <div className="gc-livre-couv__carton gc-livre-couv__carton--arriere gc-livre__carton-bord--droite gc-livre__carton-toile" />
+              <div className="gc-livre-couv__garde">{recto}</div>
+            </>
+          ) : (
+            <>
+              <div className="gc-livre-couv__plat gc-livre__carton-toile" />
+              <div className="gc-livre-couv__contenu">{recto}</div>
+            </>
+          )}
         </m.div>
         <m.div className="gc-livre-couv__lumiere" style={{ opacity: l }} aria-hidden="true" />
       </m.div>
