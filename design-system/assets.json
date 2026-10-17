@@ -1,26 +1,26 @@
 {
   "bougie/bougie": {
     "file": "baked/bougie/bougie.webp",
-    "sha": "17ab623b5f2ef5532a1c333f165e5348862752c567fea0eb6ba26552b0cc162a",
-    "w": 425,
-    "h": 510,
-    "bytes": 14646,
+    "sha": "71d4ad460459c94c5563ee65fc9a841e3703b5f2417e5d38360a853655194d63",
+    "w": 250,
+    "h": 515,
+    "bytes": 6394,
     "type": "image/webp"
   },
-  "bougie/flamme-coeur": {
-    "file": "baked/bougie/flamme-coeur.webp",
-    "sha": "27524c15dbc019f9af367d4ccf0e03a1babcc9e62ae3c82c8a3e4c01af51a83c",
-    "w": 120,
-    "h": 200,
-    "bytes": 1148,
+  "bougie/flamme": {
+    "file": "baked/bougie/flamme.webp",
+    "sha": "93e4105f47b20189383c882a758a95d2ece0bd6ff9be7a0a11da43c29b8ed604",
+    "w": 250,
+    "h": 515,
+    "bytes": 10800,
     "type": "image/webp"
   },
-  "bougie/flamme-corps": {
-    "file": "baked/bougie/flamme-corps.webp",
-    "sha": "a652f170f710b80c66b4aa99561bc493e67530c7d150079f7b81b59f081679e2",
-    "w": 120,
-    "h": 200,
-    "bytes": 2084,
+  "bougie/halo": {
+    "file": "baked/bougie/halo.webp",
+    "sha": "acae996c7a34fe1ba94889c654255ec54b99ac2e33ef70bba9d3d57528d6a04a",
+    "w": 1000,
+    "h": 1125,
+    "bytes": 23042,
     "type": "image/webp"
   },
   "couverture/a/1x/arriere": {

@@ -1,0 +1,29 @@
+{
+  "description": "Bougie du carnet (composant Bougie, lot L, v5) : une vraie photo de bougie de cire crème allumée, sur fond sombre, détourée puis cuite par scripts/bake-bougie.py (corps, flamme, halo). Original hors dépôt dans verification/out/v5-bougie2/originaux/ (vérifié par sha256).",
+  "licence": {
+    "nom": "Licence Pexels (« Free Stock Photo & Video License »)",
+    "url": "https://www.pexels.com/license/",
+    "verifiee": "2026-10-17",
+    "methode": "page de licence lue le 2026-10-17 ; page de la photo lue le 2026-10-17 (mention « Free », auteur, dimensions, URL du fichier)",
+    "permis": "Gratuit, sans attribution obligatoire, modification permise ; interdit : vendre une copie non modifiée, revente sur une autre plateforme de photos, usage de marque ou de nom commercial, personne identifiable présentée de façon défavorable.",
+    "notre_usage": "Photo modifiée (détourage, flou de profondeur de champ, assombrissement, recadrage, cuisson en calques) et intégrée à une œuvre (carnet en ligne). Aucune copie vendue, aucun usage de marque."
+  },
+  "photos": [
+    {
+      "id": "bougie-pexels-9299394",
+      "titre": "Lighted Candle in Close-up Photography",
+      "auteur": "Numan Gilgil",
+      "page": "https://www.pexels.com/photo/lighted-candle-in-close-up-photography-9299394/",
+      "fichier": "pexels-9299394.jpeg",
+      "dimensions": "4272 × 2848",
+      "sha256": "a88c958b0677589e33d038777566782ecb6b245179a6629cfe3d3563a1f0e1d2",
+      "licence": "pexels",
+      "choix": "une seule bougie crème allumée, flamme nette et haute, fond brun-noir, base coupée par le bord bas du cadre ; retenue sur trois candidats (Pexels 7233184, bougie vue de dessus en gros plan, corps occupant tout le cadre ; Unsplash KkqnhL3HjtA, bougie plus étroite et plus sombre ; Unsplash MReCvBJOjdM, groupe de bougies fondues)."
+    }
+  ],
+  "cuisson": {
+    "script": "scripts/bake-bougie.py",
+    "sorties": ["design-system/baked/bougie/bougie.webp", "design-system/baked/bougie/flamme.webp", "design-system/baked/bougie/halo.webp"],
+    "remarque": "Le halo n'est pas une photo : c'est une lueur chaude dessinée par le script à partir de la position de la flamme."
+  }
+}

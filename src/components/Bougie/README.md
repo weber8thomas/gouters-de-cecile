@@ -1,6 +1,8 @@
 # Bougie
 
-Une petite source de lumière chaude, presque hors champ : une bougie sombre, coupée par le bord bas de l'écran, dans le coin droit de la table, à l'écart du livre. On devine la bougie ; on voit surtout sa **flamme** et sa **lueur**, qui dansent sur la table et un peu sur le bas de la page droite. Le corps de la cire et le bougeoir restent dans la pénombre. Montée dans `Stage`, au-dessus de la table et du livre, sous les contrôles. Elle ne passe jamais devant le texte du livre.
+Une vraie bougie de cire crème, allumée, dans le coin bas gauche de l'écran, au premier plan et hors du plan de netteté. On la devine plus qu'on ne la voit : le corps est sombre et flou, la flamme est le seul point vif, et sa lueur chaude éclaire la table et le bord du livre. Elle sort du cadre à gauche et en bas. Montée dans `Stage`, sous les contrôles. Elle ne recouvre jamais le texte du livre.
+
+La photo est un original Pexels (Numan Gilgil) ; sa licence et son choix sont dans `design-system/sources/bougie/credits.json`.
 
 ## Props
 
@@ -10,26 +12,29 @@ Une petite source de lumière chaude, presque hors champ : une bougie sombre, co
 
 ## Position et taille
 
-Position fixe dans la scène 1920 × 1080 : axe de la bougie à x = 1760 px, plateau à y = 1120 px (sous le bord bas, qui coupe le bougeoir). La pose est mise à l'échelle `--gc-bougie-k` (0,36) ; la flamme visible ne dépasse pas ≈ 135 px de haut, soit environ 1/8 de l'écran. Le livre (cran « proche », carton compris : x ≤ 1686) reste à gauche de la bougie ; aucune partie de la bougie ne recouvre le texte.
+Repère : scène 1920 × 1080, fixe. La pose (bougie et flamme, 200 × 412 px de scène) a son bord gauche à x = −57 px : une partie de la cire sort du cadre à gauche. Son bas dépasse de 7 px sous le bord de la scène. La flamme monte jusqu'à y ≈ 690 px, soit environ 36 % de la hauteur de l'écran. La lueur est centrée sur la flamme, à (41 px, 811 px), et mesure 800 × 900 px.
+
+Les valeurs sont celles qu'imprime `scripts/bake-bougie.py` : `--gc-bougie-ks` (0,142 px de scène par px de la photo), `--gc-bougie-k` (0,8 px par px cuit, soit 1 / 1,25), le pivot de la flamme (49,15 % 61,55 %, la mèche). Le livre (x ≥ 297 px) reste à droite de la bougie ; les contrôles du haut et les flèches du bas à droite ne sont pas touchés.
 
 ## Calques
 
 | Calque | Source | Animation |
 |---|---|---|
-| Lueur | dégradé radial CSS (décroissance progressive, sans bord net), centré sur la flamme | opacité (`intensite`), échelle légère |
-| Cire, bougeoir, ombre portée | `design-system/baked/bougie/bougie.webp` (cuite, assombrie) | aucune |
-| Flamme orangée | `flamme-corps.webp` | échelle (`intensite`), opacité, balancement ≈ ± 3° (0,22 × `dx`) |
-| Cœur bleu-blanc | `flamme-coeur.webp` | échelle et opacité plus discrètes, balancement ≈ ± 1,2° |
+| Lueur | `halo.webp` (lueur chaude, dessinée par le script, très douce) | opacité (`intensite`), échelle 0,96 à 1,04, glisse ≤ 9 px (`dx`) |
+| Cire | `bougie.webp` (photo détourée, floue de 11 px de scène, assombrie de 10 %, désaturée de 30 %) | aucune |
+| Flamme | `flamme.webp` (photo détourée par seuil de luminance, floue de 8 px de scène) | échelle 0,96 à 1,04, opacité 0,7 à 1 (`intensite`), rotation ≤ 1,5° autour de la mèche (`dx`) |
 
-Toutes les animations passent par `transform` et `opacity`. Aucun filtre (CSS ou SVG) ni `mix-blend-mode` à l'exécution. Les images sont cuites par `python3 -I scripts/bake-bougie.py` (PIL) ; `ECHELLE` du script doit rester égal à `--gc-bougie-k`.
+Les trois calques sont sur la même grille de pixels (`bougie.webp` et `flamme.webp` ont la même taille, 250 × 515 px cuits). Toutes les animations passent par `transform` et `opacity`. Aucun filtre (CSS ou SVG) ni `mix-blend-mode` à l'exécution : le flou est cuit.
+
+Pour recuire : placer la photo d'origine dans `verification/out/v5-bougie2/originaux/pexels-9299394.jpeg` (non versionné, sha256 vérifié par le script), puis lancer `tools/ecriture/.venv/bin/python -I scripts/bake-bougie.py`, puis `npm run assets`.
 
 ## Mouvement réduit et téléphone
 
-- Mouvement réduit (système ou réglage du carnet) ou réglage `feu: false` : la flamme reste fixe (intensité 1, pas de balancement) ; le moteur du feu s'arrête dans ce cas.
+- Mouvement réduit (système ou réglage du carnet) ou réglage `feu: false` : la flamme reste fixe (intensité 1, pas de rotation) ; le moteur du feu s'arrête dans ce cas.
 - Téléphone en portrait (`orientation: portrait` et largeur ≤ 760 px) : la bougie est masquée, on ne garde que la lueur.
 
 ## À éviter
 
-- Éclaircir le corps de la bougie ou agrandir la pose : elle doit rester une source devinée.
-- Ajouter un filtre ou un `box-shadow` animé : le budget de calques de la scène est compté (`scripts/verify-lumiere.mjs`).
-- Déplacer la bougie sur le livre : elle doit rester à droite du carton.
+- Rendre la cire plus claire ou plus nette, ou agrandir la pose : elle doit rester devinée, hors du plan de netteté.
+- Animer un `filter` ou un `box-shadow` : le flou est cuit, et le budget de calques de la scène est compté (`scripts/verify-lumiere.mjs`).
+- Déplacer la bougie sur le livre : elle doit rester à gauche du carton, hors du texte.
