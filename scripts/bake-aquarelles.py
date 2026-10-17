@@ -16,6 +16,8 @@ RACINE = Path(__file__).resolve().parents[1]
 SOURCE = RACINE / "design-system/aquarelles"
 SORTIE = RACINE / "design-system/baked/aquarelles"
 COTE_MAX = 800
+# Zones effacées (gauche, haut, droite, bas, en fractions) : signature de planche restée sous le citron.
+EFFACER = {"citron-2": [(0.0, 0.92, 0.3, 1.0)]}
 
 
 def main() -> None:
@@ -28,6 +30,8 @@ def main() -> None:
                 noms[nom] = f
     for nom, f in sorted(noms.items()):
         im = Image.open(f).convert("RGBA")
+        for g, h, d, b in EFFACER.get(nom, []):
+            im.paste((0, 0, 0, 0), (round(g * im.width), round(h * im.height), round(d * im.width), round(b * im.height)))
         im.thumbnail((COTE_MAX, COTE_MAX), Image.LANCZOS)
         out = SORTIE / f"{nom}.webp"
         im.save(out, "WEBP", quality=88, method=6, exact=True)

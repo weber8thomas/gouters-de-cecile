@@ -14,15 +14,34 @@
    "id": "chapitre",
    "type": "chapitre",
    "chapitre": "biscuits",
-   "croquis": [
-    "cookie"
-   ],
    "taille": 1.75,
-   "croquis_taille": [
-    0.27,
-    0.25
-   ],
    "graine": 12011
+  }
+ ],
+ "vivants": [
+  {
+   "nom": "aq-ble",
+   "rect": [
+    0.27,
+    0.4,
+    0.17,
+    0.224
+   ],
+   "aquarelle": "ble",
+   "anime": "balance",
+   "angle": -6
+  },
+  {
+   "nom": "aq-vanille",
+   "rect": [
+    0.46,
+    0.41,
+    0.3,
+    0.244
+   ],
+   "aquarelle": "vanille",
+   "anime": "balance",
+   "angle": 4
   }
  ]
 }

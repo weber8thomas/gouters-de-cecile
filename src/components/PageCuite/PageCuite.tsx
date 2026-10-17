@@ -366,7 +366,9 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
   React.useSyncExternalStore(abonnerEcriture, versionEcriture, versionEcriture);
   const [horsLivre, setHorsLivre] = React.useState(false);
   const plume = React.useRef<HTMLCanvasElement>(null);
-  const aEcrireIci = mode === 'live' && !!info && cadre === 'parent' && !horsLivre && aEcrire(page);
+  // Toutes les copies de la page dans le livre (statique pendant un tour, feuillet, loupe) cachent l'encre ;
+  // seule la page vivante posée l'écrit.
+  const aEcrireIci = !!info && cadre === 'parent' && !horsLivre && aEcrire(page);
   React.useEffect(() => {
     if (!aEcrireIci) return;
     const el = racine.current;
@@ -375,7 +377,7 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
     // attendent, encre cachée, qu'elle ait fini.
     const feuille = el?.closest('.gc-livre__page');
     const livre = el?.closest('.gc-livre');
-    if (!el || !feuille || !livre || !info) return;
+    if (!el || !feuille || !livre || !info || mode !== 'live') return;
     const duree = Math.min(3400, Math.max(1500, 900 + info.texte.length * 4));
     const dpr = typeof devicePixelRatio === 'number' ? devicePixelRatio : 1;
     const encre = dpr > 1.25 || !info.encre1x ? info.encre : info.encre1x;
@@ -409,7 +411,7 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
       window.clearTimeout(minuteur);
       if (arreter) arreter();
     };
-  }, [aEcrireIci, page, info]);
+  }, [aEcrireIci, page, info, mode]);
   if (!info) {
     if (typeof console !== 'undefined') console.warn(`Page cuite inconnue : ${page}`);
     return null;

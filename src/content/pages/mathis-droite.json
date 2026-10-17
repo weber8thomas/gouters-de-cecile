@@ -50,21 +50,6 @@
    "texte": "1 pâte brisée, 5 pommes, 2 c. à s. de sucre, 1 noix de beurre. Étale la pâte dans le moule, pique-la, mets les pommes en lamelles, sucre et beurre en noisettes. 40 min à th. 7.",
    "graine": 953547,
    "interligne": 3.1
-  },
-  {
-   "id": "croquis-recette",
-   "type": "croquis",
-   "nom": [
-    "tasse"
-   ],
-   "taille": [
-    0.17,
-    0.17
-   ],
-   "pres": [
-    0.8,
-    0.5
-   ]
   }
  ],
  "vivants": [
@@ -76,6 +61,29 @@
     0.42,
     0.22313
    ]
+  },
+  {
+   "nom": "aq-tarte",
+   "rect": [
+    0.46,
+    0.56,
+    0.42,
+    0.189
+   ],
+   "aquarelle": "tarte-pommes",
+   "anime": "fleurit"
+  },
+  {
+   "nom": "aq-pomme",
+   "rect": [
+    0.14,
+    0.62,
+    0.2,
+    0.245
+   ],
+   "aquarelle": "pomme",
+   "anime": "fleurit",
+   "angle": -6
   }
  ]
 }

@@ -14,15 +14,22 @@
    "id": "chapitre",
    "type": "chapitre",
    "chapitre": "gateaux",
-   "croquis": [
-    "fouet"
-   ],
    "taille": 1.75,
-   "croquis_taille": [
-    0.27,
-    0.25
-   ],
    "graine": 22
+  }
+ ],
+ "vivants": [
+  {
+   "nom": "aq-gateau",
+   "rect": [
+    0.31,
+    0.4,
+    0.38,
+    0.315
+   ],
+   "aquarelle": "gateau",
+   "anime": "fleurit",
+   "angle": -3
   }
  ]
 }

@@ -42,23 +42,19 @@
    "encre": "crayon",
    "main": "cecile",
    "graine": 3013
-  },
+  }
+ ],
+ "vivants": [
   {
-   "id": "croquis-titre",
-   "type": "croquis",
-   "nom": [
-    "cupcake",
-    "theiere"
+   "nom": "aq-theiere",
+   "rect": [
+    0.17,
+    0.6,
+    0.66,
+    0.292
    ],
-   "taille": [
-    0.5,
-    0.5
-   ],
-   "pres": [
-    0.5,
-    0.74
-   ],
-   "encre": "plume"
+   "aquarelle": "theiere",
+   "anime": "vapeur"
   }
  ]
 }

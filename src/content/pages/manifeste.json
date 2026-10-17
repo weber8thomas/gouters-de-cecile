@@ -58,22 +58,34 @@
     ]
    },
    "texte": "Biscuits\nMamie Rose, Mathis et Bernard",
-   "vivants": {},
+   "vivants": {
+    "aq-ble": [
+     0.27,
+     0.4,
+     0.17,
+     0.224
+    ],
+    "aq-vanille": [
+     0.46,
+     0.41,
+     0.3,
+     0.244
+    ]
+   },
    "deborde": [],
    "lignes": 1,
-   "croquis": [
-    {
-     "nom": "cookie",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.3919,
-      0.3847,
-      0.27,
-      0.1771
-     ]
+   "aquarelles": {
+    "aq-ble": {
+     "aquarelle": "ble",
+     "anime": "balance",
+     "angle": -6
+    },
+    "aq-vanille": {
+     "aquarelle": "vanille",
+     "anime": "balance",
+     "angle": 4
     }
-   ],
+   },
    "douteux": [
     "Rose, (encre rendue lue « rose »)"
    ],
@@ -786,22 +798,23 @@
     ]
    },
    "texte": "Gâteaux & cakes\nLisa et Julie",
-   "vivants": {},
+   "vivants": {
+    "aq-gateau": [
+     0.31,
+     0.4,
+     0.38,
+     0.315
+    ]
+   },
    "deborde": [],
    "lignes": 1,
-   "croquis": [
-    {
-     "nom": "fouet",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.3096,
-      0.3828,
-      0.27,
-      0.1771
-     ]
+   "aquarelles": {
+    "aq-gateau": {
+     "aquarelle": "gateau",
+     "anime": "fleurit",
+     "angle": -3
     }
-   ],
+   },
    "relu": true
   },
   "gateaux-gauche": {
@@ -916,22 +929,34 @@
     ]
    },
    "texte": "Julie",
-   "vivants": {},
+   "vivants": {
+    "aq-citron": [
+     0.55,
+     0.22,
+     0.28,
+     0.383
+    ],
+    "aq-citron-2": [
+     0.16,
+     0.56,
+     0.26,
+     0.285
+    ]
+   },
    "deborde": [],
    "lignes": 0,
-   "croquis": [
-    {
-     "nom": "gateau",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.5895,
-      0.3559,
-      0.2,
-      0.1275
-     ]
+   "aquarelles": {
+    "aq-citron": {
+     "aquarelle": "citron",
+     "anime": "fleurit",
+     "angle": 6
+    },
+    "aq-citron-2": {
+     "aquarelle": "citron-2",
+     "anime": "fleurit",
+     "angle": -5
     }
-   ],
+   },
    "relu": true
   },
   "julie-gauche": {
@@ -1407,23 +1432,33 @@
      0.04,
      0.42,
      0.22313
+    ],
+    "aq-tarte": [
+     0.46,
+     0.56,
+     0.42,
+     0.189
+    ],
+    "aq-pomme": [
+     0.14,
+     0.62,
+     0.2,
+     0.245
     ]
    },
    "deborde": [],
    "lignes": 8,
-   "croquis": [
-    {
-     "nom": "tasse",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.7123,
-      0.511,
-      0.17,
-      0.1204
-     ]
+   "aquarelles": {
+    "aq-tarte": {
+     "aquarelle": "tarte-pommes",
+     "anime": "fleurit"
+    },
+    "aq-pomme": {
+     "aquarelle": "pomme",
+     "anime": "fleurit",
+     "angle": -6
     }
-   ],
+   },
    "douteux": [
     "Cécile (encre rendue lue « C recite »)",
     "pommes, (encre rendue lue « pom mes , »)",
@@ -1598,22 +1633,34 @@
     ]
    },
    "texte": "Mamie Rose\nLes garder dans la boîte en fer.\nPour Noël\nJe remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.",
-   "vivants": {},
+   "vivants": {
+    "aq-cannelle": [
+     0.5,
+     0.42,
+     0.34,
+     0.309
+    ],
+    "aq-ble": [
+     0.2,
+     0.48,
+     0.13,
+     0.171
+    ]
+   },
    "deborde": [],
    "lignes": 5,
-   "croquis": [
-    {
-     "nom": "farine",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.6295,
-      0.5383,
-      0.17,
-      0.1204
-     ]
+   "aquarelles": {
+    "aq-cannelle": {
+     "aquarelle": "cannelle",
+     "anime": "balance",
+     "angle": 5
+    },
+    "aq-ble": {
+     "aquarelle": "ble",
+     "anime": "balance",
+     "angle": -4
     }
-   ],
+   },
    "douteux": [
     "1 c. à c. (encre rendue lue « 1c. d.c. »)"
    ],
@@ -1756,7 +1803,14 @@
     ]
    },
    "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nJulie — Cake au citron, page 14\nBiscuits\nMamie Rose — Sablés, page 18\nMathis — cookies, page 20\nBernard — tarte aux pommes, page 21\nLe mot de la fin, page 22",
-   "vivants": {},
+   "vivants": {
+    "aq-tasse": [
+     0.64,
+     0.74,
+     0.22,
+     0.152
+    ]
+   },
    "deborde": [],
    "lignes": 9,
    "liens": [
@@ -1838,19 +1892,13 @@
      ]
     }
    ],
-   "croquis": [
-    {
-     "nom": "tasse",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.6301,
-      0.795,
-      0.19,
-      0.1346
-     ]
+   "aquarelles": {
+    "aq-tasse": {
+     "aquarelle": "tasse-2",
+     "anime": "vapeur",
+     "angle": -4
     }
-   ],
+   },
    "douteux": [
     "Rose (encre rendue lue « rose »)"
    ],
@@ -1913,22 +1961,22 @@
     ]
    },
    "texte": "Les goûters\nde Cécile\nrecettes de goûter offertes par ses amis",
-   "vivants": {},
+   "vivants": {
+    "aq-theiere": [
+     0.17,
+     0.6,
+     0.66,
+     0.292
+    ]
+   },
    "deborde": [],
    "lignes": 3,
-   "croquis": [
-    {
-     "nom": "cupcake",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.2516,
-      0.5666,
-      0.5,
-      0.3542
-     ]
+   "aquarelles": {
+    "aq-theiere": {
+     "aquarelle": "theiere",
+     "anime": "vapeur"
     }
-   ],
+   },
    "douteux": [
     "Cécile (encre rendue lue « ' Cecile »)"
    ],

@@ -1,7 +1,7 @@
 {
  "papier/f13": "48c76ed3d2c190feeedc31a744a926981fe305ce273c0880a66d0fa4a339724d",
  "page/julie-droite": {
-  "cle": "b4a5bfd228f11558e7e05cdb1d242c24d567a61e9d1f8504dbb10463a53613d8",
+  "cle": "4a82cbf6b25fcc20c21518a5fec5180644a15bf8f5cddff6bddcae2019b8efa5",
   "manifeste": {
    "double": "julie",
    "cote": "droite",
@@ -55,26 +55,38 @@
     ]
    },
    "texte": "Julie",
-   "vivants": {},
+   "vivants": {
+    "aq-citron": [
+     0.55,
+     0.22,
+     0.28,
+     0.383
+    ],
+    "aq-citron-2": [
+     0.16,
+     0.56,
+     0.26,
+     0.285
+    ]
+   },
    "deborde": [],
    "lignes": 0,
-   "croquis": [
-    {
-     "nom": "gateau",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.5895,
-      0.3559,
-      0.2,
-      0.1275
-     ]
+   "aquarelles": {
+    "aq-citron": {
+     "aquarelle": "citron",
+     "anime": "fleurit",
+     "angle": 6
+    },
+    "aq-citron-2": {
+     "aquarelle": "citron-2",
+     "anime": "fleurit",
+     "angle": -5
     }
-   ],
+   },
    "relu": true
   }
  },
- "papier/f19": "9a7d5989de1eae4f4284bec72c89e26045e4bc038f6ef0a91e94bc37c5f54e5f",
+ "papier/f19": "9dd98f84a9121728eeed7645b4fd371749ac76f9f5cd6b70e60caa2458729ebd",
  "page/fin-droite": {
   "cle": "91eb0412186c1d0bddb642c1a5deedb2dff14100289ff59179a78237c7ec41ba",
   "manifeste": {
@@ -149,7 +161,7 @@
    "relu": true
   }
  },
- "papier/f17": "eb1980209f60706b4d9e703c90c140b2c0c6057c29b4abd3a75162da27a85152",
+ "papier/f17": "ff2baa5a135d9771f34c7f88419d8eec60d3edfabc1526c3558f94fc8a59a364",
  "page/fin-gauche": {
   "cle": "356d46c36307de70ded3f7c7859128f776022792e2b7cbd0d177c9ba6ab6488e",
   "manifeste": {
@@ -217,7 +229,7 @@
    "relu": true
   }
  },
- "papier/f11": "c3bbb7aa5fa283095f101a4b501d53940b70aeff584c59142722e1f5a594f3fb",
+ "papier/f11": "515c5ff624588bd3652ae6b1cbc8f0cd9675b69ad1586d63c4b9a2c58d082d50",
  "page/julie-gauche": {
   "cle": "0cf7f146307c5fed2cbd4afd1c84ef2f81600a37a842c840459a22d0205eff6b",
   "manifeste": {
@@ -304,7 +316,7 @@
   }
  },
  "page/mathis-droite": {
-  "cle": "d7fe7ea03c0b3d56770273685b5711bec50094aa209302780265de51e25e78a0",
+  "cle": "58f36ed6a04b5d2c1d1cad0efa5f396df876266bb90fcb6080abb9b9d2f23580",
   "manifeste": {
    "double": "mathis",
    "cote": "droite",
@@ -364,23 +376,33 @@
      0.04,
      0.42,
      0.22313
+    ],
+    "aq-tarte": [
+     0.46,
+     0.56,
+     0.42,
+     0.189
+    ],
+    "aq-pomme": [
+     0.14,
+     0.62,
+     0.2,
+     0.245
     ]
    },
    "deborde": [],
    "lignes": 8,
-   "croquis": [
-    {
-     "nom": "tasse",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.7123,
-      0.511,
-      0.17,
-      0.1204
-     ]
+   "aquarelles": {
+    "aq-tarte": {
+     "aquarelle": "tarte-pommes",
+     "anime": "fleurit"
+    },
+    "aq-pomme": {
+     "aquarelle": "pomme",
+     "anime": "fleurit",
+     "angle": -6
     }
-   ],
+   },
    "douteux": [
     "Cécile (encre rendue lue « C recite »)",
     "pommes, (encre rendue lue « pom mes , »)",
@@ -400,7 +422,7 @@
    "relu": true
   }
  },
- "papier/f15": "94020aa90e1490e0b157c253afa507c5ebad0eb1d0a3becd16524950261e9795",
+ "papier/f15": "012c5cad90621a5ca6cfb49fd1b47540b40805aba4b6113dfd6330c89e26f461",
  "page/mathis-gauche": {
   "cle": "039f5d06d4616bf40217e5fa95a8c14fd287244af37db4fc73554ff98e552799",
   "manifeste": {
@@ -508,7 +530,7 @@
   }
  },
  "page/rose-droite": {
-  "cle": "0b804f9b724da9965106b65b257564762f72d5809cb544a483374a0afd958973",
+  "cle": "a752923a037399aeb8185ae774258cef6b1a464be0cd08640506e858265b22e3",
   "manifeste": {
    "double": "rose",
    "cote": "droite",
@@ -562,22 +584,34 @@
     ]
    },
    "texte": "Mamie Rose\nLes garder dans la boîte en fer.\nPour Noël\nJe remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.",
-   "vivants": {},
+   "vivants": {
+    "aq-cannelle": [
+     0.5,
+     0.42,
+     0.34,
+     0.309
+    ],
+    "aq-ble": [
+     0.2,
+     0.48,
+     0.13,
+     0.171
+    ]
+   },
    "deborde": [],
    "lignes": 5,
-   "croquis": [
-    {
-     "nom": "farine",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.6295,
-      0.5383,
-      0.17,
-      0.1204
-     ]
+   "aquarelles": {
+    "aq-cannelle": {
+     "aquarelle": "cannelle",
+     "anime": "balance",
+     "angle": 5
+    },
+    "aq-ble": {
+     "aquarelle": "ble",
+     "anime": "balance",
+     "angle": -4
     }
-   ],
+   },
    "douteux": [
     "1 c. à c. (encre rendue lue « 1c. d.c. »)"
    ],
@@ -671,11 +705,11 @@
    "relu": true
   }
  },
- "papier1x/f19": "9a7d5989de1eae4f4284bec72c89e26045e4bc038f6ef0a91e94bc37c5f54e5f",
- "papier1x/f17": "eb1980209f60706b4d9e703c90c140b2c0c6057c29b4abd3a75162da27a85152",
+ "papier1x/f19": "9dd98f84a9121728eeed7645b4fd371749ac76f9f5cd6b70e60caa2458729ebd",
+ "papier1x/f17": "ff2baa5a135d9771f34c7f88419d8eec60d3edfabc1526c3558f94fc8a59a364",
  "papier1x/f13": "48c76ed3d2c190feeedc31a744a926981fe305ce273c0880a66d0fa4a339724d",
- "papier1x/f11": "c3bbb7aa5fa283095f101a4b501d53940b70aeff584c59142722e1f5a594f3fb",
- "papier1x/f15": "94020aa90e1490e0b157c253afa507c5ebad0eb1d0a3becd16524950261e9795",
+ "papier1x/f11": "515c5ff624588bd3652ae6b1cbc8f0cd9675b69ad1586d63c4b9a2c58d082d50",
+ "papier1x/f15": "012c5cad90621a5ca6cfb49fd1b47540b40805aba4b6113dfd6330c89e26f461",
  "pagination/lisa": {
   "cle": "fcef5e65c1f768ef3affbd0b7cbb84cc6662536f1bb7d1bcef03c0985e25c384",
   "pages": {
@@ -1227,8 +1261,8 @@
    "lisa-gauche": 0.37
   }
  },
- "papier/f9": "eefbcb2da1508bc35358bcdd007d0dfd5d8311accbfba143911c0398e2660e73",
- "papier1x/f9": "eefbcb2da1508bc35358bcdd007d0dfd5d8311accbfba143911c0398e2660e73",
+ "papier/f9": "5e9eb46f288353d5558b142218ce6a6d6b83fd98ca7a44de7d77c0c507723fda",
+ "papier1x/f9": "5e9eb46f288353d5558b142218ce6a6d6b83fd98ca7a44de7d77c0c507723fda",
  "page/lisa-gauche": {
   "cle": "aca237b5059cc41ddbd55120b6e65328aca3aa3ca884be8a91a05dad2b4d84fd",
   "manifeste": {
@@ -1695,7 +1729,7 @@
   }
  },
  "page/biscuits-droite": {
-  "cle": "6c1d49d8ed5388011125e80e5388e5a4593dfc3fef568d27c0b28631180db8bd",
+  "cle": "47a419a95e586dafc3d17f2afbe24aeb74ec879e15a7ff4433e1eeaff4009124",
   "manifeste": {
    "double": "biscuits",
    "cote": "droite",
@@ -1750,22 +1784,34 @@
     ]
    },
    "texte": "Biscuits\nMamie Rose, Mathis et Bernard",
-   "vivants": {},
+   "vivants": {
+    "aq-ble": [
+     0.27,
+     0.4,
+     0.17,
+     0.224
+    ],
+    "aq-vanille": [
+     0.46,
+     0.41,
+     0.3,
+     0.244
+    ]
+   },
    "deborde": [],
    "lignes": 1,
-   "croquis": [
-    {
-     "nom": "cookie",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.3919,
-      0.3847,
-      0.27,
-      0.1771
-     ]
+   "aquarelles": {
+    "aq-ble": {
+     "aquarelle": "ble",
+     "anime": "balance",
+     "angle": -6
+    },
+    "aq-vanille": {
+     "aquarelle": "vanille",
+     "anime": "balance",
+     "angle": 4
     }
-   ],
+   },
    "douteux": [
     "Rose, (encre rendue lue « rose »)"
    ],
@@ -1869,12 +1915,12 @@
    "relu": true
   }
  },
- "papier/f3": "413b997952acb66e0810d89ff0310806043432150845267366a793e61b7cc899",
- "papier1x/f3": "413b997952acb66e0810d89ff0310806043432150845267366a793e61b7cc899",
+ "papier/f3": "02180fb6998823bbf0959db97bfbc74f3e9dc2c2eedef72d7275310b14ee90bf",
+ "papier1x/f3": "02180fb6998823bbf0959db97bfbc74f3e9dc2c2eedef72d7275310b14ee90bf",
  "papier/f5": "cb6f4193b45d1e60a9ae6cd60e8f1d5feb121b0558f1ed6d548ac5a6bf93e9be",
  "papier1x/f5": "cb6f4193b45d1e60a9ae6cd60e8f1d5feb121b0558f1ed6d548ac5a6bf93e9be",
  "page/dedicace": {
-  "cle": "7e3b1c36aa24db52d9da8825321da8ee073ccb9bc5dd9809f19fe33074e32b59",
+  "cle": "0f0fb7b2f72b2f7f32477038c79eb7f5ebd491bc0ab2a63170a2a5d2f0ac9201",
   "manifeste": {
    "double": "sommaire",
    "cote": "gauche",
@@ -2037,7 +2083,7 @@
  "papier/f7": "8889bd8e309706c033e233e7704396b7a1ff719e5f50b0e0977482aca3e6887f",
  "papier1x/f7": "8889bd8e309706c033e233e7704396b7a1ff719e5f50b0e0977482aca3e6887f",
  "page/gateaux-droite": {
-  "cle": "426b2aab1600693ffda0dfb93fdadccee427a859ff004517426933e1e616879b",
+  "cle": "7b57ac6f11702b148d7b569841a72dc5340bc15beb3ddb64e4b2c07546220b3c",
   "manifeste": {
    "double": "gateaux",
    "cote": "droite",
@@ -2092,22 +2138,23 @@
     ]
    },
    "texte": "Gâteaux & cakes\nLisa et Julie",
-   "vivants": {},
+   "vivants": {
+    "aq-gateau": [
+     0.31,
+     0.4,
+     0.38,
+     0.315
+    ]
+   },
    "deborde": [],
    "lignes": 1,
-   "croquis": [
-    {
-     "nom": "fouet",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.3096,
-      0.3828,
-      0.27,
-      0.1771
-     ]
+   "aquarelles": {
+    "aq-gateau": {
+     "aquarelle": "gateau",
+     "anime": "fleurit",
+     "angle": -3
     }
-   ],
+   },
    "relu": true
   }
  },
@@ -2174,7 +2221,7 @@
   }
  },
  "page/sommaire": {
-  "cle": "4e67ed4e42f13ed394621751e61fe58c4bf2bae91f54527c1e82d5a5372debe5",
+  "cle": "80952c6b0d42632d8b203ca73d1b579aed5c19905e828bcfa0711803201868fc",
   "manifeste": {
    "double": "sommaire",
    "cote": "droite",
@@ -2228,7 +2275,14 @@
     ]
    },
    "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nJulie — Cake au citron, page 14\nBiscuits\nMamie Rose — Sablés, page 18\nMathis — cookies, page 20\nBernard — tarte aux pommes, page 21\nLe mot de la fin, page 22",
-   "vivants": {},
+   "vivants": {
+    "aq-tasse": [
+     0.64,
+     0.74,
+     0.22,
+     0.152
+    ]
+   },
    "deborde": [],
    "lignes": 9,
    "liens": [
@@ -2310,19 +2364,13 @@
      ]
     }
    ],
-   "croquis": [
-    {
-     "nom": "tasse",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.6301,
-      0.795,
-      0.19,
-      0.1346
-     ]
+   "aquarelles": {
+    "aq-tasse": {
+     "aquarelle": "tasse-2",
+     "anime": "vapeur",
+     "angle": -4
     }
-   ],
+   },
    "douteux": [
     "Rose (encre rendue lue « rose »)"
    ],
@@ -2333,7 +2381,7 @@
   }
  },
  "page/titre": {
-  "cle": "7cf2765e044020b2324432c733997866778ceebc2b6bf6f4616d62155ba78e23",
+  "cle": "de830028097f6fea75e4833ed8e8ecd8e506489df120b5a4a29149b350b9d778",
   "manifeste": {
    "double": "titre",
    "cote": "droite",
@@ -2388,22 +2436,22 @@
     ]
    },
    "texte": "Les goûters\nde Cécile\nrecettes de goûter offertes par ses amis",
-   "vivants": {},
+   "vivants": {
+    "aq-theiere": [
+     0.17,
+     0.6,
+     0.66,
+     0.292
+    ]
+   },
    "deborde": [],
    "lignes": 3,
-   "croquis": [
-    {
-     "nom": "cupcake",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.2516,
-      0.5666,
-      0.5,
-      0.3542
-     ]
+   "aquarelles": {
+    "aq-theiere": {
+     "aquarelle": "theiere",
+     "anime": "vapeur"
     }
-   ],
+   },
    "douteux": [
     "Cécile (encre rendue lue « ' Cecile »)"
    ],
@@ -2752,6 +2800,6 @@
  },
  "papier/f23": "e1d4f1a6032eeaa1a05c469941ce19a4ba8ccaf5e2e3cf2841e14a5eab85e6f7",
  "papier1x/f23": "e1d4f1a6032eeaa1a05c469941ce19a4ba8ccaf5e2e3cf2841e14a5eab85e6f7",
- "papier/f21": "266e338e58e61b142562aa6de3f99cbb1b09f78d8782e689a6fbe0497d65bc63",
- "papier1x/f21": "266e338e58e61b142562aa6de3f99cbb1b09f78d8782e689a6fbe0497d65bc63"
+ "papier/f21": "86a01f084b362e66b8c0674013f1418ea198daa81d8885ec8e9adc96cf0f3bdf",
+ "papier1x/f21": "86a01f084b362e66b8c0674013f1418ea198daa81d8885ec8e9adc96cf0f3bdf"
 }

@@ -4,7 +4,8 @@
 //
 // La cuisson fournit une carte des temps par page (scripts/bake-temps-encre.py → pages/temps/<page>,
 // 1 px de page, t sur 16 bits : rouge = octet fort, vert = octet faible). Un petit canvas WebGL révèle
-// l'encre de la page (RGBA) là où t ≤ progression. Tant qu'une page n'est pas écrite, toutes ses copies
+// l'encre de la page (RGBA) là où t ≤ progression : le texte pendant les 85 premiers centièmes, puis les
+// lavis des croquis (sans trait, t = 1) en fondu. Tant qu'une page n'est pas écrite, toutes ses copies
 // (feuillet qui tourne, loupe) cachent leur encre : on ne la voit jamais avant qu'elle s'écrive.
 //
 // Une seule fois par page et par visite. Rien ne s'écrit en mouvement réduit (système ou réglage), hors du
@@ -41,7 +42,8 @@ const VS = `attribute vec2 p;varying vec2 uv;
 void main(){uv=vec2((p.x+1.)*.5,(1.-p.y)*.5);gl_Position=vec4(p,0.,1.);}`;
 const FS = `precision highp float;varying vec2 uv;uniform sampler2D encre;uniform sampler2D temps;uniform float t;uniform float bord;
 void main(){vec4 c=texture2D(encre,uv);vec2 m=texture2D(temps,uv).rg;float tt=(m.r*65280.+m.g*255.)/65535.;
-float a=1.-smoothstep(t-bord,t,tt);gl_FragColor=c*a;}`;
+float a;if(tt>.9999){a=smoothstep(.8,1.,t);}else{float te=t/.85;a=1.-smoothstep(te-bord,te,tt);}
+gl_FragColor=c*a;}`;
 
 function charger(src: string): Promise<HTMLImageElement> {
   const im = new Image();
@@ -122,7 +124,7 @@ export function ecrire(canvas: HTMLCanvasElement, page: string, encre: string, d
         const t = x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.uniform1f(uT, t * 1.004);
+        gl.uniform1f(uT, t);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
         if (x >= 1) terminer();
         else raf = requestAnimationFrame(image);

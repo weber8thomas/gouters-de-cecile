@@ -36,21 +36,32 @@
    "alinea": 0.05,
    "texte": "Je remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.",
    "graine": 31681
+  }
+ ],
+ "vivants": [
+  {
+   "nom": "aq-cannelle",
+   "rect": [
+    0.5,
+    0.42,
+    0.34,
+    0.309
+   ],
+   "aquarelle": "cannelle",
+   "anime": "balance",
+   "angle": 5
   },
   {
-   "id": "croquis-recette",
-   "type": "croquis",
-   "nom": [
-    "farine"
+   "nom": "aq-ble",
+   "rect": [
+    0.2,
+    0.48,
+    0.13,
+    0.171
    ],
-   "taille": [
-    0.17,
-    0.17
-   ],
-   "pres": [
-    0.72,
-    0.6
-   ]
+   "aquarelle": "ble",
+   "anime": "balance",
+   "angle": -4
   }
  ]
 }
