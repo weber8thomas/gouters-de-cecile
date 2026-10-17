@@ -14,6 +14,7 @@ import { useRenderMode } from '../../lib/spread';
 import { LOUPE_EVENT, LOUPE_HD, LOUPE_HD_SORTIE, abonnerLoupe, getLoupe, loupeOccupee } from '../../lib/loupe';
 import { GESTE_EVENT, type GesteDetail } from '../Livre/evenements';
 import manifesteJson from '../../content/pages/manifeste.json';
+import { aEcrire, abonnerEcriture, ecrire, marquerEcrite, versionEcriture } from './encreVivante';
 import './PageCuite.css';
 
 /** Rectangle en fractions de la page : [x, y, largeur, hauteur]. */
@@ -361,6 +362,54 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
   });
   React.useEffect(() => { if (!hd) setCouvertes([]); }, [hd]);
   const garderCouvertes = React.useCallback((rcs: string[]) => setCouvertes((x) => (x.join() === rcs.join() ? x : rcs)), []);
+  // L'encre qui s'écrit (encreVivante.ts) : tant que la page n'est pas écrite, son encre reste cachée.
+  React.useSyncExternalStore(abonnerEcriture, versionEcriture, versionEcriture);
+  const [horsLivre, setHorsLivre] = React.useState(false);
+  const plume = React.useRef<HTMLCanvasElement>(null);
+  const aEcrireIci = mode === 'live' && !!info && cadre === 'parent' && !horsLivre && aEcrire(page);
+  React.useEffect(() => {
+    if (!aEcrireIci) return;
+    const el = racine.current;
+    if (!document.querySelector('.gc-livre')) { setHorsLivre(true); return; }
+    // Seule la page posée dans le livre écrit (pas le feuillet qui tourne, ni la loupe) : les autres copies
+    // attendent, encre cachée, qu'elle ait fini.
+    const feuille = el?.closest('.gc-livre__page');
+    const livre = el?.closest('.gc-livre');
+    if (!el || !feuille || !livre || !info) return;
+    const duree = Math.min(3400, Math.max(1500, 900 + info.texte.length * 4));
+    const dpr = typeof devicePixelRatio === 'number' ? devicePixelRatio : 1;
+    const encre = dpr > 1.25 || !info.encre1x ? info.encre : info.encre1x;
+    let arreter: (() => void) | null = null;
+    let minuteur = 0;
+    const verifier = () => {
+      const visible = feuille.classList.contains('gc-livre__page--visible');
+      const pose = !livre.hasAttribute('data-gc-geste') && livre.getAttribute('data-gc-etat') === 'ouvert';
+      if (!visible) {
+        window.clearTimeout(minuteur);
+        minuteur = 0;
+        if (arreter) arreter(); // quittée en cours d'écriture : elle est écrite
+        return;
+      }
+      if (pose && !arreter && !minuteur) {
+        minuteur = window.setTimeout(() => {
+          minuteur = 0;
+          if (plume.current) arreter = ecrire(plume.current, page, encre, duree, () => marquerEcrite(page));
+        }, 280);
+      } else if (!pose && minuteur) {
+        window.clearTimeout(minuteur);
+        minuteur = 0;
+      }
+    };
+    const obs = new MutationObserver(verifier);
+    obs.observe(feuille, { attributes: true, attributeFilter: ['class'] });
+    obs.observe(livre, { attributes: true, attributeFilter: ['data-gc-geste', 'data-gc-etat'] });
+    verifier();
+    return () => {
+      obs.disconnect();
+      window.clearTimeout(minuteur);
+      if (arreter) arreter();
+    };
+  }, [aEcrireIci, page, info]);
   if (!info) {
     if (typeof console !== 'undefined') console.warn(`Page cuite inconnue : ${page}`);
     return null;
@@ -391,7 +440,7 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
     styleEncre = libres.length ? { clipPath: polygoneUnion(libres) } : { visibility: 'hidden' };
   }
   return (
-    <div ref={racine} className={cls} style={style} data-gc-page-cuite={page} data-gc-page-type={info.type ?? 'page'} data-gc-encre4x={hd ? 'oui' : undefined} lang="fr">
+    <div ref={racine} className={cls} style={style} data-gc-page-cuite={page} data-gc-page-type={info.type ?? 'page'} data-gc-encre4x={hd ? 'oui' : undefined} data-gc-ecrit={aEcrireIci ? 'a-ecrire' : undefined} lang="fr">
       <img
         className={`gc-page-cuite__papier${info.miroir ? ' gc-page-cuite__papier--miroir' : ''}`}
         {...source(info.papier, info.papier1x)}
@@ -401,6 +450,7 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
       />
       <img className="gc-page-cuite__encre" {...source(info.encre, info.encre1x)} alt="" draggable={false} decoding="sync" style={styleEncre} />
       {hd && tuiles && <Encre4x tuiles={tuiles} racine={racine.current?.closest('.gc-ecran') ?? null} onCouvertes={garderCouvertes} />}
+      {aEcrireIci && <canvas ref={plume} className="gc-page-cuite__plume" aria-hidden="true" />}
       <div className="gc-page-cuite__texte">
         {lignes.map((l, i) => (
           <p key={i}>{l}</p>

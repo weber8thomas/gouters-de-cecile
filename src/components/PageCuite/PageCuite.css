@@ -33,6 +33,21 @@
   -webkit-user-drag: none;
 }
 
+/* L'encre qui s'écrit (encreVivante.ts) : tant que la page n'est pas écrite, son encre cuite est cachée et
+   la plume (canvas WebGL) la révèle trait après trait ; ensuite l'image cuite revient, identique. */
+.gc-page-cuite[data-gc-ecrit] .gc-page-cuite__encre,
+.gc-page-cuite[data-gc-ecrit] .gc-page-cuite__tuile {
+  visibility: hidden;
+}
+
+.gc-page-cuite__plume {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 /* Verso d'un feuillet du carnet : la même pâte, retournée (le bord extérieur reste le même bord). */
 .gc-page-cuite__papier--miroir {
   transform: scaleX(-1);
