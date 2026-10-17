@@ -79,7 +79,7 @@
     "ingredients-1/ligne-9": 8,
     "ingredients-1/ligne-10": 1,
     "etape-1/phrase-1": 2,
-    "etape-6/phrase-1": 18,
+    "etape-6/phrase-1": 31694,
     "etape-1/titre": 2,
     "etape-2/titre": 2,
     "etape-3/titre": 2,
@@ -87,7 +87,13 @@
     "etape-5/titre": 2,
     "etape-6/titre": 2,
     "ingredients-1/ligne-3": 26166588,
-    "ingredients-1/ligne-5": 53752529
+    "ingredients-1/ligne-5": 53752529,
+    "etape-6/phrase-2.1": 69509264,
+    "etape-6/phrase-2.2": 18943010,
+    "etape-6/phrase-3": 8159401,
+    "extra-1/ligne-1": 89363364,
+    "extra-1/ligne-2": 8742407,
+    "extra-1/ligne-3": 31968830
    }
   }
  }
