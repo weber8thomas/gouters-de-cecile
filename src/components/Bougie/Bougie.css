@@ -1,0 +1,88 @@
+/* Une petite source chaude, presque hors champ : la bougie est coupée par le bord bas de l'écran, dans le
+   coin droit de la table, à l'écart du livre (jamais sur le texte). Le corps et le bougeoir sont sombres ;
+   on voit surtout la flamme et sa lueur, qui dansent sur la table et le bas de la page droite.
+   Géométrie en px de scène 1920 × 1080 (la scène est fixe). La pose (340 × 408 en repère local) est celle
+   de bake-bougie.py, mise à l'échelle --gc-bougie-k : la bougie est centrée en x = 158 ; le plateau repose
+   vers y = 356 ; la mèche est vers y = 6. Animation : transform et opacity seulement (Bougie.tsx). Rien ne
+   capte le pointeur. */
+
+.gc-bougie {
+  --gc-bougie-k: 0.36;     /* échelle d'affichage de la pose (= ECHELLE de bake-bougie.py) */
+  --gc-bougie-cx: 1760px;  /* axe de la bougie, dans le coin droit de la table */
+  --gc-bougie-cy: 1120px;  /* centre du plateau : sous le bord bas, qui coupe le bas du bougeoir */
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  /* Curseur figé : le curseur du livre (data-gc-curseur, hérité) ne recalcule pas ce calque. */
+  cursor: auto;
+}
+
+/* ---- Lueur : une lumière chaude, large et diffuse, qui se fond dans la pénombre -------------------
+   Dégradé radial peint une fois, centré sur la flamme. Sa décroissance est progressive (pas de bord net) :
+   forte près de la flamme, presque nulle au rayon. Son opacité et son échelle suivent le feu. */
+.gc-bougie__halo {
+  position: absolute;
+  left: calc(var(--gc-bougie-cx) - 520px);
+  top: calc(var(--gc-bougie-cy) - 416px * var(--gc-bougie-k) - 520px);
+  width: 1040px;
+  height: 1040px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(closest-side,
+    color-mix(in srgb, var(--gc-glow) 46%, transparent) 0%,
+    color-mix(in srgb, var(--gc-honey-500) 30%, transparent) 12%,
+    color-mix(in srgb, var(--gc-honey-500) 18%, transparent) 30%,
+    color-mix(in srgb, var(--gc-honey-500) 10%, transparent) 50%,
+    color-mix(in srgb, var(--gc-honey-500) 4%, transparent) 74%,
+    transparent 100%);
+  will-change: opacity, transform;
+}
+
+/* ---- La pose : bougie et bougeoir (sombres, à demi hors champ) ----------------------------------- */
+.gc-bougie__pose {
+  position: absolute;
+  left: calc(var(--gc-bougie-cx) - 158px * var(--gc-bougie-k));
+  top: calc(var(--gc-bougie-cy) - 356px * var(--gc-bougie-k));
+  width: calc(340px * var(--gc-bougie-k));
+  height: calc(408px * var(--gc-bougie-k));
+  pointer-events: none;
+}
+
+.gc-bougie__bougie {
+  position: absolute;
+  inset: 0;
+  background-image: var(--gc-bougie-bougie, none);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+/* ---- Flamme : deux calques, base au centre-bas du cadre (la mèche) --------------------------------
+   Cadre 96 × 160 (repère local), posé au-dessus de la mèche (y = 6). Chaque calque pivote et grandit depuis
+   sa base (transform-origin), comme une vraie flamme. */
+.gc-bougie__flamme {
+  position: absolute;
+  left: calc(110px * var(--gc-bougie-k));
+  top: calc(-154px * var(--gc-bougie-k));
+  width: calc(96px * var(--gc-bougie-k));
+  height: calc(160px * var(--gc-bougie-k));
+  transform-origin: 50% 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  will-change: transform, opacity;
+}
+
+.gc-bougie__flamme--corps {
+  background-image: var(--gc-bougie-corps, none);
+}
+
+.gc-bougie__flamme--coeur {
+  background-image: var(--gc-bougie-coeur, none);
+}
+
+/* ---- Téléphone en portrait : la bougie gêne, on ne garde que la lueur (le halo). ---------------- */
+@media (orientation: portrait) and (max-width: 760px) {
+  .gc-bougie__pose {
+    display: none;
+  }
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { SettingsContext, settingsAttrs, useSettings, type Distance, type IdleLook, type Settings } from '../../lib/settings';
 import { LumiereLivre, LumiereTable } from '../Lumiere';
+import { Bougie } from '../Bougie';
 import './Stage.css';
 
 export interface StageProps {
@@ -69,6 +70,7 @@ export function Stage({ idle, distance, fit = false, children, overlay, classNam
       <div className="gc-stage__light" aria-hidden="true">
         <LumiereLivre />
       </div>
+      <Bougie />
       {overlay != null && <div className="gc-stage__overlay">{overlay}</div>}
     </div>
   );
