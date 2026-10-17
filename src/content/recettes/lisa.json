@@ -1,0 +1,123 @@
+{
+  "slug": "lisa",
+  "source": "src/content/recettes/lisa.txt",
+  "adaptations": [
+    "Le « Coucou Thomas, voici ma recette… » est un message à Thomas : retiré du carnet ; « tiptop pour la saison » devient une note en marge.",
+    "Majuscules d'emphase (CARROT CAKE, ÉTAPE, YUMMY…) écrites en minuscules soulignées : l'écriture générée lit mal les mots tout en capitales.",
+    "Aucune fausse faute ni correction inventée : la coquille « carrières » du message reçu est corrigée sans rature (« 3 à 4 grosses carottes ») et le « g » oublié après 180 est ajouté, écrit d'un trait (« 180 g ») — jamais de rature ni de lettre ajoutée sur un mot important (unités, quantités, noms, ingrédients ; CONTRACT § 13).",
+    "Encre bille bleu-noir (bille-bleue) pour distinguer sa page de celle de Mathis, qui a la même main. 🥕 et 🧁 deviennent des croquis (carotte, cupcake) en guise de puces ; 😎 devient un petit croquis à la fin."
+  ],
+  "style": {
+    "main": "ado",
+    "encre": "bille-bleue",
+    "graine": 2611
+  },
+  "video": "lisa",
+  "titre": "Carrot cake",
+  "titreSouligne": "double",
+  "notesMarge": [
+    {
+      "texte": "tiptop pour la saison !",
+      "pres": "titre"
+    }
+  ],
+  "ingredients": [
+    {
+      "puce": "carotte",
+      "lignes": [
+        {
+          "texte": "250g de sucre"
+        },
+        {
+          "texte": "180 g d’huile de coco (ou autre huile végétale)"
+        },
+        {
+          "texte": "1 sachet de levure chimique"
+        },
+        {
+          "texte": "300g de carottes (3 à 4 grosses carottes)"
+        },
+        {
+          "texte": "250g de farine fluide"
+        },
+        {
+          "texte": "2 cuillères à café d’extrait de vanille"
+        },
+        {
+          "texte": "2 cuillères de muscade"
+        },
+        {
+          "texte": "2 à 3 cuillères à café de cannelle (moins selon les goûts)"
+        },
+        {
+          "texte": "4 œufs"
+        },
+        {
+          "texte": "120g de noix concassées"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "__Étape 1__",
+      "texte": "Mélanger au fouet électrique les 4 œufs et le sucre."
+    },
+    {
+      "titre": "__Étape 2__",
+      "texte": "Incorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours à l'aide du fouet électrique."
+    },
+    {
+      "titre": "__Étape 3__",
+      "texte": "Commencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer le fouet en augmentant de puissance progressivement jusqu'à obtention d'une pâte lisse."
+    },
+    {
+      "titre": "__Étape 4__",
+      "texte": "Ajouter les carottes râpées et les noix concassées. Mélanger au fouet doucement jusqu'à ce que la pâte soit homogène."
+    },
+    {
+      "titre": "__Étape 5__",
+      "texte": "Huiler et fariner légèrement le moule et verser la préparation."
+    },
+    {
+      "titre": "__Étape 6__",
+      "texte": "Enfourner 40 à 45 minutes selon votre four à 175° (th 5/6). Perso sur mon four je vais même jusqu’à 1h, mais vérifie tous les quarts d’heure quand même. Piquer pour vérifier que le gâteau soit cuit."
+    }
+  ],
+  "apres": [
+    "Laisse le gâteau dans le moule jusqu’à ce qu’il refroidisse."
+  ],
+  "extras": [
+    {
+      "titre": "Option avec le glaçage plutôt healthy, sans beurre quoi…",
+      "puce": "cupcake",
+      "lignes": [
+        {
+          "texte": "3 cuillères à soupe de sucre glace"
+        },
+        {
+          "texte": "Jus de citron ou fleur d’oranger selon préférences"
+        },
+        {
+          "texte": "Bonus : Colorant alimentaire",
+          "puce": null
+        }
+      ],
+      "paragraphes": [
+        "Attention le mélange ne doit pas trop être liquide, il faut qu’il soit crémeux. Il durcira au séchage !"
+      ]
+    }
+  ],
+  "fin": {
+    "texte": "__Yummy après c’est la régalade__",
+    "croquis": [
+      "carotte",
+      "lunettes-soleil"
+    ]
+  },
+  "croquis": [
+    "carrot-cake"
+  ],
+  "mot": null,
+  "signature": "Lisa"
+}

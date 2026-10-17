@@ -1,0 +1,1989 @@
+{
+ "version": 3,
+ "largeur": 850.0,
+ "hauteur": 1200.0,
+ "echelle": 2.0,
+ "pages": {
+  "biscuits-droite": {
+   "double": "biscuits",
+   "cote": "droite",
+   "folio": 17,
+   "sansFolio": true,
+   "papier": "pages/papier/f17",
+   "miroir": false,
+   "encre": "pages/biscuits-droite",
+   "papier1x": "pages/1x/papier/f17",
+   "encre1x": "pages/1x/biscuits-droite",
+   "encre4x": {
+    "base": "pages/4x/biscuits-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Biscuits\nMamie Rose, Mathis et Bernard",
+   "vivants": {
+    "aq-sables": [
+     0.27,
+     0.4,
+     0.17,
+     0.224
+    ],
+    "aq-cookies": [
+     0.46,
+     0.41,
+     0.3,
+     0.244
+    ]
+   },
+   "deborde": [],
+   "lignes": 1,
+   "aquarelles": {
+    "aq-sables": {
+     "aquarelle": "sables-etoiles",
+     "anime": "balance",
+     "angle": -6
+    },
+    "aq-cookies": {
+     "aquarelle": "cookies",
+     "anime": "balance",
+     "angle": 4
+    }
+   },
+   "douteux": [
+    "Rose, (encre rendue lue « rose »)"
+   ],
+   "douteux_importants": [
+    "Rose,"
+   ],
+   "relu": true
+  },
+  "biscuits-gauche": {
+   "double": "biscuits",
+   "cote": "gauche",
+   "folio": 16,
+   "sansFolio": true,
+   "papier": "pages/papier/f15",
+   "miroir": true,
+   "encre": "pages/biscuits-gauche",
+   "papier1x": "pages/1x/papier/f15",
+   "encre1x": "pages/1x/biscuits-gauche",
+   "encre4x": {
+    "base": "pages/4x/biscuits-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 0,
+   "relu": true
+  },
+  "cecile-1-droite": {
+   "double": "cecile-1",
+   "cote": "droite",
+   "folio": 5,
+   "papier": "pages/papier/f5",
+   "miroir": false,
+   "encre": "pages/cecile-1-droite",
+   "papier1x": "pages/1x/papier/f5",
+   "encre1x": "pages/1x/cecile-1-droite",
+   "encre4x": {
+    "base": "pages/4x/cecile-1-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Cécile, ……… ans\nCécile, ……… ans",
+   "vivants": {
+    "photo-4": [
+     0.14,
+     0.1,
+     0.56,
+     0.295
+    ],
+    "photo-5": [
+     0.4,
+     0.55,
+     0.5,
+     0.263
+    ]
+   },
+   "deborde": [],
+   "lignes": 0,
+   "douteux": [
+    "Cécile, (encre rendue lue « Cecile »)",
+    "Cécile, (encre rendue lue « Cecile »)"
+   ],
+   "douteux_importants": [
+    "Cécile,"
+   ],
+   "relu": true
+  },
+  "cecile-1-gauche": {
+   "double": "cecile-1",
+   "cote": "gauche",
+   "folio": 4,
+   "papier": "pages/papier/f3",
+   "miroir": true,
+   "encre": "pages/cecile-1-gauche",
+   "papier1x": "pages/1x/papier/f3",
+   "encre1x": "pages/1x/cecile-1-gauche",
+   "encre4x": {
+    "base": "pages/4x/cecile-1-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Cécile en cuisine\nCécile, ……… ans\nCécile, ……… ans\nCécile, ……… ans",
+   "vivants": {
+    "photo-1": [
+     0.08,
+     0.22,
+     0.48,
+     0.253
+    ],
+    "photo-2": [
+     0.6,
+     0.3,
+     0.32,
+     0.168
+    ],
+    "photo-3": [
+     0.24,
+     0.6,
+     0.54,
+     0.284
+    ]
+   },
+   "deborde": [],
+   "lignes": 1,
+   "douteux": [
+    "Cécile (encre rendue lue « Cecile »)",
+    "Cécile, (encre rendue lue « Cecile »)"
+   ],
+   "douteux_importants": [
+    "Cécile",
+    "Cécile,"
+   ],
+   "relu": true
+  },
+  "cecile-2-droite": {
+   "double": "cecile-2",
+   "cote": "droite",
+   "folio": 7,
+   "papier": "pages/papier/f7",
+   "miroir": false,
+   "encre": "pages/cecile-2-droite",
+   "papier1x": "pages/1x/papier/f7",
+   "encre1x": "pages/1x/cecile-2-droite",
+   "encre4x": {
+    "base": "pages/4x/cecile-2-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Cécile, ……… ans\nCécile, ……… ans",
+   "vivants": {
+    "photo-9": [
+     0.2,
+     0.12,
+     0.56,
+     0.295
+    ],
+    "photo-10": [
+     0.38,
+     0.56,
+     0.48,
+     0.253
+    ]
+   },
+   "deborde": [],
+   "lignes": 0,
+   "douteux": [
+    "Cécile, (encre rendue lue « Cecile »)"
+   ],
+   "douteux_importants": [
+    "Cécile,"
+   ],
+   "relu": true
+  },
+  "cecile-2-gauche": {
+   "double": "cecile-2",
+   "cote": "gauche",
+   "folio": 6,
+   "papier": "pages/papier/f5",
+   "miroir": true,
+   "encre": "pages/cecile-2-gauche",
+   "papier1x": "pages/1x/papier/f5",
+   "encre1x": "pages/1x/cecile-2-gauche",
+   "encre4x": {
+    "base": "pages/4x/cecile-2-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Cécile, ……… ans\nCécile, ……… ans\nCécile, ……… ans",
+   "vivants": {
+    "photo-6": [
+     0.1,
+     0.1,
+     0.4,
+     0.211
+    ],
+    "photo-7": [
+     0.5,
+     0.24,
+     0.42,
+     0.221
+    ],
+    "photo-8": [
+     0.16,
+     0.58,
+     0.56,
+     0.295
+    ]
+   },
+   "deborde": [],
+   "lignes": 0,
+   "douteux": [
+    "Cécile, (encre rendue lue « Cecile . »)",
+    "Cécile, (encre rendue lue « Cecile »)",
+    "Cécile, (encre rendue lue « Cecile »)"
+   ],
+   "douteux_importants": [
+    "Cécile,"
+   ],
+   "relu": true
+  },
+  "dedicace": {
+   "double": "sommaire",
+   "cote": "gauche",
+   "folio": 8,
+   "papier": "pages/papier/f7",
+   "miroir": true,
+   "encre": "pages/dedicace",
+   "papier1x": "pages/1x/papier/f7",
+   "encre1x": "pages/1x/dedicace",
+   "encre4x": {
+    "base": "pages/4x/dedicace",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Pour Cécile, un goûter par page, de la part de ceux qui t'aiment.",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 0,
+   "croquis": [
+    {
+     "nom": "fleur",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.4105,
+      0.4952,
+      0.17,
+      0.1204
+     ]
+    }
+   ],
+   "relu": true
+  },
+  "fin-droite": {
+   "double": "fin",
+   "cote": "droite",
+   "folio": 23,
+   "papier": "pages/papier/f23",
+   "miroir": false,
+   "encre": "pages/fin-droite",
+   "papier1x": "pages/1x/papier/f23",
+   "encre1x": "pages/1x/fin-droite",
+   "encre4x": {
+    "base": "pages/4x/fin-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Ce carnet a été rempli par les amis de Cécile pour son anniversaire, automne 2026. Les recettes sont celles qu'ils ont envoyées, mot pour mot.",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 0,
+   "croquis": [
+    {
+     "nom": "bougie",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.4308,
+      0.4415,
+      0.13,
+      0.1062
+     ]
+    }
+   ],
+   "relu": true
+  },
+  "fin-gauche": {
+   "double": "fin",
+   "cote": "gauche",
+   "folio": 22,
+   "papier": "pages/papier/f21",
+   "miroir": true,
+   "encre": "pages/fin-gauche",
+   "papier1x": "pages/1x/papier/f21",
+   "encre1x": "pages/1x/fin-gauche",
+   "encre4x": {
+    "base": "pages/4x/fin-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "À suivre…\nLa version papier arrive bientôt…\nMerci à tous pour vos recettes et vos petits mots.\nCécile",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 4,
+   "douteux": [
+    "Cécile (encre rendue lue « Cecile »)"
+   ],
+   "douteux_importants": [
+    "Cécile"
+   ],
+   "relu": true
+  },
+  "garde": {
+   "double": "titre",
+   "cote": "gauche",
+   "folio": 2,
+   "sansFolio": true,
+   "contrePlat": true,
+   "papier": "pages/papier/garde-uni",
+   "miroir": true,
+   "encre": "pages/garde",
+   "papier1x": "pages/1x/papier/garde-uni",
+   "encre1x": "pages/1x/garde",
+   "encre4x": {
+    "base": "pages/4x/garde",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Ce carnet appartient à Cécile",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 0,
+   "relu": true
+  },
+  "gateaux-droite": {
+   "double": "gateaux",
+   "cote": "droite",
+   "folio": 11,
+   "sansFolio": true,
+   "papier": "pages/papier/f11",
+   "miroir": false,
+   "encre": "pages/gateaux-droite",
+   "papier1x": "pages/1x/papier/f11",
+   "encre1x": "pages/1x/gateaux-droite",
+   "encre4x": {
+    "base": "pages/4x/gateaux-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Gâteaux & cakes\nLisa et Julie",
+   "vivants": {
+    "aq-gateau": [
+     0.31,
+     0.4,
+     0.38,
+     0.315
+    ]
+   },
+   "deborde": [],
+   "lignes": 1,
+   "aquarelles": {
+    "aq-gateau": {
+     "aquarelle": "gateau",
+     "anime": "fleurit",
+     "angle": -3
+    }
+   },
+   "relu": true
+  },
+  "gateaux-gauche": {
+   "double": "gateaux",
+   "cote": "gauche",
+   "folio": 10,
+   "sansFolio": true,
+   "papier": "pages/papier/f9",
+   "miroir": true,
+   "encre": "pages/gateaux-gauche",
+   "papier1x": "pages/1x/papier/f9",
+   "encre1x": "pages/1x/gateaux-gauche",
+   "encre4x": {
+    "base": "pages/4x/gateaux-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 0,
+   "relu": true
+  },
+  "julie-droite": {
+   "double": "julie",
+   "cote": "droite",
+   "folio": 15,
+   "papier": "pages/papier/f15",
+   "miroir": false,
+   "encre": "pages/julie-droite",
+   "papier1x": "pages/1x/papier/f15",
+   "encre1x": "pages/1x/julie-droite",
+   "encre4x": {
+    "base": "pages/4x/julie-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Julie",
+   "vivants": {
+    "aq-citron": [
+     0.55,
+     0.22,
+     0.28,
+     0.383
+    ],
+    "aq-citron-2": [
+     0.16,
+     0.56,
+     0.26,
+     0.285
+    ]
+   },
+   "deborde": [],
+   "lignes": 0,
+   "aquarelles": {
+    "aq-citron": {
+     "aquarelle": "citron",
+     "anime": "fleurit",
+     "angle": 6
+    },
+    "aq-citron-2": {
+     "aquarelle": "citron-2",
+     "anime": "fleurit",
+     "angle": -5
+    }
+   },
+   "relu": true
+  },
+  "julie-gauche": {
+   "double": "julie",
+   "cote": "gauche",
+   "folio": 14,
+   "papier": "pages/papier/f13",
+   "miroir": true,
+   "encre": "pages/julie-gauche",
+   "papier1x": "pages/1x/papier/f13",
+   "encre1x": "pages/1x/julie-gauche",
+   "encre4x": {
+    "base": "pages/4x/julie-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Julie, depuis Lyon\nPour Cécile : Pour toutes nos pauses goûter à refaire le monde. Joyeux anniversaire ma Cécile ! — Julie\nLe cake citron de Julie\n3 œufs 120 g de sucre 2 citrons non traités 180 g de farine\n½ sachet de levure 125 g de beurre 1 c. à s. de pavot 1 pincée de sel\nFour à th. 6 (180 °C). Fouette les œufs avec le sucre jusqu'à ce que ça blanchisse, ajoute les zestes et le jus des citrons, puis la farine, la levure, le sel, le pavot et enfin le beurre fondu. Moule à cake beurré, 40 min au four.\n(testé le 3 mars, un régal !)",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.04,
+     0.42,
+     0.22313
+    ]
+   },
+   "deborde": [],
+   "lignes": 16,
+   "douteux": [
+    "œufs (encre rendue lue « cents . »)",
+    "125 g (encre rendue lue « 125 9 »)",
+    "1 c. à s. (encre rendue lue « 1 cas »)",
+    "œufs (encre rendue lue « cents »)",
+    "sel, (encre rendue lue « sef »)",
+    "beurré, (encre rendue lue « beurrie »)",
+    "3 (encre rendue lue « 3 »)"
+   ],
+   "douteux_importants": [
+    "1 c. à s.",
+    "125 g",
+    "3",
+    "beurré,",
+    "sel,",
+    "œufs"
+   ],
+   "relu": true
+  },
+  "lisa-droite": {
+   "double": "lisa",
+   "cote": "droite",
+   "folio": 13,
+   "papier": "pages/papier/f13",
+   "miroir": false,
+   "encre": "pages/lisa-droite",
+   "papier1x": "pages/1x/papier/f13",
+   "encre1x": "pages/1x/lisa-droite",
+   "encre4x": {
+    "base": "pages/4x/lisa-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Lisa\nÉtape 4\nAjouter les carottes râpées et les noix concassées. Mélanger au fouet doucement jusqu'à ce que la pâte soit homogène.\nÉtape 5\nHuiler et fariner légèrement le moule et verser la préparation.\nÉtape 6\nEnfourner 40 à 45 minutes selon votre four à 175° (th 5/6). Perso sur mon four je vais même jusqu’à 1h, mais vérifie tous les quarts d’heure quand même. Piquer pour vérifier que le gâteau soit cuit.\nLaisse le gâteau dans le moule jusqu’à ce qu’il refroidisse.\nOption avec le glaçage plutôt healthy, sans beurre quoi…\n3 cuillères à soupe de sucre glace\nJus de citron ou fleur d’oranger selon préférences\nBonus : Colorant alimentaire\nAttention le mélange ne doit pas trop être liquide, il faut qu’il soit crémeux. Il durcira au séchage !\nYummy après c’est la régalade\nLisa",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 20,
+   "recette": "lisa",
+   "croquis": [
+    {
+     "nom": "cupcake",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0913,
+      0.5006,
+      0.0193,
+      0.0136
+     ]
+    },
+    {
+     "nom": "cupcake",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0909,
+      0.5291,
+      0.0185,
+      0.0131
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.6158,
+      0.6693,
+      0.0239,
+      0.0169
+     ]
+    },
+    {
+     "nom": "sourire-lunettes",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.6418,
+      0.6708,
+      0.0223,
+      0.0158
+     ]
+    }
+   ],
+   "douteux": [
+    "4 (encre rendue lue « _ 4 »)",
+    "1h, (encre rendue lue « th »)"
+   ],
+   "douteux_importants": [
+    "1h,",
+    "4"
+   ],
+   "relu": true
+  },
+  "lisa-gauche": {
+   "double": "lisa",
+   "cote": "gauche",
+   "folio": 12,
+   "papier": "pages/papier/f11",
+   "miroir": true,
+   "encre": "pages/lisa-gauche",
+   "papier1x": "pages/1x/papier/f11",
+   "encre1x": "pages/1x/lisa-gauche",
+   "encre4x": {
+    "base": "pages/4x/lisa-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Lisa\nPour Cécile : mot à venir\nCarrot cake\n250g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300g de carottes (3 à 4 grosses carottes)\n250g de farine fluide\n2 cuillères à café d’extrait de vanille\n2 cuillères de muscade\n2 à 3 cuillères à café de cannelle (moins selon les goûts)\n4 œufs\n120g de noix concassées\nÉtape 1\nMélanger au fouet électrique les 4 œufs et le sucre.\nÉtape 2\nIncorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours à l'aide du fouet électrique.\nÉtape 3\nCommencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer le fouet en augmentant de puissance progressivement jusqu'à obtention d'une pâte lisse.\n(tiptop pour la saison !)",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.48934,
+     0.27556
+    ]
+   },
+   "deborde": [],
+   "lignes": 21,
+   "recette": "lisa",
+   "croquis": [
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0629,
+      0.3758,
+      0.019,
+      0.0134
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0602,
+      0.4018,
+      0.0186,
+      0.0132
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0615,
+      0.4305,
+      0.0197,
+      0.014
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0621,
+      0.4632,
+      0.0178,
+      0.0126
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.062,
+      0.4901,
+      0.0194,
+      0.0138
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0608,
+      0.5192,
+      0.0186,
+      0.0132
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0593,
+      0.5484,
+      0.0189,
+      0.0134
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0625,
+      0.5782,
+      0.0199,
+      0.0141
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0633,
+      0.6093,
+      0.0192,
+      0.0136
+     ]
+    },
+    {
+     "nom": "carotte",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.0611,
+      0.6354,
+      0.0201,
+      0.0142
+     ]
+    },
+    {
+     "nom": "carrot-cake",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.7888,
+      0.2706,
+      0.1672,
+      0.106
+     ]
+    }
+   ],
+   "douteux": [
+    "1 (groupe « 1 » lu « . I »)",
+    "1 (groupe « 1 » lu « A »)",
+    "250g (encre rendue lue « 450g »)",
+    "180 g (encre rendue lue « ISO g »)",
+    "1 (encre rendue lue « n »)",
+    "300g (encre rendue lue « 3009 »)",
+    "(3 (encre rendue lue « C3 »)",
+    "4 (encre rendue lue « \" 4 »)",
+    "250g (encre rendue lue « 2sog »)",
+    "2 (encre rendue lue « ' L »)",
+    "2 (encre rendue lue « q »)",
+    "goûts) (encre rendue lue « goats ) »)",
+    "4 (encre rendue lue « _ U »)",
+    "1 (encre rendue lue « A »)",
+    "œufs (encre rendue lue « cents . »)",
+    "sucre. (encre rendue lue « sucre »)"
+   ],
+   "douteux_importants": [
+    "(3",
+    "1",
+    "180 g",
+    "2",
+    "250g",
+    "300g",
+    "4",
+    "goûts)",
+    "sucre.",
+    "œufs"
+   ],
+   "relu": true
+  },
+  "mathis-droite": {
+   "double": "mathis",
+   "cote": "droite",
+   "folio": 21,
+   "papier": "pages/papier/f21",
+   "miroir": false,
+   "encre": "pages/mathis-droite",
+   "papier1x": "pages/1x/papier/f21",
+   "encre1x": "pages/1x/mathis-droite",
+   "encre4x": {
+    "base": "pages/4x/mathis-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Bernard, depuis Dijon\nPour Cécile : Joyeux anniversaire Cécile, garde-moi une part de tarte ! — Bernard\nMa tarte aux pommes\n1 pâte brisée, 5 pommes, 2 c. à s. de sucre, 1 noix de beurre. Étale la pâte dans le moule, pique-la, mets les pommes en lamelles, sucre et beurre en noisettes. 40 min à th. 7.",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.04,
+     0.42,
+     0.22313
+    ],
+    "aq-tarte": [
+     0.46,
+     0.56,
+     0.42,
+     0.189
+    ],
+    "aq-pomme": [
+     0.14,
+     0.62,
+     0.2,
+     0.245
+    ]
+   },
+   "deborde": [],
+   "lignes": 8,
+   "aquarelles": {
+    "aq-tarte": {
+     "aquarelle": "tarte-pommes",
+     "anime": "fleurit"
+    },
+    "aq-pomme": {
+     "aquarelle": "pomme",
+     "anime": "fleurit",
+     "angle": -6
+    }
+   },
+   "douteux": [
+    "Cécile (encre rendue lue « C recite »)",
+    "pommes, (encre rendue lue « pom mes , »)",
+    "2 c. à s. (encre rendue lue « 2C d s »)",
+    "noix (encre rendue lue « in ox »)",
+    "pommes (encre rendue lue « p.g.m.mes. »)",
+    "th. 7. (encre rendue lue « th ? »)"
+   ],
+   "douteux_importants": [
+    "2 c. à s.",
+    "Cécile",
+    "noix",
+    "pommes",
+    "pommes,",
+    "th. 7."
+   ],
+   "relu": true
+  },
+  "mathis-gauche": {
+   "double": "mathis",
+   "cote": "gauche",
+   "folio": 20,
+   "papier": "pages/papier/f19",
+   "miroir": true,
+   "encre": "pages/mathis-gauche",
+   "papier1x": "pages/1x/papier/f19",
+   "encre1x": "pages/1x/mathis-gauche",
+   "encre4x": {
+    "base": "pages/4x/mathis-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Mathis, depuis Lille\nPour Cécile : Joyeux anniv Cécile !! — Mathis\nLes cookies de Mathis\n1 œuf, 100 g de beurre mou, 75 g de sucre roux, 50 g de sucre blanc, 200 g de farine, ½ sachet de levure, 1 pincée de sel, 150 g de pépites de choco.\nMélange tout, mets beaucoup de pépites !! 10 min à 170 °C, ils restent mous au milieu.",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.04,
+     0.42,
+     0.22313
+    ]
+   },
+   "deborde": [],
+   "lignes": 7,
+   "croquis": [
+    {
+     "nom": "cookie",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.7498,
+      0.8106,
+      0.16,
+      0.1133
+     ]
+    }
+   ],
+   "douteux": [
+    "50 (groupe « 50 g » lu « 50 9 »)",
+    "pépites (groupe « pépites » lu « petites »)",
+    "roux, (encre rendue lue « row , »)",
+    "50 g (encre rendue lue « 60 g »)",
+    "200 g (encre rendue lue « 200 9 »)",
+    "½ (encre rendue lue « 1 ft »)",
+    "1 (encre rendue lue « 1 »)",
+    "sel, (encre rendue lue « set »)",
+    "150 g (encre rendue lue « 150 9 »)",
+    "pépites (encre rendue lue « pipepites »)",
+    "170 °C, (encre rendue lue « 170 kg . »)"
+   ],
+   "douteux_importants": [
+    "1",
+    "150 g",
+    "170 °C,",
+    "200 g",
+    "50",
+    "50 g",
+    "pépites",
+    "roux,",
+    "sel,",
+    "½"
+   ],
+   "relu": true
+  },
+  "rose-droite": {
+   "double": "rose",
+   "cote": "droite",
+   "folio": 19,
+   "papier": "pages/papier/f19",
+   "miroir": false,
+   "encre": "pages/rose-droite",
+   "papier1x": "pages/1x/papier/f19",
+   "encre1x": "pages/1x/rose-droite",
+   "encre4x": {
+    "base": "pages/4x/rose-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Mamie Rose\nLes garder dans la boîte en fer.\nPour Noël\nJe remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.",
+   "vivants": {
+    "aq-cannelle": [
+     0.5,
+     0.42,
+     0.34,
+     0.309
+    ],
+    "aq-sables": [
+     0.2,
+     0.48,
+     0.13,
+     0.171
+    ]
+   },
+   "deborde": [],
+   "lignes": 5,
+   "aquarelles": {
+    "aq-cannelle": {
+     "aquarelle": "cannelle",
+     "anime": "balance",
+     "angle": 5
+    },
+    "aq-sables": {
+     "aquarelle": "sables-etoiles",
+     "anime": "balance",
+     "angle": -4
+    }
+   },
+   "douteux": [
+    "1 c. à c. (encre rendue lue « 1c. d.c. »)"
+   ],
+   "douteux_importants": [
+    "1 c. à c."
+   ],
+   "relu": true
+  },
+  "rose-gauche": {
+   "double": "rose",
+   "cote": "gauche",
+   "folio": 18,
+   "papier": "pages/papier/f17",
+   "miroir": true,
+   "encre": "pages/rose-gauche",
+   "papier1x": "pages/1x/papier/f17",
+   "encre1x": "pages/1x/rose-gauche",
+   "encre4x": {
+    "base": "pages/4x/rose-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Mamie Rose, depuis Vannes\nPour Cécile : Ma recette de toujours, pour ma Cécile qui en volait toujours un de plus. — Mamie Rose\nLes sablés de Rose.\nPour une boîte en fer : 250 g de farine, 125 g de beurre bien froid, 100 g de sucre glace, 1 jaune d'œuf, 1 pincée de sel et 1 de cannelle , le zeste d'un citron.\nSabler la farine et le beurre du bout des doigts, ajouter le sucre, le sel, le zeste puis le jaune. Faire une boule sans trop la travailler et la laisser une heure au frais. Étaler sur ½ cm, découper au verre, dorer au jaune et rayer à la fourchette. Cuire 12 min à th. 6, ils doivent rester blonds.",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.04,
+     0.42,
+     0.22313
+    ]
+   },
+   "deborde": [],
+   "lignes": 11,
+   "douteux": [
+    "Mamie (encre rendue lue « Namie »)",
+    "1 (encre rendue lue « d »)",
+    "sel, (encre rendue lue « seh »)",
+    "1 (encre rendue lue « 1 »)",
+    "beurre (encre rendue lue « benrre »)",
+    "sel, (encre rendue lue « seh »)",
+    "½ cm, (encre rendue lue « 1/2 cm »)"
+   ],
+   "douteux_importants": [
+    "1",
+    "Mamie",
+    "beurre",
+    "sel,",
+    "½ cm,"
+   ],
+   "relu": true
+  },
+  "sommaire": {
+   "double": "sommaire",
+   "cote": "droite",
+   "folio": 9,
+   "papier": "pages/papier/f9",
+   "miroir": false,
+   "encre": "pages/sommaire",
+   "papier1x": "pages/1x/papier/f9",
+   "encre1x": "pages/1x/sommaire",
+   "encre4x": {
+    "base": "pages/4x/sommaire",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nJulie — Cake au citron, page 14\nBiscuits\nMamie Rose — Sablés, page 18\nMathis — cookies, page 20\nBernard — tarte aux pommes, page 21\nLe mot de la fin, page 22",
+   "vivants": {
+    "aq-tasse": [
+     0.64,
+     0.74,
+     0.22,
+     0.152
+    ]
+   },
+   "deborde": [],
+   "lignes": 9,
+   "liens": [
+    {
+     "cible": "gateaux",
+     "rect": [
+      0.08925,
+      0.14194,
+      0.36723,
+      0.0424
+     ]
+    },
+    {
+     "cible": "lisa",
+     "invite": "lisa",
+     "rect": [
+      0.13298,
+      0.19134,
+      0.80391,
+      0.02712
+     ]
+    },
+    {
+     "cible": "julie",
+     "invite": "julie",
+     "rect": [
+      0.134,
+      0.22123,
+      0.80365,
+      0.02712
+     ]
+    },
+    {
+     "cible": "biscuits",
+     "rect": [
+      0.09332,
+      0.26887,
+      0.16832,
+      0.0424
+     ]
+    },
+    {
+     "cible": "rose",
+     "invite": "rose",
+     "rect": [
+      0.12365,
+      0.31438,
+      0.81269,
+      0.03209
+     ]
+    },
+    {
+     "cible": "mathis",
+     "invite": "mathis",
+     "rect": [
+      0.1285,
+      0.34964,
+      0.80918,
+      0.02712
+     ]
+    },
+    {
+     "cible": "mathis",
+     "invite": "bernard",
+     "rect": [
+      0.12896,
+      0.38101,
+      0.80518,
+      0.02832
+     ]
+    },
+    {
+     "cible": "fin",
+     "rect": [
+      0.12975,
+      0.43529,
+      0.80438,
+      0.02731
+     ]
+    }
+   ],
+   "aquarelles": {
+    "aq-tasse": {
+     "aquarelle": "tasse-2",
+     "anime": "vapeur",
+     "angle": -4
+    }
+   },
+   "douteux": [
+    "Rose (encre rendue lue « rose »)"
+   ],
+   "douteux_importants": [
+    "Rose"
+   ],
+   "relu": true
+  },
+  "titre": {
+   "double": "titre",
+   "cote": "droite",
+   "folio": 3,
+   "sansFolio": true,
+   "papier": "pages/papier/f3",
+   "miroir": false,
+   "encre": "pages/titre",
+   "papier1x": "pages/1x/papier/f3",
+   "encre1x": "pages/1x/titre",
+   "encre4x": {
+    "base": "pages/4x/titre",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Les goûters\nde Cécile\nrecettes de goûter offertes par ses amis",
+   "vivants": {
+    "aq-theiere": [
+     0.17,
+     0.6,
+     0.66,
+     0.292
+    ]
+   },
+   "deborde": [],
+   "lignes": 3,
+   "aquarelles": {
+    "aq-theiere": {
+     "aquarelle": "theiere",
+     "anime": "vapeur"
+    }
+   },
+   "douteux": [
+    "Cécile (encre rendue lue « ' Cecile »)"
+   ],
+   "douteux_importants": [
+    "Cécile"
+   ],
+   "relu": true
+  }
+ }
+}

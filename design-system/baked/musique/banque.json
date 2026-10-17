@@ -1,0 +1,38 @@
+{
+  "v": 1,
+  "morceaux": [
+    {
+      "id": "path-of-the-goblin-king",
+      "titre": "The Path of the Goblin King",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100873",
+      "credit": "\"The Path of the Goblin King\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/path-of-the-goblin-king",
+      "d": 188
+    },
+    {
+      "id": "frozen-star",
+      "titre": "Frozen Star",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100356",
+      "credit": "\"Frozen Star\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/frozen-star",
+      "d": 217
+    },
+    {
+      "id": "melodie-victoria",
+      "titre": "Melodie Victoria",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100819",
+      "credit": "\"Melodie Victoria\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/melodie-victoria",
+      "d": 236
+    }
+  ]
+}

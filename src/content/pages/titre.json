@@ -1,0 +1,60 @@
+{
+ "main": "soignee",
+ "encre": "plume",
+ "gabarit": "carnet",
+ "id": "titre",
+ "double": "titre",
+ "cote": "droite",
+ "folio": 3,
+ "graine": 301,
+ "marges": {
+  "haut": 0.2
+ },
+ "_": "Page de titre : titre en deux lignes centrées, à la plume, en grand ; sous-titre discret au crayon ; grande illustration (cupcake ou théière, ≥ 0,35 × la largeur) centrée sous le titre, dans l'air.",
+ "blocs": [
+  {
+   "id": "titre-1",
+   "type": "titre",
+   "texte": "Les goûters",
+   "echelle": 3.2,
+   "position": "centre",
+   "souligne": "aucun",
+   "graine": 3011
+  },
+  {
+   "id": "titre-2",
+   "type": "titre",
+   "texte": "de Cécile",
+   "echelle": 3.2,
+   "position": "centre",
+   "souligne": "trait",
+   "avant": -0.1,
+   "graine": 3012
+  },
+  {
+   "id": "sous-titre",
+   "type": "titre",
+   "texte": "recettes de goûter offertes par ses amis",
+   "echelle": 0.8,
+   "position": "centre",
+   "souligne": "aucun",
+   "avant": 0.8,
+   "encre": "crayon",
+   "main": "cecile",
+   "graine": 3013
+  }
+ ],
+ "vivants": [
+  {
+   "nom": "aq-theiere",
+   "rect": [
+    0.17,
+    0.6,
+    0.66,
+    0.292
+   ],
+   "aquarelle": "theiere",
+   "anime": "vapeur"
+  }
+ ]
+}

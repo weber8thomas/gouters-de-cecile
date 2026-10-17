@@ -3,3 +3,8 @@ dist/
 verification/out/
 *.log
 .DS_Store
+src/generated/
+vendor/
+tools/ecriture/.venv/
+tools/ecriture/.cache/
+__pycache__/

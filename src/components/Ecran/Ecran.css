@@ -1,0 +1,165 @@
+/* Ecran : coque plein écran du carnet. La scène 1920 × 1080 y est mise à l'échelle par le livre
+   (cadrage « double » ou « page ») ; la table déborde jusqu'aux bords. Les contrôles vivent dans un
+   calque en px d'écran, dans les zones sûres. */
+.gc-ecran {
+  /* Cibles : la taille de la TV (--gc-nav-size) à l'échelle de l'écran, jamais sous 32 px (souris)
+     ni sous 44 px (doigt). Bords : l'espacement de la TV à l'échelle, avec un minimum. */
+  --gc-ecran-cible: max(32px, calc(var(--gc-nav-size) * var(--gc-ecran-u)));
+  --gc-ecran-bord: max(8px, calc(var(--gc-space-3) * var(--gc-ecran-u)));
+  --gc-ecran-bord-bas: max(6px, calc(var(--gc-space-2) * var(--gc-ecran-u)));
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--gc-wood-3);
+  color: var(--gc-ink);
+  /* Aucun défilement ; hors du livre (contrôles), le pincement du navigateur reste permis. Sur le
+     livre, c'est la loupe du carnet qui zoome (calque .gc-ecran__loupe, touch-action: none). */
+  touch-action: pinch-zoom;
+  overscroll-behavior: none;
+  /* Ni sélection de texte, ni menu d'appui long, ni reflet de toucher. */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gc-ecran[data-gc-tactile] {
+  --gc-ecran-cible: max(44px, calc(var(--gc-nav-size) * var(--gc-ecran-u)));
+}
+
+/* Écran simulé (cartes, tests) : une boîte de la taille imposée. */
+.gc-ecran--simule {
+  position: relative;
+  inset: auto;
+  width: var(--gc-ecran-w);
+  height: var(--gc-ecran-h);
+}
+
+.gc-ecran img {
+  -webkit-user-drag: none;
+}
+
+/* ---- Calque de la loupe : le livre, zoomé par translate3d + scale (MotionValues) ------------- */
+.gc-ecran__loupe {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  /* Pincer, double toucher, déplacer : la loupe du carnet, jamais le navigateur. */
+  touch-action: none;
+}
+
+/* Zoomé : la main saisit la page (souris) ; pendant un déplacement, elle la tient. */
+.gc-ecran[data-gc-loupe="zoome"] .gc-ecran__loupe {
+  cursor: grab;
+}
+
+.gc-ecran[data-gc-loupe-geste="deplacer"] .gc-ecran__loupe {
+  cursor: grabbing;
+}
+
+/* Navigateur déjà zoomé (visualViewport.scale > 1) : la loupe se retire, le pincement du navigateur
+   revient sur le livre (on peut dézoomer). */
+.gc-ecran[data-gc-loupe-navigateur] .gc-ecran__loupe {
+  touch-action: pinch-zoom;
+}
+
+/* ---- Calque des contrôles (px d'écran) ----------------------------------------------------- */
+.gc-ecran__controles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ---- Barre du haut, à droite : fermer le carnet (si ouvert), musique, haut-parleur, loupe, plein écran
+   (une rangée, dans les zones sûres) ---- */
+.gc-ecran__barre {
+  position: absolute;
+  top: calc(var(--gc-ecran-haut) + var(--gc-ecran-bord-bas));
+  right: calc(var(--gc-ecran-droite) + var(--gc-ecran-bord-bas));
+  display: flex;
+  align-items: center;
+  gap: var(--gc-ecran-bord-bas);
+  pointer-events: none;
+}
+
+/* Dans la barre, la loupe et le plein écran sont en flux (la barre les aligne) : la position absolue
+   que leur donne Loupe.css est annulée ici. */
+.gc-ecran__barre > .gc-loupe-bouton--ecran,
+.gc-ecran__barre > .gc-ecran__plein {
+  position: relative;
+  top: auto;
+  right: auto;
+}
+
+/* ---- Plein écran et fermer le carnet : tracés à la main, à droite de la barre ---------------- */
+.gc-ecran__plein,
+.gc-ecran__fermer {
+  display: grid;
+  place-items: center;
+  width: var(--gc-ecran-cible);
+  height: var(--gc-ecran-cible);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gc-paper-lace);
+  opacity: calc(var(--gc-nav-alpha) * 0.8);
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+.gc-ecran__plein:focus,
+.gc-ecran__fermer:focus {
+  outline: none;
+}
+
+.gc-ecran__plein:focus-visible,
+.gc-ecran__fermer:focus-visible {
+  outline: 3px solid var(--gc-honey-500);
+  outline-offset: 4px;
+}
+
+.gc-ecran__trace {
+  width: 56%;
+  height: 56%;
+  overflow: visible;
+}
+
+.gc-ecran__encre path,
+.gc-ecran__ombre path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gc-ecran__encre path {
+  stroke: currentColor;
+  stroke-width: 2.6;
+}
+
+.gc-ecran__encre .gc-ecran__repasse {
+  stroke-width: 1.1;
+  opacity: 0.55;
+}
+
+.gc-ecran__ombre {
+  transform: translate(1px, 1.5px);
+}
+
+.gc-ecran__ombre path {
+  stroke: color-mix(in srgb, var(--gc-wood-3) 55%, transparent);
+  stroke-width: 3.2;
+}
+
+/* Zoomé, le papier remplit l'écran : le plein écran passe à l'encre, avec un halo de papier. */
+.gc-ecran[data-gc-loupe="zoome"] .gc-ecran__plein,
+.gc-ecran[data-gc-loupe="zoome"] .gc-ecran__fermer {
+  color: var(--gc-ink);
+}
+
+.gc-ecran[data-gc-loupe="zoome"] .gc-ecran__ombre path {
+  stroke: color-mix(in srgb, var(--gc-paper-lace) 70%, transparent);
+  stroke-width: 4.2;
+}

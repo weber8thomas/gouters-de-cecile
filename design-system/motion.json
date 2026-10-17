@@ -1,0 +1,79 @@
+{
+  "note": "Ressorts du carnet : source unique. Motion les lit (src/lib/motion.ts) ; scripts/gen-springs.mjs en tire des easings CSS linear() dans tokens.json (famille timing).",
+  "springs": {
+    "paper": {
+      "visualDuration": 0.9,
+      "bounce": 0.08,
+      "usage": "Tourner une page : papier souple, presque sans rebond."
+    },
+    "cover": {
+      "visualDuration": 1.4,
+      "bounce": 0.05,
+      "usage": "Ouvrir la couverture : carton lourd, lent."
+    },
+    "dome": {
+      "visualDuration": 0.9,
+      "bounce": 0.18,
+      "usage": "Soulever la cloche : un léger rebond en haut."
+    },
+    "camera": {
+      "visualDuration": 0.65,
+      "bounce": 0,
+      "usage": "Changer de distance ou de zoom fin : glissement net, sans rebond."
+    },
+    "toast": {
+      "visualDuration": 0.6,
+      "bounce": 0.25,
+      "usage": "Les invités lèvent leur tasse : petit rebond joyeux."
+    },
+    "settle": {
+      "visualDuration": 0.5,
+      "bounce": 0.12,
+      "usage": "Un objet se pose (étiquette, Polaroid, washi)."
+    },
+    "lift": {
+      "visualDuration": 0.7,
+      "bounce": 0.08,
+      "usage": "Soulever une photo ou le feuillet volant au-dessus du livre, puis le reposer."
+    },
+    "arrivee": {
+      "visualDuration": 0.8,
+      "bounce": 0.14,
+      "usage": "Le livre glisse sur la table au chargement et se pose."
+    },
+    "riffle": {
+      "visualDuration": 0.55,
+      "bounce": 0,
+      "usage": "Feuilleter : les feuilles intermédiaires d'un saut de plusieurs doubles pages."
+    }
+  },
+  "cup": {
+    "stiffness": 40,
+    "damping": 8,
+    "usage": "Niveau de la tasse-progression : monte doucement, ondule un peu."
+  },
+  "stagger": {
+    "toast": 0.09,
+    "sommaire": 0.05
+  },
+  "vitesses": {
+    "note": "Vitesse des pages (menu de réglages) : ressort « paper » appliqué par regleRessort.",
+    "vive": {
+      "visualDuration": 0.6,
+      "bounce": 0.1
+    },
+    "normale": {
+      "visualDuration": 0.9,
+      "bounce": 0.08
+    },
+    "lente": {
+      "visualDuration": 1.3,
+      "bounce": 0
+    }
+  },
+  "inertie": {
+    "power": 0.35,
+    "timeConstant": 260,
+    "usage": "Déplacement à la loupe : élan au lâcher (Motion inertia)."
+  }
+}

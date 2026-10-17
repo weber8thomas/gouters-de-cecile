@@ -1,0 +1,11 @@
+{
+ "main": "soignee",
+ "encre": "plume",
+ "gabarit": "carnet",
+ "id": "biscuits-gauche",
+ "double": "biscuits",
+ "cote": "gauche",
+ "graine": 1201,
+ "_": "Intercalaire : le dos d'une page, quasi blanc (on devine la page au dos par transparence).",
+ "blocs": []
+}

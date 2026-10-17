@@ -1,0 +1,46 @@
+{
+ "id": "fin-droite",
+ "double": "fin",
+ "cote": "droite",
+ "folio": 23,
+ "graine": 1202,
+ "main": "soignee",
+ "encre": "plume",
+ "gabarit": "carnet",
+ "marges": {
+  "haut": 0.2
+ },
+ "_": "Colophon (fin du carnet, dernière page de droite) : petite note dans la main du carnet et un croquis de bougie. Textes provisoires, à modifier librement. Le dernier papier est f23 (non prévu dans papiers.json : repli sur une autre découpe, journalisé à la cuisson).",
+ "blocs": [
+  {
+   "id": "colophon",
+   "type": "etiquette",
+   "texte": "Ce carnet a été rempli\npar les amis de Cécile\npour son anniversaire, automne 2026.\n\nLes recettes sont celles qu'ils ont envoyées,\nmot pour mot.",
+   "main": "soignee",
+   "encre": "plume",
+   "role": "legende",
+   "rect": [
+    0.08,
+    0.58,
+    0.84,
+    0.3
+   ],
+   "pente": -0.8
+  },
+  {
+   "id": "croquis",
+   "type": "croquis",
+   "nom": [
+    "bougie"
+   ],
+   "taille": [
+    0.13,
+    0.15
+   ],
+   "pres": [
+    0.5,
+    0.5
+   ]
+  }
+ ]
+}

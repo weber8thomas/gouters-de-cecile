@@ -1,0 +1,100 @@
+{
+ "_": "Plan de cuisson des recettes reçues (scripts/pages/recette.py) : chaque recette (src/content/recettes/<slug>.json, type RecetteRecue) devient <slug>-gauche, <slug>-droite et, si elle est longue, <slug>-feuillet-recto / -verso. photo : tirage collé en haut de la page gauche (largeur et ratio h/l du tirage bord compris, position x, y du coin de la zone, angle en degrés, marge pour les coins / le scotch, blanc sous la zone). volant : zone du coin du feuillet sur la page droite [x, y, l, h] et son angle ; note : bande réservée à « suite sur la feuille ». feuillet : papier (papiers.json, cahiers), taille (fractions de la page), xh (facteur de la hauteur d'x : on écrit un peu plus petit sur la feuille). etapes : ligne | tete | auto. croquis : pages où chercher un blanc pour le petit dessin (gauche = à côté de la photo, fin = dernière page écrite), noms de repli, taille (fraction de la largeur de page). graines : graine imposée à un atome (id → graine) quand un mot se relit mal (choisie sur planche, voir le README de PageCuite).",
+ "recettes": {
+  "lisa": {
+   "source": "src/content/recettes/lisa.json",
+   "double": "lisa",
+   "folios": [
+    8,
+    9
+   ],
+   "graine": 2611,
+   "photo": {
+    "largeur": 0.42,
+    "ratio": 0.75,
+    "x": 0.06,
+    "y": 0.035,
+    "angle": -2.5,
+    "marge": 0.028,
+    "blanc": 0.01
+   },
+   "volant": {
+    "zone": [
+     0.83,
+     0.66,
+     0.17,
+     0.215
+    ],
+    "note": [
+     0.08,
+     0.895,
+     0.7,
+     0.06
+    ],
+    "angle": -7
+   },
+   "feuillet": {
+    "papier": "c-lisa",
+    "taille": [
+     0.82,
+     0.88
+    ],
+    "xh": 0.83,
+    "haut": 0.04,
+    "bas": 0.035
+   },
+   "etapes": "auto",
+   "suite": {
+    "texte": "suite sur la feuille",
+    "main": "cecile",
+    "encre": "crayon"
+   },
+   "croquis": {
+    "pages": [
+     "gauche",
+     "fin",
+     "droite"
+    ],
+    "taille": [
+     0.19,
+     0.17
+    ],
+    "noms": {
+     "carrot-cake": [
+      "carrot-cake",
+      "gateau-carottes",
+      "gateau",
+      "cake"
+     ]
+    },
+    "alias": {
+     "lunettes-soleil": "sourire-lunettes"
+    }
+   },
+   "serrage_max": 1,
+   "graines": {
+    "ingredients-1/ligne-1": 23758,
+    "ingredients-1/ligne-2": 23759,
+    "ingredients-1/ligne-4": 23760,
+    "ingredients-1/ligne-9": 8,
+    "ingredients-1/ligne-10": 1,
+    "etape-1/phrase-1": 2,
+    "etape-6/phrase-1": 31694,
+    "etape-1/titre": 2,
+    "etape-2/titre": 2,
+    "etape-3/titre": 2,
+    "etape-4/titre": 2,
+    "etape-5/titre": 2,
+    "etape-6/titre": 2,
+    "ingredients-1/ligne-3": 26166588,
+    "ingredients-1/ligne-5": 53752529,
+    "etape-6/phrase-2.1": 69509264,
+    "etape-6/phrase-2.2": 18943010,
+    "etape-6/phrase-3": 8159401,
+    "extra-1/ligne-1": 89363364,
+    "extra-1/ligne-2": 8742407,
+    "extra-1/ligne-3": 31968830
+   }
+  }
+ }
+}

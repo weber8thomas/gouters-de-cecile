@@ -1,0 +1,83 @@
+/* Photo collée : le tirage sépia d'une vidéo, de travers, tenu par ses coins. Rien que des images. */
+.gc-photo-collee {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  container-type: size;
+}
+
+/* Le tirage (et l'élément mesuré quand il se soulève) : tourné de --gc-pc-angle. */
+.gc-photo-collee__photo {
+  position: relative;
+  width: min(var(--gc-pc-l), var(--gc-pc-h));
+  transform: rotate(var(--gc-pc-angle));
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* L'enveloppeur de l'indice (respiration) : la boîte du papier, mise à l'échelle autour de son centre.
+   Le papier lui-même (.gc-photo-collee__photo) n'est jamais animé : c'est lui que Soulever mesure. */
+.gc-photo-collee__souffle {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+}
+
+/* Ombre de l'indice : statique, plus large que l'ombre de contact (la photo se décolle à peine) ;
+   seule son opacité bouge, le temps d'une respiration. */
+.gc-photo-collee__ombre-indice {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--gc-radius-photo);
+  box-shadow:
+    0 1.1cqh 2.8cqh color-mix(in srgb, var(--gc-chocolate) 26%, transparent),
+    0 0.3cqh 0.8cqh color-mix(in srgb, var(--gc-chocolate) 14%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gc-photo-collee__photo img {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Collé à plat : une ombre de contact à peine, plus une très légère pénombre (sauf si elle est cuite
+   dans l'image du tirage, marge transparente comprise : --ombre-cuite). L'image du tirage et celle des
+   coins sont posées par le composant (left / top / width / height), débord compris. */
+.gc-photo-collee__tirage {
+  border-radius: var(--gc-radius-photo);
+  box-shadow:
+    var(--gc-sh-contact),
+    0 0.4cqh 1.6cqh color-mix(in srgb, var(--gc-chocolate) 16%, transparent);
+}
+
+.gc-photo-collee__photo--ombre-cuite .gc-photo-collee__tirage {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.gc-photo-collee__lire {
+  opacity: 0.72;
+  transform-origin: 50% 50%;
+}
+
+/* Soulevée (attribut posé par le SoulevementProvider) : le tirage a quitté la page, les coins restent. */
+.gc-photo-collee__photo[data-gc-souleve] .gc-photo-collee__tirage,
+.gc-photo-collee__photo[data-gc-souleve] .gc-photo-collee__lire,
+.gc-photo-collee__photo[data-gc-souleve] .gc-photo-collee__ombre-indice {
+  opacity: 0;
+}
+
+.gc-photo-collee__photo:focus {
+  outline: none;
+}
+
+.gc-photo-collee__photo:focus-visible {
+  outline: 3px solid var(--gc-honey-500);
+  outline-offset: 4px;
+}

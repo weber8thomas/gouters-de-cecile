@@ -1,0 +1,5 @@
+{
+  "_": "Réglage de l'écriture de tout le carnet (lu par scripts/pages/mise_en_page.py à la cuisson). 1 = valeurs actuelles. « taille » : hauteur des lettres (0,8 = 20 % plus petit, 1,2 = 20 % plus grand). « epaisseur » : épaisseur du trait du stylo (1,2 = plus appuyé, 0,8 = plus fin). Une page peut aussi régler les siens : \"ecriture\": { \"taille\": 1.1, \"epaisseur\": 0.9 } dans src/content/pages/<page>.json (multiplie ces valeurs). Après un changement : node scripts/bake-pages.mjs (recuit tout le carnet).",
+  "taille": 1.0,
+  "epaisseur": 1.0
+}

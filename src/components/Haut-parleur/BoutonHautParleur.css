@@ -1,0 +1,76 @@
+/* Bouton haut-parleur : même facture que le plein écran et la loupe (px d'écran, dans la barre du haut de
+   l'Ecran). Cible --gc-ecran-cible (≥ 44 px au doigt), aucun survol, encre tracée à la main. */
+.gc-haut-parleur {
+  display: grid;
+  place-items: center;
+  width: var(--gc-ecran-cible, 44px);
+  height: var(--gc-ecran-cible, 44px);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gc-paper-lace);
+  opacity: calc(var(--gc-nav-alpha) * 0.8);
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (pointer: coarse) {
+  .gc-haut-parleur {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+.gc-haut-parleur:focus {
+  outline: none;
+}
+
+.gc-haut-parleur:focus-visible {
+  outline: 3px solid var(--gc-honey-500);
+  outline-offset: 4px;
+}
+
+.gc-haut-parleur__trace {
+  width: 58%;
+  height: 58%;
+  overflow: visible;
+}
+
+.gc-haut-parleur__encre path,
+.gc-haut-parleur__ombre path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gc-haut-parleur__encre path {
+  stroke: currentColor;
+  stroke-width: 2.6;
+}
+
+.gc-haut-parleur__encre .gc-haut-parleur__repasse {
+  stroke-width: 1.1;
+  opacity: 0.55;
+}
+
+.gc-haut-parleur__ombre {
+  transform: translate(1px, 1.5px);
+}
+
+.gc-haut-parleur__ombre path {
+  stroke: color-mix(in srgb, var(--gc-wood-3) 55%, transparent);
+  stroke-width: 3.2;
+}
+
+/* Zoomé, le papier remplit l'écran : le haut-parleur passe à l'encre, avec un halo de papier. */
+.gc-ecran[data-gc-loupe="zoome"] .gc-haut-parleur {
+  color: var(--gc-ink);
+}
+
+.gc-ecran[data-gc-loupe="zoome"] .gc-haut-parleur__ombre path {
+  stroke: color-mix(in srgb, var(--gc-paper-lace) 70%, transparent);
+  stroke-width: 4.2;
+}

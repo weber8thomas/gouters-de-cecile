@@ -1,0 +1,70 @@
+<!-- @dsCard group="Mouvement" width=1920 height=1080 page subtitle="Soulever : la vidéo d'un invité collée comme une photo sépia, et le coin d'un feuillet volant qui dépasse de la page. Touchez la photo (ou Entrée) : elle se soulève, la couleur revient et la vidéo joue ; touchez le coin ou glissez-le vers le haut (↑) : la feuille se soulève, ← → la retournent ; Échap, ↓ ou un toucher la reposent" -->
+<style>
+  .demo-s-page { position: absolute; inset: 0; }
+  .demo-s-zone { position: absolute; }
+</style>
+<div id="root"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    // ?fixtures=<dossier> : les images et le clip d'essai du banc (verification/out/s/fixtures), au format
+    // par défaut (sans géométrie cuite) ; &format=webm pour un Chromium sans H.264.
+    var q = new URLSearchParams(location.search);
+    var fx = q.get('fixtures');
+    var base = fx ? '/' + fx.replace(/^\/+|\/+$/g, '') + '/' : null;
+    var VIDEO = base
+      ? { id: 'essai', titre: 'Le goûter de Julie', video: base + (q.get('format') === 'webm' ? 'clip-test.webm' : 'clip-test.mp4'),
+          affiche: base + 'affiche.webp', tirage: base + 'tirage.webp', coins: base + 'coins.webp', angle: -2.6, debordCoins: [30 / 1200, 30 / 824] }
+      // L'entrée « julie » de src/content/videos.json (lot V), géométrie cuite comprise.
+      : { id: 'julie', titre: 'Le cake au citron de Julie', video: 'videos/julie', affiche: 'videos/julie-affiche',
+          tirage: 'photos/julie/tirage', coins: 'photos/julie/coins', angle: 1.8,
+          geometrie: { taille: [1400, 1040], papier: [0.07143, 0.09615, 0.85714, 0.80769], photo: [0.11286, 0.15, 0.77143, 0.69231], cadreVideo: [0.28077, 0.14308, 0.64904, 0.76923] } };
+
+    // La zone « volant » que la cuisson réservera (lot B), simulée ici sur la page de fin.
+    var VOLANT = [0.5, 0.66, 0.5, 0.34];
+    function pct(v) { return (v * 100).toFixed(3) + '%'; }
+
+    var SPREAD = {
+      id: 'demo-soulever', kind: 'video', invite: 'julie', titre: 'Julie',
+      render: function () {
+        return {
+          left: h(G.PageCuite, { page: 'julie-gauche', slots: { photo: h(G.PhotoCollee, { video: VIDEO, graine: 4 }) } }),
+          right: h('div', { className: 'demo-s-page' },
+            h(G.PageCuite, { page: 'fin-droite' }),
+            h('div', { className: 'demo-s-zone', style: { left: pct(VOLANT[0]), top: pct(VOLANT[1]), width: pct(VOLANT[2]), height: pct(VOLANT[3]) } },
+              h(G.FeuilletVolant, { recto: 'julie-droite', verso: 'rose-droite', angle: 6, coin: [0.16, 0.2] }))),
+        };
+      },
+    };
+    var SPREADS = [SPREAD];
+
+    // Ce que l'intégration fera : la source de la vidéo à l'atterrissage, Entrée et ↑ sur la double page.
+    function Preparer() {
+      var s = G.useSoulevement();
+      React.useEffect(function () { s.preparer(VIDEO); }, []);
+      React.useEffect(function () {
+        function onKey(e) {
+          if (e.repeat || e.altKey || e.ctrlKey || e.metaKey) return;
+          if (e.key === 'Enter' || e.key === ' ') { if (G.souleverObjet('photo')) e.preventDefault(); }
+          else if (e.key === 'ArrowUp') { if (G.souleverObjet('feuillet')) e.preventDefault(); }
+        }
+        window.addEventListener('keydown', onKey);
+        return function () { window.removeEventListener('keydown', onKey); };
+      }, []);
+      window.__gcSoulever = s;
+      return null;
+    }
+
+    var carnet = h(G.CameraProvider, { fixed: { distance: 'moyenne', zoom: 1 } },
+      h(G.Ecran, { pleinEcran: false },
+        h(G.SoulevementProvider, null,
+          h(Preparer),
+          h(G.Livre, { spreads: SPREADS, index: 0 })),
+        // &reglages : le menu de réglages par-dessus (tests du clavier modal).
+        q.get('reglages') != null && G.Reglages ? h(G.Reglages, { invites: [] }) : null));
+    // ?ecran=reel : la vraie fenêtre (tests sur appareils émulés) ; sinon la TV simulée de la carte.
+    var vp = q.get('ecran') === 'reel' ? null : { w: 1920, h: 1080, dpr: 1, tactile: false, pleinEcran: false };
+    ReactDOM.createRoot(document.getElementById('root')).render(vp ? h(G.ViewportOverride.Provider, { value: vp }, carnet) : carnet);
+  })();
+</script>

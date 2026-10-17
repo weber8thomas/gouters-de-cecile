@@ -1,0 +1,89 @@
+{
+ "id": "mathis-droite",
+ "double": "mathis",
+ "cote": "droite",
+ "folio": 17,
+ "graine": 906,
+ "gabarit": "C",
+ "main": "capitales",
+ "encre": "noire",
+ "outil": "bille",
+ "blocs": [
+  {
+   "id": "bandeau",
+   "type": "bandeau",
+   "texte": "Bernard",
+   "sous": "depuis Dijon",
+   "outil": "bille",
+   "places": [
+    "cote",
+    "dessous"
+   ]
+  },
+  {
+   "id": "cadre",
+   "type": "cadre",
+   "style": "double",
+   "titre": "Pour Cécile",
+   "texte": "Joyeux anniversaire Cécile, garde-moi une part de tarte !",
+   "signature": "Bernard",
+   "outil": "bille",
+   "largeur": 0.46,
+   "graine": 36012,
+   "position": "bandeau"
+  },
+  {
+   "id": "titre",
+   "type": "titre",
+   "texte": "Ma tarte aux pommes",
+   "position": "fer",
+   "souligne": "trait",
+   "outil": "bille",
+   "echelle": 0.86
+  },
+  {
+   "id": "recette",
+   "type": "paragraphe",
+   "avant": 0.25,
+   "alinea": 0.0,
+   "outil": "bille",
+   "texte": "1 pâte brisée, 5 pommes, 2 c. à s. de sucre, 1 noix de beurre. Étale la pâte dans le moule, pique-la, mets les pommes en lamelles, sucre et beurre en noisettes. 40 min à th. 7.",
+   "graine": 953547,
+   "interligne": 3.1
+  }
+ ],
+ "vivants": [
+  {
+   "nom": "photo",
+   "rect": [
+    0.06,
+    0.04,
+    0.42,
+    0.22313
+   ]
+  },
+  {
+   "nom": "aq-tarte",
+   "rect": [
+    0.46,
+    0.56,
+    0.42,
+    0.189
+   ],
+   "aquarelle": "tarte-pommes",
+   "anime": "fleurit"
+  },
+  {
+   "nom": "aq-pomme",
+   "rect": [
+    0.14,
+    0.62,
+    0.2,
+    0.245
+   ],
+   "aquarelle": "pomme",
+   "anime": "fleurit",
+   "angle": -6
+  }
+ ]
+}

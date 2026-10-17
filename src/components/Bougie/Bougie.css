@@ -1,0 +1,55 @@
+/* Une bougie posée sur la table, dans le coin bas gauche de la scène, à gauche du livre, vue presque d'en
+   haut comme toute la table (rendu 3D, scripts/bougie3d/scene.py ; calques cuits par scripts/bake-bougie.py).
+   La géométrie de chaque calque (px de scène 1920 × 1080, la scène est fixe) vient de geometrie.json et
+   est posée en ligne par Bougie.tsx ; ce fichier ne fait que l'habillage. Animation : transform et opacity
+   seulement. Rien ne capte le pointeur. */
+
+.gc-bougie {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  /* Curseur figé : le curseur du livre (data-gc-curseur, hérité) ne recalcule pas ce calque. */
+  cursor: auto;
+}
+
+.gc-bougie__ombre,
+.gc-bougie__halo,
+.gc-bougie__cire,
+.gc-bougie__flamme {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+.gc-bougie__ombre,
+.gc-bougie__halo,
+.gc-bougie__flamme,
+.gc-bougie__cire[data-gc-bougie='vive'] {
+  will-change: opacity, transform;
+}
+
+/* ---- Les gouttes : une fenêtre sur la planche des images, qui défile par paliers (Bougie.tsx). ---- */
+.gc-bougie__goutte {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gc-bougie__feuille {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  will-change: transform;
+}
+
+/* ---- Téléphone en portrait : la bougie gêne, on ne garde que la lueur (le halo). ---------------- */
+@media (orientation: portrait) and (max-width: 760px) {
+  .gc-bougie__pose,
+  .gc-bougie__goutte {
+    display: none;
+  }
+}

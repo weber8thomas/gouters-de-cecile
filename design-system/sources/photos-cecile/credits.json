@@ -1,0 +1,212 @@
+{
+  "description": "Photos « Cécile en cuisine » : placeholders de banques d'images (Pexels) pour la mise en page, tirages sépia-passés collés. Lues par scripts/bake-photos-cecile.py (originaux hors dépôt dans verification/out/v5-photos/originaux/).",
+  "licence": {
+    "nom": "Licence Pexels (« Free Stock Photo & Video License »)",
+    "url": "https://www.pexels.com/license/",
+    "verifiee": "2026-10-17",
+    "methode": "page de licence lue le 2026-10-17 ; page de chaque photo lue (mention « Free », auteur)",
+    "permis": "Gratuit, sans attribution obligatoire, modification permise ; interdit : vendre une copie non modifiée, usage de marque, personne identifiable présentée de façon défavorable."
+  },
+  "photos": [
+    {
+      "id": "cecile-1",
+      "age": "très jeune enfant",
+      "angle": -3,
+      "coins": "noir",
+      "cadrage": {
+        "cx": 0.5,
+        "cy": 0.38,
+        "zoom": 0.65
+      },
+      "source": {
+        "fichier": "pexels-5062718.jpeg",
+        "sha256": "4f64a65ba3008992f152936b23bdd39313198cba8dd46df8eff53811712b79f1",
+        "titre": "A Girl Playing With Flour",
+        "auteur": "Andrea Piacquadio",
+        "page": "https://www.pexels.com/photo/a-girl-playing-with-flour-5062718/",
+        "licence": "pexels"
+      },
+      "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
+    },
+    {
+      "id": "cecile-2",
+      "age": "tout-petit",
+      "angle": 2,
+      "coins": "kraft",
+      "cadrage": {
+        "cx": 0.6,
+        "cy": 0.6,
+        "zoom": 0.62
+      },
+      "source": {
+        "fichier": "pexels-8430616.jpeg",
+        "sha256": "9fa676365464374b2d757a48ca2986c1d5eb76662fc890776f30b16d4e2bec50",
+        "titre": "Man Preparing Food in the Kitchen and His Baby Daughter Running Around",
+        "auteur": "Sasha Kim",
+        "page": "https://www.pexels.com/photo/man-preparing-food-in-the-kitchen-and-his-baby-daughter-running-around-8430616/",
+        "licence": "pexels"
+      },
+      "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
+    },
+    {
+      "id": "cecile-3",
+      "age": "petit garçon",
+      "angle": -1.5,
+      "coins": "noir",
+      "cadrage": {
+        "cx": 0.5,
+        "cy": 0.27,
+        "zoom": 1
+      },
+      "source": {
+        "fichier": "pexels-3806972.jpeg",
+        "sha256": "f95e1b53059e97b56b2e36092002ba3a4cfc7c949b0a6a563467ddcb716fe38f",
+        "titre": "Girl Playing With Flour",
+        "auteur": "Elina Fairytale",
+        "page": "https://www.pexels.com/photo/girl-playing-with-flour-3806972/",
+        "licence": "pexels"
+      },
+      "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
+    },
+    {
+      "id": "cecile-4",
+      "age": "petite fille",
+      "angle": 2.5,
+      "coins": "kraft",
+      "cadrage": {
+        "cx": 0.5,
+        "cy": 0.5,
+        "zoom": 1
+      },
+      "source": {
+        "fichier": "pexels-8307775.jpeg",
+        "sha256": "2dd7fff819a8496c5894b21e6e1c0e0fd202f74776b277649edb7170394f6d0f",
+        "titre": "A Young Girl and Grandmother Cooking Together",
+        "auteur": "Mikhail Nilov",
+        "page": "https://www.pexels.com/photo/a-young-girl-and-grandmother-cooking-together-8307775/",
+        "licence": "pexels"
+      },
+      "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
+    },
+    {
+      "id": "cecile-5",
+      "age": "ado",
+      "angle": -2.5,
+      "coins": "noir",
+      "cadrage": {
+        "cx": 0.6,
+        "cy": 0.42,
+        "zoom": 0.75
+      },
+      "source": {
+        "fichier": "pexels-8511872.jpeg",
+        "sha256": "3d75116bc862a387c6c4d3114ac5b700489a95bde5331b7374ca34db3d0369f9",
+        "titre": "A Young Girl Cooking while Holding a Pot and a Wooden Spatula",
+        "auteur": "Kampus Production",
+        "page": "https://www.pexels.com/photo/a-young-girl-cooking-while-holding-a-pot-and-a-wooden-spatula-8511872/",
+        "licence": "pexels"
+      },
+      "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
+    },
+    {
+      "id": "cecile-6",
+      "age": "ado",
+      "angle": 1.2,
+      "coins": "kraft",
+      "cadrage": {
+        "cx": 0.36,
+        "cy": 0.4,
+        "zoom": 0.8
+      },
+      "source": {
+        "fichier": "pexels-8054739.jpeg",
+        "sha256": "81116ec089bfac6bb1eb14ee2acfc2e1220df3bbb7f19e9fae5162fb6eb446a4",
+        "titre": "A Girl Cooking Inside the Kitchen",
+        "auteur": "Annushka Ahuja",
+        "page": "https://www.pexels.com/photo/a-girl-cooking-inside-the-kitchen-8054739/",
+        "licence": "pexels"
+      },
+      "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
+    },
+    {
+      "id": "cecile-7",
+      "age": "jeune femme",
+      "angle": 3,
+      "coins": "noir",
+      "cadrage": {
+        "cx": 0.55,
+        "cy": 0.5,
+        "zoom": 1
+      },
+      "source": {
+        "fichier": "pexels-3771120.jpeg",
+        "sha256": "0140815b4b1577a5390c639b386a8af1384bba6e28d0d873d6526b3ed02a65e0",
+        "titre": "Delighted ethnic woman cooking in kitchen",
+        "auteur": "Andrea Piacquadio",
+        "page": "https://www.pexels.com/photo/delighted-ethnic-woman-cooking-in-kitchen-3771120/",
+        "licence": "pexels"
+      },
+      "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
+    },
+    {
+      "id": "cecile-8",
+      "age": "jeune femme",
+      "angle": -1,
+      "coins": "kraft",
+      "cadrage": {
+        "cx": 0.5,
+        "cy": 0.3,
+        "zoom": 1
+      },
+      "source": {
+        "fichier": "pexels-10432362.jpeg",
+        "sha256": "7695ce0e11b19e17eb651c11aba03409a9547b920544e51d600e1d2eeec9286c",
+        "titre": "Woman Smiling while Cooking",
+        "auteur": "RDNE Stock project",
+        "page": "https://www.pexels.com/photo/woman-smiling-while-cooking-10432362/",
+        "licence": "pexels"
+      },
+      "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
+    },
+    {
+      "id": "cecile-9",
+      "age": "femme adulte",
+      "angle": 2,
+      "coins": "noir",
+      "cadrage": {
+        "cx": 0.5,
+        "cy": 0.3,
+        "zoom": 1
+      },
+      "source": {
+        "fichier": "pexels-6874233.jpeg",
+        "sha256": "0b77da6b20c0c3c7367bba5813537b58c8e0f203c4310dffdf55c3dd896018fc",
+        "titre": "Mature Female in Apron in Kitchen Near Counter",
+        "auteur": "Teona Swift",
+        "page": "https://www.pexels.com/photo/mature-female-in-apron-in-kitchen-near-counter-6874233/",
+        "licence": "pexels"
+      },
+      "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
+    },
+    {
+      "id": "cecile-10",
+      "age": "femme adulte",
+      "angle": -3,
+      "coins": "kraft",
+      "cadrage": {
+        "cx": 0.5,
+        "cy": 0.3,
+        "zoom": 1
+      },
+      "source": {
+        "fichier": "pexels-10432622.jpeg",
+        "sha256": "9056f6fae70bfb702a59bf84e7f363a41e0d52e43179e85c592f9cbced6e9c68",
+        "titre": "Smiling Woman Cooking",
+        "auteur": "RDNE Stock project",
+        "page": "https://www.pexels.com/photo/smiling-woman-cooking-10432622/",
+        "licence": "pexels"
+      },
+      "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
+    }
+  ]
+}

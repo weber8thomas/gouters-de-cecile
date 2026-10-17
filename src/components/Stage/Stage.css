@@ -1,0 +1,104 @@
+/* Stage : scène fixe 1920 × 1080 — un soir au coin du feu. Table en bois, lumière du feu sur la table
+   (Lumiere : bain, ombre), contenu, ambiance et voile chaud (Lumiere), calque libre.
+   La cheminée est hors champ à gauche (Lumiere.css : --gc-feu-x, --gc-feu-y). */
+
+.gc-stage-fit {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.gc-stage {
+  position: relative;
+  width: var(--gc-stage-w);
+  height: var(--gc-stage-h);
+  overflow: hidden;
+  isolation: isolate;
+  background-color: var(--gc-wood-3);
+  color: var(--gc-ink);
+}
+
+.gc-stage__table,
+.gc-stage__surface,
+.gc-stage__falloff,
+.gc-stage__content,
+.gc-stage__light,
+.gc-stage__overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.gc-stage__table,
+.gc-stage__light {
+  pointer-events: none;
+  /* Curseur figé : le curseur du livre (data-gc-curseur, hérité) ne recalcule pas ces calques. */
+  cursor: auto;
+}
+
+/* ---- Table en bois, le soir ---------------------------------------------------------------------- */
+/* Planches à l'échelle réelle : la tuile (2560 px, natif) est affichée à 1:1, sans agrandissement, donc
+   sans flou. Une planche fait environ 470 px, soit 0,66 × la largeur d'une page (708 px), environ 11 cm
+   sur une page de 17 cm. La couture de tuilage tombe sous le livre. */
+.gc-stage__surface {
+  background-color: var(--gc-wood-2);
+  background-image: url('../../../design-system/textures/wood.webp');
+  background-size: 2560px 2560px;
+  background-position: calc(-236px + var(--gc-stage-debord, 0px)) calc(-18px + var(--gc-stage-debord, 0px));
+}
+
+/* La nuit autour du feu (v5, allégée) : la table s'enfonce doucement dans l'ombre loin de la cheminée (à
+   droite, en haut et en bas), et un vignettage brun-rouge gagne les bords et les coins sans effacer le
+   bois. Le centre, autour du livre, reste éclairé : le vignettage ne commence qu'au-delà de la marge du
+   livre. Statique : le bain du feu
+   (Lumiere, sous le contenu) le rallume côté gauche et le fait vivre. Ancré sur la scène en px : le débord
+   prolonge le même dessin sans couture (le vignettage est centré sur la scène, et le débord est symétrique). */
+.gc-stage__falloff {
+  background:
+    radial-gradient(calc(var(--gc-stage-w) * 0.7) calc(var(--gc-stage-h) * 0.55) at 50% 50%,
+      transparent 52%,
+      color-mix(in srgb, var(--gc-feu-nuit) 22%, transparent) 70%,
+      color-mix(in srgb, var(--gc-feu-nuit) 44%, transparent) 88%,
+      color-mix(in srgb, var(--gc-feu-nuit) 58%, transparent) 104%),
+    radial-gradient(calc(var(--gc-stage-w) * 1.55) calc(var(--gc-stage-h) * 1.5) at calc(var(--gc-feu-x) + var(--gc-stage-debord, 0px)) calc(var(--gc-feu-y) + var(--gc-stage-debord, 0px)),
+      transparent 20%,
+      color-mix(in srgb, var(--gc-feu-nuit) 8%, transparent) 40%,
+      color-mix(in srgb, var(--gc-feu-nuit) 14%, transparent) 58%,
+      color-mix(in srgb, var(--gc-feu-nuit) 22%, transparent) 74%,
+      color-mix(in srgb, var(--gc-feu-nuit) 30%, transparent) 88%,
+      color-mix(in srgb, var(--gc-feu-nuit) 40%, transparent) 110%,
+      color-mix(in srgb, var(--gc-feu-nuit) 50%, transparent) 150%),
+    linear-gradient(color-mix(in srgb, var(--gc-feu-nuit) 4%, transparent), color-mix(in srgb, var(--gc-feu-nuit) 4%, transparent));
+}
+
+/* ---- Contenu et lumière --------------------------------------------------------------------------- */
+.gc-stage__content {
+  z-index: 1;
+}
+
+/* Lumière au-dessus du livre (ambiance, voile) : sous l'overlay, et sous les contrôles de l'Ecran, la
+   photo soulevée et le menu (en portail hors de la scène). */
+.gc-stage__light {
+  z-index: 2;
+}
+
+/* Calque libre (navigation) : seuls ses enfants captent le pointeur. */
+.gc-stage__overlay {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.gc-stage__overlay > * {
+  pointer-events: auto;
+}
+
+/* ---- Débord (composant Ecran) : la table et la lumière se prolongent hors de la scène ---------
+   Sur un écran d'une autre forme que 16:9, la table couvre tout l'écran. Les mêmes dessins, ancrés sur
+   la scène en px (--gc-stage-debord) : rien ne bouge dans la scène, tout se prolonge au-delà sans
+   couture. Les calques de lumière (Lumiere.css) s'étendent d'eux-mêmes. */
+.gc-stage--debord {
+  overflow: visible;
+}
+
+.gc-stage--debord .gc-stage__table {
+  inset: calc(-1 * var(--gc-stage-debord));
+}
