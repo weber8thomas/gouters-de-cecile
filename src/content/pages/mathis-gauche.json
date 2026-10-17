@@ -27,7 +27,7 @@
    "signature": "Mathis",
    "largeur": 0.74,
    "_": "Mot d'exemple : Mathis est un invité fictif de démonstration (aucun vrai message).",
-   "graine": 35981
+   "graine": 51819
   },
   {
    "id": "titre",
@@ -53,7 +53,7 @@
    ],
    "fin": ".",
    "alinea": 0.0,
-   "graine": 67671
+   "graine": 99347
   },
   {
    "id": "preparation",

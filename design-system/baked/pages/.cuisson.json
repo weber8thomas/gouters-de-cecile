@@ -88,7 +88,7 @@
    "relu": true
   }
  },
- "papier/f17": "11d602ce7ab27c54ec2d89c49a906b089a5370f568e4b0fe90549ca2bc53aa35",
+ "papier/f17": "f4d736440339cc7313d3dff1ad0a50e611035b64647861f0cb9b1e74faa47186",
  "page/fin-gauche": {
   "cle": "153e8de71c2b6705969a07346b67fedd20cf58d1e92a8d226c7bd1d6a60a41c1",
   "manifeste": {
@@ -147,7 +147,7 @@
   }
  },
  "page/mathis-droite": {
-  "cle": "b953f10a0847220da79e6428ffcc781fda29c95444ce38619935dc6381539e70",
+  "cle": "add9b20f16340063157ed7b7b19c0a6f7bf585b3ae849598acc55ee0d664bcf5",
   "manifeste": {
    "double": "mathis",
    "cote": "droite",
@@ -174,10 +174,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.0488,
-      0.3766,
-      0.0355,
-      0.0314
+      0.0524,
+      0.3721,
+      0.0365,
+      0.0323
      ]
     },
     {
@@ -185,10 +185,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.0457,
-      0.4607,
-      0.0367,
-      0.0325
+      0.0567,
+      0.4679,
+      0.0332,
+      0.0294
      ]
     }
    ],
@@ -196,35 +196,29 @@
     "tasse"
    ],
    "douteux": [
-    "Bernard (encre rendue lue « B\"erinard »)",
-    "pommes, (encre rendue lue « pomp mesi »)",
-    "2 c. à s. (encre rendue lue « 2'c. d. S. »)",
-    "noix (encre rendue lue « naix »)",
-    "beurre. (encre rendue lue « beirre . »)",
-    "sucre (encre rendue lue « su cre »)",
-    "beurre (encre rendue lue « beioire »)",
-    "noisettes. (encre rendue lue « noise ttes . »)",
-    "40 min (encre rendue lue « 40 min »)",
-    "th. 7. (encre rendue lue « th . I »)"
+    "pommes, (encre rendue lue « pomnes . »)",
+    "2 c. à s. (encre rendue lue « 2'c d s . »)",
+    "sucre, (encre rendue lue « Su cre »)",
+    "pommes (encre rendue lue « P om mes . »)",
+    "beurre (encre rendue lue « bimixie »)",
+    "40 min (encre rendue lue « 4G min »)",
+    "th. 7. (encre rendue lue « ft. 7' »)"
    ],
    "douteux_importants": [
     "2 c. à s.",
     "40 min",
-    "Bernard",
     "beurre",
-    "beurre.",
-    "noisettes.",
-    "noix",
+    "pommes",
     "pommes,",
-    "sucre",
+    "sucre,",
     "th. 7."
    ],
    "relu": true
   }
  },
- "papier/f15": "fb0f67e4d35b010110f8066657b76a05307ff02f9d78d8310e8bb04b15bf7b78",
+ "papier/f15": "e773c47c91d95f153833e33eb2e33454f6207f4cd86c5706bcc53d66c219825e",
  "page/mathis-gauche": {
-  "cle": "81182cc6935452e3e7500b30d1f6574edcedaffa20780e3211c7681e258c984c",
+  "cle": "0d9581f22800c01c78e80d4e802b83db816315c53d2dba6693dee912132f4d05",
   "manifeste": {
    "double": "mathis",
    "cote": "gauche",
@@ -244,17 +238,17 @@
     ]
    },
    "deborde": [],
-   "lignes": 10,
+   "lignes": 8,
    "croquis": [
     {
      "nom": "oeuf",
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.2314,
-      0.3872,
-      0.0385,
-      0.0341
+      0.2102,
+      0.3894,
+      0.0309,
+      0.0273
      ]
     },
     {
@@ -262,8 +256,8 @@
      "role": "dessin",
      "dessine": true,
      "boite": [
-      0.0742,
-      0.1516,
+      0.1137,
+      0.137,
       0.16,
       0.1417
      ]
@@ -273,21 +267,16 @@
     "beurre (mot « beurre » introuvable)"
    ],
    "douteux": [
-    "1 (groupe « 1 » lu « A »)",
-    "1 (groupe « 1 » lu « \" I »)",
-    "1 (encre rendue lue « A »)",
-    "75 g (encre rendue lue « FRG »)",
-    "200 g (encre rendue lue « 200 g »)",
-    "1 (encre rendue lue « \" I »)",
-    "pépites (encre rendue lue « recites »)",
-    "10 min (encre rendue lue « 10 inin- »)"
+    "roux, (groupe « roux, » lu « rows . »)",
+    "½ (groupe « ½ » lu « 1 ft »)",
+    "roux, (encre rendue lue « rows . »)",
+    "½ (encre rendue lue « 1 ft »)",
+    "pépites (encre rendue lue « pipites . »)"
    ],
    "douteux_importants": [
-    "1",
-    "10 min",
-    "200 g",
-    "75 g",
-    "pépites"
+    "pépites",
+    "roux,",
+    "½"
    ],
    "relu": true
   }
@@ -404,10 +393,10 @@
   }
  },
  "papier1x/f19": "433f95b7ed1bdf4e908696fd7e17aa53053536306b5a52acb6f5d26f10697ad1",
- "papier1x/f17": "11d602ce7ab27c54ec2d89c49a906b089a5370f568e4b0fe90549ca2bc53aa35",
+ "papier1x/f17": "f4d736440339cc7313d3dff1ad0a50e611035b64647861f0cb9b1e74faa47186",
  "papier1x/f13": "d0393b1bfb7e1552f9d45f218db620dc0f03156ac43dde194b38d1c284f00253",
  "papier1x/f11": "5f4215481aa9ca8b04fa4ec450247c12751b833f6ff0220f4fb4bcdc84a0b69a",
- "papier1x/f15": "fb0f67e4d35b010110f8066657b76a05307ff02f9d78d8310e8bb04b15bf7b78",
+ "papier1x/f15": "e773c47c91d95f153833e33eb2e33454f6207f4cd86c5706bcc53d66c219825e",
  "pagination/lisa": {
   "cle": "ddd9436f41aa79a2889858028243954ea6babdc4cabcfbcc33d12ce83afdc334",
   "pages": {

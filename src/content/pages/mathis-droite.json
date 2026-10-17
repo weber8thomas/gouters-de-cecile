@@ -29,7 +29,7 @@
    "texte": "Joyeux anniversaire Cécile, garde-moi une part de tarte !",
    "signature": "Bernard",
    "outil": "bille",
-   "largeur": 0.84,
+   "largeur": 0.8,
    "graine": 36012
   },
   {
@@ -48,7 +48,7 @@
    "alinea": 0.0,
    "outil": "bille",
    "texte": "1 pâte brisée, 5 pommes, 2 c. à s. de sucre, 1 noix de beurre. Étale la pâte dans le moule, pique-la, mets les pommes en lamelles, sucre et beurre en noisettes. 40 min à th. 7.",
-   "graine": 945628,
+   "graine": 953547,
    "icones": [
     {
      "mot": "pommes",
@@ -61,7 +61,7 @@
      "place": "fin"
     }
    ],
-   "interligne": 3.35
+   "interligne": 3.1
   },
   {
    "id": "croquis-recette",

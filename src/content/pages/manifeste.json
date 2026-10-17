@@ -663,10 +663,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.0488,
-      0.3766,
-      0.0355,
-      0.0314
+      0.0524,
+      0.3721,
+      0.0365,
+      0.0323
      ]
     },
     {
@@ -674,10 +674,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.0457,
-      0.4607,
-      0.0367,
-      0.0325
+      0.0567,
+      0.4679,
+      0.0332,
+      0.0294
      ]
     }
    ],
@@ -685,27 +685,21 @@
     "tasse"
    ],
    "douteux": [
-    "Bernard (encre rendue lue « B\"erinard »)",
-    "pommes, (encre rendue lue « pomp mesi »)",
-    "2 c. à s. (encre rendue lue « 2'c. d. S. »)",
-    "noix (encre rendue lue « naix »)",
-    "beurre. (encre rendue lue « beirre . »)",
-    "sucre (encre rendue lue « su cre »)",
-    "beurre (encre rendue lue « beioire »)",
-    "noisettes. (encre rendue lue « noise ttes . »)",
-    "40 min (encre rendue lue « 40 min »)",
-    "th. 7. (encre rendue lue « th . I »)"
+    "pommes, (encre rendue lue « pomnes . »)",
+    "2 c. à s. (encre rendue lue « 2'c d s . »)",
+    "sucre, (encre rendue lue « Su cre »)",
+    "pommes (encre rendue lue « P om mes . »)",
+    "beurre (encre rendue lue « bimixie »)",
+    "40 min (encre rendue lue « 4G min »)",
+    "th. 7. (encre rendue lue « ft. 7' »)"
    ],
    "douteux_importants": [
     "2 c. à s.",
     "40 min",
-    "Bernard",
     "beurre",
-    "beurre.",
-    "noisettes.",
-    "noix",
+    "pommes",
     "pommes,",
-    "sucre",
+    "sucre,",
     "th. 7."
    ],
    "relu": true
@@ -729,17 +723,17 @@
     ]
    },
    "deborde": [],
-   "lignes": 10,
+   "lignes": 8,
    "croquis": [
     {
      "nom": "oeuf",
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.2314,
-      0.3872,
-      0.0385,
-      0.0341
+      0.2102,
+      0.3894,
+      0.0309,
+      0.0273
      ]
     },
     {
@@ -747,8 +741,8 @@
      "role": "dessin",
      "dessine": true,
      "boite": [
-      0.0742,
-      0.1516,
+      0.1137,
+      0.137,
       0.16,
       0.1417
      ]
@@ -758,21 +752,16 @@
     "beurre (mot « beurre » introuvable)"
    ],
    "douteux": [
-    "1 (groupe « 1 » lu « A »)",
-    "1 (groupe « 1 » lu « \" I »)",
-    "1 (encre rendue lue « A »)",
-    "75 g (encre rendue lue « FRG »)",
-    "200 g (encre rendue lue « 200 g »)",
-    "1 (encre rendue lue « \" I »)",
-    "pépites (encre rendue lue « recites »)",
-    "10 min (encre rendue lue « 10 inin- »)"
+    "roux, (groupe « roux, » lu « rows . »)",
+    "½ (groupe « ½ » lu « 1 ft »)",
+    "roux, (encre rendue lue « rows . »)",
+    "½ (encre rendue lue « 1 ft »)",
+    "pépites (encre rendue lue « pipites . »)"
    ],
    "douteux_importants": [
-    "1",
-    "10 min",
-    "200 g",
-    "75 g",
-    "pépites"
+    "pépites",
+    "roux,",
+    "½"
    ],
    "relu": true
   },
