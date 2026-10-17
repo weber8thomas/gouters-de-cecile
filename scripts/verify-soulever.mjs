@@ -14,6 +14,10 @@
 // Feuillet [data-gc-objet="feuillet"] (page du lien --lien-feuillet, défaut #lisa) :
 //   - toucher, glisser vers le haut, ↑ → « ouvert » ; → verso, ← recto (captures comparées) ;
 //     toucher le feuillet soulevé le retourne ; ↓ et Échap → « ferme », coin revenu à ±2 px.
+// Tirage [data-gc-objet="tirage"] (photo fixe de l'album, page du lien --lien-tirage, défaut #cecile-1) :
+//   - toucher (téléphones) ou Entrée sur le tirage qui a le focus (TV) → « ouvert », sans vidéo (aucun play()),
+//     légende au crayon [.gc-soulever__legende] ; le livre ne tourne pas la page ;
+//   - Échap, toucher la photo soulevée, toucher le voile → « ferme », tirage revenu à ±2 px, focus rendu au tirage.
 // Mouvement réduit (emulateMedia reducedMotion « reduce », puis réglage gc:reglages:v1.mouvementReduit) :
 //   aucune transformation pendant l'ouverture (transform calculé constant, relevé à chaque image) ;
 //   témoin : le même relevé voit bien l'envol normal.
@@ -31,7 +35,8 @@
 //
 //   node scripts/verify-soulever.mjs [--site dist/site | --url harness/devices.html?b=… | --banc [--defaut x]]
 //        [--bundle dist/ds-t/components] [--only iphone13-portrait,pixel7,tv-1080]
-//        [--suites photo,feuillet,reduit,indices] [--lien julie] [--lien-feuillet lisa] [--out verification/out/t/soulever]
+//        [--suites photo,feuillet,reduit,indices,tirage] [--lien julie] [--lien-feuillet lisa] [--lien-tirage cecile-1]
+//        [--vue 390x844] [--out verification/out/t/soulever]
 //        [--ecrans-indices ordi-1280] [--out-indices verification/out/v4-s]
 import { resolve, join } from 'node:path';
 import { PNG } from 'pngjs';
@@ -47,7 +52,8 @@ const { opt, drapeau, liste } = lireArgs();
 const out = resolve(ROOT, opt('out', 'verification/out/t/soulever'));
 const lienPhoto = opt('lien', 'julie');
 const lienFeuillet = opt('lien-feuillet', 'lisa');
-const suites = liste('suites', 'photo,feuillet,reduit,indices');
+const lienTirage = opt('lien-tirage', 'cecile-1');
+const suites = liste('suites', 'photo,feuillet,reduit,indices,tirage');
 const outIndices = resolve(ROOT, opt('out-indices', 'verification/out/v4-s'));
 mkdirSync(outIndices, { recursive: true });
 const SEL = {
@@ -568,8 +574,104 @@ async function suiteIndices(e) {
   }
 }
 
+// ---- Tirage (album « Cécile en cuisine ») : photo fixe, sans vidéo --------------------------------
+const SEL_TIRAGE = '.gc-livre__page--visible [data-gc-objet="tirage"][data-gc-objet-mode="live"], [data-gc-objet="tirage"][data-gc-objet-mode="live"]';
+async function suiteTirage(e) {
+  const { ctx, page, surv } = await ouvrirPage(browser, cible, e, lienTirage);
+  try {
+    const avant = await rectDe(page, SEL_TIRAGE);
+    if (!avant || !avant.visible) { R.attente(e.nom, `tirage posé [data-gc-objet="tirage"] sur #${lienTirage}`); return; }
+    if (!(await existe(page, SEL.calque))) { R.attente(e.nom, 'calque [data-gc-soulever]'); return; }
+    const mode = tactile(e) ? 'toucher' : 'entree';
+    const focus = () => page.evaluate((s) => document.querySelector(s)?.focus({ preventScroll: true }), SEL_TIRAGE);
+    const pose = await page.evaluate((s) => {
+      const el = document.querySelector(s);
+      return { vivants: document.querySelectorAll('[data-gc-objet="tirage"][data-gc-objet-mode="live"]').length, tab: el.getAttribute('tabindex'), role: el.getAttribute('role'), curseur: getComputedStyle(el).cursor, nom: el.getAttribute('aria-label') };
+    }, SEL_TIRAGE);
+    R.ok(e.nom, 'tirage : focusable, curseur pointer, libellé', pose.tab === '0' && pose.role === 'img' && pose.curseur === 'pointer' && !!pose.nom,
+      `${pose.vivants} tirage(s) vivant(s) sur la double page · tabindex ${pose.tab} · curseur ${pose.curseur} · « ${pose.nom} »`);
+    R.capturer(await capture(page, `${e.nom}-tirage-avant`, out), `${e.titre} — double page « Cécile en cuisine », posée`);
+    const e0 = await etatLivre(page);
+    const n0 = await nbPlays(page);
+
+    // 1. Ouverture : toucher (téléphones) ou Entrée (TV, le tirage a le focus)
+    if (mode === 'entree') await focus();
+    await declencher(page, e, avant, mode);
+    const o = await ouvert(page);
+    R.ok(e.nom, `tirage : ${LIBELLE[mode]} → data-gc-soulever="ouvert"`, o, o ? '' : `état : ${await etatCalque(page)}`);
+    if (!o) return;
+    await finEnvol(page);
+    const etiquette = await page.evaluate(() => ({
+      type: document.querySelector('[data-gc-soulever]')?.getAttribute('data-gc-type') ?? null,
+      legende: document.querySelector('.gc-soulever__legende')?.textContent ?? null,
+    }));
+    R.ok(e.nom, 'tirage : soulevé (type « tirage », légende au crayon)', etiquette.type === 'tirage' && !!etiquette.legende, `type ${etiquette.type} · légende « ${etiquette.legende} »`);
+    const rs = await rectSouleve(page);
+    const z = await zoneSure(page, insetsDe(e));
+    const lg = await rectDe(page, '.gc-soulever__legende');
+    R.ok(e.nom, 'tirage soulevé et sa légende dans la zone sûre', dansZone(rs, z) && (!lg || dansZone(lg, z)),
+      rs ? `${rs.el} ${Math.round(rs.x)},${Math.round(rs.y)} ${Math.round(rs.w)}×${Math.round(rs.h)} · zone ${z.x},${z.y} → ${z.r},${z.b}` : 'tirage soulevé introuvable');
+    R.capturer(await capture(page, `${e.nom}-tirage-ouvert`, out), `${e.titre} — tirage soulevé, en grand`);
+
+    // 2. Rouvrir : après une fermeture, le même geste relance le soulèvement.
+    const rouvrir = async () => {
+      if ((await etatCalque(page)) === 'ouvert') return true;
+      await ferme(page, 3000);
+      await stabiliser(page, SEL_TIRAGE, { images: 6 });
+      if (mode === 'entree') await focus();
+      const r = await rectDe(page, SEL_TIRAGE);
+      if (r) await declencher(page, e, r, mode);
+      const ok = await ouvert(page);
+      if (ok) await finEnvol(page);
+      return ok;
+    };
+
+    // 3. Échap : repose le tirage à sa place, focus rendu au tirage (clavier)
+    await verifierRetour(page, e, SEL_TIRAGE, avant, 'Échap', () => page.keyboard.press('Escape'));
+    if (mode === 'entree') {
+      const focuse = await page.evaluate((s) => document.activeElement === document.querySelector(s), SEL_TIRAGE);
+      R.ok(e.nom, 'tirage : le focus revient à la photo après Échap', focuse, '');
+    }
+    R.capturer(await capture(page, `${e.nom}-tirage-apres`, out), `${e.titre} — tirage reposé (après)`);
+
+    // 4. Toucher (clic sur la TV) la photo soulevée
+    if (await rouvrir()) {
+      const r = await rectSouleve(page);
+      await verifierRetour(page, e, SEL_TIRAGE, avant, tactile(e) ? 'toucher la photo soulevée' : 'clic sur la photo soulevée', () => taper(page, e, r.cx, r.cy));
+    } else R.ajouter(e.nom, 'tirage : rouvrir', 'KO', 'ne se rouvre pas');
+
+    // 5. Toucher le voile, hors de la photo (un point où le voile est le plus haut : ni la croix, ni le réglage)
+    if (await rouvrir()) {
+      const p = await page.evaluate(() => {
+        const voile = document.querySelector('.gc-soulever__voile');
+        for (const fy of [0.5, 0.15, 0.85, 0.3, 0.7, 0.05, 0.95]) {
+          for (const fx of [0.5, 0.2, 0.8, 0.1, 0.9]) {
+            const x = Math.round(innerWidth * fx);
+            const y = Math.round(innerHeight * fy);
+            if (voile && document.elementFromPoint(x, y) === voile) return { x, y };
+          }
+        }
+        return null;
+      });
+      if (p) await verifierRetour(page, e, SEL_TIRAGE, avant, `toucher le voile (${p.x}, ${p.y}, hors de la photo)`, () => taper(page, e, p.x, p.y));
+      else R.attente(e.nom, 'voile libre, hors de la photo et des contrôles');
+    } else R.ajouter(e.nom, 'tirage : rouvrir (voile)', 'KO', 'ne se rouvre pas');
+
+    // 6. Le livre ne tourne pas la page, et aucune vidéo n'a joué
+    const e1 = await etatLivre(page);
+    R.ok(e.nom, 'tirage : le livre ne tourne pas la page', e1.double === e0.double && e1.cote === e0.cote, `double ${e0.double} → ${e1.double}, côté ${e0.cote} → ${e1.cote}`);
+    R.ok(e.nom, 'tirage : aucune vidéo lancée', (await nbPlays(page)) === n0, '');
+  } finally {
+    R.ok(e.nom, 'tirage : aucune erreur de page', !surv.erreurs.length, surv.erreurs.slice(0, 3).join(' | '));
+    await ctx.close();
+  }
+}
+
 // ---- Programme -------------------------------------------------------------------------------------
-const liste_ = ecrans(liste('only', 'iphone13-portrait,pixel7,tv-1080'));
+// --vue LxH : fenêtre imposée aux écrans choisis (ex. iPhone 13 à 390×844, le descripteur Playwright étant 390×664).
+const vueForcee = opt('vue')?.match(/^(\d+)x(\d+)$/);
+const liste_ = ecrans(liste('only', 'iphone13-portrait,pixel7,tv-1080'))
+  .map((e) => (vueForcee ? { ...e, ctx: { ...e.ctx, viewport: { width: +vueForcee[1], height: +vueForcee[2] } } } : e));
 let premier = true;
 for (const e of liste_) {
   if (!suites.some((s) => s !== 'indices')) break;
@@ -578,6 +680,7 @@ for (const e of liste_) {
     if (suites.includes('photo')) await suitePhoto(e);
     if (suites.includes('feuillet')) await suiteFeuillet(e);
     if (suites.includes('reduit')) await suiteReduite(e, premier);
+    if (suites.includes('tirage')) await suiteTirage(e);
   } catch (x) {
     R.ajouter(e.nom, 'exécution', 'KO', `plantage : ${String(x).split('\n')[0]}`);
   }

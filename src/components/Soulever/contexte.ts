@@ -6,7 +6,7 @@ import type { VideoInfo } from './media';
 /** Phase du soulèvement : fermé, en vol vers le haut, ouvert (posé au-dessus du livre), en vol vers la page. */
 export type EtatSoulevement = 'ferme' | 'envol' | 'ouvert' | 'retour';
 
-/** Un objet qu'on soulève : la photo d'une vidéo, ou le feuillet volant (pages cuites recto / verso). */
+/** Un objet qu'on soulève : la photo d'une vidéo, un tirage sans vidéo, ou le feuillet volant (pages cuites recto / verso). */
 export type ObjetSoulevable =
   | {
     type: 'photo';
@@ -14,6 +14,20 @@ export type ObjetSoulevable =
     /** L'élément posé dans la page (celui qui porte data-gc-objet="photo", tourné ou non). */
     source: HTMLElement;
     /** Inclinaison de départ (degrés). Défaut : la rotation propre de `source`. */
+    angle?: number;
+  }
+  | {
+    type: 'tirage';
+    /** La photo fixe (nom logique d'assetUrl() ou URL) : un tirage à bord blanc, sans vidéo. */
+    tirage: string;
+    /** Ses coins, même cadre que le tirage (facultatifs). */
+    coins?: string | null;
+    /** Légende au crayon, sous la photo soulevée (facultative). */
+    legende?: string | null;
+    /** Proportion (largeur / hauteur) de l'image. Défaut : celle de l'image cuite, sinon 3 / 2. */
+    proportion?: number;
+    /** L'élément posé dans la page (tourné ou non) : sa proportion est celle de l'image. */
+    source: HTMLElement;
     angle?: number;
   }
   | {

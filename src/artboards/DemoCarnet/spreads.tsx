@@ -13,10 +13,13 @@
 import React from 'react';
 import { PageCuite, PAGES_CUITES } from '../../components/PageCuite';
 import type { VideoInfo } from '../../components/Soulever';
+import { useSoulevementActions } from '../../components/Soulever/contexte';
+import { proportionImage } from '../../components/Soulever/media';
 import { PhotoCollee } from '../../components/PhotoCollee';
 import { FeuilletVolant } from '../../components/FeuilletVolant';
 import { Aquarelle } from '../../components/Aquarelle';
-import type { SpreadSpec } from '../../lib/spread';
+import { TOUCHER_EVENT } from '../../components/Livre/evenements';
+import { useRenderMode, type SpreadSpec } from '../../lib/spread';
 import videosJson from '../../content/videos.json';
 import carnetJson from '../../content/carnet.json';
 import photosCecileJson from '../../content/photos-cecile.json';
@@ -47,13 +50,62 @@ interface VolantInfo { recto: string; verso?: string | null; angle?: number }
 /** Tirages de l'album « Cécile en cuisine » (src/content/photos-cecile.json), dans l'ordre des zones photo-1…photo-10. */
 const PHOTOS_CECILE = photosCecileJson as { id: string; age: string; tirage: string; coins: string; angle?: number }[];
 
-/** Un tirage collé sans vidéo (album « Cécile en cuisine ») : le tirage et ses coins, un peu de travers. */
-function TirageColle({ tirage, coins, angle = 0 }: { tirage: string; coins: string; angle?: number }) {
-  const img: React.CSSProperties = { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' };
+/**
+ * Un tirage collé sans vidéo (album « Cécile en cuisine ») : le tirage et ses coins, un peu de travers.
+ * Il se soulève comme une photo (type « tirage » de Soulever) : au toucher, ou à Entrée quand il a le
+ * focus (mode vivant). Sa légende au crayon s'écrit sous la photo en grand.
+ */
+function TirageColle({ tirage, coins, angle = 0, legende }: { tirage: string; coins: string; angle?: number; legende?: string }) {
+  const mode = useRenderMode();
+  const vivant = mode === 'live';
+  const actions = useSoulevementActions();
+  const ref = React.useRef<HTMLDivElement>(null);
+  // Le tirage tient dans sa zone à sa proportion (image contenue), puis il est incliné.
+  const A = proportionImage(tirage);
+
+  const souleverRef = React.useRef<() => boolean>(() => false);
+  souleverRef.current = () => {
+    const el = ref.current;
+    return !!el && !!actions?.soulever({ type: 'tirage', tirage, coins, legende, source: el });
+  };
+
+  // Toucher dans le livre (dans le geste) : la photo se soulève, et le livre ne tourne pas la page.
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el || !vivant) return undefined;
+    const prendre = (e: Event) => {
+      if (souleverRef.current()) e.preventDefault();
+    };
+    el.addEventListener(TOUCHER_EVENT, prendre);
+    return () => el.removeEventListener(TOUCHER_EVENT, prendre);
+  }, [vivant]);
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (e.repeat || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (souleverRef.current()) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
   return (
-    <div style={{ position: 'absolute', inset: '3%', transform: `rotate(${angle}deg)` }}>
-      <img src={assetUrl(tirage)} alt="" draggable={false} style={img} />
-      <img src={assetUrl(coins)} alt="" draggable={false} style={img} />
+    <div style={{ position: 'absolute', inset: '3%', containerType: 'size', display: 'grid', placeItems: 'center' }}>
+      <div
+        ref={ref}
+        className="gc-tirage__photo"
+        style={{ width: `min(100cqw, ${(A * 100).toFixed(3)}cqh)`, aspectRatio: `${A.toFixed(5)}`, transform: `rotate(${angle}deg)` }}
+        data-gc-objet="tirage"
+        data-gc-objet-mode={mode}
+        tabIndex={vivant ? 0 : undefined}
+        role={vivant ? 'img' : undefined}
+        aria-label={vivant ? `Photo${legende ? ` : ${legende}` : ''}. Entrée pour la voir en grand.` : undefined}
+        aria-hidden={vivant ? undefined : true}
+        onKeyDown={vivant ? onKeyDown : undefined}
+      >
+        <img className="gc-tirage__image" src={assetUrl(tirage)} alt="" draggable={false} decoding="sync" />
+        <img src={assetUrl(coins)} alt="" draggable={false} decoding="sync" />
+      </div>
     </div>
   );
 }
@@ -67,7 +119,7 @@ function Page({ id, graine }: { id: string; graine: number }) {
   for (const nom of Object.keys(info?.vivants ?? {})) {
     const n = /^photo-(\d+)$/.exec(nom);
     const t = n ? PHOTOS_CECILE[Number(n[1]) - 1] : undefined;
-    if (t) slots[nom] = <TirageColle tirage={t.tirage} coins={t.coins} angle={t.angle} />;
+    if (t) slots[nom] = <TirageColle tirage={t.tirage} coins={t.coins} angle={t.angle} legende={`Cécile, ${t.age}`} />;
   }
   Object.entries(info?.aquarelles ?? {}).forEach(([nom, a], i) => {
     slots[nom] = <Aquarelle nom={a.aquarelle} anime={a.anime} angle={a.angle} ordre={i} page={id} />;

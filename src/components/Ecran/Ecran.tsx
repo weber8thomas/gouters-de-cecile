@@ -1,9 +1,11 @@
 import React from 'react';
 import { ViewportOverride, useViewport } from '../../lib/viewport';
 import { LazyMotion, domMax, m, useMotionValue, useTransform } from '../../lib/motion';
-import { LOUPE_ZOOME, brancherLoupe, useLoupe } from '../../lib/loupe';
+import { LOUPE_ZOOME, brancherLoupe, getLoupe, useLoupe } from '../../lib/loupe';
+import { clavierModalActif } from '../../lib/clavier';
 import { BoutonLoupe } from '../Loupe/BoutonLoupe';
 import { BoutonHautParleur } from '../Haut-parleur/BoutonHautParleur';
+import { BoutonMusique } from '../Haut-parleur/BoutonMusique';
 import { creerControleur, transformLoupe, type ControleurEcran } from '../Loupe/controleur';
 import { EcranContext, type EcranInfo } from './contexte';
 import './Ecran.css';
@@ -19,6 +21,12 @@ export interface EcranProps {
    * Défaut : true. Sur un écran simulé (cartes), seulement les gestes et le bouton, sans clavier.
    */
   loupe?: boolean;
+  /**
+   * Le carnet est ouvert : le bouton « Fermer le carnet » et Échap le referment sur leur couverture (le
+   * livre fait son tourne-page habituel). Absent quand le livre est fermé. Une photo soulevée, le menu et
+   * la loupe zoomée prennent Échap d'abord.
+   */
+  onFermerCarnet?: () => void;
 }
 
 /** Taille de la scène logique (tokens --gc-stage-w / --gc-stage-h). */
@@ -44,6 +52,12 @@ const FERMER = {
   repasse: ['M8.6 15.6c2 .1 4 0 5.9-.2', 'M25.6 15.5c1.9.2 3.9.2 5.9.1', 'M31.4 24.4c-1.9 0-3.9.1-5.8.3', 'M14.5 24.5c-1.9-.2-3.9-.2-5.9-.1'],
 };
 
+// Livre fermé, à l'encre : le plat, le dos et une étiquette ; la tranche des pages repassée au crayon.
+const LIVRE_FERME = {
+  trait: ['M10.4 8.7c6.6-.5 13.3-.4 19.8.2.6 5.7.6 11.6 0 17.5-6.5.6-13.2.6-19.8.1-.4-5.9-.4-11.9 0-17.8z', 'M14.4 9c-.2 5.7-.2 11.6.1 17.4', 'M18.4 16.2c2.7-.2 5.3-.2 7.9 0'],
+  repasse: ['M31.1 10.4c1.3 5.3 1.3 11 0 16.4'],
+};
+
 function Coins({ d }: { d: typeof OUVRIR }) {
   return (
     <svg className="gc-ecran__trace" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
@@ -53,6 +67,15 @@ function Coins({ d }: { d: typeof OUVRIR }) {
         {d.repasse.map((t) => <path key={t} className="gc-ecran__repasse" d={t} />)}
       </g>
     </svg>
+  );
+}
+
+/** « Fermer le carnet » : un livre fermé, à la place des coins du plein écran (même facture). */
+function BoutonFermerCarnet({ onFermer }: { onFermer: () => void }) {
+  return (
+    <button type="button" className="gc-ecran__fermer" data-gc-controle="fermer-carnet" aria-label="Fermer le carnet" onClick={onFermer}>
+      <Coins d={LIVRE_FERME} />
+    </button>
   );
 }
 
@@ -92,7 +115,7 @@ function BoutonPleinEcran() {
 // Le livre est posé dans le calque de la LOUPE (.gc-ecran__loupe : translate3d + scale, plan v4) ; les
 // contrôles, la photo soulevée et le menu sont en portail hors de ce calque : ils ne zooment jamais.
 // Sous un ViewportOverride (cartes, tests), l'écran est une boîte de la taille imposée.
-export function Ecran({ children, className, pleinEcran = true, loupe = true }: EcranProps) {
+export function Ecran({ children, className, pleinEcran = true, loupe = true, onFermerCarnet }: EcranProps) {
   const vp = useViewport();
   const force = React.useContext(ViewportOverride);
   const simule = !!force && force.w != null && force.h != null;
@@ -131,6 +154,23 @@ export function Ecran({ children, className, pleinEcran = true, loupe = true }: 
   }, [loupe, simule, lx, ly, lz]);
   React.useEffect(() => { ctrlRef.current?.majVp(vp); }, [vp]);
 
+  // ---- Échap : referme le carnet (le même geste que le bouton). Une photo soulevée et le menu gardent
+  // le clavier (clavier modal, consommé avant nous) ; la loupe zoomée prend Échap pour revenir à 1×.
+  const fermerRef = React.useRef(onFermerCarnet);
+  fermerRef.current = onFermerCarnet;
+  const carnetOuvert = !!onFermerCarnet;
+  React.useEffect(() => {
+    if (!carnetOuvert) return undefined;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || e.defaultPrevented || e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (clavierModalActif() || getLoupe().zoome) return;
+      e.preventDefault();
+      fermerRef.current?.();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [carnetOuvert]);
+
   const u = Math.min(vp.w / SCENE.w, vp.h / SCENE.h);
   const style: Vars = {
     '--gc-ecran-w': `${vp.w}px`,
@@ -160,6 +200,8 @@ export function Ecran({ children, className, pleinEcran = true, loupe = true }: 
         </LazyMotion>
         <div ref={setControles} className="gc-ecran__controles">
           <div className="gc-ecran__barre">
+            {onFermerCarnet && <BoutonFermerCarnet onFermer={onFermerCarnet} />}
+            <BoutonMusique />
             <BoutonHautParleur />
             {loupe && (
               <BoutonLoupe

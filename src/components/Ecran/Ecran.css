@@ -71,7 +71,8 @@
   pointer-events: none;
 }
 
-/* ---- Barre du haut, à droite : haut-parleur, loupe, plein écran (une rangée, dans les zones sûres) ---- */
+/* ---- Barre du haut, à droite : fermer le carnet (si ouvert), musique, haut-parleur, loupe, plein écran
+   (une rangée, dans les zones sûres) ---- */
 .gc-ecran__barre {
   position: absolute;
   top: calc(var(--gc-ecran-haut) + var(--gc-ecran-bord-bas));
@@ -91,8 +92,9 @@
   right: auto;
 }
 
-/* ---- Plein écran : coins tracés à la main, à droite de la barre ------------------------------ */
-.gc-ecran__plein {
+/* ---- Plein écran et fermer le carnet : tracés à la main, à droite de la barre ---------------- */
+.gc-ecran__plein,
+.gc-ecran__fermer {
   display: grid;
   place-items: center;
   width: var(--gc-ecran-cible);
@@ -108,11 +110,13 @@
   touch-action: manipulation;
 }
 
-.gc-ecran__plein:focus {
+.gc-ecran__plein:focus,
+.gc-ecran__fermer:focus {
   outline: none;
 }
 
-.gc-ecran__plein:focus-visible {
+.gc-ecran__plein:focus-visible,
+.gc-ecran__fermer:focus-visible {
   outline: 3px solid var(--gc-honey-500);
   outline-offset: 4px;
 }
@@ -150,7 +154,8 @@
 }
 
 /* Zoomé, le papier remplit l'écran : le plein écran passe à l'encre, avec un halo de papier. */
-.gc-ecran[data-gc-loupe="zoome"] .gc-ecran__plein {
+.gc-ecran[data-gc-loupe="zoome"] .gc-ecran__plein,
+.gc-ecran[data-gc-loupe="zoome"] .gc-ecran__fermer {
   color: var(--gc-ink);
 }
 

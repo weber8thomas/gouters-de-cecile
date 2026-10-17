@@ -231,6 +231,14 @@
     "bytes": 34710,
     "type": "image/webp"
   },
+  "couverture/a/1x/plat-arriere": {
+    "file": "baked/couverture/a/1x/plat-arriere.webp",
+    "sha": "15dc14c9b802dcc57ac30f274aa8666eb25ec391a4ebbaa04ae8a31dc467109e",
+    "w": 868,
+    "h": 1222,
+    "bytes": 282004,
+    "type": "image/webp"
+  },
   "couverture/a/1x/plat": {
     "file": "baked/couverture/a/1x/plat.webp",
     "sha": "3549464b58df80e48ddb1d547d9c12b2bd26ebffc78863539e497ad77d899ac8",
@@ -301,6 +309,14 @@
     "w": 1078,
     "h": 604,
     "bytes": 94974,
+    "type": "image/webp"
+  },
+  "couverture/a/plat-arriere": {
+    "file": "baked/couverture/a/plat-arriere.webp",
+    "sha": "acd8038e7924155ccaabf6710363a1294f6b8e17daf6a61568b422e624fee6b0",
+    "w": 1736,
+    "h": 2444,
+    "bytes": 625540,
     "type": "image/webp"
   },
   "couverture/a/plat": {

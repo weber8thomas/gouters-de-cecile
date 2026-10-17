@@ -1,10 +1,10 @@
 // Musique de fond du carnet (lot M) : un morceau en boucle, libre de droits (Kevin MacLeod, incompetech.com,
 // CC BY 4.0 ; crédits au menu ⚙ et dans design-system/sources/musique/licences.json), joué sur le même
 // AudioContext que les sons du livre (src/lib/son.ts) et l'ambiance (src/lib/ambiance.ts).
-//   - réglage « musique » (reglages.musique) : « aucune », ou l'identifiant d'un morceau (le premier par défaut) ;
+//   - réglages « musique » (morceau choisi au menu) et « musiqueActive » (bouton musique) : coupée par défaut ;
 //   - le premier geste déverrouille l'audio pour elle aussi (besoinAudio, comme l'ambiance) ;
 //   - démarre en fondu de 4 s ; changer de morceau : fondu croisé de 2 s ;
-//   - niveau : 0,25 × le volume des réglages, × 0,2 pendant une vidéo soulevée (videoEnLecture) ;
+//   - niveau : 0,1 × le volume des réglages (sous le feu, src/lib/ambiance.ts), × 0,2 pendant une vidéo soulevée ;
 //   - « muet » (bouton haut-parleur, reglages.muet) : le gain va à 0 et la boucle continue, comme le feu ;
 //   - en pause quand l'onglet est caché : son.ts suspend le contexte partagé, donc l'horloge audio s'arrête ;
 //   - banque : design-system/baked/musique/banque.json (scripts/bake-musique.mjs), fichiers musique/<id>.mp3,
@@ -36,8 +36,8 @@ export const MORCEAUX: readonly Morceau[] = (banqueJson as { morceaux: Morceau[]
 
 const FONDU_ENTREE = 4;
 const FONDU_CHANGEMENT = 2;
-/** Niveau de la musique, en fraction du volume des réglages (un fond, loin derrière le livre). */
-export const NIVEAU_MUSIQUE = 0.25;
+/** Niveau de la musique, en fraction du volume des réglages : un fond, sous le feu (0,248) et le livre. */
+export const NIVEAU_MUSIQUE = 0.1;
 export const SOURDINE_VIDEO_MUSIQUE = 0.2;
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
@@ -52,10 +52,11 @@ function constructeur(): boolean {
 /** Le bouton haut-parleur a coupé les sons ? Lu de façon défensive. */
 const muet = (): boolean => (getReglages() as unknown as { muet?: unknown }).muet === true;
 
-/** Le morceau demandé par les réglages ; null si « aucune » ou inconnu. */
+/** Le morceau demandé par les réglages ; null si la musique est coupée, « aucune » ou inconnu. */
 function demande(): Morceau | null {
-  const id = getReglages().musique;
-  return MORCEAUX.find((m) => m.id === id) ?? null;
+  const r = getReglages() as unknown as { musique: string; musiqueActive?: unknown };
+  if (r.musiqueActive !== true) return null;
+  return MORCEAUX.find((m) => m.id === r.musique) ?? null;
 }
 
 /** Adresse de la boucle ; vide si l'inventaire ne la connaît pas (artifact : pas de musique). */
@@ -119,7 +120,7 @@ let maitre: GainNode | null = null;
 let maitreDe: AudioContext | null = null;
 let voix: Voix | null = null;
 
-/** Niveau voulu : 0 en muet ; sinon volume × 0,25, et × 0,2 pendant une vidéo. */
+/** Niveau voulu : 0 en muet ; sinon volume × 0,1, et × 0,2 pendant une vidéo. */
 export function niveauMusique(): number {
   if (muet()) return 0;
   return clamp01(getReglages().volume) * NIVEAU_MUSIQUE * (videoEnLecture() ? SOURDINE_VIDEO_MUSIQUE : 1);

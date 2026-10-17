@@ -29,6 +29,7 @@ import { SoulevementProvider, useSoulevement, souleverObjet } from '…/componen
 - `etat` : `'ferme' | 'envol' | 'ouvert' | 'retour'`.
 - `objet` :
   - `{ type: 'photo', video: VideoInfo, source: HTMLElement, angle? }` ;
+  - `{ type: 'tirage', tirage, coins?, legende?, proportion?, source: HTMLElement, angle? }` : une photo fixe de l'album (sans vidéo, sans trait), en grand ; `tirage` et `coins` sont des noms logiques d'`assetUrl()`, `legende` s'écrit au crayon sous la photo (main de Cécile, encre claire). `proportion` défaut : celle de l'image cuite. Posée par `TirageColle` (`src/artboards/DemoCarnet/spreads.tsx`) ;
   - `{ type: 'feuillet', recto: string, verso?: string | null, source: HTMLElement, angle?, fenetre? }` (ids de pages cuites, rendues par `<PageCuite>`).
 - `source` : l'élément posé dans la page (tourné ou non : sa rotation propre est lue). Sans `angle`, l'inclinaison de départ est celle de `source`.
 - `soulever()` renvoie `false` si un autre objet est déjà soulevé ; appelé à nouveau pour **le même** objet, il le rattrape pendant son retour, ou relance la vidéo si elle n'a pas démarré (nouveau geste).
@@ -110,7 +111,7 @@ Toucher la photo ou le voile ; feuillet : toucher hors de la feuille (toucher la
 
 | Élément | Attribut |
 |---|---|
-| Calque | `data-gc-soulever="ouvert\|ferme"`, `data-gc-phase="ferme\|envol\|ouvert\|retour"`, `data-gc-type="photo\|feuillet"`, `data-gc-reduit` |
+| Calque | `data-gc-soulever="ouvert\|ferme"`, `data-gc-phase="ferme\|envol\|ouvert\|retour"`, `data-gc-type="photo\|tirage\|feuillet"`, `data-gc-reduit` |
 | Vidéo unique | `data-gc-video` (`playsinline`, `webkit-playsinline`, `preload="auto"`, `disablepictureinpicture`) |
 | Objet posé, soulevé | `data-gc-souleve` (sur `source`) |
 | Carte photo en lecture | `data-gc-lecture` |
