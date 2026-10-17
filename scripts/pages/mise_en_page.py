@@ -5,7 +5,7 @@ les traits à cuire (px de la page, y vers le bas), les boîtes des mots, le tex
 (accessibilité), les zones réservées aux éléments vivants (photo collée, coin du feuillet volant) et
 les croquis (traits + lavis) demandés au module des croquis (scripts/pages/croquis.py, lot C).
 
-Page de référence : 850 × 960 px. Une page de feuillet volant (`type: "feuillet"`) a sa propre
+Page de référence : 850 × 1200 px (format 17 × 24 cm). Une page de feuillet volant (`type: "feuillet"`) a sa propre
 `taille` (≈ 0,8 × la page) ; la hauteur d'x reste en px de la page de référence (même écriture).
 
 Les dix règles de design-system/docs/references-carnets.md § 5, avec la contrainte de lisibilité
@@ -52,19 +52,21 @@ import gestes as TR
 
 ICI = Path(__file__).resolve().parent
 RACINE = ICI.parents[1]
-W, H = 850.0, 960.0  # page de référence (px)
-# Hauteurs d'x par rôle (fraction de la largeur de la page de référence). Plancher : 1,8 % (14 px à
-# l'écran au cran « loin », page de 786 px). Le corps suit le jeton gc-x-body du cran loin (15 / 786).
+W, H = 850.0, 1200.0  # page de référence (px) : livre de recettes 17 × 24 cm (rapport 0,708)
+# Hauteurs d'x par rôle (fraction de la largeur de la page de référence). Plan v5 : écriture d'un vrai
+# carnet imprimé en 17 × 24 cm (corps ≈ 2,1 mm de hauteur d'x), 35 % plus fine qu'en v4 ; à l'écran,
+# le zoom et la loupe prennent le relais. FINESSE règle tout d'un coup (rôles ET plancher).
+FINESSE = 0.65
 ROLES = {
-    "corps": 0.0190,
-    "mot": 0.0194,
-    "titre": 0.0190 * 1.36,
-    "signature": 0.0190 * 1.32,
-    "annotation": 0.0184,
-    "legende": 0.0188,
-    "correction": 0.0181,
+    "corps": 0.0190 * FINESSE,
+    "mot": 0.0194 * FINESSE,
+    "titre": 0.0190 * 1.36 * FINESSE,
+    "signature": 0.0190 * 1.32 * FINESSE,
+    "annotation": 0.0184 * FINESSE,
+    "legende": 0.0188 * FINESSE,
+    "correction": 0.0181 * FINESSE,
 }
-XH_MIN = 0.0181 * W
+XH_MIN = 0.0181 * FINESSE * W
 TAILLE_PUCE = 1.3  # côté de la boîte d'une puce-croquis (hauteurs d'x) : un emoji fait ≈ une capitale
 TAILLE_ICONE = 1.75  # petit croquis à côté d'un ingrédient (bout de ligne, marge) : discret mais lisible
 TAILLE_EMOJI = 1.6  # croquis en ligne à la place d'un emoji (« Yummy … 🥕😎 »)
@@ -1553,7 +1555,7 @@ class Mise:
         enc_id = encre_dispo(b.get("encre", self.encre))
         outil = b.get("outil", self.desc.get("outil") if enc_id == self.encre else None)
         info = ECR.main_info(main)
-        k = float(b.get("taille", 2.5))
+        k = float(b.get("taille", 1.9))
         xh_c = self.xh_de("corps", main)
         xh = xh_c * k
         graine = int(b.get("graine", self.graine * 31 + idx * 7))
@@ -1971,7 +1973,7 @@ class Mise:
         bid = b.get("id", "chapitre")
         r = self.rng
         tb = {"type": "titre", "id": bid, "texte": b["titre"], "position": b.get("position", "centre"),
-              "souligne": b.get("souligne", "trait"), "echelle": float(b.get("taille", 2.1)), "avant": float(b.get("avant", 0.0)),
+              "souligne": b.get("souligne", "trait"), "echelle": float(b.get("taille", 1.8)), "avant": float(b.get("avant", 0.0)),
               "premier_haut": float(b.get("premier_haut", 1.7))}
         for c in ("main", "encre", "outil", "graine", "souligne_encre"):
             if c in b:

@@ -72,7 +72,7 @@ VERIF = RACINE / "verification/out/v4-c"
 
 # ---- géométrie (px de la page de référence, comme les pages cuites) -------------------------
 ECH = 2
-PAGE_W, PAGE_H = 850, 960
+PAGE_W, PAGE_H = 850, 1200
 OUT, HAUT, BAS, EP = 18, 6, 16, 10  # débords du carton (Livre.css --gc-livre-carton-*), épaisseur du carton
 PLAT_W, PLAT_H = PAGE_W + OUT, PAGE_H + HAUT + BAS  # 868 × 982
 BLOC = 40  # épaisseur du bloc de pages (≈ 80 feuillets d'un papier épais : 8 mm pour un plat de 17 cm)

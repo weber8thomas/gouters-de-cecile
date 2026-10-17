@@ -52,7 +52,7 @@ DOSSIER = RACINE / "design-system" / "croquis"
 if str(ICI) not in sys.path:
     sys.path.insert(0, str(ICI))
 
-W, H = 850.0, 960.0  # page de référence (mise_en_page.W, H)
+W, H = 850.0, 1200.0  # page de référence (mise_en_page.W, H)
 PAPIER_REF = "#eee1bf"  # rendu_encre.PAPIER_REF : papier où les teintes sont définies
 ICONE_MAX = 72.0  # au-delà (px de page, plus grand côté de la boîte), c'est un « dessin »
 # « Une touche d'aquarelle » : sur les dessins, le lavis couvre un peu moins et reste plus léger que la

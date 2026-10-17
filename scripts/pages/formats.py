@@ -10,7 +10,7 @@ Un format dit seulement :
   - sa taille physique (mm, dpi) quand il est fait pour l'impression ;
   - le facteur de hauteur d'x (`xh_facteur`) : on écrit un peu plus petit sur papier qu'à l'écran.
 
-    ecran   850 × 960 px, échelle 2 (1700 × 1920), plus une variante 1× et une passe d'encre ×4
+    ecran   850 × 1200 px (17 × 24 cm), échelle 2 (1700 × 2400), plus une variante 1× et une passe d'encre ×4
             découpée en tuiles 2 × 2 (loupe) ;
     a5      148 × 210 mm + 3 mm de fond perdu de chaque côté (154 × 216 mm), 300 dpi
             (1819 × 2551 px) ; la page rognée garde 850 px de référence de large.
@@ -81,7 +81,7 @@ def _a5(dpi: int = 300, fond_mm: float = 3.0, rogne=(148.0, 210.0), xh_facteur: 
                   extras={"mm_par_px": mm_px})
 
 
-ECRAN = Format("ecran", 850.0, 960.0, 2.0, variante_1x=True, tuiles_4x=True)
+ECRAN = Format("ecran", 850.0, 1200.0, 2.0, variante_1x=True, tuiles_4x=True)
 A5 = _a5()
 FORMATS = {"ecran": ECRAN, "a5": A5}
 
