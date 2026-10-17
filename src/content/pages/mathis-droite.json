@@ -38,7 +38,8 @@
    "texte": "Ma tarte aux pommes",
    "position": "fer",
    "souligne": "trait",
-   "outil": "bille"
+   "outil": "bille",
+   "echelle": 0.86
   },
   {
    "id": "recette",
@@ -59,7 +60,8 @@
      "nom": "beurre",
      "place": "fin"
     }
-   ]
+   ],
+   "interligne": 3.35
   },
   {
    "id": "croquis-recette",
