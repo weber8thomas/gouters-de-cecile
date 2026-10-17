@@ -294,6 +294,16 @@ Quand le menu ou un objet soulevé est ouvert, **lui seul** reçoit les touches 
   - Les folios sont calculés : double page k (0 = page de titre) → gauche 2k+2, droite 2k+3.
   - `sansFolio` : rien d'écrit.
   - Les pages s'appellent `<id>-gauche` / `<id>-droite`, sauf la double page de titre : `garde` (contre-plat) et `titre`.
+- **Structure d'un vrai livre** :
+  - couverture ;
+  - garde et page de titre ;
+  - dédicace et sommaire ;
+  - pour chaque chapitre, un intercalaire puis les invités ;
+  - le mot de la fin ;
+  - colophon et garde arrière ;
+  - le livre se referme sur son plat arrière.
+
+  **Pas de GATE en v4** : l'utilisatrice laisse les choix de direction artistique au lead et aux lots. Les vidéos restent des placeholders (les clips actuels) jusqu'aux vraies.
 - **Liens** : `#<slug>` ouvre la double page de l'invité, y compris le second d'une double page partagée (`#bernard`) et `#cecile`. L'adresse publique est dans `src/content/site.json` (QR de l'A5).
 
 ### 13.1 Clavier (remplace les lignes zoom du § 12.1)

@@ -127,7 +127,7 @@ export interface RecetteRecue {
 
 export interface DoubleCarnet {
   id: string;
-  type: 'titre' | 'sommaire' | 'intercalaire' | 'video' | 'recette' | 'deux-recettes' | 'finale';
+  type: 'titre' | 'sommaire' | 'intercalaire' | 'video' | 'recette' | 'deux-recettes' | 'finale' | 'colophon';
   /** Nom affiché dans « Aller à… » et annoncé aux lecteurs d'écran. */
   titre: string;
   /** Slugs du roster présents sur la double page (le premier est l'invité principal). */
