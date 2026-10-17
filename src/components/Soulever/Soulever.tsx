@@ -9,6 +9,11 @@
 //
 // La vidéo unique (<video data-gc-video>) est toujours montée dans le calque : preparer(video) pose sa
 // source à l'atterrissage d'un tourne-page, soulever({ type: 'photo' }) la lance DANS le geste.
+//
+// Sons du livre (src/lib/son.ts) : « photo-lever » à l'envol de la photo, « photo-poser » quand elle
+// retouche la page, « feuillet » quand la feuille se soulève, se retourne ou se repose ; pendant que la
+// vidéo joue, les sons du livre passent à 30 % et l'ambiance à 15 % (marquerVideo). L'ambiance (feu de
+// cheminée, bruits de cuisine : src/lib/ambiance.ts) tourne tant que le provider est monté (useAmbiance).
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { useEcran } from '../Ecran/contexte';
@@ -16,6 +21,8 @@ import { PageCuite } from '../PageCuite';
 import { LazyMotion, SPRINGS, animate, domMax, m, useMotionValue, useReducedMotion, useTransform } from '../../lib/motion';
 import { getReglages } from '../../lib/reglages';
 import { useClavierModal } from '../../lib/clavier';
+import { jouerSon, marquerVideo } from '../../lib/son';
+import { useAmbiance } from '../../lib/ambiance';
 import { AUCUNE_MARGE, type Insets } from '../../lib/viewport';
 import { ActionsContext, EtatContext, type EtatSoulevement, type ObjetSoulevable, type SoulevementActions } from './contexte';
 import { geometrieDe, urlMedia, type Fractions, type VideoInfo } from './media';
@@ -94,6 +101,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   const ecran = useEcran();
   const vp = ecran?.vp ?? null;
   const reduit = !!useReducedMotion();
+  useAmbiance();
 
   const [phase, setPhase] = React.useState<EtatSoulevement>('ferme');
   const [objet, setObjet] = React.useState<ObjetSoulevable | null>(null);
@@ -122,6 +130,8 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   const appui = React.useRef<{ x: number; y: number } | null>(null);
   const appuiClavier = React.useRef(false);
   const sansSon = React.useRef(false);
+  /** Le son de l'atterrissage du retour en cours a été joué. */
+  const poseSonnee = React.useRef(true);
   const reduitRef = React.useRef(reduit);
   reduitRef.current = reduit;
   const vpRef = React.useRef(vp);
@@ -201,6 +211,16 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     return () => { a(); b(); };
   }, [p, pret, majSource]);
 
+  // Le son de l'atterrissage : quand l'objet qui revient retouche la page (p ≈ 0), une seule fois.
+  React.useEffect(() => p.on('change', (v) => {
+    if (poseSonnee.current || phaseRef.current !== 'retour' || v > 0.04) return;
+    poseSonnee.current = true;
+    const o = objetRef.current;
+    const vif = Math.min(1, Math.abs(p.getVelocity()) / 6);
+    if (o?.type === 'photo') jouerSon('photo-poser', { vitesse: 0.4 + 0.5 * vif });
+    else if (o) jouerSon('feuillet', { vitesse: 0.3 + 0.4 * vif, gain: 0.6 });
+  }), [p]);
+
   // ---- Vidéo unique ------------------------------------------------------------------------
   /** Dernière vidéo préparée : appliquée aussi quand l'élément arrive après coup (portail monté tard). */
   const attenteRef = React.useRef<VideoInfo | null>(null);
@@ -250,6 +270,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     avance.set(0);
     const v = videoRef.current;
     if (v && !v.paused) v.pause();
+    marquerVideo(false);
     objetRef.current = null;
     geoRef.current = { ...geoRef.current, fondu: false };
     changerPhase('ferme');
@@ -306,6 +327,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
       if (o.type === 'photo') videoRef.current?.pause();
       return false;
     }
+    jouerSon(o.type === 'photo' ? 'photo-lever' : 'feuillet', { vitesse: 0.55 });
     const v0 = vpRef.current ?? { w: window.innerWidth, h: window.innerHeight, insets: AUCUNE_MARGE as Insets, tactile: false };
     const S = versLocal(mesurerPose(o.source, o.angle), calque);
     const T = poseCible(v0, S.w / (S.h || 1));
@@ -354,6 +376,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
       // L'objet a quitté la page : fondu sur place.
       geoRef.current = { ...geoRef.current, S: { ...geoRef.current.T }, fondu: true };
     }
+    poseSonnee.current = geoRef.current.fondu; // pas d'atterrissage pour un fondu sur place
     changerPhase('retour');
     lancer(0);
   }, [vu, pret, finir, changerPhase, lancer]);
@@ -392,6 +415,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     if (f === faceRef.current) return;
     faceRef.current = f;
     setFace(f);
+    jouerSon('feuillet', { vitesse: 0.7 });
     const el = retourneRef.current;
     if (el && !reduitRef.current) el.style.willChange = 'transform';
     const fin = () => { if (el) el.style.willChange = ''; };
@@ -443,6 +467,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
       const ph = phaseRef.current;
       if (ph === 'ferme' || ph === 'retour' || objetRef.current?.type !== 'photo') return;
       animate(vu, 1, { ...SPRINGS.settle });
+      marquerVideo(true);
       carte()?.setAttribute('data-gc-lecture', '');
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(tick);
@@ -450,6 +475,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     const onStop = () => {
       cancelAnimationFrame(raf);
       raf = 0;
+      marquerVideo(false);
       carte()?.removeAttribute('data-gc-lecture');
     };
     const onEnded = () => {
@@ -530,6 +556,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     animRef.current?.stop();
     montrerSource();
     videoRef.current?.pause();
+    marquerVideo(false);
   }, [montrerSource]);
 
   // ---- Clavier modal ------------------------------------------------------------------------

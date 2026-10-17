@@ -24,6 +24,13 @@ export interface Reglages {
    * null = automatique : coupés sur téléphone, actifs ailleurs (voir sonsLivreEffectif, src/lib/son.ts).
    */
   sonsLivre: boolean | null;
+  /**
+   * Ambiance sonore : le feu de cheminée et de rares bruits de cuisine (src/lib/ambiance.ts).
+   * null = automatique : active sur TV et ordinateur, coupée sur téléphone (voir ambianceEffective).
+   */
+  ambiance: boolean | null;
+  /** La lumière du feu vacille (lot L, src/lib/feu.ts) ; false : lumière chaude mais immobile. */
+  feu: boolean;
 }
 
 export const REGLAGES_DEFAUT: Reglages = {
@@ -34,6 +41,8 @@ export const REGLAGES_DEFAUT: Reglages = {
   vitesse: 'normale',
   mouvementReduit: false,
   sonsLivre: null,
+  ambiance: null,
+  feu: true,
 };
 const CLE = 'gc:reglages:v1';
 
@@ -47,6 +56,8 @@ function valider(x: unknown): Reglages {
   if (typeof o.vitesse === 'string' && (VITESSES as string[]).includes(o.vitesse)) r.vitesse = o.vitesse as Vitesse;
   if (typeof o.mouvementReduit === 'boolean') r.mouvementReduit = o.mouvementReduit;
   if (typeof o.sonsLivre === 'boolean' || o.sonsLivre === null) r.sonsLivre = o.sonsLivre;
+  if (typeof o.ambiance === 'boolean' || o.ambiance === null) r.ambiance = o.ambiance;
+  if (typeof o.feu === 'boolean') r.feu = o.feu;
   return r;
 }
 

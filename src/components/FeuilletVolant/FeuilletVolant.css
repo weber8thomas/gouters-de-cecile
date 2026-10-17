@@ -8,18 +8,27 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* La feuille entière, à l'échelle de la page ; on n'en voit que le coin. Ombre fine : elle est posée,
-   pas collée. */
+/* La feuille entière, à l'échelle de la page ; on n'en voit que le coin. C'est elle que Soulever mesure
+   (taille, inclinaison) : elle n'est jamais animée. */
 .gc-feuillet-volant__feuille {
   position: absolute;
   transform-origin: 0 0;
   border-radius: 1px;
+}
+
+/* Le papier et son ombre fine (posée, pas collée). Enveloppeur de l'indice : il frémit autour du centre
+   de la feuille, et son ombre avec lui. */
+.gc-feuillet-volant__frisson {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform-origin: 50% 50%;
   box-shadow:
     -1px 1px 1.5px color-mix(in srgb, var(--gc-chocolate) 30%, transparent),
     -3px 4px 10px color-mix(in srgb, var(--gc-chocolate) 14%, transparent);
 }
 
-.gc-feuillet-volant__feuille .gc-page-cuite {
+.gc-feuillet-volant__frisson .gc-page-cuite {
   border-radius: inherit;
 }
 

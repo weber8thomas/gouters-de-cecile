@@ -45,6 +45,41 @@ import { SoulevementProvider, useSoulevement, souleverObjet } from '…/componen
 6. **`inert`** : posé par le provider lui-même pendant que l'objet est en l'air, sur les frères de la racine `.gc-ecran` (dont `.gc-livre-ecran`) et sur les autres contrôles (flèches, plein écran), **sauf le menu de réglages** (`[data-gc-reglages]`). L'attribut `data-gc-souleve` est posé sur `.gc-ecran` pendant ce temps (pour un style éventuel). Rien à brancher.
 7. **Lecture automatique** (`lectureAuto`) : `soulever()` hors d'un geste ; si le navigateur refuse le son, la vidéo repart sans le son et le premier toucher sur la photo le rend.
 
+## Sons du livre et ambiance (plan v4, lot S)
+
+Le moteur audio vit dans `src/lib/son.ts` ; il **se branche tout seul à l'import** (écouteurs en capture sur `window`), il n'y a rien à monter. Le provider s'en sert ainsi :
+
+- `photo-lever` à l'envol de la photo (dans le geste) ; `photo-poser` quand elle retouche la page au retour (`p` ≈ 0, une fois ; pas de son pour un fondu sur place) ;
+- `feuillet` quand la feuille se soulève, se retourne (← → ou toucher), et plus doux (gain 0,6) quand elle se repose ;
+- `marquerVideo(true|false)` aux événements `playing` / `pause` / `ended` / `emptied` : les sons du livre passent à 30 %, l'ambiance à 15 % ;
+- `useAmbiance()` : **l'ambiance** (feu de cheminée en boucle, rares bruits de cuisine : `src/lib/ambiance.ts`) tourne tant que le provider est monté.
+
+### API pour le Livre (lot A)
+
+```ts
+import { jouerSon } from '…/lib/son';
+jouerSon('page', { vitesse, gain, delai });   // ne lève jamais d'erreur
+```
+
+| Option | Rôle |
+|---|---|
+| `vitesse` | 0 (lent) à 1 (vif), défaut 0,5. Débit = 0,9 + 0,25 × vitesse (± 3 % au hasard) ; gain × (0,35 + 0,65 × vitesse). Pour un tourne-page : la vitesse angulaire au lâcher, ramenée à 0–1. |
+| `gain` | Facteur en plus (défaut 1). Le gain final = volume des réglages × (0,35 + 0,65 v) × gain × mixage de la banque (× 0,3 pendant une vidéo). |
+| `delai` | Secondes avant de jouer. `BANQUE_SONS[nom][k].a` donne l'instant du choc de chaque variante (la page qui retombe vers 0,4 s, le carton de `couverture-fermer` à 0,54 s) pour caler un son sur un atterrissage. |
+
+Noms : `page` (×5), `riffle`, `couverture-ouvrir`, `couverture-poser`, `couverture-fermer`, `feuillet` (×2), `photo-lever`, `photo-poser`, `coin` (×2, très doux). Une variante au hasard, jamais la même deux fois de suite ; 8 voix au plus (au-delà, le son est ignoré). Avant le premier geste, rien ne joue (le contexte n'existe pas encore) : le **premier** son d'un geste (ouvrir la couverture) peut arriver jusqu'à 0,3 s après, le temps du décodage ; au-delà il est oublié. `etatSons()` décrit le moteur (tests).
+
+### API pour les Réglages (lot B)
+
+- `reglages.sonsLivre: boolean | null` et `sonsLivreEffectif(r)` (`src/lib/son.ts`) : `null` = automatique (coupés sur téléphone : écran tactile dont le petit côté < 600 px). `useSonsLivre()` donne la valeur effective.
+- `reglages.ambiance: boolean | null` et `ambianceEffective(r)` (`src/lib/ambiance.ts`) : même règle automatique.
+- `reglages.feu: boolean` (défaut `true`) : la lumière du feu vacille (lu par le lot L).
+- Activer « Sons du livre » ou « Ambiance » d'un clic dans le menu déverrouille l'audio dans ce même clic. Un petit `jouerSon('page')` juste après l'activation donne un aperçu.
+
+### Banque, adresses
+
+`design-system/baked/sons/*.mp3` (MP3 mono 96 kb/s), décrits par `banque.json` (importé dans le bundle). Les adresses passent par `assetUrl('sons/<fichier>')` dès que l'inventaire liste les MP3 (**à faire par l'intégration** : `.mp3` dans `scripts/assets.mjs`, `mp3` dans le `import.meta.glob` de `src/app/main.tsx`, et les exclure de l'artifact comme les vidéos dans `gen-entry.mjs`). En attendant, sur le banc d'essai (adresses absolues `/…/design-system/baked/…`), le moteur les cherche à côté des images cuites ; ailleurs (site, artifact), silence plutôt qu'une 404. `setSonResolver(fn)` remplace la résolution.
+
 ## Menu de réglages
 
 Le calque est à `z-index: 3` dans les contrôles, **sous** le menu (`z-index: 4`). Choix : **le menu s'ouvre par-dessus la photo soulevée** (le bouton ⚙ reste actif, M et « , » le cliquent) ; son clavier modal passe devant le nôtre (le dernier ouvert gagne) : Échap ferme d'abord le menu, puis repose la photo. Aucun nom de transition de vue.
@@ -104,6 +139,8 @@ Toucher la photo ou le voile ; feuillet : toucher hors de la feuille (toucher la
 node scripts/build-bundle.mjs --only Soulever,PhotoCollee,FeuilletVolant,PageCuite,Ecran,Livre,Stage,DoublePage,Page,Reglages --tag s
 python3 verification/out/s/fixtures.py verification/out/s/fixtures   # clips ffmpeg, affiche, tirage, coins (en-tête du script)
 node verification/out/s/verifier.mjs          # iphone, tv, lecture, feuillet, toucher, reglages, reduit, trace, film
+node scripts/verify-soulever.mjs --suites indices --bundle dist/ds-v4s/components   # indices sans texte (plan v4)
+node scripts/verify-sons.mjs --bundle dist/ds-v4s/components                       # sons du livre, ambiance, licences
 ```
 
 La carte (`preview.html`, groupe « Mouvement ») lit les vraies vidéos (`videos/julie`, `photos/julie/…`) ; `&fixtures=verification/out/s/fixtures` sert les images d'essai du banc, `&format=webm` le clip VP9 (Chromium sans H.264), `&ecran=reel` la vraie fenêtre (appareils émulés), `&reglages` ajoute le menu.

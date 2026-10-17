@@ -32,7 +32,7 @@ Elle se pose dans la zone `vivants.photo` d'une `PageCuite` (aucune encre dessou
 ```
 
 - **Rien que des `<img>`**, identiques en mode `live` et `static` (copies du tourne-page) ; décodées avec la peinture (`decoding="sync"`, le `Livre` les pré-décode).
-- Soulevée (`data-gc-souleve` posé par le provider) : le tirage et le ▶ passent à l'opacité 0 (une repeinture au départ, une au retour) ; les coins restent sur la page.
+- Soulevée (`data-gc-souleve` posé par le provider) : le tirage, le ▶ et l'ombre de l'indice passent à l'opacité 0 (une repeinture au départ, une au retour) ; les coins restent sur la page.
 
 ## Interaction (mode `live` seulement)
 
@@ -40,6 +40,23 @@ Elle se pose dans la zone `vivants.photo` d'une `PageCuite` (aucune encre dessou
 - **Clavier** : focusable (`tabIndex=0`, `role="img"`, libellé « Photo : <titre>. Entrée pour regarder la vidéo. ») ; Entrée ou Espace la soulèvent ; anneau miel en `:focus-visible`.
 - **Demande** : `souleverObjet('photo')` (Entrée du livre) lui envoie l'événement `gc-soulever`.
 - Mode `static` : ni focus, ni écouteur, `aria-hidden`.
+
+## Indice sans texte (plan v4)
+
+Tant qu'on ne l'a ni touchée ni soulevée, la photo **respire** de temps en temps (`src/lib/indices.ts`, un seul ordonnanceur pour tout le carnet : un indice toutes les 6 à 9 s d'inactivité, en pause pendant un geste, la loupe, un menu ou un objet soulevé, coupé en mouvement réduit) :
+
+```
+.gc-photo-collee__photo            le papier (mesuré par Soulever) : jamais animé
+└─ .gc-photo-collee__souffle       enveloppeur : scale 1 → 1,025 → 1 (1,5 s, sommet à 42 %)
+   ├─ .gc-photo-collee__ombre-indice  calque d'ombre statique plus large : opacité 0 → 1 → 0 (vivant seulement)
+   ├─ img tirage
+   ├─ img ▶                         opacité 0,72 → 1, scale 1 → 1,12 → 1
+   └─ img coins
+```
+
+- Un `animate` ponctuel (WAAPI : transform et opacity, joué par le compositeur), `will-change` le temps de la pulsation ; à la fin, plus aucun style en ligne.
+- Objet `photo:<id de la vidéo>` : **plus d'indice** dès qu'elle est touchée (`pointerdown`) ou soulevée (`indiceUtilise`), mémorisé dans `gc:indices:v1`.
+- Pendant l'indice, `data-gc-indice="photo:<id>"` sur la photo (tests).
 
 ## À éviter
 

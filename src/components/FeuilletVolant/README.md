@@ -26,7 +26,8 @@ import { FeuilletVolant } from '…/components/FeuilletVolant';
 └─ .gc-feuillet-volant__feuille          la feuille entière (taille du manifeste, à l'échelle de la page :
    │                                     var(--gc-page-w/h) × taille / 850 × 960), rotate(angle) autour
    │                                     de son coin haut gauche, ombre fine
-   └─ PageCuite page={recto}
+   └─ .gc-feuillet-volant__frisson       le papier et son ombre fine ; enveloppeur de l'indice
+      └─ PageCuite page={recto}
 ```
 
 - Taille de la feuille : `taille: [w, h]` de la page de feuillet dans le manifeste (lot B), sinon celle d'une page. L'écriture a donc la même taille que dans la page.
@@ -40,6 +41,10 @@ import { FeuilletVolant } from '…/components/FeuilletVolant';
 - **Clavier** : focusable (`role="button"`, libellé « Feuillet volant : la suite de la recette… »), Entrée, Espace ou ↑ ; `souleverObjet('feuillet')` pour la touche ↑ du livre.
 - Une fois soulevée : toucher la feuille ou ← → la retournent ; Échap, ↓, Retour arrière ou un toucher hors de la feuille la reposent.
 - Mode `static` : ni focus ni écouteur, `aria-hidden`.
+
+## Indice sans texte (plan v4)
+
+Tant qu'on ne l'a ni touché ni soulevé, **le coin frémit** de temps en temps (`src/lib/indices.ts`, même ordonnanceur que la photo : une seule chose bouge à la fois) : `rotate` de l'enveloppeur `.gc-feuillet-volant__frisson` autour du centre de la feuille, ± 1,5°, deux fois (1,3 s). Le coin visible bouge d'une dizaine de pixels, la partie glissée dans le carnet reste en place ; l'ombre suit le papier. La feuille mesurée par Soulever n'est jamais animée. `will-change` le temps du frisson ; objet `feuillet:<recto>`, oublié dès qu'on touche le coin ou qu'on soulève la feuille ; `data-gc-indice` pendant le frisson.
 
 ## À éviter
 
