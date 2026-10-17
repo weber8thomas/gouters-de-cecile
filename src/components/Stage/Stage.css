@@ -36,34 +36,38 @@
 }
 
 /* ---- Table en bois, le soir ---------------------------------------------------------------------- */
+/* Planches à l'échelle réelle : la tuile (2560 px, natif) est affichée à 1:1, sans agrandissement, donc
+   sans flou. Une planche fait environ 470 px, soit 0,66 × la largeur d'une page (708 px), environ 11 cm
+   sur une page de 17 cm. La couture de tuilage tombe sous le livre. */
 .gc-stage__surface {
   background-color: var(--gc-wood-2);
   background-image: url('../../../design-system/textures/wood.webp');
+  background-size: 2560px 2560px;
   background-position: calc(-236px + var(--gc-stage-debord, 0px)) calc(-18px + var(--gc-stage-debord, 0px));
 }
 
-/* La nuit autour du feu (v5) : la table s'enfonce dans l'ombre loin de la cheminée (à droite, en haut et
-   en bas), et un vignettage profond et brun-rouge gagne les bords et les coins. Le centre, autour du livre,
-   reste éclairé : le vignettage ne commence qu'au-delà de la marge du livre. Statique : le bain du feu
+/* La nuit autour du feu (v5, allégée) : la table s'enfonce doucement dans l'ombre loin de la cheminée (à
+   droite, en haut et en bas), et un vignettage brun-rouge gagne les bords et les coins sans effacer le
+   bois. Le centre, autour du livre, reste éclairé : le vignettage ne commence qu'au-delà de la marge du
+   livre. Statique : le bain du feu
    (Lumiere, sous le contenu) le rallume côté gauche et le fait vivre. Ancré sur la scène en px : le débord
    prolonge le même dessin sans couture (le vignettage est centré sur la scène, et le débord est symétrique). */
 .gc-stage__falloff {
   background:
     radial-gradient(calc(var(--gc-stage-w) * 0.7) calc(var(--gc-stage-h) * 0.55) at 50% 50%,
-      transparent 40%,
-      color-mix(in srgb, var(--gc-feu-nuit) 58%, transparent) 64%,
-      color-mix(in srgb, var(--gc-feu-nuit) 86%, transparent) 84%,
-      color-mix(in srgb, var(--gc-feu-nuit) 96%, transparent) 104%),
+      transparent 52%,
+      color-mix(in srgb, var(--gc-feu-nuit) 22%, transparent) 70%,
+      color-mix(in srgb, var(--gc-feu-nuit) 44%, transparent) 88%,
+      color-mix(in srgb, var(--gc-feu-nuit) 58%, transparent) 104%),
     radial-gradient(calc(var(--gc-stage-w) * 1.55) calc(var(--gc-stage-h) * 1.5) at calc(var(--gc-feu-x) + var(--gc-stage-debord, 0px)) calc(var(--gc-feu-y) + var(--gc-stage-debord, 0px)),
-      transparent 14%,
-      color-mix(in srgb, var(--gc-feu-nuit) 18%, transparent) 36%,
-      color-mix(in srgb, var(--gc-feu-nuit) 30%, transparent) 56%,
-      color-mix(in srgb, var(--gc-feu-nuit) 46%, transparent) 74%,
-      color-mix(in srgb, var(--gc-feu-nuit) 60%, transparent) 82%,
-      color-mix(in srgb, var(--gc-feu-nuit) 74%, transparent) 92%,
-      color-mix(in srgb, var(--gc-feu-nuit) 86%, transparent) 110%,
-      color-mix(in srgb, var(--gc-feu-nuit) 94%, transparent) 150%),
-    linear-gradient(color-mix(in srgb, var(--gc-feu-nuit) 10%, transparent), color-mix(in srgb, var(--gc-feu-nuit) 10%, transparent));
+      transparent 20%,
+      color-mix(in srgb, var(--gc-feu-nuit) 8%, transparent) 40%,
+      color-mix(in srgb, var(--gc-feu-nuit) 14%, transparent) 58%,
+      color-mix(in srgb, var(--gc-feu-nuit) 22%, transparent) 74%,
+      color-mix(in srgb, var(--gc-feu-nuit) 30%, transparent) 88%,
+      color-mix(in srgb, var(--gc-feu-nuit) 40%, transparent) 110%,
+      color-mix(in srgb, var(--gc-feu-nuit) 50%, transparent) 150%),
+    linear-gradient(color-mix(in srgb, var(--gc-feu-nuit) 4%, transparent), color-mix(in srgb, var(--gc-feu-nuit) 4%, transparent));
 }
 
 /* ---- Contenu et lumière --------------------------------------------------------------------------- */

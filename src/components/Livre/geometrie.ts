@@ -89,7 +89,7 @@ export const PERSPECTIVE = 10;
  *  --gc-livre-perspective-couverture. */
 export const PERSPECTIVE_COUVERTURE = 20;
 /** Épaisseur du carton et débords de la couverture (px) : mêmes valeurs que Livre.css. */
-export const CARTON = { epaisseur: 14, out: 18, haut: 6, bas: 16 };
+export const CARTON = { epaisseur: 14, out: 28, haut: 12, bas: 26 };
 
 /**
  * Recul de caméra pendant l'ouverture : quand la couverture se dresse vers la caméra, la perspective
