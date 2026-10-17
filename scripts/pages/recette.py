@@ -442,7 +442,8 @@ def gabarits(rec: dict, plan: dict, papiers: dict, roster: dict | None = None) -
 
 
 def _seg(a: Atome) -> dict:
-    return {"texte": a.texte, "graine": a.graine}
+    # « atome » : pour inscrire une graine choisie à la relecture dans le plan (scripts/pages/reparer.py)
+    return {"texte": a.texte, "graine": a.graine, "atome": a.id}
 
 
 def assembler(gab: Gabarits, base: dict, A: list[Atome], tete: list | None = None, fin: list | None = None,
@@ -462,12 +463,12 @@ def assembler(gab: Gabarits, base: dict, A: list[Atome], tete: list | None = Non
                           "avant": 0.0 if premier else 0.65})
         elif a.genre == "ligne":
             if prec is not None and prec.genre == "ligne" and prec.bloc == a.bloc and blocs and blocs[-1]["type"] == "ingredients":
-                blocs[-1]["lignes"].append({"texte": a.texte, "graine": a.graine, "puce": a.puce})
+                blocs[-1]["lignes"].append({"texte": a.texte, "graine": a.graine, "puce": a.puce, "atome": a.id})
             else:
                 avant = 0.0 if premier or (prec is not None and prec.genre == "groupe-titre") else (0.3 if prec and prec.genre == "titre" else 0.4)
                 blocs.append({"type": "ingredients", "id": f"{a.bloc}@{a.id.split('/')[-1]}", "disposition": "puces",
                               "graine_puces": graine_atome(gab.slug, f"{a.bloc}/puces"),
-                              "avant": avant, "lignes": [{"texte": a.texte, "graine": a.graine, "puce": a.puce}]})
+                              "avant": avant, "lignes": [{"texte": a.texte, "graine": a.graine, "puce": a.puce, "atome": a.id}]})
         elif a.genre == "phrase":
             if prec is not None and prec.genre == "phrase" and prec.bloc == a.bloc and blocs and blocs[-1]["type"] in ("etape", "paragraphe") \
                     and blocs[-1].get("source") == a.bloc:
