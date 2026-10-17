@@ -16,9 +16,9 @@
 /* ---- Le livre ---------------------------------------------------------------------------- */
 .gc-livre {
   /* débord des cartons autour du bloc de pages, épaisseur du carton de couverture */
-  --gc-livre-carton-out: 18px;
-  --gc-livre-carton-haut: 6px;
-  --gc-livre-carton-bas: 16px;
+  --gc-livre-carton-out: 28px;
+  --gc-livre-carton-haut: 12px;
+  --gc-livre-carton-bas: 26px;
   --gc-livre-epaisseur: 14px;
   /* Toile de lin écru teintée kraft, trame fine, éclairée par le haut : le repli des cartons tant que la
      couverture cuite (lot C, couvertureVars()) n'est pas posée. */

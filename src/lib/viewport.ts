@@ -121,12 +121,17 @@ export const MARGE_PAGE = 0.03;
 
 /**
  * Cadrage « page » : une page (W × H + petite marge), à la plus grande échelle possible dans la zone
- * sûre. Le centre horizontal de la caméra est donné à part (il glisse d'une page à l'autre).
+ * sûre. Le cadre prend au moins les cartons (débord extérieur, haut, bas) : ils ne sont jamais rognés.
+ * Le centre horizontal de la caméra est donné à part (il glisse d'une page à l'autre).
  */
 export function cadrerPage(vp: Pick<Viewport, 'w' | 'h' | 'insets'>, geo: GeometrieLivre): CadreCamera {
   const z = zoneSure(vp);
   const m = geo.W * MARGE_PAGE;
-  const s = arrondiEchelle(echelleContain({ w: geo.W + 2 * m, h: geo.H + 2 * m }, z));
+  const c = geo.carton;
+  // Carton + demi-marge : le bord extérieur du carton ne touche jamais le bord de l'écran.
+  const mx = c.out + m / 2;
+  const my = Math.max(c.haut, c.bas) + m / 2;
+  const s = arrondiEchelle(echelleContain({ w: geo.W + 2 * mx, h: geo.H + 2 * my }, z));
   return { s, cx: geo.bookX + geo.W * 0.5, cy: geo.bookY + geo.H / 2, ox: z.x + z.w / 2, oy: z.y + z.h / 2 };
 }
 
