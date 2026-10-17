@@ -96,6 +96,10 @@ def empreinte_moteur() -> str:
     m = hashlib.sha256(str(VERSION_MOTEUR).encode())
     for f in sorted(ICI.glob("*.py")):
         m.update(f.read_bytes())
+    # réglage de l'écriture (taille, épaisseur) : le changer recuit tout le carnet
+    reglage = ICI.parents[1] / "src/content/ecriture.json"
+    if reglage.exists():
+        m.update(reglage.read_bytes())
     return m.hexdigest()[:16]
 
 

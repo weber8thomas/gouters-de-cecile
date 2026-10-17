@@ -56,7 +56,16 @@ W, H = 850.0, 1200.0  # page de référence (px) : livre de recettes 17 × 24 cm
 # Hauteurs d'x par rôle (fraction de la largeur de la page de référence). Plan v5 : écriture d'un vrai
 # carnet imprimé en 17 × 24 cm (corps ≈ 2,1 mm de hauteur d'x), 35 % plus fine qu'en v4 ; à l'écran,
 # le zoom et la loupe prennent le relais. FINESSE règle tout d'un coup (rôles ET plancher).
-FINESSE = 0.65
+# Réglage de l'utilisatrice (src/content/ecriture.json : « taille », « epaisseur », 1 = valeurs ci-dessous).
+def _reglage_ecriture() -> dict:
+    try:
+        return json.loads((RACINE / "src/content/ecriture.json").read_text())
+    except (OSError, ValueError):
+        return {}
+
+
+REGLAGE_ECRITURE = _reglage_ecriture()
+FINESSE = 0.65 * float(REGLAGE_ECRITURE.get("taille", 1.0))
 ROLES = {
     "corps": 0.0190 * FINESSE,
     "mot": 0.0194 * FINESSE,
@@ -69,7 +78,7 @@ ROLES = {
 XH_MIN = 0.0181 * FINESSE * W
 # Le stylo ne rétrécit pas avec la lettre : la largeur du trait (en hauteurs d'x) est compensée pour
 # garder à peu près l'épaisseur absolue de la v4 (une écriture plus petite, pas plus maigre).
-EPAISSEUR_STYLO = 1.8
+EPAISSEUR_STYLO = 1.8 * float(REGLAGE_ECRITURE.get("epaisseur", 1.0))
 TAILLE_PUCE = 1.3  # côté de la boîte d'une puce-croquis (hauteurs d'x) : un emoji fait ≈ une capitale
 TAILLE_ICONE = 1.75  # petit croquis à côté d'un ingrédient (bout de ligne, marge) : discret mais lisible
 TAILLE_EMOJI = 1.6  # croquis en ligne à la place d'un emoji (« Yummy … 🥕😎 »)
@@ -471,9 +480,12 @@ class Mise:
         self.serrage = serrage  # (n_lignes_total, n_dernieres, facteur)
         # interligne local (pagination : −4 % pour combler un trou en bas de page)
         self.global_pas = global_pas * float(desc.get("pas_local", 1.0))
-        self.xh_facteur = float(desc.get("xh_facteur", 1.0))
+        # réglage de la page (« ecriture » : taille, epaisseur), en plus de celui du carnet
+        ecr = desc.get("ecriture") or {}
+        self.xh_facteur = float(desc.get("xh_facteur", 1.0)) * float(ecr.get("taille", 1.0))
+        self.trait = EPAISSEUR_STYLO * float(ecr.get("epaisseur", 1.0))
         # plancher de lisibilité (écran : 1,8 % de la largeur ; A5 imprimé : un peu plus petit, voir formats.py)
-        self.xh_min = float(desc.get("xh_min", XH_MIN / W)) * W
+        self.xh_min = float(desc.get("xh_min", XH_MIN / W)) * W * float(ecr.get("taille", 1.0))
         self.dessins = dessins
         self.grille = desc.get("grille")  # réglure du cahier (feuillet volant) : l'écriture la suit
         self._k_prec = None
@@ -762,7 +774,7 @@ class Mise:
             ly = P[:, 1] * xh
             P[:, 0] = x + lx * ca - ly * sa
             P[:, 1] = y + lx * sa + ly * ca
-            self.traces.append(Trace(P[:, :5], ep * xh * EPAISSEUR_STYLO, encre, sans_saut=_sans_saut(P, ss_mot, k_t)))
+            self.traces.append(Trace(P[:, :5], ep * xh * self.trait, encre, sans_saut=_sans_saut(P, ss_mot, k_t)))
             tous.append(P[:, :2])
         if tous:
             A = np.vstack(tous)
@@ -888,7 +900,7 @@ class Mise:
             P = np.asarray(T, float).copy()
             P[:, 0] *= xh
             P[:, 1] *= xh
-            self.traces.append(Trace(P, ep * xh * EPAISSEUR_STYLO, encre))
+            self.traces.append(Trace(P, ep * xh * self.trait, encre))
             self.marques_boites.append((P[:, 0].min(), P[:, 1].min(), P[:, 0].max(), P[:, 1].max()))
 
     # ---- croquis ----------------------------------------------------------------------------------
@@ -926,7 +938,7 @@ class Mise:
                     continue
                 if P.shape[1] < 5:
                     P = ECR._repli_encre(P)
-                self.traces.append(Trace(P[:, :5].copy(), diam * EPAISSEUR_STYLO, enc))
+                self.traces.append(Trace(P[:, :5].copy(), diam * self.trait, enc))
             if req["lavis"] and d.get("lavis"):
                 self.lavis.append(d["lavis"])
             req["dessine"] = True
