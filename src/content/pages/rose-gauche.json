@@ -1,106 +1,98 @@
 {
- "id": "rose-gauche",
- "double": "rose",
- "cote": "gauche",
- "folio": 14,
- "graine": 811,
- "gabarit": "C",
- "main": "mamie",
- "encre": "brune",
- "vivants": [
-  {
-   "nom": "photo",
-   "rect": [
-    0.55,
-    0.03,
-    0.4,
-    0.27836
-   ]
-  }
- ],
- "marges": {
-  "haut": 0.33
- },
- "blocs": [
-  {
-   "id": "bandeau",
-   "type": "bandeau",
-   "texte": "Mamie Rose",
-   "sous": "depuis Vannes",
-   "taille": 2.05,
-   "places": [
-    "cote",
-    "dessous"
-   ]
-  },
-  {
-   "id": "titre",
-   "type": "titre",
-   "texte": "Les sablés de Rose.",
-   "position": "centre",
-   "souligne": "trait"
-  },
-  {
-   "id": "ingredients",
-   "type": "ingredients",
-   "disposition": "texte",
-   "avant": 0.2,
-   "alinea": 0.05,
-   "intro": "Pour une boîte en fer :",
-   "lignes": [
-    "250 g de farine",
-    "125 g de beurre bien froid",
-    "100 g de sucre glace",
-    "1 jaune d'œuf",
-    "1 pincée de sel^{ et 1 de cannelle}",
-    "le zeste d'un citron"
-   ],
-   "correction": {
-    "main": "mamie",
-    "encre": "brune"
-   },
-   "insertion": {
-    "main": "cecile",
-    "encre": "crayon"
-   },
-   "icones": [
+  "id": "rose-gauche",
+  "double": "rose",
+  "cote": "gauche",
+  "folio": 14,
+  "graine": 811,
+  "gabarit": "C",
+  "main": "mamie",
+  "encre": "brune",
+  "vivants": [
     {
-     "mot": "beurre",
-     "nom": "beurre",
-     "place": "marge"
-    },
-    {
-     "mot": "jaune",
-     "nom": "oeuf",
-     "place": "marge"
-    },
-    {
-     "mot": "citron",
-     "nom": "citron",
-     "place": "fin"
+      "nom": "photo",
+      "rect": [
+        0.06,
+        0.04,
+        0.42,
+        0.22313
+      ]
     }
-   ]
-  },
-  {
-   "id": "preparation",
-   "type": "paragraphe",
-   "alinea": 0.0,
-   "texte": "Sabler la farine et le beurre du bout des doigts, ajouter le sucre, le sel, le zeste puis le jaune."
-  },
-  {
-   "id": "croquis-recette",
-   "type": "croquis",
-   "nom": [
-    "farine"
-   ],
-   "taille": [
-    0.17,
-    0.17
-   ],
-   "pres": [
-    0.75,
-    0.86
-   ]
-  }
- ]
+  ],
+  "blocs": [
+    {
+      "id": "bandeau",
+      "type": "bandeau",
+      "texte": "Mamie Rose",
+      "sous": "depuis Vannes",
+      "places": [
+        "cote",
+        "dessous"
+      ]
+    },
+    {
+      "id": "cadre",
+      "type": "cadre",
+      "style": "double",
+      "encre": "noire",
+      "titre": "Pour Cécile",
+      "texte": "Ma recette de toujours, pour ma Cécile qui en volait toujours un de plus.",
+      "signature": "Mamie Rose",
+      "position": "bandeau",
+      "largeur": 0.46
+    },
+    {
+      "id": "titre",
+      "type": "titre",
+      "texte": "Les sablés de Rose.",
+      "position": "centre",
+      "souligne": "trait"
+    },
+    {
+      "id": "ingredients",
+      "type": "ingredients",
+      "disposition": "texte",
+      "avant": 0.2,
+      "alinea": 0.05,
+      "intro": "Pour une boîte en fer :",
+      "lignes": [
+        "250 g de farine",
+        "125 g de beurre bien froid",
+        "100 g de sucre glace",
+        "1 jaune d'œuf",
+        "1 pincée de sel^{ et 1 de cannelle}",
+        "le zeste d'un citron"
+      ],
+      "correction": {
+        "main": "mamie",
+        "encre": "brune"
+      },
+      "insertion": {
+        "main": "cecile",
+        "encre": "crayon"
+      },
+      "icones": [
+        {
+          "mot": "beurre",
+          "nom": "beurre",
+          "place": "marge"
+        },
+        {
+          "mot": "jaune",
+          "nom": "oeuf",
+          "place": "marge"
+        },
+        {
+          "mot": "citron",
+          "nom": "citron",
+          "place": "fin"
+        }
+      ]
+    },
+    {
+      "id": "preparation",
+      "type": "paragraphe",
+      "alinea": 0.0,
+      "texte": "Sabler la farine et le beurre du bout des doigts, ajouter le sucre, le sel, le zeste puis le jaune. Faire une boule sans trop la travailler et la laisser une heure au frais. Étaler sur ½ cm, découper au verre, dorer au jaune et rayer à la fourchette. Cuire 12 min à th. 6, ils doivent rester blonds."
+    }
+  ]
 }

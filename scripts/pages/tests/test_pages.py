@@ -244,7 +244,7 @@ class Pagination(Base):
         """Déplacer un atome d'une page à l'autre ne change pas son écriture (sa graine)."""
         rec = fixture("longue")
         a = self.paginer("longue")
-        b = self.paginer("longue", photo=dict(plan_test()["photo"], largeur=0.62, ratio=0.9))  # pagination différente
+        b = self.paginer("longue", photo=dict(plan_test()["photo"], ratio=0.9))  # photo plus haute : pagination différente
         def graines(res):
             out = {}
             for pid in res.ordre:
@@ -426,6 +426,30 @@ class Blocs(Base):
         self.assertTrue(MEP.tient(m))
         self.assertGreater(m.zones_blocs["bandeau"][1], m.vivants["photo"][3] - 1)
 
+    def test_cadre_sous_le_prenom(self):
+        """`position: bandeau` : le cadre du mot est sous le prénom, à droite de la photo (même sans mot :
+        « mot à venir » a la taille de trois lignes), et la recette commence dessous, jamais dedans."""
+        d = page_test(vivants=[{"nom": "photo", "rect": [0.06, 0.04, 0.42, 0.22313]}],
+                      blocs=[{"id": "bandeau", "type": "bandeau", "texte": "Lisa", "sous": "depuis Lyon",
+                              "places": ["cote", "dessous"]},
+                             {"id": "cadre", "type": "cadre", "texte": "mot à venir", "main": "cecile", "encre": "crayon",
+                              "position": "bandeau", "largeur": 0.46, "lignes_min": 3},
+                             {"id": "p", "type": "paragraphe", "texte": TEXTE_LONG}])
+        m = MEP.mettre_en_page(d)
+        self.assertTrue(MEP.tient(m), (m.deborde, m.non_places))
+        photo, bx, cz = m.vivants["photo"], m.zones_blocs["bandeau"], m.zones_blocs["cadre"]
+        self.assertGreaterEqual(cz[0], photo[2], "le cadre est à droite de la photo")
+        self.assertFalse(chevauche(cz, photo))
+        marge_cadre = 0.5 * m.xh_de("corps", "cecile")  # la boîte réservée déborde du cadre de cette marge
+        self.assertGreaterEqual(cz[1] + marge_cadre, bx[3] - 1, "le cadre est sous le prénom")
+        self.assertLessEqual(cz[3], 0.36 * m.H, "le bandeau reste dans le tiers haut de la page")
+        self.assertEqual([w.texte for w in m.mots if w.bloc == "cadre"], ["mot", "à", "venir"])
+        for w in m.mots:
+            if w.bloc == "p":
+                self.assertFalse(chevauche(w.boite, cz), f"« {w.texte} » dans le cadre")
+                self.assertFalse(chevauche(w.boite, bx), f"« {w.texte} » sous le prénom")
+        self.assertTrue(any(w.bloc == "p" and w.boite[1] >= cz[3] - 1 for w in m.mots), "la recette commence sous le cadre")
+
     def page_cadre(self, style="double", **kw):
         blocs = [{"id": "cadre", "type": "cadre", "style": style, "texte": "Pour toutes nos pauses goûter à refaire le monde. "
                   "Joyeux anniversaire ma Cécile !", "signature": "Julie", "encre": "plume"},
@@ -471,13 +495,22 @@ class Blocs(Base):
         rec = json.loads((RACINE / "src/content/recettes/lisa.json").read_text())
         self.assertIsNone(rec.get("mot"))
         gab = RC.gabarits(rec, plan_test(), papiers())
-        types = [b["type"] for base in (gab.gauche, gab.droite) for b in base.get("blocs_fixes", [])]
-        self.assertNotIn("cadre", types)
-        self.assertIn("bandeau", types)
-        self.assertIn("courant", types)
+        cadres = [b for b in gab.gauche["blocs_fixes"] if b["type"] == "cadre"]
+        self.assertEqual(len(cadres), 1, "un cadre sous le bandeau, même sans mot")
+        self.assertEqual(cadres[0]["texte"], "mot à venir")
+        self.assertEqual((cadres[0]["main"], cadres[0]["encre"]), ("cecile", "crayon"))
+        self.assertNotIn("signature", cadres[0], "aucune signature inventée")
+        self.assertEqual(cadres[0]["position"], "bandeau")
+        types_d = [b["type"] for b in gab.droite["blocs_fixes"]]
+        self.assertNotIn("cadre", types_d)
+        self.assertIn("bandeau", [b["type"] for b in gab.gauche["blocs_fixes"]])
+        self.assertIn("courant", types_d)
         rec2 = dict(rec, mot="Un mot pour toi", signature="Lisa")
         gab2 = RC.gabarits(rec2, plan_test(), papiers())
-        self.assertIn("cadre", [b["type"] for b in gab2.droite["blocs_fixes"]])
+        mots = [b for b in gab2.gauche["blocs_fixes"] if b["type"] == "cadre"]
+        self.assertEqual([b["texte"] for b in mots], ["Un mot pour toi"])
+        self.assertEqual(mots[0]["position"], "bandeau")
+        self.assertNotIn("cadre", [b["type"] for b in gab2.droite["blocs_fixes"]])
         self.assertNotIn("mot", [a.genre for a in RC.atomes(rec2)], "le mot va dans le cadre, pas dans le texte")
 
     def test_courant_en_tete(self):
@@ -496,17 +529,32 @@ class Carnet(Base):
     def test_folios(self):
         """Double page k (0 = titre) → gauche 2k+2, droite 2k+3 ; garde et titre ; sansFolio."""
         f = RC.folios_carnet(RC.charger_carnet())
-        attendu = {"garde": 2, "titre": 3, "dedicace": 4, "sommaire": 5, "gateaux-gauche": 6, "colophon": 20, "garde-arriere": 21,
-                   "lisa-gauche": 8, "lisa-droite": 9, "julie-gauche": 10, "julie-droite": 11, "biscuits-droite": 13,
-                   "rose-gauche": 14, "rose-droite": 15, "mathis-gauche": 16, "mathis-droite": 17, "fin-gauche": 18, "fin-droite": 19}
+        attendu = {"garde": 2, "titre": 3, "cecile-1-gauche": 4, "cecile-1-droite": 5, "cecile-2-gauche": 6,
+                   "cecile-2-droite": 7, "dedicace": 8, "sommaire": 9, "gateaux-gauche": 10,
+                   "lisa-gauche": 12, "lisa-droite": 13, "julie-gauche": 14, "julie-droite": 15, "biscuits-droite": 17,
+                   "rose-gauche": 18, "rose-droite": 19, "mathis-gauche": 20, "mathis-droite": 21, "fin-gauche": 22, "fin-droite": 23}
         for pid, folio in attendu.items():
             self.assertEqual(f[pid]["folio"], folio, pid)
-        for pid in ("garde", "titre", "gateaux-gauche", "gateaux-droite", "biscuits-gauche", "biscuits-droite", "colophon",
-                    "garde-arriere"):
+        for pid in ("garde", "titre", "gateaux-gauche", "gateaux-droite", "biscuits-gauche", "biscuits-droite"):
             self.assertTrue(f[pid]["sansFolio"], pid)
         self.assertFalse(f["lisa-gauche"]["sansFolio"])
-        plan = json.loads((RACINE / "src/content/pages/recettes.json").read_text())
-        self.assertEqual(plan["recettes"]["lisa"]["folios"], [8, 9])
+        self.assertNotIn("colophon", f, "le colophon est désormais sur fin-droite")
+        # recettes.json garde ses anciens folios (plan) : la cuisson les remplace par ceux du carnet (cuire.py)
+
+    def test_album_et_fin(self):
+        """Album « Cécile en cuisine » juste après le titre (10 zones photo-1 à photo-10, 2 ou 3 par page,
+        légendes comprises) ; le mot de la fin reste la dernière double page, sans colophon à part."""
+        doubles = [d["id"] for d in RC.charger_carnet()["doubles"]]
+        self.assertEqual(doubles[1:3], ["cecile-1", "cecile-2"])
+        self.assertEqual(doubles[-1], "fin")
+        zones = []
+        for pid in ("cecile-1-gauche", "cecile-1-droite", "cecile-2-gauche", "cecile-2-droite"):
+            d = json.loads((RACINE / "src/content/pages" / f"{pid}.json").read_text())
+            noms = [v["nom"] for v in d["vivants"]]
+            self.assertIn(len(noms), (2, 3), pid)
+            self.assertTrue(all(n.startswith("photo-") for n in noms), pid)
+            zones += noms
+        self.assertEqual(sorted(zones, key=lambda n: int(n.split("-")[1])), [f"photo-{k}" for k in range(1, 11)])
 
     def test_descriptions_du_carnet(self):
         """Chaque page du carnet a sa description (ou sa recette) ; les folios sont réalignés."""
@@ -529,10 +577,11 @@ class Carnet(Base):
         lignes = RC.lignes_sommaire(carnet, roster, titres={"mathis": "Mathis — cookies", "bernard": "Bernard — tarte"})
         ids = {d["id"] for d in carnet["doubles"]}
         par_invite = {l.get("invite"): l for l in lignes if l.get("invite")}
-        self.assertEqual(par_invite["lisa"]["folio"], 8)
-        self.assertEqual(par_invite["julie"]["folio"], 10)
-        self.assertEqual(par_invite["rose"]["folio"], 14)
-        self.assertEqual((par_invite["mathis"]["folio"], par_invite["bernard"]["folio"]), (16, 17))
+        # folios après l'album (cecile-1, cecile-2 : +4 pages après le titre)
+        self.assertEqual(par_invite["lisa"]["folio"], 12)
+        self.assertEqual(par_invite["julie"]["folio"], 14)
+        self.assertEqual(par_invite["rose"]["folio"], 18)
+        self.assertEqual((par_invite["mathis"]["folio"], par_invite["bernard"]["folio"]), (20, 21))
         self.assertEqual(par_invite["bernard"]["cible"], "mathis")
         self.assertEqual([l["texte"] for l in lignes if l.get("chapitre")], ["Gâteaux & cakes", "Biscuits"])
         self.assertTrue(all(l["cible"] in ids for l in lignes))
@@ -547,7 +596,7 @@ class Carnet(Base):
             self.assertEqual(lien["cible"], l["cible"])
             x0, y0, x1, y1 = lien["rect"]
             self.assertTrue(0 <= x0 < x1 <= m.W and 0 <= y0 < y1 <= m.H)
-        folios = [w for w in m.mots if w.texte == "17"]
+        folios = [w for w in m.mots if w.texte == "21"]  # folio de Bernard (double page mathis, après l'album)
         self.assertEqual(len(folios), 1)
         # les rects ne se chevauchent pas (une ligne = un lien)
         for a, b in zip(m.liens, m.liens[1:]):
@@ -605,7 +654,7 @@ class A5(Base):
         self.assertEqual(F.A5.px(), (1819, 2551))
         self.assertAlmostEqual(F.A5.W * F.A5.extras["mm_par_px"], 154.0, places=3)
         self.assertAlmostEqual(F.A5.H * F.A5.extras["mm_par_px"], 216.0, places=3)
-        self.assertEqual(F.ECRAN.px(), (1700, 1920))
+        self.assertEqual(F.ECRAN.px(), (1700, 2400))  # 17 × 24 cm : 850 × 1200 px de référence, échelle 2
         self.assertEqual(F.rayon(2.0, 2.0), 2.0)
         self.assertEqual(F.rayon(2.0, 4.0), 4.0)
 
@@ -774,6 +823,83 @@ class Livre(Base):
             for w in self.jetons(CU.textes_page(d)):
                 self.assertIn(w, ecrits, f"{pid} : « {w} » perdu")
                 ecrits.remove(w)
+
+
+class Folio(Base):
+    """Le folio écrit à la main (crayon, main de Cécile) : en bas, côté extérieur, dans sa zone réservée,
+    sans toucher un trait ni un mot ; il ne déplace aucun mot de la page ; rien sur les pages sans numéro."""
+
+    def pose(self, **kw) -> MEP.Mise:
+        d = page_test(blocs=[{"id": "p", "type": "paragraphe", "texte": TEXTE_LONG}], **kw)
+        return MEP.mettre_en_page(d)
+
+    @staticmethod
+    def boite(m) -> tuple:
+        A = np.array([w.boite for w in m.folio_mots], float)
+        return float(A[:, 0].min()), float(A[:, 1].min()), float(A[:, 2].max()), float(A[:, 3].max())
+
+    def assertLibre(self, m, marge: float):
+        """Aucun trait (hors crayon) ni mot de la page dans la boîte du folio, à `marge` près."""
+        x0, y0, x1, y1 = self.boite(m)
+        for t in m.traces:
+            if t.encre.get("id") == "crayon":
+                continue
+            P = t.pts[:, :2]
+            dedans = (P[:, 0] > x0 - marge) & (P[:, 0] < x1 + marge) & (P[:, 1] > y0 - marge) & (P[:, 1] < y1 + marge)
+            self.assertFalse(dedans.any(), f"un trait touche le folio {m.desc.get('folio')}")
+        for w in m.mots:
+            self.assertFalse(chevauche(w.boite, (x0 - marge, y0 - marge, x1 + marge, y1 + marge)), f"« {w.texte} » touche le folio")
+
+    def test_folio_en_bas_cote_exterieur(self):
+        for cote, n in (("droite", 11), ("gauche", 10)):
+            m = self.pose(cote=cote, folio=n)
+            self.assertTrue(MEP.tient(m), (m.deborde, m.non_places))
+            self.assertEqual([w.texte for w in m.folio_mots], [str(n)])
+            x0, y0, x1, y1 = self.boite(m)
+            fx0, fy0, fx1, fy1 = MEP.FOLIO_JUSTE[cote]
+            xh = m.folio_mots[0].xh
+            self.assertTrue(fy0 * m.H - 1 <= y0 and y1 <= m.H - 1, "en bas de page, dans la zone du folio")
+            if cote == "droite":
+                self.assertAlmostEqual(x1, fx1 * m.W, delta=0.5 * xh, msg="bord extérieur (droite)")
+            else:
+                self.assertAlmostEqual(x0, fx0 * m.W, delta=0.5 * xh, msg="bord extérieur (gauche)")
+            # au crayon, main de Cécile
+            crayon = [t for t in m.traces if t.encre.get("id") == "crayon"]
+            self.assertTrue(crayon)
+            self.assertTrue(all(x0 - 1 <= t.pts[:, 0].min() and t.pts[:, 0].max() <= x1 + 1 for t in crayon))
+            self.assertLibre(m, marge=0.25 * xh)
+
+    def test_hauteur_d_x_constante(self):
+        for main in ("soignee", "mamie", "cecile"):
+            m = self.pose(folio=3, main=main)
+            self.assertAlmostEqual(m.folio_mots[0].xh, 0.9 * m.xh_de("corps", m.main), places=6, msg=main)
+
+    def test_folio_ne_deplace_aucun_mot(self):
+        """Le folio est écrit en dernier : les mots de la page sont exactement ceux qu'on aurait sans lui."""
+        avec, sans = self.pose(folio=11), self.pose(folio=None)
+        self.assertEqual([(w.texte, w.boite) for w in avec.mots], [(w.texte, w.boite) for w in sans.mots])
+        self.assertEqual(sans.folio_mots, [])
+
+    def test_folio_libre_sur_page_pleine_et_cadre(self):
+        """Page pleine jusqu'en bas (folio large ou « juste ») et cadre du mot en bas de la page droite : le
+        folio ne touche ni un trait ni un mot."""
+        for kw in ({}, {"folio_juste": True}):
+            m = self.pose(cote="gauche", folio=10, **kw)
+            self.assertTrue(MEP.tient(m), (m.deborde, kw))
+            self.assertLibre(m, marge=0.25 * m.folio_mots[0].xh)
+        cadre = page_test(id="essai-droite", cote="droite", folio=11, blocs=[
+            {"id": "cadre", "type": "cadre", "texte": "Pour toutes nos pauses goûter à refaire le monde.", "signature": "Julie",
+             "encre": "plume"},
+            {"id": "titre", "type": "titre", "texte": "Le cake citron de Julie"},
+            {"id": "p", "type": "paragraphe", "texte": TEXTE_LONG}])
+        m = MEP.mettre_en_page(cadre)
+        self.assertTrue(MEP.tient(m), (m.deborde, m.non_places))
+        self.assertLibre(m, marge=0.25 * m.folio_mots[0].xh)
+
+    def test_pas_de_folio_sans_numero(self):
+        self.assertEqual(self.pose(sansFolio=True, folio=11).folio_mots, [], "sansFolio")
+        self.assertEqual(self.pose(folio=None).folio_mots, [], "sans numéro")
+        self.assertEqual(self.pose(type="feuillet", folio=11).folio_mots, [], "feuillet volant")
 
 
 if __name__ == "__main__":

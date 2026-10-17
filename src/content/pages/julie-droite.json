@@ -1,86 +1,33 @@
 {
- "id": "julie-droite",
- "double": "julie",
- "cote": "droite",
- "folio": 11,
- "graine": 4127,
- "gabarit": "A",
- "main": "soignee",
- "encre": "bic",
- "blocs": [
-  {
-   "id": "courant",
-   "type": "courant",
-   "texte": "Julie"
-  },
-  {
-   "id": "cadre",
-   "type": "cadre",
-   "style": "double",
-   "encre": "plume",
-   "titre": "Pour Cécile",
-   "texte": "Pour toutes nos pauses goûter à refaire le monde. Joyeux anniversaire ma Cécile !",
-   "signature": "Julie",
-   "largeur": 0.7
-  },
-  {
-   "id": "titre",
-   "type": "titre",
-   "texte": "Le cake citron de Julie",
-   "position": "centre",
-   "souligne": "trait"
-  },
-  {
-   "id": "ingredients",
-   "type": "ingredients",
-   "disposition": "deux-colonnes",
-   "avant": 0.25,
-   "lignes": [
-    "3 œufs :oeuf:",
-    "120 g de sucre",
-    "2 citrons non traités :citron:",
-    "180 g de farine",
-    "½ sachet de levure",
-    "125 g de beurre :beurre:",
-    "1 c. à s. de pavot",
-    "1 pincée de sel"
-   ]
-  },
-  {
-   "id": "preparation",
-   "type": "paragraphe",
-   "avant": 0.35,
-   "alinea": 0.04,
-   "texte": "Four à th. 6 (180 °C). Fouette les œufs avec le sucre jusqu'à ce que ça blanchisse, ajoute les __zestes__ et le jus des citrons, puis la farine, la levure, le sel, le pavot et enfin le beurre fondu. Moule à cake beurré, 40 min au four."
-  },
-  {
-   "id": "teste",
-   "type": "annotation",
-   "main": "cecile",
-   "encre": "crayon",
-   "pente": -3,
-   "texte": "testé le 3 mars, un régal !",
-   "places": [
+  "id": "julie-droite",
+  "double": "julie",
+  "cote": "droite",
+  "folio": 11,
+  "graine": 4127,
+  "gabarit": "A",
+  "main": "soignee",
+  "encre": "bic",
+  "blocs": [
     {
-     "sous": "preparation",
-     "dx": 0.22,
-     "dy": 2.3
+      "id": "courant",
+      "type": "courant",
+      "texte": "Julie"
     },
     {
-     "sous": "preparation",
-     "dx": 0.1,
-     "dy": 2.6
-    },
-    {
-     "sous": "preparation",
-     "dx": 0.3,
-     "dy": 3.0
-    },
-    {
-     "x": 0.075,
-     "y": 0.955
+      "id": "croquis-recette",
+      "type": "croquis",
+      "nom": [
+        "gateau",
+        "citron"
+      ],
+      "taille": [
+        0.2,
+        0.18
+      ],
+      "pres": [
+        0.7,
+        0.42
+      ]
     }
-   ]
-  }
- ]
+  ]
 }

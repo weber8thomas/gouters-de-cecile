@@ -55,6 +55,8 @@ CARNET = RACINE / "src/content/carnet.json"
 ROSTER = RACINE / "src/content/roster.json"
 SORTIE_DESC = RACINE / "verification/out/b/pages"
 TROU_MAX = 1.5  # lignes de blanc tolérées en bas d'une page qui n'est pas la dernière de la recette
+MOT_A_VENIR = "mot à venir"  # cadre d'un invité sans mot (`mot: null`) : écrit au crayon de Cécile
+LIGNES_MOT_A_VENIR = 3  # même hauteur de cadre qu'un mot de trois lignes
 
 # main de la recette (RecetteRecue.style.main, mains de l'écriture) → main du moteur de pages
 MAINS = {"ado": "ado", "papa": "papa", "mamie": "mamie", "ecole": "ecole", "soignee": "soignee",
@@ -407,13 +409,21 @@ def gabarits(rec: dict, plan: dict, papiers: dict, roster: dict | None = None) -
         fixes_g.append(bd)
     if plan.get("courant", True):
         fixes_d.append({"type": "courant", "id": "courant", "texte": nom, "graine": graine_atome(slug, "courant")})
+    # le mot pour Cécile vit dans le cadre, sous le prénom du bandeau, à droite de la photo (page gauche)
+    cadre_plan = plan.get("cadre") if isinstance(plan.get("cadre"), dict) else {}
     if rec.get("mot"):
         cd = {"type": "cadre", "id": "cadre", "texte": rec["mot"], "signature": rec.get("signature") or nom,
-              "style": plan.get("cadre", {}).get("style", "double") if isinstance(plan.get("cadre"), dict) else "double",
               "graine": graine_atome(slug, "mot"), "signature_graine": graine_atome(slug, "signature")}
-        if isinstance(plan.get("cadre"), dict):
-            cd.update({k: v for k, v in plan["cadre"].items() if k != "style"})
-        fixes_d.append(cd)
+        cd.update(cadre_plan)
+    else:
+        # pas de mot (`mot: null`) : un cadre de même taille, « mot à venir » au crayon de Cécile.
+        # On n'écrit jamais de mot à la place de l'invité.
+        cd = {"type": "cadre", "id": "cadre", "texte": MOT_A_VENIR, "main": "cecile", "encre": "crayon",
+              "graine": graine_atome(slug, "mot"), "lignes_min": LIGNES_MOT_A_VENIR}
+        cd.update({k: v for k, v in cadre_plan.items() if k not in ("texte", "signature", "main", "encre", "lignes_min")})
+    cd.setdefault("style", "double")
+    cd["position"] = "bandeau"
+    fixes_g.append(cd)
     gauche = dict(commun, id=f"{slug}-gauche", cote="gauche", folio=f0, graine=G + 1, gabarit="C",
                   vivants=[{"nom": "photo", "rect": rp}],
                   marges={"haut": round(rp[1] + rp[3] + float(ph.get("blanc", 0.012)), 5)}, blocs_fixes=fixes_g)
@@ -511,8 +521,12 @@ def _note_marge(gab: Gabarits) -> list:
                     "main": MAINS.get(n.get("main"), n.get("main")) or gab.style["main"],
                     "encre": n.get("encre") or gab.style["encre"],
                     "graine": graine_atome(gab.slug, f"note-{k + 1}"), "pente": -4.0,
-                    "places": [{"apres": "titre", "dx": 1.6, "dy": -0.5}, {"apres": "titre", "dx": 1.1, "dy": 0.4},
-                               {"au_dessus": "titre", "dx": 0.25, "dy": 1.2}]})
+                    # d'abord à droite de la photo, au-dessus du titre (le bandeau et la photo occupent le haut)
+                    # (si le cadre laisse peu de place : plusieurs hauteurs au-dessus du titre, puis les anciennes places)
+                    "places": [{"au_dessus": "titre", "dx": 0.5, "dy": 3.0}, {"au_dessus": "titre", "dx": 0.5, "dy": 2.2},
+                               {"au_dessus": "titre", "dx": 0.5, "dy": 4.0}, {"au_dessus": "titre", "dx": 0.5, "dy": 5.0},
+                               {"au_dessus": "titre", "dx": 0.56, "dy": 3.0}, {"apres": "titre", "dx": 1.6, "dy": -0.5},
+                               {"apres": "titre", "dx": 1.1, "dy": 0.4}, {"au_dessus": "titre", "dx": 0.25, "dy": 1.2}]})
     return out
 
 
@@ -844,7 +858,8 @@ def depuis_pages(slug: str, descs: list[dict]):
                 if b.get("sous"):
                     rec["sousTitre"] = b["sous"]
             elif t == "cadre":
-                cadre = dict(b)
+                # A5 : le mot reste encadré en bas du verso (la position « bandeau » est celle du carnet écran)
+                cadre = {k: v for k, v in b.items() if k != "position"}
             elif t == "titre":
                 if not titre_vu:
                     A.append(Atome("titre", "titre", texte, g("titre"), bloc="titre", colle=True, opts=o))

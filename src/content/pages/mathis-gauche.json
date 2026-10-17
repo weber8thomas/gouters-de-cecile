@@ -5,7 +5,7 @@
  "folio": 16,
  "graine": 905,
  "gabarit": "C",
- "main": "ecole",
+ "main": "pressee",
  "encre": "feutre",
  "blocs": [
   {
@@ -13,9 +13,9 @@
    "type": "bandeau",
    "texte": "Mathis",
    "sous": "depuis Lille",
-   "taille": 2.2,
    "places": [
-    "cote"
+    "cote",
+    "dessous"
    ]
   },
   {
@@ -25,9 +25,10 @@
    "titre": "Pour Cécile",
    "texte": "Joyeux anniv Cécile !!",
    "signature": "Mathis",
-   "largeur": 0.74,
+   "largeur": 0.46,
    "_": "Mot d'exemple : Mathis est un invité fictif de démonstration (aucun vrai message).",
-   "graine": 51819
+   "graine": 51819,
+   "position": "bandeau"
   },
   {
    "id": "titre",
@@ -90,10 +91,10 @@
   {
    "nom": "photo",
    "rect": [
-    0.62,
-    0.035,
-    0.32,
-    0.22555
+    0.06,
+    0.04,
+    0.42,
+    0.22313
    ]
   }
  ]
