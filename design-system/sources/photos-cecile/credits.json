@@ -15,15 +15,15 @@
       "coins": "noir",
       "cadrage": {
         "cx": 0.5,
-        "cy": 0.5,
-        "zoom": 1
+        "cy": 0.38,
+        "zoom": 0.65
       },
       "source": {
-        "fichier": "pexels-7677941.jpeg",
-        "sha256": "221b5e3072f931a4a6946798e05e45435e509c12bcc7d102d2fe8978dd379e62",
-        "titre": "A Little Kid Baking In Kitchen",
-        "auteur": "PNW Production",
-        "page": "https://www.pexels.com/photo/a-little-kid-baking-in-kitchen-7677941/",
+        "fichier": "pexels-5062718.jpeg",
+        "sha256": "4f64a65ba3008992f152936b23bdd39313198cba8dd46df8eff53811712b79f1",
+        "titre": "A Girl Playing With Flour",
+        "auteur": "Andrea Piacquadio",
+        "page": "https://www.pexels.com/photo/a-girl-playing-with-flour-5062718/",
         "licence": "pexels"
       },
       "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
@@ -55,15 +55,15 @@
       "coins": "noir",
       "cadrage": {
         "cx": 0.5,
-        "cy": 0.5,
+        "cy": 0.27,
         "zoom": 1
       },
       "source": {
-        "fichier": "pexels-8511867.jpeg",
-        "sha256": "88c521e56c02b2fc7c2ece3e8191eeaa0a76df01f6b8581ca53e9c8cc92a38e6",
-        "titre": "A Young Boy Stirring a Pot",
-        "auteur": "Kampus Production",
-        "page": "https://www.pexels.com/photo/a-young-boy-stirring-a-pot-8511867/",
+        "fichier": "pexels-3806972.jpeg",
+        "sha256": "f95e1b53059e97b56b2e36092002ba3a4cfc7c949b0a6a563467ddcb716fe38f",
+        "titre": "Girl Playing With Flour",
+        "auteur": "Elina Fairytale",
+        "page": "https://www.pexels.com/photo/girl-playing-with-flour-3806972/",
         "licence": "pexels"
       },
       "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
@@ -94,16 +94,16 @@
       "angle": -2.5,
       "coins": "noir",
       "cadrage": {
-        "cx": 0.56,
-        "cy": 0.35,
-        "zoom": 0.7
+        "cx": 0.6,
+        "cy": 0.42,
+        "zoom": 0.75
       },
       "source": {
-        "fichier": "pexels-8064884.jpeg",
-        "sha256": "e0090c8b8517f73d8a2eba8712807b7d2c12834b87193f0ef2ed59a1905bc4d0",
-        "titre": "Teenage Boy in Red Apron Holding a Whisk",
-        "auteur": "Los Muertos Crew",
-        "page": "https://www.pexels.com/photo/teenage-boy-in-red-apron-holding-a-whisk-8064884/",
+        "fichier": "pexels-8511872.jpeg",
+        "sha256": "3d75116bc862a387c6c4d3114ac5b700489a95bde5331b7374ca34db3d0369f9",
+        "titre": "A Young Girl Cooking while Holding a Pot and a Wooden Spatula",
+        "auteur": "Kampus Production",
+        "page": "https://www.pexels.com/photo/a-young-girl-cooking-while-holding-a-pot-and-a-wooden-spatula-8511872/",
         "licence": "pexels"
       },
       "usage": "placeholder « Cécile en cuisine » : personne de banque d'images, ce n'est PAS Cécile ; à remplacer par de vraies photos avant tout partage."
