@@ -657,7 +657,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                     <Choix options={SON} valeur={r.son} onChoisir={(son) => setR({ son })} graine={g()} />
                   </Ligne>
                   {avecVolume && (
-                    <Ligne id="volume" libelle="Volume" attenuee={!volumeActif}>
+                    <Ligne id="volume" libelle="Volume des vidéos" attenuee={!volumeActif}>
                       <Reglette
                         valeur={r.volume}
                         min={0}
@@ -665,7 +665,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                         pas={VOLUME_PAS}
                         principal
                         attenuee={!volumeActif}
-                        libelle="Volume"
+                        libelle="Volume des vidéos"
                         texte={pourcent(r.volume)}
                         onChange={(volume) => setR({ volume })}
                       />
@@ -708,7 +708,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                     />
                     <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.volumeBruitages)}</span>
                   </Ligne>
-                  <Ligne id="musique" libelle="Musique" role="radiogroup" large>
+                  <Ligne id="musique" libelle="Morceau" role="radiogroup" large>
                     {/* « aucune » coupe la musique ; un morceau la joue (le bouton musique la rallume). */}
                     <Choix
                       options={OPTIONS_MUSIQUE}
