@@ -1246,8 +1246,8 @@ def ecrire_manifeste(variantes: dict, indices: dict | None):
             (COMPAREES / "couverture" / k / "manifeste.json").write_text(json.dumps(v, indent=1, ensure_ascii=False) + "\n")
     man = {
         "_": "Écrit par scripts/pages/couverture.py (lot C). Noms logiques d'assetUrl() (design-system/baked/…). "
-             "Rectangles en fractions du plat [x, y, largeur, hauteur]. Plat de référence : 868 × 982 px "
-             "(page 850 × 960 + débords du carton 18 / 6 / 16), cuit à 2× (et 1×).",
+             "Rectangles en fractions du plat [x, y, largeur, hauteur]. Plat de référence : 868 × 1222 px "
+             "(page 850 × 1200 + débords du carton 18 / 6 / 16), cuit à 2× (et 1×).",
         "version": 1,
         "active": ACTIVE,
         "plat": [PLAT_W, PLAT_H],
