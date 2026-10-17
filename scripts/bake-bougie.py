@@ -42,8 +42,9 @@ GEOMETRIE = os.path.join(ROOT, 'src', 'components', 'Bougie', 'geometrie.json')
 
 CUISSON = 1.25          # px cuits par px de scène : celui du rendu Blender (scene.py, CUISSON) ; changer les deux avec un nouveau rendu
 FLOU_CIRE = 0           # px de scène : la cire est nette (le flou de profondeur de champ est retiré)
-DECALAGE = (-52, -24)   # px de scène : la bougie est posée plus à gauche et un peu plus haut (pied (196, 846) → (144, 822))
-TAILLE = 0.82           # et un peu plus petite (autour de son pied) : entière à l'écran, loin du livre ouvert, plus nette
+DECALAGE = (-88, -20)   # px de scène : la bougie est posée dans le coin, loin du livre (pied (196, 846) → (108, 826))
+TAILLE = 0.6            # et plus petite (autour de son pied) : la pointe de la flamme reste à l'écran et la cire à ~115 px
+                        # de scène du livre (bordure comprise) : on tourne les pages sans passer la main au-dessus
 OMBRE_R0, OMBRE_R1 = 90.0, 230.0   # l'ombre s'efface entre ces distances au pied (px de scène)
 ASSOMBRI = 0.9          # la pièce est sombre : la cire reste devinée plutôt que montrée
 COLONNES_GOUTTE = 8
