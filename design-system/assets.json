@@ -335,12 +335,12 @@
     "bytes": 10674,
     "type": "image/webp"
   },
-  "bougie/flamme": {
-    "file": "baked/bougie/flamme.webp",
-    "sha": "86cdb5737dc0dba896193f74fcd282ecd496f9f9975982571fba7d7a3c0d783a",
-    "w": 1328,
-    "h": 1089,
-    "bytes": 280196,
+  "bougie/flamme-fixe": {
+    "file": "baked/bougie/flamme-fixe.webp",
+    "sha": "e31403af906e23daeafac2a4158193798b7c4876e4b4f80de2dfd3b425f84b88",
+    "w": 158,
+    "h": 122,
+    "bytes": 5260,
     "type": "image/webp"
   },
   "bougie/goutte-1": {

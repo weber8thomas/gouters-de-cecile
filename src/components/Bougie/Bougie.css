@@ -25,14 +25,15 @@
 
 .gc-bougie__ombre,
 .gc-bougie__halo,
-.gc-bougie__flamme,
+.gc-bougie__flamme--image,
 .gc-bougie__cire[data-gc-bougie='vive'] {
   will-change: opacity, transform;
 }
 
-/* La flamme est un cadre : une fenêtre sur la planche de sa boucle, qui défile par paliers (Bougie.tsx). */
-.gc-bougie__flamme {
-  overflow: hidden;
+/* La flamme est une petite toile WebGL (un calque à elle seule, qui ne repeint qu'elle : flamme.ts) ;
+   sans WebGL, l'image de secours (--image) bouge par transform et opacity. */
+canvas.gc-bougie__flamme {
+  display: block;
 }
 
 /* ---- Les gouttes : une fenêtre sur la planche des images, qui défile par paliers (Bougie.tsx). ---- */

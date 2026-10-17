@@ -111,6 +111,9 @@ const echantillonner = (page, ms) => page.evaluate(([sel, duree]) => new Promise
       p.op.push(Number(cs.opacity));
       p.tr.add(cs.transform);
     }
+    // la flamme de la bougie est une toile WebGL : sa lumière rendue (flammeBougie), lue sur sa poignée
+    const fl = window.__gcFlamme?.etat?.();
+    if (fl) (par['lumiere-bougie'] ??= { op: [], tr: new Set(['']) }).op.push(fl.lumiere);
     if (performance.now() - t0 < duree) requestAnimationFrame(tick);
     else {
       resolve({
@@ -185,8 +188,8 @@ if (tests.has('vivant') || tests.has('pause')) {
       R.ok('tv-1080', `opacité du calque « ${n} » qui varie (4 s)`, !!p && p.distinctes >= assez && p.max - p.min >= 0.015, p ? `${p.distinctes} valeurs sur ${e.images} images (seuil ${assez}), ${r3(p.min)} → ${r3(p.max)}, ${p.transforms} transforms` : 'absent');
     }
     R.ok('tv-1080', 'la source bouge (transform du bain)', (e.par.bain?.transforms ?? 0) >= assez, `${e.par.bain?.transforms} valeurs`);
-    const flamme = e.par.flamme;
-    R.ok('tv-1080', 'bougie : la flamme vacille (opacité, 4 s)', !!flamme && flamme.distinctes >= assez, flamme ? `${flamme.distinctes} valeurs sur ${e.images} images (seuil ${assez}), ${r3(flamme.min)} → ${r3(flamme.max)}` : 'absente');
+    const flamme = e.par['lumiere-bougie'] ?? e.par.flamme;
+    R.ok('tv-1080', 'bougie : la flamme vacille (lumière rendue, 4 s)', !!flamme && flamme.distinctes >= assez, flamme ? `${flamme.distinctes} valeurs sur ${e.images} images (seuil ${assez}), ${r3(flamme.min)} → ${r3(flamme.max)}` : 'absente');
   }
   if (tests.has('pause')) {
     const cacher = (cache) => page.evaluate((h) => {

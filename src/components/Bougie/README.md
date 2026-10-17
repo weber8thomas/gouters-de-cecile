@@ -11,7 +11,7 @@ Une bougie de cire crème à moitié consumée, posée sur la table dans le coin
 
   Le tout est réuni par un remaillage voxel. La cire est translucide (diffusion sous la surface). Elle est éclairée par la flamme, par la cheminée hors champ à gauche, et par un peu de lumière renvoyée par le livre.
 - **Cuisson** : `scripts/bake-bougie.py` (PIL et numpy). Il produit les calques WebP dans `design-system/baked/bougie/` et leur géométrie, en px de scène 1920 × 1080, dans `geometrie.json`.
-- **La flamme** est la boucle d'une vraie flamme filmée (Wikimedia Commons, Jahobr, CC0 ; licence et empreinte dans `design-system/sources/bougie/credits.json`). La fenêtre de 3 s (72 images à 24 i/s, fondu enchaîné pour boucler) est détourée sur le fond statique de la cire, teintée, puis mise en perspective comme l'était la photo : vue d'en haut, une flamme se raccourcit et pointe vers le coin de l'écran. Les images sont rangées dans une planche en grille, avec leur luminosité et leur hauteur relatives (`geometrie.json`).
+- **La flamme** est rendue en temps réel dans une petite toile WebGL (`flamme.ts`) : un volume émissif, traversé par les rayons de la caméra de la scène (marche de 32 pas), vu presque d'en haut. C'est une vraie flamme de bougie à l'échelle : ≈ 0,7 cm de large et 2 cm de haut, la plus large vers le tiers bas, effilée en pointe. Elle a une zone sombre autour de la mèche, une mèche recourbée avec une braise au bout, une coupelle bleue faible à la base, et la suie incandescente du jaune-blanc au cœur à l'orangé sur les bords et à la pointe (corps noir de 1500 à 2400 K, courbe tonale douce). Vue d'en haut, c'est une goutte lumineuse autour de la mèche, un peu allongée vers le coin de l'écran. Sans WebGL, ou si le contexte est perdu, l'ancienne photo de flamme détourée (Pexels, `flamme-fixe.webp`) la remplace. Licence et empreinte de la photo : `design-system/sources/bougie/credits.json`.
 
 Recuire :
 
@@ -22,7 +22,7 @@ tools/ecriture/.venv/bin/python -I scripts/bake-bougie.py
 npm run assets
 ```
 
-La vidéo de la flamme doit être dans `verification/out/bougie2/originaux/White_candle_video.webm` (non versionnée, sha256 vérifié) ; `ffmpeg` la lit. `--apercu` fait un rendu rapide, et `--seulement bougie,gouttes,ombre` ne refait que certaines passes.
+La photo de la flamme de secours doit être dans `verification/out/v5-bougie2/originaux/pexels-9299394.jpeg` (non versionnée, sha256 vérifié). Pour `scene.py`, `--apercu` fait un rendu rapide, et `--seulement bougie,gouttes,ombre` ne refait que certaines passes.
 
 ## Props
 
@@ -41,13 +41,13 @@ De bas en haut :
 | Cire, flamme basse | `cire.webp` | aucune |
 | Cire, flamme haute | `cire-vive.webp` | opacité 0,12 à 0,9 suivant l'intensité : la cire s'éclaire et s'assombrit avec sa flamme |
 | Gouttes qui coulent | `goutte-1.webp`, `goutte-3.webp` | planches de 48 images, plus une image vide. Une animation Web les fait défiler par paliers (`transform`, `steps`), à 20 images par seconde. Il passe une goutte toutes les 14 s par coulure, en décalé. |
-| Flamme | `flamme.webp` (planche de 72 images, 8 colonnes) | une case par image, à 24 i/s, par une animation Web en paliers (`transform`). Échelle 0,96 à 1,04, opacité 0,7 à 1, rotation ≤ 2° autour de la mèche (`pivot`). La lumière tracée suit la luminosité de l'image, la lueur sur la table sa hauteur. |
+| Flamme | toile WebGL (`flamme.ts`), 124 × 126 px de scène autour de la mèche | rendue à chaque image (60 i/s au plus, 30 si l'appareil peine), seulement quand elle est visible (onglet affiché, à l'écran) ; balancement, respiration, frémissement de la pointe, petits sauts, et le souffle de la main qui la couche. La lumière tracée et la lueur sur la table suivent l'état rendu (`flammeBougie` = éclat × longueur). Sans WebGL : `flamme-fixe.webp`, échelle 0,96 à 1,04, opacité 0,7 à 1, rotation autour de la mèche (`pivot`). |
 
-Tout passe par `transform` et `opacity`. Aucun filtre (CSS ou SVG) ni `mix-blend-mode` à l'exécution : le flou de profondeur de champ, très léger, est cuit.
+Tout passe par `transform` et `opacity`, sauf la flamme, qui est une toile WebGL : un seul calque, qui ne repeint que lui. Aucun filtre (CSS ou SVG) ni `mix-blend-mode` à l'exécution : la toile est composée en alpha prémultiplié normal, et le flou de profondeur de champ de la cire, très léger, est cuit.
 
 ## Mouvement réduit et téléphone
 
-- Mouvement réduit (système ou réglage du carnet) ou réglage `feu: false` : tout est immobile. La flamme est fixe, la cire éclairée reste à mi-opacité, et aucune goutte ne coule.
+- Mouvement réduit (système ou réglage du carnet) ou réglage `feu: false` : tout est immobile. La flamme est rendue une seule fois, au repos ; la cire éclairée reste à mi-opacité, et aucune goutte ne coule.
 - Téléphone en portrait (`orientation: portrait` et largeur ≤ 760 px) : la bougie est masquée, on ne garde que la lueur.
 
 ## À éviter

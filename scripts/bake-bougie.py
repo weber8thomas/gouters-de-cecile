@@ -11,36 +11,35 @@ l'écran, sa flaque de cire figée au pied. Ce script en cuit les calques :
   cire-vive.webp   la même, flamme haute : l'application fond l'une dans l'autre au rythme de la flamme
   ombre.webp       l'ombre portée par la cheminée (hors champ à gauche) sur la table, en alpha
   goutte-<n>.webp  planche des images d'une goutte de cire liquide qui coule le long d'une coulure
-  flamme.webp      la flamme : une planche en grille de la boucle vidéo d'une vraie flamme (Wikimedia Commons,
-                   CC0, Jahobr), détourée, puis mise en perspective (vue d'en haut, elle se raccourcit et
-                   pointe vers le coin de l'écran)
+  flamme-fixe.webp la flamme de secours (sans WebGL) : la photo d'une vraie flamme (Pexels, Numan Gilgil),
+                   détourée, puis mise en perspective (vue d'en haut, elle pointe vers le coin de l'écran)
   halo.webp        la lueur chaude de la flamme sur la table (dessinée)
 
-et écrit leur géométrie (px de scène 1920 × 1080) dans src/components/Bougie/geometrie.json. La flamme y est
-accompagnée de sa cadence (images par seconde), de la luminosité et de la hauteur relatives de chaque image
-(moyenne 1) : l'application lit la luminosité pour la lumière tracée, la hauteur pour la lueur sur la table.
+et écrit leur géométrie (px de scène 1920 × 1080) dans src/components/Bougie/geometrie.json. La flamme
+elle-même est rendue en temps réel par une toile WebGL (src/components/Bougie/flamme.ts) : le script n'en
+écrit que la géométrie, la boîte de la toile autour de la mèche et la hauteur de la mèche au-dessus de la
+table (« flamme »).
 
 Entrées (hors dépôt) :
   verification/out/v5-bougie3d/rendu/   rendu Blender : bougie.png, bougie-vive.png, ombre.png,
                                          goutte-<n>/<image>.png, reperes.json
-  verification/out/bougie2/originaux/White_candle_video.webm   la vidéo de la flamme (sha256 vérifié)
-Licence et choix de la vidéo : design-system/sources/bougie/credits.json.
+  verification/out/v5-bougie2/originaux/pexels-9299394.jpeg   la photo de la flamme (sha256 vérifié)
+Licence et choix de la photo : design-system/sources/bougie/credits.json.
 
-Déterministe, sans réseau. PIL et numpy, et ffmpeg pour lire la vidéo.
+Déterministe, sans réseau. PIL et numpy seulement.
 """
 import hashlib
 import json
 import math
 import os
-import subprocess
 
 import numpy as np
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RENDU = os.path.join(ROOT, 'verification', 'out', 'v5-bougie3d', 'rendu')
-VIDEO = os.path.join(ROOT, 'verification', 'out', 'bougie2', 'originaux', 'White_candle_video.webm')
-SHA256_VIDEO = '7b78a3e8ddd95f3a6ee8d7abda1da589d67234b17774eebe1f81c4b4ad504636'
+ORIG = os.path.join(ROOT, 'verification', 'out', 'v5-bougie2', 'originaux', 'pexels-9299394.jpeg')
+SHA256 = 'a88c958b0677589e33d038777566782ecb6b245179a6629cfe3d3563a1f0e1d2'
 OUT = os.path.join(ROOT, 'design-system', 'baked', 'bougie')
 GEOMETRIE = os.path.join(ROOT, 'src', 'components', 'Bougie', 'geometrie.json')
 
@@ -54,25 +53,20 @@ ASSOMBRI = 0.9          # la pièce est sombre : la cire reste devinée plutôt 
 COLONNES_GOUTTE = 8
 IMAGES_PAR_SECONDE = 16
 
-# Flamme : la boucle vidéo (800 × 600, bougie vue de côté, caméra fixe, fond noir).
-VIDEO_ZONE = (330, 140, 140, 204)   # x, y, largeur, hauteur (px vidéo) autour de la flamme ; hauteur paire (yuv420)
-VIDEO_DEBUT_IMAGE = 286             # première image de la boucle, à VIDEO_FPS (≈ 11,9 s) : calme, sans dérive
-VIDEO_FPS = 24
-VIDEO_IMAGES = 72                   # 3 s de boucle à 24 i/s (≤ 96)
-VIDEO_FONDU = 12                    # images du fondu enchaîné des dernières images sur les premières (0,5 s)
-VIDEO_PIED = (72.5, 152.0)          # haut de la mèche, en px de la zone : pivot de la flamme
-VIDEO_LONGUEUR = 112.0              # px vidéo, mèche → pointe (mesurée sur la boucle, alpha > 0,5) : mise à l'échelle de la photo
-LONGUEUR_FLAMME_CUITE = (1785 - 130) * 0.142 * CUISSON   # longueur mèche → pointe de l'ancienne flamme (photo), px cuits
-VIDEO_CLE = (40, 230)               # luminance : de l'ombre à la flamme (fond sombre) ; bords doux, la flamme ne fait pas une découpe
-VIDEO_CIRE = (30, 60)               # sous le rebord de la cire : la flamme sort du fond statique (20e centile)
-VIDEO_CIRE_RANGS = (84, 96)         # rangs où la cire commence (la cire est statique, on la retire par le fond)
-VIDEO_PIED_FONDU = (144, 152)       # la flamme s'éteint à la mèche
-VIDEO_TEINTE_T = np.array([0.0, 0.45, 0.8, 1.0], np.float32)
-VIDEO_TEINTE = np.array([[120, 30, 6], [255, 120, 30], [255, 205, 110], [255, 238, 190]], np.float32)   # bord rouge-orangé, cœur jaune-blanc
+# Photo de la flamme (repère de la photo) : canevas, mèche (pivot), seuils de détourage.
+SRC_W, SRC_H = 4272, 2848
+X0, X1, Y0, Y1 = 2560, 3968, 0, 2848
+ECHELLE_PHOTO = 0.142   # px de scène par px de la photo, pour une flamme debout de 235 px
+MECHE = (3252, 1785)
+FLAMME_BAS, FLAMME_HAUT = 30, 140
+FLAMME_FONDU = (1735, 1792)
+FLOU_FLAMME = 1.5       # px de scène, avant la mise en perspective (qui la réduit encore)
 FLAMME_LARGEUR = 0.5    # échelle en travers (la largeur d'une flamme ne fuit pas)
 FLAMME_RACCOURCI_MIN = 0.5   # vue presque d'en haut, la flamme se raccourcit, mais on la garde lisible
-FLOU_FLAMME = 1.5       # px de scène, avant la mise en perspective (qui la réduit encore)
 HALO_SCENE = (800, 900)
+MECHE_Z = 5.6           # cm : bout de la mèche au-dessus de la table (scene.py : NIVEAU_PUITS + 0.78), avant TAILLE
+TOILE_FLAMME = (84, 55, 40, 71)   # px de scène autour de la mèche (gauche, haut, droite, bas) : la toile de la
+                                  # flamme WebGL, assez grande pour la flamme couchée à 35° dans tous les sens, halo compris
 
 
 def marche(x, a, b):
@@ -81,20 +75,19 @@ def marche(x, a, b):
     return t * t * (3.0 - 2.0 * t)
 
 
+def masque_flamme(src, yv):
+    """Flamme (0 à 1) : seuil de luminance, fondu vers la mèche."""
+    lum = 0.2126 * src[..., 0] + 0.7152 * src[..., 1] + 0.0722 * src[..., 2]
+    fondu = np.clip((FLAMME_FONDU[1] - yv) / (FLAMME_FONDU[1] - FLAMME_FONDU[0]), 0.0, 1.0)[:, None]
+    return marche(lum, FLAMME_BAS, FLAMME_HAUT) * fondu
+
+
 def reechantillonne(arr, taille):
     """Réduction en moyenne de surface (BOX) ; arr (H, W) ou (H, W, C), float."""
     if arr.ndim == 2:
         plan = np.ascontiguousarray(arr, dtype=np.float32)
         return np.asarray(Image.fromarray(plan, mode='F').resize(taille, Image.BOX))
     return np.stack([reechantillonne(arr[..., c], taille) for c in range(arr.shape[2])], axis=-1)
-
-
-def agrandit(arr, taille):
-    """Agrandissement bicubique ; arr (H, W) ou (H, W, C), float."""
-    if arr.ndim == 2:
-        plan = np.ascontiguousarray(arr, dtype=np.float32)
-        return np.asarray(Image.fromarray(plan, mode='F').resize(taille, Image.BICUBIC))
-    return np.stack([agrandit(arr[..., c], taille) for c in range(arr.shape[2])], axis=-1)
 
 
 def flou(arr, sigma, mode):
@@ -169,6 +162,25 @@ def en_scene(boite_cuite, origine):
             'w': round((x1 - x0) / CUISSON, 2), 'h': round((y1 - y0) / CUISSON, 2)}
 
 
+def flamme_photo():
+    """La flamme de la photo, détourée, sur le canevas (px cuits pour une flamme debout), et son pivot."""
+    with open(ORIG, 'rb') as f:
+        if hashlib.sha256(f.read()).hexdigest() != SHA256:
+            raise SystemExit(f'sha256 inattendu pour {ORIG}')
+    im = Image.open(ORIG).convert('RGB')
+    assert im.size == (SRC_W, SRC_H), im.size
+    src = np.asarray(im, dtype=np.float32)[Y0:Y1, X0:X1]
+    yv = np.arange(Y0, Y1, dtype=np.float32)
+    taille = (round((X1 - X0) * ECHELLE_PHOTO * CUISSON), round((Y1 - Y0) * ECHELLE_PHOTO * CUISSON))
+    mf = masque_flamme(src, yv)
+    pm = reechantillonne(src * mf[..., None], taille)
+    a = reechantillonne(mf, taille)
+    rgb, a = flou_premultiplie(pm, a, FLOU_FLAMME * CUISSON, 'constant')
+    pivot = ((MECHE[0] - X0) * ECHELLE_PHOTO * CUISSON, (MECHE[1] - Y0) * ECHELLE_PHOTO * CUISSON)
+    sommet = ((MECHE[1] - 130) * ECHELLE_PHOTO * CUISSON)   # longueur debout, mèche → pointe (px cuits)
+    return rgb, a, pivot, sommet
+
+
 def perspective(rgb, alpha, pivot, angle, sx, sy, cote=320):
     """Met la flamme en perspective : échelle (sx en travers, sy le long), puis rotation (degrés, sens
     horaire, comme CSS) autour du pivot. Sortie : carré de `cote` px cuits, pivot au centre."""
@@ -206,98 +218,7 @@ def planche_goutte(dossier, n):
     return rgb, al, w, h, total, lignes
 
 
-def decode_video(debut, n):
-    """n images de la zone de la flamme, à VIDEO_FPS, à partir de l'image `debut` : (n, H, W, 3) float."""
-    x, y, w, h = VIDEO_ZONE
-    cmd = ['ffmpeg', '-v', 'error', '-ss', f'{debut / VIDEO_FPS:.6f}', '-i', VIDEO, '-frames:v', str(n),
-           '-vf', f'fps={VIDEO_FPS},crop={w}:{h}:{x}:{y}', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-']
-    brut = subprocess.run(cmd, capture_output=True, check=True).stdout
-    if len(brut) != n * h * w * 3:
-        raise SystemExit(f'ffmpeg : {len(brut) // (h * w * 3)} images au lieu de {n}')
-    return np.frombuffer(brut, np.uint8).reshape(n, h, w, 3).astype(np.float32)
-
-
-def luminance(rgb):
-    return 0.2126 * rgb[..., 0] + 0.7152 * rgb[..., 1] + 0.0722 * rgb[..., 2]
-
-
-def clef_flamme(lum, cire, yv):
-    """Flamme (0 à 1) sur la zone : sur le fond sombre, par la luminance ; sur la cire, statique, par son
-    écart au 20e centile temporel (la cire ne bouge pas, la flamme oui) ; la mèche s'éteint en dessous."""
-    haut = marche(lum, *VIDEO_CLE)
-    bas = np.maximum(marche(lum - cire, *VIDEO_CIRE), marche(lum, 235, 248))   # le cœur saturé reste plein
-    w_cire = marche(yv, *VIDEO_CIRE_RANGS)[:, None]
-    fondu = 1 - marche(yv, *VIDEO_PIED_FONDU)[:, None]
-    return (w_cire * bas + (1 - w_cire) * haut) * fondu
-
-
-def teinte(lum):
-    """Couleur de la flamme, selon sa luminance (la vidéo est blanche et saturée)."""
-    t = np.clip((lum - 40) / 200, 0, 1)
-    return np.stack([np.interp(t, VIDEO_TEINTE_T, VIDEO_TEINTE[:, k]) for k in range(3)], axis=-1)
-
-
-def planche_flamme(rep):
-    """La boucle de la flamme : détourée image par image, mise en perspective comme l'ancienne photo
-    (même angle, même échelle en travers, même raccourci), puis rangée dans une planche en grille.
-    Renvoie la planche (rgb, alpha), la boîte de l'image dans son canevas, et les listes par image."""
-    x, y, w, h = VIDEO_ZONE
-    n, f = VIDEO_IMAGES, VIDEO_FONDU
-    brut = decode_video(VIDEO_DEBUT_IMAGE, n + f)
-    cire = np.percentile(luminance(brut), 20, axis=0)
-    # boucle sans raccord : les f dernières images se fondent sur les f premières
-    boucle = brut[:n].copy()
-    for i in range(f):
-        k = (i + 0.5) / f
-        boucle[i] = (1 - k) * brut[n + i] + k * brut[i]
-    yv = np.arange(h, dtype=np.float32)
-    kv = LONGUEUR_FLAMME_CUITE / VIDEO_LONGUEUR           # px cuits par px vidéo
-    taille = (round(w * kv), round(h * kv))
-    vx = rep['flamme_pointe'][0] - rep['meche'][0]
-    vy = rep['flamme_pointe'][1] - rep['meche'][1]
-    angle = math.degrees(math.atan2(vx, -vy))              # 0 = debout ; sens horaire
-    sy = max(FLAMME_RACCOURCI_MIN, math.hypot(vx, vy) * CUISSON / LONGUEUR_FLAMME_CUITE)
-    pivot = (VIDEO_PIED[0] * kv, VIDEO_PIED[1] * kv)
-    images, luminosites, hauteurs = [], [], []
-    for i in range(n):
-        lum = luminance(boucle[i])
-        a = clef_flamme(lum, cire, yv)
-        luminosites.append(float((lum * a).sum()))          # lumière émise : surface × éclat
-        rangees = np.nonzero(a.max(axis=1) > 0.5)[0]
-        hauteurs.append(VIDEO_PIED[1] - (rangees.min() if rangees.size else VIDEO_PIED[1]))
-        # la pointe est plus sombre que le pied : elle passe à l'orangé
-        pointe = np.clip((VIDEO_PIED[1] - yv) / VIDEO_LONGUEUR, 0, 1)[:, None]
-        pm = agrandit(teinte(lum * (1 - 0.25 * pointe * pointe)) * a[..., None], taille)
-        al = np.clip(agrandit(a, taille), 0, 1)
-        rgb, al = flou_premultiplie(pm, al, FLOU_FLAMME * CUISSON, 'constant')
-        images.append(perspective(rgb, al, pivot, angle, FLAMME_LARGEUR, sy))
-    # une seule boîte pour toute la planche : chaque image y occupe la même case
-    cote = images[0][0].shape[0]
-    union = np.max(np.stack([a for _, a in images]), axis=0)
-    b = boite_alpha(union, 1 / 255, 6)
-    lu = np.array(luminosites)
-    ha = np.array(hauteurs, np.float64)
-    colonnes = COLONNES_GOUTTE
-    lignes = math.ceil(n / colonnes)
-    cw, ch = b[2] - b[0], b[3] - b[1]
-    prgb = np.zeros((lignes * ch, colonnes * cw, 3), np.float32)
-    pal = np.zeros((lignes * ch, colonnes * cw), np.float32)
-    for i, (r, a) in enumerate(images):
-        yy, xx = (i // colonnes) * ch, (i % colonnes) * cw
-        prgb[yy:yy + ch, xx:xx + cw] = r[b[1]:b[3], b[0]:b[2]]
-        pal[yy:yy + ch, xx:xx + cw] = a[b[1]:b[3], b[0]:b[2]]
-    return {
-        'rgb': prgb, 'alpha': pal, 'boite': b, 'cote': cote, 'colonnes': colonnes, 'lignes': lignes, 'images': n,
-        'luminosites': [round(v, 3) for v in (lu / lu.mean())],
-        'hauteurs': [round(v, 3) for v in (ha / ha.mean())],
-        'hauteur_brute': round(float(ha.mean()), 2),
-    }
-
-
 def main():
-    with open(VIDEO, 'rb') as f:
-        if hashlib.sha256(f.read()).hexdigest() != SHA256_VIDEO:
-            raise SystemExit(f'sha256 inattendu pour {VIDEO}')
     rep = json.load(open(os.path.join(RENDU, 'reperes.json')))
     os.makedirs(OUT, exist_ok=True)
     geo = {'cuisson': CUISSON}
@@ -334,18 +255,22 @@ def main():
                                'h': round(h / CUISSON, 2), 'colonnes': COLONNES_GOUTTE, 'lignes': lignes,
                                'images': total, 'parSeconde': IMAGES_PAR_SECONDE})
 
-    # 4. la flamme : la boucle vidéo, détourée et mise en perspective, en planche (une image par case)
-    fl = planche_flamme(rep)
-    vers_webp(fl['rgb'], fl['alpha'], os.path.join(OUT, 'flamme.webp'))
+    # 4. la flamme de secours, mise en perspective : de la mèche vers la pointe projetée (la toile de la
+    #    flamme WebGL, « flamme », est posée une fois la bougie déplacée)
+    geo['flamme'] = {}
+    rgb, a, pivot, longueur = flamme_photo()
     mx, my = rep['meche']
-    origine = (mx - fl['cote'] / 2 / CUISSON, my - fl['cote'] / 2 / CUISSON)
-    f = en_scene(fl['boite'], origine)
-    bx0_, by0_, bx1_, by1_ = fl['boite']
-    f['pivot'] = [round((fl['cote'] / 2 - bx0_) / (bx1_ - bx0_) * 100, 2),
-                  round((fl['cote'] / 2 - by0_) / (by1_ - by0_) * 100, 2)]
-    f.update({'colonnes': fl['colonnes'], 'lignes': fl['lignes'], 'images': fl['images'],
-              'parSeconde': VIDEO_FPS, 'luminosites': fl['luminosites'], 'hauteurs': fl['hauteurs']})
-    geo['flamme'] = f
+    px, py = rep['flamme_pointe']
+    vx, vy = px - mx, py - my
+    angle = math.degrees(math.atan2(vx, -vy))            # 0 = debout ; sens horaire
+    sy = max(FLAMME_RACCOURCI_MIN, math.hypot(vx, vy) * CUISSON / longueur)
+    rgb, a = perspective(rgb, a, pivot, angle, FLAMME_LARGEUR, sy)
+    b = boite_alpha(a, 1 / 255, 6)
+    cote = a.shape[0]
+    vers_webp(rgb[b[1]:b[3], b[0]:b[2]], a[b[1]:b[3], b[0]:b[2]], os.path.join(OUT, 'flamme-fixe.webp'))
+    f = en_scene(b, (mx - cote / 2 / CUISSON, my - cote / 2 / CUISSON))
+    f['pivot'] = [round((cote / 2 - b[0]) / (b[2] - b[0]) * 100, 2), round((cote / 2 - b[1]) / (b[3] - b[1]) * 100, 2)]
+    geo['flammeFixe'] = f
 
     # 5. le halo, centré sur le milieu de la flamme
     hw, hh = round(HALO_SCENE[0] * CUISSON), round(HALO_SCENE[1] * CUISSON)
@@ -358,13 +283,20 @@ def main():
     # la bougie est posée ailleurs sur la table, un peu plus petite : ses calques, sa lueur et son ombre
     # suivent d'un bloc, réduits autour du pied (les pixels ne changent pas, seule la géométrie bouge)
     px, py = rep['pied']
-    for calque in [geo['cire'], geo['ombre'], geo['flamme'], geo['halo'], *geo['gouttes']]:
+    for calque in [geo['cire'], geo['ombre'], geo['flammeFixe'], geo['halo'], *geo['gouttes']]:
         calque['x'] = round(px + (calque['x'] - px) * TAILLE + DECALAGE[0], 2)
         calque['y'] = round(py + (calque['y'] - py) * TAILLE + DECALAGE[1], 2)
         calque['w'] = round(calque['w'] * TAILLE, 2)
         calque['h'] = round(calque['h'] * TAILLE, 2)
+    # la toile de la flamme WebGL : autour de la mèche déplacée ; la mèche (px de scène) et sa hauteur (cm)
+    mx = round(px + (rep['meche'][0] - px) * TAILLE + DECALAGE[0], 2)
+    my = round(py + (rep['meche'][1] - py) * TAILLE + DECALAGE[1], 2)
+    g, h, d, b = TOILE_FLAMME
+    geo['flamme'] = {'x': round(mx - g, 2), 'y': round(my - h, 2), 'w': g + d, 'h': h + b,
+                     'meche': [mx, my], 'z': round(MECHE_Z * TAILLE, 2)}
 
-    for vieux in ('bougie.webp',):
+    # la planche vidéo de la flamme (v6) n'est plus utilisée : la flamme est rendue en WebGL
+    for vieux in ('bougie.webp', 'flamme.webp'):
         p = os.path.join(OUT, vieux)
         if os.path.exists(p):
             os.remove(p)
@@ -374,10 +306,7 @@ def main():
     for nom in sorted(os.listdir(OUT)):
         chemin = os.path.join(OUT, nom)
         print(f'{os.path.relpath(chemin, ROOT)} {Image.open(chemin).size} {os.path.getsize(chemin) // 1024} Ko')
-    print(f"flamme : longueur vidéo {fl['hauteur_brute']} px (pour {VIDEO_LONGUEUR}), "
-          f"{fl['images']} images, {fl['colonnes']} colonnes × {fl['lignes']} lignes")
-    print(json.dumps({k: v for k, v in geo.items() if k != 'flamme'}, ensure_ascii=False))
-    print(json.dumps({k: v for k, v in geo['flamme'].items() if k not in ('luminosites', 'hauteurs')}, ensure_ascii=False))
+    print(json.dumps(geo, ensure_ascii=False))
 
 
 if __name__ == '__main__':
