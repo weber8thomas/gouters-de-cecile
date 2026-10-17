@@ -75,7 +75,7 @@ const FEU: Feu = {
 };
 
 /**
- * La flamme de la bougie (éclat × étirement, ≈ 0,85 à 1,07 ; 1 au repos), posée à chaque image par
+ * La flamme de la bougie (éclat × étirement × luminosité de l'image, ≈ 0,85 à 1,07 ; 1 au repos), posée à chaque image par
  * Bougie.tsx : l'éclairage tracé (Lumiere.tsx) y règle la lumière de la bougie sur le livre.
  */
 export const flammeBougie: MotionValue<number> = motionValue(1);

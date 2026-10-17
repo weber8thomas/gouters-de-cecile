@@ -1,28 +1,41 @@
 {
-  "description": "Bougie du carnet (composant Bougie, v5) : la cire (corps, coulures, flaque au pied, gouttes qui coulent, ombre) est un rendu 3D fait ici (scripts/bougie3d/scene.py, Blender, aucune source tierce). Seule la flamme vient d'une vraie photo de bougie allumée, détourée puis mise en perspective par scripts/bake-bougie.py. Original de la photo hors dépôt dans verification/out/v5-bougie2/originaux/ (vérifié par sha256).",
+  "description": "Bougie du carnet (composant Bougie, v6) : la cire (corps, coulures, flaque au pied, gouttes qui coulent, ombre) est un rendu 3D fait ici (scripts/bougie3d/scene.py, Blender, aucune source tierce). La flamme est la boucle d'une vraie flamme de bougie filmée (vidéo du domaine public, CC0), détourée, teintée et mise en perspective par scripts/bake-bougie.py. Original de la vidéo hors dépôt dans verification/out/bougie2/originaux/ (vérifié par sha256). La photo de la flamme de la v5 (Pexels) n'est plus utilisée.",
   "licence": {
-    "nom": "Licence Pexels (« Free Stock Photo & Video License »)",
-    "url": "https://www.pexels.com/license/",
+    "nom": "Creative Commons CC0 1.0 (domaine public) pour la vidéo ; Licence Pexels pour la photo retirée",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/deed.fr",
     "verifiee": "2026-10-17",
-    "methode": "page de licence lue le 2026-10-17 ; page de la photo lue le 2026-10-17 (mention « Free », auteur, dimensions, URL du fichier)",
-    "permis": "Gratuit, sans attribution obligatoire, modification permise ; interdit : vendre une copie non modifiée, revente sur une autre plateforme de photos, usage de marque ou de nom commercial, personne identifiable présentée de façon défavorable.",
-    "notre_usage": "Flamme de la photo seule, modifiée (détourage, mise en perspective vue d'en haut, assombrissement, cuisson en calque) et intégrée à une œuvre (carnet en ligne). Aucune copie vendue, aucun usage de marque."
+    "methode": "page du fichier lue le 2026-10-17 (https://commons.wikimedia.org/wiki/File:White_candle_video.webm) : licence CC0 1.0, auteur, source « Own work », date du 18 janvier 2021, dimensions 800 × 600, durée 42 s, sha256 du fichier calculé sur l'original téléchargé.",
+    "permis": "Domaine public (CC0) : usage libre, modification et usage commercial permis, sans attribution obligatoire.",
+    "notre_usage": "Une boucle de 3 s (72 images) tirée de la vidéo : zone de la flamme seule, détourée sur fond statique, teintée, mise en perspective vue d'en haut et cuite en planche. Aucune copie non modifiée."
   },
-  "photos": [
+  "videos": [
+    {
+      "id": "bougie-commons-white-candle-video",
+      "titre": "White candle burning (File:White candle video.webm)",
+      "auteur": "Jahobr",
+      "page": "https://commons.wikimedia.org/wiki/File:White_candle_video.webm",
+      "fichier": "White_candle_video.webm",
+      "fichier_source": "https://upload.wikimedia.org/wikipedia/commons/1/17/White_candle_video.webm",
+      "dimensions": "800 × 600, 30 i/s, 42 s",
+      "sha256": "7b78a3e8ddd95f3a6ee8d7abda1da589d67234b17774eebe1f81c4b4ad504636",
+      "licence": "cc0",
+      "choix": "bougie crème à flamme blanche, vue de côté, caméra fixe, fond noir ; une seule flamme. Fenêtre retenue : images 286 à 358 (11,9 s à 14,9 s), celle où la flamme bouge le moins parmi les fenêtres de 3,5 s de la vidéo. Autres candidats de la même série : Pink candle burning.webm (CC0, 720 × 720, flamme bleutée à la base), Blue candle burning.webm (CC0, 600 × 400, flamme plus violette)."
+    }
+  ],
+  "photos_retirees": [
     {
       "id": "bougie-pexels-9299394",
       "titre": "Lighted Candle in Close-up Photography",
       "auteur": "Numan Gilgil",
       "page": "https://www.pexels.com/photo/lighted-candle-in-close-up-photography-9299394/",
       "fichier": "pexels-9299394.jpeg",
-      "dimensions": "4272 × 2848",
       "sha256": "a88c958b0677589e33d038777566782ecb6b245179a6629cfe3d3563a1f0e1d2",
       "licence": "pexels",
-      "choix": "une seule bougie crème allumée, flamme nette et haute, fond brun-noir, base coupée par le bord bas du cadre ; retenue sur trois candidats (Pexels 7233184, bougie vue de dessus en gros plan, corps occupant tout le cadre ; Unsplash KkqnhL3HjtA, bougie plus étroite et plus sombre ; Unsplash MReCvBJOjdM, groupe de bougies fondues)."
+      "remarque": "Flamme de la v5, remplacée par la boucle vidéo ci-dessus (v6). Le fichier n'est plus cuit ; sa licence reste notée ici."
     }
   ],
   "cuisson": {
-    "script": "scripts/bake-bougie.py (à partir du rendu de scripts/bougie3d/scene.py)",
+    "script": "scripts/bake-bougie.py (à partir du rendu de scripts/bougie3d/scene.py et de la vidéo ci-dessus)",
     "sorties": [
       "design-system/baked/bougie/cire.webp",
       "design-system/baked/bougie/cire-vive.webp",
@@ -32,6 +45,6 @@
       "design-system/baked/bougie/flamme.webp",
       "design-system/baked/bougie/halo.webp"
     ],
-    "remarque": "Cire, ombre et gouttes : rendu 3D original. Flamme : la photo ci-dessus. Halo : une lueur chaude dessinée par le script à partir de la position de la flamme."
+    "remarque": "Cire, ombre et gouttes : rendu 3D original. Flamme : planche de 72 images (8 × 9 cases) tirée de la vidéo, avec sa luminosité et sa hauteur relatives par image (geometrie.json). Halo : une lueur chaude dessinée par le script à partir de la position de la flamme."
   }
 }

@@ -30,6 +30,11 @@
   will-change: opacity, transform;
 }
 
+/* La flamme est un cadre : une fenêtre sur la planche de sa boucle, qui défile par paliers (Bougie.tsx). */
+.gc-bougie__flamme {
+  overflow: hidden;
+}
+
 /* ---- Les gouttes : une fenêtre sur la planche des images, qui défile par paliers (Bougie.tsx). ---- */
 .gc-bougie__goutte {
   position: absolute;

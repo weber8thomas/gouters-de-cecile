@@ -23,16 +23,18 @@ export interface BougieProps {
 // la cire (flamme basse), la cire éclairée (flamme haute, fondue au rythme de la flamme : la cire vit avec
 // elle), les gouttes de cire liquide qui coulent le long de deux coulures, la flamme. Tout passe par
 // transform et opacity : la flamme, la lueur, la cire éclairée et l'ombre suivent le feu (src/lib/feu.ts) ;
-// les gouttes sont des planches d'images qu'une animation Web (transform, par paliers) fait défiler. Aucun
-// filtre à l'exécution.
+// les gouttes et la flamme sont des planches d'images qu'une animation Web (transform, par paliers) fait
+// défiler. Aucun filtre à l'exécution.
 //
-// La flamme vit en plus par elle-même (balancement lent, étirements, petits sauts au hasard) et répond à la
-// main : un passage rapide près d'elle la couche dans le sens du mouvement, elle vacille puis se redresse
-// (un ressort amorti, poussé par la vitesse du pointeur projetée sur la normale de la flamme).
+// La flamme est la boucle d'une vraie flamme filmée (vidéo libre, détourée et mise en perspective à la
+// cuisson) : elle porte le mouvement (frémissement, balancement, vacillement). L'application n'y ajoute
+// qu'une retouche légère, et la main : un passage rapide près d'elle la couche dans le sens du mouvement,
+// elle vacille puis se redresse (un ressort amorti, poussé par la vitesse du pointeur projetée sur la normale
+// de la flamme). La lumière tracée suit la luminosité de l'image en cours, et la lueur sur la table sa hauteur.
 //
-// Mouvement réduit (système ou réglage) ou réglage feu: false : tout est immobile (flamme fixe, aucune goutte).
-// Rien ne capte le pointeur : on écoute seulement ses mouvements (src/lib/pointeur.ts). Sur téléphone en
-// portrait, le CSS ne garde que la lueur.
+// Mouvement réduit (système ou réglage) ou réglage feu: false : tout est immobile (flamme fixe, première
+// image de la boucle, aucune goutte). Rien ne capte le pointeur : on écoute seulement ses mouvements
+// (src/lib/pointeur.ts). Sur téléphone en portrait, le CSS ne garde que la lueur.
 
 const borne = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 const r3 = (v: number) => Math.round(v * 1e3) / 1e3;
@@ -47,16 +49,28 @@ const AMORTI = 6;
 const POUSSEE = 2.6; // (°/s²) par px/s de vent, au contact : un passage à 1000 px/s la couche d'environ 20°
 const PENCHE_MAX = 35;
 
-/** Balancement, étirement et opacité propres de la flamme, et sa réponse au vent de la main. */
-function useFlammeVivante(el: React.RefObject<HTMLElement | null>, fixe: boolean) {
+// La boucle de la flamme : une case par image, lue à parSeconde. Sa luminosité et sa hauteur relatives
+// (moyenne 1) sont cuites avec la planche (scripts/bake-bougie.py).
+const FLAMME = geo.flamme;
+const DUREE_FLAMME = (FLAMME.images * 1000) / FLAMME.parSeconde;
+// La lumière tracée suit l'éclat de l'image, amorti : ±8 % d'éclat donne ±5 % de lumière.
+const POIDS_LUMIERE = 0.6;
+
+const positionImage = (g: { colonnes: number; w: number; h: number }, i: number) =>
+  `translate(${-(i % g.colonnes) * g.w}px, ${-Math.floor(i / g.colonnes) * g.h}px)`;
+
+/** Retouche de la flamme (balancement et étirement, discrets : la vidéo porte le mouvement), réponse au vent de la main, et lecture de l'image en cours. */
+function useFlammeVivante(el: React.RefObject<HTMLElement | null>, fixe: boolean, anim: React.MutableRefObject<Animation | null>) {
   const penche = useMotionValue(0);
   const etire = useMotionValue(1);
   const eclat = useMotionValue(1);
+  const hauteur = useMotionValue(1);
   React.useEffect(() => {
     if (fixe) {
       penche.set(0);
       etire.set(1);
       eclat.set(1);
+      hauteur.set(1);
       flammeBougie.set(1);
       return;
     }
@@ -69,6 +83,7 @@ function useFlammeVivante(el: React.RefObject<HTMLElement | null>, fixe: boolean
     let lue = 0;
     let vu = 0;
     let avant = performance.now();
+    let image = -1; // image de la boucle, dernière lue
     let raf = 0;
     const desab = ecouterPointeur((p) => {
       const node = el.current;
@@ -90,7 +105,7 @@ function useFlammeVivante(el: React.RefObject<HTMLElement | null>, fixe: boolean
       om += POUSSEE * prox * prox * (p.vx * NORMALE[0] + p.vy * NORMALE[1]) * dt;
       trouble = Math.min(1, trouble + 3 * prox * ((p.vx * p.vx + p.vy * p.vy) / 1e6) * dt);
     });
-    const image = () => {
+    const pas = () => {
       const now = performance.now();
       const dt = Math.min(0.05, (now - avant) / 1000);
       avant = now;
@@ -99,25 +114,34 @@ function useFlammeVivante(el: React.RefObject<HTMLElement | null>, fixe: boolean
       trouble *= Math.exp(-2.5 * dt);
       saut *= Math.exp(-14 * dt);
       if (now > prochainSaut) {
-        saut = 0.07 + Math.random() * 0.07;
+        saut = 0.03 + Math.random() * 0.03;
         prochainSaut = now + 1800 + Math.random() * 4500;
       }
       const t = now / 1000;
-      const balance = 2.6 * Math.sin(1.3 * t) + 1.5 * Math.sin(2.9 * t + 1) + 0.7 * Math.sin(7.1 * t + 2);
+      const balance = 0.6 * Math.sin(1.3 * t) + 0.3 * Math.sin(2.9 * t + 1);
       const vacille = trouble * (5 * Math.sin(23 * t) + 3 * Math.sin(37 * t + 1));
       penche.set(r2(balance + th + vacille));
-      etire.set(r3(1 + 0.045 * Math.sin(3.7 * t) + 0.025 * Math.sin(9.3 * t + 0.5) - saut - 0.16 * trouble + 0.05 * trouble * Math.sin(29 * t)));
+      etire.set(r3(1 + 0.012 * Math.sin(3.7 * t) - saut - 0.16 * trouble + 0.05 * trouble * Math.sin(29 * t)));
       eclat.set(r3(1 - 0.5 * saut - 0.28 * trouble * (0.6 + 0.4 * Math.sin(31 * t))));
-      flammeBougie.set(r3(eclat.get() * etire.get()));
-      raf = requestAnimationFrame(image);
+      // l'image de la boucle en cours : sa lumière règle la lumière tracée, sa hauteur la lueur sur la table
+      const a = anim.current;
+      const temps = a && typeof a.currentTime === 'number' ? a.currentTime : 0;
+      const i = Math.floor(((temps % DUREE_FLAMME) * FLAMME.parSeconde) / 1000) % FLAMME.images;
+      if (i !== image) {
+        image = i;
+        hauteur.set(FLAMME.hauteurs[i] ?? 1);
+      }
+      const lum = FLAMME.luminosites[i] ?? 1;
+      flammeBougie.set(r3(eclat.get() * etire.get() * (1 + POIDS_LUMIERE * (lum - 1))));
+      raf = requestAnimationFrame(pas);
     };
-    raf = requestAnimationFrame(image);
+    raf = requestAnimationFrame(pas);
     return () => {
       desab();
       cancelAnimationFrame(raf);
     };
-  }, [el, fixe, penche, etire, eclat]);
-  return { penche, etire, eclat };
+  }, [el, fixe, anim, penche, etire, eclat, hauteur]);
+  return { penche, etire, eclat, hauteur };
 }
 
 type Boite = { x: number; y: number; w: number; h: number };
@@ -175,7 +199,26 @@ export function Bougie({ className }: BougieProps) {
   const fixeRef = React.useRef(false);
   fixeRef.current = fixe;
   const flamme = React.useRef<HTMLDivElement>(null);
-  const vive = useFlammeVivante(flamme, fixe);
+  const feuilleFlamme = React.useRef<HTMLDivElement>(null);
+  const animFlamme = React.useRef<Animation | null>(null);
+  const vive = useFlammeVivante(flamme, fixe, animFlamme);
+
+  // La boucle de la flamme : une animation Web par paliers (transform seulement), une case par image.
+  React.useEffect(() => {
+    const el = feuilleFlamme.current;
+    if (fixe || !el || typeof el.animate !== 'function') return;
+    const images: Keyframe[] = [];
+    for (let i = 0; i < FLAMME.images; i++) {
+      images.push({ offset: i / FLAMME.images, transform: positionImage(FLAMME, i), easing: 'steps(1, end)' });
+    }
+    images.push({ offset: 1, transform: positionImage(FLAMME, 0) });
+    const a = el.animate(images, { duration: DUREE_FLAMME, iterations: Infinity });
+    animFlamme.current = a;
+    return () => {
+      a.cancel();
+      animFlamme.current = null;
+    };
+  }, [fixe]);
 
   const intensite = useTransform(feu.intensite, (i) => (fixeRef.current ? 1 : i));
   const dx = useTransform(feu.dx, (v) => (fixeRef.current ? 0 : v));
@@ -189,9 +232,9 @@ export function Bougie({ className }: BougieProps) {
   const eclatFlamme = useTransform([opaciteFlamme, vive.eclat], ([a, b]: number[]) => r3(a * b));
   // La cire s'éclaire quand la flamme monte (fondu entre la cire à flamme basse et à flamme haute).
   const opaciteVive = useTransform(intensite, (i) => r3(borne(0.45 + 0.55 * (i - 1), 0.12, 0.9)));
-  // Lueur sur la table : elle suit l'intensité et glisse à peine avec la source.
+  // Lueur sur la table : elle suit l'intensité, grandit un peu avec la hauteur de la flamme et glisse à peine avec la source.
   const opaciteHalo = useTransform([intensite, vive.eclat], ([i, e]: number[]) => r3(borne(0.8 + 0.4 * (i - 1), 0.5, 1.15) * (0.55 + 0.45 * e)));
-  const echelleHalo = useTransform(intensite, (i) => r3(borne(1 + 0.05 * (i - 1), 0.96, 1.04)));
+  const echelleHalo = useTransform([intensite, vive.hauteur], ([i, h]: number[]) => r3(borne(1 + 0.05 * (i - 1), 0.96, 1.04) * (1 + 0.5 * (h - 1))));
   const glisseX = useTransform(dx, (v) => r2(borne(0.4 * v, -9, 9)));
   // Ombre de la cheminée : plus dense quand le feu flambe, elle bouge à l'opposé de la source.
   const opaciteOmbre = useTransform(intensite, (i) => r3(borne(0.34 + 0.22 * (i - 1), 0.2, 0.5)));
@@ -227,14 +270,24 @@ export function Bougie({ className }: BougieProps) {
           className="gc-bougie__flamme gc-bougie__pose"
           data-gc-bougie="flamme"
           style={{
-            ...place(geo.flamme),
-            backgroundImage: cssUrl('bougie/flamme'),
-            transformOrigin: `${geo.flamme.pivot[0]}% ${geo.flamme.pivot[1]}%`,
+            ...place(FLAMME),
+            transformOrigin: `${FLAMME.pivot[0]}% ${FLAMME.pivot[1]}%`,
             opacity: eclatFlamme,
             scale: etirementFlamme,
             rotate: rotationFlamme,
           }}
-        />
+        >
+          <div
+            ref={feuilleFlamme}
+            className="gc-bougie__feuille"
+            style={{
+              width: FLAMME.w * FLAMME.colonnes,
+              height: FLAMME.h * FLAMME.lignes,
+              backgroundImage: cssUrl('bougie/flamme'),
+              transform: positionImage(FLAMME, 0),
+            }}
+          />
+        </m.div>
       </div>
     </LazyMotion>
   );

@@ -119,7 +119,7 @@ function LumiereTracee() {
   const { intensite } = useFeu();
   // feu : part de la cheminée 0,8 + 0,5 (i − 1), entre 0,6 et 1 ; le voile noir vaut sa baisse à 0,6
   const feuOp = useTransform(intensite, (i) => r4(borne((0.2 - 0.5 * (i - 1)) / 0.4, 0, 1)));
-  // bougie : son éclat (flamme × étirement, ≈ 0,85 à 1,07) ; le voile noir vaut sa baisse à la moitié
+  // bougie : son éclat (éclat × étirement × luminosité de l'image, ≈ 0,85 à 1,07) ; le voile noir vaut sa baisse à la moitié
   const bougieOp = useTransform(flammeBougie, (v) => r4(borne((1.06 - v) / 0.5, 0, 1)));
   const { marge, w, h, bords } = tracee as { marge: number; w: number; h: number; bords: Record<string, number[]> };
   const boite = { left: -marge, top: -marge, width: w, height: h };
