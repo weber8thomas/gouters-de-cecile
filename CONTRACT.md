@@ -160,7 +160,7 @@ Personne ne modifie `src/index.ts`.
 - Glyphes présents dans la police.
 - Contraste mesuré sur les pixels réels du papier.
 - Écrins : alignement du masque, test magenta, transparence.
-- Mouvement : aucun recalcul de mise en page pendant un geste, 40 calques au plus.
+- Mouvement : aucun recalcul de mise en page pendant un geste, 44 calques au plus. Le plafond était de 40 ; la scène en compte 36 sans lumière, le feu en ajoute 4 et la bougie 4 (deux calques animés, et la cire qui les recouvre). Sur un téléphone en portrait, la bougie est cachée, il ne reste que sa lueur.
 
 ## 11. Tous les écrans : téléphone, tablette, ordinateur, TV
 

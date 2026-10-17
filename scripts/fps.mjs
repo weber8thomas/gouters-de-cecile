@@ -10,7 +10,7 @@
 //      (--disable-gpu : sous SwiftShader, la capture ne suit pas le mouvement) ;
 //   4. captures figées à mi-geste (banc harness/motion.html, scénario pose).
 // Exigences (CONTRACT § 10, plan v3), en KO pour turn, open, turn-photo et envol, en INFO ailleurs :
-//   0 Layout et ≤ 2 Paint pendant le geste, transform / opacity seulement, ≤ 40 calques.
+//   0 Layout et ≤ 2 Paint pendant le geste, transform / opacity seulement, ≤ 44 calques (PLAFOND_CALQUES).
 //   Les Paint d'une vidéo qui joue (nœud VIDEO, et autant de Paint de la racine du document) sont
 //   comptés à part : en rendu logiciel, chaque image de la vidéo est un Paint, sans rapport avec l'envol.
 // Bornes du geste : les événements « gc-livre-geste » du livre ; pour l'envol (pas d'événement
@@ -43,6 +43,9 @@ import { chromium } from 'playwright';
 import { existsSync, mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { serve, ROOT, lireArgs, Rapport, rectDe, attendrePret, bundleParDefaut, rel, cdpDe } from './lib/verif.mjs';
+
+// Plafond de calques composités pendant un geste (CONTRACT § 10) : 36 sans lumière, + 4 feu, + 4 bougie.
+const PLAFOND_CALQUES = 44;
 
 const { opt, drapeau, liste } = lireArgs();
 const scenarios = liste('scenarios', 'turn,open,camera,zoom,reduit');
@@ -649,7 +652,7 @@ for (const nom of scenarios) {
     R.ajouter(nom, 'arrive sur la double page de Bernard', surBernard(r.arrivee.spreads) ? 'OK' : 'KO', `double ${r.arrivee.double} (${r.arrivee.spreads.join(', ')}) ${r.arrivee.hash}`);
     R.ajouter(nom, '0 Layout pendant la séquence', g.Layout === 0 ? 'OK' : 'KO', `${g.Layout}${g.Layout ? ` (à ${g.LayoutA_ms.join(', ')} ms)` : ''}`);
     R.ajouter(nom, '≤ 2 Paint pendant la séquence', g.Paint <= 2 ? 'OK' : 'KO', `${g.Paint}${g.Paint ? ` (à ${g.PaintA_ms.join(', ')} ms)` : ''}`);
-    R.ajouter(nom, '≤ 40 calques', r.calquesMax <= 40 ? 'OK' : 'KO', `${r.calquesMax} (dont ${r.calquesDessinesMax} dessinés)`);
+    R.ajouter(nom, `≤ ${PLAFOND_CALQUES} calques`, r.calquesMax <= PLAFOND_CALQUES ? 'OK' : 'KO', `${r.calquesMax} (dont ${r.calquesDessinesMax} dessinés)`);
     R.ajouter(nom, `toucher à 0,5 s : posé en ≤ ${SAUT_MAX_MS} ms`, r.saut.ms != null && r.saut.ms <= SAUT_MAX_MS ? 'OK' : 'KO', `${r.saut.ms} ms`);
     R.ajouter(nom, 'toucher à 0,5 s : sur la double page de Bernard', surBernard(r.saut.spreads) ? 'OK' : 'KO', `double ${r.saut.double} (${r.saut.spreads.join(', ')})`);
     R.info(nom, 'temps de frame', `p50 ${r.frameMs.p50} · p95 ${r.frameMs.p95} · max ${r.frameMs.max} ms · ${r.framesPlusDe25ms} > 25 ms · ${r.frames} images`);
@@ -694,7 +697,7 @@ for (const nom of scenarios) {
   juge('0 Layout pendant le geste', g.Layout === 0, `${g.Layout}${g.Layout ? ` (à ${g.LayoutA_ms.join(', ')} ms)` : ''}`);
   juge('≤ 2 Paint pendant le geste (hors images de la vidéo)', g.PaintHorsVideo <= 2, `${g.PaintHorsVideo}${g.PaintVideo ? ` (+ ${g.Paint - g.PaintHorsVideo} pour la vidéo qui joue)` : ''} · par nœud : ${Object.entries(g.PaintNoeuds).map(([k, v]) => `${k} ${v}`).join(', ') || '—'}`);
   juge('transform / opacity seulement', !g.horsTransformOpacite.length, g.horsTransformOpacite.length ? `aussi : ${g.horsTransformOpacite.join(', ')}` : `${Object.keys(g.proprietes).join(', ') || 'aucune propriété en ligne'}${g.variables.length ? ` (variables : ${g.variables.join(', ')})` : ''}`);
-  juge('≤ 40 calques', r.calquesMax <= 40, `${r.calquesMax} (dont ${r.calquesDessinesMax} dessinés)`);
+  juge(`≤ ${PLAFOND_CALQUES} calques`, r.calquesMax <= PLAFOND_CALQUES, `${r.calquesMax} (dont ${r.calquesDessinesMax} dessinés)`);
   R.info(nom, 'bornes du geste', r.bornes);
   R.info(nom, 'temps de frame', `p50 ${r.frameMs.p50} · p95 ${r.frameMs.p95} · max ${r.frameMs.max} ms · ${r.framesPlusDe25ms} > 25 ms · geste ${r.dureeGesteMs} ms · ${r.frames} images${r.essais > 1 ? ` (${r.essais} essais : machine chargée)` : ''}`);
   if (errs.length) R.ajouter(nom, 'aucune erreur de page', 'KO', errs.slice(0, 3).join(' | '));

@@ -11,7 +11,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { useEcran } from '../Ecran';
 import { partScene, useViewport, type Viewport } from '../../lib/viewport';
-import { useCamera, zoomBornes, ZOOM_STEP } from '../../lib/camera';
+import { CAMERA_DEFAULT, useCamera, zoomBornes, ZOOM_STEP } from '../../lib/camera';
 import type { Distance } from '../../lib/settings';
 import { resetReglages, useReglages, type Reglages as ReglagesValeurs, type Vitesse } from '../../lib/reglages';
 import * as son from '../../lib/son';
@@ -536,10 +536,9 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
 
   const remettre = () => {
     resetReglages();
-    setR(partielAmbiance({ ambiance: null, feu: true })); // (déjà fait par resetReglages quand reglages.ts a ces champs)
     // Comme le carnet : au doigt, le cran par défaut est « proche ».
     camera.setDistance(vp.tactile ? 'proche' : 'moyenne');
-    camera.setZoom(1);
+    camera.setZoom(CAMERA_DEFAULT.zoom);
     reglerLoupe(1);
     setRemis(true);
   };

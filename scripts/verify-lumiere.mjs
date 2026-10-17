@@ -13,7 +13,7 @@
 //   - performance (trace Chrome, CPU ×4) : 5 s au repos, puis un tour de page (→ sur la page du carnet) :
 //     0 Layout et 0 Paint attribuables au feu (Paint sur un calque de lumière, ou écart feu vivant / feu figé),
 //     calques composités en plus dus au feu (≤ 4) et à la bougie (≤ 4), mesurés par CDP LayerTree, lumière retirée par CSS ;
-//     calques pendant un tour de page ≤ 40 (CONTRACT § 10, la bougie compris) ;
+//     calques pendant un tour de page ≤ 44 (CONTRACT § 10, la bougie comprise) ;
 //   - téléphone milieu de gamme émulé (Pixel 7, CPU ×4) : temps de script et cadence, feu vivant / figé ;
 //   - contraste de l'encre d'une page cuite (Julie) : ≥ 90 % du contraste sans voile, sur chaque tuile
 //     de la page qui porte de l'encre, feu figé aux bornes (0,6 et 1,6) et au milieu (1).
@@ -64,7 +64,7 @@ const SANS_BOUGIE = '.gc-bougie { display: none !important; }';
 //  - le feu (bain, ombre, voile, calques du lot L) : 4, budget d'origine (src/components/Stage/README.md) ;
 //  - la bougie (src/components/Bougie) : 4, mesuré (33 calques avec, 29 sans la bougie). Elle a deux calques
 //    animés (halo, flamme : will-change) et en ajoute deux de plus au rendu. Ce budget ne dispense pas du
-//    plafond du CONTRACT § 10 (40 calques pendant un geste), qui est vérifié à part (« calques pendant un tour de page »).
+//    plafond du CONTRACT § 10 (44 calques pendant un geste), qui est vérifié à part (« calques pendant un tour de page »).
 const BUDGET_FEU = 4;
 const BUDGET_BOUGIE = 4;
 const SANS_VOILE = '.gc-lumiere--livre { visibility: hidden !important; }';
@@ -345,7 +345,7 @@ if (tests.has('perf')) {
   R.ok('tv-1080', `calques composités en plus dus à la bougie (repos) ≤ ${BUDGET_BOUGIE}`, delaBougie <= BUDGET_BOUGIE, `${repos.dernier} avec la bougie, ${reposSansBougie.dernier} sans`);
   R.ok('tv-1080', `calques composités en plus dus à la lumière, feu et bougie (repos et tour de page) ≤ ${BUDGET_FEU + BUDGET_BOUGIE}`, enPlus <= BUDGET_FEU + BUDGET_BOUGIE,
     `repos ${repos.dernier} (sans lumière ${reposSans.dernier}) · tour de page max ${tour.max} (sans ${tourSans.max})`);
-  R.ok('tv-1080', 'calques pendant un tour de page ≤ 40 (CONTRACT § 10)', tour.max <= 40, `${tour.max}`);
+  R.ok('tv-1080', 'calques pendant un tour de page ≤ 44 (CONTRACT § 10)', tour.max <= 44, `${tour.max}`);
   await ctx.close();
 }
 
