@@ -1,0 +1,60 @@
+{
+ "main": "soignee",
+ "encre": "plume",
+ "gabarit": "carnet",
+ "id": "titre",
+ "double": "titre",
+ "cote": "droite",
+ "folio": 3,
+ "graine": 301,
+ "marges": {
+  "haut": 0.17
+ },
+ "blocs": [
+  {
+   "id": "titre-1",
+   "type": "titre",
+   "texte": "Les goûters",
+   "echelle": 2.35,
+   "position": "centre",
+   "souligne": "aucun"
+  },
+  {
+   "id": "titre-2",
+   "type": "titre",
+   "texte": "de Cécile",
+   "echelle": 2.35,
+   "position": "decale",
+   "souligne": "trait",
+   "avant": -0.05
+  },
+  {
+   "id": "sous-titre",
+   "type": "titre",
+   "texte": "recettes de goûter offertes par ses amis",
+   "echelle": 0.72,
+   "position": "centre",
+   "souligne": "aucun",
+   "avant": 0.55,
+   "encre": "crayon",
+   "main": "cecile"
+  },
+  {
+   "id": "croquis-titre",
+   "type": "croquis",
+   "nom": [
+    "cupcake",
+    "theiere"
+   ],
+   "taille": [
+    0.27,
+    0.27
+   ],
+   "pres": [
+    0.52,
+    0.7
+   ],
+   "encre": "plume"
+  }
+ ]
+}

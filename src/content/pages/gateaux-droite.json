@@ -1,0 +1,28 @@
+{
+ "main": "soignee",
+ "encre": "plume",
+ "gabarit": "carnet",
+ "id": "gateaux-droite",
+ "double": "gateaux",
+ "cote": "droite",
+ "graine": 602,
+ "marges": {
+  "haut": 0.27
+ },
+ "blocs": [
+  {
+   "id": "chapitre",
+   "type": "chapitre",
+   "chapitre": "gateaux",
+   "croquis": [
+    "fouet"
+   ],
+   "taille": 1.75,
+   "croquis_taille": [
+    0.27,
+    0.25
+   ],
+   "graine": 6007
+  }
+ ]
+}

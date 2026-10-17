@@ -5,8 +5,8 @@
    "source": "src/content/recettes/lisa.json",
    "double": "lisa",
    "folios": [
-    10,
-    11
+    8,
+    9
    ],
    "graine": 2611,
    "photo": {

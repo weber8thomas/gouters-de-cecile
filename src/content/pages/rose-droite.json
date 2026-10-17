@@ -9,6 +9,21 @@
  "encre": "brune",
  "blocs": [
   {
+   "id": "courant",
+   "type": "courant",
+   "texte": "Mamie Rose"
+  },
+  {
+   "id": "cadre",
+   "type": "cadre",
+   "style": "double",
+   "encre": "noire",
+   "titre": "Pour Cécile",
+   "texte": "Ma recette de toujours, pour ma Cécile qui en volait toujours un de plus.",
+   "signature": "Mamie Rose",
+   "largeur": 0.86
+  },
+  {
    "id": "preparation-suite",
    "type": "paragraphe",
    "alinea": 0.0,
@@ -18,7 +33,7 @@
    "id": "note",
    "type": "note",
    "texte": "__Les garder dans la boîte en fer.__",
-   "avant": 0.15,
+   "avant": 0.1,
    "alinea": 0.12
   },
   {
@@ -27,36 +42,16 @@
    "texte": "Pour Noël",
    "position": "decale",
    "souligne": "trait",
-   "avant": 0.45
+   "avant": 0.3,
+   "graine": 4471
   },
   {
    "id": "noel",
    "type": "paragraphe",
-   "avant": 0.15,
+   "avant": 0.1,
    "alinea": 0.05,
    "texte": "Je remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.",
    "graine": 5
-  },
-  {
-   "type": "filet",
-   "longueur": 0.2
-  },
-  {
-   "id": "mot",
-   "type": "mot",
-   "encre": "noire",
-   "avant": 0.4,
-   "retrait": 0.14,
-   "pente": -1.6,
-   "texte": "Ma recette de toujours, pour ma Cécile qui en volait toujours un de plus."
-  },
-  {
-   "id": "signature",
-   "type": "signature",
-   "encre": "noire",
-   "texte": "Mamie Rose",
-   "x": 0.55,
-   "avant": 0.15
   }
  ]
 }

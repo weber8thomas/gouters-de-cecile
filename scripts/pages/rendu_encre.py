@@ -15,6 +15,10 @@ Modèle (lumière linéaire, absorption) :
   - V : transparence du verso — l'encre de la page au dos, en miroir, floutée par l'épaisseur
     du papier (σ = 3 px à 2×), assombrit le papier de 2 à 3,5 % au plus (teinte chaude).
 
+Échelle : tous les rayons (px) sont réglés à l'échelle 2 (page 1700 × 1920) et ramenés à l'échelle
+de cuisson par `formats.rayon` (format `ecran` ×2 et passe ×4 de la loupe, format `a5` à 300 dpi) ;
+à l'échelle 2, le rendu est inchangé au bit près.
+
 Le calque stocké (WebP RGBA, alpha sans perte) est la solution exacte de la composition « over »
 en sRGB : alpha = max(couverture, 1 − min_c sortie/papier), couleur = papier × (1 − (1 − R)/alpha).
 Posé normalement sur le même papier au même endroit, il reproduit `sortie` au niveau près, sans
@@ -28,6 +32,8 @@ import math
 
 import numpy as np
 from PIL import Image
+
+from formats import rayon
 
 PAPIER_REF = "#eee1bf"  # papier sur lequel les nuances d'encre ont été mesurées
 LUMIERE = 0.22
@@ -77,10 +83,10 @@ def flou(a: np.ndarray, sigma: float) -> np.ndarray:
     return out[..., 0] if seul else out
 
 
-def relief(papier_u8: np.ndarray) -> np.ndarray:
+def relief(papier_u8: np.ndarray, echelle: float = 2.0) -> np.ndarray:
     """Passe-haut de la luminance du papier, normalisé (≈ écart-type 1) : + = relief clair."""
     L = papier_u8.astype(np.float32) @ np.array([0.299, 0.587, 0.114], np.float32)
-    hp = L - flou(L, 2.0)
+    hp = L - flou(L, rayon(2.0, echelle))
     return np.clip(hp / (hp.std() + 1e-6), -3, 3).astype(np.float32)
 
 
@@ -98,16 +104,33 @@ def _reechantillonner(P: np.ndarray, pas: float):
     return np.column_stack([np.interp(t, s, P[:, k]) for k in range(P.shape[1])])
 
 
-def rasteriser(traces, larg: int, haut: int, echelle: float, bruit: np.ndarray):
-    """traces : liste de mise_en_page.Trace (px de page). → {clé d'encre: (a, t, encre)}."""
+PLANCHER_SANS_SAUT = 0.5  # encre minimale d'un trait marqué « sans saut » (glyphe d'un mot important)
+
+
+def rasteriser(traces, larg: int, haut: int, echelle: float, bruit: np.ndarray, origine=(0.0, 0.0)):
+    """traces : liste de mise_en_page.Trace (px de page). → {clé d'encre: (a, t, encre)}.
+    `origine` : coin haut-gauche (px de l'image entière) de la fenêtre rendue (tuiles de la passe ×4) ;
+    `bruit` a la forme de la fenêtre. Un trait marqué `sans_saut` (drapeau du lot E : glyphe d'un mot
+    important) ne descend jamais sous PLANCHER_SANS_SAUT d'encre : pas de blanc de bille dedans."""
     paquets: dict = {}
+    ox, oy = float(origine[0]), float(origine[1])
+    r_min = rayon(0.55, echelle)
+    pas = 0.25 * echelle  # 0,5 px à l'échelle 2
     for tr in traces:
         P = tr.pts.copy()
         P[:, :2] *= echelle
-        P = _reechantillonner(P, 0.5)
+        if ox or oy:
+            P[:, 0] -= ox
+            P[:, 1] -= oy
+            m = tr.diam * echelle + 8
+            if P[:, 0].max() < -m or P[:, 1].max() < -m or P[:, 0].min() > larg + m or P[:, 1].min() > haut + m:
+                continue
+        P = _reechantillonner(P, pas)
         r = 0.5 * tr.diam * echelle * GRAISSE.get(tr.encre.get("outil"), 1.1) * (0.42 + 0.78 * np.clip(P[:, 2], 0, 1))
-        r = np.maximum(r, 0.55)
+        r = np.maximum(r, r_min)
         t = np.clip(P[:, 4] - 0.07 * np.clip(P[:, 3] - 1, 0, 1.5), 0, 1)
+        if getattr(tr, "sans_saut", False):
+            t = np.maximum(t, PLANCHER_SANS_SAUT)
         cle = (tr.encre["id"], tr.encre.get("outil"), tr.encre["charge"], tr.encre["clair"])
         paquets.setdefault(cle, []).append(np.column_stack([P[:, 0], P[:, 1], r, t]))
     sortie = {}
@@ -155,7 +178,7 @@ def _do(encre: dict):
     return -np.log(np.clip(C / P, 1e-4, 1)), -np.log(np.clip(K / P, 1e-4, 1))
 
 
-def transmittance(cartes: dict, rel: np.ndarray, lam: np.ndarray | None):
+def transmittance(cartes: dict, rel: np.ndarray, lam: np.ndarray | None, echelle: float = 2.0):
     """→ (R linéaire (h, w, 3) = Π (1 − a + a T F), couverture réunie (h, w))."""
     h, w = rel.shape
     R = np.ones((h, w, 3), np.float32)
@@ -174,7 +197,7 @@ def transmittance(cartes: dict, rel: np.ndarray, lam: np.ndarray | None):
         duvet = DUVET.get(outil, 0.04)
         if duvet:
             # l'encre file un peu dans les fibres : duvet très léger au bord, modulé par le relief
-            d = flou(a, 1.1) * duvet * np.clip(1 - 0.5 * rel, 0.2, 1.8)
+            d = flou(a, rayon(1.1, echelle)) * duvet * np.clip(1 - 0.5 * rel, 0.2, 1.8)
             a = np.maximum(a, d)
         do_c, do_k = _do(encre)
         tt = t[..., None]
@@ -187,22 +210,26 @@ def transmittance(cartes: dict, rel: np.ndarray, lam: np.ndarray | None):
     return R, union
 
 
-def lumiere_carte(larg: int, haut: int, cote: str) -> np.ndarray:
-    """λ (−1 ombre … +1 lumière) sur la double page : source en haut à gauche."""
+def lumiere_carte(larg: int, haut: int, cote: str, fenetre=None) -> np.ndarray:
+    """λ (−1 ombre … +1 lumière) sur la double page : source en haut à gauche. `fenetre` : (x0, y0,
+    x1, y1) px d'une partie de la page (tuiles de la passe ×4) ; la carte reste celle de la page."""
     u = (np.arange(larg, dtype=np.float32) + 0.5) / larg / 2 + (0.5 if cote == "droite" else 0.0)
     v = (np.arange(haut, dtype=np.float32) + 0.5) / haut
+    if fenetre is not None:
+        x0, y0, x1, y1 = fenetre
+        u, v = u[x0:x1], v[y0:y1]
     return np.clip(1 - (0.85 * u[None, :] + 1.15 * v[:, None]), -1, 1)
 
 
-def verso_transmittance(R_dos: np.ndarray, force: float) -> np.ndarray:
+def verso_transmittance(R_dos: np.ndarray, force: float, echelle: float = 2.0) -> np.ndarray:
     """La page au dos vue par transparence : miroir horizontal, flou d'épaisseur, teinte chaude."""
     D = 1 - R_dos.mean(axis=2)
-    D = flou(D[:, ::-1], 3.0)
+    D = flou(D[:, ::-1], rayon(3.0, echelle))
     teinte = np.array([1.0, 0.98, 0.8], np.float32)
     return (1 - force * np.clip(D, 0, 1)[..., None] * teinte).astype(np.float32)
 
 
-def composer(papier_u8: np.ndarray, R: np.ndarray, union: np.ndarray, V: np.ndarray | None):
+def composer(papier_u8: np.ndarray, R: np.ndarray, union: np.ndarray, V: np.ndarray | None, echelle: float = 2.0):
     """→ RGBA uint8 du calque d'encre, et la sortie voulue (sRGB float) pour contrôle.
 
     Solution « alpha minimal » de la composition over : alpha = max_c(1 − sortie/papier), couleur =
@@ -224,9 +251,10 @@ def composer(papier_u8: np.ndarray, R: np.ndarray, union: np.ndarray, V: np.ndar
     vide = A8 == 0
     if vide.any():
         # couleur prolongée sous les pixels transparents (aucun liseré à la compression)
-        poids = flou(Aq[..., 0], 6.0)
+        sig = rayon(6.0, echelle)
+        poids = flou(Aq[..., 0], sig)
         moy = (C * Aq).reshape(-1, 3).sum(0) / max(float(Aq.sum()), 1e-6)
-        rempl = flou(C * Aq, 6.0) / np.maximum(poids[..., None], 1e-6)
+        rempl = flou(C * Aq, sig) / np.maximum(poids[..., None], 1e-6)
         rempl = np.where(poids[..., None] > 1e-3, rempl, moy)
         C[vide] = np.clip(rempl[vide], 0, 255)
     rgba = np.dstack([np.round(C).astype(np.uint8), A8])
@@ -238,6 +266,39 @@ def webp(rgba_ou_rgb: np.ndarray, qualite: int, alpha_qualite: int = 100) -> byt
     b = io.BytesIO()
     im.save(b, "WEBP", quality=qualite, alpha_quality=alpha_qualite, method=6)
     return b.getvalue()
+
+
+def jpeg(rgb: np.ndarray, qualite: int = 92, dpi: int | None = None) -> bytes:
+    """Image opaque pour l'impression (pdf-lib ne lit que JPEG et PNG) : sous-échantillonnage 4:4:4."""
+    im = Image.fromarray(rgb)
+    b = io.BytesIO()
+    kw = {"dpi": (dpi, dpi)} if dpi else {}
+    im.save(b, "JPEG", quality=qualite, subsampling=0, optimize=True, **kw)
+    return b.getvalue()
+
+
+def agrandir(a: np.ndarray, facteur: int) -> np.ndarray:
+    """Agrandissement bilinéaire entier (centres de pixels alignés, comme un navigateur qui étire une
+    image) d'une image (h, w) ou (h, w, c) en float32."""
+    a = np.asarray(a, np.float32)
+    if facteur == 1:
+        return a
+    h, w = a.shape[:2]
+    ys = (np.arange(h * facteur, dtype=np.float32) + 0.5) / facteur - 0.5
+    xs = (np.arange(w * facteur, dtype=np.float32) + 0.5) / facteur - 0.5
+    y0 = np.clip(np.floor(ys).astype(np.int32), 0, h - 1)
+    x0 = np.clip(np.floor(xs).astype(np.int32), 0, w - 1)
+    y1 = np.clip(y0 + 1, 0, h - 1)
+    x1 = np.clip(x0 + 1, 0, w - 1)
+    fy = np.clip(ys - y0, 0, 1)
+    fx = np.clip(xs - x0, 0, 1)
+    if a.ndim == 3:
+        fy, fx = fy[:, None, None], fx[None, :, None]
+    else:
+        fy, fx = fy[:, None], fx[None, :]
+    haut = a[y0][:, x0] * (1 - fx) + a[y0][:, x1] * fx
+    bas = a[y1][:, x0] * (1 - fx) + a[y1][:, x1] * fx
+    return (haut * (1 - fy) + bas * fy).astype(np.float32)
 
 
 def decoder(data: bytes) -> np.ndarray:

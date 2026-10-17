@@ -1,0 +1,15 @@
+{
+ "main": "soignee",
+ "encre": "plume",
+ "gabarit": "carnet",
+ "id": "garde-arriere",
+ "double": "colophon",
+ "cote": "droite",
+ "folio": 21,
+ "graine": 2101,
+ "contre_plat": true,
+ "papier": "garde-uni-arriere",
+ "papier_miroir": false,
+ "blocs": [],
+ "_": "Contre-plat arrière : même papier de garde que la garde avant (lot Pa, papiers.json, gardes) ; aucun texte."
+}

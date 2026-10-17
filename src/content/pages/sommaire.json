@@ -1,0 +1,48 @@
+{
+ "main": "soignee",
+ "encre": "plume",
+ "gabarit": "carnet",
+ "id": "sommaire",
+ "double": "sommaire",
+ "cote": "droite",
+ "folio": 5,
+ "graine": 501,
+ "marges": {
+  "haut": 0.075
+ },
+ "_": "Lignes générées depuis src/content/carnet.json et le roster (recette.lignes_sommaire) ; chaque ligne est un lien (manifeste : liens). `titres` : texte d'un invité d'une double page partagée.",
+ "blocs": [
+  {
+   "id": "titre",
+   "type": "titre",
+   "texte": "Sommaire",
+   "echelle": 1.9,
+   "position": "centre",
+   "souligne": "trait"
+  },
+  {
+   "id": "sommaire",
+   "type": "sommaire",
+   "fin": true,
+   "titres": {
+    "mathis": "Mathis — cookies",
+    "bernard": "Bernard — tarte aux pommes"
+   }
+  },
+  {
+   "id": "croquis",
+   "type": "croquis",
+   "nom": [
+    "tasse"
+   ],
+   "taille": [
+    0.19,
+    0.19
+   ],
+   "pres": [
+    0.72,
+    0.86
+   ]
+  }
+ ]
+}

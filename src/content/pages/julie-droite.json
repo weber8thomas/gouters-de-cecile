@@ -2,12 +2,27 @@
  "id": "julie-droite",
  "double": "julie",
  "cote": "droite",
- "folio": 13,
+ "folio": 11,
  "graine": 4127,
  "gabarit": "A",
  "main": "soignee",
  "encre": "bic",
  "blocs": [
+  {
+   "id": "courant",
+   "type": "courant",
+   "texte": "Julie"
+  },
+  {
+   "id": "cadre",
+   "type": "cadre",
+   "style": "double",
+   "encre": "plume",
+   "titre": "Pour Cécile",
+   "texte": "Pour toutes nos pauses goûter à refaire le monde. Joyeux anniversaire ma Cécile !",
+   "signature": "Julie",
+   "largeur": 0.7
+  },
   {
    "id": "titre",
    "type": "titre",
@@ -22,7 +37,7 @@
    "avant": 0.25,
    "lignes": [
     "3 œufs :oeuf:",
-    "~~150 g~~>{120 g} de sucre",
+    "120 g de sucre",
     "2 citrons non traités :citron:",
     "180 g de farine",
     "½ sachet de levure",
@@ -36,32 +51,7 @@
    "type": "paragraphe",
    "avant": 0.35,
    "alinea": 0.04,
-   "texte": "Four à th. 6 (180 °C). Fouette les œufs avec le sucre jusqu'à ce que ça blanchisse, ajoute les __zestes__ et le jus des citrons, puis la farine, la levure, le sel, le pavot et enfin le beurre fondu. Moule à cake beurré, ~~45 min~~>{40 min} au four.",
-   "correction": {
-    "main": "cecile",
-    "encre": "rouge"
-   }
-  },
-  {
-   "type": "filet",
-   "longueur": 0.22
-  },
-  {
-   "id": "mot",
-   "type": "mot",
-   "encre": "plume",
-   "avant": 0.5,
-   "retrait": 0.16,
-   "pente": -1.2,
-   "texte": "Pour toutes nos pauses goûter à refaire le monde. Joyeux anniversaire ma Cécile !"
-  },
-  {
-   "id": "signature",
-   "type": "signature",
-   "encre": "plume",
-   "texte": "Julie",
-   "x": 0.66,
-   "avant": 0.1
+   "texte": "Four à th. 6 (180 °C). Fouette les œufs avec le sucre jusqu'à ce que ça blanchisse, ajoute les __zestes__ et le jus des citrons, puis la farine, la levure, le sel, le pavot et enfin le beurre fondu. Moule à cake beurré, 40 min au four."
   },
   {
    "id": "teste",
@@ -72,16 +62,23 @@
    "texte": "testé le 3 mars, un régal !",
    "places": [
     {
+     "sous": "preparation",
+     "dx": 0.22,
+     "dy": 2.3
+    },
+    {
+     "sous": "preparation",
+     "dx": 0.1,
+     "dy": 2.6
+    },
+    {
+     "sous": "preparation",
+     "dx": 0.3,
+     "dy": 3.0
+    },
+    {
      "x": 0.075,
-     "y": 0.945
-    },
-    {
-     "x": 0.09,
-     "y": 0.915
-    },
-    {
-     "x": 0.5,
-     "y": 0.05
+     "y": 0.955
     }
    ]
   }

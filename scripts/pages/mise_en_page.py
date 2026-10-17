@@ -291,6 +291,7 @@ class Trace:
     pts: np.ndarray  # (n, 5) x, y, pression, vitesse, encre — px de page
     diam: float  # largeur du trait à pression 1 (px de page) : largeur = diam × (0,42 + 0,78 p)
     encre: dict  # id, outil, charge, clair
+    sans_saut: bool = False  # glyphe d'un mot important (drapeau du lot E) : jamais de blanc de bille
 
 
 @dataclass
@@ -301,6 +302,8 @@ class MotPose:
     boite: tuple  # (x0, y0, x1, y1)
     bloc: str
     ligne: int
+    rature: bool = False  # mot barré (on ne le relit pas : c'est la correction au-dessus qui compte)
+    contexte: str = ""  # texte du bloc (pour savoir si le mot est important)
 
 
 @dataclass
@@ -330,6 +333,26 @@ def _copie_collee(m: ECR.Mot) -> ECR.Mot:
                 debord_g=m.debord_g, debord_d=m.debord_d)
     c.colle = True
     return c
+
+
+def _accepte_contexte() -> bool:
+    """ecriture.ecrire_bloc (lot E) prend-il le contexte des mots importants (ingrédients, noms) ?"""
+    import inspect
+    f = ECR.ecrire_bloc
+    try:
+        return "contexte" in inspect.signature(f).parameters
+    except (TypeError, ValueError):
+        return False
+
+
+def _sans_saut(P: np.ndarray, drapeau, k: int) -> bool:
+    """Drapeau « pas de saut de bille » d'un trait (lot E) : 6e colonne des points, ou attribut du mot
+    (`sans_saut` : booléen pour tout le mot, ou liste par trait)."""
+    if P.ndim == 2 and P.shape[1] >= 6:
+        return bool(np.nanmax(P[:, 5]) > 0.5)
+    if isinstance(drapeau, (list, tuple)):
+        return bool(drapeau[k]) if k < len(drapeau) else False
+    return bool(drapeau)
 
 
 def mot_icone(nom: str, largeur: float = 1.3, colle: bool = False) -> ECR.Mot:
@@ -387,9 +410,40 @@ def _insecable(prec, cur) -> bool:
 
 
 # =============================================================================================
+# Encres : une encre pas encore livrée par l'outil d'écriture (lot E : « bille-bleue ») est remplacée
+# par sa plus proche voisine, et le remplacement est signalé (journal de cuisson).
+# =============================================================================================
+REPLIS_ENCRE = {"bille-bleue": "bic"}
+ENCRES_REMPLACEES: dict = {}
+
+
+def encre_dispo(enc_id):
+    if enc_id is None:
+        return None
+    try:
+        import encre as _M  # tools/ecriture/encre.py
+        connues = _M.ENCRES
+    except Exception:
+        return enc_id
+    if enc_id in connues:
+        return enc_id
+    rep = REPLIS_ENCRE.get(enc_id, "bic")
+    ENCRES_REMPLACEES[enc_id] = rep
+    return rep
+
+
+# Zone du folio imprimé par le livre (Livre/Face : `bottom: --gc-space-4`, à --gc-page-pad-outer du
+# bord extérieur) : large par défaut ; « juste » (`folio_juste`) = la boîte réelle du numéro, et une
+# ligne ne la touche que si ses jambages y descendent (0,55 x sous la ligne de base, pas 1 x).
+FOLIO_LARGE = {"gauche": (0.045, 0.94, 0.15, 1.0), "droite": (0.85, 0.94, 0.955, 1.0)}
+FOLIO_JUSTE = {"gauche": (0.06, 0.947, 0.135, 1.0), "droite": (0.865, 0.947, 0.94, 1.0)}
+
+# =============================================================================================
 # Le moteur
 # =============================================================================================
 _BLOCS: dict = {}  # écritures déjà demandées (et vérifiées) dans ce processus
+# blocs posés AVANT le texte coulé (zones réservées : la recette coule autour)
+BLOCS_RESERVES = ("bandeau", "courant", "cadre", "etiquette")
 
 
 class Mise:
@@ -404,10 +458,13 @@ class Mise:
         self.rng = np.random.default_rng(self.graine)
         r = self.rng
         self.main = desc.get("main", "soignee")
-        self.encre = desc.get("encre")
+        self.encre = encre_dispo(desc.get("encre"))
         self.serrage = serrage  # (n_lignes_total, n_dernieres, facteur)
-        self.global_pas = global_pas
+        # interligne local (pagination : −4 % pour combler un trou en bas de page)
+        self.global_pas = global_pas * float(desc.get("pas_local", 1.0))
         self.xh_facteur = float(desc.get("xh_facteur", 1.0))
+        # plancher de lisibilité (écran : 1,8 % de la largeur ; A5 imprimé : un peu plus petit, voir formats.py)
+        self.xh_min = float(desc.get("xh_min", XH_MIN / W)) * W
         self.dessins = dessins
         self.grille = desc.get("grille")  # réglure du cahier (feuillet volant) : l'écriture la suit
         self._k_prec = None
@@ -441,13 +498,15 @@ class Mise:
                 self.vivants[v["nom"]] = rect
             self.zones[v["nom"]] = rect
             self.reserves.append((rect, v["nom"]))
-        if self.type != "feuillet":
+        self.folio_juste = bool(desc.get("folio_juste", False))
+        if self.type != "feuillet" and not desc.get("sansFolio") and desc.get("zone_folio", True):
             # folio imprimé par le livre (Livre/Face : `bottom: --gc-space-4`, à --gc-page-pad-outer du bord
             # extérieur, 28 px) : x ≈ 0,066 à 0,125 et y ≈ 0,95 à 0,985 de la page, aux trois crans
-            if self.cote == "gauche":
-                self.reserves.append(((0.045 * self.W, 0.94 * self.H, 0.15 * self.W, self.H), "folio"))
-            else:
-                self.reserves.append(((0.85 * self.W, 0.94 * self.H, 0.955 * self.W, self.H), "folio"))
+            fx0, fy0, fx1, fy1 = (FOLIO_JUSTE if self.folio_juste else FOLIO_LARGE)[self.cote if self.cote == "gauche" else "droite"]
+            self.reserves.append(((fx0 * self.W, fy0 * self.H, fx1 * self.W, fy1 * self.H), "folio"))
+        self._ignorer: tuple = ()  # zones ignorées pendant l'écriture DANS une zone (le mot du cadre)
+        self.liens: list = []  # [{cible, rect (px), invite?}] : lignes du sommaire (cliquables)
+        self.zones_blocs: dict = {}  # bandeau, courant, cadre : boîte posée (px)
         self.traces: list[Trace] = []
         self.mots: list[MotPose] = []
         self.marques_boites = []  # boîtes des tracés (soulignés, barres…)
@@ -468,10 +527,15 @@ class Mise:
 
     # ---- écriture (N2) --------------------------------------------------------------------
     def ecrire(self, texte, main, graine, encre=None, outil=None):
-        cle = (texte, main, graine, encre, outil)
+        encre = encre_dispo(encre)
+        ctx = self.desc.get("contexte_importants")
+        cle = (texte, main, graine, encre, outil, json.dumps(ctx, sort_keys=True, ensure_ascii=False) if ctx else None)
         if cle not in self._bloc_cache:
             if cle not in _BLOCS:
-                _BLOCS[cle] = ECR.ecrire_bloc(texte, main, graine, encre=encre, outil=outil)
+                if ctx and _accepte_contexte():
+                    _BLOCS[cle] = ECR.ecrire_bloc(texte, main, graine, encre=encre, outil=outil, contexte=ctx)
+                else:
+                    _BLOCS[cle] = ECR.ecrire_bloc(texte, main, graine, encre=encre, outil=outil)
             b = _BLOCS[cle]
             self._bloc_cache[cle] = b
             self.douteux += b.douteux
@@ -541,14 +605,18 @@ class Mise:
         b = np.array([0.08 + inc + rng.normal(0, 0.03), -1.32 + rng.normal(0, 0.06)])
         G = TR.geste(TR.trait_courbe(a, b, rng, 1.0, 0.01, 12), rng, 1.0, appui=0.8, vif=1.3, tremble=0.01)
         enc = ECR.nuances(enc_id or "bic", outil)
-        traits = ECR.encrer_traits([G], enc["id"], enc.get("outil"), int(graine) % (2 ** 31), main)
+        try:  # la barre fait partie d'un nombre (« 5/6 ») : mot important, jamais de saut de bille (lot E)
+            traits = ECR.encrer_traits([G], enc["id"], enc.get("outil"), int(graine) % (2 ** 31), main, proteger=True)
+        except TypeError:
+            traits = ECR.encrer_traits([G], enc["id"], enc.get("outil"), int(graine) % (2 ** 31), main)
         m = ECR.Mot(texte="/", traits=[np.asarray(t, float) for t in traits], largeur=inc + 0.18, espace_avant=0.06)
         m.colle = True
+        m.important = True
         return m
 
     def xh_de(self, role: str, main: str) -> float:
         taille = ECR.main_info(main)["taille"]
-        return max(XH_MIN, ROLES[role] * W * taille * self.xh_facteur)
+        return max(self.xh_min, ROLES[role] * W * taille * self.xh_facteur)
 
     # ---- lignes -----------------------------------------------------------------------------
     def _pente(self, sigma=None, propre=None) -> float:
@@ -573,8 +641,11 @@ class Mise:
         morceaux libres (None s'il est trop étroit : la ligne sera sautée)."""
         haut, bas = y - 2.2 * xh, y + 1.0 * xh
         libres = [(x0, x1)]
+        ignorer = tuple(ignorer) + tuple(self._ignorer)
         for (rx0, ry0, rx1, ry1), nom in self.reserves:
-            if nom in ignorer or bas < ry0 or haut > ry1:
+            if nom in ignorer or haut > ry1:
+                continue
+            if (y + 0.55 * xh if (nom == "folio" and self.folio_juste) else bas) < ry0:
                 continue
             a, b = rx0 - 0.4 * xh, rx1 + 0.4 * xh
             nouv = []
@@ -672,13 +743,16 @@ class Mise:
             ligne.mots.append(mp)
             return mp, w * ca
         tous = []
-        for T in mot.traits:
-            P = T.copy()
+        ss_mot = getattr(mot, "sans_saut", None)
+        if ss_mot is None:
+            ss_mot = bool(getattr(mot, "important", False))  # lot E : mot important → aucun saut de bille
+        for k_t, T in enumerate(mot.traits):
+            P = np.asarray(T, float).copy()
             lx = P[:, 0] * xh * ech_x
             ly = P[:, 1] * xh
             P[:, 0] = x + lx * ca - ly * sa
             P[:, 1] = y + lx * sa + ly * ca
-            self.traces.append(Trace(P, ep * xh, encre))
+            self.traces.append(Trace(P[:, :5], ep * xh, encre, sans_saut=_sans_saut(P, ss_mot, k_t)))
             tous.append(P[:, :2])
         if tous:
             A = np.vstack(tous)
@@ -851,11 +925,18 @@ class Mise:
     # ---- blocs ---------------------------------------------------------------------------------
     def _style_bloc(self, b: dict, role: str):
         main = b.get("main", self.main)
-        enc_id = b.get("encre", self.encre)
+        enc_id = encre_dispo(b.get("encre", self.encre))
         outil = b.get("outil", self.desc.get("outil") if enc_id == self.encre else None)
         info = ECR.main_info(main)
-        xh = self.xh_de(b.get("role", role), main)
+        xh = self.xh_de(b.get("role", role), main) * float(b.get("echelle", 1.0))
         return main, enc_id, outil, info, xh
+
+    @staticmethod
+    def _ep(epaisseur: float, b: dict) -> float:
+        """Épaisseur (en hauteurs d'x) d'un texte écrit en grand (`echelle` k) : même stylo, un peu
+        plus appuyé — le trait ne grossit pas comme la lettre (k^0,3 au lieu de k)."""
+        k = float(b.get("echelle", 1.0))
+        return epaisseur * (k ** -0.7 if k > 1 else 1.0)
 
     def _segments(self, b: dict, graine: int) -> list:
         segs = b.get("segments")
@@ -920,6 +1001,9 @@ class Mise:
                     c_ep = ECR.main_info(c_main)["epaisseur"]
                     ch = TR.rature(xa, ya, xb, yb, r, xh)
                     self.tracer(ch, xh, c_enc, c_ep, graine + 70 + k, c_main)
+            if mq["genre"] == "rature":
+                for p in dedans:
+                    p.rature = True
             if mq["genre"] == "rature" and mq.get("correction"):
                 cible = dedans[0]
                 x0, y0 = cible.base[0], cible.base[1]
@@ -969,8 +1053,9 @@ class Mise:
             x = self.ml + r.uniform(0.0, 0.012) * self.W
         x = float(np.clip(x, self.ml, max(self.ml, self.xr - largeur)))
         sauter = float(b.get("avant", 0.0))
+        ep = self._ep(bloc.epaisseur, b)
         poses, lignes = self.couler(mots, xh, float(b.get("interligne", bloc.interligne * 0.92)), dict(bloc.encre),
-                                    bloc.epaisseur, b.get("id", "titre"), espace=espace, x0=x, derive=False,
+                                    ep, b.get("id", "titre"), espace=espace, x0=x, derive=False,
                                     sauter=sauter, premier_haut=b.get("premier_haut", 1.7))
         self.blocs_lignes[b.get("id", "titre")] = lignes
         spans = _spans(brut, [mots])
@@ -983,7 +1068,7 @@ class Mise:
                 for k, p in enumerate(ok):
                     if PONCT.match(p.texte.strip()):
                         continue
-                    self.tracer(TR.souligne(*p.base, r, xh, dy=0.5), xh, enc, bloc.epaisseur * 0.9, graine + 10 + k, main)
+                    self.tracer(TR.souligne(*p.base, r, xh, dy=0.5), xh, enc, ep * 0.9, graine + 10 + k, main)
             else:
                 for n_l in sorted({p.ligne for p in ok}):
                     part = [p for p in ok if p.ligne == n_l and not PONCT.match(p.texte.strip())]
@@ -991,7 +1076,7 @@ class Mise:
                         continue
                     a, z = part[0].base, part[-1].base
                     self.tracer(TR.souligne(a[0], a[1], z[2], z[3], r, xh, double=(sl == "double"), dy=0.55),
-                                xh, enc, bloc.epaisseur * 0.9, graine + 10, main)
+                                xh, enc, ep * 0.9, graine + 10, main)
         self.texte.append(self._texte_lisible(brut, marques))
         return lignes
 
@@ -1204,7 +1289,7 @@ class Mise:
         r = self.rng
         brut, marques, mots, bloc = self.ecrire_segments(self._segments(b, graine), main, enc_id, outil)
         encre = dict(bloc.encre)
-        larg = sum(m.largeur * xh for m in mots) + info["espace"] * xh * (len(mots) - 1)
+        larg = self._mesure(mots, xh, info["espace"])[0]
         pente = float(b.get("pente", r.uniform(-3.5, -1.5)))
         candidats = []
         ignorer = ()
@@ -1262,7 +1347,7 @@ class Mise:
         poses = []
         for k, m in enumerate(mots):
             if k:
-                x += (m.espace_avant if m.espace_avant > 0 else info["espace"]) * xh
+                x += self._espace_libre(mots[k - 1], m, info["espace"], float(np.clip(r.normal(1, 0.08), 0.9, 1.12))) * xh
             mp, adv = self.poser(L, m, x, xh, encre, bloc.epaisseur, b.get("id", "annotation"))
             poses.append(mp)
             x += adv
@@ -1311,6 +1396,13 @@ class Mise:
         tw, th = tw * W, th * W  # en px absolus (même taille sur un feuillet)
         px, py = b.get("pres", [0.72, 0.86])
         px, py = px * self.W, py * self.H
+        if b.get("sous_bloc"):
+            # sous un bloc (titre d'intercalaire) : centré dessous, un peu de travers
+            ms = [m.boite for m in self.mots if m.bloc.startswith(b["sous_bloc"])]
+            if ms:
+                A = np.array(ms, float)
+                px = float((A[:, 0].min() + A[:, 2].max()) / 2) + r.normal(0.03, 0.02) * self.W
+                py = float(A[:, 3].max()) + th * 0.5 * 0.9 + float(b.get("ecart", 0.05)) * self.H
         choisi = None
         for s in (1.0, 0.88, 0.76, 0.66):
             w, h = tw * s, th * s
@@ -1369,6 +1461,546 @@ class Mise:
             else:
                 self.croquis_non_places.append(ic["nom"])
 
+    # =========================================================================================
+    # v4 : blocs posés avant le texte (bandeau, titre courant, cadre du mot) ; sommaire ; chapitre
+    # =========================================================================================
+    @staticmethod
+    def _espace_libre(prec, m, espace: float, alea: float = 1.0) -> float:
+        """Espace (hauteurs d'x) avant le mot `m` sur une ligne posée à la main : celle du texte coulé
+        (ESPACE × espace de la main), d'encre à encre ; un mot collé (icône, « / ») garde la sienne."""
+        if getattr(m, "colle", False):
+            return m.espace_avant
+        e = ESPACE * espace * alea
+        deb = 0.85 * (getattr(prec, "debord_d", 0.0) + getattr(m, "debord_g", 0.0))
+        return max(e, 0.5 * espace + deb) if deb > 0 else e
+
+    def _mesure(self, mots, xh: float, espace: float):
+        """(largeur, montée, descente) d'une suite de mots écrits sur une ligne (px)."""
+        larg = 0.0
+        ys = []
+        for k, m in enumerate(mots):
+            if k:
+                larg += self._espace_libre(mots[k - 1], m, espace) * xh
+            larg += m.largeur * xh
+            for T in m.traits:
+                if len(T):
+                    ys.append(np.asarray(T)[:, 1])
+        if ys:
+            Y = np.concatenate(ys)
+            return larg, float(-Y.min()) * xh, float(max(Y.max(), 0.0)) * xh
+        return larg, 1.4 * xh, 0.3 * xh
+
+    def _ligne_libre(self, mots, x: float, y: float, xh: float, pente_deg: float, encre: dict, ep: float, bloc: str,
+                     espace: float):
+        """Écrit une suite de mots sur une ligne posée à la main (prénom, titre du cadre, folio…)."""
+        r = self.rng
+        larg = sum(m.largeur * xh for m in mots) + espace * xh * max(0, len(mots) - 1)
+        L = Ligne(y0=y, x0=x, x1=self.W, theta=math.radians(pente_deg), xh=xh,
+                  noeuds=np.clip(np.cumsum(r.normal(0, 0.03 * xh, int(larg / (2 * xh)) + 3)), -0.12 * xh, 0.12 * xh),
+                  pas=2 * xh, n=-1)
+        poses, xx = [], x
+        for k, m in enumerate(mots):
+            if k:
+                xx += self._espace_libre(mots[k - 1], m, espace, float(np.clip(r.normal(1, 0.08), 0.9, 1.12))) * xh
+            mp, adv = self.poser(L, m, xx, xh, encre, ep, bloc)
+            poses.append(mp)
+            xx += adv
+        self.blocs_lignes.setdefault(bloc, []).append(L)
+        return poses, L
+
+    def _boite_de(self, n_mots: int, n_marques: int, marge: float):
+        """Boîte de l'encre posée depuis (n_mots, n_marques) (mots + tracés), élargie de `marge`."""
+        bx = [m.boite for m in self.mots[n_mots:]] + list(self.marques_boites[n_marques:])
+        if not bx:
+            return None
+        A = np.array(bx, float)
+        return (float(A[:, 0].min() - marge), float(A[:, 1].min() - marge), float(A[:, 2].max() + marge), float(A[:, 3].max() + marge))
+
+    def _touche_reserve(self, boite, marge: float, sauf=()) -> bool:
+        x0, y0, x1, y1 = boite
+        for (a0, b0, a1, b1), nom in self.reserves:
+            if nom in sauf:
+                continue
+            if x0 - marge < a1 and x1 + marge > a0 and y0 - marge < b1 and y1 + marge > b0:
+                return True
+        return False
+
+    def _reserver(self, bid: str, boite):
+        self.reserves.append((tuple(float(v) for v in boite), bid))
+        self.zones_blocs[bid] = tuple(float(v) for v in boite)
+
+    @staticmethod
+    def _nb_lignes(mots, xh: float, espace: float, largeur: float) -> int:
+        n, x = 1, 0.0
+        for m in mots:
+            w = m.largeur * xh
+            e = ESPACE * espace * xh if x > 0 and not getattr(m, "colle", False) else (0.1 * xh if x > 0 else 0.0)
+            if x > 0 and x + e + w > largeur and not getattr(m, "colle", False):
+                n += 1
+                x = w
+            else:
+                x += e + w
+        return n
+
+    def bandeau(self, b, idx):
+        """Le prénom de l'invité écrit en grand (2,2 à 2,8 × la hauteur d'x du corps), dans sa main et
+        son encre, souligné d'un geste, avec un sous-titre au crayon (« depuis Lyon ») ; posé à côté de
+        la photo, sinon juste dessous, sinon juste dessus (la photo et le prénom se lisent ensemble).
+        La boîte est réservée : le texte de la page coule autour."""
+        bid = b.get("id", "bandeau")
+        r = self.rng
+        main = b.get("main", self.main)
+        enc_id = encre_dispo(b.get("encre", self.encre))
+        outil = b.get("outil", self.desc.get("outil") if enc_id == self.encre else None)
+        info = ECR.main_info(main)
+        k = float(b.get("taille", 2.5))
+        xh_c = self.xh_de("corps", main)
+        xh = xh_c * k
+        graine = int(b.get("graine", self.graine * 31 + idx * 7))
+        brut, marques, mots, bloc = self.ecrire_segments(self._segments(b, graine), main, enc_id, outil)
+        esp = info["espace"] * 0.92
+        larg, asc, desc = self._mesure(mots, xh, esp)
+        encre = dict(bloc.encre)
+        ep = self._ep(bloc.epaisseur, {"echelle": k})
+        sous = b.get("sous")
+        s_main = b.get("sous_main", "cecile")
+        s_enc = encre_dispo(b.get("sous_encre", "crayon"))
+        mots_s, larg_s, asc_s, desc_s, xh_s, bloc_s, brut_s, marques_s = [], 0.0, 0.0, 0.0, 0.0, None, "", []
+        if sous:
+            xh_s = self.xh_de("legende", s_main)
+            brut_s, marques_s, mots_s, bloc_s = self.ecrire_segments(
+                [{"texte": sous, "graine": int(b.get("sous_graine", graine + 17))}], s_main, s_enc, b.get("sous_outil"))
+            larg_s, asc_s, desc_s = self._mesure(mots_s, xh_s, ECR.main_info(s_main)["espace"])
+        souligne_bas = 0.42 * xh + 0.35 * xh  # souligné + son épaisseur et sa remontée
+        dx_s = r.uniform(0.3, 0.85) * xh
+        h_nom = asc + max(desc, souligne_bas)
+        h_sous = (0.55 * xh_c + asc_s + desc_s) if sous else 0.0
+        w_box = max(larg + 0.6 * xh, dx_s + larg_s + 0.2 * xh)
+        h_box = h_nom + h_sous
+        photo = self.zones.get(b.get("pres", "photo"))
+        gap = float(b.get("ecart", 0.03)) * self.W
+        places = b.get("places") or ["cote", "dessous", "dessus"]
+        cands = []
+        if photo:
+            px0, py0, px1, py1 = photo
+            for pl in places:
+                if pl == "cote":
+                    cotes = [("d", self.xr - (px1 + gap)), ("g", (px0 - gap) - self.ml)]
+                    cotes.sort(key=lambda c: -c[1])
+                    for cote, place in cotes:
+                        if place < w_box:
+                            continue
+                        jeu = r.uniform(0.0, 0.3) * (place - w_box)
+                        x = px1 + gap + jeu if cote == "d" else px0 - gap - w_box - jeu
+                        for fy in (r.uniform(0.1, 0.24), 0.04, 0.35, 0.5):
+                            cands.append((x, py0 + (py1 - py0) * fy))
+                elif pl == "dessous":
+                    for fx in (r.uniform(0.0, 0.07), 0.12, 0.0):
+                        cands.append((max(self.ml, px0 + fx * self.W), py1 + 0.55 * xh_c))
+                elif pl == "dessus":
+                    cands.append((max(self.ml, px0 + r.uniform(0.0, 0.06) * self.W), py0 - 0.45 * xh_c - h_box))
+        if not cands or "haut" in places:
+            cands.append((self.ml + r.uniform(0.0, 0.025) * self.W, self.haut - 0.2 * h_box))
+        choisi = None
+        for (x, y) in cands:
+            boite = (x, y, x + w_box, y + h_box)
+            if x < 0.03 * self.W or boite[2] > 0.975 * self.W or y < 0.018 * self.H or boite[3] > 0.92 * self.H:
+                continue
+            if self._touche_reserve(boite, 0.25 * xh_c):
+                continue
+            choisi = (x, y)
+            break
+        if choisi is None:
+            self.non_places.append(f"{bid} (« {brut} » : aucune place près de la photo)")
+            return
+        x, y = choisi
+        n_m, n_q = len(self.mots), len(self.marques_boites)
+        yb = y + asc
+        pente = float(b.get("pente", r.uniform(-2.6, 0.4)))
+        poses, L = self._ligne_libre(mots, x + 0.1 * xh, yb, xh, pente, encre, ep, bid, esp)
+        if b.get("souligne", "trait") != "aucun" and poses:
+            a, z = poses[0].base, poses[-1].base
+            self.tracer(TR.souligne_nom(a[0], a[1], z[2], z[3], r, xh, dy=0.42, double=b.get("souligne") == "double"),
+                        xh, encre, ep * 0.9, graine + 9, main)
+        if sous:
+            ys = L.y(x) + max(desc, souligne_bas) + 0.55 * xh_c + asc_s
+            enc_s = dict(bloc_s.encre)
+            ps, _ = self._ligne_libre(mots_s, x + dx_s, ys, xh_s, float(b.get("sous_pente", r.uniform(-2.5, 0.0))), enc_s,
+                                      bloc_s.epaisseur, bid + "-sous", ECR.main_info(s_main)["espace"])
+        self._reserver(bid, self._boite_de(n_m, n_q, 0.45 * xh_c))
+        self.texte.append(self._texte_lisible(brut, marques) + (f", {self._texte_lisible(brut_s, marques_s)}" if sous else ""))
+
+    def courant(self, b, idx):
+        """Titre courant : rappel du prénom, petit, au crayon, en tête de la page (côté extérieur)."""
+        bid = b.get("id", "courant")
+        r = self.rng
+        main = b.get("main", "cecile")
+        enc_id = encre_dispo(b.get("encre", "crayon"))
+        info = ECR.main_info(main)
+        xh = max(self.xh_min, self.xh_de("annotation", main) * float(b.get("echelle", 0.96)))
+        graine = int(b.get("graine", self.graine * 31 + idx * 7))
+        brut, marques, mots, bloc = self.ecrire_segments(self._segments(b, graine), main, enc_id, b.get("outil"))
+        larg, asc, desc = self._mesure(mots, xh, info["espace"])
+        exterieur = self.cote != "gauche"
+        for k in range(6):
+            yb = self.H * float(b.get("y", r.uniform(0.045, 0.056))) + k * 0.4 * xh
+            fx = r.uniform(0.06, 0.1) + 0.03 * k
+            x = self.W * (1 - fx) - larg if exterieur else self.W * fx
+            boite = (x, yb - asc, x + larg, yb + desc)
+            if not self._touche_reserve(boite, 0.3 * xh):
+                break
+        else:
+            self.non_places.append(f"{bid} (« {brut} »)")
+            return
+        n_m, n_q = len(self.mots), len(self.marques_boites)
+        self._ligne_libre(mots, x, yb, xh, float(b.get("pente", r.uniform(-2.0, 0.8))), dict(bloc.encre), bloc.epaisseur,
+                          bid, info["espace"])
+        self._reserver(bid, self._boite_de(n_m, n_q, 0.4 * xh))
+        self.texte.append(self._texte_lisible(brut, marques))
+
+    def cadre(self, b, idx):
+        """Le mot pour Cécile dans un cadre tracé à la main (« Pour Cécile » en petit en haut, le mot
+        dans l'encre de l'invité, sa signature en bas à droite), posé AVANT la recette — en bas de la
+        page par défaut — et réservé : la recette coule autour. `style` : `double` (double trait) ou
+        `ondule` (trait ondulé, petit cœur sur un angle)."""
+        bid = b.get("id", "cadre")
+        r = self.rng
+        style = b.get("style", "double")
+        main, enc_id, outil, info, xh = self._style_bloc(b, "mot")
+        graine = int(b.get("graine", self.graine * 31 + idx * 7))
+        brut, marques, mots, bloc = self.ecrire_segments(self._segments(b, graine), main, enc_id, outil)
+        encre = dict(bloc.encre)
+        esp = info["espace"]
+        interligne = float(b.get("interligne", bloc.interligne * 0.95))
+        pitch = interligne * xh
+        xh_c = self.xh_de("corps", main)
+        # « Pour Cécile » : petit, même main et même encre (il a écrit le titre avant de tracer le cadre)
+        t_main = b.get("titre_main", main)
+        t_enc = encre_dispo(b.get("titre_encre", enc_id))
+        titre = b.get("titre", "Pour Cécile")
+        xh_t = max(self.xh_min, self.xh_de("annotation", t_main) * 0.98)
+        tb = None
+        if titre:
+            tb = self.ecrire_segments([{"texte": titre, "graine": int(b.get("titre_graine", graine + 3))}], t_main, t_enc,
+                                      outil if t_enc == enc_id else None)
+        sig = b.get("signature")
+        s_main = b.get("signature_main", main)
+        xh_s = self.xh_de("signature", s_main) * float(b.get("signature_echelle", 0.9))
+        sb = None
+        if sig:
+            sb = self.ecrire_segments([{"texte": sig, "graine": int(b.get("signature_graine", graine + 5))}], s_main, enc_id, outil)
+        larg_t, asc_t, desc_t = self._mesure(tb[2], xh_t, ECR.main_info(t_main)["espace"]) if tb else (0, 0, 0)
+        larg_s, asc_s, desc_s = self._mesure(sb[2], xh_s, ECR.main_info(s_main)["espace"]) if sb else (0, 0, 0)
+        lw = min(float(b.get("largeur", 0.64)) * self.W, self.xr - self.ml)
+        pad_x = float(b.get("marge", 1.55)) * xh
+        pad_y = 0.85 * xh
+        n = self._nb_lignes(mots, xh, esp, (lw - 2 * pad_x) * 0.92)
+        folio = next((z for z, nom in self.reserves if nom == "folio"), None)
+        etat0 = (len(self.traces), len(self.mots), len(self.marques_boites), len(self.lignes), list(self.deborde),
+                 len(self.texte), dict(self.blocs_lignes), list(self.croquis))
+        sauve = (self.base, self.pas_prec, self.bas, self.haut, self.marge_derive, self.pente_prec, self._ignorer)
+        dx_frac = b.get("x")
+        jeu_x = r.uniform(0.0, 0.05) * self.W
+        bas_frac = float(b.get("bas", r.uniform(0.042, 0.058)))
+        pente = float(b.get("pente", r.uniform(-1.4, 0.4)))
+        reduit = False
+        sig_en_ligne = None  # None : pas encore essayé ; True : la signature finit la dernière ligne du mot
+        jeu_t = r.uniform(0.75, 0.95)
+        for essai in range(7):
+            h_titre = (asc_t + 0.95 * xh) if tb else 0.4 * xh
+            h_sig = ((asc_s + desc_s + 0.15 * xh) if not sig_en_ligne else 0.25 * xh) if sb else 0.0
+            h = pad_y + h_titre + (n - 1) * pitch + 0.55 * xh + h_sig + 0.7 * pad_y
+            if dx_frac is not None:
+                x0 = float(dx_frac) * self.W
+            else:
+                x0 = (self.xr - lw - jeu_x) if self.cote != "gauche" else (self.ml + jeu_x * 0.6)
+            x0 = float(np.clip(x0, self.ml - 0.01 * self.W, self.xr - lw))
+            x1 = x0 + lw
+            if b.get("position", "bas") == "bas":
+                y1 = self.H * (1 - bas_frac)
+                if folio is not None and x1 > folio[0] - 0.3 * xh_c and x0 < folio[2]:
+                    y1 = min(y1, folio[1] - 0.45 * xh_c)
+                y0 = y1 - h
+            else:
+                y0 = float(b.get("y", 0.6)) * self.H
+                y1 = y0 + h
+            self._ignorer = (bid,)
+            enc_t = dict(tb[3].encre) if tb else encre
+            if tb:
+                tx = x0 + pad_x * jeu_t
+                ty = y0 + pad_y + asc_t
+                self._ligne_libre(tb[2], tx, ty, xh_t, r.uniform(-2.5, 0.3), enc_t, tb[3].epaisseur, bid + "-titre",
+                                  ECR.main_info(t_main)["espace"])
+                self.base = ty
+            else:
+                self.base = y0 + pad_y
+            self.pas_prec = pitch
+            self.bas = y1 - 0.7 * pad_y - h_sig - 0.25 * xh
+            n_d = len(self.deborde)
+            spans = _spans(brut, [mots])
+            poses, lignes = self.couler(mots, xh, interligne, encre, bloc.epaisseur, bid, espace=esp, x0=x0 + pad_x,
+                                        x1=x1 - 0.85 * pad_x, derive=False, pente=pente, sigma=0.3, sauter=-0.12 if tb else 0.0,
+                                        premier_haut=asc_t / xh + 1.2, haut_requis=_haut_requis(marques, spans))
+            deb = bid in self.deborde[n_d:]
+            reel = len([L for L in lignes if L.mots])
+            der = [L for L in lignes if L.mots]
+            x_fin = max((m.boite[2] for m in der[-1].mots), default=x0) if der else x0
+            place_sig = bool(sb) and der and x_fin + 1.1 * xh + larg_s <= x1 - 0.75 * pad_x
+            essayer_ligne = (not deb and sig_en_ligne is None and place_sig and (reduit or reel >= n))
+            if sig_en_ligne and not place_sig:
+                sig_en_ligne = False  # finalement pas la place : signature en dessous
+                essayer_ligne = True
+            if (deb and essai < 5) or (not deb and reel < n and not reduit) or essayer_ligne:
+                # le mot prend une ligne de plus (ou de moins) que prévu : on recommence avec un cadre
+                # à sa mesure (jamais de grand blanc entre le mot et la signature)
+                del self.traces[etat0[0]:]
+                del self.mots[etat0[1]:]
+                del self.marques_boites[etat0[2]:]
+                del self.lignes[etat0[3]:]
+                self.deborde[:] = etat0[4]
+                self.blocs_lignes = dict(etat0[6])
+                self.croquis = list(etat0[7])
+                if deb:
+                    n += 1
+                elif essayer_ligne:
+                    sig_en_ligne = True if sig_en_ligne is None else False
+                else:
+                    n, reduit = max(1, reel), True
+                continue
+            break
+        self.blocs_lignes[bid] = lignes
+        self._marquer(b, brut, marques, poses, spans, xh, encre, bloc, main, graine)
+        if sb and sig_en_ligne and der:
+            # la signature finit la dernière ligne du mot, poussée à droite, un peu plus bas
+            sx = max(x_fin + 1.1 * xh, x1 - 0.75 * pad_x - larg_s - r.uniform(0.0, 0.5) * xh)
+            sy = der[-1].y(sx) + 0.3 * xh
+            self._ligne_libre(sb[2], sx, sy, xh_s, float(b.get("signature_pente", r.uniform(-4.0, -2.0))), dict(sb[3].encre),
+                              sb[3].epaisseur * 1.05, bid + "-signature", ECR.main_info(s_main)["espace"])
+        elif sb:
+            sx = x1 - 0.7 * pad_x - larg_s - r.uniform(0.0, 0.8) * xh
+            sy = y1 - 0.7 * pad_y - desc_s
+            self._ligne_libre(sb[2], sx, sy, xh_s, float(b.get("signature_pente", r.uniform(-5.0, -2.5))), dict(sb[3].encre),
+                              sb[3].epaisseur * 1.05, bid + "-signature", ECR.main_info(s_main)["espace"])
+        # le cadre, tracé après coup autour du tout
+        self.tracer(TR.cadre(x0, y0, x1, y1, r, xh, style), xh, encre, bloc.epaisseur * 0.95, graine + 31, main)
+        if style == "ondule":
+            coin = b.get("coeur", "haut-droite")
+            cx = x1 - r.uniform(0.2, 0.6) * xh if "droite" in coin else x0 + r.uniform(0.2, 0.6) * xh
+            cy = y0 + r.uniform(-0.15, 0.15) * xh if "haut" in coin else y1 + r.uniform(-0.15, 0.15) * xh
+            self.tracer(TR.coeur(cx, cy, float(b.get("taille_coeur", 1.5)) * xh, r, xh), xh, encre, bloc.epaisseur, graine + 37, main)
+        (self.base, self.pas_prec, self.bas, self.haut, self.marge_derive, self.pente_prec, self._ignorer) = sauve
+        m = 0.5 * xh_c
+        boite = (x0 - m, y0 - m, x1 + m, (self.H if b.get("position", "bas") == "bas" else y1 + m))
+        if b.get("style") == "ondule":
+            boite = (boite[0], boite[1] - 0.8 * xh, boite[2], boite[3])
+        self._reserver(bid, boite)
+        self.cadre_rect = (x0, y0, x1, y1)
+        lis = self._texte_lisible(brut, marques)
+        self.texte.append((f"{titre} : " if titre else "") + lis + (f" — {sig}" if sig else ""))
+
+    def etiquette(self, b, idx):
+        """Quelques mots écrits à la main dans une boîte (`rect`, fractions de la page), centrés,
+        coupés en lignes à sa largeur : « Scanne-moi pour voir ma vidéo » sous le QR de l'A5, la
+        dédicace, le colophon. « \\n » : retour à la ligne voulu ; ligne vide : un blanc. `decalage` :
+        chaque ligne un peu plus à droite (fraction de la largeur), comme une dédicace écrite d'un jet.
+        La boîte est réservée."""
+        bid = b.get("id", "etiquette")
+        r = self.rng
+        main = b.get("main", "cecile")
+        enc_id = encre_dispo(b.get("encre", "crayon"))
+        info = ECR.main_info(main)
+        xh = self.xh_de(b.get("role", "legende"), main) * float(b.get("echelle", 1.0))
+        graine = int(b.get("graine", self.graine * 31 + idx * 7))
+        fx, fy, fw, fh = b["rect"]
+        x0, y0, w, hh = fx * self.W, fy * self.H, fw * self.W, fh * self.H
+        esp = info["espace"]
+        ep = self._ep(ECR.main_info(main)["epaisseur"], b)
+        lignes = []  # [(mots, bloc d'écriture)] ; None = blanc
+        lisibles = []
+        dec = float(b.get("decalage", 0.0)) * self.W
+        for k, texte in enumerate(b["texte"].split("\n")):
+            if not texte.strip():
+                lignes.append(None)
+                continue
+            brut, marques, mots, bloc = self.ecrire_segments([{"texte": texte, "graine": graine + 13 * k}], main, enc_id,
+                                                             b.get("outil"))
+            lisibles.append(self._texte_lisible(brut, marques))
+            cur, larg = [], 0.0
+            for m in mots:
+                e = self._espace_libre(cur[-1], m, esp) * xh if cur else 0.0
+                dispo = w - dec * len([x for x in lignes if x is not None])  # chaque ligne commence plus à droite
+                if cur and larg + e + m.largeur * xh > dispo and not getattr(m, "colle", False):
+                    lignes.append((cur, bloc))
+                    cur, larg, e = [], 0.0, 0.0
+                cur.append(m)
+                larg += e + m.largeur * xh
+            if cur:
+                lignes.append((cur, bloc))
+        pas = info["interligne"] * xh * float(b.get("interligne", 0.86))
+        y = y0 + 1.55 * xh
+        n_ecrites = 0
+        for k, item in enumerate(lignes):
+            if item is None:
+                y += 0.55 * pas
+                continue
+            ligne, bloc = item
+            lg, _, _ = self._mesure(ligne, xh, esp)
+            if dec:
+                x = x0 + n_ecrites * dec + r.normal(0, 0.1) * xh
+            else:
+                x = x0 + max(0.0, (w - lg) / 2) + r.normal(0, 0.12) * xh + (0.25 * xh if n_ecrites % 2 else 0.0)
+            self._ligne_libre(ligne, x, y, xh, float(b.get("pente", r.uniform(-2.5, 0.5))) + r.normal(0, 0.4), dict(bloc.encre),
+                              self._ep(bloc.epaisseur, b), bid, esp)
+            n_ecrites += 1
+            y += pas
+        if y - pas + 0.7 * xh > y0 + hh + 0.5 * xh:
+            self.deborde.append(f"{bid} (trop long pour sa boîte)")
+        self._reserver(bid, self._boite_de(len(self.mots) - sum(len(i[0]) for i in lignes if i), len(self.marques_boites), 0.3 * xh)
+                       or (x0, y0, x0 + w, y0 + hh))
+        self.texte.append(" ".join(lisibles))
+
+    def sommaire(self, b, idx):
+        """Lignes « Prénom — recette ........ folio » (points de conduite à la main), regroupées par
+        chapitre (`chapitre: true` : titre du chapitre, sans folio). Chaque ligne qui a une `cible`
+        donne un lien (manifeste `liens`, rect en fractions de page). Les lignes viennent du carnet
+        (recette.lignes_sommaire : `chapitres`, `fin`, `titres`) quand la description n'en donne pas.
+
+        Débordement (une vingtaine d'invités, ≈ 30 lignes) — prévu, pas encore fait : le sommaire
+        commencerait alors en haut de la page GAUCHE de sa double page (la dédicace remonte en tête de
+        cette page, plus petite, et le sommaire suit dessous), puis continuerait sur la page droite
+        (`sommaire`), coupé entre deux chapitres de préférence, jamais entre un titre de chapitre et sa
+        première ligne. Aujourd'hui, un sommaire trop long pour sa page est un débordement (cuisson en
+        code 1) : jamais une ligne perdue."""
+        bid = b.get("id", "sommaire")
+        main, enc_id, outil, info, xh = self._style_bloc(b, "corps")
+        r = self.rng
+        graine = int(b.get("graine", self.graine * 31 + idx * 7))
+        interligne = float(b.get("interligne", info["interligne"] * 1.08))
+        x_folio = self.xr - float(b.get("marge_folio", r.uniform(0.025, 0.045))) * self.W
+        for k, l in enumerate(b.get("lignes", [])):
+            g = int(l.get("graine", graine + 37 * k))
+            lid = f"{bid}-{k + 1}"
+            n_m = len(self.mots)
+            if l.get("chapitre"):
+                tb = {"type": "titre", "id": lid, "segments": [{"texte": l["texte"], "graine": g}], "position": "fer",
+                      "souligne": l.get("souligne", "trait"), "echelle": float(l.get("echelle", 1.22)),
+                      "avant": float(l.get("avant", 0.75 if k else 0.15)), "premier_haut": 1.6}
+                for c in ("main", "encre", "outil"):
+                    if c in b:
+                        tb[c] = b[c]
+                ls = self.titre(tb, idx * 100 + k)
+                if not ls:
+                    break
+                if l.get("cible"):
+                    self._lien(l, n_m, xh, ls[-1])
+                continue
+            # « Prénom — recette » : le tiret est tracé à la main (l'écriture en ferait un petit « - » bas)
+            parties = [t.strip() for t in l["texte"].split(" — ")] if " — " in l["texte"] else [l["texte"]]
+            brut, marques, mots, bloc = self.ecrire_segments([{"texte": parties[0], "graine": g}], main, enc_id, outil)
+            mots2 = []
+            if len(parties) > 1:
+                b2 = self.ecrire_segments([{"texte": " — ".join(parties[1:]), "graine": g + 5}], main, enc_id, outil)
+                mots2 = b2[2]
+                brut, marques = brut + " — " + b2[0], marques + [dict(m, debut=m["debut"] + len(brut) + 3, fin=m["fin"] + len(brut) + 3)
+                                                              for m in b2[1]]
+            encre = dict(bloc.encre)
+            fol = str(l["folio"]) if l.get("folio") is not None else ""
+            fm = self.ecrire_segments([{"texte": fol, "graine": g + 11}], main, enc_id, outil)[2] if fol else []
+            larg_f, _, _ = self._mesure(fm, xh, info["espace"])
+            retrait = float(l.get("retrait", 0.045)) * self.W + r.normal(0, 0.004) * self.W
+            L = self.nouvelle_ligne(xh, interligne, x0=self.ml + retrait, sauter=float(l.get("avant", 0.08)), derive=False,
+                                    sigma=0.16)
+            if L is None:
+                self.deborde.append(lid)
+                break
+            x = L.x0
+            for j, m in enumerate(mots):
+                if j:
+                    e = ESPACE * info["espace"] * float(np.clip(r.normal(1, 0.1), 0.85, 1.2))
+                    x += (m.espace_avant if getattr(m, "colle", False) else e) * xh
+                _, adv = self.poser(L, m, x, xh, encre, bloc.epaisseur, lid)
+                x += adv
+            if mots2:
+                x += info["espace"] * xh * float(np.clip(r.normal(1.05, 0.08), 0.9, 1.2))
+                lg_t = xh * float(r.uniform(0.85, 1.15))
+                self.tracer(TR.tiret(x, L.y(x) + 0.05 * xh, lg_t, r, xh), xh, encre, bloc.epaisseur, g + 7, main)
+                x += lg_t + info["espace"] * xh * float(np.clip(r.normal(1.05, 0.08), 0.9, 1.2))
+                for j, m in enumerate(mots2):
+                    if j:
+                        e = ESPACE * info["espace"] * float(np.clip(r.normal(1, 0.1), 0.85, 1.2))
+                        x += (m.espace_avant if getattr(m, "colle", False) else e) * xh
+                    _, adv = self.poser(L, m, x, xh, encre, bloc.epaisseur, lid)
+                    x += adv
+            mots = mots + mots2
+            xf = x_folio - larg_f + r.normal(0, 0.1) * xh
+            if xf < x + 1.6 * xh:
+                self.deborde.append(f"{lid} (ligne trop longue pour son folio)")
+            xx = xf
+            for j, m in enumerate(fm):
+                if j:
+                    xx += max(m.espace_avant, 0.08) * xh
+                _, adv = self.poser(L, m, xx, xh, encre, bloc.epaisseur, lid)
+                xx += adv
+            xa, xb = x + r.uniform(0.35, 0.6) * xh, xf - r.uniform(0.35, 0.55) * xh
+            self.tracer(TR.points_conduite(xa, L.y(xa), xb, L.y(xb), r, xh), xh, encre, bloc.epaisseur, g + 3, main)
+            self.blocs_lignes[lid] = [L]
+            spans = _spans(brut, [mots])
+            self._marquer(l, brut, marques, [p for p in self.mots[n_m:n_m + len(mots)]], spans, xh, encre, bloc, main, g)
+            if l.get("cible"):
+                self._lien(l, n_m, xh, L)
+            self.texte.append(self._texte_lisible(brut, marques) + (f", page {fol}" if fol else ""))
+
+    def _lien(self, l: dict, n_m: int, xh: float, L: Ligne):
+        """Rectangle cliquable d'une ligne du sommaire : toute la ligne, du début du texte au folio."""
+        bx = [m.boite for m in self.mots[n_m:]]
+        if not bx:
+            return
+        A = np.array(bx, float)
+        x0 = float(A[:, 0].min()) - 0.4 * xh
+        x1 = float(A[:, 2].max()) + 0.4 * xh
+        y0 = min(float(A[:, 1].min()), L.y0 - 1.9 * L.xh) - 0.25 * xh
+        y1 = max(float(A[:, 3].max()), L.y0 + 0.75 * L.xh) + 0.2 * xh
+        e = {"cible": l["cible"], "rect": (x0, y0, x1, y1)}
+        if l.get("invite"):
+            e["invite"] = l["invite"]
+        self.liens.append(e)
+
+    def chapitre(self, b, idx):
+        """Intercalaire : titre du chapitre en grand dans la main du carnet, souligné, la liste des
+        invités du chapitre en petit dessous ; le croquis (bloc différé) se pose sous le tout."""
+        bid = b.get("id", "chapitre")
+        r = self.rng
+        tb = {"type": "titre", "id": bid, "texte": b["titre"], "position": b.get("position", "centre"),
+              "souligne": b.get("souligne", "trait"), "echelle": float(b.get("taille", 2.1)), "avant": float(b.get("avant", 0.0)),
+              "premier_haut": float(b.get("premier_haut", 1.7))}
+        for c in ("main", "encre", "outil", "graine", "souligne_encre"):
+            if c in b:
+                tb[c] = b[c]
+        ls = self.titre(tb, idx)
+        if not ls or not b.get("invites"):
+            return
+        noms = b["invites"]
+        texte = noms if isinstance(noms, str) else (", ".join(noms[:-1]) + " et " + noms[-1] if len(noms) > 1 else noms[0])
+        main = b.get("invites_main", b.get("main", self.main))
+        enc_id = encre_dispo(b.get("invites_encre", b.get("encre", self.encre)))
+        info = ECR.main_info(main)
+        xh = max(self.xh_min, self.xh_de("annotation", main))
+        g = int(b.get("invites_graine", self.graine * 31 + idx * 7 + 5))
+        brut, marques, mots, bloc = self.ecrire_segments([{"texte": texte, "graine": g}], main, enc_id, b.get("outil"))
+        larg, asc, desc = self._mesure(mots, xh, info["espace"])
+        titre_mots = [m for L in ls for m in L.mots]
+        if titre_mots:
+            A = np.array([m.boite for m in titre_mots], float)
+            cx = float((A[:, 0].min() + A[:, 2].max()) / 2)
+            yb = float(A[:, 3].max()) + 1.15 * ls[-1].xh * 0.6 + asc
+        else:
+            cx, yb = self.W / 2, (self.base or self.haut) + 2 * xh
+        x = cx - larg / 2 + r.normal(0.02, 0.02) * self.W
+        poses, L = self._ligne_libre(mots, x, yb, xh, r.uniform(-1.8, 0.6), dict(bloc.encre), bloc.epaisseur, bid + "-invites",
+                                     info["espace"])
+        self.base = yb
+        self.texte.append(self._texte_lisible(brut, marques))
+
     # ---- contrôle : rien sous une zone vivante -------------------------------------------------
     def _verifier_zones(self):
         for m in self.mots:
@@ -1385,8 +2017,20 @@ class Mise:
     # ---- page entière ------------------------------------------------------------------------
     def composer(self):
         differe, dessins = [], []
+        # 1. les zones posées avant le texte (prénom, titre courant, cadre du mot) : il coule autour
+        for i, b in enumerate(self.desc.get("blocs", [])):
+            if b["type"] in BLOCS_RESERVES:
+                getattr(self, b["type"])(b, i)
+        self.n_avant = len(self.lignes)  # lignes écrites dans les zones (le mot du cadre) : hors du texte coulé
         for i, b in enumerate(self.desc.get("blocs", [])):
             t = b["type"]
+            if t in BLOCS_RESERVES:
+                continue
+            if t == "chapitre" and b.get("croquis"):
+                dessins.append((i, {"type": "croquis", "id": b.get("id", "chapitre") + "-croquis", "nom": b["croquis"],
+                                    "taille": b.get("croquis_taille", [0.27, 0.25]), "sous_bloc": b.get("id", "chapitre"),
+                                    "main": b.get("main", self.main), "encre": b.get("croquis_encre", b.get("encre", self.encre)),
+                                    "graine": int(b.get("croquis_graine", self.graine * 31 + i * 7 + 3))}))
             if t in ("annotation", "legende"):
                 differe.append((i, b))
                 continue
@@ -1412,6 +2056,10 @@ class Mise:
                 self.signature(b, i)
             elif t == "espace":
                 self.espace(b, i)
+            elif t == "sommaire":
+                self.sommaire(b, i)
+            elif t == "chapitre":
+                self.chapitre(b, i)
             else:
                 raise ValueError(f"{self.id} : type de bloc inconnu « {t} »")
         for b in self.desc.get("blocs", []):
@@ -1451,6 +2099,8 @@ def noms_croquis(desc: dict) -> list:
                 out.append(l["puce"])
         if b["type"] == "croquis":
             out += b["nom"] if isinstance(b["nom"], list) else [b["nom"]]
+        if b["type"] == "chapitre" and b.get("croquis"):
+            out += b["croquis"] if isinstance(b["croquis"], list) else [b["croquis"]]
         for t in textes(b):
             out += [m.strip(":") for m in _COUPE_ICONES.findall(t)]
     return sorted(set(out))
@@ -1459,6 +2109,25 @@ def noms_croquis(desc: dict) -> list:
 def tient(m: Mise) -> bool:
     """La page tient : aucun débordement, aucune annotation (des mots !) non placée."""
     return not m.deborde and not m.non_places
+
+
+def trou_bas(m: Mise) -> float:
+    """Blanc laissé en bas de la page sous la dernière ligne du texte coulé, en lignes du corps
+    (interligne de la main) : de la dernière ligne de base à la plus basse ligne de base où une ligne
+    pourrait encore commencer à la marge (zones réservées comprises : folio, cadre du mot, note de
+    suite, coin du feuillet). 0 : la page est pleine."""
+    lignes = [L for L in m.lignes[getattr(m, "n_avant", 0):] if L.mots]
+    if not lignes:
+        return 0.0
+    info = ECR.main_info(m.main)
+    xh = m.xh_de("corps", m.main)
+    pas = info["interligne"] * xh
+    bas = m.H * (1 - m.desc.get("marges", {}).get("bas", 0.035))
+    y = max(L.y0 for L in lignes)
+    yb = bas
+    while yb > y and m.plage(yb, xh, m.ml, m.xr) is None:
+        yb -= 1.0
+    return max(0.0, (yb - y) / pas)
 
 
 def mettre_en_page(desc: dict, dessins: bool = True, serrage_max: int | None = None) -> Mise:

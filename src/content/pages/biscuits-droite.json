@@ -1,0 +1,28 @@
+{
+ "main": "soignee",
+ "encre": "plume",
+ "gabarit": "carnet",
+ "id": "biscuits-droite",
+ "double": "biscuits",
+ "cote": "droite",
+ "graine": 1202,
+ "marges": {
+  "haut": 0.27
+ },
+ "blocs": [
+  {
+   "id": "chapitre",
+   "type": "chapitre",
+   "chapitre": "biscuits",
+   "croquis": [
+    "cookie"
+   ],
+   "taille": 1.75,
+   "croquis_taille": [
+    0.27,
+    0.25
+   ],
+   "graine": 12011
+  }
+ ]
+}

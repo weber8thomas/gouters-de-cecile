@@ -9,6 +9,26 @@
  "encre": "feutre",
  "blocs": [
   {
+   "id": "bandeau",
+   "type": "bandeau",
+   "texte": "Mathis",
+   "sous": "depuis Lille",
+   "taille": 2.2,
+   "places": [
+    "cote"
+   ]
+  },
+  {
+   "id": "cadre",
+   "type": "cadre",
+   "style": "ondule",
+   "titre": "Pour Cécile",
+   "texte": "Joyeux anniv Cécile !!",
+   "signature": "Mathis",
+   "largeur": 0.74,
+   "_": "Mot d'exemple : Mathis est un invité fictif de démonstration (aucun vrai message)."
+  },
+  {
    "id": "titre",
    "type": "titre",
    "texte": "Les cookies de Mathis",
@@ -18,7 +38,7 @@
   {
    "id": "ingredients",
    "type": "ingredients",
-   "disposition": "colonne",
+   "disposition": "texte",
    "avant": 0.2,
    "lignes": [
     "1 œuf :oeuf:",
@@ -27,16 +47,18 @@
     "50 g de sucre blanc",
     "200 g de farine",
     "½ sachet de levure",
-    "1 pincée de fleur de sel",
-    "150 g de pépites de chocolat"
-   ]
+    "1 pincée de sel",
+    "150 g de pépites de choco"
+   ],
+   "fin": ".",
+   "alinea": 0.0
   },
   {
    "id": "preparation",
    "type": "paragraphe",
    "avant": 0.25,
    "alinea": 0.0,
-   "texte": "Mélange le beurre avec les sucres, ajoute l'œuf puis la farine, la levure et le sel. Mets __beaucoup__ de pépites !! Fais des boules sur la plaque, 10 min à 170 °C. Ils doivent rester mous au milieu.",
+   "texte": "Mélange tout, mets __beaucoup__ de pépites !! 10 min à 170 °C, ils restent mous au milieu.",
    "graine": 905079,
    "icones": [
     {
@@ -47,40 +69,18 @@
    ]
   },
   {
-   "id": "goute",
-   "type": "annotation",
-   "main": "cecile",
-   "encre": "crayon",
-   "pente": -4,
-   "texte": "goûtés : trop bons !",
-   "places": [
-    {
-     "x": 0.6,
-     "y": 0.52
-    },
-    {
-     "x": 0.56,
-     "y": 0.5
-    },
-    {
-     "x": 0.5,
-     "y": 0.93
-    }
-   ]
-  },
-  {
    "id": "croquis-recette",
    "type": "croquis",
    "nom": [
     "cookie"
    ],
    "taille": [
-    0.17,
-    0.17
+    0.16,
+    0.16
    ],
    "pres": [
-    0.82,
-    0.9
+    0.83,
+    0.86
    ]
   }
  ],
@@ -88,10 +88,10 @@
   {
    "nom": "photo",
    "rect": [
-    0.6,
-    0.14,
-    0.3654,
-    0.25755
+    0.62,
+    0.035,
+    0.32,
+    0.22555
    ]
   }
  ]

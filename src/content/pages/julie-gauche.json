@@ -2,35 +2,50 @@
  "id": "julie-gauche",
  "double": "julie",
  "cote": "gauche",
- "folio": 12,
+ "folio": 10,
  "graine": 4128,
  "gabarit": "C",
- "main": "cecile",
- "encre": "crayon",
+ "main": "soignee",
+ "encre": "bic",
  "vivants": [
-  { "nom": "photo", "rect": [0.17, 0.09, 0.67113, 0.46101] }
+  {
+   "nom": "photo",
+   "rect": [
+    0.205,
+    0.245,
+    0.6,
+    0.41214
+   ]
+  }
  ],
  "blocs": [
   {
-   "id": "legende",
-   "type": "legende",
-   "role": "legende",
-   "texte": "Julie, depuis Lyon",
-   "pente": -2.2,
+   "id": "bandeau",
+   "type": "bandeau",
+   "texte": "Julie",
+   "sous": "depuis Lyon",
+   "taille": 2.6,
    "places": [
-    { "sous": "photo", "dx": 0.07, "dy": 0.045 },
-    { "sous": "photo", "dx": 0.16, "dy": 0.05 },
-    { "x": 0.22, "y": 0.62 }
+    "dessus",
+    "cote",
+    "dessous"
    ]
   },
   {
    "id": "croquis-recette",
    "type": "croquis",
-   "nom": ["gateau", "citron"],
-   "main": "soignee",
-   "encre": "bic",
-   "taille": [0.2, 0.18],
-   "pres": [0.66, 0.78]
+   "nom": [
+    "gateau",
+    "citron"
+   ],
+   "taille": [
+    0.2,
+    0.18
+   ],
+   "pres": [
+    0.7,
+    0.84
+   ]
   }
  ]
 }

@@ -1,0 +1,38 @@
+{
+ "main": "soignee",
+ "encre": "crayon",
+ "gabarit": "carnet",
+ "id": "garde",
+ "double": "titre",
+ "cote": "gauche",
+ "folio": 2,
+ "graine": 201,
+ "contre_plat": true,
+ "papier": "garde-uni",
+ "papier_miroir": true,
+ "_": "Contre-plat (papier de garde collé sur le carton de la couverture) : pas de page au dos, pas de folio. Papier : lot Pa (papiers.json, gardes), choisi au GATE avec la couverture.",
+ "blocs": [
+  {
+   "id": "ex-libris",
+   "type": "annotation",
+   "role": "legende",
+   "texte": "Ce carnet appartient à Cécile",
+   "pente": -2.4,
+   "sans_parentheses": true,
+   "places": [
+    {
+     "x": 0.36,
+     "y": 0.84
+    },
+    {
+     "x": 0.3,
+     "y": 0.8
+    },
+    {
+     "x": 0.4,
+     "y": 0.88
+    }
+   ]
+  }
+ ]
+}
