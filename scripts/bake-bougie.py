@@ -40,8 +40,10 @@ SHA256 = 'a88c958b0677589e33d038777566782ecb6b245179a6629cfe3d3563a1f0e1d2'
 OUT = os.path.join(ROOT, 'design-system', 'baked', 'bougie')
 GEOMETRIE = os.path.join(ROOT, 'src', 'components', 'Bougie', 'geometrie.json')
 
-CUISSON = 1.25          # px cuits par px de scène (le rendu Blender est fait à cette échelle)
-FLOU_CIRE = 0.7         # px de scène : la bougie est un peu plus haute que le livre, à peine hors du net
+CUISSON = 1.25          # px cuits par px de scène : celui du rendu Blender (scene.py, CUISSON) ; changer les deux avec un nouveau rendu
+FLOU_CIRE = 0           # px de scène : la cire est nette (le flou de profondeur de champ est retiré)
+DECALAGE = (-52, -24)   # px de scène : la bougie est posée plus à gauche et un peu plus haut (pied (196, 846) → (144, 822))
+TAILLE = 0.82           # et un peu plus petite (autour de son pied) : entière à l'écran, loin du livre ouvert, plus nette
 OMBRE_R0, OMBRE_R1 = 90.0, 230.0   # l'ombre s'efface entre ces distances au pied (px de scène)
 ASSOMBRI = 0.9          # la pièce est sombre : la cire reste devinée plutôt que montrée
 COLONNES_GOUTTE = 8
@@ -54,7 +56,7 @@ ECHELLE_PHOTO = 0.142   # px de scène par px de la photo, pour une flamme debou
 MECHE = (3252, 1785)
 FLAMME_BAS, FLAMME_HAUT = 30, 140
 FLAMME_FONDU = (1735, 1792)
-FLOU_FLAMME = 4         # px de scène, avant la mise en perspective (qui la réduit encore)
+FLOU_FLAMME = 1.5       # px de scène, avant la mise en perspective (qui la réduit encore)
 FLAMME_LARGEUR = 0.5    # échelle en travers (la largeur d'une flamme ne fuit pas)
 FLAMME_RACCOURCI_MIN = 0.5   # vue presque d'en haut, la flamme se raccourcit, mais on la garde lisible
 HALO_SCENE = (800, 900)
@@ -268,6 +270,15 @@ def main():
     cx, cy = rep['flamme']
     geo['halo'] = {'x': round(cx - HALO_SCENE[0] / 2, 2), 'y': round(cy - HALO_SCENE[1] / 2, 2),
                    'w': HALO_SCENE[0], 'h': HALO_SCENE[1]}
+
+    # la bougie est posée ailleurs sur la table, un peu plus petite : ses calques, sa lueur et son ombre
+    # suivent d'un bloc, réduits autour du pied (les pixels ne changent pas, seule la géométrie bouge)
+    px, py = rep['pied']
+    for calque in [geo['cire'], geo['ombre'], geo['flamme'], geo['halo'], *geo['gouttes']]:
+        calque['x'] = round(px + (calque['x'] - px) * TAILLE + DECALAGE[0], 2)
+        calque['y'] = round(py + (calque['y'] - py) * TAILLE + DECALAGE[1], 2)
+        calque['w'] = round(calque['w'] * TAILLE, 2)
+        calque['h'] = round(calque['h'] * TAILLE, 2)
 
     for vieux in ('bougie.webp',):
         p = os.path.join(OUT, vieux)
