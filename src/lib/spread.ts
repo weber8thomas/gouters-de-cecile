@@ -9,7 +9,7 @@ export type RenderMode = 'live' | 'static';
 export const RenderModeContext = React.createContext<RenderMode>('live');
 export const useRenderMode = () => React.useContext(RenderModeContext);
 
-export type SpreadKind = 'couverture' | 'titre' | 'sommaire' | 'intercalaire' | 'video' | 'recette' | 'deux-recettes' | 'finale' | 'colophon';
+export type SpreadKind = 'couverture' | 'titre' | 'sommaire' | 'intercalaire' | 'video' | 'recette' | 'deux-recettes' | 'finale' | 'colophon' | 'album';
 
 export interface SpreadSpec {
   id: string; // « p04-julie »

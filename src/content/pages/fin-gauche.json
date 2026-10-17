@@ -2,12 +2,35 @@
  "id": "fin-gauche",
  "double": "fin",
  "cote": "gauche",
- "folio": 18,
+ "folio": 22,
  "graine": 1201,
  "main": "cecile",
  "encre": "chocolat",
  "marges": { "haut": 0.3 },
+ "_": "Le mot de la fin (dernière double page, gauche) : titre « À suivre… », puis le mot de Cécile. Le colophon est sur la page de droite (fin-droite).",
  "blocs": [
-  { "id": "suivre", "type": "titre", "texte": "À suivre…", "position": "decale", "souligne": "aucun" }
+  { "id": "suivre", "type": "titre", "texte": "À suivre…", "position": "decale", "souligne": "aucun" },
+  {
+   "id": "papier",
+   "type": "paragraphe",
+   "role": "mot",
+   "alinea": 0.06,
+   "texte": "La version papier arrive bientôt…"
+  },
+  {
+   "id": "merci",
+   "type": "paragraphe",
+   "role": "mot",
+   "avant": 0.35,
+   "alinea": 0.0,
+   "texte": "Merci à tous pour vos recettes et vos petits mots."
+  },
+  {
+   "id": "signature",
+   "type": "signature",
+   "texte": "Cécile",
+   "x": 0.6,
+   "avant": 0.2
+  }
  ]
 }

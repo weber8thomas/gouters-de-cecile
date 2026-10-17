@@ -5,41 +5,41 @@
  "id": "dedicace",
  "double": "sommaire",
  "cote": "gauche",
- "folio": 4,
+ "folio": 8,
  "graine": 401,
- "_": "Dédicace (texte provisoire, à modifier librement) : `texte` du bloc « dedicace », une ligne par retour à la ligne (\\n). Quand le sommaire ne tient plus sur sa page (une vingtaine d'invités), il reprend en haut de cette page et la dédicace remonte au-dessus de lui (scripts/pages/mise_en_page.py, bloc « sommaire »).",
+ "_": "Dédicace : `texte` du bloc « dedicace », une ligne par retour à la ligne (\\n). Centrée, au tiers haut de la page, à la plume ; un croquis fleur fait l'ornement dessous. Quand le sommaire ne tient plus sur sa page (une vingtaine d'invités), il reprend en haut de cette page et la dédicace remonte au-dessus de lui (scripts/pages/mise_en_page.py, bloc « sommaire »).",
  "blocs": [
   {
    "id": "dedicace",
    "type": "etiquette",
-   "texte": "Pour Cécile,\nun goûter par page,\nde la part de ceux qui t'aiment",
+   "texte": "Pour Cécile,\nun goûter par page,\nde la part de ceux qui t'aiment.",
    "main": "soignee",
    "encre": "plume",
    "role": "mot",
-   "echelle": 1.18,
+   "echelle": 1.45,
+   "interligne": 1.15,
    "rect": [
-    0.13,
-    0.25,
-    0.74,
+    0.1,
+    0.19,
+    0.8,
     0.24
    ],
-   "pente": -1.6,
-   "decalage": 0.04,
-   "graine": 35691
+   "pente": -1.2,
+   "graine": 35697
   },
   {
-   "id": "croquis",
+   "id": "ornement",
    "type": "croquis",
    "nom": [
     "fleur"
    ],
    "taille": [
-    0.15,
-    0.15
+    0.17,
+    0.17
    ],
    "pres": [
-    0.6,
-    0.58
+    0.5,
+    0.56
    ]
   }
  ]

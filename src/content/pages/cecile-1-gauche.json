@@ -1,0 +1,67 @@
+{
+ "id": "cecile-1-gauche",
+ "double": "cecile-1",
+ "cote": "gauche",
+ "folio": 4,
+ "graine": 4011,
+ "main": "cecile",
+ "encre": "crayon",
+ "marges": {
+  "haut": 0.1
+ },
+ "_": "Album « Cécile en cuisine », 1re double page (gauche) : titre manuscrit en haut, trois photos collées (photo-1 à photo-3) de tailles et d'inclinaisons variées ; une légende au crayon sous chaque photo (« Cécile, … ans », l'âge en pointillés).",
+ "vivants": [
+  { "nom": "photo-1", "rect": [0.09, 0.22, 0.46, 0.3] },
+  { "nom": "photo-2", "rect": [0.6, 0.25, 0.29, 0.22] },
+  { "nom": "photo-3", "rect": [0.22, 0.66, 0.52, 0.22] }
+ ],
+ "blocs": [
+  {
+   "id": "titre",
+   "type": "titre",
+   "texte": "Cécile en cuisine",
+   "main": "cecile",
+   "encre": "chocolat",
+   "echelle": 2.0,
+   "position": "centre",
+   "souligne": "trait",
+   "graine": 4021
+  },
+  {
+   "id": "legende-photo-1",
+   "type": "annotation",
+   "role": "legende",
+   "main": "cecile",
+   "encre": "crayon",
+   "texte": "Cécile, ……… ans",
+   "sans_parentheses": true,
+   "pente": -1.5,
+   "places": [{ "sous": "photo-1", "dx": 0.01, "dy": 0.04 }],
+   "graine": 4031
+  },
+  {
+   "id": "legende-photo-2",
+   "type": "annotation",
+   "role": "legende",
+   "main": "cecile",
+   "encre": "crayon",
+   "texte": "Cécile, ……… ans",
+   "sans_parentheses": true,
+   "pente": -2.0,
+   "places": [{ "sous": "photo-2", "dx": 0.0, "dy": 0.04 }],
+   "graine": 4032
+  },
+  {
+   "id": "legende-photo-3",
+   "type": "annotation",
+   "role": "legende",
+   "main": "cecile",
+   "encre": "crayon",
+   "texte": "Cécile, ……… ans",
+   "sans_parentheses": true,
+   "pente": -1.0,
+   "places": [{ "sous": "photo-3", "dx": 0.02, "dy": 0.04 }],
+   "graine": 4033
+  }
+ ]
+}
