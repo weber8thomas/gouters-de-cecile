@@ -33,6 +33,9 @@ export const CUP_SPRING = { stiffness: motionSpec.cup.stiffness, damping: motion
 /** Décalages (en s) des enchaînements. */
 export const STAGGER = motionSpec.stagger;
 
+/** Élan au lâcher d'un déplacement à la loupe (Motion type « inertia »). */
+export const INERTIE = { power: motionSpec.inertie.power, timeConstant: motionSpec.inertie.timeConstant };
+
 /** Équivalent CSS d'un ressort (easing + durée), pour les transitions CSS simples. */
 export const cssSpring = (name: SpringName): string => `var(--gc-dur-spring-${name}) var(--gc-spring-${name})`;
 

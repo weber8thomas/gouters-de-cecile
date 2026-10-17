@@ -275,3 +275,94 @@ Quand le menu ou un objet soulevé est ouvert, **lui seul** reçoit les touches 
   - une recette donne des pages `<slug>-gauche`, `<slug>-droite`, et si besoin `<slug>-feuillet-recto` et `-verso` ;
   - dans le manifeste, chaque page porte `vivants: { photo?, volant? }` en fractions de page, et `volant: { recto, verso, angle }`. Les pages de feuillet ont `type: 'feuillet'` et leur propre `taille: [w, h]` ;
   - plus aucun mot perdu : si le texte déborde, la cuisson échoue.
+
+## 13. Plan v4 : invités en évidence, couverture cuite, loupe, livre vivant, A5 + QR
+
+**Décisions prises avec l'utilisatrice.** Elles l'emportent sur les sections précédentes. Plan complet : `design-system/docs/plan-v4.md`.
+
+- **Chaque invité est identifiable d'un coup d'œil** (choix « Bandeau + mot encadré ») :
+  - la double page garde sa forme. Le **prénom** est écrit **en grand en haut de la page gauche**, près de la photo, dans la main et l'encre de l'invité, souligné à la main, avec un sous-titre au crayon (« depuis Lyon ») ;
+  - le **mot pour Cécile** est écrit **dans un cadre tracé à la main** (« Pour Cécile », signature dedans), à part de la recette. Le cadre est posé avant la recette, qui coule autour ;
+  - un rappel du prénom, petit et au crayon, en tête de la page droite (titre courant).
+- **Photos et vidéos : des vœux d'anniversaire**, pas des recettes. On voit le visage de la personne, et son prénom se lit tout près.
+  - Les clips d'exemple sont libres de droits (personnes de banques d'images). **Aucune vraie vidéo d'invité en ligne** tant que l'hébergement n'est pas décidé avec l'utilisatrice.
+- **Mots importants** : les nombres, les unités (`g`, `kg`, `cl`, `ml`, `°`, `°C`, `min`, `h`, `c. à s.`…), les noms (roster, Cécile) et les ingrédients.
+  - **Aucune** correction voulue (insertion `^{}`, rature `~~a~~>{b}`) ne tombe à l'intérieur d'un mot important.
+  - La cuisson les relit **sur l'encre rendue**. Un mot important douteux fait **échouer** la cuisson (code 1).
+- **Couverture cuite** comme les pages : toile ou carton scannés, étiquette manuscrite, garde. Plus de texte en police web sur la couverture.
+- **Ordre du carnet** : `src/content/carnet.json`, source unique pour la cuisson et l'application.
+  - Les folios sont calculés : double page k (0 = page de titre) → gauche 2k+2, droite 2k+3.
+  - `sansFolio` : rien d'écrit.
+  - Les pages s'appellent `<id>-gauche` / `<id>-droite`, sauf la double page de titre : `garde` (contre-plat) et `titre`.
+- **Liens** : `#<slug>` ouvre la double page de l'invité, y compris le second d'une double page partagée (`#bernard`) et `#cecile`. L'adresse publique est dans `src/content/site.json` (QR de l'A5).
+
+### 13.1 Clavier (remplace les lignes zoom du § 12.1)
+| Touche | Effet |
+|---|---|
+| `+` / `−` | Loupe : paliers 1 · 1,5 · 2 · 3 |
+| `0` | Loupe à 1× (et zoom fin à 100 %) |
+| Alt + `+` / `−` | Zoom fin (inchangé) |
+| Flèches, loupe active | Déplacer la vue ; au bord, ← → tournent la page (la loupe reste, la vue revient en haut de la page) |
+| Échap / Retour arrière, loupe active | Loupe à 1× |
+| Entrée / Espace, livre fermé | Ouvrir le livre |
+
+Les **crans de distance** (taille du livre) ne se règlent plus que dans le menu.
+
+### 13.2 Amendements
+- **§ 11, gestes** : le pincement du navigateur sur le livre est remplacé par **la loupe du carnet** (pincer, double toucher, ctrl + molette, bouton, menu) avec `touch-action: none` sur le livre. Si le navigateur est déjà zoomé (`visualViewport.scale > 1`), la loupe se désactive.
+- **§ 5, CSS** : le survol se gère en JS (`pointermove`) avec `cursor` ; il n'y a toujours **aucune règle `:hover`**. Une ombre ne s'anime que par l'**opacité** d'un calque d'ombre, jamais par `box-shadow`.
+- **§ 3, réseau** : permis aux lots qui téléchargent des sources sous licence vérifiée : vidéos, couverture, papier, sons.
+- **§ 11, caméra fixe** : la loupe marche **partout**, téléphone compris. Seuls les crans restent fixes quand la caméra est fixe.
+
+### 13.3 Bibliothèques partagées (lead)
+- **`src/lib/loupe.ts`**. État au repos : `getLoupe()`, `useLoupe()`, `abonnerLoupe()` donnent `{ z, zoome, hd, cote, contenu }`.
+  - Geste en cours : `loupeOccupee()`, plus l'événement `gc-loupe` `{ phase: 'debut' | 'fin' }` sur `window`.
+  - Commandes : `demanderLoupe(z, foyer?)`, `ancrerLoupe('haut')`, `publierContenuLoupe(rect, cote)`, `palierVoisin(z, ±1)`.
+  - Réservé au contrôleur : `majLoupe()`, `signalerGesteLoupe()`, `brancherLoupe()`.
+  - Constantes : `LOUPE_MIN` 1, `LOUPE_MAX` 3, `LOUPE_HD` 1,5, `LOUPE_PALIERS`.
+- **`src/lib/son.ts`** : `jouerSon(nom, { vitesse, gain, delai })` ne lève jamais d'erreur. `sonsLivreEffectif(reglages)`, `brancherSons(lecteur)`.
+  - Noms : `page`, `riffle`, `couverture-ouvrir`, `couverture-poser`, `couverture-fermer`, `feuillet`, `photo-lever`, `photo-poser`, `coin`.
+- **`src/lib/reglages.ts`** : nouveau champ `sonsLivre: boolean | null`, où `null` veut dire automatique (coupés sur téléphone).
+- **`src/lib/motion.ts`** : nouveaux ressorts `SPRINGS.arrivee` et `SPRINGS.riffle`, plus `INERTIE` pour l'élan de la loupe.
+- **`src/components/Livre/evenements.ts`** : `GesteType` reçoit `loupe`, `coin`, `arrivee`, `riffle`.
+- **`src/lib/spread.ts`** :
+  - `SpreadSpec.invites[]` ;
+  - `SpreadKind` reçoit `titre`.
+- **`src/content/types.ts`** :
+  - `DoubleCarnet` et `Carnet` ;
+  - `RecetteRecue.nom` et `RecetteRecue.sousTitre` ;
+  - `EncreId` reçoit `bille-bleue`.
+
+### 13.4 Interfaces entre lots
+- **Écriture fiable** (lot E) :
+  - `scripts/pages/importants.py` fournit `important(jeton, contexte) -> bool` et `verifier_contenu(texte) -> [erreurs]` (aucune correction dans un mot important) ;
+  - `scripts/pages/ecriture.py` fournit `relire_rendu(encre_rgba, mots_places) -> [douteux]`.
+  - La nouvelle encre `bille-bleue` vit dans `tools/ecriture/encre.py`.
+- **Mise en page** (lot P1), blocs des pages `src/content/pages/*.json` :
+  - `bandeau` : `{ texte, sous?, main?, encre? }` ;
+  - `cadre` : `{ texte, titre: "Pour Cécile", signature, style: "double" | "ondule" }` ;
+  - `courant` : `{ texte }` ;
+  - `sommaire` : lignes `{ texte, folio, cible }` ;
+  - `chapitre` : `{ titre, croquis? }`.
+  - Dans le manifeste, chaque page peut porter :
+    - `liens: [{ cible, rect }]`, avec des rects en fractions de page ;
+    - `vivants.qr`, pour l'A5.
+- **Cuisson** (lot P2) :
+  - `ECHELLE` et le format sont paramétrés (`formats.py` : `ecran` 850×960 et `a5` 148×210 mm + 3 mm de fond perdu à 300 dpi).
+  - L'encre ×4 est découpée en tuiles 2×2 (`pages/4x/<id>-<rc>`, 4 px de recouvrement). Le manifeste la décrit dans `encre4x: { tuiles: [[r, c, x, y, w, h], …] }`, en fractions de page.
+  - Ces tuiles vont sur le site, **pas dans l'artifact**.
+- **Couverture** (lot C) :
+  - `<Couverture>` fournit les images cuites (plat, dos, tranche, étiquette, garde) que Livre pose sur le plat ;
+  - les étiquettes cuites `indices/{toucher,cliquer,entree}` disent « … pour ouvrir ».
+- **Loupe** (lot B) :
+  - calque `.gc-ecran__loupe` dans `Ecran`, bouton `data-gc-loupe-bouton` ;
+  - attribut `data-gc-loupe="repos|zoome"` sur `.gc-ecran` ;
+  - la ligne « Loupe » et la ligne « Sons du livre » vont dans `Reglages`.
+- **Livre** (lot A) :
+  - attributs `data-gc-coin` pendant un geste de coin et `data-gc-arrivee="en-cours|fini"` ;
+  - la prop `arrivee` ;
+  - pas de glisser de page quand `getLoupe().zoome`.
+- **Sons et indices** (lot S) :
+  - `src/lib/indices.ts` : `indiceUtilise(objet)` ;
+  - `src/lib/modalite.ts` : `useModalite()` renvoie `'toucher' | 'cliquer' | 'entree'` ;
+  - `<InvitationOuvrir opacite={MotionValue} />`.

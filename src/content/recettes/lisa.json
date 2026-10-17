@@ -4,10 +4,10 @@
   "adaptations": [
     "Le « Coucou Thomas, voici ma recette… » est un message à Thomas : retiré du carnet ; « tiptop pour la saison » devient une note en marge.",
     "Majuscules d'emphase (CARROT CAKE, ÉTAPE, YUMMY…) écrites en minuscules soulignées : l'écriture générée lit mal les mots tout en capitales.",
-    "Coquilles gardées comme de vraies corrections à la main : « carrières » barré → carottes, « g » oublié ajouté avec ‸.",
-    "🥕 et 🧁 deviennent des croquis (carotte, cupcake) en guise de puces ; 😎 devient un petit croquis à la fin."
+    "Coquille gardée comme une vraie correction à la main : « carrières » barré → carottes. Le « g » oublié après 180 est écrit d'un trait (« 180 g ») : jamais de correction ni de lettre manquante sur un mot important (unités, quantités, noms, ingrédients ; CONTRACT § 13).",
+    "Encre bille bleu-noir (bille-bleue) pour distinguer sa page de celle de Mathis, qui a la même main. 🥕 et 🧁 deviennent des croquis (carotte, cupcake) en guise de puces ; 😎 devient un petit croquis à la fin."
   ],
-  "style": { "main": "ado", "encre": "feutre", "graine": 2611 },
+  "style": { "main": "ado", "encre": "bille-bleue", "graine": 2611 },
   "video": "lisa",
   "titre": "Carrot cake",
   "titreSouligne": "double",
@@ -19,7 +19,7 @@
       "puce": "carotte",
       "lignes": [
         { "texte": "250g de sucre" },
-        { "texte": "180^{g} d’huile de coco (ou autre huile végétale)" },
+        { "texte": "180 g d’huile de coco (ou autre huile végétale)" },
         { "texte": "1 sachet de levure chimique" },
         { "texte": "300g de carottes (3 à 4 grosses ~~carrières~~>{carottes})" },
         { "texte": "250g de farine fluide" },

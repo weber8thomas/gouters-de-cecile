@@ -3,7 +3,11 @@
 import React from 'react';
 import type { SpreadSpec } from '../../lib/spread';
 
-/** Index de la double page nommée par un lien (#<id>, ou #<invité> pour un id « p04-julie »), −1 sinon. */
+/**
+ * Index de la double page nommée par un lien, −1 sinon : #<id> de la double page, #<invité> (invité
+ * principal ou l'un des invités : #bernard ouvre la double page de Mathis et Bernard, #cecile la fin),
+ * ou #<invité> pour un id « p04-julie ».
+ */
 export function indexDuLien(spreads: SpreadSpec[], hash: string): number {
   let id = hash.replace(/^#/, '');
   try { id = decodeURIComponent(id); } catch { /* lien mal encodé : tel quel */ }
@@ -11,6 +15,8 @@ export function indexDuLien(spreads: SpreadSpec[], hash: string): number {
   if (!id) return -1;
   const exact = spreads.findIndex((s) => s.id.toLowerCase() === id);
   if (exact >= 0) return exact;
+  const invite = spreads.findIndex((s) => s.invite?.toLowerCase() === id || !!s.invites?.some((v) => v.toLowerCase() === id));
+  if (invite >= 0) return invite;
   return spreads.findIndex((s) => s.id.toLowerCase().endsWith(`-${id}`));
 }
 

@@ -5,8 +5,9 @@
 export const GESTE_EVENT = 'gc-livre-geste';
 /** prepa : appui pris en compte (captures d'une transition de vue) ; debut / fin : le mouvement visible. */
 export type GestePhase = 'prepa' | 'debut' | 'fin';
-/** glisse : la caméra passe d'une page à l'autre (cadrage « page ») ; rebond : butée au doigt. */
-export type GesteType = 'page' | 'couverture' | 'zoom' | 'distance' | 'fondu' | 'glisse' | 'rebond';
+/** glisse : la caméra passe d'une page à l'autre (cadrage « page ») ; rebond : butée au doigt ;
+ * loupe : pincer, déplacer ; coin : le coin suit le doigt ; arrivee : le livre se pose ; riffle : feuilleter. */
+export type GesteType = 'page' | 'couverture' | 'zoom' | 'distance' | 'fondu' | 'glisse' | 'rebond' | 'loupe' | 'coin' | 'arrivee' | 'riffle';
 export interface GesteDetail {
   phase: GestePhase;
   type: GesteType;

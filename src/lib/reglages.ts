@@ -19,9 +19,22 @@ export interface Reglages {
   vitesse: Vitesse;
   /** Moins d'animations (en plus de la préférence du système). */
   mouvementReduit: boolean;
+  /**
+   * Sons du livre (pages, couverture, feuillet, photo), distincts du son des vidéos.
+   * null = automatique : coupés sur téléphone, actifs ailleurs (voir sonsLivreEffectif, src/lib/son.ts).
+   */
+  sonsLivre: boolean | null;
 }
 
-export const REGLAGES_DEFAUT: Reglages = { v: 1, son: true, volume: 1, lectureAuto: false, vitesse: 'normale', mouvementReduit: false };
+export const REGLAGES_DEFAUT: Reglages = {
+  v: 1,
+  son: true,
+  volume: 1,
+  lectureAuto: false,
+  vitesse: 'normale',
+  mouvementReduit: false,
+  sonsLivre: null,
+};
 const CLE = 'gc:reglages:v1';
 
 function valider(x: unknown): Reglages {
@@ -33,6 +46,7 @@ function valider(x: unknown): Reglages {
   if (typeof o.lectureAuto === 'boolean') r.lectureAuto = o.lectureAuto;
   if (typeof o.vitesse === 'string' && (VITESSES as string[]).includes(o.vitesse)) r.vitesse = o.vitesse as Vitesse;
   if (typeof o.mouvementReduit === 'boolean') r.mouvementReduit = o.mouvementReduit;
+  if (typeof o.sonsLivre === 'boolean' || o.sonsLivre === null) r.sonsLivre = o.sonsLivre;
   return r;
 }
 

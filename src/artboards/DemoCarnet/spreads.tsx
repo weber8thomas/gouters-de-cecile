@@ -1,13 +1,15 @@
 // Doubles pages de la démo du carnet, partagées par l'application (Carnet), la carte DemoCarnet et la
-// carte Formats : Lisa (vraie recette, longue : feuillet volant), Julie, Mamie Rose, Mathis et
-// Bernard, puis le mot de la fin. Toutes sur la table en bois (CONTRACT § 12).
+// carte Formats. L'ordre vient de src/content/carnet.json (source unique, aussi lue par la cuisson) :
+// page de titre, sommaire, intercalaires, Lisa (vraie recette, longue : feuillet volant), Julie, Mamie
+// Rose, Mathis et Bernard, puis le mot de la fin. Toutes sur la table en bois (CONTRACT § 12, § 13).
 //
 // Chaque page est une PAGE CUITE (<PageCuite>, scripts/bake-pages.mjs) : vrai papier ancien scanné,
 // écriture générée trait par trait et croquis, l'encre cuite dans le papier. Ce qui reste vivant se
 // pose dans les zones que la page réserve (`vivants` du manifeste) :
 //   photo  → <PhotoCollee> : la vidéo de l'invité, en tirage sépia (se soulève au toucher, Entrée) ;
 //   volant → <FeuilletVolant> : la suite d'une recette trop longue (se soulève au toucher, ↑).
-// Rien d'autre que des <img> dans le livre : la vidéo vit dans le calque Soulever.
+// Rien d'autre que des <img> dans le livre : la vidéo vit dans le calque Soulever. Une double page
+// dont les pages ne sont pas encore cuites est sautée.
 import React from 'react';
 import { PageCuite, PAGES_CUITES } from '../../components/PageCuite';
 import type { VideoInfo } from '../../components/Soulever';
@@ -15,6 +17,8 @@ import { PhotoCollee } from '../../components/PhotoCollee';
 import { FeuilletVolant } from '../../components/FeuilletVolant';
 import type { SpreadSpec } from '../../lib/spread';
 import videosJson from '../../content/videos.json';
+import carnetJson from '../../content/carnet.json';
+import type { Carnet, DoubleCarnet } from '../../content/types';
 import './DemoCarnet.css';
 
 /** Étiquette collée sur le plat de couverture. */
@@ -59,22 +63,45 @@ function Page({ id, graine }: { id: string; graine: number }) {
   return <PageCuite page={id} slots={slots} />;
 }
 
-function double(o: { id: string; kind: SpreadSpec['kind']; folios: [number, number]; seed: number; titre: string; invite?: string }): SpreadSpec {
-  const gauche = <Page id={`${o.id}-gauche`} graine={o.seed} />;
-  const droite = <Page id={`${o.id}-droite`} graine={o.seed + 1} />;
-  return { id: o.id, kind: o.kind, folios: o.folios, seed: o.seed, titre: o.titre, invite: o.invite ?? o.id, render: () => ({ left: gauche, right: droite }) };
+const CARNET = carnetJson as unknown as Carnet;
+
+/** Identifiants des deux pages d'une double page du carnet. */
+export const pagesDe = (d: DoubleCarnet): { gauche: string; droite: string } =>
+  d.pages ?? { gauche: `${d.id}-gauche`, droite: `${d.id}-droite` };
+
+/** Folios de la double page k (0 = titre) : gauche 2k+2, droite 2k+3 (CONTRACT § 13). */
+export const foliosDe = (k: number): [number, number] => [2 * k + 2, 2 * k + 3];
+
+/** Graine stable d'une double page (papier, photo) : tirée de son id. */
+function graineDe(id: string): number {
+  let h = 2166136261;
+  for (const c of id) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+  return (h >>> 0) % 9000 + 100;
 }
 
-const existe = (id: string) => !!PAGES_CUITES.pages[`${id}-gauche`] && !!PAGES_CUITES.pages[`${id}-droite`];
+function double(d: DoubleCarnet, k: number): SpreadSpec | null {
+  const { gauche: g, droite: dr } = pagesDe(d);
+  if (!PAGES_CUITES.pages[g] || !PAGES_CUITES.pages[dr]) return null;
+  const seed = d.graine ?? graineDe(d.id);
+  const gauche = <Page id={g} graine={seed} />;
+  const droite = <Page id={dr} graine={seed + 1} />;
+  const [f0, f1] = foliosDe(k);
+  return {
+    id: d.id,
+    kind: d.type,
+    folios: d.sansFolio ? [null, null] : [f0, f1],
+    seed,
+    titre: d.titre,
+    invite: d.invites?.[0],
+    invites: d.invites,
+    render: () => ({ left: gauche, right: droite }),
+  };
+}
 
 /** Les doubles pages de la démo, dans l'ordre (liste stable : mêmes objets à chaque rendu). */
-export const SPREADS_DEMO: SpreadSpec[] = [
-  existe('lisa') ? double({ id: 'lisa', kind: 'video', folios: [10, 11], seed: 2611, titre: 'Lisa — Carrot cake' }) : null,
-  double({ id: 'julie', kind: 'video', folios: [12, 13], seed: 4127, titre: 'Julie — Cake au citron' }),
-  double({ id: 'rose', kind: 'recette', folios: [14, 15], seed: 811, titre: 'Mamie Rose — Sablés' }),
-  double({ id: 'mathis', kind: 'deux-recettes', folios: [16, 17], seed: 905, titre: 'Mathis et Bernard' }),
-  double({ id: 'fin', kind: 'finale', folios: [18, 19], seed: 1201, titre: 'Le mot de la fin', invite: 'cecile' }),
-].filter((s): s is SpreadSpec => s !== null);
+export const SPREADS_DEMO: SpreadSpec[] = CARNET.doubles
+  .map((d, k) => double(d, k))
+  .filter((s): s is SpreadSpec => s !== null);
 
 /** Vidéo à préparer quand une double page devient visible (celle de la page gauche, sinon droite). */
 export function videoDe(spread: SpreadSpec | undefined): VideoInfo | null {

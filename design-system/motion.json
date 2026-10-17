@@ -35,6 +35,16 @@
       "visualDuration": 0.7,
       "bounce": 0.08,
       "usage": "Soulever une photo ou le feuillet volant au-dessus du livre, puis le reposer."
+    },
+    "arrivee": {
+      "visualDuration": 0.8,
+      "bounce": 0.14,
+      "usage": "Le livre glisse sur la table au chargement et se pose."
+    },
+    "riffle": {
+      "visualDuration": 0.55,
+      "bounce": 0,
+      "usage": "Feuilleter : les feuilles intermédiaires d'un saut de plusieurs doubles pages."
     }
   },
   "cup": {
@@ -60,5 +70,10 @@
       "visualDuration": 1.3,
       "bounce": 0
     }
+  },
+  "inertie": {
+    "power": 0.35,
+    "timeConstant": 260,
+    "usage": "Déplacement à la loupe : élan au lâcher (Motion inertia)."
   }
 }

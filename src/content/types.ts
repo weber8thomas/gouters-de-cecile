@@ -75,7 +75,7 @@ export interface Guest {
 /** Main de l'écriture générée (tools/ecriture/styles.py). */
 export type MainId = 'mamie' | 'ecole' | 'soignee' | 'ado' | 'papa' | 'pressee' | 'cecile';
 /** Encre de l'écriture générée (tools/ecriture/encre.py). */
-export type EncreId = 'plume' | 'brune' | 'noire' | 'bic' | 'rouge' | 'crayon' | 'feutre' | 'chocolat';
+export type EncreId = 'plume' | 'brune' | 'noire' | 'bic' | 'bille-bleue' | 'rouge' | 'crayon' | 'feutre' | 'chocolat';
 
 export interface LigneRecette {
   texte: string;
@@ -113,7 +113,34 @@ export interface RecetteRecue {
   fin?: { texte: string; croquis?: string[] };
   /** Petit(s) dessin(s) de la recette, en marge. */
   croquis?: string[];
-  /** Petit mot pour Cécile (pas encore reçu : null). */
+  /** Petit mot pour Cécile (pas encore reçu : null). Écrit dans un cadre tracé à la main, à part de la recette. */
   mot?: string | null;
   signature?: string;
+  /** Prénom écrit en grand en bandeau (défaut : firstName du roster). */
+  nom?: string;
+  /** Sous-titre du bandeau, au crayon (« depuis Lyon » ; défaut : « depuis <city> »). */
+  sousTitre?: string;
+}
+
+// ---- Ordre du carnet (plan v4) ---------------------------------------------------------------
+// src/content/carnet.json : source unique de l'ordre des doubles pages, pour la cuisson et l'application.
+
+export interface DoubleCarnet {
+  id: string;
+  type: 'titre' | 'sommaire' | 'intercalaire' | 'video' | 'recette' | 'deux-recettes' | 'finale';
+  /** Nom affiché dans « Aller à… » et annoncé aux lecteurs d'écran. */
+  titre: string;
+  /** Slugs du roster présents sur la double page (le premier est l'invité principal). */
+  invites?: string[];
+  chapitre?: ChapterId;
+  /** Pas de numéro écrit sur ces pages. */
+  sansFolio?: boolean;
+  /** Graine de la double page (photo collée) ; défaut : tirée de l'id. */
+  graine?: number;
+  /** Identifiants des pages s'ils ne suivent pas <id>-gauche / <id>-droite. */
+  pages?: { gauche: string; droite: string };
+}
+
+export interface Carnet {
+  doubles: DoubleCarnet[];
 }

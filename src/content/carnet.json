@@ -1,0 +1,14 @@
+{
+  "_": "Ordre du carnet : source unique pour la cuisson (folios, sommaire, intercalaires : scripts/pages) et pour l'application (src/artboards/DemoCarnet/spreads.tsx). Chaque double page porte deux pages <id>-gauche et <id>-droite (src/content/pages/, design-system/baked/pages/). Folios : double page k (0 = titre) → gauche 2k+2, droite 2k+3 (une page de droite a toujours un folio impair : recto d'un feuillet, papiers.json). « graine » : graine de la double page (photo collée ; défaut tirée de l'id). « sansFolio » : pas de numéro écrit sur ces pages. « invites » : slugs du roster (le premier est l'invité principal ; « Aller à… », liens #<slug>, QR de l'A5). Le sommaire liste les invités dans cet ordre, avec le folio de leur page.",
+  "doubles": [
+    { "id": "titre", "type": "titre", "titre": "Page de titre", "sansFolio": true, "pages": { "gauche": "garde", "droite": "titre" } },
+    { "id": "sommaire", "type": "sommaire", "titre": "Sommaire" },
+    { "id": "gateaux", "type": "intercalaire", "chapitre": "gateaux", "titre": "Gâteaux & cakes", "sansFolio": true },
+    { "id": "lisa", "graine": 2611, "type": "video", "invites": ["lisa"], "titre": "Lisa — Carrot cake" },
+    { "id": "julie", "graine": 4127, "type": "video", "invites": ["julie"], "titre": "Julie — Cake au citron" },
+    { "id": "biscuits", "type": "intercalaire", "chapitre": "biscuits", "titre": "Biscuits", "sansFolio": true },
+    { "id": "rose", "graine": 811, "type": "recette", "invites": ["rose"], "titre": "Mamie Rose — Sablés" },
+    { "id": "mathis", "graine": 905, "type": "deux-recettes", "invites": ["mathis", "bernard"], "titre": "Mathis et Bernard" },
+    { "id": "fin", "graine": 1201, "type": "finale", "invites": ["cecile"], "titre": "Le mot de la fin" }
+  ]
+}
