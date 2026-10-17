@@ -78,6 +78,8 @@ export interface PageCuiteInfo {
   vivants: ZonesVivantes;
   /** Page droite d'une recette longue : le feuillet volant glissé dans le carnet. */
   volant?: VolantInfo;
+  /** Lignes cliquables (sommaire) : double page visée, invité, zone en fractions de page. */
+  liens?: { cible: string; rect: RectPage; invite?: string }[];
   /** Page où le texte continue (« suite sur la feuille » → recto, recto → verso). */
   suite?: string;
   /** Recette reçue d'où vient la page (src/content/recettes/<slug>.json). */
@@ -401,6 +403,18 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
           <p key={i}>{l}</p>
         ))}
       </div>
+      {mode === 'live' &&
+        info.liens?.map((l) => (
+          // Lien profond (#<invité>) : le carnet suit le fragment d'URL (Carnet, useLienProfond).
+          <a
+            key={`${l.cible}-${l.invite ?? ''}`}
+            className="gc-page-cuite__lien"
+            href={`#${encodeURIComponent(l.invite ?? l.cible)}`}
+            data-gc-controle=""
+            aria-label={`Aller à la page de ${l.invite ?? l.cible}`}
+            style={{ left: pc(l.rect[0]), top: pc(l.rect[1]), width: pc(l.rect[2]), height: pc(l.rect[3]) }}
+          />
+        ))}
       {Object.entries(info.vivants).map(([nom, r]) =>
         r && slots?.[nom] ? (
           <div

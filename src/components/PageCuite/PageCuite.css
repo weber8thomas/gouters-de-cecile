@@ -91,3 +91,13 @@
     transition: none;
   }
 }
+
+/* Lignes cliquables du sommaire : transparentes sur l'encre cuite ; le focus garde son contour. */
+.gc-page-cuite__lien {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  cursor: pointer;
+  border-radius: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
