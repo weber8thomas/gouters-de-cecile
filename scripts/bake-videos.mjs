@@ -61,18 +61,15 @@ T.ch = T.h + 2 * T.marge; // 1040
 // ---------------------------------------------------------------------------------------------
 // Les invités de la démo. Segments : [de, a] en secondes dans l'original ; x, y : position du cadre
 // 16:9 dans l'original (0 à 1) ; z : zoom (≥ 1). tirage.x : position du cadre 3:2 dans le cadre 16:9.
+// lenteur (optionnel, défaut 1) : étire le plan (1,1 = 10 % plus lent) quand la source est trop courte pour 12 s.
 
 const INVITES = {
   lisa: {
     titre: 'Le carrot cake de Lisa',
     angle: -2.4,
-    segments: [
-      { clip: 'pexels-3325991', de: 7.2, a: 10.6 }, // glaçage à la spatule en bois (gâteau à étages), puis flou
-      { clip: 'pexels-4934312', de: 77.6, a: 83.0, z: 1.08, y: 0.6 }, // carottes râpées, une main racle la râpe
-      { clip: 'pexels-3325985', de: 2.0, a: 6.5 }, // farine tamisée devant la fenêtre
-    ],
+    segments: [{ clip: 'pexels-4492700', de: 0.0, a: 10.26, lenteur: 1.17 }], // salue de la main, bisou des deux mains, face caméra
     couleur: { saturation: 0.94, u: -1, v: 1 },
-    tirage: { x: 0.25, lift: 0.1, cap: 0.94, contraste: 0.42, vignette: 0.3, grain: 0.034, chaleur: 1, trace: { type: 'pli', coin: 'bd' } },
+    tirage: { x: 0.5, lift: 0.1, cap: 0.94, contraste: 0.42, vignette: 0.3, grain: 0.034, chaleur: 1, trace: { type: 'pli', coin: 'bd' } },
     maintien: {
       type: 'scotch',
       age: 0.7,
@@ -85,26 +82,23 @@ const INVITES = {
   julie: {
     titre: 'Le cake au citron de Julie',
     angle: 1.8,
-    segments: [
-      { clip: 'pexels-7525285', de: 0.3, a: 7.3 }, // zeste de citron râpé au-dessus de la pâte
-      { clip: 'pexels-7525274', de: 0.0, a: 5.7 }, // pâte battue, citron sur la table
-    ],
+    segments: [{ clip: 'pexels-7157237', de: 0.0, a: 11.2, lenteur: 1.08 }], // chapeau de fête, beignet à bougie tendu à la caméra
     couleur: { saturation: 0.9, u: -3, v: 2, gamma: 0.97 },
-    tirage: { x: 0.8, y: 0.62, z: 1.3, lift: 0.1, cap: 0.92, contraste: 0.62, vignette: 0.34, grain: 0.032, chaleur: 0.92, halo: { seuil: 0.82, force: 0.25 }, trace: { type: 'tache', ou: [0.64, 0.962] } },
+    tirage: { x: 0.0, lift: 0.1, cap: 0.92, contraste: 0.62, vignette: 0.34, grain: 0.032, chaleur: 0.92, halo: { seuil: 0.82, force: 0.25 }, trace: { type: 'tache', ou: [0.64, 0.962] } },
     maintien: { type: 'coins', papier: 'noir', jeu: 1 },
   },
   rose: {
     titre: 'Les sablés de Rose',
     angle: -1.3,
-    segments: [{ clip: 'pexels-6942576', de: 3.0, a: 15.1 }], // sablés découpés à l'emporte-pièce
+    segments: [{ clip: 'pexels-6248328', de: 0.0, a: 10.84, lenteur: 1.11 }], // grand-mère qui salue et parle face caméra
     couleur: { saturation: 0.96, u: -1, v: 1 },
-    tirage: { x: 0.42, lift: 0.14, cap: 0.92, contraste: 0.34, vignette: 0.36, grain: 0.038, chaleur: 1.08, papier: 0.8, trace: { type: 'rayure' } },
+    tirage: { x: 0.55, lift: 0.14, cap: 0.92, contraste: 0.34, vignette: 0.36, grain: 0.038, chaleur: 1.08, papier: 0.8, trace: { type: 'rayure' } },
     maintien: { type: 'coins', papier: 'kraft', jeu: 1.4 },
   },
   mathis: {
     titre: 'Les cookies de Mathis',
     angle: 3.1,
-    segments: [{ clip: 'pexels-4267057', de: 0.4, a: 12.5 }], // mains d'enfant qui rangent les cookies
+    segments: [{ clip: 'pexels-8899920', de: 1.0, a: 13.2 }], // garçon au chapeau de fête, sourit à la caméra
     couleur: { saturation: 0.95, u: -1, v: 1 },
     tirage: { x: 0.5, lift: 0.09, cap: 0.95, contraste: 0.46, vignette: 0.24, grain: 0.032, chaleur: 0.95, trace: { type: 'aucune' } },
     maintien: {
@@ -119,9 +113,12 @@ const INVITES = {
   bernard: {
     titre: 'La tarte aux pommes de Bernard',
     angle: -3.4,
-    segments: [{ clip: 'pexels-34422463', de: 2.0, a: 14.1 }], // une part servie dans l'assiette à roses
+    segments: [
+      { clip: 'pexels-6949566', de: 0.6, a: 7.1 }, // lève son verre de vin rouge, face caméra
+      { clip: 'pexels-6949558', de: 0.4, a: 7.1 }, // même tournage, second plan
+    ],
     couleur: { saturation: 0.95, u: 0, v: 0 },
-    tirage: { x: 0.62, lift: 0.11, cap: 0.94, contraste: 0.4, vignette: 0.32, grain: 0.036, chaleur: 1, papier: 0.4, trace: { type: 'pli', coin: 'bg', long: 1.9 } },
+    tirage: { x: 0.52, lift: 0.11, cap: 0.94, contraste: 0.4, vignette: 0.32, grain: 0.036, chaleur: 1, papier: 0.4, trace: { type: 'pli', coin: 'bg', long: 1.9 } },
     maintien: { type: 'coins', papier: 'noir', jeu: 2.2, decolle: 'bd' },
   },
 };
@@ -191,7 +188,7 @@ function filtrePlan(i, seg, couleur) {
     `[${i}:v]fps=${V.fps},scale=${sw}:${sh}:force_original_aspect_ratio=increase:flags=lanczos,` +
     `crop=${V.w}:${V.h}:(iw-${V.w})*${x}:(ih-${V.h})*${y},setsar=1,format=yuv420p,` +
     `eq=saturation=${saturation}:gamma=${gamma}:contrast=${contraste},lutyuv=u=val${u >= 0 ? '+' : ''}${u}:v=val${v >= 0 ? '+' : ''}${v},` +
-    `settb=1/${V.fps},setpts=PTS-STARTPTS`
+    `settb=1/${V.fps},setpts=(PTS-STARTPTS)*${seg.lenteur ?? 1}`
   );
 }
 
@@ -201,7 +198,7 @@ function entreesPlans(inv) {
 
 function encoderVideo(id, inv, sortie) {
   const segs = inv.segments;
-  const durees = segs.map((s) => s.a - s.de);
+  const durees = segs.map((s) => (s.a - s.de) * (s.lenteur ?? 1));
   const total = durees.reduce((a, b) => a + b, 0) - V.fondu * (segs.length - 1);
   if (total < V.duree - 1e-6) throw new Error(`${id} : montage trop court (${total.toFixed(2)} s)`);
   let fc = segs.map((s, i) => filtrePlan(i, s, inv.couleur) + `[s${i}]`).join(';');

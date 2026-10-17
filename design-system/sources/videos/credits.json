@@ -1,10 +1,10 @@
 {
-  "description": "Clips exemples des invités de la démo (en attendant leurs vraies vidéos). Chaque entrée : page, fichier téléchargé (URL, taille, sha256), auteur, licence vérifiée. Lus par scripts/bake-videos.mjs, qui retrouve les originaux par leur nom et vérifie leur sha256.",
+  "description": "Clips exemples des invités de la démo (en attendant leurs vraies vidéos ; une personne de banque d'images joue chaque invité fictif). Chaque entrée : page, fichier téléchargé (URL, taille, sha256), auteur, licence vérifiée. Lus par scripts/bake-videos.mjs, qui retrouve les originaux par leur nom et vérifie leur sha256.",
   "licences": {
     "pexels": {
       "nom": "Licence Pexels (« Free Stock Photo & Video License »)",
       "url": "https://www.pexels.com/license/",
-      "verifiee": "2026-10-16",
+      "verifiee": "2026-10-17",
       "permis": [
         "All photos and videos on Pexels are free to use.",
         "Attribution is not required.",
@@ -27,11 +27,14 @@
   },
   "clips": {
     "pexels-3325991": {
-      "role": "lisa",
+      "role": "ancien lisa (remplacé le 2026-10-17, non utilisé)",
       "titre": "Topping A Baked Cake With icing Using A Wooden Spatula",
       "description": "Glaçage d'un gâteau à étages à la spatule en bois, cuisine à la lumière de fenêtre.",
       "page": "https://www.pexels.com/video/topping-a-baked-cake-with-icing-using-a-wooden-spatula-3325991/",
-      "auteur": { "nom": "Taryn Elliott", "page": "https://www.pexels.com/@taryn-elliott/" },
+      "auteur": {
+        "nom": "Taryn Elliott",
+        "page": "https://www.pexels.com/@taryn-elliott/"
+      },
       "licence": "pexels",
       "fichier": {
         "nom": "3325991-hd_1920_1080_24fps.mp4",
@@ -45,11 +48,14 @@
       "telecharge": "2026-10-16"
     },
     "pexels-4934312": {
-      "role": "lisa",
+      "role": "ancien lisa (remplacé le 2026-10-17, non utilisé)",
       "titre": "Person Grinding Carrots",
       "description": "Carottes râpées qui tombent dans un saladier, une main racle la râpe.",
       "page": "https://www.pexels.com/video/person-grinding-carrots-4934312/",
-      "auteur": { "nom": "AlRab M.R.", "page": "https://www.pexels.com/@alrab-m-r-2406762/" },
+      "auteur": {
+        "nom": "AlRab M.R.",
+        "page": "https://www.pexels.com/@alrab-m-r-2406762/"
+      },
       "licence": "pexels",
       "fichier": {
         "nom": "4934312-hd_1920_1080_30fps.mp4",
@@ -63,11 +69,14 @@
       "telecharge": "2026-10-16"
     },
     "pexels-3325985": {
-      "role": "lisa",
+      "role": "ancien lisa (remplacé le 2026-10-17, non utilisé)",
       "titre": "A Person Straining The Flour To Be Used In Baking",
       "description": "Farine tamisée au-dessus d'un bol, devant la fenêtre.",
       "page": "https://www.pexels.com/video/a-person-straining-the-flour-to-be-used-in-baking-3325985/",
-      "auteur": { "nom": "Taryn Elliott", "page": "https://www.pexels.com/@taryn-elliott/" },
+      "auteur": {
+        "nom": "Taryn Elliott",
+        "page": "https://www.pexels.com/@taryn-elliott/"
+      },
       "licence": "pexels",
       "fichier": {
         "nom": "3325985-hd_1920_1080_24fps.mp4",
@@ -81,11 +90,14 @@
       "telecharge": "2026-10-16"
     },
     "pexels-7525285": {
-      "role": "julie",
+      "role": "ancien julie (remplacé le 2026-10-17, non utilisé)",
       "titre": "A Woman Grating Lemon into the Batter",
       "description": "Zeste de citron râpé au-dessus de la pâte à gâteau (visage hors champ).",
       "page": "https://www.pexels.com/video/a-woman-grating-lemon-into-the-batter-7525285/",
-      "auteur": { "nom": "SHVETS production", "page": "https://www.pexels.com/@shvets-production/" },
+      "auteur": {
+        "nom": "SHVETS production",
+        "page": "https://www.pexels.com/@shvets-production/"
+      },
       "licence": "pexels",
       "fichier": {
         "nom": "7525285-hd_1920_1080_25fps.mp4",
@@ -99,11 +111,14 @@
       "telecharge": "2026-10-16"
     },
     "pexels-7525274": {
-      "role": "julie",
+      "role": "ancien julie (remplacé le 2026-10-17, non utilisé)",
       "titre": "A Person Using a Hand Mixer",
       "description": "Pâte à gâteau battue au batteur, œufs, farine et citron sur la table.",
       "page": "https://www.pexels.com/video/a-person-using-a-hand-mixer-7525274/",
-      "auteur": { "nom": "SHVETS production", "page": "https://www.pexels.com/@shvets-production/" },
+      "auteur": {
+        "nom": "SHVETS production",
+        "page": "https://www.pexels.com/@shvets-production/"
+      },
       "licence": "pexels",
       "fichier": {
         "nom": "7525274-hd_1920_1080_25fps.mp4",
@@ -117,11 +132,14 @@
       "telecharge": "2026-10-16"
     },
     "pexels-6942576": {
-      "role": "rose",
+      "role": "ancien rose (remplacé le 2026-10-17, non utilisé)",
       "titre": "A Person Making Cookies",
       "description": "Deux mains découpent des sablés à l'emporte-pièce sur une planche farinée, vue de dessus.",
       "page": "https://www.pexels.com/video/a-person-making-cookies-6942576/",
-      "auteur": { "nom": "Pavel Danilyuk", "page": "https://www.pexels.com/@pavel-danilyuk/" },
+      "auteur": {
+        "nom": "Pavel Danilyuk",
+        "page": "https://www.pexels.com/@pavel-danilyuk/"
+      },
       "licence": "pexels",
       "fichier": {
         "nom": "6942576-hd_1920_1080_25fps.mp4",
@@ -135,11 +153,14 @@
       "telecharge": "2026-10-16"
     },
     "pexels-4267057": {
-      "role": "mathis",
+      "role": "ancien mathis (remplacé le 2026-10-17, non utilisé)",
       "titre": "Cookies On A Tray",
       "description": "Des mains d'enfant et d'adulte rangent des cookies aux pépites de chocolat sur une planche (visages hors champ).",
       "page": "https://www.pexels.com/video/cookies-on-a-tray-4267057/",
-      "auteur": { "nom": "Gustavo Fring", "page": "https://www.pexels.com/@gustavo-fring/" },
+      "auteur": {
+        "nom": "Gustavo Fring",
+        "page": "https://www.pexels.com/@gustavo-fring/"
+      },
       "licence": "pexels",
       "fichier": {
         "nom": "4267057-hd_1920_1080_30fps.mp4",
@@ -153,11 +174,14 @@
       "telecharge": "2026-10-16"
     },
     "pexels-34422463": {
-      "role": "bernard",
+      "role": "ancien bernard (remplacé le 2026-10-17, non utilisé)",
       "titre": "Slicing Homemade Apple Pie on Wooden Table",
       "description": "Une main âgée sert une part de gâteau aux pommes maison dans une assiette à roses, sur une table en bois.",
       "page": "https://www.pexels.com/video/slicing-homemade-apple-pie-on-wooden-table-34422463/",
-      "auteur": { "nom": "Frank Litschel", "page": "https://www.pexels.com/@frawali-studios/" },
+      "auteur": {
+        "nom": "Frank Litschel",
+        "page": "https://www.pexels.com/@frawali-studios/"
+      },
       "licence": "pexels",
       "fichier": {
         "nom": "14582414_1920_1080_30fps.mp4",
@@ -175,7 +199,10 @@
       "titre": "A Person Putting Crepe on a Wood Board",
       "description": "Des mains plient des crêpes de sarrasin sur une planche en bois.",
       "page": "https://www.pexels.com/video/a-person-putting-crepe-on-a-wood-board-6823577/",
-      "auteur": { "nom": "Eva Bronzini", "page": "https://www.pexels.com/@eva-bronzini/" },
+      "auteur": {
+        "nom": "Eva Bronzini",
+        "page": "https://www.pexels.com/@eva-bronzini/"
+      },
       "licence": "pexels",
       "fichier": {
         "nom": "6823577-hd_1920_1080_30fps.mp4",
@@ -193,7 +220,10 @@
       "titre": "Backing Cookies",
       "description": "Cookies qui gonflent et dorent dans le four, lumière chaude (sans mains).",
       "page": "https://www.pexels.com/video/backing-cookies-852375/",
-      "auteur": { "nom": "Distill", "page": "https://www.pexels.com/@distill/" },
+      "auteur": {
+        "nom": "Distill",
+        "page": "https://www.pexels.com/@distill/"
+      },
       "licence": "pexels",
       "fichier": {
         "nom": "852375-hd_1920_1080_24fps.mp4",
@@ -211,7 +241,10 @@
       "titre": "Person Slicing Lemons on a Chopping Board",
       "description": "Des mains coupent des citrons sur une planche, torchon à carreaux.",
       "page": "https://www.pexels.com/video/person-slicing-lemons-on-a-chopping-board-5540318/",
-      "auteur": { "nom": "Phillip Dillow", "page": "https://www.pexels.com/@phillip-dillow-3553939/" },
+      "auteur": {
+        "nom": "Phillip Dillow",
+        "page": "https://www.pexels.com/@phillip-dillow-3553939/"
+      },
       "licence": "pexels",
       "fichier": {
         "nom": "5540318-hd_1920_1080_24fps.mp4",
@@ -229,7 +262,10 @@
       "titre": "Footage Of Someone Preparing A Cake",
       "description": "Un gâteau décoré d'oranges sur un présentoir, près de la fenêtre (personne de dos).",
       "page": "https://www.pexels.com/video/footage-of-someone-preparing-a-cake-3325990/",
-      "auteur": { "nom": "Taryn Elliott", "page": "https://www.pexels.com/@taryn-elliott/" },
+      "auteur": {
+        "nom": "Taryn Elliott",
+        "page": "https://www.pexels.com/@taryn-elliott/"
+      },
       "licence": "pexels",
       "fichier": {
         "nom": "3325990-hd_1920_1080_24fps.mp4",
@@ -241,6 +277,162 @@
         "son": "piste AAC muette (−91 dB)"
       },
       "telecharge": "2026-10-16"
+    },
+    "pexels-4492700": {
+      "role": "lisa",
+      "titre": "A Woman Waving Her Hand",
+      "description": "Une jeune femme salue de la main, puis envoie un bisou des deux mains, face caméra.",
+      "page": "https://www.pexels.com/video/a-woman-waiving-her-hand-4492700/",
+      "auteur": {
+        "nom": "Artem Podrez",
+        "page": "https://www.pexels.com/@artempodrez/"
+      },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "4492700-hd_1920_1080_30fps.mp4",
+        "url": "https://videos.pexels.com/video-files/4492700/4492700-hd_1920_1080_30fps.mp4",
+        "octets": 4566658,
+        "sha256": "773a65b6dd1dff15184891123f3e96b0de2d8360808313accb3ded5e71b49647",
+        "video": "H.264 1920×1080, bt709",
+        "duree": 10.27,
+        "son": "aucune piste"
+      },
+      "telecharge": "2026-10-17",
+      "verifie": {
+        "date": "2026-10-17",
+        "methode": "page de licence Pexels (lue le 2026-10-17) et page du clip (auteur, mention « Free »)"
+      },
+      "notre_usage": "personne de banque d'images jouant un invité fictif d'exemple"
+    },
+    "pexels-7157237": {
+      "role": "julie",
+      "titre": "Woman Wearing a Party Hat While Holding a Donut",
+      "description": "Une femme au chapeau de fête tend vers la caméra un beignet à bougie, en souriant.",
+      "page": "https://www.pexels.com/video/woman-wearing-a-party-hat-while-holding-a-donut-7157237/",
+      "auteur": {
+        "nom": "Kampus Production",
+        "page": "https://www.pexels.com/@kampus/"
+      },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "7157237-hd_1920_1080_25fps.mp4",
+        "url": "https://videos.pexels.com/video-files/7157237/7157237-hd_1920_1080_25fps.mp4",
+        "octets": 2701946,
+        "sha256": "a7c1d7d0802c7225e2f747489ddbd1c1f0910608f6869cf427dd7f5ba4f4d646",
+        "video": "H.264 1920×1080, bt709",
+        "duree": 11.2,
+        "son": "aucune piste"
+      },
+      "telecharge": "2026-10-17",
+      "verifie": {
+        "date": "2026-10-17",
+        "methode": "page de licence Pexels (lue le 2026-10-17) et page du clip (auteur, mention « Free »)"
+      },
+      "notre_usage": "personne de banque d'images jouant un invité fictif d'exemple"
+    },
+    "pexels-6248328": {
+      "role": "rose",
+      "titre": "An Elderly Woman Waving Her Hand and Talking",
+      "description": "Une dame âgée salue de la main et parle face caméra.",
+      "page": "https://www.pexels.com/video/an-elderly-woman-waving-her-hand-and-talking-6248328/",
+      "auteur": {
+        "nom": "Kampus Production",
+        "page": "https://www.pexels.com/@kampus/"
+      },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "6248328-hd_1920_1080_25fps.mp4",
+        "url": "https://videos.pexels.com/video-files/6248328/6248328-hd_1920_1080_25fps.mp4",
+        "octets": 6139558,
+        "sha256": "5af7d5d6a880987640616c0256d1e58d15174cb60cbc3f2b0021537e89b8bccb",
+        "video": "H.264 1920×1080, bt709",
+        "duree": 10.84,
+        "son": "aucune piste"
+      },
+      "telecharge": "2026-10-17",
+      "verifie": {
+        "date": "2026-10-17",
+        "methode": "page de licence Pexels (lue le 2026-10-17) et page du clip (auteur, mention « Free »)"
+      },
+      "notre_usage": "personne de banque d'images jouant un invité fictif d'exemple"
+    },
+    "pexels-8899920": {
+      "role": "mathis",
+      "titre": "Boy Wearing Party Hat",
+      "description": "Un garçon au chapeau de fête et à la guirlande sourit à la caméra.",
+      "page": "https://www.pexels.com/video/boy-wearing-party-hat-8899920/",
+      "auteur": {
+        "nom": "Ivan S",
+        "page": "https://www.pexels.com/@ivan-s/"
+      },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "8899920-hd_1920_1080_25fps.mp4",
+        "url": "https://videos.pexels.com/video-files/8899920/8899920-hd_1920_1080_25fps.mp4",
+        "octets": 4281020,
+        "sha256": "85941f0dcf6a38ab74437fed5699e167774ea040b71f09362c6b2ed53f099441",
+        "video": "H.264 1920×1080, bt709",
+        "duree": 15.2,
+        "son": "aucune piste"
+      },
+      "telecharge": "2026-10-17",
+      "verifie": {
+        "date": "2026-10-17",
+        "methode": "page de licence Pexels (lue le 2026-10-17) et page du clip (auteur, mention « Free »)"
+      },
+      "notre_usage": "personne de banque d'images jouant un invité fictif d'exemple"
+    },
+    "pexels-6949566": {
+      "role": "bernard",
+      "titre": "A Man Raising a Glass for a Toast",
+      "description": "Un homme grisonnant lève son verre de vin rouge, face caméra.",
+      "page": "https://www.pexels.com/video/a-man-raising-a-glass-for-a-toast-6949566/",
+      "auteur": {
+        "nom": "Kampus Production",
+        "page": "https://www.pexels.com/@kampus/"
+      },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "6949566-hd_1920_1080_25fps.mp4",
+        "url": "https://videos.pexels.com/video-files/6949566/6949566-hd_1920_1080_25fps.mp4",
+        "octets": 4474955,
+        "sha256": "0c889e05c09d671f12455caf73d5f6130b7dc1db81b74dcbb6346712c0434e26",
+        "video": "H.264 1920×1080, bt709",
+        "duree": 7.12,
+        "son": "aucune piste"
+      },
+      "telecharge": "2026-10-17",
+      "verifie": {
+        "date": "2026-10-17",
+        "methode": "page de licence Pexels (lue le 2026-10-17) et page du clip (auteur, mention « Free »)"
+      },
+      "notre_usage": "personne de banque d'images jouant un invité fictif d'exemple"
+    },
+    "pexels-6949558": {
+      "role": "bernard",
+      "titre": "A Man Raising a Glass for a Toast (second plan)",
+      "description": "Même tournage que pexels-6949566, second plan du verre levé.",
+      "page": "https://www.pexels.com/video/a-man-raising-a-glass-for-a-toast-6949558/",
+      "auteur": {
+        "nom": "Kampus Production",
+        "page": "https://www.pexels.com/@kampus/"
+      },
+      "licence": "pexels",
+      "fichier": {
+        "nom": "6949558-hd_1920_1080_25fps.mp4",
+        "url": "https://videos.pexels.com/video-files/6949558/6949558-hd_1920_1080_25fps.mp4",
+        "octets": 4486638,
+        "sha256": "e164525c481a83408b709cc4ebd17ff015806f21d08f88cf18410b16705928c0",
+        "video": "H.264 1920×1080, bt709",
+        "duree": 7.16,
+        "son": "aucune piste"
+      },
+      "telecharge": "2026-10-17",
+      "verifie": {
+        "date": "2026-10-17",
+        "methode": "page de licence Pexels (lue le 2026-10-17) et page du clip (auteur, mention « Free »)"
+      },
+      "notre_usage": "personne de banque d'images jouant un invité fictif d'exemple"
     }
   }
 }

@@ -8,22 +8,14 @@
     "coins": "photos/lisa/coins",
     "angle": -2.4,
     "credit": {
-      "auteur": "Taryn Elliott, AlRab M.R.",
-      "source": "https://www.pexels.com/video/topping-a-baked-cake-with-icing-using-a-wooden-spatula-3325991/",
+      "auteur": "Artem Podrez",
+      "source": "https://www.pexels.com/video/a-woman-waiving-her-hand-4492700/",
       "licence": "Licence Pexels (https://www.pexels.com/license/)"
     },
     "sources": [
       {
-        "auteur": "Taryn Elliott",
-        "page": "https://www.pexels.com/video/topping-a-baked-cake-with-icing-using-a-wooden-spatula-3325991/"
-      },
-      {
-        "auteur": "AlRab M.R.",
-        "page": "https://www.pexels.com/video/person-grinding-carrots-4934312/"
-      },
-      {
-        "auteur": "Taryn Elliott",
-        "page": "https://www.pexels.com/video/a-person-straining-the-flour-to-be-used-in-baking-3325985/"
+        "auteur": "Artem Podrez",
+        "page": "https://www.pexels.com/video/a-woman-waiving-her-hand-4492700/"
       }
     ],
     "maintien": "scotch",
@@ -45,7 +37,7 @@
         0.69231
       ],
       "cadreVideo": [
-        0.03906,
+        0.07813,
         0,
         0.84375,
         1
@@ -61,18 +53,14 @@
     "coins": "photos/julie/coins",
     "angle": 1.8,
     "credit": {
-      "auteur": "SHVETS production",
-      "source": "https://www.pexels.com/video/a-woman-grating-lemon-into-the-batter-7525285/",
+      "auteur": "Kampus Production",
+      "source": "https://www.pexels.com/video/woman-wearing-a-party-hat-while-holding-a-donut-7157237/",
       "licence": "Licence Pexels (https://www.pexels.com/license/)"
     },
     "sources": [
       {
-        "auteur": "SHVETS production",
-        "page": "https://www.pexels.com/video/a-woman-grating-lemon-into-the-batter-7525285/"
-      },
-      {
-        "auteur": "SHVETS production",
-        "page": "https://www.pexels.com/video/a-person-using-a-hand-mixer-7525274/"
+        "auteur": "Kampus Production",
+        "page": "https://www.pexels.com/video/woman-wearing-a-party-hat-while-holding-a-donut-7157237/"
       }
     ],
     "maintien": "coins-noir",
@@ -94,10 +82,10 @@
         0.69231
       ],
       "cadreVideo": [
-        0.28077,
-        0.14308,
-        0.64904,
-        0.76923
+        0,
+        0,
+        0.84375,
+        1
       ]
     }
   },
@@ -110,14 +98,14 @@
     "coins": "photos/rose/coins",
     "angle": -1.3,
     "credit": {
-      "auteur": "Pavel Danilyuk",
-      "source": "https://www.pexels.com/video/a-person-making-cookies-6942576/",
+      "auteur": "Kampus Production",
+      "source": "https://www.pexels.com/video/an-elderly-woman-waving-her-hand-and-talking-6248328/",
       "licence": "Licence Pexels (https://www.pexels.com/license/)"
     },
     "sources": [
       {
-        "auteur": "Pavel Danilyuk",
-        "page": "https://www.pexels.com/video/a-person-making-cookies-6942576/"
+        "auteur": "Kampus Production",
+        "page": "https://www.pexels.com/video/an-elderly-woman-waving-her-hand-and-talking-6248328/"
       }
     ],
     "maintien": "coins-kraft",
@@ -139,7 +127,7 @@
         0.69231
       ],
       "cadreVideo": [
-        0.06563,
+        0.08594,
         0,
         0.84375,
         1
@@ -155,14 +143,14 @@
     "coins": "photos/mathis/coins",
     "angle": 3.1,
     "credit": {
-      "auteur": "Gustavo Fring",
-      "source": "https://www.pexels.com/video/cookies-on-a-tray-4267057/",
+      "auteur": "Ivan S",
+      "source": "https://www.pexels.com/video/boy-wearing-party-hat-8899920/",
       "licence": "Licence Pexels (https://www.pexels.com/license/)"
     },
     "sources": [
       {
-        "auteur": "Gustavo Fring",
-        "page": "https://www.pexels.com/video/cookies-on-a-tray-4267057/"
+        "auteur": "Ivan S",
+        "page": "https://www.pexels.com/video/boy-wearing-party-hat-8899920/"
       }
     ],
     "maintien": "scotch",
@@ -200,14 +188,18 @@
     "coins": "photos/bernard/coins",
     "angle": -3.4,
     "credit": {
-      "auteur": "Frank Litschel",
-      "source": "https://www.pexels.com/video/slicing-homemade-apple-pie-on-wooden-table-34422463/",
+      "auteur": "Kampus Production",
+      "source": "https://www.pexels.com/video/a-man-raising-a-glass-for-a-toast-6949566/",
       "licence": "Licence Pexels (https://www.pexels.com/license/)"
     },
     "sources": [
       {
-        "auteur": "Frank Litschel",
-        "page": "https://www.pexels.com/video/slicing-homemade-apple-pie-on-wooden-table-34422463/"
+        "auteur": "Kampus Production",
+        "page": "https://www.pexels.com/video/a-man-raising-a-glass-for-a-toast-6949566/"
+      },
+      {
+        "auteur": "Kampus Production",
+        "page": "https://www.pexels.com/video/a-man-raising-a-glass-for-a-toast-6949558/"
       }
     ],
     "maintien": "coins-noir",
@@ -229,7 +221,7 @@
         0.69231
       ],
       "cadreVideo": [
-        0.09688,
+        0.08125,
         0,
         0.84375,
         1
