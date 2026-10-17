@@ -35,9 +35,12 @@ import diacritiques as dia  # noqa: E402
 import encre as encre_mod  # noqa: E402
 import lecteur as lecteur_mod  # noqa: E402
 from styles import STYLES, Style  # noqa: E402
-from texte import Mot, decouper  # noqa: E402
+from texte import Mot, decouper, x_final  # noqa: E402
 
 VERSION = 26  # version du tracé : à incrémenter quand le rendu change (invalide le cache)
+# version de la relecture stricte et du « x » final : n'entre dans la clé de cache QUE des textes
+# qui ont un mot important ou un x final (les autres textes gardent leur cache)
+VERSION_LECTURE = 1
 CACHE = ICI / ".cache"
 
 LETTRES_X = set("acemnorsuvwxz")
@@ -160,18 +163,35 @@ class Ecrivain:
         return xh, pente, lc
 
     # -- génération ---------------------------------------------------------------------------
-    def ecrire_segments(self, main: Main, demandes: list[tuple[str, int]], biais: float, n_cand: int,
+    def ecrire_segments(self, main: Main, demandes: list[tuple], biais: float, n_cand: int,
                         lecteur=None):
-        """demandes : (texte, graine). Renvoie pour chacune le meilleur candidat analysé.
+        """demandes : (texte, graine) ou (texte, graine, options). Renvoie pour chacune le meilleur
+        candidat analysé.
 
         Sans lecteur : le meilleur selon le score géométrique (`analyser`).
         Avec lecteur (TrOCR) : on relit les candidats deux par deux, dans l'ordre du score, et
-        on s'arrête dès qu'un candidat se lit bien ; sinon on en redemande (3 tentatives)."""
+        on s'arrête dès qu'un candidat se lit bien ; sinon on en redemande (3 tentatives).
+
+        options (dict, facultatif) :
+          - `strict` : mot important (nombre, unité, nom, ingrédient) : relu même s'il est court
+            (« g », « C) », « 4 »), aucun jeton manqué toléré, variantes strictes (lettre ou chiffre
+            en moins à toute longueur, chiffres voisins, sosies : `lecteur.variantes`), jusqu'à
+            `TENTATIVES_STRICT` tentatives ;
+          - `suffixe` : glyphe dessiné à la suite du segment (« x » final de « Joyeux ») : le
+            candidat est relu AVEC ce glyphe (« Joyeux » et non « Joyeu »)."""
         n = len(demandes)
+        opts = [(d[2] if len(d) > 2 and d[2] else {}) for d in demandes]
+        demandes = [(d[0], d[1]) for d in demandes]
+        strict = [bool(o.get("strict")) for o in opts]
+        suffixe = [str(o.get("suffixe") or "") for o in opts]
+        lecture = [demandes[i][0] + suffixe[i] for i in range(n)]
+        stricts_txt = {lecture[i] for i in range(n) if strict[i]}
         n_cand0 = n_cand
         meilleur: list[dict | None] = [None] * n
         restants = list(range(n))
-        for tentative in range(TENTATIVES):
+        for tentative in range(TENTATIVES_STRICT if any(strict) and lecteur is not None else TENTATIVES):
+            if tentative >= TENTATIVES:  # tentatives supplémentaires : mots importants seulement
+                restants = [i for i in restants if strict[i]]
             if not restants:
                 break
             b = biais + 0.3 * tentative
@@ -209,12 +229,15 @@ class Ecrivain:
                 continue
             accepte = set()
             # chiffres, fractions, lettre seule : TrOCR les lit mal, on garde le choix géométrique
+            # (sauf pour un mot important : relu quoi qu'il arrive)
             for i in restants:
-                if not _a_relire(demandes[i][0]) and cands[i]:
+                if not strict[i] and not _a_relire(demandes[i][0]) and cands[i]:
                     if meilleur[i] is None or cands[i][0]["valeur"] > meilleur[i]["valeur"]:
                         meilleur[i] = cands[i][0]
                     accepte.add(i)
-            refs = lecteur.references(sorted({demandes[i][0] for i in restants if i not in accepte}))
+            a_lire = [i for i in restants if i not in accepte]
+            refs = lecteur.references(sorted({lecture[i] for i in a_lire if not strict[i]}))
+            refs.update(lecteur.references(sorted({lecture[i] for i in a_lire if strict[i]}), strict=True))
             for r in range(0, n_cand, 2):  # deux candidats par mot et par tour (images bien remplies)
                 items, ref = [], []
                 for i in restants:
@@ -222,46 +245,97 @@ class Ecrivain:
                         continue
                     for c in cands[i][r : r + 2]:
                         traits = [Q for Q, _ in c["traits"]] + completer(c, set(), main.pente, np.random.default_rng(0))
-                        items.append((c["texte"], traits))
+                        if suffixe[i]:
+                            traits += _glyphe_suffixe(c, suffixe[i], main.pente)
+                        items.append((lecture[i], traits))
                         ref.append((i, c))
                 if not items:
                     break
-                def jetons_lus(premiers, ref_premiers):
+                def jetons_lus(premiers, ref_premiers, mot):
                     # chaque jeton que le lecteur reconnaît dans la police propre doit être (presque)
                     # son premier choix ici ; un seul écart toléré pour les mots d'au moins 3 jetons
+                    # (aucun pour un mot important)
                     rates = sum(1 for p_, r_ in zip(premiers, ref_premiers) if r_ and not p_)
-                    return rates == 0 or (rates == 1 and len(premiers) >= 3)
+                    return rates == 0 or (rates == 1 and len(premiers) >= 3 and mot not in stricts_txt)
 
                 def accepter(mot, nt):
                     ref_note, ref_premiers, _ = refs[mot]
-                    return jetons_lus(nt[1], ref_premiers) and nt[0] - ref_note > seuil_lecture(mot)
+                    return jetons_lus(nt[1], ref_premiers, mot) and nt[0] - ref_note > seuil_lecture(mot)
 
-                for (i, c), (note, premiers, amput) in zip(ref, lecteur.noter(items, accepter)):
-                    ref_note, ref_premiers, ref_amput = refs[c["texte"]]
+                for (i, c), (note, premiers, amput) in zip(ref, lecteur.noter(items, accepter, stricts_txt)):
+                    ref_note, ref_premiers, ref_amput = refs[lecture[i]]
                     ecart = note - ref_note
                     # lu comme le mot attendu : chaque jeton que le lecteur reconnaît dans la
                     # police propre doit aussi être son premier choix ici, et le mot amputé
                     # d'une lettre ne doit pas se lire mieux (que dans la police propre)
-                    lu = jetons_lus(premiers, ref_premiers)
-                    if amput is not None and amput > max(0.0, ref_amput or 0.0) + 0.3:
+                    lu = jetons_lus(premiers, ref_premiers, lecture[i])
+                    marge = MARGE_STRICTE if strict[i] else 0.3
+                    if amput is not None and amput > max(0.0, ref_amput or 0.0) + marge:
                         lu = False
-                        ecart -= amput
+                        ecart -= max(amput, 0.0)
                     c["lecture"] = round(ecart, 2)
                     c["lu"] = lu
                     c["valeur"] = min(ecart, 0.0) - 0.25 * c["score"] - (0.0 if lu else 2.5)
                     if meilleur[i] is None or c["valeur"] > meilleur[i]["valeur"]:
                         meilleur[i] = c
-                    if lu and ecart > seuil_lecture(c["texte"]):
+                    if lu and ecart > seuil_lecture(lecture[i]):
                         accepte.add(i)
             restants = [i for i in restants if i not in accepte]
         return meilleur
 
 
 TENTATIVES = 3
+TENTATIVES_STRICT = 5  # mots importants : deux tentatives de plus (biais encore relevé, tirages doublés)
+# lecture stricte : aucune variante (lettre ou chiffre en moins, sosie) ne doit se lire mieux que le
+# mot, à MARGE_STRICTE près (contre 0,3 pour l'amputation d'un mot ordinaire)
+MARGE_STRICTE = 0.0
 
 
 def _a_relire(texte: str) -> bool:
     return sum(c.isalpha() for c in texte) >= 2
+
+
+def _x_suffixe(geo: dict) -> float:
+    """Abscisse où commence un glyphe dessiné qui suit le segment (même règle que `_ecrire_mots`) :
+    le « x » part d'où la lettre précédente s'achève."""
+    principaux = [Q for Q, _ in geo["traits"] if len(Q) > 3 and np.ptp(Q[:, 0]) + np.ptp(Q[:, 1]) > 0.4]
+    x = float(geo["largeur"])
+    if principaux:
+        x = min(x, float(principaux[-1][-1, 0]))
+    return x
+
+
+def _glyphe_suffixe(geo: dict, glyphe: str, pente: float) -> list[np.ndarray]:
+    """Traits du glyphe dessiné après le segment, pour la relecture (« Joyeu » + x)."""
+    rng = np.random.default_rng(0)
+    tr, _ = dia.glyphe(glyphe, rng, pente=pente)
+    x = _x_suffixe(geo) + dia.ECART_AVANT.get(glyphe, 0.12)
+    return [t + [x, 0] for t in tr]
+
+
+# Mots importants par défaut (CLI `--strict`) : nombres, fractions, degrés et unités. La cuisson des
+# pages passe sa propre fonction (scripts/pages/importants.py : + noms et ingrédients).
+UNITES_DEFAUT = {"g", "kg", "mg", "cl", "ml", "l", "dl", "cm", "mm", "min", "h", "°", "°c", "c.", "s.", "th."}
+
+
+def important_defaut(mot: str) -> bool:
+    if any(c.isdigit() or c in "°½¼¾⅓⅔" for c in mot):
+        return True
+    return mot.strip("()[],;:!?«»").lower() in UNITES_DEFAUT
+
+
+def _fonction_importants(importants):
+    """None / False → aucune ; True → tous les mots ; fonction(mot) → bool ; ensemble de mots."""
+    if importants is None or importants is False:
+        return None
+    if importants is True:
+        return lambda t: True
+    if callable(importants):
+        return lambda t: bool(importants(t))
+    if isinstance(importants, str):
+        importants = {importants}
+    ens = set(importants)
+    return lambda t: t in ens or t.strip("()[],;:.!?«»") in ens
 
 
 def seuil_lecture(texte: str) -> float:
@@ -719,10 +793,24 @@ class MotEcrit:
 
 
 def _ecrire_mots(texte: str, style: Style, graine: int, biais: float, n_cand: int,
-                 utiliser_cache: bool = True, relire: bool = True):
-    """Génère (ou relit) la géométrie de chaque mot, avant mise en page."""
+                 utiliser_cache: bool = True, relire: bool = True, importants=None):
+    """Génère (ou relit) la géométrie de chaque mot, avant mise en page. `importants` : fonction
+    mot → bool (mots relus strictement, voir `Ecrivain.ecrire_segments`)."""
     relire = relire and lecteur_mod.disponible()
-    cle = _hash([VERSION, style.dict(), texte, graine, biais, n_cand, relire])
+    est_imp = _fonction_importants(importants)
+    signature = [VERSION, style.dict(), texte, graine, biais, n_cand, relire]
+    # la clé ne change que pour les textes concernés (les autres gardent leur cache)
+    extra = {}
+    if relire and est_imp is not None:
+        stricts = sorted({t for t in texte.split() if est_imp(t)})
+        if stricts:
+            extra["stricts"] = stricts
+    if relire and any(x_final(t) for t in texte.split()):
+        extra["x"] = 1
+    if extra:
+        extra["v"] = VERSION_LECTURE
+        signature.append(extra)
+    cle = _hash(signature)
     f = CACHE / "textes" / f"{style.nom}-{cle[:16]}.json"
     if utiliser_cache and f.exists():  # le réseau n'est même pas chargé
         d = json.loads(f.read_text())
@@ -736,10 +824,18 @@ def _ecrire_mots(texte: str, style: Style, graine: int, biais: float, n_cand: in
     mots, non_geres = decouper(texte, ecr.modele.connait)
     demandes, ou = [], []
     for i, m in enumerate(mots):
+        imp = bool(est_imp is not None and est_imp(m.texte))
         for s, seg in enumerate(m.segments):
             if seg.genre == "reseau":
                 ou.append((i, s))
-                demandes.append((seg.texte, moteur.graine_de(graine, style.nom, i, s, seg.texte)))
+                opts = {}
+                if imp and not seg.role:  # (chiffres d'une fraction ½ : choix géométrique)
+                    opts["strict"] = True
+                suivant = m.segments[s + 1] if s + 1 < len(m.segments) else None
+                if suivant is not None and suivant.genre == "dessin" and suivant.texte == "x":
+                    opts["suffixe"] = "x"  # « Joyeu » relu avec son x dessiné : « Joyeux »
+                g = moteur.graine_de(graine, style.nom, i, s, seg.texte)
+                demandes.append((seg.texte, g, opts) if opts else (seg.texte, g))
     resultats = ecr.ecrire_segments(main, demandes, biais, n_cand, ecr.lecteur() if relire else None)
     geo_par = {k: r for k, r in zip(ou, resultats)}
     sortie = []
@@ -789,7 +885,10 @@ def _ecrire_mots(texte: str, style: Style, graine: int, biais: float, n_cand: in
             x += geo["largeur"]
         finis = finir_traits(traits_mot)
         larg = max((t[:, 0].max() for t in finis), default=0.0)
-        sortie.append(MotEcrit(m, finis, float(larg), {"score": scores, "lecture": lectures, "lu": lus}))
+        infos = {"score": scores, "lecture": lectures, "lu": lus}
+        if est_imp is not None and est_imp(m.texte):
+            infos["important"] = True
+        sortie.append(MotEcrit(m, finis, float(larg), infos))
     f.parent.mkdir(parents=True, exist_ok=True)
     f.write_text(json.dumps({
         "alphabet": "".join(sorted(ecr.modele.alphabet)),
@@ -905,6 +1004,7 @@ def mettre_en_page(mots: list[MotEcrit], style: Style, graine: int, largeur_max:
                 score=fm["me"].infos.get("score"),
                 lecture=fm["me"].infos.get("lecture"),
                 lu=fm["me"].infos.get("lu"),
+                important=bool(fm["me"].infos.get("important", False)),
                 traits=[np.round(t, 3).tolist() for t in traits],
             ))
             x += w
@@ -921,22 +1021,30 @@ def ecrire(texte: str, style: str = "soignee", graine: int = 0, largeur_max: flo
            encre: str | None = None, outil: str | None = None,
            pente: float | None = None, inclinaison: float = 0.0,
            interligne: float | None = None, biais: float | None = None, candidats: int | None = None,
-           cache: bool = True, relire: bool = True) -> dict:
+           cache: bool = True, relire: bool = True, importants=None) -> dict:
     """Écrit `texte` dans la main `style`. Unités : hauteur d'x de la main, y vers le bas,
     première ligne de base à y ≈ 0. Chaque point : [x, y, pression, vitesse, encre].
     `encre` : plume, brune, noire, bic, crayon, feutre, rouge, chocolat (défaut : celle de la
     main) ; `outil` : plume, bille, crayon, feutre (défaut : celui de l'encre).
     `pente` : pente de base des lignes en degrés (négatif = la ligne monte ; défaut : celle de
     la main) ; `inclinaison` : degrés ajoutés à la pente des lettres (+ = penche à droite).
-    Ni l'une ni l'autre ne régénère les mots (cache conservé). Voir README."""
+    Ni l'une ni l'autre ne régénère les mots (cache conservé).
+    `importants` : mots importants (nombres, unités, noms, ingrédients), relus sans tolérance et
+    jamais touchés par un saut de bille : fonction mot → bool, ensemble de mots, True (tous) ou
+    None (aucun, défaut). Chaque mot de la sortie porte `important` (bool). Voir README."""
     t0 = time.time()
     st = STYLES[style]
     b = st.biais if biais is None else biais
     n = st.candidats if candidats is None else candidats
-    mots, non_geres, depuis_cache, pente_main = _ecrire_mots(texte, st, graine, b, n, cache, relire)
+    mots, non_geres, depuis_cache, pente_main = _ecrire_mots(texte, st, graine, b, n, cache, relire, importants)
     st_page = replace(st, pente_ligne=st.pente_ligne if pente is None else pente,
                       cisaillement=st.cisaillement + inclinaison)
     lignes = mettre_en_page(mots, st_page, graine, largeur_max, interligne)
+    est_imp = _fonction_importants(importants)
+    if est_imp is not None:  # (aussi sans relecture : la bille ne saute jamais sur un mot important)
+        for ligne in lignes:
+            for mot in ligne["mots"]:
+                mot["important"] = bool(mot.get("important") or est_imp(mot["texte"]))
     e_def, o_def = encre_mod.STYLE_ENCRE.get(style, ("bic", None))
     if encre is None:
         encre, outil = e_def, outil or o_def
@@ -984,6 +1092,8 @@ def main(argv=None):
     ap.add_argument("--lumiere", type=float, default=0.3, help="lumière de l'aperçu SVG (0 = aucune)")
     ap.add_argument("--sans-cache", action="store_true")
     ap.add_argument("--rapide", action="store_true", help="sans relecture TrOCR (plus rapide, moins sûr)")
+    ap.add_argument("--strict", action="store_true",
+                    help="nombres et unités relus sans tolérance, sans saut de bille (mots importants)")
     ap.add_argument("--styles", action="store_true", help="liste les styles")
     ap.add_argument("--compact", action="store_true", help="JSON sans indentation")
     a = ap.parse_args(argv)
@@ -995,7 +1105,8 @@ def main(argv=None):
     texte = a.texte.replace("\\n", "\n")
     res = ecrire(texte, a.style, a.graine, a.largeur, encre=a.encre, outil=a.outil, pente=a.pente,
                  inclinaison=a.inclinaison, interligne=a.interligne, biais=a.biais,
-                 candidats=a.candidats, cache=not a.sans_cache, relire=not a.rapide)
+                 candidats=a.candidats, cache=not a.sans_cache, relire=not a.rapide,
+                 importants=important_defaut if a.strict else None)
     if a.svg:
         import rendu
 

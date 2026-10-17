@@ -13,7 +13,8 @@ Comportements (mesures : design-system/docs/references-carnets.md § 4.3–4.4) 
   mots puis on retrempe ; petites flaques là où le bec s'arrête ou tourne (fins de mots, bas
   de boucles) ;
 - bille : régulière, épaisseur presque constante ; petits sauts (blancs très courts) dans les
-  traits rapides, petit pâté à certains départs ;
+  traits rapides, petit pâté à certains départs — JAMAIS de saut sur les traits d'un mot important
+  (nombre, unité, nom, ingrédient : « 40 » ne doit pas s'ouvrir en « 4C ») ;
 - crayon : suit l'appui, plus clair et granuleux dans les traits rapides, pas de plein/délié ;
 - feutre : très régulier, un peu plus foncé là où deux traits se croisent ;
 - partout : trait rapide = plus fin et plus clair ; trait lent, départs et arrêts = plus foncés.
@@ -39,6 +40,10 @@ ENCRES: dict[str, dict] = {
                   source="noire brunie vers 1900 (réf. 13, 16)"),
     "bic": dict(outil="bille", charge="#2e2e49", clair="#6c6b84",
                 source="bille bleue 1963 (réf. 25 : cœur #2e2e49, milieu #797887)"),
+    # bille bleu-noir récente (encre de Lisa) : plus bleue que « bic », jamais vive ; pleins
+    # foncés, déliés plus clairs et plus froids (cœur du trait courant ≈ #262f63)
+    "bille-bleue": dict(outil="bille", charge="#1d2558", clair="#5a669c",
+                        source="stylo bille bleu-noir (cœur ≈ #262f63 ; déliés plus froids)"),
     "crayon": dict(outil="crayon", charge="#8d836a", clair="#a69b82",
                    source="mine de plomb (réf. 18 : cœur #8d836a, milieu #a99e85)"),
     "feutre": dict(outil="feutre", charge="#4a3d5f", clair="#7a7090",
@@ -106,9 +111,22 @@ def _bouts(s, L, long=0.05):
     return np.clip(1 - np.minimum(s, L - s) / long, 0, 1)
 
 
+def protege(mot: dict, k: int) -> bool:
+    """Le trait k du mot est-il protégé (aucun saut de bille) ? Drapeaux posés par la génération :
+    `mot["important"]` (tout le mot) ou `mot["proteger"]` (liste de booléens, un par trait)."""
+    if mot.get("important"):
+        return True
+    pr = mot.get("proteger")
+    return bool(pr is not None and k < len(pr) and pr[k])
+
+
 def encrer(res: dict, encre: str, outil: str | None, graine: int, pente: float = 0.0) -> dict:
     """Ajoute la quantité d'encre à chaque point (5e valeur) et ajuste la pression selon l'outil.
-    Modifie `res` (sortie d'`ecrire`) en place et le renvoie."""
+    Modifie `res` (sortie d'`ecrire`) en place et le renvoie.
+
+    Mots importants : un mot qui porte `important: true` (ou `proteger: [bool par trait]`) garde
+    tous les effets de son encre (pression, nuance, pâté, pâleur des traits rapides) SAUF les sauts
+    de bille. Les tirages au sort sont faits quand même : l'encre des autres mots ne change pas."""
     from moteur import graine_de
 
     info = ENCRES[encre]
@@ -134,6 +152,7 @@ def encrer(res: dict, encre: str, outil: str | None, graine: int, pente: float =
                 if len(T) == 0:
                     nouveaux.append([])
                     continue
+                garde = protege(mot, k)
                 s = _arc(T)
                 L = float(s[-1])
                 p, v = T[:, 2].copy(), np.maximum(T[:, 3], 0.0)
@@ -178,7 +197,9 @@ def encrer(res: dict, encre: str, outil: str | None, graine: int, pente: float =
                         if i < len(v) and v[i] > 1.15:
                             lg = float(rng.uniform(*reg["saut_long"]))
                             m = (s >= pos) & (s < pos + lg)
-                            e[m] *= float(rng.uniform(0.3, 0.55))
+                            f = float(rng.uniform(0.3, 0.55))
+                            if not garde:  # pas de saut sur un mot important
+                                e[m] *= f
                         pos += 0.05
                     if L > 0.1 and rng.random() < reg["pate"]:
                         m = s < 0.03

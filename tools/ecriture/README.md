@@ -24,8 +24,9 @@ Options de la CLI : `--style` (mamie, ecole, soignee, ado, papa, pressee, cecile
 `--inclinaison` (degrés ajoutés à la pente des lettres), `--encre` (plume, brune, noire, bic,
 crayon, feutre, rouge, chocolat), `--outil` (plume, bille, crayon, feutre), `--biais`,
 `--candidats`, `--svg fichier.svg`, `--lumiere 0.3` (aperçu), `--rapide` (sans relecture),
+`--strict` (nombres et unités relus sans tolérance, sans saut de bille : voir « Mots importants »),
 `--sans-cache`, `--compact`, `--styles` (liste les mains). `\n` dans le texte force un retour à
-la ligne.
+la ligne. Encres : plume, brune, noire, bic, bille-bleue, crayon, feutre, rouge, chocolat.
 
 API Python :
 
@@ -35,7 +36,8 @@ from ecrire import ecrire
 page = ecrire("Le cake citron de Julie", style="soignee", graine=4127, largeur_max=14,
               encre=None, outil=None,          # défaut : l'encre et l'outil de la main
               pente=None, inclinaison=0.0,     # degrés ; défaut : ceux de la main
-              interligne=None, biais=None, candidats=None, cache=True, relire=True)
+              interligne=None, biais=None, candidats=None, cache=True, relire=True,
+              importants=None)                 # mots importants : fonction mot → bool (voir plus bas)
 import rendu; open("apercu.svg", "w").write(rendu.svg(page, lumiere=0.3))
 ```
 
@@ -68,6 +70,7 @@ a désormais **5 valeurs** (`encre` ajoutée en 5e position, `point` donne l'ord
       "boite": [...],                        // toute l'encre du mot (accents compris)
       "ligne_de_base": [[x0, y0], [x1, y1]], // suit la pente et la rotation du mot
       "hauteur_x": 1.01, "haut_x": [x, y],   // haut des minuscules au début du mot
+      "important": false,                    // mot important (si `importants` est donné) : aucun saut de bille
       "score": [1.9], "lecture": [0.12],     // par segment écrit par le réseau : score géométrique
       "lu": [true],                          // (bas = bien) ; relecture TrOCR : écart à la note du
                                              // mot dans une police propre, et « lu » = relu comme
@@ -95,6 +98,33 @@ a désormais **5 valeurs** (`encre` ajoutée en 5e position, `point` donne l'ord
 - `encre` (0–1) : quantité d'encre déposée (voir « Encres »).
 - Ratures, soulignés : utiliser `ligne_de_base`, `haut_x` et `boite` de chaque mot (milieu de
   la hauteur d'x = ligne de base + 0,5 × (haut_x − ligne de base)).
+
+## Mots importants (lot E, plan v4)
+
+Nombres, unités, noms et ingrédients ne doivent jamais être mal lus (« 4C min » pour « 40 min »,
+« 180 » sans son « g »). `ecrire(..., importants=f)` (f : mot → bool ; la cuisson des pages passe
+`scripts/pages/importants.important`, la CLI `--strict` passe `ecrire.important_defaut` : nombres,
+fractions, ° et unités) :
+
+- **relecture sans tolérance** des segments de ces mots (`Ecrivain.ecrire_segments`, option
+  `strict`) : relus même courts (« g », « C) », un chiffre seul), aucun jeton manqué toléré,
+  variantes strictes (`lecteur.variantes(mot, strict=True)` : lettre ou chiffre en moins à toute
+  longueur, chiffres voisins, sosies 0 → o/c/u/C, g → q/9/y…), jusqu'à `TENTATIVES_STRICT` = 5
+  tentatives (biais relevé, tirages doublés). Les autres mots gardent exactement les critères
+  d'avant (3 tentatives, un jeton manqué toléré à partir de 3 jetons, lettre en moins dès 4 lettres) ;
+- **aucun saut de bille** : chaque mot de la sortie porte `important` ; `encre.encrer` n'applique pas
+  les sauts (ni les blancs) de la bille aux traits d'un mot important (`important: true`, ou
+  `proteger: [bool par trait]`). Pression, nuance, pâté et pâleur des traits rapides restent ; les
+  tirages au sort sont faits quand même, l'encre des autres mots ne change pas ;
+- le cache n'est invalidé que pour les textes qui contiennent un mot important (ou un x final).
+
+La relecture du **groupe** (« 180 g », « 4 °C », « 40 min ») tel qu'il est posé, la réécriture des
+mots douteux (8 graines, puis 3 graines pour le bloc) et la relecture de l'encre rendue
+(`relire_rendu`) sont dans `scripts/pages/ecriture.py`.
+
+**« x » final** (« Joyeux », « deux ») : il est toujours tracé à la main (le réseau le rate), mais
+le candidat est désormais relu **avec** ce x (option `suffixe` : on relit « Joyeux », plus
+« Joyeu », que TrOCR refusait).
 
 ## Technique retenue
 
@@ -187,7 +217,7 @@ déterministe par graine) :
 | Outil | Comportement |
 |---|---|
 | plume | pleine et foncée après une trempée, se vide sur ≈ 5 à 15 mots (capacité 90–170 hauteurs d'x de trait), on retrempe au début d'un mot quand la réserve passe sous 12–30 % (`encre.trempes`) ; petites flaques aux arrêts, virages lents et bas de boucles ; pleins/déliés (pression) |
-| bille | régulière (± 5 %), épaisseur presque constante ; petits sauts pâles (2–6 % de hauteur d'x) dans les traits rapides ; petit pâté au départ de 12 % des traits |
+| bille | régulière (± 5 %), épaisseur presque constante ; petits sauts pâles (2–6 % de hauteur d'x) dans les traits rapides, **jamais sur un mot important** ; petit pâté au départ de 12 % des traits |
 | crayon | suit l'appui ; plus clair et granuleux dans les traits rapides ; pas de plein/délié |
 | feutre | très régulier ; plus foncé là où deux traits se croisent (double couche) |
 | toutes | trait rapide = plus fin et plus clair ; trait lent, départs et arrêts = plus foncés |
@@ -200,6 +230,7 @@ Nuances (mesurées sur de vrais carnets, `design-system/docs/references-carnets.
 | brune | plume | `#60533f` | `#9a8a6c` | ferrogallique (réf. 09) |
 | noire | plume | `#2a1d12` | `#6e5b42` | noire brunie vers 1900 (réf. 13, 16) |
 | bic | bille | `#2e2e49` | `#6c6b84` | bille bleue 1963 (réf. 25) |
+| bille-bleue | bille | `#1d2558` | `#5a669c` | bille bleu-noir récente (Lisa) : plus bleue que bic, cœur ≈ `#262f63`, déliés plus froids |
 | crayon | crayon | `#8d836a` | `#a69b82` | mine de plomb (réf. 18) |
 | feutre | feutre | `#4a3d5f` | `#7a7090` | gc-ink-feutre sourdi |
 | rouge | bille | `#83432f` | `#b17f6e` | rouge de correction (réf. 05) |
@@ -293,7 +324,8 @@ ligne de ≈ 40 caractères, sans cache — détail dans `verification/out/n2/pe
 - Pas de liaison entre deux mots (on lève le stylo entre les mots, comme presque tout le monde).
 - Déterminisme garanti sur une même installation (même NumPy/OpenBLAS) ; une autre machine peut
   donner d'autres tracés → **versionner le JSON produit**, pas le régénérer à la volée.
-- Le relecteur ne lit pas les chiffres ni les mots d'une lettre (choix géométrique seul).
+- Le relecteur ne lit pas les chiffres ni les mots d'une lettre (choix géométrique seul), sauf
+  quand ce sont des mots importants (`importants`) : ils sont alors relus strictement.
 
 ## Fichiers
 

@@ -38,6 +38,37 @@ def disponible() -> bool:
     return True
 
 
+# Lecture stricte (mots importants : nombres, unités, noms, ingrédients ; lot E) : en plus du mot
+# amputé d'une lettre (à toute longueur, chiffres compris), le lecteur ne doit préférer aucune
+# lecture voisine : chiffre confondu (« 180 » / « 100 »), chiffre pris pour une lettre (« 40 » /
+# « 4C »), unité déformée (« g » / « q », « 9 »).
+CHIFFRES_VOISINS = {"0": "689", "1": "74", "2": "731", "3": "852", "4": "91", "5": "638", "6": "058",
+                    "7": "12", "8": "0369", "9": "480"}
+SOSIES = {"0": "ocuCO", "1": "lIt", "2": "z", "3": "B", "4": "ytu", "5": "sS", "6": "b", "7": "t",
+          "8": "B", "9": "gq", "g": "q9y", "q": "g9", "l": "1", "h": "bk", "C": "(L", "c": "e"}
+
+
+def variantes(mot: str, strict: bool = False) -> list[str]:
+    """Lectures voisines de `mot` qui ne doivent pas se lire mieux que lui.
+
+    Ordinaire : le mot privé d'une lettre (hors lettres doubles : « ff » lu « f » n'est pas une
+    lettre oubliée). Strict : privé d'un caractère quelconque (lettre ou chiffre, à toute longueur ;
+    « 00 » lu « 0 » EST un chiffre oublié), plus les chiffres voisins et les sosies (CHIFFRES_VOISINS,
+    SOSIES). Les variantes qui ne diffèrent que par la casse ou les espaces sont écartées."""
+    out = set()
+    for j, ch in enumerate(mot):
+        double = ch == mot[j - 1 : j] or ch == mot[j + 1 : j + 2]
+        if ch.isalpha() and not double or (strict and ch.isdigit()):
+            out.add(mot[:j] + mot[j + 1 :])
+    if strict:
+        for j, ch in enumerate(mot):
+            for d in CHIFFRES_VOISINS.get(ch, "") + SOSIES.get(ch, ""):
+                out.add(mot[:j] + d + mot[j + 1 :])
+    def _c(t):
+        return "".join(t.split()).lower()
+    return sorted(v for v in out if v.strip() and _c(v) != _c(mot))
+
+
 def _lse(x):
     m = x.max(-1)
     return m + np.log(np.exp(x - m[..., None]).sum(-1))
@@ -113,11 +144,14 @@ class Lecteur:
         a = np.asarray(im, np.float32) / 255.0
         return ((a - 0.5) / 0.5).transpose(2, 0, 1)
 
-    def references(self, textes: list[str]) -> dict[str, tuple[float, list[bool], float | None]]:
-        manquants = sorted({t for t in textes if t not in self._refs})
+    def references(self, textes: list[str], strict: bool = False) -> dict[str, tuple[float, list[bool], float | None]]:
+        """Notes de référence (police propre). `strict` : avec les variantes strictes (mots importants)."""
+        cle = (lambda t: "\u241fstrict\u241f" + t) if strict else (lambda t: t)
+        manquants = sorted({t for t in textes if cle(t) not in self._refs})
         if manquants:
-            notes = self._noter_images(manquants, lambda groupe: self._image_texte(groupe), verifier=True)
-            self._refs.update({t: list(n) for t, n in zip(manquants, notes)})
+            notes = self._noter_images(manquants, lambda groupe: self._image_texte(groupe), verifier=True,
+                                       stricts=set(manquants) if strict else None)
+            self._refs.update({cle(t): list(n) for t, n in zip(manquants, notes)})
             try:
                 import json
 
@@ -125,21 +159,23 @@ class Lecteur:
                 self._fichier_refs.write_text(json.dumps(self._refs, ensure_ascii=False))
             except Exception:
                 pass
-        return {t: self._refs[t] for t in textes}
+        return {t: self._refs[cle(t)] for t in textes}
 
     def _jetons(self, texte):
         return self.tok.encode(texte).ids[1:-1]
 
     # -- notes -----------------------------------------------------------------------------
-    def noter(self, items: list[tuple[str, list[np.ndarray]]], accepter=None) -> list[tuple]:
+    def noter(self, items: list[tuple[str, list[np.ndarray]]], accepter=None, stricts=None) -> list[tuple]:
         """items : (texte, traits) → pour chacun (log P(texte | image), [jeton attendu = 1er
         choix du lecteur ?] pour chaque jeton du mot, avantage de la meilleure variante amputée
-        d'une lettre (None si non calculé))."""
+        d'une lettre (None si non calculé)). `stricts` : textes relus strictement (variantes
+        strictes, à toute longueur)."""
         textes = [t for t, _ in items]
         return self._noter_images(textes, lambda groupe, k0: self._image([items[k][1] for k in k0]),
-                                  avec_index=True, verifier=True, accepter=accepter)
+                                  avec_index=True, verifier=True, accepter=accepter, stricts=stricts)
 
-    def _noter_images(self, textes, faire_image, avec_index=False, verifier=False, accepter=None) -> list:
+    def _noter_images(self, textes, faire_image, avec_index=False, verifier=False, accepter=None,
+                      stricts=None) -> list:
         if not textes:
             return []
         lignes, ligne, n = [], [], 0
@@ -191,7 +227,12 @@ class Lecteur:
             for i, (l, s_, sp) in enumerate(zip(lignes, seqs, spans)):
                 for q, k in enumerate(l):
                     mot = textes[k]
-                    if sum(ch.isalpha() for ch in mot) < 4 or (accepter is not None and not accepter(mot, notes[k])):
+                    strict = bool(stricts) and mot in stricts
+                    if (not strict and sum(ch.isalpha() for ch in mot) < 4) or \
+                            (accepter is not None and not accepter(mot, notes[k])):
+                        continue
+                    vs = variantes(mot, strict)
+                    if not vs:
                         continue
                     a_, b_ = sp[q]
                     n_mot = len(self._jetons(mot))
@@ -201,8 +242,7 @@ class Lecteur:
                     var_seqs.append(ref_ids)
                     var_ref.append((i, k, None, a_))
                     # (pas dans une lettre double : « ff » lu « f » n'est pas une lettre oubliée)
-                    for v_ in sorted({mot[:j] + mot[j + 1 :] for j in range(len(mot)) if mot[j].isalpha()
-                                      and mot[j] != mot[j - 1 : j] and mot[j] != mot[j + 1 : j + 2]}):
+                    for v_ in vs:
                         var_seqs.append(avant + self._jetons(v_) + apres)
                         var_ref.append((i, k, v_, a_))
             if var_seqs:

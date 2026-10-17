@@ -195,7 +195,7 @@ def choisir_variante(nom: str, graine: int, taille: float | None = None) -> str:
 # =============================================================================================
 # Tracé
 # =============================================================================================
-_MAIN_DE_L_ENCRE = {"feutre": "ado", "bic": "soignee", "plume": "ecole", "brune": "mamie",
+_MAIN_DE_L_ENCRE = {"feutre": "ado", "bille-bleue": "ado", "bic": "soignee", "plume": "ecole", "brune": "mamie",
                     "noire": "papa", "crayon": "soignee", "chocolat": "cecile", "rouge": "soignee"}
 
 

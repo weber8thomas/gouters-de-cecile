@@ -139,6 +139,12 @@ def _segments(token: str, connait, non_geres: list[str]) -> list[Segment]:
     return segs
 
 
+def x_final(token: str) -> bool:
+    """Le mot finit-il par un « x » tracé à la main (« joyeux », « deux, », « gâteaux ! ») ?"""
+    t = token.rstrip("".join(PONCTUATION_FINALE))
+    return len(t) >= 2 and t[-1] == "x" and t[-2].isalpha()
+
+
 def decouper(texte: str, connait) -> tuple[list[Mot], list[str]]:
     """Découpe en mots. `connait(c)` dit si le réseau sait écrire le caractère c."""
     non_geres: list[str] = []
