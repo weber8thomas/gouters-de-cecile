@@ -15,6 +15,7 @@ import { PageCuite, PAGES_CUITES } from '../../components/PageCuite';
 import type { VideoInfo } from '../../components/Soulever';
 import { PhotoCollee } from '../../components/PhotoCollee';
 import { FeuilletVolant } from '../../components/FeuilletVolant';
+import { Aquarelle } from '../../components/Aquarelle';
 import type { SpreadSpec } from '../../lib/spread';
 import videosJson from '../../content/videos.json';
 import carnetJson from '../../content/carnet.json';
@@ -68,6 +69,9 @@ function Page({ id, graine }: { id: string; graine: number }) {
     const t = n ? PHOTOS_CECILE[Number(n[1]) - 1] : undefined;
     if (t) slots[nom] = <TirageColle tirage={t.tirage} coins={t.coins} angle={t.angle} />;
   }
+  Object.entries(info?.aquarelles ?? {}).forEach(([nom, a], i) => {
+    slots[nom] = <Aquarelle nom={a.aquarelle} anime={a.anime} angle={a.angle} ordre={i} />;
+  });
   if (info?.vivants?.volant && info.volant) {
     slots.volant = <FeuilletVolant recto={info.volant.recto} verso={info.volant.verso ?? null} angle={info.volant.angle} graine={graine} />;
   }

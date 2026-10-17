@@ -1,0 +1,89 @@
+/* Aquarelle posée sur une page cuite (Aquarelle.tsx), dans sa zone vivante. Multipliée avec le papier,
+   comme de la couleur sur la feuille. Animations : opacité et transformation seulement. */
+
+.gc-aquarelle {
+  position: absolute;
+  inset: 0;
+  transform: rotate(var(--gc-aq-angle, 0deg));
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.gc-aquarelle img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* La couleur encore mouillée : une copie floue, un peu plus large, qui s'étale puis sèche. Le flou est
+   fixe (dessiné une fois), seule son opacité et son échelle bougent. */
+.gc-aquarelle__mouille {
+  filter: blur(6px) saturate(1.15);
+  opacity: 0;
+}
+
+/* ---- Fleurit : quand la page devient visible ---------------------------------------------------- */
+.gc-livre__page--visible .gc-aquarelle:not(.gc-aquarelle--fixe) .gc-aquarelle__seche {
+  animation: gc-aq-seche 1.9s var(--gc-aq-delai, 0.45s) cubic-bezier(0.25, 0.7, 0.25, 1) both;
+}
+
+.gc-livre__page--visible .gc-aquarelle:not(.gc-aquarelle--fixe) .gc-aquarelle__mouille {
+  animation: gc-aq-mouille 1.9s var(--gc-aq-delai, 0.45s) ease-out both;
+}
+
+@keyframes gc-aq-seche {
+  0% { opacity: 0; transform: scale(0.95); }
+  55% { opacity: 0.8; }
+  100% { opacity: 1; transform: none; }
+}
+
+@keyframes gc-aq-mouille {
+  0% { opacity: 0; transform: scale(0.82); }
+  30% { opacity: 0.75; }
+  100% { opacity: 0; transform: scale(1.05); }
+}
+
+/* ---- Balance : une feuille, un brin qui oscille à peine, en boucle ------------------------------ */
+.gc-livre__page--visible .gc-aquarelle--balance {
+  transform-origin: 50% 100%;
+  animation: gc-aq-balance 5.5s ease-in-out calc(var(--gc-aq-delai, 0.45s) + 1.9s) infinite alternate;
+}
+
+@keyframes gc-aq-balance {
+  from { transform: rotate(calc(var(--gc-aq-angle, 0deg) - 1.2deg)); }
+  to { transform: rotate(calc(var(--gc-aq-angle, 0deg) + 1.2deg)); }
+}
+
+/* ---- Vapeur : deux volutes montent au-dessus d'une tasse ou d'une théière, en boucle ------------- */
+.gc-aquarelle__volute {
+  position: absolute;
+  left: 46%;
+  top: -14%;
+  width: 9%;
+  height: 34%;
+  border-radius: 50%;
+  border-left: 2px solid rgba(120, 100, 80, 0.32);
+  opacity: 0;
+  animation: gc-aq-volute 4.2s ease-in-out 2.4s infinite;
+}
+
+.gc-aquarelle__volute--2 {
+  left: 54%;
+  animation-delay: 4.5s;
+}
+
+@keyframes gc-aq-volute {
+  0% { opacity: 0; transform: translateY(18%) scaleY(0.7); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-32%) scaleY(1.1) skewX(-8deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gc-aquarelle,
+  .gc-aquarelle img,
+  .gc-aquarelle__volute {
+    animation: none !important;
+  }
+}

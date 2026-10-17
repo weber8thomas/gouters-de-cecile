@@ -281,6 +281,15 @@ def planche(items):
     return PLANCHE
 
 
+def _est_image(path):
+    try:
+        with Image.open(path) as im:
+            im.verify()
+        return True
+    except Exception:
+        return False
+
+
 def sha256(path):
     h = hashlib.sha256()
     with open(path, 'rb') as f:
@@ -295,9 +304,9 @@ def main():
     planche_items = []
     for nom, (src, crop, sujet, page, auteur, licence, collection) in SPEC.items():
         path = os.path.join(ORIG, src)
-        if not os.path.exists(path):
+        if not os.path.exists(path) or not _est_image(path):
             print('absent, ignoré :', nom, path)
-            planche_items.append((nom, None, 'source à télécharger'))
+            planche_items.append((nom, None, 'téléchargement bloqué (429)'))
             continue
         img = process(path, crop, OPTS.get(nom))
         out_name = nom + '.png'

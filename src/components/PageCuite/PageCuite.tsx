@@ -85,6 +85,9 @@ export interface PageCuiteInfo {
   /** Recette reçue d'où vient la page (src/content/recettes/<slug>.json). */
   recette?: string;
   croquis?: CroquisPage[];
+  /** Aquarelles posées par l'application dans une zone vivante (même nom) : fichier de
+   *  design-system/baked/aquarelles, animation (« fleurit » à l'arrivée, « vapeur »…), inclinaison. */
+  aquarelles?: Record<string, { aquarelle: string; anime?: string; angle?: number }>;
   /** Ce qui n'a pas tenu sur la page à la cuisson (toujours vide : sinon la cuisson échoue). */
   deborde: string[];
   lignes: number;

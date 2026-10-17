@@ -633,6 +633,11 @@ class Cuisine:
         })
         if mise.liens:
             man["liens"] = [dict({k: v for k, v in l.items() if k != "rect"}, rect=fr(l["rect"])) for l in mise.liens]
+        # aquarelles posées par l'application dans une zone vivante (calque à part : elle fleurit, s'anime)
+        aq = {v["nom"]: {k: v[k] for k in ("aquarelle", "anime", "angle") if k in v}
+              for v in page.get("vivants", []) if v.get("aquarelle")}
+        if aq:
+            man["aquarelles"] = aq
         if page.get("type") == "feuillet":
             man["type"] = "feuillet"
             man["taille"] = list(taille_page(page))
