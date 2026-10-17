@@ -1,6 +1,7 @@
 import React from 'react';
 import { LazyMotion, domMax, m, useMotionValue, useTransform, useReducedMotion } from '../../lib/motion';
-import { useFeu } from '../../lib/feu';
+import { flammeBougie, useFeu } from '../../lib/feu';
+import { LUMIERE_TRACEE } from '../Lumiere';
 import { useReglages } from '../../lib/reglages';
 import { cssUrl } from '../../lib/assets';
 import { ecouterPointeur } from '../../lib/pointeur';
@@ -56,6 +57,7 @@ function useFlammeVivante(el: React.RefObject<HTMLElement | null>, fixe: boolean
       penche.set(0);
       etire.set(1);
       eclat.set(1);
+      flammeBougie.set(1);
       return;
     }
     let th = 0; // inclinaison due au vent (°)
@@ -106,6 +108,7 @@ function useFlammeVivante(el: React.RefObject<HTMLElement | null>, fixe: boolean
       penche.set(r2(balance + th + vacille));
       etire.set(r3(1 + 0.045 * Math.sin(3.7 * t) + 0.025 * Math.sin(9.3 * t + 0.5) - saut - 0.16 * trouble + 0.05 * trouble * Math.sin(29 * t)));
       eclat.set(r3(1 - 0.5 * saut - 0.28 * trouble * (0.6 + 0.4 * Math.sin(31 * t))));
+      flammeBougie.set(r3(eclat.get() * etire.get()));
       raf = requestAnimationFrame(image);
     };
     raf = requestAnimationFrame(image);
@@ -203,11 +206,11 @@ export function Bougie({ className }: BougieProps) {
           data-gc-bougie="ombre"
           style={{ ...place(geo.ombre), backgroundImage: cssUrl('bougie/ombre'), opacity: opaciteOmbre, x: ombreX, y: ombreY }}
         />
-        <m.div
+        {!LUMIERE_TRACEE && <m.div
           className="gc-bougie__halo"
           data-gc-bougie="halo"
           style={{ ...place(geo.halo), backgroundImage: cssUrl('bougie/halo'), opacity: opaciteHalo, scale: echelleHalo, x: glisseX }}
-        />
+        />}
         <div
           className="gc-bougie__cire gc-bougie__pose"
           data-gc-bougie="cire"

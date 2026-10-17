@@ -583,6 +583,246 @@
     "bytes": 32440,
     "type": "image/webp"
   },
+  "lumiere/loin-arriere-bougie": {
+    "file": "baked/lumiere/loin-arriere-bougie.webp",
+    "sha": "d83d4cd78dc080d1ad1caf4d58b6942f081c247c159bae16d77a54cf44de90c0",
+    "w": 1360,
+    "h": 940,
+    "bytes": 70568,
+    "type": "image/webp"
+  },
+  "lumiere/loin-arriere-feu": {
+    "file": "baked/lumiere/loin-arriere-feu.webp",
+    "sha": "43457a8fb0f93930e287dbca5f957872fb737a021aadbb492949580196998284",
+    "w": 1360,
+    "h": 940,
+    "bytes": 63926,
+    "type": "image/webp"
+  },
+  "lumiere/loin-arriere": {
+    "file": "baked/lumiere/loin-arriere.webp",
+    "sha": "4ddf21ae49eb548a14c1c147a5650431335cbba8d7afdca728e01cccb823a885",
+    "w": 1360,
+    "h": 940,
+    "bytes": 174008,
+    "type": "image/webp"
+  },
+  "lumiere/loin-couverture-bougie": {
+    "file": "baked/lumiere/loin-couverture-bougie.webp",
+    "sha": "6aadae3c1433b32a9c22a020d1bd539d4c64dda5d6972fbcbc5fb1d3cd7dbbc5",
+    "w": 1360,
+    "h": 940,
+    "bytes": 69670,
+    "type": "image/webp"
+  },
+  "lumiere/loin-couverture-feu": {
+    "file": "baked/lumiere/loin-couverture-feu.webp",
+    "sha": "ba9c575bf4ef8a44c0172f817fb1822fb0e999e8964d56098fb4f134daf6cbdc",
+    "w": 1360,
+    "h": 940,
+    "bytes": 63560,
+    "type": "image/webp"
+  },
+  "lumiere/loin-couverture": {
+    "file": "baked/lumiere/loin-couverture.webp",
+    "sha": "868eccfc5e907073e4d2cc58fb29ecb7b0f1b9812bf23d6faf570aedebf91a4d",
+    "w": 1360,
+    "h": 940,
+    "bytes": 173830,
+    "type": "image/webp"
+  },
+  "lumiere/loin-ouvert-bougie": {
+    "file": "baked/lumiere/loin-ouvert-bougie.webp",
+    "sha": "28572f1dc4cec416aeba036dde8c87c6d6283a3b1f48dff48cf17d05be2d66d8",
+    "w": 1360,
+    "h": 940,
+    "bytes": 72638,
+    "type": "image/webp"
+  },
+  "lumiere/loin-ouvert-feu": {
+    "file": "baked/lumiere/loin-ouvert-feu.webp",
+    "sha": "913177a38a862a388727ffac6b973bb537e2b18868345c75b4b0544682e7a76b",
+    "w": 1360,
+    "h": 940,
+    "bytes": 70960,
+    "type": "image/webp"
+  },
+  "lumiere/loin-ouvert": {
+    "file": "baked/lumiere/loin-ouvert.webp",
+    "sha": "6052be66607fe1c4bfc321a4837f0132f28b57e448c31bd6c1ec4b64bd6a0258",
+    "w": 1360,
+    "h": 940,
+    "bytes": 179636,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-arriere-bougie": {
+    "file": "baked/lumiere/moyenne-arriere-bougie.webp",
+    "sha": "e85b2e0cbad36311e5bc39485d3cba397293bc8d4343536fac67ca15c8779490",
+    "w": 1360,
+    "h": 940,
+    "bytes": 68260,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-arriere-feu": {
+    "file": "baked/lumiere/moyenne-arriere-feu.webp",
+    "sha": "e2fad985cfbc7b4fbf4acd716e316e579b9fc88b7aecec6bff27c2a67b38666f",
+    "w": 1360,
+    "h": 940,
+    "bytes": 62948,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-arriere": {
+    "file": "baked/lumiere/moyenne-arriere.webp",
+    "sha": "d2fe0ed77187731cb71f4c1b27b9873750a36caba49872116296d0ad8b4e8612",
+    "w": 1360,
+    "h": 940,
+    "bytes": 173292,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-couverture-bougie": {
+    "file": "baked/lumiere/moyenne-couverture-bougie.webp",
+    "sha": "3cb04288a0f34fb5728d96357031cc77b6b668ab03f4b42c14d504c791be5be1",
+    "w": 1360,
+    "h": 940,
+    "bytes": 68270,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-couverture-feu": {
+    "file": "baked/lumiere/moyenne-couverture-feu.webp",
+    "sha": "c510ccca189a9fa723370eb880dd6266e0f9a3166f7566b5807989b3c26749a6",
+    "w": 1360,
+    "h": 940,
+    "bytes": 62922,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-couverture": {
+    "file": "baked/lumiere/moyenne-couverture.webp",
+    "sha": "c60deddf875e2ece0e49337883ddc5ab58c8d34dfbce63b3cc9ad1ae294c7b5b",
+    "w": 1360,
+    "h": 940,
+    "bytes": 173226,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-ouvert-bougie": {
+    "file": "baked/lumiere/moyenne-ouvert-bougie.webp",
+    "sha": "d269f69aed492238b05afb4a1cd60de435d3da356e9a24ad8331e66c4f153014",
+    "w": 1360,
+    "h": 940,
+    "bytes": 70156,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-ouvert-feu": {
+    "file": "baked/lumiere/moyenne-ouvert-feu.webp",
+    "sha": "db11e02de5026bc37ca4917a04a3d405fe0418d0b0e75307b07092e10d947f5a",
+    "w": 1360,
+    "h": 940,
+    "bytes": 68770,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-ouvert": {
+    "file": "baked/lumiere/moyenne-ouvert.webp",
+    "sha": "7a3f7b276464bd4b20612b656ceed3e86f4e35deafa918822a44178999714887",
+    "w": 1360,
+    "h": 940,
+    "bytes": 177428,
+    "type": "image/webp"
+  },
+  "lumiere/proche-arriere-bougie": {
+    "file": "baked/lumiere/proche-arriere-bougie.webp",
+    "sha": "17453c001d78a10754e91a17046d64b14a25674c7e71e49b77138729521a6851",
+    "w": 1360,
+    "h": 940,
+    "bytes": 66996,
+    "type": "image/webp"
+  },
+  "lumiere/proche-arriere-feu": {
+    "file": "baked/lumiere/proche-arriere-feu.webp",
+    "sha": "65ce9bcc017a4cdc572b5199c13ef378493544ddf1c5516181831c726b5a918a",
+    "w": 1360,
+    "h": 940,
+    "bytes": 61832,
+    "type": "image/webp"
+  },
+  "lumiere/proche-arriere": {
+    "file": "baked/lumiere/proche-arriere.webp",
+    "sha": "8e00719a64f61551f7938c245be1deff080ff22391349c5b3de185de3b8afd4e",
+    "w": 1360,
+    "h": 940,
+    "bytes": 171996,
+    "type": "image/webp"
+  },
+  "lumiere/proche-couverture-bougie": {
+    "file": "baked/lumiere/proche-couverture-bougie.webp",
+    "sha": "69a904ff3028c38731a51eb64fd090c4d9156d65b89fd83ca7290697e100ca3e",
+    "w": 1360,
+    "h": 940,
+    "bytes": 66712,
+    "type": "image/webp"
+  },
+  "lumiere/proche-couverture-feu": {
+    "file": "baked/lumiere/proche-couverture-feu.webp",
+    "sha": "dfb7209912a933b7ae22e3429d5f4bcac36a93387cf5e896f27fa64d80825370",
+    "w": 1360,
+    "h": 940,
+    "bytes": 61786,
+    "type": "image/webp"
+  },
+  "lumiere/proche-couverture": {
+    "file": "baked/lumiere/proche-couverture.webp",
+    "sha": "7363b77d03762908d1baad84c08e9e81820a3674ec08dbfa21820d53d3a63e42",
+    "w": 1360,
+    "h": 940,
+    "bytes": 173030,
+    "type": "image/webp"
+  },
+  "lumiere/proche-ouvert-bougie": {
+    "file": "baked/lumiere/proche-ouvert-bougie.webp",
+    "sha": "9994ddea2f13afeece6a93e5d63a5eefb09da348f2e1143df1cd19175efacb42",
+    "w": 1360,
+    "h": 940,
+    "bytes": 68126,
+    "type": "image/webp"
+  },
+  "lumiere/proche-ouvert-feu": {
+    "file": "baked/lumiere/proche-ouvert-feu.webp",
+    "sha": "b63d56394630b02666cb7e53c5c9e5def1231a054032f61d6a53d83c80e6fa68",
+    "w": 1360,
+    "h": 940,
+    "bytes": 67162,
+    "type": "image/webp"
+  },
+  "lumiere/proche-ouvert": {
+    "file": "baked/lumiere/proche-ouvert.webp",
+    "sha": "65db64a4650c4bd2bbb52e73596b3c7f6096e2f459cb7ef3d4aa49060f7857a7",
+    "w": 1360,
+    "h": 940,
+    "bytes": 176976,
+    "type": "image/webp"
+  },
+  "lumiere/vide-bougie": {
+    "file": "baked/lumiere/vide-bougie.webp",
+    "sha": "d5b3d0ab3001577aa89ecb86ca60261e6990f358e688f143baaaec37020fd5b6",
+    "w": 1360,
+    "h": 940,
+    "bytes": 77542,
+    "type": "image/webp"
+  },
+  "lumiere/vide-feu": {
+    "file": "baked/lumiere/vide-feu.webp",
+    "sha": "64b96474143bf72a4677865983b5c46ec15224f9f7ee006827e91074da79ad0e",
+    "w": 1360,
+    "h": 940,
+    "bytes": 64710,
+    "type": "image/webp"
+  },
+  "lumiere/vide": {
+    "file": "baked/lumiere/vide.webp",
+    "sha": "f63f673df647938e31d35223dc3420d29686ed5045879d730c6673fa778d8363",
+    "w": 1360,
+    "h": 940,
+    "bytes": 177938,
+    "type": "image/webp"
+  },
   "musique/frozen-star": {
     "file": "baked/musique/frozen-star.mp3",
     "sha": "4b646848a344e941bfa00c4341bf0bd11a2113727a8f5ee59303b6ec80a0fdbc",
