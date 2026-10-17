@@ -1,6 +1,7 @@
 import React from 'react';
 import { createPortal, flushSync } from 'react-dom';
 import { Stage } from '../Stage';
+import { OmbreFeu } from '../Lumiere';
 import { useEcran } from '../Ecran/contexte';
 import { useCamera } from '../../lib/camera';
 import type { Distance } from '../../lib/settings';
@@ -1950,6 +1951,7 @@ export function Livre({
           {/* Mouvement de caméra de l'ouverture : appliqué au corps et à l'espace 3D séparément
               (transformer leur parent commun obligerait à aplatir tout le livre à chaque image). */}
           <m.div className="gc-livre__corps" style={{ transform: livreT }}>
+            <OmbreFeu />
             <m.div className="gc-livre__ombre gc-livre__ombre--gauche" style={{ opacity: ombreGauche }} aria-hidden="true" />
             <m.div className="gc-livre__ombre gc-livre__ombre--droite" style={{ opacity: ombreDroite }} aria-hidden="true" />
             {(couv || arr_) && <m.div className={`gc-livre__ombre gc-livre__ombre--epaisseur${arr_ ? ' gc-livre__ombre--epaisseur-gauche' : ''}`} style={{ opacity: ombreEpaisseur }} aria-hidden="true" />}

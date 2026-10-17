@@ -3,10 +3,10 @@
 // Aucun rendu React : les calques lisent les MotionValues (useTransform) et n'animent que
 // opacity / transform de calques précalculés (CONTRACT §§ 4, 5, 13).
 //
-//   intensite  autour de 1 : bruits lissés (≈ 0,3 à 3 Hz, faible amplitude) + flambées occasionnelles
-//              (montée rapide, descente lente) + « pops » brefs (crépitements) ;
-//   dx, dy     déplacement de la source, en px de scène (1920 × 1080), de l'ordre de 1 % de la scène :
-//              la lumière bouge un peu (la flamme monte quand elle flambe : dy < 0).
+//   intensite  entre 0,6 et 1,6, autour de 1 : bruits lissés (≈ 0,3 à 3 Hz) + flambées occasionnelles
+//              (montée rapide, descente lente, jusqu'à ≈ 1,6) + « pops » brefs (crépitements) ;
+//   dx, dy     déplacement lent de la source, en px de scène (1920 × 1080) : ≈ ± 22 px en x, ± 10 px en y
+//              (la flamme monte un peu quand elle flambe : dy < 0).
 //
 // Modes :
 //   vivant     le moteur tourne tant qu'au moins un calque écoute (useFeu monté) et que l'onglet est visible ;
@@ -34,11 +34,11 @@ import { abonnerReglages, getReglages } from './reglages';
 export type ModeFeu = 'vivant' | 'statique' | 'pause';
 
 export interface Feu {
-  /** Intensité de la lumière du feu, autour de 1 (≈ 0,88 à 1,3). */
+  /** Intensité de la lumière du feu, entre 0,6 et 1,6 (autour de 1). */
   intensite: MotionValue<number>;
-  /** Déplacement horizontal de la source (px de scène, ≈ ± 12). */
+  /** Déplacement horizontal de la source (px de scène, ≈ ± 22). */
   dx: MotionValue<number>;
-  /** Déplacement vertical de la source (px de scène, ≈ ± 7 ; négatif quand la flamme monte). */
+  /** Déplacement vertical de la source (px de scène, ≈ ± 10 ; négatif quand la flamme monte). */
   dy: MotionValue<number>;
 }
 
@@ -102,11 +102,11 @@ class Octave {
 const bruit = (octaves: [number, number][]) => octaves.map(([f, a]) => new Octave(f, a));
 const somme = (os: Octave[], dt: number, vitesse = 1) => os.reduce((s, o) => s + o.avancer(dt, vitesse), 0);
 
-// Intensité : souffle lent, respiration, tremblement ; écart type ≈ 0,05 (pas de « stroboscope »).
-const BRUIT_I = bruit([[0.31, 0.05], [0.73, 0.042], [1.55, 0.028], [2.9, 0.014]]);
-// Source : la flamme penche et revient (lent), et frémit un peu.
-const BRUIT_X = bruit([[0.19, 7], [0.47, 3.5], [1.3, 1.2]]);
-const BRUIT_Y = bruit([[0.23, 4], [0.61, 2], [1.7, 0.8]]);
+// Intensité : souffle lent et respiration douce ; écart type ≈ 0,11 (une lueur calme qui vacille, sans à-coups).
+const BRUIT_I = bruit([[0.2, 0.17], [0.47, 0.12], [1.0, 0.07], [2.2, 0.03]]);
+// Source : la flamme penche et revient très lentement (plus de dix secondes), et frémit à peine.
+const BRUIT_X = bruit([[0.08, 22], [0.2, 7], [0.6, 1.5]]);
+const BRUIT_Y = bruit([[0.1, 10], [0.27, 3], [0.8, 0.8]]);
 
 // ---- Événements : flambées (montée 0,25–0,45 s, descente 1,6–3,2 s) et pops (≈ 40 ms / 160 ms) ----
 interface Bouffee { t: number; montee: number; descente: number; amp: number }
@@ -134,13 +134,13 @@ function annoncer(e: EvenementFeu) {
 
 function flamber(force: number, synchro = false) {
   const f = Math.min(1, Math.max(0, force));
-  bouffees.push({ t: horlogeInterne, montee: 0.25 + 0.2 * Math.random(), descente: 1.6 + 1.6 * Math.random(), amp: 0.1 + 0.13 * f });
+  bouffees.push({ t: horlogeInterne, montee: 0.4 + 0.3 * Math.random(), descente: 2.2 + 2 * Math.random(), amp: 0.15 + 0.2 * f });
   annoncer({ type: 'flambee', force: f, synchro });
 }
 
 function popper(force: number, synchro = false) {
   const f = Math.min(1, Math.max(0, force));
-  bouffees.push({ t: horlogeInterne, montee: 0.035 + 0.02 * Math.random(), descente: 0.13 + 0.08 * Math.random(), amp: 0.03 + 0.06 * f });
+  bouffees.push({ t: horlogeInterne, montee: 0.035 + 0.02 * Math.random(), descente: 0.13 + 0.08 * Math.random(), amp: 0.05 + 0.08 * f });
   annoncer({ type: 'pop', force: f, synchro });
 }
 
@@ -234,12 +234,12 @@ function pas(t: number) {
   bouffees = bouffees.filter((b) => horlogeInterne - b.t < b.montee + b.descente * 6);
 
   // Pendant une flambée, la flamme est plus turbulente : le bruit rapide s'accélère un peu.
-  const turbulence = 1 + 3 * flambee;
+  const turbulence = 1 + 1.2 * flambee;
   const i = 1 + somme(BRUIT_I, dt, turbulence) + bouffee;
   const x = somme(BRUIT_X, dt, turbulence);
-  const y = somme(BRUIT_Y, dt, turbulence) - 22 * flambee;
+  const y = somme(BRUIT_Y, dt, turbulence) - 18 * flambee;
 
-  FEU.intensite.set(arrondi(Math.min(1.4, Math.max(0.8, i))));
+  FEU.intensite.set(arrondi(Math.min(1.6, Math.max(0.6, i))));
   FEU.dx.set(arrondi(x, 100));
   FEU.dy.set(arrondi(y, 100));
   raf = requestAnimationFrame(pas);

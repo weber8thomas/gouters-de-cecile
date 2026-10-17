@@ -10,21 +10,23 @@ import './Lumiere.css';
 //
 // Tous les calques sont des dégradés CSS statiques, peints une fois ; le feu (src/lib/feu.ts) ne
 // change que leur opacité et leur transformation (MotionValues, aucun rendu React, aucun Paint).
-// Deux calques vivants : le bain (+ reflet et ombre portée) sous le livre, le voile au-dessus ;
+// Deux calques vivants : le bain (+ ombre portée générique) sous le livre, le voile au-dessus ;
 // l'ambiance (vignettage) est statique.
 // Rien ne capte le pointeur.
 
 const borne = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 const r4 = (v: number) => Math.round(v * 1e4) / 1e4;
+// Opacité d'un calque selon l'intensité du feu (src/lib/feu.ts, entre 0,6 et 1,6) : `base` pour un feu moyen
+// (1), qui varie de `pente` par unité d'intensité, bornée à [min, max].
+const reglage = (i: number, base: number, pente: number, min: number, max: number) => r4(borne(base + pente * (i - 1), min, max));
 
 /**
- * Sous le contenu (sur la table) : le bain de lumière orangée côté feu, le reflet chaud sur le bois
- * verni près du livre et l'ombre portée générique du livre au repos, côté opposé : un calque, opacité
- * + translation, qui suit la flamme.
+ * Sous le contenu (sur la table) : la lueur indirecte, orangée, côté feu, et l'ombre portée générique du
+ * livre au repos, côté opposé : un calque, opacité + translation, qui suit la flamme.
  */
 export function LumiereTable() {
   const { intensite, dx, dy } = useFeu();
-  const bainOp = useTransform(intensite, (i) => r4(borne(0.74 + 1.6 * (i - 1), 0.42, 1)));
+  const bainOp = useTransform(intensite, (i) => reglage(i, 0.55, 1.2, 0.2, 1));
   // Un seul calque vivant sous le livre (budget de calques) : l'ombre portée générique y est peinte et
   // vacille avec lui (plus marquée quand le feu flambe).
   return (
@@ -46,7 +48,7 @@ export function LumiereTable() {
  */
 export function LumiereLivre() {
   const { intensite } = useFeu();
-  const voileOp = useTransform(intensite, (i) => r4(borne(0.74 + 1.0 * (i - 1), 0.45, 1)));
+  const voileOp = useTransform(intensite, (i) => reglage(i, 0.6, 0.5, 0.25, 1));
   return (
     <LazyMotion features={domMax}>
       <div className="gc-lumiere gc-lumiere--livre" aria-hidden="true">
@@ -69,9 +71,9 @@ export interface OmbreFeuProps {
  */
 export function OmbreFeu({ className }: OmbreFeuProps) {
   const { intensite, dx, dy } = useFeu();
-  const op = useTransform(intensite, (i) => r4(borne(0.82 + 0.9 * (i - 1), 0.5, 1)));
-  const x = useTransform(dx, (v) => r4(-0.45 * v));
-  const y = useTransform(dy, (v) => r4(-0.25 * v));
+  const op = useTransform(intensite, (i) => reglage(i, 0.6, 0.9, 0.2, 1));
+  const x = useTransform(dx, (v) => r4(-0.6 * v));
+  const y = useTransform(dy, (v) => r4(-0.35 * v));
   return (
     <LazyMotion features={domMax}>
       <m.div

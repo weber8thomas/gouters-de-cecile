@@ -12,7 +12,7 @@
   /* Couleurs de la lumière (mélanges de tokens ; tokens gc-feu-* proposés au lead). */
   --gc-feu-flamme: color-mix(in srgb, color-mix(in srgb, var(--gc-glow) 62%, var(--gc-honey-500)) 82%, var(--gc-terracotta-300));
   --gc-feu-braise: color-mix(in srgb, var(--gc-honey-500) 45%, var(--gc-terracotta-500));
-  --gc-feu-nuit: color-mix(in srgb, var(--gc-ink) 72%, var(--gc-wood-3));
+  --gc-feu-nuit: color-mix(in srgb, var(--gc-ink) 60%, var(--gc-ink-noire));
   /* Source : hors champ à gauche, un peu au-dessus du milieu. */
   --gc-feu-x: calc(var(--gc-stage-w) * -0.2);
   --gc-feu-y: calc(var(--gc-stage-h) * 0.4);
@@ -49,27 +49,21 @@
   backface-visibility: hidden;
 }
 
-/* ---- 1. Bain de lumière sur la table, côté feu, et reflet sur le bois verni ------------------------
-   Le reflet : un lustre chaud et doux sur le vernis, près du bord gauche du livre, étiré dans le fil du
-   bois, avec un cœur un peu plus clair ; il suit la flamme (translation du calque). */
+/* ---- 1. Bain de lumière sur la table, côté feu (v5 : lueur indirecte) ---------------------------------
+   Une seule lueur, très large et très douce, qui vient de la cheminée hors champ à gauche : ni tache ni
+   cercle net. Elle éclaire surtout le livre et le bord gauche de la table, et se fond dans la nuit vers la
+   droite. Elle suit la flamme (translation du calque, opacité). */
 .gc-lumiere__bain {
   width: calc(var(--gc-stage-w) * 0.98 + var(--gc-lumiere-o));
   background-image:
-    radial-gradient(120px 26px at calc(var(--gc-lumiere-o) + 40px) calc(var(--gc-lumiere-o) + var(--gc-stage-h) * 0.556),
-      color-mix(in srgb, var(--gc-feu-flamme) 26%, transparent), color-mix(in srgb, var(--gc-feu-flamme) 9%, transparent) 55%, transparent),
-    radial-gradient(84px 9px at calc(var(--gc-lumiere-o) + 52px) calc(var(--gc-lumiere-o) + var(--gc-stage-h) * 0.592),
-      color-mix(in srgb, var(--gc-feu-flamme) 14%, transparent), transparent),
-    radial-gradient(300px 100px at calc(var(--gc-lumiere-o) + 34px) calc(var(--gc-lumiere-o) + var(--gc-stage-h) * 0.562),
-      color-mix(in srgb, var(--gc-feu-flamme) 18%, transparent), color-mix(in srgb, var(--gc-feu-flamme) 6%, transparent) 55%, transparent),
-    radial-gradient(calc(var(--gc-stage-w) * 1.3) calc(var(--gc-stage-h) * 1.6) at calc(var(--gc-lumiere-o) + var(--gc-feu-x)) calc(var(--gc-lumiere-o) + var(--gc-feu-y)),
-      color-mix(in srgb, var(--gc-feu-flamme) 64%, transparent) 0%,
-      color-mix(in srgb, var(--gc-feu-braise) 58%, transparent) 13%,
-      color-mix(in srgb, var(--gc-feu-braise) 48%, transparent) 22%,
-      color-mix(in srgb, var(--gc-feu-braise) 35%, transparent) 33%,
-      color-mix(in srgb, var(--gc-feu-braise) 22%, transparent) 45%,
-      color-mix(in srgb, var(--gc-feu-braise) 11%, transparent) 59%,
-      color-mix(in srgb, var(--gc-feu-braise) 4%, transparent) 74%,
-      transparent 88%);
+    radial-gradient(calc(var(--gc-stage-w) * 1.05) calc(var(--gc-stage-h) * 1.25) at calc(var(--gc-lumiere-o) + var(--gc-feu-x)) calc(var(--gc-lumiere-o) + var(--gc-feu-y)),
+      color-mix(in srgb, var(--gc-feu-flamme) 60%, transparent) 0%,
+      color-mix(in srgb, var(--gc-feu-flamme) 48%, transparent) 20%,
+      color-mix(in srgb, var(--gc-feu-braise) 36%, transparent) 36%,
+      color-mix(in srgb, var(--gc-feu-braise) 24%, transparent) 52%,
+      color-mix(in srgb, var(--gc-feu-braise) 13%, transparent) 68%,
+      color-mix(in srgb, var(--gc-feu-braise) 5%, transparent) 84%,
+      transparent 100%);
 }
 
 /* ---- 2. Ombre portée du livre, du côté opposé au feu --------------------------------------------
@@ -106,9 +100,10 @@
   height: 95%;
   border-radius: 2px;
   pointer-events: none;
+  /* Ombre longue et nette au bord, vers la droite : elle doit se lire sur la table sombre (v5). */
   box-shadow:
-    26px 14px 58px 10px color-mix(in srgb, var(--gc-feu-nuit) 58%, transparent),
-    9px 5px 14px 2px color-mix(in srgb, var(--gc-feu-nuit) 34%, transparent);
+    34px 16px 80px 14px color-mix(in srgb, var(--gc-ink-noire) 90%, transparent),
+    12px 6px 18px 3px color-mix(in srgb, var(--gc-ink-noire) 55%, transparent);
 }
 
 /* ---- 3. Ambiance du soir : les bords et les coins s'enfoncent dans la nuit -----------------------------
