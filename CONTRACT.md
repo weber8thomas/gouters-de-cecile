@@ -304,6 +304,11 @@ Quand le menu ou un objet soulevé est ouvert, **lui seul** reçoit les touches 
   - le livre se referme sur son plat arrière.
 
   **Pas de GATE en v4** : l'utilisatrice laisse les choix de direction artistique au lead et aux lots. Les vidéos restent des placeholders (les clips actuels) jusqu'aux vraies.
+- **Ambiance cozy, mais qui présente bien.**
+  - C'est une soirée au coin du feu : une cheminée hors champ éclaire la table et le livre d'une lumière chaude qui **vacille en direct**. Lot L : `src/lib/feu.ts`, `Stage`, `Lumiere`.
+  - Le vacillement passe uniquement par l'opacité ou la transformation de calques précalculés, sans aucun Paint. Avec le mouvement réduit ou le réglage `feu: false`, la lumière reste statique.
+  - Fond sonore : une boucle de feu de cheminée et de rares bruits de cuisine délicats (lot S), réglage `ambiance` (null = automatique, coupé sur téléphone).
+  - L'encre reste lisible : son contraste reste à au moins 90 % de ce qu'il est sans voile.
 - **Liens** : `#<slug>` ouvre la double page de l'invité, y compris le second d'une double page partagée (`#bernard`) et `#cecile`. L'adresse publique est dans `src/content/site.json` (QR de l'A5).
 
 ### 13.1 Clavier (remplace les lignes zoom du § 12.1)
