@@ -67,9 +67,13 @@ ROLES = {
     "correction": 0.0181 * FINESSE,
 }
 XH_MIN = 0.0181 * FINESSE * W
+# Le stylo ne rétrécit pas avec la lettre : la largeur du trait (en hauteurs d'x) est compensée pour
+# garder à peu près l'épaisseur absolue de la v4 (une écriture plus petite, pas plus maigre).
+EPAISSEUR_STYLO = 1.8
 TAILLE_PUCE = 1.3  # côté de la boîte d'une puce-croquis (hauteurs d'x) : un emoji fait ≈ une capitale
 TAILLE_ICONE = 1.75  # petit croquis à côté d'un ingrédient (bout de ligne, marge) : discret mais lisible
 TAILLE_EMOJI = 1.6  # croquis en ligne à la place d'un emoji (« Yummy … 🥕😎 »)
+TAILLE_BANDEAU = 2.5  # prénom du bandeau, en hauteurs d'x du corps (2,2 à 2,8 : écrit en grand, sans crier)
 # Espace entre les mots × celle de la main : un peu plus aérée que nature (lecture à 3 m, sur téléphone).
 ESPACE = 1.12
 
@@ -439,6 +443,9 @@ def encre_dispo(enc_id):
 # ligne ne la touche que si ses jambages y descendent (0,55 x sous la ligne de base, pas 1 x).
 FOLIO_LARGE = {"gauche": (0.045, 0.94, 0.15, 1.0), "droite": (0.85, 0.94, 0.955, 1.0)}
 FOLIO_JUSTE = {"gauche": (0.06, 0.947, 0.135, 1.0), "droite": (0.865, 0.947, 0.94, 1.0)}
+# Folio écrit à la main (`Mise.folio`) : même main et même encre sur tout le carnet, hauteur d'x 0,9 × celle
+# du corps ; le bord extérieur de la boîte « juste » sert d'alignement (gauche à 0,06 W, droite à 0,94 W).
+FOLIO_MAIN, FOLIO_ENCRE, FOLIO_ECHELLE = "cecile", "crayon", 0.9
 
 # =============================================================================================
 # Le moteur
@@ -526,6 +533,7 @@ class Mise:
         self.croquis: list[dict] = []  # demandes de croquis (puces, icônes, dessins de marge)
         self.lavis: list = []  # lavis des croquis dessinés (cuits par transmittance_lavis)
         self.croquis_non_places: list[str] = []
+        self.folio_mots: list = []  # le folio écrit à la main (hors du texte coulé, voir `folio`)
 
     # ---- écriture (N2) --------------------------------------------------------------------
     def ecrire(self, texte, main, graine, encre=None, outil=None):
@@ -754,7 +762,7 @@ class Mise:
             ly = P[:, 1] * xh
             P[:, 0] = x + lx * ca - ly * sa
             P[:, 1] = y + lx * sa + ly * ca
-            self.traces.append(Trace(P[:, :5], ep * xh, encre, sans_saut=_sans_saut(P, ss_mot, k_t)))
+            self.traces.append(Trace(P[:, :5], ep * xh * EPAISSEUR_STYLO, encre, sans_saut=_sans_saut(P, ss_mot, k_t)))
             tous.append(P[:, :2])
         if tous:
             A = np.vstack(tous)
@@ -880,7 +888,7 @@ class Mise:
             P = np.asarray(T, float).copy()
             P[:, 0] *= xh
             P[:, 1] *= xh
-            self.traces.append(Trace(P, ep * xh, encre))
+            self.traces.append(Trace(P, ep * xh * EPAISSEUR_STYLO, encre))
             self.marques_boites.append((P[:, 0].min(), P[:, 1].min(), P[:, 0].max(), P[:, 1].max()))
 
     # ---- croquis ----------------------------------------------------------------------------------
@@ -918,7 +926,7 @@ class Mise:
                     continue
                 if P.shape[1] < 5:
                     P = ECR._repli_encre(P)
-                self.traces.append(Trace(P[:, :5].copy(), diam, enc))
+                self.traces.append(Trace(P[:, :5].copy(), diam * EPAISSEUR_STYLO, enc))
             if req["lavis"] and d.get("lavis"):
                 self.lavis.append(d["lavis"])
             req["dessine"] = True
@@ -1555,7 +1563,7 @@ class Mise:
         enc_id = encre_dispo(b.get("encre", self.encre))
         outil = b.get("outil", self.desc.get("outil") if enc_id == self.encre else None)
         info = ECR.main_info(main)
-        k = float(b.get("taille", 1.9))
+        k = float(b.get("taille", TAILLE_BANDEAU))
         xh_c = self.xh_de("corps", main)
         xh = xh_c * k
         graine = int(b.get("graine", self.graine * 31 + idx * 7))
@@ -1664,7 +1672,9 @@ class Mise:
         """Le mot pour Cécile dans un cadre tracé à la main (« Pour Cécile » en petit en haut, le mot
         dans l'encre de l'invité, sa signature en bas à droite), posé AVANT la recette — en bas de la
         page par défaut — et réservé : la recette coule autour. `style` : `double` (double trait) ou
-        `ondule` (trait ondulé, petit cœur sur un angle)."""
+        `ondule` (trait ondulé, petit cœur sur un angle). `position: "bandeau"` : sous le prénom du
+        bandeau (`pres`, défaut « bandeau »), à droite de la photo ; `lignes_min` : nombre de lignes
+        imposé (un cadre « mot à venir » garde la taille d'un vrai mot)."""
         bid = b.get("id", "cadre")
         r = self.rng
         style = b.get("style", "double")
@@ -1693,10 +1703,23 @@ class Mise:
             sb = self.ecrire_segments([{"texte": sig, "graine": int(b.get("signature_graine", graine + 5))}], s_main, enc_id, outil)
         larg_t, asc_t, desc_t = self._mesure(tb[2], xh_t, ECR.main_info(t_main)["espace"]) if tb else (0, 0, 0)
         larg_s, asc_s, desc_s = self._mesure(sb[2], xh_s, ECR.main_info(s_main)["espace"]) if sb else (0, 0, 0)
-        lw = min(float(b.get("largeur", 0.64)) * self.W, self.xr - self.ml)
+        # position `bandeau` (la première page d'un invité) : sous le prénom, à droite de la photo, le bord
+        # gauche du cadre aligné sur le prénom ; sinon `bas` (défaut : en bas de la page droite)
+        pos = b.get("position", "bas")
+        bx_ref = self.zones_blocs.get(b.get("pres", "bandeau")) if pos == "bandeau" else None
+        if pos == "bandeau" and bx_ref is None:
+            self.non_places.append(f"{bid} (pas de bandeau où le poser)")
+            return
+        x_bd = bx_ref[0] + 0.45 * xh_c if bx_ref is not None else None
+        if bx_ref is not None:
+            lw = min(float(b.get("largeur", 0.46)) * self.W, self.xr - x_bd)
+        else:
+            lw = min(float(b.get("largeur", 0.64)) * self.W, self.xr - self.ml)
         pad_x = float(b.get("marge", 1.55)) * xh
         pad_y = 0.85 * xh
         n = self._nb_lignes(mots, xh, esp, (lw - 2 * pad_x) * 0.92)
+        fixe = "lignes_min" in b  # cadre de taille imposée (mot à venir) : le texte ne le resserre pas
+        n = max(n, int(b.get("lignes_min", 1)))
         folio = next((z for z, nom in self.reserves if nom == "folio"), None)
         etat0 = (len(self.traces), len(self.mots), len(self.marques_boites), len(self.lignes), list(self.deborde),
                  len(self.texte), dict(self.blocs_lignes), list(self.croquis))
@@ -1712,17 +1735,22 @@ class Mise:
             h_titre = (asc_t + 0.95 * xh) if tb else 0.4 * xh
             h_sig = ((asc_s + desc_s + 0.15 * xh) if not sig_en_ligne else 0.25 * xh) if sb else 0.0
             h = pad_y + h_titre + (n - 1) * pitch + 0.55 * xh + h_sig + 0.7 * pad_y
-            if dx_frac is not None:
+            if bx_ref is not None:
+                x0 = x_bd
+            elif dx_frac is not None:
                 x0 = float(dx_frac) * self.W
             else:
                 x0 = (self.xr - lw - jeu_x) if self.cote != "gauche" else (self.ml + jeu_x * 0.6)
             x0 = float(np.clip(x0, self.ml - 0.01 * self.W, self.xr - lw))
             x1 = x0 + lw
-            if b.get("position", "bas") == "bas":
+            if pos == "bas":
                 y1 = self.H * (1 - bas_frac)
                 if folio is not None and x1 > folio[0] - 0.3 * xh_c and x0 < folio[2]:
                     y1 = min(y1, folio[1] - 0.45 * xh_c)
                 y0 = y1 - h
+            elif pos == "bandeau":
+                y0 = bx_ref[3]  # juste sous le prénom (sa boîte réservée, marge comprise)
+                y1 = y0 + h
             else:
                 y0 = float(b.get("y", 0.6)) * self.H
                 y1 = y0 + h
@@ -1752,7 +1780,7 @@ class Mise:
             if sig_en_ligne and not place_sig:
                 sig_en_ligne = False  # finalement pas la place : signature en dessous
                 essayer_ligne = True
-            if (deb and essai < 5) or (not deb and reel < n and not reduit) or essayer_ligne:
+            if (deb and essai < 5) or (not deb and reel < n and not reduit and not fixe) or essayer_ligne:
                 # le mot prend une ligne de plus (ou de moins) que prévu : on recommence avec un cadre
                 # à sa mesure (jamais de grand blanc entre le mot et la signature)
                 del self.traces[etat0[0]:]
@@ -1796,6 +1824,10 @@ class Mise:
         if b.get("style") == "ondule":
             boite = (boite[0], boite[1] - 0.8 * xh, boite[2], boite[3])
         self._reserver(bid, boite)
+        if pos == "bandeau":
+            # la recette commence SOUS le bandeau et son cadre, jamais à côté du cadre (sinon le titre se coupe) :
+            # la première ligne monte d'environ 2,6 hauteurs d'x au-dessus de sa ligne de base
+            self.haut = max(self.haut, y1 + m + 2.6 * xh_c)
         self.cadre_rect = (x0, y0, x1, y1)
         lis = self._texte_lisible(brut, marques)
         self.texte.append((f"{titre} : " if titre else "") + lis + (f" — {sig}" if sig else ""))
@@ -2016,6 +2048,54 @@ class Mise:
                 if x < a1 and x + w > a0 and y < b1 and y + h > b0:
                     self.deborde.append(f"croquis {c['nom']} touche la zone {nom}")
 
+    # ---- folio écrit à la main ----------------------------------------------------------------
+    def folio(self):
+        """Le numéro de la page, écrit à la main au crayon (main de Cécile), en bas du côté extérieur (à
+        droite sur une page droite, à gauche sur une page gauche), dans la boîte « juste » réservée. Rien
+        sur une page `sansFolio`, sans `folio`, ni sur un feuillet volant (pas de zone réservée).
+
+        Le folio n'est pas du texte coulé : ses mots sortent de `self.mots` (donc du texte de la page et
+        des contrôles de mots) et restent dans `self.folio_mots` ; ses traits vont dans `self.traces`.
+        Il ne doit toucher ni un trait, ni un croquis, ni un élément vivant : sinon la page est signalée."""
+        n = self.desc.get("folio")
+        if n is None or str(n).strip() == "" or not any(nom == "folio" for _, nom in self.reserves):
+            return
+        cote = "gauche" if self.cote == "gauche" else "droite"
+        fx0, _, fx1, _ = FOLIO_JUSTE[cote]
+        xh = FOLIO_ECHELLE * self.xh_de("corps", self.main)
+        espace = ECR.main_info(FOLIO_MAIN)["espace"]
+        brut, _, mots, bloc = self.ecrire_segments([{"texte": str(n), "graine": self.graine * 17 + 41}], FOLIO_MAIN,
+                                                   encre_dispo(FOLIO_ENCRE), None)
+        larg, _, _ = self._mesure(mots, xh, espace)
+        x = self.W * fx0 if cote == "gauche" else self.W * fx1 - larg
+        y = self.H * (1 - self.desc.get("marges", {}).get("bas", 0.035))  # ligne de base : marge du bas
+        n_mots, n_traces = len(self.mots), len(self.traces)
+        self._ligne_libre(mots, x, y, xh, float(self.rng.uniform(-1.2, 0.4)), dict(bloc.encre), bloc.epaisseur, "folio",
+                          espace)
+        self.folio_mots = self.mots[n_mots:]
+        del self.mots[n_mots:]
+        if not self.folio_mots:
+            return
+        A = np.array([m.boite for m in self.folio_mots], float)
+        x0, y0, x1, y1 = float(A[:, 0].min()), float(A[:, 1].min()), float(A[:, 2].max()), float(A[:, 3].max())
+        marge = 0.25 * xh
+
+        def touche(a0, b0, a1, b1) -> bool:
+            return a0 < x1 + marge and a1 > x0 - marge and b0 < y1 + marge and b1 > y0 - marge
+
+        for t in self.traces[:n_traces]:
+            P = t.pts[:, :2]
+            if np.any((P[:, 0] > x0 - marge) & (P[:, 0] < x1 + marge) & (P[:, 1] > y0 - marge) & (P[:, 1] < y1 + marge)):
+                self.deborde.append(f"folio {n} touche un trait de la page")
+                break
+        for c in self.croquis:
+            cx, cy, cw, ch = c["boite"]
+            if touche(cx, cy, cx + cw, cy + ch):
+                self.deborde.append(f"folio {n} touche le croquis {c['nom']}")
+        for nom, (a0, b0, a1, b1) in self.vivants.items():
+            if touche(a0, b0, a1, b1):
+                self.deborde.append(f"folio {n} touche la zone {nom}")
+
     # ---- page entière ------------------------------------------------------------------------
     def composer(self):
         differe, dessins = [], []
@@ -2071,6 +2151,7 @@ class Mise:
             self.annotation(dict(b, role=b.get("role", "legende" if b["type"] == "legende" else "annotation")), i)
         for i, b in dessins:
             self.croquis_marge(b, i)
+        self.folio()  # le numéro à la main : en dernier, dans sa zone réservée
         self._verifier_zones()
         self._dessiner_croquis()
         return self
