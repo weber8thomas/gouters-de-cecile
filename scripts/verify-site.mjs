@@ -4,6 +4,9 @@
 // Sur le dossier :
 //   - index.html présent ; JavaScript total ≤ 3 Mo ;
 //   - chaque mp4 : ≤ 2 Mo, « +faststart » (moov avant mdat), H.264 (+ AAC ou muet) si ffprobe est là ;
+//   - encre ×4 de la loupe (pages/4x/**, plan v4 § 13.4) : chaque tuile de l'inventaire est publiée avec
+//     le site (même taille, référencée par le JavaScript), et absente de l'artifact du design system
+//     (inventaire de la cible artifact, dist/artifact/assets.json, bundle de l'artifact) ;
 // Par HTTP : un mp4 demandé avec « Range: bytes=0-1 » → 206, Content-Range, video/mp4, Accept-Ranges.
 // Dans le navigateur, pour chaque lien (--liens, défaut lisa,julie) et chaque écran :
 //   - #<lien> ouvre la bonne double page (en cadrage « page » : la page vidéo, à gauche), l'URL le garde ;
@@ -16,7 +19,8 @@
 //   node scripts/verify-site.mjs --build [--build-out verification/out/t/site-build] [--gen]
 //        (vite build dans un dossier à part ; --gen régénère d'abord src/generated/ : gen-entry --target site)
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, resolve, relative } from 'node:path';
+import { join, resolve, relative, basename } from 'node:path';
+import { inventory, siteSeulement } from './assets.mjs';
 import { spawnSync } from 'node:child_process';
 import {
   ROOT, lireArgs, ecrans, lancer, serveSite, Rapport, etatLivre, rectDe, existe, capture, surveiller, attendrePret,
@@ -73,6 +77,35 @@ for (const f of mp4) {
     const v = st.find((s) => s.codec_type === 'video');
     const au = st.find((s) => s.codec_type === 'audio');
     R.ok(null, `${relative(dossier, f)} : H.264${au ? ' + AAC' : ' (muet)'}`, v?.codec_name === 'h264' && (!au || au.codec_name === 'aac'), `${v?.codec_name ?? '?'} ${v?.profile ?? ''} ${v?.width ?? '?'}×${v?.height ?? '?'}${au ? ` · ${au.codec_name}` : ''}`);
+  }
+}
+
+// ---- Encre ×4 de la loupe, sons : sur le site, jamais dans l'artifact ------------------------------------
+{
+  const tout = inventory({ cible: 'site' });
+  const tuiles = Object.entries(tout).filter(([n]) => /^pages\/4x\//.test(n));
+  R.ok(null, 'règle « site seulement » : vidéos, sons et pages/4x/**, rien d\'autre', siteSeulement('pages/4x/julie-gauche-01', 'image/webp') && siteSeulement('videos/julie', 'video/mp4') && siteSeulement('sons/page-1', 'audio/mpeg') && !siteSeulement('pages/julie-gauche', 'image/webp') && !siteSeulement('pages/1x/julie-gauche', 'image/webp'));
+  const sons = Object.keys(tout).filter((n) => /^sons\//.test(n));
+  R.ok(null, 'sons du livre inventoriés (sons/<fichier>, audio/mpeg), hors de l\'artifact', sons.every((n) => tout[n].type === 'audio/mpeg' && tout[n].site) && !Object.keys(inventory({ cible: 'artifact' })).some((n) => /^sons\//.test(n)), `${sons.length} sons`);
+  const artifact = Object.keys(inventory({ cible: 'artifact' }));
+  R.ok(null, 'artifact : l\'inventaire de la cible artifact n\'a ni tuile ×4 ni vidéo', !artifact.some((n) => siteSeulement(n, tout[n]?.type)), `${artifact.length} images à téléverser`);
+  const listeArtifact = join(ROOT, 'dist/artifact/assets.json');
+  if (existsSync(listeArtifact)) {
+    const noms = Object.keys(JSON.parse(readFileSync(listeArtifact, 'utf8')));
+    R.ok(null, 'artifact : dist/artifact/assets.json sans tuile ×4', !noms.some((n) => /^pages\/4x\//.test(n)), `${noms.length} images`);
+  } else R.info(null, 'artifact : dist/artifact/assets.json', 'absent (node scripts/build-artifact.mjs)');
+  const bundleArtifact = join(ROOT, 'dist/artifact/project/components/bundle.js');
+  if (existsSync(bundleArtifact)) {
+    const b = readFileSync(bundleArtifact, 'utf8');
+    if (/\/_blob\//.test(b)) R.ok(null, 'artifact : bundle.js ne référence aucune tuile ×4', !/["'`]pages\/4x\//.test(b));
+    else R.info(null, 'artifact : bundle.js', 'construit pour une autre cible que l\'artifact (pas de /_blob/) : non jugé');
+  }
+  if (!tuiles.length) R.attente(null, 'encre ×4 (pages/4x/**) dans le site', 'aucune tuile cuite : à relancer après le lot P');
+  else {
+    const publies = fichiers.filter((f) => f.endsWith('.webp')).map((f) => ({ nom: basename(f), octets: statSync(f).size }));
+    const manquent = tuiles.filter(([n, a]) => !publies.some((p) => p.nom.startsWith(`${n.split('/').pop()}-`) && p.octets === a.bytes)).map(([n]) => n);
+    R.ok(null, `encre ×4 : ${tuiles.length} tuiles publiées avec le site (même taille)`, !manquent.length, manquent.slice(0, 6).join(', '));
+    R.ok(null, 'encre ×4 : référencée par le JavaScript du site', /baked\/pages\/4x\//.test(texteJs));
   }
 }
 

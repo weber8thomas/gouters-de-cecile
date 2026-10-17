@@ -11,6 +11,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, copyFileSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { inventory } from './assets.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const outRoot = join(root, 'dist/artifact');
@@ -47,6 +48,9 @@ for (const n of ['bundle.js', 'bundle.css']) {
   if (!existsSync(join(ds, n))) { problems.push(`${n} manquant : lancer npm run bundle`); continue; }
   const text = readFileSync(join(ds, n), 'utf8');
   if (n === 'bundle.js' && /<\/script|<!--/i.test(text)) problems.push('bundle.js contient </script ou <!--');
+  // Vidéos, sons et encre ×4 de la loupe : sur le site seulement (CONTRACT §§ 12.3, 13.4) ; leurs images
+  // ne sont pas téléversées (dist/artifact/assets.json, cible artifact).
+  if (n === 'bundle.js' && /["'`]pages\/4x\//.test(text)) problems.push('bundle.js référence l\'encre ×4 (pages/4x/…) : construire avec build-bundle --target artifact');
   if (n === 'bundle.css' && /<\/style/i.test(text)) problems.push('bundle.css contient </style');
   const limit = n === 'bundle.js' ? 6 : 2;
   if (text.length > limit * 1024 * 1024) problems.push(`${n} dépasse ${limit} Mo`);
@@ -85,10 +89,17 @@ for (const p of paths) if (/(^|\/)\./.test(p) || p.includes('..')) problems.push
 
 writeFileSync(join(outRoot, 'files.json'), JSON.stringify(files, null, 2) + '\n');
 
+// Fichiers à téléverser comme assets de l'artifact : l'inventaire de la cible artifact (sans les
+// vidéos, les sons ni l'encre ×4, qui ne vont que sur le site).
+const aTeleverser = inventory({ cible: 'artifact' });
+const siteSeul = Object.keys(inventory({ cible: 'site' })).length - Object.keys(aTeleverser).length;
+for (const [n, a] of Object.entries(aTeleverser)) if (/^(video|audio)\//.test(a.type)) problems.push(`${n} : ${a.type} dans les assets de l'artifact`);
+writeFileSync(join(outRoot, 'assets.json'), JSON.stringify(aTeleverser, null, 2) + '\n');
+
 // Index
 const ni = process.argv.indexOf('--note');
 const index = JSON.parse(readFileSync(join(root, 'design-system/artifact-index.json'), 'utf8'));
 index.lastChange = { by: 'Claude', at: new Date().toISOString().replace(/\.\d+Z$/, 'Z'), via: 'Claude Code', note: ni > 0 ? process.argv[ni + 1] : 'Mise à jour' };
 writeFileSync(join(proj, 'design-system.json'), JSON.stringify(index, null, 2) + '\n');
-console.log(`dist/artifact : ${paths.length} fichiers, ${(total / 1024).toFixed(0)} Ko, ${cards.length} cartes`);
+console.log(`dist/artifact : ${paths.length} fichiers, ${(total / 1024).toFixed(0)} Ko, ${cards.length} cartes ; ${Object.keys(aTeleverser).length} images à téléverser (dist/artifact/assets.json), ${siteSeul} pour le site seulement (vidéos, sons, encre ×4)`);
 if (problems.length) { console.error(problems.map((p) => `✗ ${p}`).join('\n')); process.exit(1); }

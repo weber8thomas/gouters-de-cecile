@@ -14,6 +14,10 @@ export const LOUPE_MAX = 3;
 export const LOUPE_PALIERS = [1, 1.5, 2, 3] as const;
 /** Au-delà, les pages cuites chargent l'encre ×4 (tuiles) de la page visible. */
 export const LOUPE_HD = 1.5;
+/** En deçà, les tuiles d'encre ×4 sont retirées (hystérésis avec LOUPE_HD). */
+export const LOUPE_HD_SORTIE = 1.25;
+/** Facteur du double toucher et du bouton loupe. */
+export const LOUPE_DOUBLE = 2;
 /** En deçà, on considère le livre comme non zoomé (le glisser tourne les pages). */
 export const LOUPE_ZOOME = 1.02;
 
@@ -36,7 +40,7 @@ export interface EtatLoupe {
   zoome: boolean;
   /** z ≥ LOUPE_HD : encre ×4 pour la page visible. */
   hd: boolean;
-  /** Page au centre de la vue quand on est zoomé (cadrage double), null sinon. */
+  /** Page vue quand on est zoomé : la page affichée (cadrage « page »), celle du centre (« double ») ; null à 1×. */
   cote: 'gauche' | 'droite' | null;
   /** Rectangle du contenu du livre (px d'écran, à z = 1), publié par le livre au repos. */
   contenu: RectLoupe | null;
@@ -92,6 +96,8 @@ export interface ControleurLoupe {
   demander(z: number, foyer?: { x: number; y: number }): void;
   /** Recadre la vue zoomée sur le haut de la page visible (après un tourne-page à la loupe). */
   ancrer(ou: 'haut'): void;
+  /** Facteur visé : celui de l'animation en cours, sinon le facteur affiché. */
+  vise?(): number;
 }
 
 let controleur: ControleurLoupe | null = null;
@@ -110,6 +116,11 @@ export function demanderLoupe(z: number, foyer?: { x: number; y: number }): void
 
 export function ancrerLoupe(ou: 'haut'): void {
   controleur?.ancrer(ou);
+}
+
+/** Facteur visé (animation en cours comprise) : base des paliers + / − pressés coup sur coup. */
+export function loupeVisee(): number {
+  return controleur?.vise?.() ?? etat.z;
 }
 
 /** Le livre publie, au repos, le rectangle de son contenu et la page visible (bornes du déplacement). */

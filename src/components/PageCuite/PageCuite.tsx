@@ -3,8 +3,16 @@
 // alignées au pixel. Rien n'est calculé à l'exécution (aucun filtre, aucun mélange) : on pose deux
 // <img>, le texte réel de la page pour l'accessibilité, et les objets vivants dans les zones que la
 // page leur a réservées (photo collée, coin du feuillet volant).
+//
+// Sous la loupe (plan v4) : à partir de 1,5×, la page visible pose par-dessus son encre ×2 les tuiles
+// d'encre ×4 (manifeste `encre4x`, 2 × 2 tuiles), seulement celles qui sont à l'écran
+// (IntersectionObserver), décodées puis montrées en fondu ; retirées sous 1,25×. Rien ne se rend
+// pendant un geste (loupe ou livre) : les rappels attendent sa fin.
 import React from 'react';
 import { assetInfo, assetUrl } from '../../lib/assets';
+import { useRenderMode } from '../../lib/spread';
+import { LOUPE_EVENT, LOUPE_HD, LOUPE_HD_SORTIE, abonnerLoupe, getLoupe, loupeOccupee } from '../../lib/loupe';
+import { GESTE_EVENT, type GesteDetail } from '../Livre/evenements';
 import manifesteJson from '../../content/pages/manifeste.json';
 import './PageCuite.css';
 
@@ -80,6 +88,11 @@ export interface PageCuiteInfo {
   lignes: number;
   /** Mots mal relus restants (relecture de l'écriture générée). */
   douteux?: string[];
+  /**
+   * Encre ×4 (cuisson P2, site seulement) : tuiles 2 × 2 `pages/4x/<id>-<r><c>`, 4 px de
+   * recouvrement ; [r, c, x, y, largeur, hauteur], le rectangle en fractions de la page.
+   */
+  encre4x?: { tuiles: [number, number, number, number, number, number][] };
 }
 
 export interface PageCuiteManifeste {
@@ -101,6 +114,207 @@ export function pageCuite(page: string): PageCuiteInfo | undefined {
 export function taillePage(page: string): [number, number] {
   const info = PAGES_CUITES.pages[page];
   return info?.taille ?? [PAGES_CUITES.largeur, PAGES_CUITES.hauteur];
+}
+
+// ---- Encre ×4 sous la loupe -------------------------------------------------------------------------
+
+/** Une tuile d'encre ×4 prête à poser : rang et colonne (« 01 »), rectangle (fractions), URL. */
+export interface TuileEncre4x {
+  rc: string;
+  rect: RectPage;
+  src: string;
+}
+
+/** D'où viennent les tuiles d'une page (null : pas d'encre ×4, rien ne change). */
+export type SourceEncre4x = (page: string, info: PageCuiteInfo) => TuileEncre4x[] | null;
+
+/** Le manifeste (`encre4x`) et les images cuites `pages/4x/<id>-<rc>` ; toutes ou aucune. */
+const sourceManifeste: SourceEncre4x = (page, info) => {
+  const t = info.encre4x?.tuiles;
+  if (!t?.length) return null;
+  const out: TuileEncre4x[] = [];
+  for (const [r, c, x, y, w, h] of t) {
+    const nom = `pages/4x/${page}-${r}${c}`;
+    if (!assetInfo(nom)) return null; // artifact du design system : pas de tuiles ×4
+    out.push({ rc: `${r}${c}`, rect: [x, y, w, h], src: assetUrl(nom) });
+  }
+  return out;
+};
+let sourceEncre4x: SourceEncre4x = sourceManifeste;
+
+/** Remplace la source des tuiles ×4 (essais : tuiles fabriquées hors des images cuites) ; null : le manifeste. */
+export function definirSourceEncre4x(f: SourceEncre4x | null): void {
+  sourceEncre4x = f ?? sourceManifeste;
+}
+
+/** Tuiles d'encre ×4 d'une page, ou null. */
+export function tuilesEncre4x(page: string): TuileEncre4x[] | null {
+  const info = PAGES_CUITES.pages[page];
+  return info ? sourceEncre4x(page, info) : null;
+}
+
+// Rien ne se rend pendant un geste : un rappel (tuile visible, image décodée, fondu fini) attend la
+// fin de la loupe et des gestes du livre (au plus 3 s, au cas où une fin se perdrait).
+const gestesLivre = new Map<string, number>();
+const enAttente = new Set<() => void>();
+let ecoute = false;
+const livreOccupe = () => {
+  const t = typeof performance !== 'undefined' ? performance.now() : 0;
+  for (const [k, t0] of gestesLivre) if (t - t0 > 3000) gestesLivre.delete(k);
+  return gestesLivre.size > 0;
+};
+const occupe = () => loupeOccupee() || livreOccupe();
+function vider() {
+  if (occupe()) return;
+  const fs = [...enAttente];
+  enAttente.clear();
+  fs.forEach((f) => f());
+}
+function ecouter() {
+  if (ecoute || typeof window === 'undefined') return;
+  ecoute = true;
+  window.addEventListener(LOUPE_EVENT, () => setTimeout(vider, 0));
+  document.addEventListener(GESTE_EVENT, (e) => {
+    const d = (e as CustomEvent<GesteDetail>).detail;
+    if (!d || d.type === 'loupe' || d.phase === 'prepa') return;
+    if (d.phase === 'debut') gestesLivre.set(d.type, performance.now());
+    else {
+      gestesLivre.delete(d.type);
+      setTimeout(vider, 0);
+    }
+  });
+}
+if (typeof window !== 'undefined') ecouter();
+function quandLibre(f: () => void): void {
+  if (!occupe()) {
+    f();
+    return;
+  }
+  enAttente.add(f);
+  setTimeout(vider, 3100);
+}
+
+const lireZ = () => getLoupe().z;
+const lireCote = () => getLoupe().cote;
+const unZ = () => 1;
+const aucunCote = () => null;
+
+/** Polygone (clip-path) de l'union de rectangles en fractions : chaque rectangle relié au coin 0 0 par
+ *  un aller-retour sans surface (règle nonzero). */
+function polygoneUnion(rects: RectPage[]): string {
+  const p = (x: number, y: number) => `${pc(x)} ${pc(y)}`;
+  const pts = ['0% 0%'];
+  for (const [x, y, w, h] of rects) pts.push(p(x, y), p(x + w, y), p(x + w, y + h), p(x, y + h), p(x, y), '0% 0%');
+  return `polygon(${pts.join(', ')})`;
+}
+
+/** Cellules d'une grille 2 × 2 de tuiles qui se recouvrent : coupées au milieu des recouvrements. */
+function cellules(tuiles: TuileEncre4x[]): Map<string, RectPage> {
+  const cs = new Map<string, RectPage>();
+  const cote = (a: 'r' | 'c', v: 0 | 1) => tuiles.filter((t) => t.rc[a === 'r' ? 0 : 1] === String(v));
+  const coupe = (a: 'r' | 'c') => {
+    const i = a === 'r' ? 1 : 0;
+    const avant = cote(a, 0).map((t) => t.rect[i] + t.rect[i + 2]);
+    const apres = cote(a, 1).map((t) => t.rect[i]);
+    return avant.length && apres.length ? (Math.min(...avant) + Math.max(...apres)) / 2 : null;
+  };
+  const sx = coupe('c');
+  const sy = coupe('r');
+  for (const t of tuiles) {
+    const [x, y, w, h] = t.rect;
+    const r = t.rc[0] === '1';
+    const c = t.rc[1] === '1';
+    const x0 = sx == null ? x : c ? sx : Math.min(x, 0);
+    const x1 = sx == null ? x + w : c ? Math.max(x + w, 1) : sx;
+    const y0 = sy == null ? y : r ? sy : Math.min(y, 0);
+    const y1 = sy == null ? y + h : r ? Math.max(y + h, 1) : sy;
+    cs.set(t.rc, [x0, y0, x1 - x0, y1 - y0]);
+  }
+  return cs;
+}
+
+type EtatTuile = 'demandee' | 'prete' | 'couverte';
+
+/** Les tuiles ×4 d'une page : une boîte par tuile, l'image demandée quand la boîte entre à l'écran. */
+function Encre4x({ tuiles, racine, onCouvertes }: { tuiles: TuileEncre4x[]; racine: Element | null; onCouvertes: (rcs: string[]) => void }) {
+  const [etats, setEtats] = React.useState<Record<string, EtatTuile>>({});
+  const boites = React.useRef(new Map<string, HTMLDivElement>());
+  const vivant = React.useRef(true);
+  React.useEffect(() => () => { vivant.current = false; }, []);
+  const maj = React.useCallback((rc: string, e: EtatTuile) => {
+    quandLibre(() => {
+      if (!vivant.current) return;
+      setEtats((x) => (x[rc] === e || (e === 'demandee' && x[rc]) ? x : { ...x, [rc]: e }));
+    });
+  }, []);
+
+  React.useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return undefined;
+    // Racine : l'écran (.gc-ecran), pas la fenêtre. Son overflow: hidden rognerait les tuiles à la
+    // fenêtre avant la marge de 25 % ; posée sur lui, la marge s'applique (tuiles juste hors de vue
+    // demandées d'avance).
+    const io = new IntersectionObserver((entrees) => {
+      for (const en of entrees) {
+        if (!en.isIntersecting) continue;
+        io.unobserve(en.target);
+        const rc = (en.target as HTMLElement).dataset.gcTuile;
+        if (rc) maj(rc, 'demandee');
+      }
+    }, { root: racine, rootMargin: '25%' });
+    boites.current.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [tuiles, racine, maj]);
+
+  const couvertes = tuiles.filter((t) => etats[t.rc] === 'couverte').map((t) => t.rc).join(',');
+  React.useEffect(() => { onCouvertes(couvertes ? couvertes.split(',') : []); }, [couvertes, onCouvertes]);
+
+  return (
+    <>
+      {tuiles.map((t) => {
+        const etat = etats[t.rc];
+        return (
+          <div
+            key={t.rc}
+            ref={(el) => { if (el) boites.current.set(t.rc, el); else boites.current.delete(t.rc); }}
+            className="gc-page-cuite__tuile"
+            data-gc-tuile={t.rc}
+            data-gc-tuile-etat={etat ?? 'attente'}
+            style={{ left: pc(t.rect[0]), top: pc(t.rect[1]), width: pc(t.rect[2]), height: pc(t.rect[3]) }}
+          >
+            {etat && (
+              <img
+                src={t.src}
+                alt=""
+                draggable={false}
+                decoding="async"
+                ref={(img) => {
+                  if (!img || img.dataset.gcDecode) return;
+                  img.dataset.gcDecode = '1';
+                  // Fondu fini (transitionend), ou sans fondu (mouvement réduit) : la tuile couvre l'encre ×2.
+                  const pret = () => {
+                    maj(t.rc, 'prete');
+                    setTimeout(() => maj(t.rc, 'couverte'), 900);
+                  };
+                  (img.decode ? img.decode() : Promise.resolve()).then(pret, () => undefined);
+                }}
+                onTransitionEnd={() => maj(t.rc, 'couverte')}
+              />
+            )}
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
+/** Encre ×4 voulue pour cette page : loupe ≥ 1,5× (gardée jusqu'à 1,25×), page vivante, côté de la loupe. */
+function useEncre4xVoulue(cote: 'gauche' | 'droite'): boolean {
+  const z = React.useSyncExternalStore(abonnerLoupe, lireZ, unZ);
+  const coteLoupe = React.useSyncExternalStore(abonnerLoupe, lireCote, aucunCote);
+  const hd = React.useRef(false);
+  if (z >= LOUPE_HD) hd.current = true;
+  else if (z < LOUPE_HD_SORTIE) hd.current = false;
+  return hd.current && (coteLoupe == null || coteLoupe === cote);
 }
 
 export interface PageCuiteProps {
@@ -127,6 +341,21 @@ const pc = (v: number) => `${+(v * 100).toFixed(4)}%`;
  */
 export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuiteProps) {
   const info = PAGES_CUITES.pages[page];
+  const mode = useRenderMode();
+  const voulue = useEncre4xVoulue(info?.cote ?? 'gauche');
+  const racine = React.useRef<HTMLDivElement>(null);
+  const [couvertes, setCouvertes] = React.useState<string[]>([]);
+  const [, relire] = React.useReducer((n: number) => n + 1, 0);
+  // Tuiles ×4 seulement pour une page vivante posée dans le calque de la loupe (pas le feuillet soulevé).
+  const dansLoupe = !!racine.current?.closest('.gc-ecran__loupe');
+  const tuiles = info && voulue && mode === 'live' ? tuilesEncre4x(page) : null;
+  const hd = !!tuiles && dansLoupe;
+  // Montée déjà zoomée (saut direct) : la page n'était pas encore dans le DOM au premier rendu.
+  React.useEffect(() => {
+    if (tuiles && !dansLoupe && racine.current?.closest('.gc-ecran__loupe')) relire();
+  });
+  React.useEffect(() => { if (!hd) setCouvertes([]); }, [hd]);
+  const garderCouvertes = React.useCallback((rcs: string[]) => setCouvertes((x) => (x.join() === rcs.join() ? x : rcs)), []);
   if (!info) {
     if (typeof console !== 'undefined') console.warn(`Page cuite inconnue : ${page}`);
     return null;
@@ -149,8 +378,15 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
   };
   const lignes = info.texte.split('\n').filter(Boolean);
   const style = cadre === 'propre' ? ({ aspectRatio: `${w} / ${h}` } as React.CSSProperties) : undefined;
+  // Sous les tuiles ×4 posées, l'encre ×2 s'efface (sinon l'encre serait posée deux fois, plus grasse).
+  let styleEncre: React.CSSProperties | undefined;
+  if (hd && tuiles && couvertes.length) {
+    const cs = cellules(tuiles);
+    const libres = tuiles.filter((t) => !couvertes.includes(t.rc)).map((t) => cs.get(t.rc)!);
+    styleEncre = libres.length ? { clipPath: polygoneUnion(libres) } : { visibility: 'hidden' };
+  }
   return (
-    <div className={cls} style={style} data-gc-page-cuite={page} data-gc-page-type={info.type ?? 'page'} lang="fr">
+    <div ref={racine} className={cls} style={style} data-gc-page-cuite={page} data-gc-page-type={info.type ?? 'page'} data-gc-encre4x={hd ? 'oui' : undefined} lang="fr">
       <img
         className={`gc-page-cuite__papier${info.miroir ? ' gc-page-cuite__papier--miroir' : ''}`}
         {...source(info.papier, info.papier1x)}
@@ -158,7 +394,8 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
         draggable={false}
         decoding="sync"
       />
-      <img className="gc-page-cuite__encre" {...source(info.encre, info.encre1x)} alt="" draggable={false} decoding="sync" />
+      <img className="gc-page-cuite__encre" {...source(info.encre, info.encre1x)} alt="" draggable={false} decoding="sync" style={styleEncre} />
+      {hd && tuiles && <Encre4x tuiles={tuiles} racine={racine.current?.closest('.gc-ecran') ?? null} onCouvertes={garderCouvertes} />}
       <div className="gc-page-cuite__texte">
         {lignes.map((l, i) => (
           <p key={i}>{l}</p>

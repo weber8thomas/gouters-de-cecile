@@ -1,0 +1,43 @@
+<!-- @dsCard group="Mouvement" width=1920 height=1080 page subtitle="Loupe : le vrai zoom du carnet, de 1× à 3× sur tous les écrans. Pincez, touchez deux fois l'intérieur d'une page, ctrl + molette, ou le bouton ; zoomé, glissez pour vous déplacer" -->
+<style>
+  .demo-loupe { display: flex; align-items: center; justify-content: center; gap: 120px; width: var(--gc-stage-w); height: var(--gc-stage-h); background: var(--gc-linen); color: var(--gc-ink); }
+  .demo-boutons { display: flex; flex-direction: column; gap: 56px; }
+  .demo-etat { display: flex; align-items: center; gap: 28px; margin: 0; }
+  .demo-fond { position: relative; display: grid; place-items: center; width: 280px; height: 170px; border-radius: 10px; box-shadow: var(--gc-sh-object); --gc-ecran-cible: 104px; --gc-nav-alpha: 1; }
+  .demo-fond--bois { background-color: var(--gc-wood-3); }
+  .demo-fond--papier { background-color: var(--gc-paper-aged); }
+  .demo-appareil { display: flex; flex-direction: column; align-items: center; gap: 18px; margin: 0; }
+  .demo-cadre { padding: 9px; border-radius: 34px; background: var(--gc-ink-noire); box-shadow: var(--gc-sh-object); }
+  .demo-boite { position: relative; overflow: hidden; border-radius: 26px; }
+  .demo-echelle { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+  .demo-legende { margin: 0; }
+</style>
+<div id="root"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    function Etat(props) {
+      return h('figure', { className: 'demo-etat' },
+        h('div', { className: 'demo-fond demo-fond--' + props.fond }, h(G.BoutonLoupe, { z: props.z, onBasculer: function () {} })),
+        h('figcaption', { className: 'gc-hand-caption' }, props.legende));
+    }
+    var vp = { w: 390, h: 844, dpr: 3, tactile: true, pleinEcran: false, insets: { top: 47, bottom: 34 } };
+    var k = 1.05;
+    var telephone = G.Artboards && G.Artboards.Carnet
+      ? h('figure', { className: 'demo-appareil' },
+          h('div', { className: 'demo-cadre' },
+            h('div', { className: 'demo-boite', style: { width: vp.w * k + 'px', height: vp.h * k + 'px' } },
+              h('div', { className: 'demo-echelle', style: { transform: 'scale(' + k + ')' } },
+                h(G.Artboards.Carnet, { ecran: vp, depart: 1 })))),
+          h('figcaption', { className: 'gc-hand-caption demo-legende' }, 'téléphone debout · pincez la page'))
+      : null;
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      h('div', { className: 'demo-loupe' },
+        h('div', { className: 'demo-boutons' },
+          h(Etat, { fond: 'bois', z: 1, legende: 'à 1× : la loupe, sur le bois' }),
+          h(Etat, { fond: 'papier', z: 1.5, legende: 'zoomé : une étiquette, sur le papier' }),
+          h(Etat, { fond: 'bois', z: 3, legende: 'au plus près : 300 %' })),
+        telephone));
+  })();
+</script>

@@ -82,6 +82,16 @@
   stroke-width: 3;
 }
 
+/* Loupe active : le papier remplit l'écran, l'engrenage passe à l'encre avec un halo de papier. */
+.gc-ecran[data-gc-loupe="zoome"] .gc-reglages__bouton {
+  color: var(--gc-ink);
+}
+
+.gc-ecran[data-gc-loupe="zoome"] .gc-reglages__bouton .gc-reglages__ombre path {
+  stroke: color-mix(in srgb, var(--gc-paper-lace) 70%, transparent);
+  stroke-width: 4;
+}
+
 /* ---- Voile sur le livre : le toucher referme la fiche ---------------------------------------- */
 .gc-reglages__voile {
   position: absolute;
@@ -587,6 +597,31 @@
   line-height: calc(var(--gc-reglages-pas));
   height: auto;
   min-height: var(--gc-reglages-pas);
+}
+
+/* Feuille du téléphone : la loupe se règle à la réglette (comme le volume), sans − / + qui la
+   feraient passer sur deux lignes. */
+.gc-reglages--feuille [data-gc-reglages-ligne="loupe"] .gc-reglages__pas {
+  display: none;
+}
+
+/* Titre de section (« Ambiance ») : une ligne de la réglure, à l'encre, souligné au crayon rouge. */
+.gc-reglages__section {
+  position: relative;
+  justify-self: start;
+  width: max-content;
+  margin: 0 0 0 var(--gc-reglages-marge);
+  font: inherit;
+  font-size: 1.12em;
+  font-weight: 700;
+  line-height: calc(var(--gc-reglages-pas) / 1.12);
+  color: var(--gc-ink);
+  transform: rotate(-0.8deg);
+  transform-origin: 0 75%;
+}
+
+.gc-reglages__souligne--section {
+  bottom: calc(var(--gc-reglages-pas) / 2.24 - 0.55em);
 }
 
 .gc-reglages__souligne--lien {

@@ -33,7 +33,7 @@ export function generate({ outDir = join(ROOT, 'src/generated'), components, art
   write('components.gen.ts', out);
 
   // Images cuites
-  const inv = inventory();
+  const inv = inventory({ cible: target });
   const lockFile = join(ROOT, 'design-system/assets.lock.json');
   const lock = existsSync(lockFile) ? JSON.parse(readFileSync(lockFile, 'utf8')) : {};
   const missing = [];

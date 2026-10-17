@@ -1,15 +1,17 @@
 // Caméra du carnet : cran de distance (proche / moyenne / loin) et zoom fin (pure transformation,
-// bornes propres à chaque cran : voir zoomBornes). Réglage au clavier ou dans le menu ⚙, mémorisé.
+// bornes propres à chaque cran : voir zoomBornes). Cran et zoom fin se règlent dans le menu ⚙ et sont
+// mémorisés ; le clavier règle la LOUPE (plan v4, CONTRACT § 13.1, src/lib/loupe.ts).
 //
 //   <CameraProvider keyboard>          ← fournit l'état et écoute le clavier
 //     <Stage distance={camera.distance}> … <Camera> (B1) applique scale(zoom) avec un ressort
 //
 // Touches (lues sur event.key, compatibles AZERTY et pavé numérique) :
-//   + ou =  → cran suivant (plus proche)      - → cran précédent (plus loin)
-//   Alt + « + » / « - » → zoom fin ±0,01 ;  0 → zoom fin remis à 1
-//   (↑ / ↓ sont réservés au feuillet volant ; le zoom se règle aussi dans le menu.)
+//   + ou =  → loupe : palier suivant (1 · 1,5 · 2 · 3)      - → palier précédent
+//   Alt + « + » / « - » → zoom fin ±0,01 ;  0 → loupe à 1× et zoom fin remis à 1
+//   (les crans de distance ne se règlent plus que dans le menu ; ↑ / ↓ sont au feuillet volant.)
 import React from 'react';
 import { DEFAULT_SETTINGS, DISTANCES, type Distance } from './settings';
+import { demanderLoupe, loupeVisee, palierVoisin } from './loupe';
 
 export const ZOOM_MIN = 0.85;
 export const ZOOM_MAX = 1.15;
@@ -73,14 +75,15 @@ export const CameraContext = React.createContext<CameraApi>({
 });
 export const useCamera = () => React.useContext(CameraContext);
 
-/** Traduit une touche en action caméra, ou null. Exporté pour les tests. */
-export function cameraKey(e: Pick<KeyboardEvent, 'key' | 'altKey' | 'ctrlKey' | 'metaKey'>): { kind: 'distance' | 'zoom' | 'reset'; dir: 1 | -1 } | null {
+/** Traduit une touche en action : palier de loupe, zoom fin (Alt) ou remise à 1, ou null. Exporté pour les tests. */
+export function cameraKey(e: Pick<KeyboardEvent, 'key' | 'altKey' | 'ctrlKey' | 'metaKey'> & { code?: string }): { kind: 'loupe' | 'zoom' | 'reset'; dir: 1 | -1 } | null {
   if (e.ctrlKey || e.metaKey) return null; // laisser le zoom du navigateur tranquille
-  const plus = e.key === '+' || e.key === '=' || e.key === 'Add';
-  const minus = e.key === '-' || e.key === '_' || e.key === 'Subtract';
-  if (e.key === '0') return { kind: 'reset', dir: 1 };
-  if (plus) return { kind: e.altKey ? 'zoom' : 'distance', dir: 1 };
-  if (minus) return { kind: e.altKey ? 'zoom' : 'distance', dir: -1 };
+  // Avec Alt, macOS change le caractère (≠, –) : la touche physique fait foi.
+  const plus = e.key === '+' || e.key === '=' || e.key === 'Add' || (e.altKey && (e.code === 'Equal' || e.code === 'NumpadAdd'));
+  const minus = e.key === '-' || e.key === '_' || e.key === 'Subtract' || (e.altKey && (e.code === 'Minus' || e.code === 'NumpadSubtract'));
+  if (e.key === '0' && !e.altKey) return { kind: 'reset', dir: 1 };
+  if (plus) return { kind: e.altKey ? 'zoom' : 'loupe', dir: 1 };
+  if (minus) return { kind: e.altKey ? 'zoom' : 'loupe', dir: -1 };
   return null;
 }
 
@@ -127,9 +130,12 @@ export function CameraProvider({ children, keyboard = false, persist = true, fix
       const a = cameraKey(e);
       if (!a) return;
       e.preventDefault();
-      if (a.kind === 'distance') api.stepDistance(a.dir);
+      if (a.kind === 'loupe') demanderLoupe(palierVoisin(loupeVisee(), a.dir));
       else if (a.kind === 'zoom') api.stepZoom(a.dir);
-      else api.setZoom(1);
+      else {
+        api.setZoom(1);
+        demanderLoupe(1);
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);

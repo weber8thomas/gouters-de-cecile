@@ -1,6 +1,12 @@
 # Ecran
 
-La coque plein écran du carnet (CONTRACT § 11) : le même carnet sur téléphone, tablette, ordinateur et TV. `Ecran` occupe toute la fenêtre, mesure la fenêtre d'affichage (`useViewport()`), en déduit le **cadrage** et le donne au `Livre` qu'il contient ; il porte aussi le calque des contrôles en **px d'écran** (hors de la scène mise à l'échelle) et le bouton plein écran.
+La coque plein écran du carnet (CONTRACT § 11) : le même carnet sur téléphone, tablette, ordinateur et TV. `Ecran` occupe toute la fenêtre, mesure la fenêtre d'affichage (`useViewport()`), en déduit le **cadrage** et le donne au `Livre` qu'il contient ; il porte aussi le calque des contrôles en **px d'écran** (hors de la scène mise à l'échelle), le bouton plein écran et la **loupe** (plan v4, § 13 : voir `src/components/Loupe/README.md`).
+
+```
+.gc-ecran[data-gc-loupe="repos|zoome"]
+├─ .gc-ecran__loupe        le livre, zoomé par translate3d(x, y, 0) scale(z) (MotionValues), touch-action: none
+└─ .gc-ecran__controles    px d'écran, jamais zoomé : flèches, points, menu ⚙, photo soulevée, bouton loupe, plein écran
+```
 
 ```tsx
 import { Ecran } from '…/components/Ecran';
@@ -21,6 +27,7 @@ L'application complète (liens profonds, lecture de Julie, cran « proche » par
 |---|---|---|---|
 | `children` | `ReactNode` | — | Le carnet : un `<Livre>` (qui rend sa propre scène 1920 × 1080). |
 | `pleinEcran` | `boolean` | `true` | Bouton plein écran en haut à droite (Fullscreen API ; masqué si elle manque, par exemple sur iPhone). |
+| `loupe` | `boolean` | `true` | Loupe du carnet (pincer, double toucher, ctrl + molette, + / −, bouton loupe à gauche du plein écran). Sur un écran simulé : gestes et bouton seulement, état local, sans clavier. |
 | `className` | `string` | — | Classe ajoutée à la racine `.gc-ecran`. |
 
 Exporte aussi `useEcran()` (contexte lu par le livre), et ré-exporte de `src/lib/viewport.ts` : `useViewport`, `ViewportOverride`, `cadrageDe`, `echelleContain`, `cadrerDouble`, `cadrerPage`, types `Viewport`, `ViewportForce`, `Cadrage`, `Insets`.
@@ -59,7 +66,8 @@ Posés par le livre dans le calque `.gc-ecran__controles` (portail) : flèches, 
 
 ## Ce que fait la coque
 
-- `position: fixed; inset: 0`, `overflow: hidden`, `touch-action: pinch-zoom` (aucun défilement, le pincement reste permis), `overscroll-behavior: none`, ni sélection, ni menu d'appui long, ni reflet de toucher, images non glissables.
+- `position: fixed; inset: 0`, `overflow: hidden`, `touch-action: pinch-zoom` hors du livre (contrôles) et `none` sur le calque de la loupe (le pincement y est celui du carnet ; il revient au navigateur tant que le navigateur est déjà zoomé : `[data-gc-loupe-navigateur]`), `overscroll-behavior: none`, ni sélection, ni menu d'appui long, ni reflet de toucher, images non glissables.
+- Zoomé, le papier remplit l'écran : le plein écran (et l'engrenage du menu) passent à l'encre, avec un halo de papier.
 - Page hôte : `<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">` et `html, body { margin: 0; height: 100%; overflow: hidden }` (voir `index.html`, `harness/devices.html`).
 
 ## À éviter

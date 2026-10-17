@@ -61,3 +61,33 @@
   align-items: stretch;
   justify-content: center;
 }
+
+/* Encre ×4 sous la loupe (≥ 1,5×) : une tuile par quart de page, posée sur l'encre ×2 ; l'image
+   n'est demandée que si la tuile est à l'écran, puis apparaît en fondu une fois décodée. */
+.gc-page-cuite__tuile {
+  position: absolute;
+  pointer-events: none;
+}
+
+.gc-page-cuite__tuile img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity var(--gc-dur-spring-settle) var(--gc-spring-settle);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.gc-page-cuite__tuile[data-gc-tuile-etat="prete"] img,
+.gc-page-cuite__tuile[data-gc-tuile-etat="couverte"] img {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gc-page-cuite__tuile img {
+    transition: none;
+  }
+}

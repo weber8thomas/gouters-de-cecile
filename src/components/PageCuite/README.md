@@ -135,3 +135,20 @@ Tirées de `design-system/docs/references-carnets.md` § 5, avec la contrainte d
 - Poser du texte vivant par-dessus une page cuite (il ne serait pas « bu » par le papier) : tout texte de page passe par la cuisson.
 - Modifier les images à la main, ou changer la taille d'une page cuite : tout vient de la description.
 - Mettre un objet vivant hors de sa zone `vivants` (il y aurait de l'encre dessous).
+
+## Encre ×4 sous la loupe (plan v4)
+
+Quand la loupe atteint **1,5×** (`hd`), la page **vivante** posée dans le calque de la loupe (`.gc-ecran__loupe`), du côté vu sous la loupe (`getLoupe().cote` : la page affichée en cadrage « page », celle du centre en « double »), pose par-dessus son encre ×2 les tuiles d'encre ×4 du manifeste :
+
+```jsonc
+"encre4x": { "base": "pages/4x/julie-gauche", "echelle": 4, "px": [3400, 3840], "recouvrement": 4,
+             "tuiles": [[0, 0, 0, 0, 0.501176, 0.501042], [0, 1, 0.498824, 0, 0.501176, 0.501042], …] }
+// [rang, colonne, x, y, largeur, hauteur] en fractions de la page ; image `pages/4x/<id>-<rang><colonne>`
+```
+
+- Une boîte `.gc-page-cuite__tuile[data-gc-tuile="01"]` par tuile ; l'image n'est **demandée** que quand la boîte entre à l'écran (`IntersectionObserver`, `rootMargin: 25%`), puis décodée (`img.decode()`) et montrée en fondu (`data-gc-tuile-etat` : `attente` → `demandee` → `prete` → `couverte`).
+- Sous une tuile posée, l'encre ×2 est masquée (`clip-path`, union des quarts encore sans tuile) : l'encre n'est jamais posée deux fois.
+- Retirées sous **1,25×** (hystérésis) ; la page reprend son encre ×2 entière.
+- Rien ne se rend pendant un geste : les rappels (tuile visible, image décodée, fondu fini) attendent la fin de la loupe (`loupeOccupee()`, `gc-loupe`) et des gestes du livre.
+- Sans `encre4x`, ou si une tuile manque aux images publiées (artifact du design system : les tuiles ×4 sont réservées au site), rien ne change.
+- `tuilesEncre4x(id)` donne les tuiles d'une page ; `definirSourceEncre4x(f | null)` remplace leur source (essais : tuiles fabriquées hors des images cuites).

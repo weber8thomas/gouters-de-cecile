@@ -13,7 +13,9 @@ import { useEcran } from '../Ecran';
 import { partScene, useViewport, type Viewport } from '../../lib/viewport';
 import { useCamera, zoomBornes, ZOOM_STEP } from '../../lib/camera';
 import type { Distance } from '../../lib/settings';
-import { resetReglages, useReglages, type Vitesse } from '../../lib/reglages';
+import { resetReglages, useReglages, type Reglages as ReglagesValeurs, type Vitesse } from '../../lib/reglages';
+import * as son from '../../lib/son';
+import { LOUPE_MAX, LOUPE_MIN, demanderLoupe, useLoupe } from '../../lib/loupe';
 import { useClavierModal } from '../../lib/clavier';
 import { LazyMotion, SPRINGS, animate, domMax, m, useMotionValue, useReducedMotion, useTransform } from '../../lib/motion';
 import { assetInfo, cssUrl } from '../../lib/assets';
@@ -54,8 +56,8 @@ type Etat = 'ferme' | 'ouvert' | 'fermeture';
 const borne = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 const px = (v: number) => `${Math.round(v * 100) / 100}px`;
 
-/** Hauteur d'une fiche complète, en corps de texte (titre + 11 lignes réglées + marges). */
-const HAUTEUR_EM = 21;
+/** Hauteur d'une fiche complète, en corps de texte (titre + 15 lignes réglées, section comprise, + marges). */
+const HAUTEUR_EM = 26;
 /** Corps du texte sur la TV 1080p (Caveat : hauteur d'x 0,37 → 14 px, le plancher de lecture à 3 m). */
 const CORPS_TV = 38;
 /** Angle de la fiche posée sur la TV (degrés). */
@@ -293,7 +295,37 @@ const OUI_NON: Option<boolean>[] = [{ v: false, texte: 'non' }, { v: true, texte
 const SON: Option<boolean>[] = [{ v: false, texte: 'coupé' }, { v: true, texte: 'avec son' }];
 const TAILLES: Option<Distance>[] = [{ v: 'proche', texte: 'proche' }, { v: 'moyenne', texte: 'moyenne' }, { v: 'loin', texte: 'loin' }];
 const VITESSES_TEXTE: Option<Vitesse>[] = [{ v: 'vive', texte: 'vive' }, { v: 'normale', texte: 'normale' }, { v: 'lente', texte: 'lente' }];
+type ChoixAuto = 'auto' | 'oui' | 'non';
+const AUTO_OUI_NON: Option<ChoixAuto>[] = [{ v: 'auto', texte: 'automatique' }, { v: 'oui', texte: 'oui' }, { v: 'non', texte: 'non' }];
+/** Feuille du téléphone : « auto », pour que les trois choix tiennent sur une ligne. */
+const AUTO_OUI_NON_COURT: Option<ChoixAuto>[] = [{ v: 'auto', texte: 'auto' }, { v: 'oui', texte: 'oui' }, { v: 'non', texte: 'non' }];
+const versChoixAuto = (v: boolean | null): ChoixAuto => (v === null ? 'auto' : v ? 'oui' : 'non');
+const deChoixAuto = (c: ChoixAuto): boolean | null => (c === 'auto' ? null : c === 'oui');
+
+// ---- Ambiance (lots L et S) : lue de façon défensive tant que reglages.ts n'a pas ses champs ----------
+/** Champs de l'ambiance : `ambiance` (feu de cheminée et cuisine, null = automatique) et `feu` (la lumière vacille). */
+type ChampsAmbiance = { ambiance?: boolean | null; feu?: boolean };
+const ambianceDe = (r: ReglagesValeurs): boolean | null => {
+  const v = (r as ReglagesValeurs & ChampsAmbiance).ambiance;
+  return typeof v === 'boolean' ? v : null;
+};
+const feuDe = (r: ReglagesValeurs): boolean => (r as ReglagesValeurs & ChampsAmbiance).feu !== false;
+/** Écrit des champs que reglages.ts ne déclare peut-être pas encore (ignorés par lui jusque-là). */
+const partielAmbiance = (c: ChampsAmbiance) => c as unknown as Partial<ReglagesValeurs>;
+/** Nom de la fonction que le lot S pourra exporter de src/lib/son.ts (lue par clé : pas d'import manquant). */
+const AMBIANCE_EFFECTIVE = 'ambianceEffective';
+/** Ambiance active : celle de src/lib/son.ts si elle existe ; sinon automatique = coupée sur téléphone. */
+function ambianceActive(r: ReglagesValeurs): boolean {
+  const f = (son as unknown as Record<string, unknown>)[AMBIANCE_EFFECTIVE] as ((r: ReglagesValeurs) => boolean) | undefined;
+  if (typeof f === 'function') return f(r);
+  const v = ambianceDe(r);
+  if (v !== null) return v;
+  if (typeof window === 'undefined' || typeof matchMedia === 'undefined') return true;
+  return !(matchMedia('(pointer: coarse)').matches && Math.min(window.innerWidth, window.innerHeight) < 600);
+}
 const VOLUME_PAS = 0.05;
+/** Pas de la loupe dans le menu (100 à 300 %). */
+const LOUPE_PAS = 0.25;
 const pourcent = (v: number) => `${Math.round(v * 100)} %`;
 
 // ---- Le menu ---------------------------------------------------------------------------------------
@@ -340,7 +372,26 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   const cameraFixe = cameraFixeImpose ?? (!enPlace && (vp.cadrage === 'page' || partScene(vp) < 1));
   const papier = assetInfo('paper/base') ? cssUrl('paper/base') : null;
   const mise = React.useMemo(() => miseEnPlace(vp, papier), [vp, papier]);
-  const avecVolume = volumeReglable();
+  // Volume : celui des vidéos (en lecture seule sur iPhone), des sons du livre et de l'ambiance (Web
+  // Audio, réglable partout, iPhone compris) ; la ligne reste dès que l'un d'eux peut servir.
+  const sonsLivre = son.sonsLivreEffectif(r);
+  const ambiance = ambianceActive(r);
+  const avecVolume = volumeReglable() || sonsLivre || ambiance;
+  const volumeActif = r.son || sonsLivre || ambiance;
+
+  // Loupe : l'état au repos ; pendant qu'elle s'anime vers la valeur choisie, la réglette montre déjà
+  // cette valeur (le pâté suit le doigt).
+  const loupe = useLoupe();
+  const [loupeVisee, setLoupeVisee] = React.useState<number | null>(null);
+  React.useEffect(() => { setLoupeVisee(null); }, [loupe.z]);
+  const loupeAffichee = loupeVisee ?? Math.round(loupe.z * 100) / 100;
+  const reglerLoupe = React.useCallback((v: number) => {
+    const z = auPas(v, LOUPE_MIN, LOUPE_MAX, LOUPE_PAS);
+    setLoupeVisee(z);
+    demanderLoupe(z);
+  }, []);
+  const loupeRef = React.useRef(loupeAffichee);
+  loupeRef.current = loupeAffichee;
 
   // ---- Ouvrir, fermer (une seule MotionValue : 0 = rangée, 1 = posée) ----
   const t = useMotionValue(ouvertAuDepart ? 1 : 0);
@@ -435,6 +486,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   const [zMin, zMax] = zoomBornes(camera.distance);
   const actions: Record<string, (dir: 1 | -1) => void> = {
     zoom: (dir) => camera.stepZoom(dir),
+    loupe: (dir) => reglerLoupe(loupeRef.current + dir * LOUPE_PAS),
     volume: (dir) => setR((x) => ({ volume: auPas(x.volume + dir * VOLUME_PAS, 0, 1, VOLUME_PAS) })),
   };
   const actionsRef = React.useRef(actions);
@@ -466,6 +518,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
     if ((k === 'Home' || k === 'End') && actif?.matches('[data-gc-reglette]')) {
       const id = actif.closest<HTMLElement>(SEL_LIGNE)?.dataset.gcReglagesLigne;
       if (id === 'zoom') camera.setZoom(k === 'Home' ? zMin : zMax);
+      if (id === 'loupe') reglerLoupe(k === 'Home' ? LOUPE_MIN : LOUPE_MAX);
       if (id === 'volume') setR({ volume: k === 'Home' ? 0 : 1 });
       return true;
     }
@@ -479,9 +532,11 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
 
   const remettre = () => {
     resetReglages();
+    setR(partielAmbiance({ ambiance: null, feu: true })); // (déjà fait par resetReglages quand reglages.ts a ces champs)
     // Comme le carnet : au doigt, le cran par défaut est « proche ».
     camera.setDistance(vp.tactile ? 'proche' : 'moyenne');
     camera.setZoom(1);
+    reglerLoupe(1);
     setRemis(true);
   };
 
@@ -565,6 +620,26 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                       <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(camera.zoom)}</span>
                     </Ligne>
                   )}
+                  <Ligne id="loupe" libelle="Loupe">
+                    <button type="button" className="gc-reglages__pas" aria-label="Loupe : moins grand" aria-disabled={loupeAffichee <= LOUPE_MIN || undefined} onClick={() => reglerLoupe(loupeAffichee - LOUPE_PAS)}>
+                      <Signe />
+                    </button>
+                    <Reglette
+                      valeur={loupeAffichee}
+                      min={LOUPE_MIN}
+                      max={LOUPE_MAX}
+                      pas={LOUPE_PAS}
+                      repere={1}
+                      principal
+                      libelle="Loupe"
+                      texte={pourcent(loupeAffichee)}
+                      onChange={reglerLoupe}
+                    />
+                    <button type="button" className="gc-reglages__pas" aria-label="Loupe : plus grand" aria-disabled={loupeAffichee >= LOUPE_MAX || undefined} onClick={() => reglerLoupe(loupeAffichee + LOUPE_PAS)}>
+                      <Signe plus />
+                    </button>
+                    <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(loupeAffichee)}</span>
+                  </Ligne>
                   {vp.pleinEcran && (
                     <Ligne id="plein" libelle="Plein écran" role="radiogroup">
                       <Choix options={OUI_NON} valeur={plein} onChoisir={setPlein} graine={g()} />
@@ -574,14 +649,14 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                     <Choix options={SON} valeur={r.son} onChoisir={(son) => setR({ son })} graine={g()} />
                   </Ligne>
                   {avecVolume && (
-                    <Ligne id="volume" libelle="Volume" attenuee={!r.son}>
+                    <Ligne id="volume" libelle="Volume" attenuee={!volumeActif}>
                       <Reglette
                         valeur={r.volume}
                         min={0}
                         max={1}
                         pas={VOLUME_PAS}
                         principal
-                        attenuee={!r.son}
+                        attenuee={!volumeActif}
                         libelle="Volume"
                         texte={pourcent(r.volume)}
                         onChange={(volume) => setR({ volume })}
@@ -597,6 +672,19 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                   </Ligne>
                   <Ligne id="mouvement" libelle="Moins d’animations" role="radiogroup">
                     <Choix options={OUI_NON} valeur={r.mouvementReduit} onChoisir={(mouvementReduit) => setR({ mouvementReduit })} graine={g()} />
+                  </Ligne>
+                  <h3 className="gc-reglages__section" data-gc-reglages-section="ambiance">
+                    Ambiance
+                    <TraitCrayon className="gc-reglages__souligne gc-reglages__souligne--section" />
+                  </h3>
+                  <Ligne id="sonsLivre" libelle="Sons du livre" role="radiogroup">
+                    <Choix options={mise.feuille ? AUTO_OUI_NON_COURT : AUTO_OUI_NON} valeur={versChoixAuto(r.sonsLivre)} onChoisir={(c) => setR({ sonsLivre: deChoixAuto(c) })} graine={g()} />
+                  </Ligne>
+                  <Ligne id="ambiance" libelle="Feu de cheminée et cuisine" role="radiogroup">
+                    <Choix options={mise.feuille ? AUTO_OUI_NON_COURT : AUTO_OUI_NON} valeur={versChoixAuto(ambianceDe(r))} onChoisir={(c) => setR(partielAmbiance({ ambiance: deChoixAuto(c) }))} graine={g()} />
+                  </Ligne>
+                  <Ligne id="feu" libelle="Lumière du feu" role="radiogroup">
+                    <Choix options={OUI_NON} valeur={feuDe(r)} onChoisir={(feu) => setR(partielAmbiance({ feu }))} graine={g()} />
                   </Ligne>
                   {invites.length > 0 && (
                     <Ligne id="aller" libelle="Aller à…">

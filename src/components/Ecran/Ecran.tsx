@@ -1,5 +1,9 @@
 import React from 'react';
 import { ViewportOverride, useViewport } from '../../lib/viewport';
+import { LazyMotion, domMax, m, useMotionValue, useTransform } from '../../lib/motion';
+import { LOUPE_ZOOME, brancherLoupe, useLoupe } from '../../lib/loupe';
+import { BoutonLoupe } from '../Loupe/BoutonLoupe';
+import { creerControleur, transformLoupe, type ControleurEcran } from '../Loupe/controleur';
 import { EcranContext, type EcranInfo } from './contexte';
 import './Ecran.css';
 
@@ -9,6 +13,11 @@ export interface EcranProps {
   className?: string;
   /** Bouton plein écran, en haut à droite (masqué si l'API manque, par exemple sur iPhone). Défaut : true. */
   pleinEcran?: boolean;
+  /**
+   * Loupe du carnet (pincer, double toucher, ctrl + molette, + / −, bouton loupe), de 1× à 3×.
+   * Défaut : true. Sur un écran simulé (cartes), seulement les gestes et le bouton, sans clavier.
+   */
+  loupe?: boolean;
 }
 
 /** Taille de la scène logique (tokens --gc-stage-w / --gc-stage-h). */
@@ -78,14 +87,48 @@ function BoutonPleinEcran() {
 
 // Coque plein écran du carnet : occupe toute la fenêtre (100dvh, zones sûres), donne au livre la
 // fenêtre d'affichage et son cadrage (contexte), et porte le calque des contrôles en px d'écran
-// (flèches, points de page, repère de distance : posés par le livre ; plein écran : ici).
+// (flèches, points de page, repère de distance : posés par le livre ; plein écran et loupe : ici).
+// Le livre est posé dans le calque de la LOUPE (.gc-ecran__loupe : translate3d + scale, plan v4) ; les
+// contrôles, la photo soulevée et le menu sont en portail hors de ce calque : ils ne zooment jamais.
 // Sous un ViewportOverride (cartes, tests), l'écran est une boîte de la taille imposée.
-export function Ecran({ children, className, pleinEcran = true }: EcranProps) {
+export function Ecran({ children, className, pleinEcran = true, loupe = true }: EcranProps) {
   const vp = useViewport();
   const force = React.useContext(ViewportOverride);
   const simule = !!force && force.w != null && force.h != null;
   const [controles, setControles] = React.useState<HTMLDivElement | null>(null);
   const info = React.useMemo<EcranInfo>(() => ({ vp, controles, simule }), [vp, controles, simule]);
+
+  // ---- Loupe : trois MotionValues, un contrôleur (aucun rendu React pendant un geste) ----
+  const racineRef = React.useRef<HTMLDivElement>(null);
+  const calqueRef = React.useRef<HTMLDivElement>(null);
+  const lx = useMotionValue(0);
+  const ly = useMotionValue(0);
+  const lz = useMotionValue(1);
+  const transform = useTransform([lx, ly, lz], ([x, y, z]: number[]) => transformLoupe(x, y, z));
+  const ctrlRef = React.useRef<ControleurEcran | null>(null);
+  const vpRef = React.useRef(vp);
+  vpRef.current = vp;
+  const etatGlobal = useLoupe();
+  const [zLocal, setZLocal] = React.useState(1);
+  const z = simule ? zLocal : etatGlobal.z;
+
+  React.useEffect(() => {
+    const racine = racineRef.current;
+    const calque = calqueRef.current;
+    if (!loupe || !racine || !calque) return undefined;
+    const c = creerControleur({ racine, calque, lx, ly, lz, vp: vpRef.current, globale: !simule, onRepos: (e) => setZLocal(e.z) });
+    ctrlRef.current = c;
+    const debrancher = simule ? () => undefined : brancherLoupe(c);
+    return () => {
+      debrancher();
+      c.detacher();
+      ctrlRef.current = null;
+      lx.set(0);
+      ly.set(0);
+      lz.set(1);
+    };
+  }, [loupe, simule, lx, ly, lz]);
+  React.useEffect(() => { ctrlRef.current?.majVp(vp); }, [vp]);
 
   const u = Math.min(vp.w / SCENE.w, vp.h / SCENE.h);
   const style: Vars = {
@@ -98,12 +141,31 @@ export function Ecran({ children, className, pleinEcran = true }: EcranProps) {
     '--gc-ecran-gauche': `${vp.insets.left}px`,
   };
   const cls = ['gc-ecran', simule && 'gc-ecran--simule', className].filter(Boolean).join(' ');
+  const plein = pleinEcran && vp.pleinEcran;
   return (
     <EcranContext.Provider value={info}>
-      <div className={cls} data-gc-cadrage={vp.cadrage} data-gc-tactile={vp.tactile ? '' : undefined} style={style}>
-        {children}
+      <div
+        ref={racineRef}
+        className={cls}
+        data-gc-cadrage={vp.cadrage}
+        data-gc-tactile={vp.tactile ? '' : undefined}
+        data-gc-loupe={loupe ? (z > LOUPE_ZOOME ? 'zoome' : 'repos') : undefined}
+        style={style}
+      >
+        <LazyMotion features={domMax}>
+          <m.div ref={calqueRef} className="gc-ecran__loupe" style={{ transform }}>
+            {children}
+          </m.div>
+        </LazyMotion>
         <div ref={setControles} className="gc-ecran__controles">
-          {pleinEcran && vp.pleinEcran && <BoutonPleinEcran />}
+          {loupe && (
+            <BoutonLoupe
+              z={z}
+              onBasculer={() => ctrlRef.current?.basculer()}
+              className={`gc-loupe-bouton--ecran${plein ? ' gc-loupe-bouton--decale' : ''}`}
+            />
+          )}
+          {plein && <BoutonPleinEcran />}
         </div>
       </div>
     </EcranContext.Provider>

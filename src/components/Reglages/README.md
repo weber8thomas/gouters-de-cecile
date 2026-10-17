@@ -40,14 +40,18 @@ Le composant exporte aussi `ReglagesInvite` (type) et `CREDITS_REGLAGES` (texte 
 |---|---|---|---|---|
 | 1 | Taille du livre | proche · moyenne · loin | `useCamera().setDistance` | la caméra est fixe |
 | 2 | Ajuster | − réglette + et la valeur en % (pas 0,01, bornes `zoomBornes(cran)`, repère à 100 %) | `useCamera().setZoom` | la caméra est fixe |
-| 3 | Plein écran | non · oui | Fullscreen API (appelée dans le geste) | l'API manque (iPhone, écran simulé) |
-| 4 | Son des vidéos | coupé · avec son | `reglages.son` | — |
-| 5 | Volume | réglette 0 à 100 % (pas 5 %), atténuée quand le son est coupé | `reglages.volume` | le volume est en lecture seule (iOS : on écrit `volume` sur un `<audio>` jetable, puis on le relit) |
-| 6 | Lancer la vidéo en arrivant sur la page | non · oui | `reglages.lectureAuto` | — |
-| 7 | Vitesse des pages | vive · normale · lente | `reglages.vitesse` (règle `SPRINGS.paper`) | — |
-| 8 | Moins d'animations | non · oui | `reglages.mouvementReduit` (lu par `useReducedMotion`) | — |
-| 9 | Aller à… | « choisir un invité », qui déplie les noms | `onAller(index)` | `invites` est vide |
-| 10 | remettre les réglages par défaut · crédits | — | `resetReglages()`, puis la caméra revient à `moyenne` (`proche` au doigt, comme dans `Carnet`) et au zoom 1 ; « crédits » déplie le texte | — |
+| 3 | Loupe | − réglette + et la valeur en % (100 à 300 %, pas de 25 %, repère à 100 %) | `demanderLoupe(z)`, état `useLoupe()` (plan v4) | — : **sur tous les écrans**, téléphone compris |
+| 4 | Plein écran | non · oui | Fullscreen API (appelée dans le geste) | l'API manque (iPhone, écran simulé) |
+| 5 | Son des vidéos | coupé · avec son | `reglages.son` | — |
+| 6 | Sons du livre | automatique · oui · non | `reglages.sonsLivre` : `null` · `true` · `false` (automatique : coupés sur téléphone, `sonsLivreEffectif`) | — |
+| 7 | Volume | réglette 0 à 100 % (pas 5 %), atténuée quand ni le son des vidéos ni les sons du livre ne sont actifs | `reglages.volume` (vidéos et sons du livre) | le volume des vidéos est en lecture seule (iOS : on écrit `volume` sur un `<audio>` jetable, puis on le relit) **et** les sons du livre sont coupés (le volume Web Audio, lui, marche sur iOS) |
+| 8 | Lancer la vidéo en arrivant sur la page | non · oui | `reglages.lectureAuto` | — |
+| 9 | Vitesse des pages | vive · normale · lente | `reglages.vitesse` (règle `SPRINGS.paper`) | — |
+| 10 | Moins d'animations | non · oui | `reglages.mouvementReduit` (lu par `useReducedMotion`) | — |
+| 11 | Aller à… | « choisir un invité », qui déplie les noms | `onAller(index)` | `invites` est vide |
+| 12 | remettre les réglages par défaut · crédits | — | `resetReglages()`, puis la caméra revient à `moyenne` (`proche` au doigt, comme dans `Carnet`) et au zoom 1, et la **loupe à 1×** ; « crédits » déplie le texte | — |
+
+La loupe n'est pas mémorisée (elle revient à 1× au rechargement). Au clavier, + / − règlent la loupe (paliers 1 · 1,5 · 2 · 3) ; les crans de distance (« Taille du livre ») ne se règlent plus que dans ce menu.
 
 Les réglages sont mémorisés par `src/lib/reglages.ts` (clé `gc:reglages:v1`) et la caméra par `src/lib/camera.tsx` (clé `gc:camera:v1`). Si le stockage est indisponible, les réglages restent en mémoire.
 
@@ -91,7 +95,7 @@ Tout se fait avec des boutons natifs, sans survol : toucher un choix, faire glis
 |---|---|
 | Bouton ⚙ | `data-gc-reglages="bouton"` (et `data-gc-controle="reglages"`) |
 | Fiche | `data-gc-reglages="panneau"` |
-| Une ligne | `data-gc-reglages-ligne="taille\|zoom\|plein\|son\|volume\|auto\|vitesse\|mouvement\|aller\|invites\|fin"` |
+| Une ligne | `data-gc-reglages-ligne="taille\|zoom\|loupe\|plein\|son\|sonsLivre\|volume\|auto\|vitesse\|mouvement\|aller\|invites\|fin"` |
 | Racine | `data-gc-reglages-etat="ferme\|ouvert\|fermeture"` |
 | Réglette | `data-gc-reglette` (`role="slider"`) |
 

@@ -12,7 +12,8 @@
   overflow: hidden;
   background-color: var(--gc-wood-3);
   color: var(--gc-ink);
-  /* Aucun défilement ni geste du navigateur, sauf le pincement (accessibilité). */
+  /* Aucun défilement ; hors du livre (contrôles), le pincement du navigateur reste permis. Sur le
+     livre, c'est la loupe du carnet qui zoome (calque .gc-ecran__loupe, touch-action: none). */
   touch-action: pinch-zoom;
   overscroll-behavior: none;
   /* Ni sélection de texte, ni menu d'appui long, ni reflet de toucher. */
@@ -36,6 +37,30 @@
 
 .gc-ecran img {
   -webkit-user-drag: none;
+}
+
+/* ---- Calque de la loupe : le livre, zoomé par translate3d + scale (MotionValues) ------------- */
+.gc-ecran__loupe {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  /* Pincer, double toucher, déplacer : la loupe du carnet, jamais le navigateur. */
+  touch-action: none;
+}
+
+/* Zoomé : la main saisit la page (souris) ; pendant un déplacement, elle la tient. */
+.gc-ecran[data-gc-loupe="zoome"] .gc-ecran__loupe {
+  cursor: grab;
+}
+
+.gc-ecran[data-gc-loupe-geste="deplacer"] .gc-ecran__loupe {
+  cursor: grabbing;
+}
+
+/* Navigateur déjà zoomé (visualViewport.scale > 1) : la loupe se retire, le pincement du navigateur
+   revient sur le livre (on peut dézoomer). */
+.gc-ecran[data-gc-loupe-navigateur] .gc-ecran__loupe {
+  touch-action: pinch-zoom;
 }
 
 /* ---- Calque des contrôles (px d'écran) ----------------------------------------------------- */
@@ -105,4 +130,14 @@
 .gc-ecran__ombre path {
   stroke: color-mix(in srgb, var(--gc-wood-3) 55%, transparent);
   stroke-width: 3.2;
+}
+
+/* Zoomé, le papier remplit l'écran : le plein écran passe à l'encre, avec un halo de papier. */
+.gc-ecran[data-gc-loupe="zoome"] .gc-ecran__plein {
+  color: var(--gc-ink);
+}
+
+.gc-ecran[data-gc-loupe="zoome"] .gc-ecran__ombre path {
+  stroke: color-mix(in srgb, var(--gc-paper-lace) 70%, transparent);
+  stroke-width: 4.2;
 }

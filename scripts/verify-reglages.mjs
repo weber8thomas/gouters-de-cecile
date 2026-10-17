@@ -16,6 +16,12 @@
 //   - cibles ≥ 44 px au doigt, rien hors de la zone sûre.
 // Indépendamment du menu (valide dès maintenant) : la vitesse écrite dans gc:reglages:v1 règle bien la
 // durée d'un tourne-page (écrans « double »).
+// Plan v4 (CONTRACT § 13, lot B) : ligne « Loupe » (100 à 300 %, pas de 25) sur TOUS les écrans, téléphone
+// compris ; ligne « Sons du livre » (automatique / oui / non → sonsLivre null / true / false, mémorisé) ;
+// « remettre les réglages par défaut » remet aussi la loupe à 1× ([data-gc-loupe="repos"]).
+// Section « Ambiance » (lots L et S) : « Sons du livre », « Feu de cheminée et cuisine » (automatique / oui /
+// non → ambiance null / true / false) et « Lumière du feu » (oui / non → feu, défaut oui) ; remis par
+// défaut avec le reste. Tant que src/lib/reglages.ts ne garde pas ambiance / feu (lot S) : ATTENTE.
 // Lignes cherchées par [data-gc-reglage="<champ>"] (banc factice) ou [data-gc-reglages-ligne="<id>"] (lot R :
 // taille, zoom, son, volume, auto, vitesse, mouvement, aller, invites, fin), puis par rôle et nom accessible.
 // Un oui / non est un groupe radio (lot R) ou un interrupteur (banc). Ce qui manque encore est ATTENTE
@@ -43,6 +49,39 @@ const R = new Rapport('reglages', { dir: out, meta: { cible: cible.type, depart:
 const browser = await lancer();
 const insetsDe = (e) => (cible.type === 'site' || cible.type === 'url' ? null : e.insets);
 const BORNES = zoomBornes();
+/** Valeurs par défaut du contrat, plan v4 compris (sonsLivre et ambiance : null = automatique ; feu : oui). */
+const DEFAUT = { ...REGLAGES_DEFAUT, sonsLivre: null, ambiance: null, feu: true };
+/**
+ * Lumière du feu figée (lot L, window.__gcFeu) pendant ces essais : son vacillement repeint l'écran à
+ * chaque image, ce qui, en rendu logiciel, retarde les animations du menu de plusieurs secondes. Le menu
+ * n'en dépend pas.
+ */
+/**
+ * Attend une cadence d'images régulière (≥ 30 i/s pendant 400 ms, 40 s au plus). En rendu logiciel, la
+ * première rastérisation d'une page fraîchement ouverte retient les images plusieurs secondes : une
+ * animation du menu ou un tourne-page mesurés pendant ce temps n'ont pas de sens.
+ */
+const cadence = (page, max = 40000) => page.evaluate((max) => new Promise((resolve) => {
+  const t0 = performance.now();
+  const ts = [];
+  const tick = (t) => {
+    ts.push(t);
+    while (ts.length && t - ts[0] > 400) ts.shift();
+    if ((t - t0 > 450 && ts.length >= 12) || t - t0 > max) return resolve(Math.round(t - t0));
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+  setTimeout(() => resolve(-1), max + 2000);
+}), max).catch(() => -1);
+const FEU_FIGE = {
+  fn: () => {
+    const t0 = Date.now();
+    const id = setInterval(() => {
+      try { if (window.__gcFeu?.figer) { window.__gcFeu.figer({ intensite: 1, dx: 0, dy: 0 }); clearInterval(id); } } catch { clearInterval(id); }
+      if (Date.now() - t0 > 20000) clearInterval(id);
+    }, 50);
+  },
+};
 console.log(`■ Réglages — ${cible.type} : ${cible.depart}`);
 
 const BOUTON = '[data-gc-reglages="bouton"]';
@@ -50,7 +89,12 @@ const PANNEAU = '[data-gc-reglages="panneau"]';
 const FOCUSABLES = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [role="slider"], [role="switch"], [role="radio"], [role="checkbox"], [role="option"]';
 
 // ---- Lecture de l'état -------------------------------------------------------------------------------
-const lireReglages = (page) => page.evaluate((d) => { try { return { ...d, ...(JSON.parse(localStorage.getItem('gc:reglages:v1')) || {}) }; } catch { return { ...d }; } }, REGLAGES_DEFAUT);
+const lireReglages = (page) => page.evaluate((d) => { try { return { ...d, ...(JSON.parse(localStorage.getItem('gc:reglages:v1')) || {}) }; } catch { return { ...d }; } }, DEFAUT);
+/** État de la loupe lu sur l'écran : [data-gc-loupe] et la réglette « Loupe » du menu. */
+const lireLoupe = (page) => page.evaluate(() => {
+  const r = document.querySelector('[data-gc-reglages-ligne="loupe"] [role="slider"]');
+  return { attr: document.querySelector('.gc-ecran')?.getAttribute('data-gc-loupe') ?? null, valeur: r ? Number(r.getAttribute('aria-valuenow')) : null, texte: r?.getAttribute('aria-valuetext') ?? null };
+});
 const lireCamera = (page) => page.evaluate(() => { try { return JSON.parse(localStorage.getItem('gc:camera:v1')) || null; } catch { return null; } });
 const panneauVisible = (page) => page.evaluate((s) => {
   const p = document.querySelector(s);
@@ -109,6 +153,7 @@ async function premier(locs) {
 const LIGNES = {
   distance: ['distance', 'taille'], zoom: ['zoom'], son: ['son'], volume: ['volume'], lectureAuto: ['lectureAuto', 'auto'],
   vitesse: ['vitesse'], mouvementReduit: ['mouvementReduit', 'mouvement'], aller: ['aller', 'invites'], defaut: ['defaut', 'fin'],
+  loupe: ['loupe'], sonsLivre: ['sonsLivre'], ambiance: ['ambiance'], feu: ['feu'],
 };
 const ligne = (page, cle) => page.locator((LIGNES[cle] ?? [cle]).flatMap((id) => [`${PANNEAU} [data-gc-reglage="${id}"]`, `${PANNEAU} [data-gc-reglages-ligne="${id}"]`]).join(', '));
 const pan = (page) => page.locator(PANNEAU);
@@ -197,6 +242,7 @@ const existeLigne = async (page, cle) => (await ligne(page, cle).count()) > 0 ||
 const MAX_IMAGE_MS = 40;
 async function mesurerTour(page) {
   await calme(page, { calme: 300, debutMax: 300 });
+  await cadence(page);
   const n = await nbGestes(page);
   await page.evaluate(() => { window.__gcImg = []; window.__gcImgOn = true; const f = (t) => { window.__gcImg.push(t); if (window.__gcImgOn) requestAnimationFrame(f); }; requestAnimationFrame(f); });
   await page.keyboard.press('ArrowRight');
@@ -237,7 +283,7 @@ async function mesurerVitesses(regler, mesurer) {
 async function vitesseStockee(e) {
   let pageMode = false;
   const { m, detail } = await mesurerVitesses(async () => {}, async (v) => {
-    const { ctx, page } = await ouvrirPage(browser, cible, e, lien, { init: [initReglages({ vitesse: v })] });
+    const { ctx, page } = await ouvrirPage(browser, cible, e, lien, { init: [initReglages({ vitesse: v }), FEU_FIGE] });
     try {
       if ((await etatLivre(page)).cadrage === 'page') { pageMode = true; return null; }
       return await mesurerTour(page);
@@ -251,7 +297,8 @@ async function vitesseStockee(e) {
 
 // ---- Suite du menu ----------------------------------------------------------------------------------
 async function suiteMenu(e) {
-  const { ctx, page, surv } = await ouvrirPage(browser, cible, e, lien);
+  const { ctx, page, surv } = await ouvrirPage(browser, cible, e, lien, { init: [FEU_FIGE] });
+  await cadence(page);
   const T = (test, cond, d) => R.ok(e.nom, test, cond, d);
   /** Un bloc de tests : une exception n'arrête pas les suivants ; le menu est rouvert au besoin. */
   const bloc = async (nom, f, { menu = true } = {}) => {
@@ -448,8 +495,98 @@ async function suiteMenu(e) {
       const d2 = await premier([ligne(page, 'defaut').getByRole('button', { name: NOMS.defaut }), ligne(page, 'defaut').locator('button'), pan(page).getByRole('button', { name: NOMS.defaut })]);
       await cliquer(page, e, d2);
       const r = await lireReglages(page);
-      const ecarts = Object.entries(REGLAGES_DEFAUT).filter(([k, v]) => r[k] !== v).map(([k]) => `${k}=${r[k]}`);
+      const ecarts = Object.entries(DEFAUT).filter(([k, v]) => r[k] !== v).map(([k]) => `${k}=${r[k]}`);
       T('réglages par défaut : retour aux valeurs du contrat', !ecarts.length, ecarts.join(', '));
+    });
+
+    // 10 bis. Loupe et sons du livre (plan v4) : sur tous les écrans, téléphone compris
+    await bloc('loupe et sons du livre', async () => {
+      const lg = ligne(page, 'loupe');
+      const sl = ligne(page, 'sonsLivre');
+      T('ligne « Loupe » présente (tous les écrans)', (await lg.count()) > 0, `cadrage ${(await etatLivre(page)).cadrage}`);
+      T('ligne « Sons du livre » présente (tous les écrans)', (await sl.count()) > 0);
+      if (!(await lg.count()) || !(await sl.count())) return;
+      const l0 = await lireLoupe(page);
+      T('loupe : 100 % par défaut, bornes 100 – 300 %', l0.valeur === 1 && l0.attr === 'repos' && await lg.getByRole('slider').evaluate((x) => x.getAttribute('aria-valuemin') === '1' && x.getAttribute('aria-valuemax') === '3'), `${l0.texte}, ${l0.attr}`);
+      const r0 = await lireReglages(page);
+      const auto = await premier([sl.getByRole('radio', { name: /auto/i })]);
+      T('sons du livre : « automatique » par défaut (sonsLivre null)', r0.sonsLivre === null && !!auto && await estChoisi(auto), `sonsLivre ${r0.sonsLivre}`);
+      // Loupe : le + de la ligne (pas de 25 % ; sur la feuille du téléphone, la réglette seule), puis → sur la réglette
+      const plus = await premier([lg.getByRole('button', { name: /plus/i })]);
+      if (plus) await cliquer(page, e, plus);
+      else { await lg.getByRole('slider').focus(); await page.keyboard.press('ArrowRight'); }
+      const attendreLoupe = async (attr, ms = 20000) => {
+        const t0 = Date.now();
+        while (Date.now() - t0 < ms && (await lireLoupe(page)).attr !== attr) await page.waitForTimeout(150);
+      };
+      await attendreLoupe('zoome');
+      const l1 = await lireLoupe(page);
+      T(`loupe : ${plus ? '« + » de la ligne' : '→ sur la réglette'} → 125 %, le livre est zoomé`, l1.valeur === 1.25 && l1.attr === 'zoome', `${l1.texte}, ${l1.attr}`);
+      await lg.getByRole('slider').focus();
+      await page.keyboard.press('ArrowRight');
+      await page.waitForTimeout(900);
+      const l2 = await lireLoupe(page);
+      T('loupe : → sur la réglette → 150 %', l2.valeur === 1.5, l2.texte);
+      // Sons du livre : oui, puis mémorisé
+      const oui = await premier([sl.getByRole('radio', { name: /^oui$/i })]);
+      if (oui) await cliquer(page, e, oui);
+      T('sons du livre : « oui » → sonsLivre true (gc:reglages:v1)', (await lireReglages(page)).sonsLivre === true);
+      const vol = await premier([ligne(page, 'volume').getByRole('slider')]);
+      T('volume visible quand les sons du livre sont actifs (Web Audio, iPhone compris)', !!vol);
+      R.capturer(await capture(page, `${e.nom}-menu-loupe`, out), `${e.titre} — menu : Loupe et Sons du livre`);
+      // Remettre par défaut : loupe à 1× aussi
+      const def = await premier([ligne(page, 'defaut').getByRole('button', { name: NOMS.defaut })]);
+      if (def) await cliquer(page, e, def);
+      await attendreLoupe('repos');
+      const l3 = await lireLoupe(page);
+      const r3 = await lireReglages(page);
+      T('remettre par défaut : loupe à 100 % et sons du livre automatiques', l3.attr === 'repos' && l3.valeur === 1 && r3.sonsLivre === null, `${l3.texte}, ${l3.attr}, sonsLivre ${r3.sonsLivre}`);
+      // Persistance de sonsLivre : non, puis rechargement
+      const non = await premier([sl.getByRole('radio', { name: /^non$/i })]);
+      if (non) await cliquer(page, e, non);
+      await fermerMenu(page);
+      await page.reload();
+      await page.waitForTimeout(800);
+      await cadence(page);
+      const r4 = await lireReglages(page);
+      let montre = null;
+      if (await ouvrirMenu(page, e)) {
+        const n2 = await premier([ligne(page, 'sonsLivre').getByRole('radio', { name: /^non$/i })]);
+        montre = !!n2 && await estChoisi(n2);
+        const a2 = await premier([ligne(page, 'sonsLivre').getByRole('radio', { name: /auto/i })]);
+        if (a2) await cliquer(page, e, a2); // retour à l'automatique pour la suite
+      }
+      T('sons du livre : « non » mémorisé après rechargement (sonsLivre false, menu)', r4.sonsLivre === false && montre === true, `sonsLivre ${r4.sonsLivre}, menu ${montre}`);
+      T('loupe : 100 % après rechargement (rien n\'est mémorisé)', (await lireLoupe(page)).valeur === 1);
+    });
+
+    // 10 ter. Ambiance : feu de cheminée et cuisine, lumière du feu (champs du lot S, lus de façon défensive)
+    await bloc('ambiance', async () => {
+      const sec = await page.evaluate((p) => document.querySelector(`${p} [data-gc-reglages-section="ambiance"]`)?.textContent?.trim() ?? null, PANNEAU);
+      T('section « Ambiance » présente', !!sec && /ambiance/i.test(sec), sec ?? 'absente');
+      const la = ligne(page, 'ambiance');
+      const lf = ligne(page, 'feu');
+      T('ligne « Feu de cheminée et cuisine » présente', (await la.count()) > 0);
+      T('ligne « Lumière du feu » présente', (await lf.count()) > 0);
+      if (!(await la.count()) || !(await lf.count())) return;
+      const a0 = await premier([la.getByRole('radio', { name: /auto/i })]);
+      const f0 = await premier([lf.getByRole('radio', { name: /^oui$/i })]);
+      T('ambiance : « automatique » et lumière du feu « oui » par défaut', !!a0 && await estChoisi(a0) && !!f0 && await estChoisi(f0));
+      const stocke = async (cle, v) => (await page.evaluate((k) => { try { return JSON.parse(localStorage.getItem('gc:reglages:v1') || '{}')[k]; } catch { return undefined; } }, cle)) === v;
+      const non = await premier([la.getByRole('radio', { name: /^non$/i })]);
+      if (non) await cliquer(page, e, non);
+      const fnon = await premier([lf.getByRole('radio', { name: /^non$/i })]);
+      if (fnon) await cliquer(page, e, fnon);
+      const ok = (await stocke('ambiance', false)) && (await stocke('feu', false));
+      if (ok) T('ambiance « non » et lumière « non » mémorisées (gc:reglages:v1)', true);
+      else R.attente(e.nom, 'ambiance et lumière du feu mémorisées', 'reglages.ts ne garde pas encore ambiance / feu (lot S)');
+      const def = await premier([ligne(page, 'defaut').getByRole('button', { name: NOMS.defaut })]);
+      if (def) await cliquer(page, e, def);
+      await page.waitForTimeout(400);
+      const a1 = await premier([ligne(page, 'ambiance').getByRole('radio', { name: /auto/i })]);
+      const f1 = await premier([ligne(page, 'feu').getByRole('radio', { name: /^oui$/i })]);
+      T('remettre par défaut : ambiance automatique, lumière du feu oui', !!a1 && await estChoisi(a1) && !!f1 && await estChoisi(f1));
+      R.capturer(await capture(page, `${e.nom}-menu-ambiance`, out), `${e.titre} — menu : section Ambiance`);
     });
 
     // 11. Cibles ≥ 44 px et zone sûre
@@ -511,6 +648,7 @@ async function suiteMenu(e) {
       if (mr && !(await lireReglages(page)).mouvementReduit) { if (!(await panneauVisible(page))) await ouvrirMenu(page, e); await basculer(page, e, 'mouvementReduit'); }
       await page.reload();
       await page.waitForTimeout(800);
+      await cadence(page);
       const rr = await lireReglages(page);
       T('persistance : réglages relus après rechargement', rr.vitesse === 'lente' && (!mr || rr.mouvementReduit === true), `vitesse ${rr.vitesse}, moins d'animations ${rr.mouvementReduit}`);
       if (await ouvrirMenu(page, e)) {
@@ -528,7 +666,8 @@ async function suiteMenu(e) {
 
 /** localStorage.setItem lève : le menu marche encore, sans plantage. */
 async function suiteStockage(e) {
-  const { ctx, page, surv } = await ouvrirPage(browser, cible, e, lien, { init: [initStockageQuiLeve] });
+  const { ctx, page, surv } = await ouvrirPage(browser, cible, e, lien, { init: [initStockageQuiLeve, FEU_FIGE] });
+  await cadence(page);
   try {
     const leve = await page.evaluate(() => { try { localStorage.setItem('x', '1'); return false; } catch { return true; } });
     if (!(await rectDe(page, BOUTON))) { R.attente(e.nom, 'localStorage qui lève : bouton de réglages'); return; }

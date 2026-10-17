@@ -1,4 +1,196 @@
 {
+  "couverture/a/1x/arriere": {
+    "file": "baked/couverture/a/1x/arriere.webp",
+    "sha": "55c7b917362197a287dcc7307cd5a2364e4d4b1f64c044aaf0070a42d80b7f77",
+    "w": 868,
+    "h": 982,
+    "bytes": 223578,
+    "type": "image/webp"
+  },
+  "couverture/a/1x/chant": {
+    "file": "baked/couverture/a/1x/chant.webp",
+    "sha": "d3e542dd44f71290de629089452630707bd19dd36f9976f7c1bd0679751589c6",
+    "w": 10,
+    "h": 982,
+    "bytes": 5528,
+    "type": "image/webp"
+  },
+  "couverture/a/1x/contreplat-arriere": {
+    "file": "baked/couverture/a/1x/contreplat-arriere.webp",
+    "sha": "7079d27b5fb6a2b8c575767cb6bd627bfea5088078ebcf1c27a15456a1d5cba1",
+    "w": 868,
+    "h": 982,
+    "bytes": 28980,
+    "type": "image/webp"
+  },
+  "couverture/a/1x/contreplat": {
+    "file": "baked/couverture/a/1x/contreplat.webp",
+    "sha": "11b1a7702e5a89989fe9285cbf47a343637463c20b6743f2db3b0ba0d2122a7b",
+    "w": 868,
+    "h": 982,
+    "bytes": 29456,
+    "type": "image/webp"
+  },
+  "couverture/a/1x/dos": {
+    "file": "baked/couverture/a/1x/dos.webp",
+    "sha": "373cd9aaf7e7a49c684c7246e94ec58123255e9c1bc252d77de3526aeac2cf9d",
+    "w": 71,
+    "h": 982,
+    "bytes": 28310,
+    "type": "image/webp"
+  },
+  "couverture/a/1x/etiquette": {
+    "file": "baked/couverture/a/1x/etiquette.webp",
+    "sha": "796b27a7fd2be207a9f6ceee48c19a0175469f62d94fe539263d83200c6812c8",
+    "w": 539,
+    "h": 302,
+    "bytes": 34720,
+    "type": "image/webp"
+  },
+  "couverture/a/1x/plat": {
+    "file": "baked/couverture/a/1x/plat.webp",
+    "sha": "8ccaaa6b6ffc838f85aa9d176c7f6a74c0911eebabd9054f6f41091286d1d78a",
+    "w": 868,
+    "h": 982,
+    "bytes": 215690,
+    "type": "image/webp"
+  },
+  "couverture/a/1x/tranche-pied": {
+    "file": "baked/couverture/a/1x/tranche-pied.webp",
+    "sha": "3d7a44db02b577007c4fe6b303f82c4c6d96bb40a72924190f712b1e23f76dda",
+    "w": 850,
+    "h": 40,
+    "bytes": 1140,
+    "type": "image/webp"
+  },
+  "couverture/a/1x/tranche": {
+    "file": "baked/couverture/a/1x/tranche.webp",
+    "sha": "f0c675e54d6e7653f3326c8c3e006cced2907db2b6ae23a6e122d652ba682e80",
+    "w": 40,
+    "h": 960,
+    "bytes": 1112,
+    "type": "image/webp"
+  },
+  "couverture/a/arriere": {
+    "file": "baked/couverture/a/arriere.webp",
+    "sha": "a61c7110422850c747d5bf2ceba408da2c21e2292256da44241e423b3c4017ab",
+    "w": 1736,
+    "h": 1964,
+    "bytes": 487024,
+    "type": "image/webp"
+  },
+  "couverture/a/chant": {
+    "file": "baked/couverture/a/chant.webp",
+    "sha": "1cc1765a78544febbcc7748575e5cc18623dcb5d00fd2ae9f6fcfe1615b05161",
+    "w": 20,
+    "h": 1964,
+    "bytes": 14038,
+    "type": "image/webp"
+  },
+  "couverture/a/contreplat-arriere": {
+    "file": "baked/couverture/a/contreplat-arriere.webp",
+    "sha": "f54e6b1e45464ad6638e3562a9d8365db12c5b8e6ab2f6878348e0e2682b8dae",
+    "w": 1736,
+    "h": 1964,
+    "bytes": 100942,
+    "type": "image/webp"
+  },
+  "couverture/a/contreplat": {
+    "file": "baked/couverture/a/contreplat.webp",
+    "sha": "2175447bcb4e32a21cbfd9987fe6f1f3035d044ae912931b317c585d6037418f",
+    "w": 1736,
+    "h": 1964,
+    "bytes": 102684,
+    "type": "image/webp"
+  },
+  "couverture/a/dos": {
+    "file": "baked/couverture/a/dos.webp",
+    "sha": "c74127c21388ef131968868bdb9a8134b3445a3fb3a855a86f9625fa02c79119",
+    "w": 142,
+    "h": 1964,
+    "bytes": 80146,
+    "type": "image/webp"
+  },
+  "couverture/a/etiquette": {
+    "file": "baked/couverture/a/etiquette.webp",
+    "sha": "e11f0b25183bf1e24d10867edc1518ad8e9fb2447dd410f8a980c136ecc7f754",
+    "w": 1078,
+    "h": 604,
+    "bytes": 95002,
+    "type": "image/webp"
+  },
+  "couverture/a/plat": {
+    "file": "baked/couverture/a/plat.webp",
+    "sha": "69e65980995915cdfc1898117e210a0afc39cc733b00493f248b85a6a3781b32",
+    "w": 1736,
+    "h": 1964,
+    "bytes": 484592,
+    "type": "image/webp"
+  },
+  "couverture/a/tranche-pied": {
+    "file": "baked/couverture/a/tranche-pied.webp",
+    "sha": "3c5fa3ac0633240c988bc76a2f8193691f75ad89894c536c5b316ff00913c1e8",
+    "w": 1700,
+    "h": 80,
+    "bytes": 2738,
+    "type": "image/webp"
+  },
+  "couverture/a/tranche": {
+    "file": "baked/couverture/a/tranche.webp",
+    "sha": "a636d2fefc171f210103829ef048dfa4b5ffbdef21b85cbeef8789fc7c8db8b7",
+    "w": 80,
+    "h": 1920,
+    "bytes": 3632,
+    "type": "image/webp"
+  },
+  "indices/cliquer-crayon": {
+    "file": "baked/indices/cliquer-crayon.webp",
+    "sha": "44c9d9fae790bcdb5b5c0e3fd31fd0578f3fc4dff5c1336f9a902609a8c4dff5",
+    "w": 774,
+    "h": 108,
+    "bytes": 13148,
+    "type": "image/webp"
+  },
+  "indices/cliquer": {
+    "file": "baked/indices/cliquer.webp",
+    "sha": "c8af6fe7d1cb6c59b8dba15c7cb4b5c10ea0851f79238d3991b7859105739760",
+    "w": 818,
+    "h": 172,
+    "bytes": 30404,
+    "type": "image/webp"
+  },
+  "indices/entree-crayon": {
+    "file": "baked/indices/entree-crayon.webp",
+    "sha": "22bccce0e2a7d6a21c273d6907b3585eda79c77ba5bfc2c49a5040af697d7ac9",
+    "w": 1248,
+    "h": 108,
+    "bytes": 22104,
+    "type": "image/webp"
+  },
+  "indices/entree": {
+    "file": "baked/indices/entree.webp",
+    "sha": "c4b2934e1026c24feef13fb793b1acee6937ed44841a835758f75d6973ea84ea",
+    "w": 1292,
+    "h": 174,
+    "bytes": 46594,
+    "type": "image/webp"
+  },
+  "indices/toucher-crayon": {
+    "file": "baked/indices/toucher-crayon.webp",
+    "sha": "fdaaaeb7fee686c6d357a963c45e1f2f4127a9d45b8a98e0028ae3a9a484dd68",
+    "w": 814,
+    "h": 108,
+    "bytes": 13258,
+    "type": "image/webp"
+  },
+  "indices/toucher": {
+    "file": "baked/indices/toucher.webp",
+    "sha": "21b16774c150bdd50bfb868072ffe44067593b1238148a992870a3992ad7c05e",
+    "w": 858,
+    "h": 172,
+    "bytes": 32440,
+    "type": "image/webp"
+  },
   "pages/1x/fin-droite": {
     "file": "baked/pages/1x/fin-droite.webp",
     "sha": "fc1585b000809b7bd33c87c04a09e579d112a29a097b3748d8406076404566da",
@@ -407,6 +599,204 @@
     "bytes": 187094,
     "type": "image/webp"
   },
+  "sons/ambiance-feu": {
+    "file": "baked/sons/ambiance-feu.mp3",
+    "sha": "a1bdc58d6124812700dc71d6fd4a78f0beb8de3399f02ac0b3e1b21f7213c57e",
+    "w": 0,
+    "h": 0,
+    "bytes": 534798,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/coin-1": {
+    "file": "baked/sons/coin-1.mp3",
+    "sha": "ea8d2c1244b9d70799230ada1943aedd752ef914f60b359828e267211bdc6287",
+    "w": 0,
+    "h": 0,
+    "bytes": 5035,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/coin-2": {
+    "file": "baked/sons/coin-2.mp3",
+    "sha": "3cbfb2908c14ae06cb30b20d280fbee1289ea1770e994a8041ac8a99a3f293cf",
+    "w": 0,
+    "h": 0,
+    "bytes": 4722,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/couverture-fermer": {
+    "file": "baked/sons/couverture-fermer.mp3",
+    "sha": "4a3309289093b6f642b1076f130fe24ed2eb871f8ff44512792d62153a4be374",
+    "w": 0,
+    "h": 0,
+    "bytes": 12245,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/couverture-ouvrir": {
+    "file": "baked/sons/couverture-ouvrir.mp3",
+    "sha": "83b421d0ebc845b26313bbe2d1fb069bcf4d60ed4792bbe67b0a9a9d7de73908",
+    "w": 0,
+    "h": 0,
+    "bytes": 15693,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/couverture-poser": {
+    "file": "baked/sons/couverture-poser.mp3",
+    "sha": "95bf70e5373d6415a4e000a504144d547e943d14e8b4c50548e211eb1b1f4f70",
+    "w": 0,
+    "h": 0,
+    "bytes": 5975,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-boite": {
+    "file": "baked/sons/cuisine-boite.mp3",
+    "sha": "a4a1fbf3c350b5daef41bbd23d4f61014494f3fafd55dbc8ee8055d23432e62d",
+    "w": 0,
+    "h": 0,
+    "bytes": 21962,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-bouilloire": {
+    "file": "baked/sons/cuisine-bouilloire.mp3",
+    "sha": "d40f2ea316bc5f8b879e24e62a6aeafbce59b3666223d2fdb04b6bc72951e564",
+    "w": 0,
+    "h": 0,
+    "bytes": 96882,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-cuillere": {
+    "file": "baked/sons/cuisine-cuillere.mp3",
+    "sha": "3b261fd175fd5cda93ff126ad1580a99775df956fbc2b4483d42812c609989a3",
+    "w": 0,
+    "h": 0,
+    "bytes": 39203,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-tasse-1": {
+    "file": "baked/sons/cuisine-tasse-1.mp3",
+    "sha": "349e7d534c5b7bbc2a8fe958746fb026c106fbba0f39448c246440309acdad8a",
+    "w": 0,
+    "h": 0,
+    "bytes": 9110,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-tasse-2": {
+    "file": "baked/sons/cuisine-tasse-2.mp3",
+    "sha": "1730b5591f289158608597971c2600bfba3e2599b4aafab4b210ef546b91aa2b",
+    "w": 0,
+    "h": 0,
+    "bytes": 14753,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-the": {
+    "file": "baked/sons/cuisine-the.mp3",
+    "sha": "5538888dd5e50b47dccf510244083c09bbdbfee4158c20914f3ca91de83e94c4",
+    "w": 0,
+    "h": 0,
+    "bytes": 24470,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/feuillet-1": {
+    "file": "baked/sons/feuillet-1.mp3",
+    "sha": "45b3b625e3056978ee458a985e7dc509aeb63e0d9e9fe7fe26490e8ef0af9357",
+    "w": 0,
+    "h": 0,
+    "bytes": 6602,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/feuillet-2": {
+    "file": "baked/sons/feuillet-2.mp3",
+    "sha": "3c008d41ed694757e05cf61b39e86a76c023c1f71bfb0e932d4a79ac9373b5ed",
+    "w": 0,
+    "h": 0,
+    "bytes": 5662,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/page-1": {
+    "file": "baked/sons/page-1.mp3",
+    "sha": "09c18fdec1eb673c1379de5d01625bd7d0bd365f8129625079f4a51b08d07b56",
+    "w": 0,
+    "h": 0,
+    "bytes": 10364,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/page-2": {
+    "file": "baked/sons/page-2.mp3",
+    "sha": "87de0e44795e7beb773f6f4ae6bbc4dac66603f7c56e4a05da25f84189b75713",
+    "w": 0,
+    "h": 0,
+    "bytes": 10364,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/page-3": {
+    "file": "baked/sons/page-3.mp3",
+    "sha": "1adbf31cc69cd43ebe56c6e86eed77048b36457125cf0e94dbb4c93e4ed20cba",
+    "w": 0,
+    "h": 0,
+    "bytes": 9424,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/page-4": {
+    "file": "baked/sons/page-4.mp3",
+    "sha": "4ee5d3c6007d7baa84a4b7253ee0783c94a3832d5cd9949447e424d841e3e967",
+    "w": 0,
+    "h": 0,
+    "bytes": 10051,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/page-5": {
+    "file": "baked/sons/page-5.mp3",
+    "sha": "a8c2de223dd6e8865f85e521f2c01d63bb9bbcf1199528e56ca3197d3117ac3b",
+    "w": 0,
+    "h": 0,
+    "bytes": 9424,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/photo-lever": {
+    "file": "baked/sons/photo-lever.mp3",
+    "sha": "0732c14b95a4c65459a8fd0458b0a37391699691530c685faa564e692fc40cf6",
+    "w": 0,
+    "h": 0,
+    "bytes": 5349,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/photo-poser": {
+    "file": "baked/sons/photo-poser.mp3",
+    "sha": "60482809c8824063b4105cbd6e52ec98b24444215c4b0fbfe3f5639052444852",
+    "w": 0,
+    "h": 0,
+    "bytes": 1900,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/riffle": {
+    "file": "baked/sons/riffle.mp3",
+    "sha": "0d738dbeb0143971cd584c75158d0222c2c5c7c4024364903bd2f0cc1fd9c82c",
+    "w": 0,
+    "h": 0,
+    "bytes": 11931,
+    "type": "audio/mpeg",
+    "site": true
+  },
   "videos/bernard-affiche": {
     "file": "baked/videos/bernard-affiche.webp",
     "sha": "dc6a0985887760d883b179c919d97dfcf9af9afbe4cd470267e31a533862ceca",
@@ -421,7 +811,8 @@
     "w": 0,
     "h": 0,
     "bytes": 1154484,
-    "type": "video/mp4"
+    "type": "video/mp4",
+    "site": true
   },
   "videos/julie-affiche": {
     "file": "baked/videos/julie-affiche.webp",
@@ -437,7 +828,8 @@
     "w": 0,
     "h": 0,
     "bytes": 1355336,
-    "type": "video/mp4"
+    "type": "video/mp4",
+    "site": true
   },
   "videos/lisa-affiche": {
     "file": "baked/videos/lisa-affiche.webp",
@@ -453,7 +845,8 @@
     "w": 0,
     "h": 0,
     "bytes": 1770500,
-    "type": "video/mp4"
+    "type": "video/mp4",
+    "site": true
   },
   "videos/mathis-affiche": {
     "file": "baked/videos/mathis-affiche.webp",
@@ -469,7 +862,8 @@
     "w": 0,
     "h": 0,
     "bytes": 1493147,
-    "type": "video/mp4"
+    "type": "video/mp4",
+    "site": true
   },
   "videos/rose-affiche": {
     "file": "baked/videos/rose-affiche.webp",
@@ -485,6 +879,7 @@
     "w": 0,
     "h": 0,
     "bytes": 1379857,
-    "type": "video/mp4"
+    "type": "video/mp4",
+    "site": true
   }
 }
