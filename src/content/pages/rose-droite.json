@@ -1,56 +1,56 @@
 {
-  "id": "rose-droite",
-  "double": "rose",
-  "cote": "droite",
-  "folio": 15,
-  "graine": 812,
-  "gabarit": "D",
-  "main": "mamie",
-  "encre": "brune",
-  "blocs": [
-    {
-      "id": "courant",
-      "type": "courant",
-      "texte": "Mamie Rose"
-    },
-    {
-      "id": "note",
-      "type": "note",
-      "texte": "__Les garder dans la boîte en fer.__",
-      "avant": 0.1,
-      "alinea": 0.12
-    },
-    {
-      "id": "titre",
-      "type": "titre",
-      "texte": "Pour Noël",
-      "position": "decale",
-      "souligne": "trait",
-      "avant": 0.3,
-      "graine": 4471
-    },
-    {
-      "id": "noel",
-      "type": "paragraphe",
-      "avant": 0.1,
-      "alinea": 0.05,
-      "texte": "Je remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.",
-      "graine": 5
-    },
-    {
-      "id": "croquis-recette",
-      "type": "croquis",
-      "nom": [
-        "farine"
-      ],
-      "taille": [
-        0.17,
-        0.17
-      ],
-      "pres": [
-        0.72,
-        0.6
-      ]
-    }
-  ]
+ "id": "rose-droite",
+ "double": "rose",
+ "cote": "droite",
+ "folio": 15,
+ "graine": 812,
+ "gabarit": "D",
+ "main": "mamie",
+ "encre": "brune",
+ "blocs": [
+  {
+   "id": "courant",
+   "type": "courant",
+   "texte": "Mamie Rose"
+  },
+  {
+   "id": "note",
+   "type": "note",
+   "texte": "__Les garder dans la boîte en fer.__",
+   "avant": 0.1,
+   "alinea": 0.12
+  },
+  {
+   "id": "titre",
+   "type": "titre",
+   "texte": "Pour Noël",
+   "position": "decale",
+   "souligne": "trait",
+   "avant": 0.3,
+   "graine": 4471
+  },
+  {
+   "id": "noel",
+   "type": "paragraphe",
+   "avant": 0.1,
+   "alinea": 0.05,
+   "texte": "Je remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.",
+   "graine": 31681
+  },
+  {
+   "id": "croquis-recette",
+   "type": "croquis",
+   "nom": [
+    "farine"
+   ],
+   "taille": [
+    0.17,
+    0.17
+   ],
+   "pres": [
+    0.72,
+    0.6
+   ]
+  }
+ ]
 }

@@ -27,7 +27,7 @@
    "signature": "Mathis",
    "largeur": 0.46,
    "_": "Mot d'exemple : Mathis est un invité fictif de démonstration (aucun vrai message).",
-   "graine": 51819,
+   "graine": 59738,
    "position": "bandeau"
   },
   {
@@ -35,7 +35,8 @@
    "type": "titre",
    "texte": "Les cookies de Mathis",
    "position": "fer",
-   "souligne": "double"
+   "souligne": "double",
+   "graine": 66
   },
   {
    "id": "ingredients",
@@ -54,7 +55,7 @@
    ],
    "fin": ".",
    "alinea": 0.0,
-   "graine": 99347
+   "graine": 123104
   },
   {
    "id": "preparation",
