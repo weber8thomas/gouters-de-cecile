@@ -1,0 +1,26 @@
+export {
+  Couverture,
+  EtiquetteCouverture,
+  IndiceOuvrir,
+  couvertureVars,
+  nomCouverture,
+  COUVERTURE_CUITE,
+  VARIANTE_COUVERTURE,
+  INDICES_OUVRIR,
+  INDICES_OUVRIR_CRAYON,
+  TEXTES_OUVRIR,
+} from './Couverture';
+export type {
+  CouvertureProps,
+  EtiquetteCouvertureProps,
+  IndiceOuvrirProps,
+  CouvertureManifeste,
+  VarianteCouvertureInfo,
+  IndiceOuvrirInfo,
+  PartieCouverture,
+  PartieCuiteInfo,
+  DensiteCouverture,
+  ModaliteOuvrir,
+  FaceCouverture,
+  RectPlat,
+} from './Couverture';

@@ -1,0 +1,61 @@
+/* Couverture cuite (lot C) : images posées par variables CSS (couvertureVars), aucune URL ici. */
+
+/* Une face seule, à la proportion du plat (868 × 982). */
+.gc-couverture {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 868 / 982;
+  background-color: var(--gc-couv-fond, var(--gc-couv-teinte, var(--gc-sage-500)));
+  background-repeat: no-repeat;
+  background-size: var(--gc-couv-plat-taille, 100% 100%);
+  border-radius: 2px 7px 7px 2px;
+}
+
+.gc-couverture--avant { background-image: var(--gc-couv-plat, none); }
+
+.gc-couverture--arriere {
+  background-image: var(--gc-couv-arriere, none);
+  border-radius: 7px 2px 2px 7px;
+}
+
+.gc-couverture--contreplat {
+  background-image: var(--gc-couv-contreplat, none);
+  border-radius: 7px 2px 2px 7px;
+}
+
+.gc-couverture--contreplat-arriere { background-image: var(--gc-couv-contreplat-arriere, none); }
+
+/* Contenu du plat : l'étiquette cuite, à sa place (fractions du plat). Remplit son parent positionné. */
+.gc-couv-etiquette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.gc-couv-etiquette__image {
+  position: absolute;
+  display: block;
+  max-width: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Le titre réel (lecteurs d'écran), invisible. */
+.gc-couv-etiquette__titre {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.gc-couv-indice {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
