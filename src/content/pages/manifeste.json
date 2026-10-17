@@ -59,13 +59,13 @@
    },
    "texte": "Biscuits\nMamie Rose, Mathis et Bernard",
    "vivants": {
-    "aq-ble": [
+    "aq-sables": [
      0.27,
      0.4,
      0.17,
      0.224
     ],
-    "aq-vanille": [
+    "aq-cookies": [
      0.46,
      0.41,
      0.3,
@@ -75,13 +75,13 @@
    "deborde": [],
    "lignes": 1,
    "aquarelles": {
-    "aq-ble": {
-     "aquarelle": "ble",
+    "aq-sables": {
+     "aquarelle": "sables-etoiles",
      "anime": "balance",
      "angle": -6
     },
-    "aq-vanille": {
-     "aquarelle": "vanille",
+    "aq-cookies": {
+     "aquarelle": "cookies",
      "anime": "balance",
      "angle": 4
     }
@@ -1640,7 +1640,7 @@
      0.34,
      0.309
     ],
-    "aq-ble": [
+    "aq-sables": [
      0.2,
      0.48,
      0.13,
@@ -1655,8 +1655,8 @@
      "anime": "balance",
      "angle": 5
     },
-    "aq-ble": {
-     "aquarelle": "ble",
+    "aq-sables": {
+     "aquarelle": "sables-etoiles",
      "anime": "balance",
      "angle": -4
     }
