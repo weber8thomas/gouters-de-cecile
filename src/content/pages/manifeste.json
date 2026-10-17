@@ -1413,34 +1413,12 @@
    "lignes": 8,
    "croquis": [
     {
-     "nom": "pomme",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.0602,
-      0.4056,
-      0.0247,
-      0.0175
-     ]
-    },
-    {
-     "nom": "beurre",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.8695,
-      0.4277,
-      0.025,
-      0.0177
-     ]
-    },
-    {
      "nom": "tasse",
      "role": "dessin",
      "dessine": true,
      "boite": [
-      0.7135,
-      0.513,
+      0.7123,
+      0.511,
       0.17,
       0.1204
      ]
@@ -1539,9 +1517,6 @@
       0.1133
      ]
     }
-   ],
-   "croquis_non_places": [
-    "beurre (mot « beurre » introuvable)"
    ],
    "douteux": [
     "50 (groupe « 50 g » lu « 50 9 »)",
@@ -1710,55 +1685,21 @@
    },
    "deborde": [],
    "lignes": 11,
-   "croquis": [
-    {
-     "nom": "beurre",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.0326,
-      0.3877,
-      0.0229,
-      0.0162
-     ]
-    },
-    {
-     "nom": "oeuf",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.0366,
-      0.4366,
-      0.0199,
-      0.0141
-     ]
-    },
-    {
-     "nom": "citron",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.1359,
-      0.4656,
-      0.0222,
-      0.0158
-     ]
-    }
-   ],
    "douteux": [
     "Mamie (encre rendue lue « Namie »)",
     "1 (encre rendue lue « d »)",
-    "1 (encre rendue lue « # »)",
-    "cannelle (encre rendue lue « canneille »)",
+    "sel, (encre rendue lue « seh »)",
+    "1 (encre rendue lue « 1 »)",
     "beurre (encre rendue lue « benrre »)",
-    "sel, (encre rendue lue « seh »)"
+    "sel, (encre rendue lue « seh »)",
+    "½ cm, (encre rendue lue « 1/2 cm »)"
    ],
    "douteux_importants": [
     "1",
     "Mamie",
     "beurre",
-    "cannelle",
-    "sel,"
+    "sel,",
+    "½ cm,"
    ],
    "relu": true
   },

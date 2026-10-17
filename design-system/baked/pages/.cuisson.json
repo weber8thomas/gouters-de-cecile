@@ -149,7 +149,7 @@
    "relu": true
   }
  },
- "papier/f17": "4172e15fc90000fbcde4ed4e9b6b4b32f2e060022d112bc0a365791b0e4f6b96",
+ "papier/f17": "eb1980209f60706b4d9e703c90c140b2c0c6057c29b4abd3a75162da27a85152",
  "page/fin-gauche": {
   "cle": "356d46c36307de70ded3f7c7859128f776022792e2b7cbd0d177c9ba6ab6488e",
   "manifeste": {
@@ -304,7 +304,7 @@
   }
  },
  "page/mathis-droite": {
-  "cle": "96c4728f48680e120d2782a9e9da5b9ccf574f4dfdaed3aff3e360730d11bd26",
+  "cle": "d7fe7ea03c0b3d56770273685b5711bec50094aa209302780265de51e25e78a0",
   "manifeste": {
    "double": "mathis",
    "cote": "droite",
@@ -370,34 +370,12 @@
    "lignes": 8,
    "croquis": [
     {
-     "nom": "pomme",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.0602,
-      0.4056,
-      0.0247,
-      0.0175
-     ]
-    },
-    {
-     "nom": "beurre",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.8695,
-      0.4277,
-      0.025,
-      0.0177
-     ]
-    },
-    {
      "nom": "tasse",
      "role": "dessin",
      "dessine": true,
      "boite": [
-      0.7135,
-      0.513,
+      0.7123,
+      0.511,
       0.17,
       0.1204
      ]
@@ -424,7 +402,7 @@
  },
  "papier/f15": "94020aa90e1490e0b157c253afa507c5ebad0eb1d0a3becd16524950261e9795",
  "page/mathis-gauche": {
-  "cle": "146edc131dbf5040737c95b49c7b99d5c9e84e6109ca25508ec9e9471ca35011",
+  "cle": "039f5d06d4616bf40217e5fa95a8c14fd287244af37db4fc73554ff98e552799",
   "manifeste": {
    "double": "mathis",
    "cote": "gauche",
@@ -501,9 +479,6 @@
      ]
     }
    ],
-   "croquis_non_places": [
-    "beurre (mot « beurre » introuvable)"
-   ],
    "douteux": [
     "50 (groupe « 50 g » lu « 50 9 »)",
     "pépites (groupe « pépites » lu « petites »)",
@@ -533,7 +508,7 @@
   }
  },
  "page/rose-droite": {
-  "cle": "e7ddead705c797cfbf4ffe396dd094652b3c3e58d07d6d834083f5e657bd4862",
+  "cle": "0b804f9b724da9965106b65b257564762f72d5809cb544a483374a0afd958973",
   "manifeste": {
    "double": "rose",
    "cote": "droite",
@@ -613,7 +588,7 @@
   }
  },
  "page/rose-gauche": {
-  "cle": "2a91992086669fc27ed2ad414110a64c4e47d11f0315f5500a68963b3bbed118",
+  "cle": "b8f48dacf7010401a5c73953a0cf2c13212dcff3f5b13bef5207f45391f561f9",
   "manifeste": {
    "double": "rose",
    "cote": "gauche",
@@ -677,61 +652,27 @@
    },
    "deborde": [],
    "lignes": 11,
-   "croquis": [
-    {
-     "nom": "beurre",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.0326,
-      0.3877,
-      0.0229,
-      0.0162
-     ]
-    },
-    {
-     "nom": "oeuf",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.0366,
-      0.4366,
-      0.0199,
-      0.0141
-     ]
-    },
-    {
-     "nom": "citron",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.1359,
-      0.4656,
-      0.0222,
-      0.0158
-     ]
-    }
-   ],
    "douteux": [
     "Mamie (encre rendue lue « Namie »)",
     "1 (encre rendue lue « d »)",
-    "1 (encre rendue lue « # »)",
-    "cannelle (encre rendue lue « canneille »)",
+    "sel, (encre rendue lue « seh »)",
+    "1 (encre rendue lue « 1 »)",
     "beurre (encre rendue lue « benrre »)",
-    "sel, (encre rendue lue « seh »)"
+    "sel, (encre rendue lue « seh »)",
+    "½ cm, (encre rendue lue « 1/2 cm »)"
    ],
    "douteux_importants": [
     "1",
     "Mamie",
     "beurre",
-    "cannelle",
-    "sel,"
+    "sel,",
+    "½ cm,"
    ],
    "relu": true
   }
  },
  "papier1x/f19": "9a7d5989de1eae4f4284bec72c89e26045e4bc038f6ef0a91e94bc37c5f54e5f",
- "papier1x/f17": "4172e15fc90000fbcde4ed4e9b6b4b32f2e060022d112bc0a365791b0e4f6b96",
+ "papier1x/f17": "eb1980209f60706b4d9e703c90c140b2c0c6057c29b4abd3a75162da27a85152",
  "papier1x/f13": "48c76ed3d2c190feeedc31a744a926981fe305ce273c0880a66d0fa4a339724d",
  "papier1x/f11": "c3bbb7aa5fa283095f101a4b501d53940b70aeff584c59142722e1f5a594f3fb",
  "papier1x/f15": "94020aa90e1490e0b157c253afa507c5ebad0eb1d0a3becd16524950261e9795",
@@ -2811,6 +2752,6 @@
  },
  "papier/f23": "e1d4f1a6032eeaa1a05c469941ce19a4ba8ccaf5e2e3cf2841e14a5eab85e6f7",
  "papier1x/f23": "e1d4f1a6032eeaa1a05c469941ce19a4ba8ccaf5e2e3cf2841e14a5eab85e6f7",
- "papier/f21": "e4836a8460f20f05335a0cbeab82b1054a27ef6b6cd1fd7fb4aa4bceea49df6c",
- "papier1x/f21": "e4836a8460f20f05335a0cbeab82b1054a27ef6b6cd1fd7fb4aa4bceea49df6c"
+ "papier/f21": "266e338e58e61b142562aa6de3f99cbb1b09f78d8782e689a6fbe0497d65bc63",
+ "papier1x/f21": "266e338e58e61b142562aa6de3f99cbb1b09f78d8782e689a6fbe0497d65bc63"
 }

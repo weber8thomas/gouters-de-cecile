@@ -63,14 +63,7 @@
    "avant": 0.25,
    "alinea": 0.0,
    "texte": "Mélange tout, mets __beaucoup__ de pépites !! 10 min à 170 °C, ils restent mous au milieu.",
-   "graine": 905079,
-   "icones": [
-    {
-     "mot": "beurre",
-     "nom": "beurre",
-     "place": "marge"
-    }
-   ]
+   "graine": 905079
   },
   {
    "id": "croquis-recette",
