@@ -27,11 +27,14 @@ export interface Grain {
   etoile?: boolean;
   /** Enveloppe : 0 = s'éteint peu à peu, 1 = s'allume puis s'éteint (scintillement). */
   enveloppe?: 0 | 1;
-  /** Traînée : deux reflets en arrière sur la vitesse. */
+  /** Traînée : trois reflets en arrière sur la vitesse. */
   trainee?: boolean;
   /** Ondoiement latéral (px/s) : la braise qui monte, la paillette qui tombe en feuille morte. */
   ondule?: number;
 }
+
+/** Reflets de la traînée : retard (s), taille, éclat. */
+const TRAINEE: readonly (readonly [number, number, number])[] = [[0.012, 0.85, 0.55], [0.026, 0.68, 0.32], [0.044, 0.5, 0.16]];
 
 export class Grains {
   readonly max: number;
@@ -126,12 +129,14 @@ export class Grains {
       const etoile = d & 1;
       const s = this.taille[i] * this.grossir * (etoile ? 0.55 + 0.45 * e : 1);
       o = point(buf, o, this.x[i], this.y[i], s, etoile ? GENRE.etoile : GENRE.halo, this.r[i] * e, this.g[i] * e, this.b[i] * e, 0, 0);
-      if (d & 4 && o < cap - 1) {
+      if (d & 4 && o < cap - 2) {
         const vx = this.vx[i];
         const vy = this.vy[i];
         if (vx * vx + vy * vy > 3600) {
-          o = point(buf, o, this.x[i] - vx * 0.014, this.y[i] - vy * 0.014, s * 0.8, GENRE.halo, this.r[i] * e * 0.5, this.g[i] * e * 0.5, this.b[i] * e * 0.5, 0, 0);
-          o = point(buf, o, this.x[i] - vx * 0.03, this.y[i] - vy * 0.03, s * 0.62, GENRE.halo, this.r[i] * e * 0.24, this.g[i] * e * 0.24, this.b[i] * e * 0.24, 0, 0);
+          // la traînée : trois reflets en arrière sur la vitesse, qui pâlissent et s'affinent
+          for (const [dt, k, a] of TRAINEE) {
+            o = point(buf, o, this.x[i] - vx * dt, this.y[i] - vy * dt, s * k, GENRE.halo, this.r[i] * e * a, this.g[i] * e * a, this.b[i] * e * a, 0, 0);
+          }
         }
       }
     }

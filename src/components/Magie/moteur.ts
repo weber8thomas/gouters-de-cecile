@@ -98,7 +98,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   const tactile = typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
 
   // ---- Tampons --------------------------------------------------------------------------------------
-  const MAX_POINTS = tactile ? 1400 : 2600;
+  const MAX_POINTS = tactile ? 2200 : 4400;
   const points = new Float32Array(MAX_POINTS * POINT);
   const bPoints = gl.createBuffer()!;
   gl.bindBuffer(gl.ARRAY_BUFFER, bPoints);
@@ -153,6 +153,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   let vide = false;
   let endormi = false;
   const bouge = new Map<string, number>(); // gestes de caméra (arrivée, zoom…) : on ne mesure pas pendant
+  const compte = { etincelles: 0, bords: 0 }; // débogage
 
   const versScene = (x: number, y: number): [number, number] => [(x - cr.left) / q, (y - cr.top) / q];
   const reduit = () => L.reduit();
@@ -288,6 +289,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
 
   // ---- Les gerbes ------------------------------------------------------------------------------------
   function etincelle(x: number, y: number, vx: number, vy: number, gros = 1): void {
+    compte.etincelles++;
     const etoile = Math.random() < 0.11;
     grains.ajouter({
       x, y, vx, vy,
@@ -299,6 +301,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   }
 
   function gerbeDuBord(b: { x: number; y0: number; y1: number }, avant_: { x: number }, dt: number): void {
+    compte.bords++;
     const dx = b.x - avant_.x;
     const ad = Math.abs(dx);
     lueur = Math.min(1, Math.max(lueur, ad / Math.max(1e-3, dt) / 1500));
@@ -390,16 +393,16 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       }
       plusTard(quand + MONTEE, () => {
         if (reduit()) return;
-        grains.ajouter({ x: cx, y: cy, vie: 0.45, taille: 120, couleur: ORS[3], lum: 0.6, frein: 0 });
-        grains.ajouter({ x: cx, y: cy, vie: 0.7, taille: 46, etoile: true, enveloppe: 1, couleur: ORS[3], frein: 0, lum: 1 });
-        const n = tactile ? 40 : 72;
+        grains.ajouter({ x: cx, y: cy, vie: 0.5, taille: 150, couleur: ORS[3], lum: 0.7, frein: 0 });
+        grains.ajouter({ x: cx, y: cy, vie: 0.8, taille: 60, etoile: true, enveloppe: 1, couleur: ORS[3], frein: 0, lum: 1 });
+        const n = tactile ? 44 : 80;
         for (let i = 0; i < n; i++) {
           const a = (i / n) * Math.PI * 2 + Math.random() * 0.15;
-          const v = 220 + Math.random() * 170;
+          const v = 260 + Math.random() * 190;
           grains.ajouter({
             x: cx, y: cy, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 30,
-            vie: 1.3 + Math.random() * 0.8, taille: 4.5 + Math.random() * 3.5, grav: 90, frein: 1.5, trainee: true,
-            couleur: unOr(Math.random() * 0.8), lum: 1,
+            vie: 1.6 + Math.random() * 0.9, taille: 6 + Math.random() * 5, grav: 80, frein: 1.3, trainee: true,
+            couleur: unOr(Math.random() * 0.8), lum: 1.1,
           });
         }
         // une pluie de paillettes qui retombe en feuille morte, puis un crépitement d'étoiles
@@ -969,7 +972,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     return { page: v.id, bloc: t.bloc, x: cr.left + a * q, y: cr.top + b * q, w: (c - a) * q, h: (d - b) * q };
   };
   const debug = {
-    etat: () => ({ k, q, pages: pages.map((v) => ({ id: v.id, ecrite: v.ecrite, orn: etats.get(v.id)?.ornements?.length ?? 0, fini: etats.get(v.id)?.fini })), grains: grains.n, photos: photos.vivantes.length, calme, enGeste, horloge, flamme: [poussiere.fx, poussiere.fy], poussiereVue, toile: [toile.width, toile.height] }),
+    etat: () => ({ k, q, pages: pages.map((v) => ({ id: v.id, ecrite: v.ecrite, orn: etats.get(v.id)?.ornements?.length ?? 0, fini: etats.get(v.id)?.fini })), grains: grains.n, photos: photos.vivantes.length, compte, bord: bordAvant, calme, enGeste, horloge, flamme: [poussiere.fx, poussiere.fy], poussiereVue, toile: [toile.width, toile.height] }),
     feuDArtifice: () => { const g = L.geo(); if (g) feuDArtifice(g); reveiller(); },
     pas: () => { const ok = lancerPromenade(); reveiller(); return ok; },
     // reflet() et paraphe() : sur le plus grand titre de la première page qui en a un ; rendent son rectangle
