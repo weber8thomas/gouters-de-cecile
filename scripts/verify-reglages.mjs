@@ -305,7 +305,7 @@ async function mesurerVitesses(regler, mesurer) {
 async function vitesseStockee(e) {
   let pageMode = false;
   const { m, detail } = await mesurerVitesses(async () => {}, async (v) => {
-    const { ctx, page } = await ouvrirPage(browser, cible, e, lien, { init: [initReglages({ vitesseAnimations: FACTEURS[v] }), FEU_FIGE] });
+    const { ctx, page } = await ouvrirPage(browser, cible, e, lien, { init: [initReglages({ vitesse: v, vitesseAnimations: FACTEURS[v] }), FEU_FIGE] });
     try {
       if ((await etatLivre(page)).cadrage === 'page') { pageMode = true; return null; }
       return await mesurerTour(page);
@@ -315,6 +315,20 @@ async function vitesseStockee(e) {
   });
   if (pageMode) R.info(e.nom, 'vitesse (réglage stocké)', 'cadrage « page » : mesure faite sur les écrans « double »');
   else R.ok(e.nom, 'vitesse (réglage stocké gc:reglages:v3) : tourne-page vive < normale < lente', ordonne(m), detail);
+  // Une clé d'avant les pourcentages (champ `vitesse` seul, sans vitesseAnimations) : « lente » est relue comme 70 %.
+  // Avec les deux champs (ci-dessus), c'est vitesseAnimations qui l'emporte ; `vitesse` ne sert qu'au banc factice.
+  if (cible.type === 'banc') return;
+  const { ctx, page } = await ouvrirPage(browser, cible, e, lien, { init: [{ fn: () => { try { if (!sessionStorage.getItem('__gcAncienne')) { localStorage.setItem('gc:reglages:v3', JSON.stringify({ v: 1, vitesse: 'lente' })); sessionStorage.setItem('__gcAncienne', '1'); } } catch { /* stockage indisponible */ } } }, FEU_FIGE] });
+  try {
+    let affiche = null;
+    if (await ouvrirMenu(page, e)) {
+      const sl = ligne(page, 'vitesseAnimations').getByRole('slider');
+      if (await sl.count()) affiche = ((await sl.getAttribute('aria-valuetext')) ?? '').replace(/\s/g, ' ');
+    }
+    R.ok(e.nom, 'ancien réglage « lente » (champ vitesse) relu comme 70 % par le menu', affiche === '70 %', affiche ?? 'menu ou réglette introuvable');
+  } finally {
+    await ctx.close();
+  }
 }
 
 // ---- Suite du menu ----------------------------------------------------------------------------------
@@ -323,9 +337,7 @@ async function suiteMenu(e) {
   await cadence(page);
   const T = (test, cond, d) => R.ok(e.nom, test, cond, d);
   /** Un bloc de tests : une exception n'arrête pas les suivants ; le menu est rouvert au besoin. */
-  await page.evaluate(() => { window.__cles = []; window.addEventListener('keydown', (ev) => { if (['Home', 'End', 'Escape', 'Backspace'].includes(ev.key)) window.__cles.push(`${window.__etape ?? '?'}:${ev.key}:${ev.defaultPrevented ? 'P' : '-'}:${document.querySelector('[data-gc-reglages-etat]')?.getAttribute('data-gc-reglages-etat')}:${ev.target?.getAttribute?.('aria-label') ?? ev.target?.tagName}`); }); });
   const bloc = async (nom, f, { menu = true } = {}) => {
-    await page.evaluate((n) => { window.__etape = n; }, nom).catch(() => {});
     try {
       if (menu && !(await ouvrirMenu(page, e))) { R.ajouter(e.nom, `${nom} : ouvrir le menu`, 'KO', 'le menu ne s\'ouvre pas'); return; }
       await f();
@@ -528,14 +540,12 @@ async function suiteMenu(e) {
     });
     if (vitesses === 3 && (await etatLivre(page)).cadrage !== 'page') {
       await bloc('vitesse mesurée', async () => {
-        const etats = [];
         const { m, detail } = await mesurerVitesses(async (v) => {
           if (!(await ouvrirMenu(page, e)) && !(await ouvrirMenu(page, e))) throw new Error(`le menu ne se rouvre pas (vitesse ${v})`);
           await reglerVitesse(page, FACTEURS[v]);
           await fermerMenu(page);
-          etats.push(await page.evaluate(() => `${document.querySelector('[data-gc-reglages-etat]')?.getAttribute('data-gc-reglages-etat')} · focus ${document.activeElement?.getAttribute('aria-label') || document.activeElement?.tagName} · livre ${document.querySelector('.gc-livre-ecran')?.getAttribute('data-gc-etat') ?? document.querySelector('[data-gc-etat]')?.getAttribute('data-gc-etat')} · mouvement ${document.querySelector('[data-gc-mouvement]')?.getAttribute('data-gc-mouvement')}`));
         }, () => mesurerTour(page));
-        T('vitesse choisie au menu : tourne-page 150 % < 100 % < 70 %', ordonne(m), `${detail} — après fermeture : ${etats.slice(0, 3).join(' | ')}`);
+        T('vitesse choisie au menu : tourne-page 150 % < 100 % < 70 %', ordonne(m), detail);
       }, { menu: false });
     } else if (vitesses === 3) R.info(e.nom, 'vitesse mesurée', 'cadrage « page » : mesure faite sur les écrans « double »');
 
@@ -760,7 +770,6 @@ async function suiteMenu(e) {
     }, { menu: false });
   } finally {
     R.ok(e.nom, 'aucune erreur de page', !surv.erreurs.length, surv.erreurs.slice(0, 3).join(' | '));
-    R.info(e.nom, 'touches arrivées jusqu\'à window (Début, Fin, Échap)', (await page.evaluate(() => window.__cles).catch(() => [])).join(' · '));
     await ctx.close();
   }
 }
