@@ -38,10 +38,13 @@
 import { writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import {
-  ROOT, lireArgs, ECRANS, ecrans, tactile, lancer, ouvrirCible, ouvrirPage, Rapport, etatLivre, calme, capture,
+  ROOT, lireArgs, ECRANS, ecrans, tactile, lancer, ouvrirCible, ouvrirPage as ouvrirPageBase, Rapport, etatLivre, calme, capture,
   toucher, glisser, glisserSouris, rectDe, existe, attendreAttr, stabiliser, cibles44, zoneSure, dansZone, planche,
   bundleParDefaut, rel, cdpDe,
 } from './lib/verif.mjs';
+
+/** Ici, les boutons s'effacent comme dans le carnet (les autres vérifications les gardent visibles : ouvrirPage). */
+const ouvrirPage = (browser, cible, e, hash, o = {}) => ouvrirPageBase(browser, cible, e, hash, { ...o, boutons: 'effaces' });
 
 const { opt, drapeau, liste } = lireArgs();
 const site = opt('site');
@@ -88,22 +91,24 @@ const repos = (page, ms = 450, debutMax = 4000) => calme(page, { calme: ms, debu
 /** Attend l'état des boutons (data-gc-controles = « visibles » | « caches » sur .gc-ecran) ; false si jamais atteint. */
 const attendreControles = (page, valeur, timeout = 8000) =>
   page.waitForFunction((v) => document.querySelector('.gc-ecran')?.getAttribute('data-gc-controles') === v, valeur, { timeout }).then(() => true, () => false);
+/** Le fondu de retour (0,2 s) est fini : les contrôles sont opaques. Il se joue image par image : sous rastérisation logicielle, on l'attend. */
+const attendreOpaques = (page, timeout = 5000) =>
+  page.waitForFunction(() => { const els = [...document.querySelectorAll('[data-gc-effacable]')]; return els.length > 0 && els.every((el) => Number(getComputedStyle(el).opacity) >= 0.6); }, null, { timeout, polling: 100 }).then(() => true, () => false);
 let reveil = 0;
 /**
  * Les boutons s'effacent après 3 s sans activité : un petit mouvement de souris (toujours près du bord haut, au
  * milieu, où il n'y a rien) les rappelle, puis on laisse finir le fondu (0,2 s). Deux fois le même point ne
- * compterait pas : on alterne. À faire juste avant de mesurer ou de photographier les contrôles.
+ * compterait pas : on alterne. Sur un écran tactile émulé, la « souris » de Playwright n'envoie que du toucher
+ * (ignoré sur place : le toucher agirait sur le livre) : on y ajoute la touche Maj, qui ne fait rien d'autre
+ * que rappeler les boutons. À faire juste avant de mesurer ou de photographier les contrôles.
  */
 async function reveiller(page) {
   const { width: W } = page.viewportSize();
   await page.mouse.move(W * 0.5 + (reveil++ % 2 ? 7 : -7), 3, { steps: 2 });
+  if (!(await attendreControles(page, 'visibles', 600))) await page.keyboard.press('Shift');
   await attendreControles(page, 'visibles', 5000);
-  await page.waitForTimeout(350);
+  await attendreOpaques(page);
 }
-/** La double page affichée est celle de l'invité `id` (identifiant « id » ou « …-id »). */
-const sur = (s, id) => s.double >= 0 && s.spreads.some((x) => x.toLowerCase() === id || x.toLowerCase().endsWith(`-${id}`));
-// Les attentes sont relatives à la double page de départ (#julie) : l'ordre des invités peut changer
-// (Lisa en tête de la démo), pas le fait qu'un geste avance ou recule d'une double page.
 
 // ---- Mesures au repos ----------------------------------------------------------------------------
 async function mesurerRepos(page, e) {
@@ -544,13 +549,15 @@ async function suiteBoutonsDoigt(browser, e, captures) {
   if (!fl) { res.push({ test: 'boutons effacés, toucher la flèche : la page ne tourne pas', ok: 'KO', obtenu: 'flèche « Page suivante » introuvable' }); }
   else {
     await toucher(page, fl.cx, fl.cy);
-    await page.waitForTimeout(1200);
-    await repos(page, 400, 1500);
-    const apres = await etatLivre(page);
-    const vus = await mesure();
-    res.push({ test: 'boutons effacés, toucher la flèche : la page ne tourne pas, les boutons reviennent', attendu: { effaces: true, double: d0, controles: 'visibles' }, obtenu: { effaces: ok1, double: apres.double, controles: vus }, ok: ok1 && apres.double === d0 && vus === 'visibles' ? 'OK' : 'KO' });
+    const revenus = await attendreControles(page, 'visibles', 2000);
+    await attendreOpaques(page);
     captures.push(await capture(page, `${e.nom}-boutons-rappeles`, outDir));
-    // 3. Boutons revenus : la flèche agit.
+    await page.waitForTimeout(800);
+    const apres = await etatLivre(page);
+    res.push({ test: 'boutons effacés, toucher la flèche : la page ne tourne pas, les boutons reviennent', attendu: { effaces: true, double: d0, controles: 'visibles' }, obtenu: { effaces: ok1, double: apres.double, revenus }, ok: ok1 && apres.double === d0 && revenus ? 'OK' : 'KO' });
+    // 3. Boutons revenus (Maj les rappelle sans rien toucher) : la flèche agit.
+    await page.keyboard.press('Shift');
+    await attendreControles(page, 'visibles', 2000);
     await toucher(page, fl.cx, fl.cy);
     const s2 = await attendreEtat(page, { double: d0 + 1 });
     await repos(page);
@@ -572,7 +579,7 @@ async function suiteBoutonsSouris(browser, e, captures) {
   const opCache = await op();
   await page.mouse.move(300, 3, { steps: 2 });
   const revenus = await attendreControles(page, 'visibles', 3000);
-  await page.waitForTimeout(350);
+  await attendreOpaques(page);
   const opVu = await op();
   res.push({ test: 'souris : un mouvement rappelle les boutons', attendu: { avant: 'caches', apres: 'visibles' }, obtenu: { effaces: ok0, opaciteEffacee: Math.round(opCache * 100) / 100, revenus, opaciteRappelee: Math.round(opVu * 100) / 100 }, ok: ok0 && revenus && opCache < 0.02 && opVu > 0.5 ? 'OK' : 'KO' });
   const denouveau = await attendreControles(page, 'caches', 9000);

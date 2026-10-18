@@ -234,12 +234,13 @@ Quand le menu ou un objet soulevé est ouvert, **lui seul** reçoit les touches 
 
 ### 12.2 Bibliothèques partagées (lead)
 - `src/lib/reglages.ts` : `useReglages()`, `getReglages()`, `setReglages()`, `resetReglages()`, `abonnerReglages()`.
-  - Champs : `son`, `volume`, `lectureAuto`, `vitesse` (`vive` | `normale` | `lente`), `mouvementReduit`.
+  - Champs : `son`, `volume`, `lectureAuto`, `vitesseEcriture` (0,25 à 4 : 25 à 400 %), `vitesseAnimations` (0,25 à 2 : 25 à 200 %), `mouvementReduit`, `boutonsToujoursVisibles`. L'ancien choix `vitesse` (`vive` | `normale` | `lente`) est lu comme 150 %, 100 % et 70 % de `vitesseAnimations`. `valider()` borne les valeurs.
   - Clé de stockage : `gc:reglages:v1`.
 - `src/lib/motion.ts` :
   - `useReducedMotion()` est vrai si le **système ou le réglage** le demande ;
-  - la vitesse choisie règle `SPRINGS.paper` ;
+  - la vitesse des animations règle `SPRINGS.paper` (durée ÷ facteur) ;
   - nouveau ressort `SPRINGS.lift` pour soulever.
+- `src/lib/vitesse.ts` : `facteurEcriture()` et `facteurAnimations()` (des nombres, 1 = normal, lus à chaque départ d'animation) et `abonnerVitesse(f)`. Branchés sur l'encre qui s'écrit (`encreVivante.ts`) et sur le tour de page ; les autres lots s'en servent pour leurs durées.
 - `src/lib/camera.tsx` : `zoomBornes(cran)`.
   - Le zoom fin va de 0,85 à 1,15, borné par cran : la hauteur d'x reste ≥ 14 px et le livre entier visible.
   - ↑ et ↓ ne zooment plus.

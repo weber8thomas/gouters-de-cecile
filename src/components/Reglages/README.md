@@ -48,7 +48,8 @@ Le composant exporte aussi `ReglagesInvite` (type) et `CREDITS_REGLAGES` (texte 
 | 7 bis | Bruitages | réglette 0 à 100 % (pas 5 %, défaut 80 %), atténuée quand ni les sons du livre ni le feu et la cuisine ne sont actifs | `reglages.volumeBruitages` : pages, couverture, feuillets, photo, feu, cuisine (gain Web Audio, sans reconstruire le graphe) | — |
 | 7 ter | Musique | réglette 0 à 100 % (pas 5 %, défaut 50 %), atténuée quand la musique est coupée, mais toujours réglable (le niveau attend le prochain départ) | `reglages.volumeMusique` (la musique de fond, toujours sous le feu) | — |
 | 8 | Lancer la vidéo en arrivant sur la page | non · oui | `reglages.lectureAuto` | — |
-| 9 | Vitesse des pages | vive · normale · lente | `reglages.vitesse` (règle `SPRINGS.paper`) | — |
+| 9 | Vitesse de l'écriture | réglette 25 à 400 % (pas 5 %, défaut 100 %, repère à 100 %), atténuée en mouvement réduit | `reglages.vitesseEcriture` (facteur 0,25 à 4, `facteurEcriture()` de `src/lib/vitesse.ts` : l'encre qui s'écrit, `encreVivante.ts`, durée ÷ facteur, même en cours d'écriture) | — |
+| 9 bis | Vitesse des animations | réglette 25 à 200 % (pas 5 %, défaut 100 %, repère à 100 %), atténuée en mouvement réduit | `reglages.vitesseAnimations` (facteur 0,25 à 2, `facteurAnimations()` : règle `SPRINGS.paper`, durée du tour de page ÷ facteur ; les autres lots peuvent s'y abonner par `abonnerVitesse`). Remplace l'ancien choix vive · normale · lente, relu comme 150 % · 100 % · 70 % | — |
 | 10 | Moins d'animations | non · oui | `reglages.mouvementReduit` (lu par `useReducedMotion`) | — |
 | 10 bis | Boutons | s'effacent · toujours visibles (« visibles » sur la feuille du téléphone) | `reglages.boutonsToujoursVisibles` (défaut : s'effacent ; lu par `src/lib/controles.ts`) | — |
 | 11 | Aller à… | « choisir un invité », qui déplie les noms | `onAller(index)` | `invites` est vide |
@@ -98,7 +99,7 @@ Tout se fait avec des boutons natifs, sans survol : toucher un choix, faire glis
 |---|---|
 | Bouton ⚙ | `data-gc-reglages="bouton"` (et `data-gc-controle="reglages"`) |
 | Fiche | `data-gc-reglages="panneau"` |
-| Une ligne | `data-gc-reglages-ligne="taille\|zoom\|loupe\|plein\|son\|sonsLivre\|volume\|volumeBruitages\|volumeMusique\|auto\|vitesse\|mouvement\|aller\|invites\|fin"` |
+| Une ligne | `data-gc-reglages-ligne="taille\|zoom\|loupe\|plein\|son\|sonsLivre\|volume\|volumeBruitages\|volumeMusique\|auto\|vitesseEcriture\|vitesseAnimations\|mouvement\|boutons\|aller\|invites\|fin"` |
 | Racine | `data-gc-reglages-etat="ferme\|ouvert\|fermeture"` |
 | Réglette | `data-gc-reglette` (`role="slider"`) |
 
