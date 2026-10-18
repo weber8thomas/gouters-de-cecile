@@ -374,8 +374,13 @@ export function Livre({
   const [distance, setDistance] = React.useState<Distance>(cranVoulu);
   const [cote, setCote] = React.useState<CotePage>(arriveeRef.current?.vers != null ? arriveeRef.current.cote : coteInitial);
   const [geo, setGeo] = React.useState<GeometrieLivre | null>(null);
-  /** Rabats montés (500 ms après que la page s'est posée). */
-  const [coinPret, setCoinPret] = React.useState(false);
+  /**
+   * Rabats montés (500 ms après que la page s'est posée) ; en cadrage « page », le côté de la page où ils
+   * le sont (celle qui était affichée alors).
+   */
+  const [coinPret, setCoinPret] = React.useState<CotePage | null>(null);
+  /** Cadrage « page » : la caméra glisse d'une page à l'autre (rien ne se monte ni ne se démonte). */
+  const [glisseEnCours, setGlisseEnCours] = React.useState(false);
   /** Pendant un geste de coin : le seul côté monté. */
   const [coinActif, setCoinActif] = React.useState<CotePage | null>(null);
 
@@ -603,16 +608,19 @@ export function Livre({
     const el = livreRef.current;
     if (vivant.current.reduced || !modePageRef.current) {
       glisseAnim.current = null;
+      setGlisseEnCours(false);
       glisse.set(x);
       return;
     }
     if (annoncer) emettre(el, 'debut', 'glisse');
+    setGlisseEnCours(true);
     glisseAnim.current = animate(glisse, x, {
       ...SPRINGS.camera,
       velocity,
       onComplete: () => {
         if (glisseSeq.current !== id) return;
         glisseAnim.current = null;
+        setGlisseEnCours(false);
         emettre(el, 'fin', 'glisse');
         pousserRef.current();
       },
@@ -1198,7 +1206,11 @@ export function Livre({
   // ---- Coin : rabats montés 500 ms après que la page s'est posée ------------------------------
   const coinPossible = COIN_2D && !reduced && !zoome && affiche >= 0 && affiche <= maxOuvert && !!geo;
   React.useEffect(() => {
-    setCoinPret(false);
+    // Pendant un glissement de caméra, le rabat monté reste tel quel (le démonter puis remonter l'autre
+    // côté, une page entière, ferait une mise en page et des repeintures en plein geste) : il passe du
+    // bon côté une fois la caméra posée.
+    if (glisseEnCours) return;
+    setCoinPret(null);
     if (pose || tour || !coinPossible) return;
     const t = window.setTimeout(() => {
       // Au repos : le rabat est à plat sur l'angle du bas (pli de taille nulle : rien ne se voit).
@@ -1210,10 +1222,10 @@ export function Livre({
           R.haut.set(0); R.fx.set(ax); R.fy.set(ay); R.op.set(1);
         }
       }
-      setCoinPret(true);
+      setCoinPret(coteRef.current);
     }, COIN_DELAI);
     return () => clearTimeout(t);
-  }, [affiche, cote, tour, pose, coinPossible, modePage]);
+  }, [affiche, cote, tour, pose, coinPossible, modePage, glisseEnCours]);
 
   /** Le côté peut-il se saisir par le coin (au repos) ? */
   const coteSaisissable = React.useCallback((c: CotePage): boolean => {
@@ -1961,7 +1973,7 @@ export function Livre({
     if (pose) cotesCoin = poseCoin ? [poseCoin.cote] : [];
     else if (T) cotesCoin = T.coin ? [T.coin] : [];
     else if (coinPret && coinPossible) {
-      const sides: CotePage[] = coinActif ? [coinActif] : modePage ? [cote] : ['gauche', 'droite'];
+      const sides: CotePage[] = coinActif ? [coinActif] : modePage ? [coinPret] : ['gauche', 'droite'];
       cotesCoin = sides.filter((c) => (c === 'droite' ? affiche + 1 <= maxOuvert : affiche - 1 >= 0));
     }
   }
