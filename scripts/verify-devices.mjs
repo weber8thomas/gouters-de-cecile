@@ -109,6 +109,10 @@ async function reveiller(page) {
   await attendreControles(page, 'visibles', 5000);
   await attendreOpaques(page);
 }
+/** La double page affichée est celle de l'invité `id` (identifiant « id » ou « …-id »). */
+const sur = (s, id) => s.double >= 0 && s.spreads.some((x) => x.toLowerCase() === id || x.toLowerCase().endsWith(`-${id}`));
+// Les attentes sont relatives à la double page de départ (#julie) : l'ordre des invités peut changer
+// (Lisa en tête de la démo), pas le fait qu'un geste avance ou recule d'une double page.
 
 // ---- Mesures au repos ----------------------------------------------------------------------------
 async function mesurerRepos(page, e) {
