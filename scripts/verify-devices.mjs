@@ -300,6 +300,9 @@ async function suiteRotation(browser, e, captures) {
   await page.setViewportSize(couche);
   s = await attendreEtat(page, { cadrage: 'double', julie: true }, (x) => ({ ...x, julie: sur(x, 'julie') }), 90000);
   await repos(page, 450, 6000);
+  // (relu au repos : pendant le feuilletage vers le lien, la double page affichée est encore une page de passage)
+  s = await etatLivre(page);
+  s.julie = sur(s, 'julie');
   res.push({ test: 'couché : le carnet s\'ouvre sur la page du lien', attendu: { cadrage: 'double', julie: true }, obtenu: { cadrage: s.cadrage, double: s.double, julie: s.julie }, ok: s.cadrage === 'double' && s.julie ? 'OK' : 'KO' });
   const d0 = s.double;
   const p = await centre(page, PHOTO);
