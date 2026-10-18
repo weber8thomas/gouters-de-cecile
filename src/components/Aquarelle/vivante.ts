@@ -798,7 +798,8 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     const g = gl;
     // la peinture
     if (s.debut === -1 && horloge >= s.delai) s.debut = horloge;
-    const peint = s.debut === Infinity ? 1 : s.debut < 0 ? 0 : Math.min(1, (horloge - s.debut) / s.duree);
+    // debut : -1 en attente, Infinity peinte ; finir() la met très loin dans le passé (peinte d'un coup)
+    const peint = s.debut === Infinity ? 1 : s.debut === -1 ? 0 : Math.min(1, (horloge - s.debut) / s.duree);
     if (peint >= 1 && s.debut !== Infinity) {
       s.debut = Infinity;
       opts.peinte(s.d.nom);

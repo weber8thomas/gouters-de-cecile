@@ -48,6 +48,10 @@ async function toilesPretes(page, n = 1, timeout = 20000) {
   return etat(page);
 }
 
+/** Attend que l'encre des pages visibles soit écrite (PageCuite : plus de data-gc-ecrit « a-ecrire »). */
+const encreEcrite = (page, timeout = 25000) =>
+  page.waitForFunction(() => !document.querySelector('.gc-livre__page--visible [data-gc-ecrit="a-ecrire"]'), null, { timeout, polling: 250 }).catch(() => {});
+
 /** Rectangle à l'écran d'une aquarelle (son image fixe), élargi du débord de sa boîte (vivante.ts, DEBORD). */
 const zoneAquarelle = (page, nom, bas = 0.1) => page.evaluate(([n, b]) => {
   const el = [...document.querySelectorAll(`.gc-livre__page--visible [data-gc-aquarelle="${n}"]`)][0];
@@ -77,8 +81,12 @@ from PIL import Image, ImageDraw, ImageFont
 a = json.loads(sys.argv[1])
 H = a["hauteur"]
 ims = []
-for f, leg in a["images"]:
+for e in a["images"]:
+    f, leg = e[0], e[1]
     im = Image.open(f).convert("RGB")
+    if len(e) > 2 and e[2]:
+        x0, y0, x1, y1 = e[2]
+        im = im.crop((round(x0 * im.width), round(y0 * im.height), round(x1 * im.width), round(y1 * im.height)))
     im = im.resize((max(1, round(im.width * H / im.height)), H))
     ims.append((im, leg))
 col = min(a["colonnes"], len(ims))
@@ -103,20 +111,34 @@ out.save(a["sortie"])
   return sortie;
 }
 
-/** Images prises en temps réel toutes les `pas` ms pendant `duree` ms (horodatées depuis le début). */
+/**
+ * Images en temps réel : les trames que le navigateur compose (screencast CDP, horodatées), une toutes
+ * les `pas` ms pendant `duree` ms, recadrées sur `clip`. Une capture d'écran par image serait trop lente
+ * en rendu logiciel (plusieurs secondes chacune) : le film ne serait plus en temps réel.
+ */
 async function film(page, clip, dossier, prefixe, { pas = 300, duree = 4000 } = {}) {
   mkdirSync(dossier, { recursive: true });
-  const t0 = Date.now();
+  const cdp = await page.context().newCDPSession(page);
+  const trames = [];
+  cdp.on('Page.screencastFrame', (f) => {
+    trames.push({ t: f.metadata.timestamp, data: f.data, w: f.metadata.deviceWidth, h: f.metadata.deviceHeight });
+    cdp.send('Page.screencastFrameAck', { sessionId: f.sessionId }).catch(() => {});
+  });
+  await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 88, everyNthFrame: 1 });
+  await attendre(duree);
+  await cdp.send('Page.stopScreencast').catch(() => {});
+  await cdp.detach().catch(() => {});
   const images = [];
-  for (let k = 0; ; k++) {
-    const cible = t0 + k * pas;
-    if (cible - t0 > duree) break;
-    const attente = cible - Date.now();
-    if (attente > 0) await attendre(attente);
-    const t = Date.now() - t0;
-    const f = join(dossier, `${prefixe}-${String(k).padStart(2, '0')}.png`);
-    await page.screenshot({ path: f, clip, timeout: 30000 });
-    images.push([f, `${(t / 1000).toFixed(2)} s`]);
+  if (!trames.length) return images;
+  const t0 = trames[0].t;
+  let k = 0;
+  for (const tr of trames) {
+    if (tr.t - t0 < (k * pas) / 1000) continue;
+    const f = join(dossier, `${prefixe}-${String(k).padStart(2, '0')}.jpg`);
+    writeFileSync(f, Buffer.from(tr.data, 'base64'));
+    // recadrage en fractions de l'écran (la trame peut être réduite)
+    images.push([f, `${(tr.t - t0).toFixed(2)} s`, [clip.x / tr.w, clip.y / tr.h, (clip.x + clip.width) / tr.w, (clip.y + clip.height) / tr.h]]);
+    k = Math.floor((tr.t - t0) / (pas / 1000)) + 1;
   }
   return images;
 }
@@ -132,6 +154,7 @@ if (suites.includes('pages')) {
     await attendre(1800);
     await page.screenshot({ path: join(out, `peinture-${spread}.png`) });
     await page.evaluate(() => window.__gcDessins?.finir());
+    await encreEcrite(page);
     await attendre(2500);
     await page.screenshot({ path: join(out, `page-${spread}.png`) });
     const e1 = await etat(page);
@@ -228,7 +251,7 @@ if (suites.includes('creature')) {
   }
   const e = await etat(page);
   resultats.creature = e.map((t) => t.creatures);
-  const f = bande([...avant, ...apres.map(([i, l]) => [i, `touchée +${l}`])], join(out, 'film-creature.png'),
+  const f = bande([...avant, ...apres.map(([i, l, c]) => [i, `touchée +${l}`, c])], join(out, 'film-creature.png'),
     `Biscuits : ${pos?.espece ?? 'créature'} posée, puis touchée (elle s'envole)`, { hauteur: 260, colonnes: 4 });
   rapport.ajouter(null, '[creature] posée puis envolée', pos ? 'OK' : 'KO', `${rel(f)} · ${JSON.stringify(resultats.creature)}`);
   await ctx.close();
