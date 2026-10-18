@@ -10,7 +10,7 @@
  "marges": {
   "haut": 0.2
  },
- "_": "Page de titre d'anniversaire : une guirlande de fanions dessinée en haut (croquis « fanions », plume et lavis) ; titre en deux lignes centrées, à la plume, en grand ; « carnet des trente ans » à l'encre terracotta ; sous-titre en deux lignes centrées, à l'encre chocolat (étiquette, echelle 1,2 : lisible à 3 m) ; un gâteau à bougies dessiné et lavé (croquis « gateau-bougies ») à la place de la théière, partie sur la dédicace.",
+ "_": "Page de titre d'anniversaire : une guirlande de fanions dessinée en haut (croquis « fanions », plume et lavis) ; titre en deux lignes centrées, à la plume, en grand ; « carnet des trente ans » à l'encre terracotta, en grand (mot × 2) : le sous-titre du titre ; sous-titre en deux lignes centrées, à l'encre chocolat (étiquette, echelle 1,2 : lisible à 3 m) ; un gâteau à bougies dessiné et lavé (croquis « gateau-bougies ») à la place de la théière, partie sur la dédicace.",
  "blocs": [
   {
    "id": "fanions",
@@ -56,12 +56,12 @@
    "main": "soignee",
    "encre": "terracotta",
    "role": "mot",
-   "echelle": 1.5,
+   "echelle": 2.0,
    "rect": [
-    0.15,
-    0.42,
-    0.7,
-    0.07
+    0.12,
+    0.405,
+    0.76,
+    0.085
    ],
    "pente": -0.6,
    "graine": 3014

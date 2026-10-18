@@ -10,7 +10,7 @@
  "contre_plat": true,
  "papier": "garde-uni",
  "papier_miroir": true,
- "_": "Contre-plat (papier de garde collé sur le carton de la couverture) : pas de page au dos, pas de folio. Papier : lot Pa (papiers.json, gardes), crème chaud accordé aux pages. Ex-libris d'anniversaire : un cartouche tracé à la main à l'encre terracotta (bloc « cartouche », double trait), « Ex-libris » en petit en haut, « Ce carnet appartient à Cécile » en grand à l'encre chocolat, « offert pour ses trente ans » dessous, en terracotta.",
+ "_": "Contre-plat (papier de garde collé sur le carton de la couverture) : pas de page au dos, pas de folio. Papier : lot Pa (papiers.json, gardes), crème chaud accordé aux pages. Ex-libris d'anniversaire : un cartouche tracé à la main à l'encre terracotta (bloc « cartouche », double trait), « Ex-libris » en petit en haut, « Ce carnet appartient à Cécile » en grand à l'encre chocolat, « offert pour ses trente ans » dessous, en terracotta ; une petite guirlande de fanions (croquis « fanions », un feston) tendue au-dessus du cartouche.",
  "blocs": [
   {
    "id": "ex-libris-titre",
@@ -63,6 +63,24 @@
    ],
    "pente": -0.8,
    "graine": 2023
+  },
+  {
+   "id": "fanions",
+   "type": "croquis",
+   "nom": [
+    "fanions"
+   ],
+   "taille": [
+    0.6,
+    0.11
+   ],
+   "places": [
+    {
+     "x": 0.2,
+     "y": 0.148
+    }
+   ],
+   "graine": 2063
   },
   {
    "id": "cartouche",

@@ -7,7 +7,7 @@
  "cote": "gauche",
  "folio": 8,
  "graine": 401,
- "_": "Dédicace d'anniversaire : `texte` des blocs « dedicace » (une ligne par retour à la ligne, \\n) et « dedicace-fin » (la dernière ligne, posée juste dessous, une ligne plus bas : sa propre graine, pour que « qui t'aiment » se lise bien). Centrée en haut de la page, à l'encre bille bleue (plus dense que la plume, qui se vide) ; echelle 1,8 (mot × 1,8). Dessous, un goûter d'anniversaire à l'aquarelle qui remplit la page : le gâteau rose aux bougies au fond, la théière et ses tasses devant à gauche, un cupcake à droite (zones vivantes). Quand le sommaire ne tient plus sur sa page (une vingtaine d'invités), il reprend en haut de cette page et la dédicace remonte au-dessus de lui (scripts/pages/mise_en_page.py, bloc « sommaire »).",
+ "_": "Dédicace d'anniversaire : `texte` des blocs « dedicace » (une ligne par retour à la ligne, \\n) et « dedicace-fin » (la dernière ligne, posée juste dessous, une ligne plus bas : sa propre graine, pour que « qui t'aiment » se lise bien). Centrée en haut de la page, à l'encre bille bleue (plus dense que la plume, qui se vide) ; echelle 1,8 (mot × 1,8). Dessous, un goûter d'anniversaire à l'aquarelle qui remplit la page : une frise posée sur la même ligne de table : la théière et ses tasses à gauche, le gâteau rose aux bougies, un petit cupcake à droite (zones vivantes, rectangles aux proportions des aquarelles ; la frise s'arrête à 6 % du pli). Quand le sommaire ne tient plus sur sa page (une vingtaine d'invités), il reprend en haut de cette page et la dédicace remonte au-dessus de lui (scripts/pages/mise_en_page.py, bloc « sommaire »).",
  "blocs": [
   {
    "id": "dedicace",
@@ -20,7 +20,7 @@
    "interligne": 1.05,
    "rect": [
     0.08,
-    0.07,
+    0.14,
     0.84,
     0.2
    ],
@@ -38,7 +38,7 @@
    "interligne": 1.05,
    "rect": [
     0.08,
-    0.222,
+    0.292,
     0.84,
     0.08
    ],
@@ -48,33 +48,33 @@
  ],
  "vivants": [
   {
-   "nom": "aq-gateau",
-   "rect": [
-    0.23,
-    0.33,
-    0.52,
-    0.34
-   ],
-   "aquarelle": "gateau-bougies"
-  },
-  {
    "nom": "aq-theiere",
    "rect": [
-    0.02,
-    0.64,
-    0.6,
-    0.28
+    0.04,
+    0.7206,
+    0.44,
+    0.1944
    ],
    "aquarelle": "theiere",
    "anime": "vapeur"
   },
   {
+   "nom": "aq-gateau",
+   "rect": [
+    0.42,
+    0.5667,
+    0.48,
+    0.3483
+   ],
+   "aquarelle": "gateau-bougies"
+  },
+  {
    "nom": "aq-cupcake",
    "rect": [
-    0.62,
-    0.62,
-    0.33,
-    0.3
+    0.805,
+    0.815,
+    0.13,
+    0.1
    ],
    "aquarelle": "cupcake",
    "angle": 3
