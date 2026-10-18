@@ -19,7 +19,7 @@
 //
 // Les fonctions pures (zoomFoyer, pincer, bornesPan, bornerPan, ancrerHaut, zElastique) sont
 // exportées pour les tests.
-import { animate, INERTIE, SPRINGS, prefersReducedMotion, type MotionValue } from '../../lib/motion';
+import { animate, INERTIE, SPRINGS, mouvementDoux, type MotionValue } from '../../lib/motion';
 import {
   LOUPE_DOUBLE, LOUPE_MAX, LOUPE_MIN, LOUPE_ZOOME, getLoupe, majLoupe, signalerGesteLoupe,
   type ControleurLoupe, type EtatLoupe, type RectLoupe,
@@ -430,11 +430,11 @@ export function creerControleur(o: OptionsControleur): ControleurEcran {
     a.forEach((x) => x.stop());
     visee = null;
   }
-  /** Ressort « camera » vers une vue (bornée par l'appelant) ; immédiat en mouvement réduit. */
+  /** Ressort « camera » vers une vue (bornée par l'appelant) ; immédiat en mouvement doux ou réduit. */
   function animerVers(cible: Vue, vitesseInit?: Partial<Vue>) {
     arreterAnims();
     const c = { x: auPixel(cible.x, dpr()), y: auPixel(cible.y, dpr()), z: Math.round(cible.z * 10000) / 10000 };
-    if (prefersReducedMotion()) {
+    if (mouvementDoux()) {
       lx.set(c.x);
       ly.set(c.y);
       lz.set(c.z);
@@ -471,7 +471,7 @@ export function creerControleur(o: OptionsControleur): ControleurEcran {
     const { contenu, zone: s } = geo();
     const z = lz.get();
     const b = bornesPan(z, contenu, s);
-    if (prefersReducedMotion()) {
+    if (mouvementDoux()) {
       const p = bornerPan(vue(), z, contenu, s);
       lx.set(p.x);
       ly.set(p.y);

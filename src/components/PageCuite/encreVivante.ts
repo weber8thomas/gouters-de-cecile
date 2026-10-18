@@ -12,8 +12,9 @@
 // La vitesse d'écriture se règle au menu (25 à 400 %, src/lib/vitesse.ts) : la durée est divisée par ce facteur,
 // et suit le réglage même en cours d'écriture.
 //
-// Une seule fois par page et par visite. Rien ne s'écrit en mouvement réduit (système ou réglage), hors du
-// livre vivant, pendant un geste, ni si WebGL manque : l'encre est alors simplement là.
+// Une seule fois par page et par visite. Rien ne s'écrit en mouvement réduit (réglage « Animations :
+// réduites » ; la préférence du système garde l'encre qui s'écrit), hors du livre vivant, pendant un geste,
+// ni si WebGL manque ou se perd : l'encre est alors simplement là.
 
 import { assetInfo, assetUrl } from '../../lib/assets';
 import { prefersReducedMotion } from '../../lib/motion';
@@ -96,6 +97,7 @@ export function ecrire(canvas: HTMLCanvasElement, page: string, encre: string, d
     arrete = true;
     enCours.delete(page);
     cancelAnimationFrame(raf);
+    canvas.removeEventListener('webglcontextlost', terminer);
     gl?.getExtension('WEBGL_lose_context')?.loseContext();
     fin();
   };
@@ -112,6 +114,9 @@ export function ecrire(canvas: HTMLCanvasElement, page: string, encre: string, d
       canvas.height = imE.naturalHeight;
       gl = canvas.getContext('webgl', { premultipliedAlpha: true, alpha: true, antialias: false });
       if (!gl) return terminer();
+      // Contexte perdu (téléphone qui reprend la mémoire, onglet en arrière-plan) : la toile se vide ; la
+      // page est écrite d'un coup (son encre cuite reparaît), comme la flamme de la bougie passe à l'image.
+      canvas.addEventListener('webglcontextlost', terminer);
       const prog = gl.createProgram()!;
       for (const [type, src] of [[gl.VERTEX_SHADER, VS], [gl.FRAGMENT_SHADER, FS]] as const) {
         const s = gl.createShader(type)!;

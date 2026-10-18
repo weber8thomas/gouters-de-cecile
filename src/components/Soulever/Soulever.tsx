@@ -18,7 +18,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { useEcran } from '../Ecran/contexte';
 import { PageCuite } from '../PageCuite';
-import { LazyMotion, SPRINGS, animate, domMax, m, useMotionValue, useReducedMotion, useTransform } from '../../lib/motion';
+import { LazyMotion, SPRINGS, animate, domMax, m, useMotionValue, useNiveauMouvement, useTransform } from '../../lib/motion';
 import { getReglages } from '../../lib/reglages';
 import { useClavierModal } from '../../lib/clavier';
 import { jouerSon, marquerVideo } from '../../lib/son';
@@ -114,7 +114,8 @@ const tailleBouton = (vp: { w: number; h: number; tactile?: boolean }) => {
 export function SoulevementProvider({ children }: SoulevementProviderProps) {
   const ecran = useEcran();
   const vp = ecran?.vp ?? null;
-  const reduit = !!useReducedMotion();
+  // (mouvement doux ou réduit : l'objet paraît en fondu, sans vol)
+  const reduit = useNiveauMouvement() !== 'complet';
   useAmbiance();
 
   const [phase, setPhase] = React.useState<EtatSoulevement>('ferme');
@@ -549,7 +550,21 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   React.useEffect(() => {
     if (!ouvert) return undefined;
     const onHash = () => reposerRef.current();
-    const onOrientation = () => fermerTout();
+    // Seulement à une vraie rotation (couché ↔ debout, comparé à la forme de l'écran quand l'objet s'est
+    // levé) : certains navigateurs signalent « orientationchange » quand la fenêtre change de hauteur
+    // (barre d'adresse qui paraît), ou avec un type d'orientation qui ne suivait pas encore l'écran.
+    const sens = (): 'couche' | 'debout' | null => {
+      const so = typeof screen !== 'undefined' ? screen.orientation : undefined;
+      if (so?.type) return so.type.startsWith('landscape') ? 'couche' : 'debout';
+      const w = (window as unknown as { orientation?: number }).orientation;
+      return typeof w === 'number' ? (Math.abs(w) === 90 ? 'couche' : 'debout') : null;
+    };
+    const v0 = vpRef.current;
+    const depart = v0 ? (v0.w > v0.h ? 'couche' : 'debout') : sens();
+    const onOrientation = () => {
+      const s = sens();
+      if (s && s !== depart) fermerTout();
+    };
     window.addEventListener('hashchange', onHash);
     window.addEventListener('orientationchange', onOrientation);
     const so = typeof screen !== 'undefined' ? screen.orientation : undefined;
@@ -560,13 +575,25 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
       so?.removeEventListener?.('change', onOrientation);
     };
   }, [ouvert, fermerTout]);
-  const cleVp = vp ? `${vp.w}x${vp.h}:${vp.cadrage}` : '';
+  // Rotation (couché ↔ debout) ou changement de cadrage : l'objet se repose. La barre de Safari qui
+  // paraît ou s'efface (la hauteur change de quelques dizaines de px, au moindre glissé) ne le ferme
+  // pas : posé, il se recentre sur place.
+  const cleVp = vp ? `${vp.w > vp.h ? 'couche' : 'debout'}:${vp.cadrage}` : '';
   const cleVpAvant = React.useRef(cleVp);
   React.useEffect(() => {
     if (cleVpAvant.current === cleVp) return;
     cleVpAvant.current = cleVp;
     fermerTout();
   }, [cleVp, fermerTout]);
+  const tailleVp = vp ? `${vp.w}x${vp.h}:${vp.insets.top},${vp.insets.right},${vp.insets.bottom},${vp.insets.left}` : '';
+  React.useEffect(() => {
+    const v = vpRef.current;
+    if (!v || phaseRef.current !== 'ouvert' || !objetRef.current) return;
+    const T0 = geoRef.current.T;
+    const T = poseCible(v, T0.w / (T0.h || 1));
+    geoRef.current = { ...geoRef.current, T };
+    setCible({ T, bouton: placeBouton(T, v, tailleBouton(v)) });
+  }, [tailleVp]);
 
   // Démontage : rien ne reste caché dans la page.
   React.useEffect(() => () => {

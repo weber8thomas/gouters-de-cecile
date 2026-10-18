@@ -69,7 +69,7 @@ Posés par le livre dans le calque `.gc-ecran__controles` (portail) : flèches, 
 
 ## Ce que fait la coque
 
-- `position: fixed; inset: 0`, `overflow: hidden`, `touch-action: pinch-zoom` hors du livre (contrôles) et `none` sur le calque de la loupe (le pincement y est celui du carnet ; il revient au navigateur tant que le navigateur est déjà zoomé : `[data-gc-loupe-navigateur]`), `overscroll-behavior: none`, ni sélection, ni menu d'appui long, ni reflet de toucher, images non glissables.
+- `position: fixed; inset: 0`, `overflow: hidden`, `touch-action: none` partout, contrôles compris, et `gesturestart` / `gesturechange` bloqués (Safari) : le pincement est celui de la loupe du carnet, jamais un zoom de la page qui décadrerait l'écran ; il revient au navigateur tant que le navigateur est déjà zoomé (`[data-gc-loupe-navigateur]`), pour dézoomer, `overscroll-behavior: none`, ni sélection, ni menu d'appui long, ni reflet de toucher, images non glissables.
 - Zoomé, le papier remplit l'écran : le plein écran (et l'engrenage du menu) passent à l'encre, avec un halo de papier.
 - Page hôte : `<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">` et `html, body { margin: 0; height: 100%; overflow: hidden }` (voir `index.html`, `harness/devices.html`).
 

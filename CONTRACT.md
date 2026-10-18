@@ -160,21 +160,22 @@ Personne ne modifie `src/index.ts`.
 - Glyphes présents dans la police.
 - Contraste mesuré sur les pixels réels du papier.
 - Écrins : alignement du masque, test magenta, transparence.
-- Mouvement : aucun recalcul de mise en page pendant un geste, 44 calques au plus. Le plafond était de 40 ; la scène en compte 36 sans lumière, le feu en ajoute 4 et la bougie 4 (deux calques animés, et la cire qui les recouvre). Sur un téléphone en portrait, la bougie est cachée, il ne reste que sa lueur.
+- Mouvement : aucun recalcul de mise en page pendant un geste, 44 calques au plus. Le plafond était de 40 ; la scène en compte 36 sans lumière, le feu en ajoute 4 et la bougie 4 (deux calques animés, et la cire qui les recouvre). Téléphone debout (cadrage `tourner`), la bougie est hors champ et cachée, il ne reste que sa lueur.
 
 ## 11. Tous les écrans : téléphone, tablette, ordinateur, TV
 
 - **Une seule mise en page** : tout reste dessiné dans la scène logique 1920×1080 et ses trois crans. On ne recompose jamais une page pour un petit écran : la **caméra** cadre et met à l'échelle.
 - **Cadrage** (`src/lib/viewport.ts`, `useViewport()`), choisi selon la forme de l'écran :
   - `double` (écran plus large que haut) : la double page entière, à l'échelle « contain ». La table déborde jusqu'aux bords de l'écran, sans bandes noires.
-  - `page` (portrait : téléphone, tablette debout) : **une page à la fois**, à la plus grande échelle possible. On passe de la page gauche à la page droite par un glissement de caméra. Quand la page droite tourne, **la caméra suit la feuille** et atterrit sur la page gauche suivante (en reculant, l'inverse). Deux points discrets indiquent la page de la double page.
-  - Changer d'orientation garde la double page et la page courantes, sans rechargement.
+  - `tourner` (téléphone debout : écran tactile, plus haut que large, moins de 600 px de large) : on ne lit pas une page seule. Le livre **reste fermé** sur la table, cadré dans le haut de l'écran, et une invitation animée (un petit téléphone qui pivote, « Tournez le téléphone / pour ouvrir le carnet ») occupe le bas. Couché, le téléphone lit comme l'ordinateur (`double`). Une tablette debout lit en `double`.
+  - Changer d'orientation garde la double page courante, sans rechargement : debout, le livre se ferme d'un coup en gardant la page (et le lien) ; couché, il la retrouve telle quelle (la première fois, il s'ouvre et va à la page du lien).
+  - (`page`, une page à la fois avec la caméra qui glisse, n'est plus choisi : le code reste dans le livre.)
 - **Lisibilité** : à chaque taille d'écran, la hauteur d'x à l'écran, ramenée à l'angle de vue à la distance de lecture habituelle (TV 3 m, ordinateur 60 cm, tablette 40 cm, téléphone 30 cm), reste au moins celle de la TV : 14 px à 3 m sur 1920 px.
 - **Gestes** (pointeur : doigt, stylet, souris) :
   - **glisser horizontalement** sur le livre (feuillet monté dès 4 px, geste à partir de 8 px) : la feuille suit le doigt, puis le relâcher la laisse retomber sur un ressort en gardant sa vitesse (un geste vif suffit) ;
   - **toucher l'écrin** : lecture / pause ;
   - **toucher la marge** extérieure gauche ou droite : page précédente / suivante ;
-  - `touch-action: pinch-zoom` sur le livre : le pincement du navigateur reste permis (accessibilité). Aucun défilement vertical de la page.
+  - Pincer zoome la **loupe** du carnet (§ 13), jamais la page du navigateur (`touch-action: none` sur tout l'écran ; le pincement du navigateur ne revient que s'il est déjà zoomé). Aucun défilement vertical de la page.
   - Aucune interaction ne dépend du survol.
 - **Contrôles** (flèches, plein écran, points de page, repère de distance) : en **px d'écran**, hors de la scène mise à l'échelle.
   - Cibles d'au moins **44×44 px** sur écran tactile ; discrets sur la TV.

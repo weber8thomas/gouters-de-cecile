@@ -1,5 +1,5 @@
 import React from 'react';
-import { animate, m, useMotionValue, useReducedMotion, useTransform, SPRINGS, type MotionValue } from '../../lib/motion';
+import { animate, m, useMotionValue, useNiveauMouvement, useTransform, SPRINGS, type MotionValue } from '../../lib/motion';
 import { zoomLivre } from '../../lib/camera';
 import { cadenceStable, emettre } from './evenements';
 import { r3 } from './geometrie';
@@ -31,7 +31,8 @@ export const ARRIVEE_ANGLE = 5;
 export function Camera({ zoom, fondu, x, arrivee, present, children }: CameraProps) {
   const ref = React.useRef<HTMLDivElement>(null);
   const z = useMotionValue(zoom);
-  const reduced = useReducedMotion();
+  // (mouvement doux ou réduit : pas de mouvement de caméra, le zoom est immédiat)
+  const reduced = useNiveauMouvement() !== 'complet';
   const anim = React.useRef<ReturnType<typeof animate> | null>(null);
   const alive = React.useRef(true);
   const un = useMotionValue(1);

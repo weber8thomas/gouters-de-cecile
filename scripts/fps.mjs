@@ -94,7 +94,10 @@ const SCENARIOS = {
     video: [[600], ['0'], ...Array(4).fill(['Alt+=', 110]), ['Alt+='], ...Array(9).fill(['Alt+-', 110]), ['Alt+-'], ['0']],
   },
   reduit: {
-    titre: 'Moins de mouvement : fondu court', banc: 'harness/motion.html?scenario=turn&index=1', touche: 'ArrowRight', type: 'fondu', reduced: true,
+    // (la préférence du système seule garde les effets et le tourne-page : mouvement doux, src/lib/motion.ts ;
+    // le fondu court est celui du réglage « Animations : réduites »)
+    titre: 'Animations réduites : fondu court', banc: 'harness/motion.html?scenario=turn&index=1', touche: 'ArrowRight', type: 'fondu', reduced: true,
+    reglages: { animations: 'reduites' },
     video: [[600], ['ArrowRight'], ['ArrowRight'], ['ArrowLeft']],
   },
   'turn-photo': {
@@ -358,7 +361,12 @@ const metrics = (res) => Object.fromEntries(res.metrics.map((m) => [m.name, m.va
 
 // ---- 1. Mesure ------------------------------------------------------------------------------
 const typesDe = (sc) => (Array.isArray(sc.type) ? sc.type : [sc.type]);
-const contexteDe = (browser, sc, extra = {}) => browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, reducedMotion: sc.reduced ? 'reduce' : 'no-preference', ...(sc.tactile ? { hasTouch: true } : null), ...extra });
+const contexteDe = async (browser, sc, extra = {}) => {
+  const c = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, reducedMotion: sc.reduced ? 'reduce' : 'no-preference', ...(sc.tactile ? { hasTouch: true } : null), ...extra });
+  // Réglages imposés au scénario (gc:reglages:v3), avant le chargement de l'application.
+  if (sc.reglages) await c.addInitScript((r) => { try { localStorage.setItem('gc:reglages:v3', JSON.stringify({ v: 1, ...r })); } catch { /* stockage indisponible */ } }, sc.reglages);
+  return c;
+};
 
 async function mesurer(browser, srv, nom, sc) {
   const context = await contexteDe(browser, sc);

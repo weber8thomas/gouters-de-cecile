@@ -44,3 +44,11 @@ import { InvitationOuvrir } from '…/components/Invitation';
 - Écrire « touchez pour ouvrir » en police web : l'étiquette est cuite au crayon (lot C).
 - La placer hors de la couverture, ou la laisser visible le livre ouvert (`opacite` à 0).
 - Animer autre chose que l'opacité.
+
+## Invitation à tourner le téléphone (`InvitationTourner`)
+
+Téléphone debout (cadrage `tourner`, `src/lib/viewport.ts`) : on ne lit pas une page seule, le carnet reste fermé sur la table et le Livre pose, à la place des flèches et sous le livre, un petit téléphone dessiné à la craie (couleur dentelle) qui pivote d'un quart de tour au-dessus de deux lignes de la main de Cécile : « Tournez le téléphone / pour ouvrir le carnet ». Hors de la couverture : du texte en Caveat (comme la loupe), pas d'étiquette cuite.
+
+- Props : `opacite?` (MotionValue, menée par le Livre comme l'invitation à ouvrir), `part` (part du bas de la zone sûre, `PART_INVITATION`).
+- Le pivot est une boucle WAAPI de `transform` seul (compositeur), lancée tant que l'invitation se voit ; « Animations : réduites » : le téléphone est simplement penché. Elle ne prend aucun geste.
+- Attribut de test : `[data-gc-tourner]`.

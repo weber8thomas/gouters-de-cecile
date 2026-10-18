@@ -160,11 +160,31 @@ export function Ecran({ children, className, pleinEcran = true, loupe = true, on
   }, [loupe, simule, lx, ly, lz]);
   React.useEffect(() => { ctrlRef.current?.majVp(vp); }, [vp]);
 
+  // Safari (iPhone) : un pincement commencé sur un contrôle, la photo soulevée ou le menu ne zoome pas
+  // la page entière (touch-action n'y suffit pas toujours) ; tant que le navigateur est déjà zoomé, il
+  // reste permis, pour dézoomer.
+  React.useEffect(() => {
+    const racine = racineRef.current;
+    if (simule || !racine) return undefined;
+    const bloquer = (e: Event) => {
+      if (!racine.hasAttribute('data-gc-loupe-navigateur')) e.preventDefault();
+    };
+    racine.addEventListener('gesturestart', bloquer, { passive: false });
+    racine.addEventListener('gesturechange', bloquer, { passive: false });
+    return () => {
+      racine.removeEventListener('gesturestart', bloquer);
+      racine.removeEventListener('gesturechange', bloquer);
+    };
+  }, [simule]);
+
   // ---- Échap : referme le carnet (le même geste que le bouton). Une photo soulevée et le menu gardent
   // le clavier (clavier modal, consommé avant nous) ; la loupe zoomée prend Échap pour revenir à 1×.
-  const fermerRef = React.useRef(onFermerCarnet);
-  fermerRef.current = onFermerCarnet;
-  const carnetOuvert = !!onFermerCarnet;
+  // Téléphone debout (cadrage « tourner ») : le livre est déjà fermé et garde la page lue jusqu'à ce
+  // qu'on le tourne ; ni bouton ni Échap pour le refermer.
+  const fermer = vp.cadrage === 'tourner' ? undefined : onFermerCarnet;
+  const fermerRef = React.useRef(fermer);
+  fermerRef.current = fermer;
+  const carnetOuvert = !!fermer;
   React.useEffect(() => {
     if (!carnetOuvert) return undefined;
     const onKey = (e: KeyboardEvent) => {
@@ -212,7 +232,7 @@ export function Ecran({ children, className, pleinEcran = true, loupe = true, on
         </LazyMotion>
         <div ref={setControles} className="gc-ecran__controles">
           <div className="gc-ecran__barre" data-gc-effacable>
-            {onFermerCarnet && <BoutonFermerCarnet onFermer={onFermerCarnet} />}
+            {fermer && <BoutonFermerCarnet onFermer={fermer} />}
             <BoutonMusique />
             <BoutonHautParleur />
             {loupe && (

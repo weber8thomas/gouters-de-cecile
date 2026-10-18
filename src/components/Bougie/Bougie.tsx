@@ -39,9 +39,9 @@ export interface BougieProps {
 // une goutte descend lentement une coulure figée, puis se fige (cire.ts). Rien ne se dessine pour elle
 // entre deux coulées.
 //
-// Mouvement réduit (système ou réglage) ou réglage feu: false : tout est immobile (une seule image de la
+// Animations réduites (réglage) ou réglage feu: false : tout est immobile (une seule image de la
 // flamme et de son reflet, aucune coulée). Rien ne capte le pointeur : on écoute seulement ses mouvements
-// (src/lib/pointeur.ts). Sur téléphone en portrait, le CSS ne garde que la lueur.
+// (src/lib/pointeur.ts). Téléphone debout (cadrage « tourner »), le CSS ne garde que la lueur.
 
 const borne = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 const r3 = (v: number) => Math.round(v * 1e3) / 1e3;
@@ -52,7 +52,7 @@ const r2 = (v: number) => Math.round(v * 1e2) / 1e2;
 const NORMALE = [-0.49, -0.87];
 const RAIDEUR = 60; // ressort de l'inclinaison (≈ 1,2 oscillation par seconde)
 const AMORTI = 6;
-const POUSSEE = 2.6; // (°/s²) par px/s de vent, au contact : un passage à 1000 px/s la couche d'environ 20°
+const POUSSEE = 2.6; // (°/s²) par px de scène/s de vent, au contact : un passage à 1000 px/s la couche d'environ 20°
 const PENCHE_MAX = 35;
 
 const FLAMME = geo.flamme;
@@ -74,7 +74,7 @@ type RenduVu = 'toile' | 'image';
 declare global {
   interface Window {
     /** Vérifications : l'état de la flamme rendue (scripts/verify-lumiere.mjs, captures). */
-    __gcFlamme?: { etat: () => { rendu: RenduVu; lumiere: number; long: number; eclat: number; images: number; ms: number; cadence: number } };
+    __gcFlamme?: { etat: () => { rendu: RenduVu; lumiere: number; long: number; eclat: number; trouble: number; penche: number; images: number; ms: number; cadence: number } };
     /** Vérifications : lancer une coulée de cire, lire son état (captures). */
     __gcBougie?: { couler: (k?: number, t?: number, fige?: boolean) => void; etat: () => EtatCoulee | null };
   }
@@ -210,12 +210,16 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
       const cy = boite.top + (MILIEU_FLAMME[1] - g.y) * k;
       const prox = borne(1 - Math.hypot(p.x - cx, p.y - cy) / (PORTEE * k), 0, 1);
       if (!prox) return;
-      // le vent pousse la flamme dans le sens du mouvement, plus fort tout près ; la flamme se trouble
+      // le vent pousse la flamme dans le sens du mouvement, plus fort tout près ; la flamme se trouble.
+      // Vitesse en px de scène par seconde : sur un téléphone (la scène à 0,4 ×), le même geste de la main
+      // souffle aussi fort que devant la TV.
       const dt = borne((p.t - vu) / 1000, 0.004, 1 / 30);
       vu = p.t;
-      om[0] += POUSSEE * prox * prox * p.vx * dt;
-      om[1] += POUSSEE * prox * prox * p.vy * dt;
-      trouble = Math.min(1, trouble + 3 * prox * ((p.vx * p.vx + p.vy * p.vy) / 1e6) * dt);
+      const vx = p.vx / k;
+      const vy = p.vy / k;
+      om[0] += POUSSEE * prox * prox * vx * dt;
+      om[1] += POUSSEE * prox * prox * vy * dt;
+      trouble = Math.min(1, trouble + 3 * prox * ((vx * vx + vy * vy) / 1e6) * dt);
     });
     const surVisibilite = () => {
       visible = !document.hidden;
@@ -239,7 +243,8 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
     window.addEventListener('resize', surRedim);
     window.__gcFlamme = {
       etat: () => ({
-        rendu, lumiere: flammeBougie.get(), long: etat.long, eclat: etat.eclat,
+        rendu, lumiere: flammeBougie.get(), long: etat.long, eclat: etat.eclat, trouble: r3(trouble),
+        penche: r2(Math.hypot(th[0], th[1])),
         images: gl?.mesure().images ?? 0, ms: gl?.mesure().ms ?? 0, cadence: lent > 0.024 ? 30 : 60,
       }),
     };

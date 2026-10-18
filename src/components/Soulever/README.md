@@ -40,7 +40,7 @@ import { SoulevementProvider, useSoulevement, souleverObjet } from '…/componen
 
 1. **Ordre** : `MotionConfig › CameraProvider › Ecran › SoulevementProvider › Livre`, et `Reglages` dans l'`Ecran` (frère du provider ou dedans, peu importe).
 2. **`preparer()` à l'atterrissage** d'un tourne-page : dans `onIndexChange`, `preparer(videoDe(spreads[i]) ?? null)`. La source ne change jamais pendant un geste.
-3. **Changement de page** (« Aller à… », lien profond) : appeler `reposer()` avant de changer d'index. Le provider repose déjà seul sur `hashchange`, et se ferme sans animation à un changement d'orientation ou de taille d'écran.
+3. **Changement de page** (« Aller à… », lien profond) : appeler `reposer()` avant de changer d'index. Le provider repose déjà seul sur `hashchange`, et se ferme sans animation à une vraie rotation (couché ↔ debout) ; quand seule la hauteur change (barre de Safari qui paraît ou s'efface), l'objet reste levé et se recentre.
 4. **Entrée / Espace** (vidéo de la double page) et **↑** (feuillet) : dans le gestionnaire de touches du carnet, `souleverObjet('photo')` / `souleverObjet('feuillet')` (et `preventDefault()` s'il renvoie `true`). Pas besoin de passer la source : l'objet se soulève lui-même, **dans** le `keydown`.
 5. **Toucher** : rien à brancher. `PhotoCollee` écoute l'événement `gc-livre-toucher` que le `Livre` émet **dans** le geste (juste avant `onToucherPage`) et l'annule (`preventDefault`) : le livre ne tourne pas la page par la marge. `FeuilletVolant` gère son propre toucher (`data-gc-controle`). Si `onToucherPage` appelle aussi `soulever()` pour la même photo, c'est sans effet (idempotent) ; il peut reconnaître la photo par `t.cible.closest('[data-gc-objet="photo"]')`.
 6. **`inert`** : posé par le provider lui-même pendant que l'objet est en l'air, sur les frères de la racine `.gc-ecran` (dont `.gc-livre-ecran`) et sur les autres contrôles (flèches, plein écran), **sauf le menu de réglages** (`[data-gc-reglages]`). L'attribut `data-gc-souleve` est posé sur `.gc-ecran` pendant ce temps (pour un style éventuel). Rien à brancher.
@@ -72,8 +72,8 @@ Noms : `page` (×5), `riffle`, `couverture-ouvrir`, `couverture-poser`, `couvert
 
 ### API pour les Réglages (lot B)
 
-- `reglages.sonsLivre: boolean | null` et `sonsLivreEffectif(r)` (`src/lib/son.ts`) : `null` = automatique (coupés sur téléphone : écran tactile dont le petit côté < 600 px). `useSonsLivre()` donne la valeur effective.
-- `reglages.ambiance: boolean | null` et `ambianceEffective(r)` (`src/lib/ambiance.ts`) : même règle automatique.
+- `reglages.sonsLivre: boolean | null` et `sonsLivreEffectif(r)` (`src/lib/son.ts`) : actifs partout, téléphone compris, sauf `false` (`null`, l'ancien « automatique », vaut « oui »). `useSonsLivre()` donne la valeur effective.
+- `reglages.ambiance: boolean | null` et `ambianceEffective(r)` (`src/lib/ambiance.ts`) : même règle.
 - `reglages.feu: boolean` (défaut `true`) : la lumière du feu vacille (lu par le lot L).
 - Activer « Sons du livre » ou « Ambiance » d'un clic dans le menu déverrouille l'audio dans ce même clic. Un petit `jouerSon('page')` juste après l'activation donne un aperçu.
 
@@ -99,7 +99,7 @@ Le calque est à `z-index: 3` dans les contrôles, **sous** le menu (`z-index: 4
 
 ## Fermer
 
-Toucher la photo ou le voile ; feuillet : toucher hors de la feuille (toucher la feuille la retourne) ; **Échap, Retour arrière, ↓** ; bouton « Fermer » ; `hashchange` ; orientation / taille (fermeture immédiate) ; fin de la vidéo ; `reposer()`. Le clic qui suit le toucher qui a soulevé l'objet ne le repose pas (un toucher ne compte que s'il a commencé sur le calque ouvert).
+Toucher la photo ou le voile ; feuillet : toucher hors de la feuille (toucher la feuille la retourne) ; **Échap, Retour arrière, ↓** ; bouton « Fermer » ; `hashchange` ; rotation couché ↔ debout (fermeture immédiate ; la barre de Safari ne ferme rien) ; fin de la vidéo ; `reposer()`. Le clic qui suit le toucher qui a soulevé l'objet ne le repose pas (un toucher ne compte que s'il a commencé sur le calque ouvert).
 
 ## Clavier et focus
 

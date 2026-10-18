@@ -28,6 +28,10 @@ export const VITESSE_PAS = 0.05;
  */
 const ANCIENNES_VITESSES: Record<string, number> = { vive: 1.5, normale: 1, lente: 0.7 };
 
+/** Animations du carnet : suivre la préférence du système, ou imposer complètes / réduites. */
+export type Animations = 'systeme' | 'completes' | 'reduites';
+export const ANIMATIONS: Animations[] = ['systeme', 'completes', 'reduites'];
+
 export interface Reglages {
   v: 1;
   /** Son des vidéos. */
@@ -53,18 +57,27 @@ export interface Reglages {
    * « vive · normale · lente » (champ `vitesse`), converti à la lecture.
    */
   vitesseAnimations: number;
-  /** Moins d'animations (en plus de la préférence du système). */
+  /**
+   * Animations : « systeme » (défaut) suit la préférence du système, qui, si elle demande moins
+   * d'animations, garde les effets du carnet en version douce (src/lib/motion.ts) ; « completes » ou
+   * « reduites » l'imposent (réduites : presque tout s'arrête).
+   */
+  animations: Animations;
+  /**
+   * Moins d'animations : vrai quand `animations` vaut « reduites » (miroir, tenu par valider). L'écrire
+   * (ancien interrupteur, anciens réglages mémorisés) règle `animations`.
+   */
   mouvementReduit: boolean;
   /**
    * Sons du livre (pages, couverture, feuillet, photo), distincts du son des vidéos.
-   * Défaut : actifs, téléphone compris. null = automatique : coupés sur téléphone, actifs ailleurs
-   * (voir sonsLivreEffectif, src/lib/son.ts).
+   * Défaut : actifs, téléphone compris. null (l'ancien « automatique », encore lu dans des réglages
+   * mémorisés) : actifs aussi (voir sonsLivreEffectif, src/lib/son.ts).
    */
   sonsLivre: boolean | null;
   /**
    * Ambiance sonore : le feu de cheminée et de rares bruits de cuisine (src/lib/ambiance.ts).
-   * Défaut : active, téléphone compris. null = automatique : active sur TV et ordinateur, coupée sur
-   * téléphone (voir ambianceEffective).
+   * Défaut : active, téléphone compris. null (l'ancien « automatique ») : active aussi (voir
+   * ambianceEffective).
    */
   ambiance: boolean | null;
   /** La lumière du feu vacille (lot L, src/lib/feu.ts) ; false : lumière chaude mais immobile. */
@@ -112,6 +125,7 @@ export const REGLAGES_DEFAUT: Reglages = {
   lectureAuto: false,
   vitesseEcriture: 1,
   vitesseAnimations: 1,
+  animations: 'systeme',
   mouvementReduit: false,
   sonsLivre: true,
   ambiance: true,
@@ -138,7 +152,9 @@ function valider(x: unknown): Reglages {
   if (typeof o.vitesseEcriture === 'number' && Number.isFinite(o.vitesseEcriture)) r.vitesseEcriture = Math.min(VITESSE_ECRITURE_MAX, Math.max(VITESSE_ECRITURE_MIN, o.vitesseEcriture));
   if (typeof o.vitesseAnimations === 'number' && Number.isFinite(o.vitesseAnimations)) r.vitesseAnimations = Math.min(VITESSE_ANIMATIONS_MAX, Math.max(VITESSE_ANIMATIONS_MIN, o.vitesseAnimations));
   else if (typeof o.vitesse === 'string' && Object.prototype.hasOwnProperty.call(ANCIENNES_VITESSES, o.vitesse)) r.vitesseAnimations = ANCIENNES_VITESSES[o.vitesse];
-  if (typeof o.mouvementReduit === 'boolean') r.mouvementReduit = o.mouvementReduit;
+  if (typeof o.animations === 'string' && (ANIMATIONS as string[]).includes(o.animations)) r.animations = o.animations as Animations;
+  else if (o.mouvementReduit === true) r.animations = 'reduites'; // réglages d'avant le choix à trois
+  r.mouvementReduit = r.animations === 'reduites';
   if (typeof o.sonsLivre === 'boolean' || o.sonsLivre === null) r.sonsLivre = o.sonsLivre;
   if (typeof o.ambiance === 'boolean' || o.ambiance === null) r.ambiance = o.ambiance;
   if (typeof o.feu === 'boolean') r.feu = o.feu;
@@ -189,7 +205,11 @@ export const getReglages = (): Reglages => etat;
 
 /** Change un ou plusieurs réglages (objet partiel ou fonction), mémorise et prévient les abonnés. */
 export function setReglages(maj: Partial<Reglages> | ((r: Reglages) => Partial<Reglages>)): void {
-  const partiel = typeof maj === 'function' ? maj(etat) : maj;
+  let partiel = typeof maj === 'function' ? maj(etat) : maj;
+  // L'ancien interrupteur « moins d'animations » règle le choix à trois.
+  if (typeof partiel.mouvementReduit === 'boolean' && partiel.animations === undefined) {
+    partiel = { ...partiel, animations: partiel.mouvementReduit ? 'reduites' : 'systeme' };
+  }
   const suivant = valider({ ...etat, ...partiel });
   if (JSON.stringify(suivant) === JSON.stringify(etat)) return;
   etat = suivant;

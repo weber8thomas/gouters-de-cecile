@@ -23,7 +23,7 @@
 import React from 'react';
 import banqueJson from '../../design-system/baked/sons/banque.json';
 import {
-  abonnerAudio, abonnerVideo, besoinAudio, contexteAudio, decoderSon, estTelephone, prechargerSon, urlSon, videoEnLecture,
+  abonnerAudio, abonnerVideo, besoinAudio, contexteAudio, decoderSon, prechargerSon, urlSon, videoEnLecture,
 } from './son';
 import { abonnerReglages, GAIN_BRUITAGES, getReglages, type Reglages } from './reglages';
 
@@ -47,10 +47,12 @@ interface Ambiance {
 }
 const AMBIANCE = (banqueJson as unknown as { ambiance?: Ambiance }).ambiance ?? null;
 
-/** Ambiance active pour ces réglages (automatique : coupée sur un téléphone). */
+/**
+ * Ambiance active pour ces réglages : partout, téléphone compris, sauf si elle a été coupée (l'ancien
+ * « automatique », null, qui la coupait sur un téléphone, vaut maintenant « oui »).
+ */
 export function ambianceEffective(r: Pick<Reglages, 'ambiance'>): boolean {
-  if (r.ambiance !== null && r.ambiance !== undefined) return r.ambiance;
-  return !estTelephone();
+  return r.ambiance !== false;
 }
 
 export const FONDU_ENTREE = 3;

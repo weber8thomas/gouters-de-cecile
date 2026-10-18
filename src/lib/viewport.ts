@@ -1,14 +1,18 @@
 // Fenêtre d'affichage du carnet (CONTRACT § 11) : taille de la fenêtre visuelle, densité, tactile,
 // zones sûres et cadrage choisi selon la forme de l'écran.
 //
-//   double : écran plus large que haut → la double page entière, à l'échelle « contain » ;
-//   page   : portrait (téléphone, tablette debout) → une page à la fois, la plus grande possible.
+//   double  : la double page entière, à l'échelle « contain » (ordinateur, TV, tablette debout ou
+//             couchée, téléphone couché) ;
+//   tourner : téléphone debout → le livre reste fermé sur la table, avec l'invitation à tourner le
+//             téléphone : on le lit couché, comme sur l'ordinateur ;
+//   page    : une page à la fois (ancien cadrage du téléphone debout) : plus choisi par la mesure,
+//             seulement s'il est imposé (ViewportOverride).
 //
 // Tout ce qui suit le hook est pur (aucun React, aucun DOM) et testable : échelle « contain »,
-// zone sûre, cadres de caméra (double et page), débord de table nécessaire, arrondis au pixel.
+// zone sûre, cadres de caméra (double, page, tourner), débord de table nécessaire, arrondis au pixel.
 import React from 'react';
 
-export type Cadrage = 'double' | 'page';
+export type Cadrage = 'double' | 'page' | 'tourner';
 
 export interface Insets {
   top: number;
@@ -46,14 +50,21 @@ export const AUCUNE_MARGE: Insets = { top: 0, right: 0, bottom: 0, left: 0 };
 export const HYSTERESIS = 0.06;
 
 /**
- * Cadrage selon la forme : « page » quand la fenêtre est plus haute que large. Près du carré, on garde
- * le cadrage précédent (une rotation passe par des tailles intermédiaires : pas de clignotement).
+ * Largeur (px CSS) sous laquelle un écran tactile debout est un téléphone : la double page y serait
+ * trop petite pour se lire (une tablette debout, 744 px et plus, la lit bien).
  */
-export function cadrageDe(w: number, h: number, avant?: Cadrage | null): Cadrage {
+export const LARGEUR_TOURNER = 600;
+
+/**
+ * Cadrage selon la forme : « tourner » pour un téléphone debout (écran tactile plus haut que large,
+ * moins de 600 px de large), « double » partout ailleurs. Près du carré, on garde le cadrage précédent
+ * (une rotation passe par des tailles intermédiaires : pas de clignotement).
+ */
+export function cadrageDe(w: number, h: number, avant?: Cadrage | null, tactile = true): Cadrage {
   if (!(w > 0 && h > 0)) return avant ?? 'double';
-  if (avant === 'page') return w > h * (1 + HYSTERESIS) ? 'double' : 'page';
-  if (avant === 'double') return h > w * (1 + HYSTERESIS) ? 'page' : 'double';
-  return h > w ? 'page' : 'double';
+  const debout = avant === 'tourner' || avant === 'page' ? !(w > h * (1 + HYSTERESIS))
+    : avant === 'double' ? h > w * (1 + HYSTERESIS) : h > w;
+  return debout && tactile && w < LARGEUR_TOURNER ? 'tourner' : 'double';
 }
 
 /** Échelle « contain » : le cadre entier tient dans la zone. */
@@ -135,6 +146,24 @@ export function cadrerPage(vp: Pick<Viewport, 'w' | 'h' | 'insets'>, geo: Geomet
   const my = Math.max(c.haut, c.bas) + m / 2;
   const s = arrondiEchelle(echelleContain({ w: geo.W + 2 * mx, h: geo.H + 2 * my }, z));
   return { s, cx: geo.bookX + geo.W * 0.5, cy: geo.bookY + geo.H / 2, ox: z.x + z.w / 2, oy: z.y + z.h / 2 };
+}
+
+/** Téléphone debout : part de la zone sûre (en bas) laissée à l'invitation à tourner le téléphone. */
+export const PART_INVITATION = 0.3;
+/** Téléphone debout : bande du haut (px CSS) laissée à la barre de boutons (cible de 44 px et ses bords). */
+export const BARRE_TOURNER = 56;
+
+/**
+ * Cadrage « tourner » (téléphone debout) : le livre fermé (sa page et ses cartons), entier et centré
+ * entre la barre de boutons et l'invitation à tourner le téléphone, qui occupe le bas de la zone sûre.
+ */
+export function cadrerTourner(vp: Pick<Viewport, 'w' | 'h' | 'insets'>, geo: GeometrieLivre): CadreCamera {
+  const z = zoneSure(vp);
+  const c = geo.carton;
+  const m = geo.W * MARGE_PAGE;
+  const haut = Math.max(1, z.h * (1 - PART_INVITATION) - BARRE_TOURNER);
+  const s = arrondiEchelle(echelleContain({ w: geo.W + 2 * c.out + 2 * m, h: geo.H + c.haut + c.bas + 2 * m }, { w: z.w, h: haut }));
+  return { s, cx: centrePage(geo, 'couverture'), cy: geo.bookY + geo.H / 2, ox: z.x + z.w / 2, oy: z.y + BARRE_TOURNER + haut / 2 };
 }
 
 /**
@@ -299,11 +328,11 @@ export function useViewport(): Viewport {
 
   const w = force?.w ?? m.w;
   const h = force?.h ?? m.h;
-  const cadrage = force?.cadrage ?? cadrageDe(w, h, cadrageRef.current);
+  const tactile = force?.tactile ?? m.tactile;
+  const cadrage = force?.cadrage ?? cadrageDe(w, h, cadrageRef.current, tactile);
   cadrageRef.current = cadrage;
   const insets: Insets = force?.insets ? { ...AUCUNE_MARGE, ...(toutImpose ? {} : m.insets), ...force.insets } : toutImpose ? AUCUNE_MARGE : m.insets;
   const dpr = force?.dpr ?? m.dpr;
-  const tactile = force?.tactile ?? m.tactile;
   const pleinEcran = force?.pleinEcran ?? (toutImpose ? false : m.pleinEcran);
   return React.useMemo<Viewport>(
     () => ({ w, h, dpr, tactile, insets, cadrage, pleinEcran }),

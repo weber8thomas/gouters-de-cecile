@@ -415,9 +415,10 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
         minuteur = 0;
       }
     };
-    // un clic dans le livre finit d'écrire (la page en cours comme celle qui attend)
+    // un clic dans le livre finit d'écrire (la page en cours comme celle qui attend) ; pas pendant un
+    // tourne-page : les pages visibles sont alors celles d'arrivée, qui ne se sont pas encore écrites
     const finir = () => {
-      if (!feuille.classList.contains('gc-livre__page--visible')) return;
+      if (!feuille.classList.contains('gc-livre__page--visible') || livre.hasAttribute('data-gc-geste')) return;
       window.clearTimeout(minuteur);
       minuteur = 0;
       if (arreter) arreter();
