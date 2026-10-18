@@ -13,7 +13,7 @@
 // Sorties : verification/out/dessins (planches film-*.png, page-*.png, iphone-*.png, dessins.json).
 //
 //   node scripts/verify-dessins.mjs [--site dist/site | --carnet [--bundle dist/ds/components]]
-//        [--suites pages,films,creature,iphone] [--out verification/out/dessins]
+//        [--suites pages,films,creature,iphone] [--films cupcake-bougie,…] [--out verification/out/dessins]
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -191,8 +191,9 @@ const FILMS = [
   ['mathis', 'cookies', 'casse', 0.1],
 ];
 if (suites.includes('films')) {
+  const seuls = liste('films', ''); // --films cupcake-bougie,… : ces aquarelles seulement
   const parSpread = new Map();
-  for (const f of FILMS) parSpread.set(f[0], [...(parSpread.get(f[0]) ?? []), f]);
+  for (const f of FILMS) if (!seuls.length || seuls.includes(f[1])) parSpread.set(f[0], [...(parSpread.get(f[0]) ?? []), f]);
   for (const [spread, films] of parSpread) {
     const { ctx, page } = await ouvrirPage(browser, cible, TV, `#${spread}`);
     await toilesPretes(page, 1);
@@ -235,7 +236,7 @@ if (suites.includes('creature')) {
     const A = pages[0].width / pages[0].height;
     const droite = c.x > A;
     const r = droite ? pages[pages.length - 1] : pages[0];
-    return { x: r.left + ((droite ? c.x / A - 1 : c.x / A)) * r.width, y: r.top + c.y * r.height, espece: c.espece };
+    return { x: r.left + ((droite ? c.x / A - 1 : c.x / A)) * r.width, y: r.top + c.y * r.height, espece: c.espece, cx: c.x, cy: c.y };
   });
   let apres = [];
   if (pos) {
@@ -246,9 +247,12 @@ if (suites.includes('creature')) {
   }
   const e = await etat(page);
   resultats.creature = e.map((t) => t.creatures);
+  // elle a bougé : envolée, ou posée ailleurs
+  const apresC = e.flatMap((t) => t.creatures).filter((c) => c.espece === pos?.espece);
+  const bouge = !!pos && apresC.some((c) => c.etat === 'vol' || Math.hypot(c.x - pos.cx, c.y - pos.cy) > 0.04);
   const f = bande([...avant, ...apres.map(([i, l, c]) => [i, `touchée +${l}`, c])], join(out, 'film-creature.png'),
     `Biscuits : ${pos?.espece ?? 'créature'} posée, puis touchée (elle s'envole)`, { hauteur: 260, colonnes: 4 });
-  rapport.ajouter(null, '[creature] posée puis envolée', pos ? 'OK' : 'KO', `${rel(f)} · ${JSON.stringify(resultats.creature)}`);
+  rapport.ajouter(null, '[creature] posée puis envolée', bouge ? 'OK' : 'KO', `${rel(f)} · touchée en ${pos ? `${pos.cx.toFixed(3)}, ${pos.cy.toFixed(3)}` : '—'} · après : ${JSON.stringify(apresC)}`);
   await ctx.close();
 }
 
@@ -261,10 +265,12 @@ if (suites.includes('iphone')) {
   const h0 = (await etat(page)).map((t) => t.horloge);
   await attendre(2000);
   const e1 = await etat(page);
-  const avance = e1.some((t, k) => t.joue && t.horloge > (h0[k] ?? 0) + 800);
+  // le temps des toiles avance (un pas de 100 ms au plus par image : en rendu logiciel, à dpr 3, le
+  // navigateur ne compose ici que quelques images par seconde, le temps avance donc moins vite que l'horloge)
+  const avance = e1.some((t, k) => t.joue && t.horloge > (h0[k] ?? 0) + 150);
   await page.screenshot({ path: join(out, 'iphone-peinture.png') });
   rapport.ajouter(null, '[iphone] les toiles jouent et le temps avance', avance ? 'OK' : 'KO',
-    e1.map((t, k) => `${t.page} ${t.joue ? 'joue' : 'arrêtée'} ${h0[k]} → ${t.horloge} ms`).join(' · ') || `aucune toile (${JSON.stringify(e0)})`);
+    e1.map((t, k) => `${t.page} ${t.joue ? 'joue' : 'arrêtée'} ${h0[k]} → ${t.horloge} ms (en 2 s)`).join(' · ') || `aucune toile (${JSON.stringify(e0)})`);
   // un doigt qui glisse lentement sur le cupcake, puis une tape dessus
   await page.evaluate(() => window.__gcDessins?.finir());
   await attendre(1500);

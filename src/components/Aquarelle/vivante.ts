@@ -298,7 +298,7 @@ void main(){
     float i=min(F.w,1.6);
     float g=exp(-dot(f,f)*.12)*(.2+.07*sin(t*6.3+float(k))+.04*sin(t*11.))*i*pk;
     c=sur(vec4(vec3(.98,.62,.28)*pap*g,g),c);
-    if(flv[k].y>0.)s+=volute(vec4(F.x,F.y+F.z*.9,F.z*1.2,flv[k].y*.9),ub0,ai)*vec4(.85,.85,.85,1.);
+    if(flv[k].y>0.)s+=volute(vec4(F.x,F.y+F.z*.9,max(F.z*1.6,.07),flv[k].y),ub0,ai)*vec4(.85,.85,.85,1.); // un filet de fumée visible même sur une petite bougie
   }
   // une gerbe (miettes qui tombent, gouttes qui sautent et retombent)
   if(ge.w>0.&&ge.z>0.){
