@@ -1123,6 +1123,19 @@ export function Livre({
   }, [cadre, dpr]);
   const mondeT = useTransform(camX, transformMonde);
 
+  // Rotation vers le cadrage « page », loupe zoomée : la page affichée est celle que la loupe lisait.
+  const modeAvant = React.useRef(modePage);
+  React.useLayoutEffect(() => {
+    if (modeAvant.current === modePage) return;
+    modeAvant.current = modePage;
+    const L = getLoupe();
+    if (!modePage || !L.zoome || !L.cote || L.cote === coteRef.current || afficheRef.current < 0 || tourRef.current) return;
+    coteRef.current = L.cote;
+    coteCibleRef.current = L.cote;
+    glisse.set(X(afficheRef.current, L.cote));
+    setCote(L.cote);
+  }, [modePage, glisse, X]);
+
   // Au repos (et à chaque changement d'écran) : la caméra se pose sur la page affichée, écrite tout de
   // suite (le prochain passage de Motion n'aurait lieu qu'après la première image). La loupe reçoit le
   // rectangle du contenu (px d'écran, à z = 1) et la page visible.

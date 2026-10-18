@@ -1,6 +1,6 @@
 # Loupe
 
-Le vrai zoom du carnet (plan v4, CONTRACT § 13) : de **1× à 3×**, sur **tous les écrans**, téléphone compris. Il remplace le pincement du navigateur sur le livre (`touch-action: none`). Rien n'est mémorisé : la loupe revient à 1× au rechargement et à la rotation.
+Le vrai zoom du carnet (plan v4, CONTRACT § 13) : de **1× à 3×**, sur **tous les écrans**, téléphone compris. Il remplace le pincement du navigateur sur le livre (`touch-action: none`). Rien n'est mémorisé : la loupe revient à 1× au rechargement. À la rotation de l'écran, elle garde son facteur et le point du texte qu'elle montrait au centre (en cadrage « page », le livre affiche la page que la loupe lisait).
 
 La loupe vit dans l'`Ecran` : le livre est posé dans le calque `.gc-ecran__loupe` (`translate3d(x, y, 0) scale(z)`, origine `0 0`, trois MotionValues). Les contrôles, la photo soulevée et le menu sont en portail **hors** de ce calque : ils ne zooment jamais. Ce dossier fournit le contrôleur des gestes et le bouton ; l'état partagé est dans `src/lib/loupe.ts`.
 
