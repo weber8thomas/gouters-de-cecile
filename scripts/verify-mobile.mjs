@@ -8,7 +8,7 @@
 //     apparaît (la photo reste), tape sur un dessin (la page ne tourne pas), pincement sur la page (loupe, pas
 //     de zoom du navigateur) ; #julie : pincement dans la marge (loupe aussi).
 //   iPhone 13 debout : livre fermé et invitation à tourner le téléphone ; rotation pendant la lecture (couché →
-//     debout → couché) : la page lue est retrouvée.
+//     debout → couché) : la page lue est retrouvée, même après une tape et des touches pendant qu'il est debout.
 //   iPad debout : la double page se lit. Pixel 7 couché : la double page et le tour au coin.
 //   iPhone 13 couché, « moins d'animations » du système : la flamme vit, l'encre s'écrit (mouvement doux).
 //   iPad couché, TV 1920 : non-régression (livre fermé, double page, bougie).
@@ -378,11 +378,18 @@ async function debout(e) {
   const inv1 = await rectDe(page, '[data-gc-tourner]');
   R.ok(n, 'rotation couché → debout : le livre se ferme, l’invitation paraît', L1.etat === 'couverture' && !!inv1?.visible, { avant: L0, apres: L1 });
   R.ok(n, 'rotation couché → debout : l’adresse garde la page lue', L1.hash === L0.hash, { avant: L0.hash, apres: L1.hash });
+  // Fuite de touche : debout, le livre fermé attend ; une tape sur la couverture ou une touche (→, Fin) ne
+  // doit pas déplacer en douce la page lue, qui tournerait toute seule une fois le téléphone couché.
+  const G1 = await geo(page);
+  if (G1.couv) await toucher(page, G1.couv.cx, G1.couv.cy);
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('End');
+  await page.waitForTimeout(1200);
   await page.setViewportSize(couche.ctx.viewport);
   await page.waitForTimeout(2500);
   await posee(page);
   const L2 = await livre(page);
-  R.ok(n, 'rotation debout → couché : la page lue est retrouvée', L2.double === L0.double && L2.cadrage === 'double', { avant: L0.double, apres: L2 });
+  R.ok(n, 'rotation debout → couché : la page lue est retrouvée (tape et touches debout sans effet)', L2.double === L0.double && L2.cadrage === 'double', { avant: L0.double, apres: L2 });
   await fermer(o);
 }
 

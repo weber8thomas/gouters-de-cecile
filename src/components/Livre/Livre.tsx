@@ -1081,6 +1081,8 @@ export function Livre({
     const onKey = (e: KeyboardEvent) => {
       // Déjà consommée (loupe zoomée qui déplace la vue, menu…) : rien.
       if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+      // Téléphone debout : le livre fermé attend qu'on le tourne ; une touche ne déplace pas la page lue.
+      if (tournerRef.current) return;
       const t = e.target as HTMLElement | null;
       if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
       switch (e.key) {
