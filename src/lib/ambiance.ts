@@ -3,7 +3,7 @@
 // thé qu'on verse, couvercle de la boîte à biscuits. Un fond, jamais au premier plan.
 //
 //   - Réglage « ambiance » (reglages.ambiance, null = automatique : active sur TV et ordinateur, coupée
-//     sur téléphone) ; volume des bruitages (reglages.volumeBruitages) ;
+//     sur téléphone) ; volume des bruitages (reglages.volumeBruitages × GAIN_BRUITAGES) ;
 //   - démarre en fondu (3 s) quand le premier geste déverrouille l'audio (src/lib/son.ts : même
 //     contexte, même déverrouillage) ; en sourdine (× 0,15) pendant qu'une vidéo joue ; en pause quand
 //     l'onglet est caché (le contexte est suspendu) ;
@@ -22,7 +22,7 @@ import banqueJson from '../../design-system/baked/sons/banque.json';
 import {
   abonnerAudio, abonnerVideo, besoinAudio, contexteAudio, decoderSon, estTelephone, prechargerSon, urlSon, videoEnLecture,
 } from './son';
-import { abonnerReglages, getReglages, type Reglages } from './reglages';
+import { abonnerReglages, GAIN_BRUITAGES, getReglages, type Reglages } from './reglages';
 
 export type NomCuisine = 'cuisine-cuillere' | 'cuisine-tasse' | 'cuisine-bouilloire' | 'cuisine-the' | 'cuisine-boite';
 
@@ -80,7 +80,7 @@ function voulue(): boolean {
 function niveau(): number {
   const r = getReglages();
   if (r.muet) return 0;
-  return clamp01(r.volumeBruitages) * (videoEnLecture() ? SOURDINE_VIDEO : 1);
+  return clamp01(r.volumeBruitages) * GAIN_BRUITAGES * (videoEnLecture() ? SOURDINE_VIDEO : 1);
 }
 
 let derniereRegle = 0;

@@ -20,7 +20,7 @@
 //     maître (src/lib/ambiance.ts).
 import banqueJson from '../../design-system/baked/sons/banque.json';
 import { assetInfo, assetNames, assetUrl } from './assets';
-import { abonnerReglages, getReglages, useReglages, type Reglages } from './reglages';
+import { abonnerReglages, GAIN_BRUITAGES, getReglages, useReglages, type Reglages } from './reglages';
 
 export type NomSon =
   | 'page'
@@ -318,7 +318,7 @@ function moteur(nom: NomSon, o?: OptionsSon): void {
   const v = clamp01(Number.isFinite(o?.vitesse) ? (o!.vitesse as number) : 0.5);
   const debit = (0.9 + 0.25 * v) * (1 + (Math.random() * 2 - 1) * 0.03);
   const r = getReglages();
-  let gain = clamp01(r.volumeBruitages) * (0.35 + 0.65 * v) * Math.max(0, Number.isFinite(o?.gain) ? (o!.gain as number) : 1);
+  let gain = clamp01(r.volumeBruitages) * GAIN_BRUITAGES * (0.35 + 0.65 * v) * Math.max(0, Number.isFinite(o?.gain) ? (o!.gain as number) : 1);
   if (videoEnCours) gain *= 0.3;
   const k = choisir(nom, variantes.length);
   gain *= variantes[k].g;

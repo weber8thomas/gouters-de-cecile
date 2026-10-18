@@ -5,8 +5,9 @@
 // Clé v3 : la musique est coupée par défaut (musiqueActive, absent de la clé v2 : coupée). Les réglages
 // v2 sont repris tels quels, sauf la musique ; la clé v2 sert de repli, puis la v1 (son « automatique »
 // ramené au défaut, comme avant).
-// Les volumes des bruitages et de la musique (volumeBruitages, volumeMusique) n'ont pas de clé à part :
-// absents d'une clé v3, ils prennent leur défaut (0,8 et 0,5), comme les autres champs ajoutés.
+// Clé v4 : les curseurs de volume des bruitages et de la musique ont changé d'échelle (le mélange choisi
+// à l'écoute, bruitages à 15 % et musique à 100 % de l'ancienne échelle, tombe à 50 % / 50 %) ; les
+// volumes d'une clé plus ancienne sont donc oubliés et repartent de leur défaut, le reste est repris.
 import React from 'react';
 import banqueMusique from '../../design-system/baked/musique/banque.json';
 
@@ -21,7 +22,8 @@ export interface Reglages {
   volume: number;
   /**
    * Volume des bruitages, 0 à 1 : pages, couverture, feuillets, photo (src/lib/son.ts), feu et bruits de
-   * cuisine (src/lib/ambiance.ts). Indépendant du volume des vidéos et de celui de la musique. Défaut : 0,8.
+   * cuisine (src/lib/ambiance.ts). Indépendant du volume des vidéos et de celui de la musique. Défaut : 0,5
+   * (× GAIN_BRUITAGES : 100 % du curseur reste discret, sous la musique et la voix des vidéos).
    */
   volumeBruitages: number;
   /** Lancer la vidéo en arrivant sur la double page d'un invité. */
@@ -61,11 +63,14 @@ export interface Reglages {
    */
   musiqueActive: boolean;
   /**
-   * Volume de la musique de fond, 0 à 1, toujours sous le feu (src/lib/musique.ts). Réglable musique
-   * coupée : le niveau attend le prochain départ. Défaut : 0,5.
+   * Volume de la musique de fond, 0 à 1 (src/lib/musique.ts). Réglable musique
+   * coupée : le niveau attend le prochain départ. Défaut : 0,5 (× NIVEAU_MUSIQUE, src/lib/musique.ts).
    */
   volumeMusique: number;
 }
+
+/** Niveau réel des bruitages à 100 % du curseur (sons du livre et ambiance) : 50 % ≈ 15 % de l'ancienne échelle. */
+export const GAIN_BRUITAGES = 0.3;
 
 /** Identifiants des morceaux de musique de fond (la banque cuite par scripts/bake-musique.mjs). */
 export const MUSIQUES_IDS: readonly string[] = (banqueMusique as { morceaux: { id: string }[] }).morceaux.map((m) => m.id);
@@ -74,7 +79,7 @@ export const REGLAGES_DEFAUT: Reglages = {
   v: 1,
   son: true,
   volume: 1,
-  volumeBruitages: 0.8,
+  volumeBruitages: 0.5,
   lectureAuto: false,
   vitesse: 'normale',
   mouvementReduit: false,
@@ -86,7 +91,8 @@ export const REGLAGES_DEFAUT: Reglages = {
   musiqueActive: false,
   volumeMusique: 0.5,
 };
-const CLE = 'gc:reglages:v3';
+const CLE = 'gc:reglages:v4';
+const CLE_V3 = 'gc:reglages:v3';
 const CLE_V2 = 'gc:reglages:v2';
 const CLE_V1 = 'gc:reglages:v1';
 
@@ -117,9 +123,16 @@ function charger(): Reglages {
     const lire = (cle: string): string | null => (typeof localStorage !== 'undefined' ? localStorage.getItem(cle) : null);
     const brut = lire(CLE);
     if (brut) return valider(JSON.parse(brut));
-    // Première visite de cette version : on reprend la clé v2 (sans musiqueActive : la musique reste
+    // Première visite de cette version : la clé v3 sans ses volumes (ancienne échelle), puis la clé v2 (sans musiqueActive : la musique reste
     // coupée), puis la v1, sauf les « automatique » (null) de sonsLivre et d'ambiance, qui retombent
     // sur le défaut (actif).
+    const v3 = lire(CLE_V3);
+    if (v3) {
+      const o = { ...(JSON.parse(v3) as Record<string, unknown>) };
+      delete o.volumeBruitages;
+      delete o.volumeMusique;
+      return valider(o);
+    }
     const v2 = lire(CLE_V2);
     if (v2) return valider(JSON.parse(v2));
     const ancien = lire(CLE_V1);

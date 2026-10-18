@@ -4,7 +4,7 @@
 //   - réglages « musique » (morceau choisi au menu) et « musiqueActive » (bouton musique) : coupée par défaut ;
 //   - le premier geste déverrouille l'audio pour elle aussi (besoinAudio, comme l'ambiance) ;
 //   - démarre en fondu de 4 s ; changer de morceau : fondu croisé de 2 s ;
-//   - niveau : 0,1 × le volume de la musique (reglages.volumeMusique, sous le feu, src/lib/ambiance.ts), × 0,2
+//   - niveau : 0,2 × le volume de la musique (reglages.volumeMusique ; à 50 %, le niveau choisi à l'écoute), × 0,2
 //     pendant une vidéo soulevée ; réglable musique coupée, le niveau suit alors sans jouer ;
 //   - « muet » (bouton haut-parleur, reglages.muet) : le gain va à 0 et la boucle continue, comme le feu ;
 //   - en pause quand l'onglet est caché : son.ts suspend le contexte partagé, donc l'horloge audio s'arrête ;
@@ -37,8 +37,9 @@ export const MORCEAUX: readonly Morceau[] = (banqueJson as { morceaux: Morceau[]
 
 const FONDU_ENTREE = 4;
 const FONDU_CHANGEMENT = 2;
-/** Niveau de la musique, en fraction du volume des réglages : un fond, sous le feu (0,248) et le livre. */
-export const NIVEAU_MUSIQUE = 0.1;
+/** Niveau de la musique à 100 % du curseur : à 50 % (défaut), 0,1, le niveau choisi à l'écoute au-dessus
+ * des bruitages ; le curseur garde de la marge pour monter. */
+export const NIVEAU_MUSIQUE = 0.2;
 export const SOURDINE_VIDEO_MUSIQUE = 0.2;
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
@@ -121,7 +122,7 @@ let maitre: GainNode | null = null;
 let maitreDe: AudioContext | null = null;
 let voix: Voix | null = null;
 
-/** Niveau voulu : 0 en muet ; sinon volume de la musique × 0,1, et × 0,2 pendant une vidéo. */
+/** Niveau voulu : 0 en muet ; sinon volume de la musique × NIVEAU_MUSIQUE, et × 0,2 pendant une vidéo. */
 export function niveauMusique(): number {
   if (muet()) return 0;
   return clamp01(getReglages().volumeMusique) * NIVEAU_MUSIQUE * (videoEnLecture() ? SOURDINE_VIDEO_MUSIQUE : 1);
