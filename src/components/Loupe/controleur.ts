@@ -14,7 +14,8 @@
 //   - Safari : gesturestart / gesturechange / gestureend (pavé tactile du Mac) ;
 //   - clavier zoomé : flèches = déplacement de 20 % (← → passent au livre au bord), Échap = 1×.
 // Bornes : le contenu zoomé couvre la zone sûre (jamais de texte coincé sous l'encoche).
-// Désactivée tant que le navigateur est zoomé (visualViewport.scale > 1,01). Rien n'est mémorisé.
+// Désactivée tant que le navigateur est zoomé (visualViewport.scale > 1,01). Rien n'est mémorisé ; à la
+// rotation de l'écran, la loupe garde son facteur et le point du texte qu'elle montrait au centre.
 //
 // Les fonctions pures (zoomFoyer, pincer, bornesPan, bornerPan, ancrerHaut, zElastique) sont
 // exportées pour les tests.
@@ -238,6 +239,8 @@ export function creerControleur(o: OptionsControleur): ControleurEcran {
   let geometrie: { contenu: RectLoupe; zone: RectLoupe } | null = null;
   let dernierDouble: number | null = null;
   let detache = false;
+  /** Zoomé, au repos : le point du texte au centre de la zone sûre (fractions d'une page) et le facteur. */
+  let ancre: { cote: 'gauche' | 'droite'; fx: number; fy: number; z: number } | null = null;
 
   const vue = (): Vue => ({ x: lx.get(), y: ly.get(), z: lz.get() });
   const viseeOuCourante = (): Vue => visee ?? vue();
@@ -374,10 +377,49 @@ export function creerControleur(o: OptionsControleur): ControleurEcran {
     lireOrigine();
     const z = lz.get();
     const cote = coteAuCentre();
+    ancre = cote ? releverAncre(cote) : null;
     const d = Number(livreEcran()?.getAttribute('data-gc-double'));
     if (Number.isFinite(d)) dernierDouble = d;
     if (globale) majLoupe({ z, cote });
     else o.onRepos?.({ z, cote });
+  }
+
+  /** Point du contenu au centre de la zone sûre, en fractions de la page `cote` (lu au repos). */
+  function releverAncre(cote: 'gauche' | 'droite') {
+    const el = emplacement(cote);
+    if (!el) return null;
+    const v = vue();
+    const p = aZ1(el.getBoundingClientRect(), v);
+    if (!(p.w > 0 && p.h > 0)) return null;
+    const s = zone();
+    return { cote, fx: ((s.x + s.w / 2 - v.x) / v.z - p.x) / p.w, fy: ((s.y + s.h / 2 - v.y) / v.z - p.y) / p.h, z: v.z };
+  }
+
+  /**
+   * Après une rotation de l'écran : même facteur, et le même point du texte au centre de la zone sûre
+   * (sur une autre page que celle de l'ancre, en cadrage « page » : le haut de la page affichée). Sans
+   * animation : l'écran vient de tourner.
+   */
+  function reprendre(a: NonNullable<typeof ancre>) {
+    if (detache || !actif || enGeste) return;
+    arreterAnims();
+    oublierGeo();
+    const { contenu, zone: s } = geo();
+    const le = livreEcran();
+    const el = le?.getAttribute('data-gc-cadrage') === 'page' && le.getAttribute('data-gc-cote') !== a.cote ? null : emplacement(a.cote);
+    let v: Vue;
+    if (el) {
+      const p = aZ1(el.getBoundingClientRect(), vue());
+      v = bornerVue({ x: s.x + s.w / 2 - a.z * (p.x + a.fx * p.w), y: s.y + s.h / 2 - a.z * (p.y + a.fy * p.h), z: a.z }, contenu, s);
+    } else {
+      const p = pageAAncrer();
+      if (!p) { reinitialiser(); return; }
+      v = { ...ancrerHaut(p, a.z, s, contenu), z: a.z };
+    }
+    lx.set(auPixel(v.x, dpr()));
+    ly.set(auPixel(v.y, dpr()));
+    lz.set(v.z);
+    publier();
   }
 
   // ---- Animations ----
@@ -881,7 +923,15 @@ export function creerControleur(o: OptionsControleur): ControleurEcran {
       oublierGeo();
       const tourne = (avant.w > avant.h) !== (n.w > n.h) || avant.cadrage !== n.cadrage;
       if (tourne) {
-        reinitialiser();
+        // Zoomé au repos : la loupe garde son facteur et le texte lu ; on la recale tout de suite, puis
+        // deux images plus tard (le livre a pu changer de page affichée, la mise en page est posée).
+        const a = !enGeste && mode === 'aucun' && zoomeMaintenant() ? ancre : null;
+        if (!a) {
+          reinitialiser();
+          return;
+        }
+        reprendre(a);
+        requestAnimationFrame(() => requestAnimationFrame(() => reprendre(a)));
         return;
       }
       if (enGeste || !(lz.get() > 1 + 1e-4)) return;

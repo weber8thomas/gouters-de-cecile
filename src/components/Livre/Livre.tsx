@@ -374,8 +374,13 @@ export function Livre({
   const [distance, setDistance] = React.useState<Distance>(cranVoulu);
   const [cote, setCote] = React.useState<CotePage>(arriveeRef.current?.vers != null ? arriveeRef.current.cote : coteInitial);
   const [geo, setGeo] = React.useState<GeometrieLivre | null>(null);
-  /** Rabats montés (500 ms après que la page s'est posée). */
-  const [coinPret, setCoinPret] = React.useState(false);
+  /**
+   * Rabats montés (500 ms après que la page s'est posée) ; en cadrage « page », le côté de la page où ils
+   * le sont (celle qui était affichée alors).
+   */
+  const [coinPret, setCoinPret] = React.useState<CotePage | null>(null);
+  /** Cadrage « page » : la caméra glisse d'une page à l'autre (rien ne se monte ni ne se démonte). */
+  const [glisseEnCours, setGlisseEnCours] = React.useState(false);
   /** Pendant un geste de coin : le seul côté monté. */
   const [coinActif, setCoinActif] = React.useState<CotePage | null>(null);
 
@@ -603,16 +608,19 @@ export function Livre({
     const el = livreRef.current;
     if (vivant.current.reduced || !modePageRef.current) {
       glisseAnim.current = null;
+      setGlisseEnCours(false);
       glisse.set(x);
       return;
     }
     if (annoncer) emettre(el, 'debut', 'glisse');
+    setGlisseEnCours(true);
     glisseAnim.current = animate(glisse, x, {
       ...SPRINGS.camera,
       velocity,
       onComplete: () => {
         if (glisseSeq.current !== id) return;
         glisseAnim.current = null;
+        setGlisseEnCours(false);
         emettre(el, 'fin', 'glisse');
         pousserRef.current();
       },
@@ -1123,6 +1131,19 @@ export function Livre({
   }, [cadre, dpr]);
   const mondeT = useTransform(camX, transformMonde);
 
+  // Rotation vers le cadrage « page », loupe zoomée : la page affichée est celle que la loupe lisait.
+  const modeAvant = React.useRef(modePage);
+  React.useLayoutEffect(() => {
+    if (modeAvant.current === modePage) return;
+    modeAvant.current = modePage;
+    const L = getLoupe();
+    if (!modePage || !L.zoome || !L.cote || L.cote === coteRef.current || afficheRef.current < 0 || tourRef.current) return;
+    coteRef.current = L.cote;
+    coteCibleRef.current = L.cote;
+    glisse.set(X(afficheRef.current, L.cote));
+    setCote(L.cote);
+  }, [modePage, glisse, X]);
+
   // Au repos (et à chaque changement d'écran) : la caméra se pose sur la page affichée, écrite tout de
   // suite (le prochain passage de Motion n'aurait lieu qu'après la première image). La loupe reçoit le
   // rectangle du contenu (px d'écran, à z = 1) et la page visible.
@@ -1185,7 +1206,11 @@ export function Livre({
   // ---- Coin : rabats montés 500 ms après que la page s'est posée ------------------------------
   const coinPossible = COIN_2D && !reduced && !zoome && affiche >= 0 && affiche <= maxOuvert && !!geo;
   React.useEffect(() => {
-    setCoinPret(false);
+    // Pendant un glissement de caméra, le rabat monté reste tel quel (le démonter puis remonter l'autre
+    // côté, une page entière, ferait une mise en page et des repeintures en plein geste) : il passe du
+    // bon côté une fois la caméra posée.
+    if (glisseEnCours) return;
+    setCoinPret(null);
     if (pose || tour || !coinPossible) return;
     const t = window.setTimeout(() => {
       // Au repos : le rabat est à plat sur l'angle du bas (pli de taille nulle : rien ne se voit).
@@ -1197,10 +1222,10 @@ export function Livre({
           R.haut.set(0); R.fx.set(ax); R.fy.set(ay); R.op.set(1);
         }
       }
-      setCoinPret(true);
+      setCoinPret(coteRef.current);
     }, COIN_DELAI);
     return () => clearTimeout(t);
-  }, [affiche, cote, tour, pose, coinPossible, modePage]);
+  }, [affiche, cote, tour, pose, coinPossible, modePage, glisseEnCours]);
 
   /** Le côté peut-il se saisir par le coin (au repos) ? */
   const coteSaisissable = React.useCallback((c: CotePage): boolean => {
@@ -1948,7 +1973,7 @@ export function Livre({
     if (pose) cotesCoin = poseCoin ? [poseCoin.cote] : [];
     else if (T) cotesCoin = T.coin ? [T.coin] : [];
     else if (coinPret && coinPossible) {
-      const sides: CotePage[] = coinActif ? [coinActif] : modePage ? [cote] : ['gauche', 'droite'];
+      const sides: CotePage[] = coinActif ? [coinActif] : modePage ? [coinPret] : ['gauche', 'droite'];
       cotesCoin = sides.filter((c) => (c === 'droite' ? affiche + 1 <= maxOuvert : affiche - 1 >= 0));
     }
   }
@@ -1988,7 +2013,7 @@ export function Livre({
   // Flèches à l'écran : groupées en bas à droite, comme sur la TV ; sur un téléphone couché (le livre
   // remplit la hauteur), une de chaque côté du livre, sur la table. Sous la loupe, elles passent sur le
   // papier (à l'encre) : ce sont les ‹ › de la page zoomée.
-  const placeFleches = React.useMemo<{ place: 'coin' | 'cotes'; bande: number; papier: boolean }>(() => {
+  const placeFleches = React.useMemo<{ place: 'coin' | 'cotes'; bande: number; papier: boolean; bas?: number }>(() => {
     const coin = { place: 'coin' as const, bande: 0, papier: false };
     // Sur un grand écran, la composition de la TV (flèches sur la table, en bas à droite).
     if (!vp || !geo || !cadre || (!modePage && partScene(vp) >= 1)) return coin;
@@ -2005,8 +2030,10 @@ export function Livre({
     if (bandeBas >= taille + 8) return coin;
     // (sur les côtés, la cible tient dans la bande de table, à 1 px près de chaque bord)
     if (!modePage && bande >= taille + 2) return { place: 'cotes', bande, papier: false };
-    // Ni la table du bas ni celle des côtés n'a la place : les flèches se posent sur le papier, à l'encre.
-    return { ...coin, papier: true };
+    // Ni la table du bas ni celle des côtés n'a la place : les flèches se posent sur le papier, à l'encre,
+    // dans la marge du bas de la page (`bas` : du bas de l'écran au bas du papier), au-dessus du carton.
+    const basPapier = cadre.oy + (geo.bookY + geo.H - cadre.cy) * cadre.s;
+    return { ...coin, papier: true, bas: Math.max(0, vp.h - basPapier) };
   }, [vp, geo, cadre, modePage]);
   const surPapier = placeFleches.papier || (zoome && enEcran);
 
@@ -2080,7 +2107,9 @@ export function Livre({
       <div
         className="gc-livre-commandes"
         data-gc-sur={surPapier ? 'papier' : undefined}
-        style={placeFleches.place === 'cotes' && !zoome ? ({ '--gc-livre-bande': `${Math.round(placeFleches.bande)}px` } as React.CSSProperties) : undefined}
+        style={zoome ? undefined
+          : placeFleches.place === 'cotes' ? ({ '--gc-livre-bande': `${Math.round(placeFleches.bande)}px` } as React.CSSProperties)
+            : placeFleches.bas != null ? ({ '--gc-livre-papier-bas': `${Math.round(placeFleches.bas)}px` } as React.CSSProperties) : undefined}
       >
         {!cameraFixe && (
           <div className="gc-livre-commandes__repere">

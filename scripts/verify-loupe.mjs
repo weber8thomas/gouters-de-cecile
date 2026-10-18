@@ -15,7 +15,7 @@
 //   - bornes : le contenu couvre la zone sûre ; ancrerLoupe('haut') met le haut de la page sous l'encoche ;
 //   - encre ×4 : seules les tuiles visibles (rootMargin 25 %) sont demandées, fondu, encre ×2 masquée
 //     dessous, retirées sous 1,25× ; aucun changement d'état de tuile pendant un geste ;
-//   - zoom du navigateur (Emulation.setPageScaleFactor) : loupe retirée ; rotation : retour à 1× ;
+//   - zoom du navigateur (Emulation.setPageScaleFactor) : loupe retirée ; rotation : la loupe reste ;
 //     rechargement : 1× (rien n'est mémorisé).
 // Trace (CPU ×4, Chrome tracing) entre les marques gc-geste-debut-loupe et gc-geste-fin-loupe :
 // 0 Layout, ≤ 2 Paint (pincement au doigt, déplacement, ctrl + molette). La lumière du feu (lot L,
@@ -727,11 +727,14 @@ async function suiteEcran(e, essai) {
       await page.waitForTimeout(900);
       await cadence(page);
       await repos(page);
-      for (let i = 0; i < 30 && (await lire(page)).etat.z !== 1; i++) await page.waitForTimeout(300);
       const s = await lire(page);
-      T('rotation : retour à 1×', s.etat.z === 1 && s.transform === 'none', `z ${s.etat.z}`);
+      T('rotation : la loupe reste (même facteur)', Math.abs(s.etat.z - 2) < 0.01 && Math.abs(s.z - 2) < 0.01, `z ${s.etat.z} · ${s.transform}`);
       await page.setViewportSize(vp);
-      await page.waitForTimeout(600);
+      await page.waitForTimeout(900);
+      await repos(page);
+      const s2 = await lire(page);
+      T('rotation retour : la loupe reste', Math.abs(s2.etat.z - 2) < 0.01, `z ${s2.etat.z}`);
+      await demander(page, 1);
     });
     await bloc('navigateur zoomé', async () => {
       const cdp = await cdpDe(page);

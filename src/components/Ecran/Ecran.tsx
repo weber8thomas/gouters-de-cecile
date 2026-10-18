@@ -183,6 +183,9 @@ export function Ecran({ children, className, pleinEcran = true, loupe = true, on
   };
   const cls = ['gc-ecran', simule && 'gc-ecran--simule', className].filter(Boolean).join(' ');
   const plein = pleinEcran && vp.pleinEcran;
+  // Téléphone couché : le livre remplit la hauteur et laisse de la place sur les côtés, la barre
+  // des contrôles se range en colonne à droite (au lieu de recouvrir les coins du livre).
+  const barreCote = vp.w > vp.h && vp.h < 560;
   return (
     <EcranContext.Provider value={info}>
       <div
@@ -190,6 +193,7 @@ export function Ecran({ children, className, pleinEcran = true, loupe = true, on
         className={cls}
         data-gc-cadrage={vp.cadrage}
         data-gc-tactile={vp.tactile ? '' : undefined}
+        data-gc-bord={barreCote ? 'cote' : undefined}
         data-gc-loupe={loupe ? (z > LOUPE_ZOOME ? 'zoome' : 'repos') : undefined}
         style={style}
       >

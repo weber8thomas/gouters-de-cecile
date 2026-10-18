@@ -17,6 +17,12 @@ import manifesteJson from '../../content/pages/manifeste.json';
 import { aEcrire, abonnerEcriture, ecrire, marquerEcrite, plumeOccupee, versionEcriture } from './encreVivante';
 import './PageCuite.css';
 
+// Écran tactile (téléphone, tablette) : le papier, une texture sans texte, reste en 1× quelle que soit la
+// densité ; son 2× doublait le poids de chaque page et sa mémoire décodée (16 Mo par image). Une page y
+// fait au plus ≈ 1 200 px physiques de large : le 1× (850 px) n'y perd que du grain. L'encre, qui porte
+// le texte, garde son 2×.
+const PAPIER_1X = typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
+
 /** Rectangle en fractions de la page : [x, y, largeur, hauteur]. */
 export type RectPage = [number, number, number, number];
 
@@ -442,11 +448,13 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
     className,
   ].filter(Boolean).join(' ');
   // 1× sur un écran de densité 1, 2× ailleurs (téléphone, tablette, TV 4K) ; taille intrinsèque
-  // connue d'avance : le chargement d'une copie ne relance aucune mise en page.
-  const source = (nom2: string, nom1?: string) => {
+  // connue d'avance : le chargement d'une copie ne relance aucune mise en page. Le papier d'un écran
+  // tactile reste en 1× (PAPIER_1X).
+  const source = (nom2: string, nom1?: string, texture = false) => {
     const a = assetInfo(nom2);
     const taille = a ? { width: Math.round(a.w / PAGES_CUITES.echelle), height: Math.round(a.h / PAGES_CUITES.echelle) } : {};
     if (!nom1 || !assetInfo(nom1)) return { src: assetUrl(nom2), ...taille };
+    if (texture && PAPIER_1X) return { src: assetUrl(nom1), ...taille };
     return { src: assetUrl(nom1), srcSet: `${assetUrl(nom1)} 1x, ${assetUrl(nom2)} 2x`, ...taille };
   };
   const lignes = info.texte.split('\n').filter(Boolean);
@@ -462,7 +470,7 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
     <div ref={racine} className={cls} style={style} data-gc-page-cuite={page} data-gc-page-type={info.type ?? 'page'} data-gc-encre4x={hd ? 'oui' : undefined} data-gc-ecrit={aEcrireIci ? 'a-ecrire' : undefined} lang="fr">
       <img
         className={`gc-page-cuite__papier${info.miroir ? ' gc-page-cuite__papier--miroir' : ''}`}
-        {...source(info.papier, info.papier1x)}
+        {...source(info.papier, info.papier1x, true)}
         alt=""
         draggable={false}
         decoding="sync"
