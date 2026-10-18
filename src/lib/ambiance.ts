@@ -3,7 +3,7 @@
 // thé qu'on verse, couvercle de la boîte à biscuits. Un fond, jamais au premier plan.
 //
 //   - Réglage « ambiance » (reglages.ambiance, null = automatique : active sur TV et ordinateur, coupée
-//     sur téléphone) ; volume des réglages ;
+//     sur téléphone) ; volume des bruitages (reglages.volumeBruitages) ;
 //   - démarre en fondu (3 s) quand le premier geste déverrouille l'audio (src/lib/son.ts : même
 //     contexte, même déverrouillage) ; en sourdine (× 0,15) pendant qu'une vidéo joue ; en pause quand
 //     l'onglet est caché (le contexte est suspendu) ;
@@ -80,7 +80,7 @@ function voulue(): boolean {
 function niveau(): number {
   const r = getReglages();
   if (r.muet) return 0;
-  return clamp01(r.volume) * (videoEnLecture() ? SOURDINE_VIDEO : 1);
+  return clamp01(r.volumeBruitages) * (videoEnLecture() ? SOURDINE_VIDEO : 1);
 }
 
 let derniereRegle = 0;
@@ -273,7 +273,8 @@ function arreter(duree = 1.2): void {
 
 function suivre(): void {
   if (voulue()) {
-    if (enMarche) regler(0.6);
+    // Un changement de volume s'entend tout de suite : rampe courte (0,15 s), sans clic.
+    if (enMarche) regler(0.15);
     else demarrer();
   } else arreter();
 }

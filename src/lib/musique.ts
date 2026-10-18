@@ -4,7 +4,8 @@
 //   - réglages « musique » (morceau choisi au menu) et « musiqueActive » (bouton musique) : coupée par défaut ;
 //   - le premier geste déverrouille l'audio pour elle aussi (besoinAudio, comme l'ambiance) ;
 //   - démarre en fondu de 4 s ; changer de morceau : fondu croisé de 2 s ;
-//   - niveau : 0,1 × le volume des réglages (sous le feu, src/lib/ambiance.ts), × 0,2 pendant une vidéo soulevée ;
+//   - niveau : 0,1 × le volume de la musique (reglages.volumeMusique, sous le feu, src/lib/ambiance.ts), × 0,2
+//     pendant une vidéo soulevée ; réglable musique coupée, le niveau suit alors sans jouer ;
 //   - « muet » (bouton haut-parleur, reglages.muet) : le gain va à 0 et la boucle continue, comme le feu ;
 //   - en pause quand l'onglet est caché : son.ts suspend le contexte partagé, donc l'horloge audio s'arrête ;
 //   - banque : design-system/baked/musique/banque.json (scripts/bake-musique.mjs), fichiers musique/<id>.mp3,
@@ -120,10 +121,10 @@ let maitre: GainNode | null = null;
 let maitreDe: AudioContext | null = null;
 let voix: Voix | null = null;
 
-/** Niveau voulu : 0 en muet ; sinon volume × 0,1, et × 0,2 pendant une vidéo. */
+/** Niveau voulu : 0 en muet ; sinon volume de la musique × 0,1, et × 0,2 pendant une vidéo. */
 export function niveauMusique(): number {
   if (muet()) return 0;
-  return clamp01(getReglages().volume) * NIVEAU_MUSIQUE * (videoEnLecture() ? SOURDINE_VIDEO_MUSIQUE : 1);
+  return clamp01(getReglages().volumeMusique) * NIVEAU_MUSIQUE * (videoEnLecture() ? SOURDINE_VIDEO_MUSIQUE : 1);
 }
 
 /** Va vers le niveau voulu en `duree` s. */
@@ -184,6 +185,8 @@ function arreter(duree = 1.2): void {
 
 /** Joue ce que les réglages demandent. Sans contexte, sans boucle ou sans décodage : attend, sans erreur. */
 function suivre(): void {
+  // Le niveau suit le réglage, morceau joué ou non : un départ repart déjà au bon volume.
+  regler(0.15);
   const m = demande();
   if (!m || !voulue()) {
     arreter();
@@ -194,10 +197,7 @@ function suivre(): void {
     void telecharger(m);
     return;
   }
-  if (voix?.id === m.id) {
-    regler(0.6);
-    return;
-  }
+  if (voix?.id === m.id) return;
   const b = tampons.get(m.id);
   if (!b) {
     void decoder(m, c).then((x) => { if (x && contexteAudio() === c) suivre(); });

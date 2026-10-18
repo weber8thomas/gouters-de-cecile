@@ -375,13 +375,14 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   const cameraFixe = cameraFixeImpose ?? (!enPlace && (vp.cadrage === 'page' || partScene(vp) < 1));
   const papier = assetInfo('paper/base') ? cssUrl('paper/base') : null;
   const mise = React.useMemo(() => miseEnPlace(vp, papier), [vp, papier]);
-  // Volume : celui des vidéos (en lecture seule sur iPhone), des sons du livre et de l'ambiance (Web
-  // Audio, réglable partout, iPhone compris) ; la ligne reste dès que l'un d'eux peut servir.
+  // Volumes indépendants : celui des vidéos (en lecture seule sur iPhone : sa ligne disparaît alors), puis
+  // ceux des bruitages (sons du livre, feu, cuisine) et de la musique, réglables partout (Web Audio, iPhone compris).
   const sonsLivre = son.sonsLivreEffectif(r);
   const ambiance = ambianceActive(r);
   const musique = r.musiqueActive;
-  const avecVolume = volumeReglable() || sonsLivre || ambiance || musique;
-  const volumeActif = r.son || sonsLivre || ambiance || musique;
+  const bruitages = sonsLivre || ambiance;
+  const avecVolume = volumeReglable();
+  const volumeActif = r.son;
 
   // Loupe : l'état au repos ; pendant qu'elle s'anime vers la valeur choisie, la réglette montre déjà
   // cette valeur (le pâté suit le doigt).
@@ -492,6 +493,8 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
     zoom: (dir) => camera.stepZoom(dir),
     loupe: (dir) => reglerLoupe(loupeRef.current + dir * LOUPE_PAS),
     volume: (dir) => setR((x) => ({ volume: auPas(x.volume + dir * VOLUME_PAS, 0, 1, VOLUME_PAS) })),
+    volumeBruitages: (dir) => setR((x) => ({ volumeBruitages: auPas(x.volumeBruitages + dir * VOLUME_PAS, 0, 1, VOLUME_PAS) })),
+    volumeMusique: (dir) => setR((x) => ({ volumeMusique: auPas(x.volumeMusique + dir * VOLUME_PAS, 0, 1, VOLUME_PAS) })),
   };
   const actionsRef = React.useRef(actions);
   actionsRef.current = actions;
@@ -524,6 +527,8 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
       if (id === 'zoom') camera.setZoom(k === 'Home' ? zMin : zMax);
       if (id === 'loupe') reglerLoupe(k === 'Home' ? LOUPE_MIN : LOUPE_MAX);
       if (id === 'volume') setR({ volume: k === 'Home' ? 0 : 1 });
+      if (id === 'volumeBruitages') setR({ volumeBruitages: k === 'Home' ? 0 : 1 });
+      if (id === 'volumeMusique') setR({ volumeMusique: k === 'Home' ? 0 : 1 });
       return true;
     }
     if ((k === 'Enter' || k === ' ') && !actif) {
@@ -652,7 +657,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                     <Choix options={SON} valeur={r.son} onChoisir={(son) => setR({ son })} graine={g()} />
                   </Ligne>
                   {avecVolume && (
-                    <Ligne id="volume" libelle="Volume" attenuee={!volumeActif}>
+                    <Ligne id="volume" libelle="Volume des vidéos" attenuee={!volumeActif}>
                       <Reglette
                         valeur={r.volume}
                         min={0}
@@ -660,7 +665,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                         pas={VOLUME_PAS}
                         principal
                         attenuee={!volumeActif}
-                        libelle="Volume"
+                        libelle="Volume des vidéos"
                         texte={pourcent(r.volume)}
                         onChange={(volume) => setR({ volume })}
                       />
@@ -689,7 +694,21 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                   <Ligne id="feu" libelle="Lumière du feu" role="radiogroup">
                     <Choix options={OUI_NON} valeur={feuDe(r)} onChoisir={(feu) => setR(partielAmbiance({ feu }))} graine={g()} />
                   </Ligne>
-                  <Ligne id="musique" libelle="Musique" role="radiogroup" large>
+                  <Ligne id="volumeBruitages" libelle="Bruitages" attenuee={!bruitages}>
+                    <Reglette
+                      valeur={r.volumeBruitages}
+                      min={0}
+                      max={1}
+                      pas={VOLUME_PAS}
+                      principal
+                      attenuee={!bruitages}
+                      libelle="Bruitages"
+                      texte={pourcent(r.volumeBruitages)}
+                      onChange={(volumeBruitages) => setR({ volumeBruitages })}
+                    />
+                    <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.volumeBruitages)}</span>
+                  </Ligne>
+                  <Ligne id="musique" libelle="Morceau" role="radiogroup" large>
                     {/* « aucune » coupe la musique ; un morceau la joue (le bouton musique la rallume). */}
                     <Choix
                       options={OPTIONS_MUSIQUE}
@@ -697,6 +716,21 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                       onChoisir={(m) => setR(m === 'aucune' ? { musique: 'aucune', musiqueActive: false } : { musique: m, musiqueActive: true })}
                       graine={g()}
                     />
+                  </Ligne>
+                  {/* Réglable musique coupée (atténuée) : le niveau attend le prochain départ. */}
+                  <Ligne id="volumeMusique" libelle="Musique" attenuee={!musique}>
+                    <Reglette
+                      valeur={r.volumeMusique}
+                      min={0}
+                      max={1}
+                      pas={VOLUME_PAS}
+                      principal
+                      attenuee={!musique}
+                      libelle="Musique"
+                      texte={pourcent(r.volumeMusique)}
+                      onChange={(volumeMusique) => setR({ volumeMusique })}
+                    />
+                    <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.volumeMusique)}</span>
                   </Ligne>
                   {invites.length > 0 && (
                     <Ligne id="aller" libelle="Aller à…">

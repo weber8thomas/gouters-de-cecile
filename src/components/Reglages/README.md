@@ -44,7 +44,9 @@ Le composant exporte aussi `ReglagesInvite` (type) et `CREDITS_REGLAGES` (texte 
 | 4 | Plein écran | non · oui | Fullscreen API (appelée dans le geste) | l'API manque (iPhone, écran simulé) |
 | 5 | Son des vidéos | coupé · avec son | `reglages.son` | — |
 | 6 | Sons du livre | automatique · oui · non | `reglages.sonsLivre` : `null` · `true` · `false` (automatique : coupés sur téléphone, `sonsLivreEffectif`) | — |
-| 7 | Volume | réglette 0 à 100 % (pas 5 %), atténuée quand ni le son des vidéos ni les sons du livre ne sont actifs | `reglages.volume` (vidéos et sons du livre) | le volume des vidéos est en lecture seule (iOS : on écrit `volume` sur un `<audio>` jetable, puis on le relit) **et** les sons du livre sont coupés (le volume Web Audio, lui, marche sur iOS) |
+| 7 | Volume | réglette 0 à 100 % (pas 5 %), atténuée quand le son des vidéos est coupé | `reglages.volume` (vidéos seules) | le volume des vidéos est en lecture seule (iOS : on écrit `volume` sur un `<audio>` jetable, puis on le relit) |
+| 7 bis | Bruitages | réglette 0 à 100 % (pas 5 %, défaut 80 %), atténuée quand ni les sons du livre ni le feu et la cuisine ne sont actifs | `reglages.volumeBruitages` : pages, couverture, feuillets, photo, feu, cuisine (gain Web Audio, sans reconstruire le graphe) | — |
+| 7 ter | Musique | réglette 0 à 100 % (pas 5 %, défaut 50 %), atténuée quand la musique est coupée, mais toujours réglable (le niveau attend le prochain départ) | `reglages.volumeMusique` (la musique de fond, toujours sous le feu) | — |
 | 8 | Lancer la vidéo en arrivant sur la page | non · oui | `reglages.lectureAuto` | — |
 | 9 | Vitesse des pages | vive · normale · lente | `reglages.vitesse` (règle `SPRINGS.paper`) | — |
 | 10 | Moins d'animations | non · oui | `reglages.mouvementReduit` (lu par `useReducedMotion`) | — |
@@ -95,7 +97,7 @@ Tout se fait avec des boutons natifs, sans survol : toucher un choix, faire glis
 |---|---|
 | Bouton ⚙ | `data-gc-reglages="bouton"` (et `data-gc-controle="reglages"`) |
 | Fiche | `data-gc-reglages="panneau"` |
-| Une ligne | `data-gc-reglages-ligne="taille\|zoom\|loupe\|plein\|son\|sonsLivre\|volume\|auto\|vitesse\|mouvement\|aller\|invites\|fin"` |
+| Une ligne | `data-gc-reglages-ligne="taille\|zoom\|loupe\|plein\|son\|sonsLivre\|volume\|volumeBruitages\|volumeMusique\|auto\|vitesse\|mouvement\|aller\|invites\|fin"` |
 | Racine | `data-gc-reglages-etat="ferme\|ouvert\|fermeture"` |
 | Réglette | `data-gc-reglette` (`role="slider"`) |
 
