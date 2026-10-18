@@ -36,14 +36,14 @@
     "contreplat": {
      "w": 1756,
      "h": 2476,
-     "ko": 136.7,
-     "ko1x": 41.3
+     "ko": 141.8,
+     "ko1x": 44.1
     },
     "contreplat-arriere": {
      "w": 1756,
      "h": 2476,
-     "ko": 134.1,
-     "ko1x": 39.8
+     "ko": 139.1,
+     "ko1x": 42.8
     },
     "dos": {
      "w": 142,
@@ -88,7 +88,7 @@
     }
    },
    "garde": "papiers.json:garde-uni",
-   "teinte_garde": "#c9d5b8",
+   "teinte_garde": "#eee1c7",
    "etiquette": {
     "rect": [
      0.22305,
@@ -111,6 +111,21 @@
    "nom": "Toile bleu passé, titre au feutre peinture",
    "description": "Toile bleu passé (vraie toile 1894), le titre écrit directement sur la toile au feutre peinture crème, dans la main de Cécile, avec un petit cupcake au même feutre.",
    "dossier": "verification/out/v4-c/variantes/couverture/c"
+  },
+  "d": {
+   "nom": "Toile vert sauge, étiquette des trente ans (encre dorée)",
+   "description": "La toile vert sauge de « a » ; l'étiquette, un peu plus haute, porte sous le titre « pour ses trente ans » écrit à l'encre dorée, et un gâteau à bougies au crayon et à l'aquarelle à la place de la théière.",
+   "dossier": "verification/out/v4-c/variantes/couverture/d"
+  },
+  "e": {
+   "nom": "Toile vert sauge, médaillon doré « 30 ans »",
+   "description": "La toile vert sauge et l'étiquette de « a » (titre à la plume, théière) ; sous l'étiquette, un médaillon « 30 ans » doré à chaud dans la toile (double filet, comme celui de la 4e de couverture).",
+   "dossier": "verification/out/v4-c/variantes/couverture/e"
+  },
+  "f": {
+   "nom": "Toile vert sauge, cachet de cire et ruban",
+   "description": "La toile vert sauge de « a » ; l'étiquette porte sous le titre « pour ses trente ans » à l'encre terracotta, et, sur son coin bas droit, un cachet de cire rouge « 30 » qui retient deux pans de ruban de satin ivoire.",
+   "dossier": "verification/out/v4-c/variantes/couverture/f"
   }
  },
  "indices": {

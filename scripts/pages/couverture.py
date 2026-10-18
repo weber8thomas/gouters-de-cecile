@@ -45,10 +45,12 @@ Déterministe. L'écriture et les croquis sont figés dans design-system/sources
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import io
 import json
 import math
+import os
 import subprocess
 import sys
 import time
@@ -56,7 +58,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 ICI = Path(__file__).resolve().parent
 if str(ICI) not in sys.path:
@@ -85,7 +87,7 @@ PW, PH = PLAT_W * ECH, PLAT_H * ECH
 Q_TOILE, Q_ALPHA = 80, 90
 # Variante retenue (plan v4, sans GATE : choix du lot C). Elle seule est cuite dans design-system/baked/ ;
 # les autres (comparaison) vont dans verification/out/v4-c/variantes/ et ne partent ni sur le site ni dans l'artifact.
-ACTIVE = "a"
+ACTIVE = os.environ.get("GC_COUVERTURE_ACTIVE") or "a"  # GC_COUVERTURE_ACTIVE : essayer une proposition dans le site
 BAKED = RACINE / "design-system/baked"
 COMPAREES = VERIF / "variantes"
 
@@ -595,11 +597,104 @@ def forme_etiquette(genre: str, lw: float, lh: float) -> list:
     return [(0, 0), (lw, 0), (lw, lh), (0, lh)]
 
 
+def dorer(out: np.ndarray, traces: list, P: np.ndarray, rng, couleur: str) -> np.ndarray:
+    """Encre dorée (stylo or) : le trait couvre le papier au lieu de le teinter ; reflet métallique (le relief
+    du trait éclairé de haut gauche, comme le médaillon), fines paillettes claires."""
+    h, w = out.shape[:2]
+    rel = R.relief(u8(P))
+    cartes = R.rasteriser(traces, w, h, ECH, grain(u8(P), rel, rng))
+    a = np.zeros((h, w), np.float32)
+    for (ak, _, _) in cartes.values():
+        a = np.maximum(a, ak)
+    E_ = flou(a, 0.7 * ECH)
+    gy, gx = np.gradient(E_)
+    reflet = np.clip(-(gx * 0.7 + gy * 0.7) * 5.0, -1, 1)
+    fin = bruit(rng, h, w, 1.0)
+    pail = np.clip(bruit(rng, h, w, 1.0) - 1.5, 0, 1)
+    base = desaturer(hexrgb(couleur)[None, None, :], 0.95)
+    col = base * (1 + 0.3 * reflet + 0.06 * fin)[..., None] + (255 - base) * (0.45 * pail)[..., None]
+    op = np.clip(a * 1.15, 0, 1) * np.clip(0.9 + 0.08 * fin, 0, 1)
+    return out + (np.clip(col, 0, 255) - out) * op[..., None]
+
+
+def ombrer(H: np.ndarray, pente: float, brillance: float, exposant: float):
+    """Éclairage d'une carte de hauteur (lumière de haut gauche, comme toute la couverture) → (diffus, spéculaire)."""
+    gy, gx = np.gradient(H)
+    nx, ny, nz = -gx * pente, -gy * pente, np.ones_like(H)
+    n = np.sqrt(nx ** 2 + ny ** 2 + nz ** 2)
+    nx, ny, nz = nx / n, ny / n, nz / n
+    L = np.array([-0.5, -0.62, 0.6], np.float32)
+    L /= np.linalg.norm(L)
+    Hv = L + np.array([0, 0, 1], np.float32)
+    Hv /= np.linalg.norm(Hv)
+    diffus = np.clip(nx * L[0] + ny * L[1] + nz * L[2], 0, 1)
+    spec = brillance * np.clip(nx * Hv[0] + ny * Hv[1] + nz * Hv[2], 0, 1) ** exposant
+    return diffus, spec
+
+
+def ruban(X: np.ndarray, Y: np.ndarray, r: dict, rng) -> tuple[np.ndarray, np.ndarray]:
+    """Un pan de ruban de satin (px de référence de l'étiquette), du centre du cachet vers `angle` (degrés,
+    0 = vers la droite, 90 = vers le bas), bout coupé en V ; reflet satiné en long qui ondule. → (rgb, alpha)."""
+    x0, y0 = r["depart"]
+    a = math.radians(r["angle"])
+    ux, uy = math.cos(a), math.sin(a)
+    u = (X - x0) * ux + (Y - y0) * uy
+    v = -(X - x0) * uy + (Y - y0) * ux
+    L, demi, enc = r["longueur"], r["largeur"] / 2, r.get("encoche", 0.45 * r["largeur"])
+    v = v - r.get("courbe", 0.0) * (u / L) ** 2 * L  # le ruban retombe un peu
+    demi_u = demi * (1 + 0.06 * np.clip(u / L, 0, 1))
+    t = v / demi_u
+    fin = L - enc * (1 - np.clip(np.abs(t), 0, 1))
+    dist = np.minimum.reduce([demi_u - np.abs(v), fin - u, u + 4.0])
+    alpha = np.clip(dist * ECH + 0.5, 0, 1)
+    phase = rng.uniform(0, 2 * np.pi)
+    lustre = np.exp(-((t - 0.45 * np.sin(np.pi * 1.4 * np.clip(u / L, 0, 1) + phase)) / 0.32) ** 2)
+    ombre_bord = np.clip(1 - np.abs(t), 0, 1) ** 0.35
+    teinte = 0.78 + 0.12 * ombre_bord + 0.22 * lustre - 0.08 * np.clip(u / L, 0, 1)
+    col = hexrgb(r["couleur"])[None, None, :] * teinte[..., None]
+    col = col + (255 - col) * (0.25 * lustre ** 3)[..., None]
+    return np.clip(col, 0, 255), alpha
+
+
+def sceau(X: np.ndarray, Y: np.ndarray, s: dict, rng) -> tuple[np.ndarray, np.ndarray]:
+    """Cachet de cire rouge (px de référence de l'étiquette) : galette au bord irrégulier, bombée, empreinte
+    ronde enfoncée au centre avec « 30 » en relief (masque_trente, un filet), reflets cireux. → (rgb, alpha)."""
+    cx, cy = s["centre"]
+    r0 = s["rayon"]
+    dx, dy = X - cx, Y - cy
+    rr = np.hypot(dx, dy)
+    th = np.arctan2(dy, dx)
+    k = np.zeros_like(rr)
+    for n in range(2, 8):
+        k += rng.normal(0, 0.05 / n ** 0.7) * np.cos(n * th + rng.uniform(0, 2 * np.pi))
+    d = r0 * (1 + k) - rr  # > 0 dans la cire (px de référence)
+    alpha = np.clip(d * ECH + 0.5, 0, 1)
+    H = np.clip(d / (0.25 * r0), 0, 1) ** 0.55
+    ri = 0.74 * r0
+    emp = np.clip((ri - rr) * ECH + 0.5, 0, 1)
+    H = H - 0.42 * flou(emp, 0.9 * ECH)
+    # l'empreinte du cachet : « 30 » et un filet, en relief dans le creux
+    D = 2 * ri * 0.96
+    M = np.zeros_like(rr)
+    m = masque_trente(D, anneaux=1, ans=False) / 255
+    Dp = m.shape[0]
+    iy, ix = np.unravel_index(np.argmin(rr), rr.shape)
+    y0, x0 = iy - Dp // 2, ix - Dp // 2
+    M[y0:y0 + Dp, x0:x0 + Dp] = m  # le cachet tient dans l'image (marge de l'étiquette)
+    H = H + 0.3 * flou(M, 0.45 * ECH) * emp
+    H = flou(H, 0.5 * ECH) + 0.005 * bruit(rng, *H.shape, 3.5 * ECH)
+    diffus, spec = ombrer(H * ECH, 9.0, 0.75, 28.0)
+    cire = hexrgb(s["couleur"])[None, None, :]
+    col = cire * (0.45 + 0.75 * diffus)[..., None]
+    col = col + (255 - col) * np.clip(spec, 0, 1)[..., None]
+    return np.clip(col, 0, 255), alpha
+
+
 def etiquette(v: str, cfg: dict) -> tuple[np.ndarray, dict]:
     """Étiquette collée, tournée, ombre cuite → (RGBA uint8, placement en fractions du plat)."""
     e = cfg["etiquette"]
     lw, lh = e["taille"]
-    m = 16  # marge pour l'ombre (px de référence)
+    m = e.get("marge", 16)  # marge pour l'ombre (px de référence) ; plus large quand un cachet déborde
     W, H = int((lw + 2 * m) * ECH), int((lh + 2 * m) * ECH)
     rng = rng_de("etiquette", v)
     # papier : un morceau du vrai papier des pages, un peu plus jauni (collé depuis longtemps)
@@ -661,8 +756,23 @@ def etiquette(v: str, cfg: dict) -> tuple[np.ndarray, dict]:
         dq = croquis(q["nom"], bx, t["encre"], q.get("graine", 7), t["main"], t.get("outil"), xh * q.get("xh", 0.7), variante=q.get("variante"))
         traces += traces_croquis(dq)
         T_lav = T_lav * lavis_croquis(dq, (H, W), rel_p, lam)
+    # mention sous le titre (« pour ses trente ans ») : à l'encre du carnet, ou à l'encre dorée
+    mn = cfg.get("mention")
+    douteux = list(bloc.get("douteux", []))
+    traces_or = []
+    if mn:
+        bm = ecriture(mn["texte"], mn["main"], mn["graine"], mn["encre"], mn.get("outil"))
+        douteux += bm.get("douteux", [])
+        x, y, al, ang = mn["pos"]
+        tm, _ = poser_texte(bm, mn["xh"], [(m + lw * x, m + lh * y, al, ang)], rng_de("mention", v), diam_k=mn.get("graisse", 1.0))
+        if mn.get("or"):
+            traces_or = tm
+        else:
+            traces += tm
     Rt, union = transmittance_encre(P, traces, lam, rng_de("encre", v))
     out = R.vers_srgb(R.vers_lin(u8(P)) * Rt * Tp * T_lav)
+    if traces_or:
+        out = dorer(out, traces_or, P, rng_de("or", v), mn["or"])
     # coin décollé : plus clair (il prend la lumière), son ombre s'écarte
     cx, cy = {"bas-droite": (lw, lh), "haut-droite": (lw, 0), "bas-gauche": (0, lh), "haut-gauche": (0, 0)}[e.get("decolle", "bas-droite")]
     dco = np.hypot(X - cx, Y - cy)
@@ -671,6 +781,20 @@ def etiquette(v: str, cfg: dict) -> tuple[np.ndarray, dict]:
     # le bord du coin levé : liseré clair (tranche du papier)
     bordc = np.exp(-(d / 0.7) ** 2) * lev
     out = out + (255 - out) * (0.35 * bordc)[..., None]
+    sc = e.get("sceau")
+    if sc:
+        # rubans puis cachet, par-dessus l'étiquette et débordant sur la toile ; leur ombre sur le papier
+        couches = [ruban(X, Y, dict(rb, depart=sc["centre"]), rng_de("ruban", v, k)) for k, rb in enumerate(sc.get("rubans", []))]
+        couches.append(sceau(X, Y, sc, rng_de("sceau", v)))
+        a_c = 1 - np.prod([1 - ac for _, ac in couches], axis=0)
+        om = flou(decaler(a_c, 1.0 * ECH, 1.5 * ECH), 1.3 * ECH) * 0.4 + flou(decaler(a_c, 2.5 * ECH, 3.5 * ECH), 3.0 * ECH) * 0.15
+        out = out * (1 - np.clip(om, 0, 0.6) * (1 - a_c))[..., None]
+        pre, A = out * alpha[..., None], alpha
+        for c, ac in couches:
+            pre = c * ac[..., None] + pre * (1 - ac[..., None])
+            A = ac + A * (1 - ac)
+        out = pre / np.maximum(A[..., None], 1e-4)
+        alpha = A
     rgba = np.dstack([np.clip(out, 0, 255), alpha * 255])
     lev_img = (lev * alpha * 255)
     # rotation (l'ombre se calcule après : elle tombe toujours vers le bas à droite)
@@ -695,7 +819,7 @@ def etiquette(v: str, cfg: dict) -> tuple[np.ndarray, dict]:
     cxp, cyp = e["centre"][0] * PLAT_W, e["centre"][1] * PLAT_H
     rect = [round((cxp - ww / ECH / 2) / PLAT_W, 5), round((cyp - hh / ECH / 2) / PLAT_H, 5),
             round(ww / ECH / PLAT_W, 5), round(hh / ECH / PLAT_H, 5)]
-    info = {"rect": rect, "angle": ang, "douteux": bloc.get("douteux", [])}
+    info = {"rect": rect, "angle": ang, "douteux": douteux}
     return res, info
 
 
@@ -782,6 +906,8 @@ def plat_toile(v: str, cfg: dict, cote="plat") -> np.ndarray:
     f = cfg["fenetre"] if cote == "plat" else cfg.get("fenetre_arriere", cfg["fenetre"])
     T = fenetre(toile_source(cfg, cote), PW, PH, **f)
     T = grade(T, cfg.get("grade"))
+    if cote == "plat" and cfg.get("medaillon_plat"):  # estampé avant la patine, comme celui du dos
+        T = medaillon(T, cfg["medaillon_plat"], v + "-plat")
     pat = dict(cfg.get("patine", {}))
     if cote != "plat":
         pat["taches"] = pat.get("taches_arriere", ())
@@ -875,6 +1001,38 @@ def medaillon_masque(D: float, ss: int = 4) -> np.ndarray:
     return np.asarray(im.resize((int(round(D * ECH)), int(round(D * ECH))), Image.LANCZOS), np.float32)
 
 
+POLICE_TRENTE = RACINE / "design-system/fonts/playfair-display-latin-700-normal.woff2"
+POLICE_ANS = RACINE / "design-system/fonts/playfair-display-latin-600-italic.woff2"
+
+
+def masque_trente(D: float, ss: int = 4, anneaux: int = 2, ans: bool = True) -> np.ndarray:
+    """Masque 0–255 « 30 ans », D × D px de référence : filets (double, comme le médaillon du dos, ou un
+    seul pour le cachet), « 30 » en Playfair Display grasse, « ans » en italique dessous, deux points
+    de part et d'autre. Dessiné ss× puis réduit à la netteté de 2×."""
+    N = int(round(D * ss))
+    k = N / D
+    c = N / 2
+    im = Image.new("L", (N, N), 0)
+    d = ImageDraw.Draw(im)
+    r = D / 2
+    d.ellipse([c - (r - 1.5) * k, c - (r - 1.5) * k, c + (r - 1.5) * k, c + (r - 1.5) * k], outline=255, width=max(1, round(3.0 * k)))
+    if anneaux > 1:
+        ri = r - 7.0
+        d.ellipse([c - ri * k, c - ri * k, c + ri * k, c + ri * k], outline=255, width=max(1, round(1.2 * k)))
+    f30 = ImageFont.truetype(str(POLICE_TRENTE), max(8, round(0.46 * N)))
+    dy = -0.07 * N if ans else 0.0
+    d.text((c, c + dy), "30", font=f30, fill=255, anchor="mm")
+    if ans:
+        fa = ImageFont.truetype(str(POLICE_ANS), max(6, round(0.17 * N)))
+        ya = c + 0.25 * N
+        d.text((c, ya), "ans", font=fa, fill=255, anchor="mm")
+        for sx in (-1, 1):  # deux points, comme un fleuron discret
+            x = c + sx * 0.17 * N
+            q = 0.018 * N
+            d.polygon([(x, ya - q), (x + q, ya + 0.05 * q), (x, ya + q), (x - q, ya + 0.05 * q)], fill=255)
+    return np.asarray(im.resize((int(round(D * ECH)), int(round(D * ECH))), Image.LANCZOS), np.float32)
+
+
 def medaillon(T: np.ndarray, m: dict, v: str) -> np.ndarray:
     """Le médaillon estampé à chaud dans la toile : or passé, qui prend sur les crêtes de la trame (la dorure
     manque dans les creux), léger relief éclairé de haut gauche comme le reste, la toile pressée autour."""
@@ -884,7 +1042,8 @@ def medaillon(T: np.ndarray, m: dict, v: str) -> np.ndarray:
     x0 = int(round(m["centre"][0] * PLAT_W * ECH - Dp / 2))
     y0 = int(round(m["centre"][1] * PLAT_H * ECH - Dp / 2))
     F = np.zeros((h, w), np.float32)
-    F[y0:y0 + Dp, x0:x0 + Dp] = medaillon_masque(D) / 255
+    motif = masque_trente(D) if m.get("motif") == "trente" else medaillon_masque(D)
+    F[y0:y0 + Dp, x0:x0 + Dp] = motif / 255
     rng = rng_de("medaillon", v)
     H = flou(F, 1.0 * ECH)  # hauteur du relief : le masque adouci
     gy, gx = np.gradient(H)
@@ -1037,11 +1196,13 @@ def contreplat(v: str, cfg: dict, cote: str = "avant") -> tuple[np.ndarray, str]
     h, w = PH, PW
     yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
     X, Y = xx / ECH, yy / ECH
-    # la garde, collée : un peu plus petite que le carton, bords coupés à la main
-    x0, y0, x1, y1 = OUT - 3.0, HAUT - 2.5, PLAT_W + 2, PLAT_H - BAS + 2.5
+    # la garde, collée : un peu plus petite que la page qui la recouvre (contre-plat `garde`), bords
+    # coupés à la main ; elle reste entièrement cachée dessous (2 px de marge, ombre et liseré compris) :
+    # aucun double liseré au bord du livre ouvert
+    x0, y0, x1, y1 = OUT + 2.0, HAUT + 2.0, PLAT_W + 2, PLAT_H - BAS - 2.0
     n_b = bruit(rng, h, w, 30 * ECH)
     n_f = bruit(rng, h, w, 1.5 * ECH)
-    dg = np.minimum.reduce([X - x0, Y - y0, y1 - Y]) + 0.5 * n_b + 0.25 * n_f
+    dg = np.minimum.reduce([X - x0, Y - y0, y1 - Y]) + 0.2 * n_b + 0.1 * n_f
     a_g = np.clip(dg * ECH + 0.5, 0, 1)
     genre = cfg.get("garde", "uni")
     G, origine = papier_garde(genre, w, h, _graine("garde", v, cote) % 997)
@@ -1234,6 +1395,53 @@ VARIANTES = {
         "garde": "uni",
     },
 }
+
+
+
+
+def _proposition(base: str, **change) -> dict:
+    """Proposition d'anniversaire sur la variante `base` (même toile, même patine, même garde, même 4e de
+    couverture) ; chaque clé de `change` remplace celle de la base (un dict est fusionné avec le sien)."""
+    cfg = copy.deepcopy(VARIANTES[base])
+    for k, val in change.items():
+        cfg[k] = {**cfg[k], **val} if isinstance(val, dict) and isinstance(cfg.get(k), dict) else val
+    return cfg
+
+
+# Les trente ans de Cécile : trois propositions comparables sur la toile de « a ».
+TITRE_HAUT = {"lignes": [(0.065, 0.33, "g", -1.0), (0.17, 0.62, "g", -0.6)]}  # le titre remonte : place pour la mention
+VARIANTES["d"] = _proposition(
+    "a",
+    nom="Toile vert sauge, étiquette des trente ans (encre dorée)",
+    description="La toile vert sauge de « a » ; l'étiquette, un peu plus haute, porte sous le titre « pour ses trente ans » "
+                "écrit à l'encre dorée, et un gâteau à bougies au crayon et à l'aquarelle à la place de la théière.",
+    etiquette={"taille": (500, 312), "centre": (0.53, 0.345)},
+    titre=TITRE_HAUT,
+    mention={"texte": "pour ses trente ans", "main": "soignee", "encre": "plume", "outil": "plume", "graine": 3013,
+             "xh": 16.5, "pos": (0.47, 0.875, "c", -0.8), "graisse": 1.5, "or": "#9e772c"},
+    croquis={"nom": "gateau-bougies", "variante": "ma", "boite": (0.745, 0.08, 0.22, 0.64), "graine": 5, "xh": 0.62},
+)
+VARIANTES["e"] = _proposition(
+    "a",
+    nom="Toile vert sauge, médaillon doré « 30 ans »",
+    description="La toile vert sauge et l'étiquette de « a » (titre à la plume, théière) ; sous l'étiquette, un médaillon "
+                "« 30 ans » doré à chaud dans la toile (double filet, comme celui de la 4e de couverture).",
+    medaillon_plat={"centre": (0.53, 0.6), "diametre": 178, "or": "#d6ae62", "motif": "trente"},
+)
+VARIANTES["f"] = _proposition(
+    "a",
+    nom="Toile vert sauge, cachet de cire et ruban",
+    description="La toile vert sauge de « a » ; l'étiquette porte sous le titre « pour ses trente ans » à l'encre terracotta, "
+                "et, sur son coin bas droit, un cachet de cire rouge « 30 » qui retient deux pans de ruban de satin ivoire.",
+    etiquette={"taille": (500, 300), "centre": (0.53, 0.34), "decolle": "haut-gauche", "marge": 96,
+               "sceau": {"centre": (464, 278), "rayon": 43, "couleur": "#9a2622",
+                         "rubans": [{"angle": 106, "longueur": 84, "largeur": 20, "couleur": "#ede3cd", "courbe": 0.05},
+                                    {"angle": 70, "longueur": 72, "largeur": 20, "couleur": "#ede3cd", "courbe": -0.05}]}},
+    titre=TITRE_HAUT,
+    mention={"texte": "pour ses trente ans", "main": "soignee", "encre": "terracotta", "graine": 3014,
+             "xh": 16.5, "pos": (0.46, 0.865, "c", -0.8), "graisse": 1.2},
+    croquis={"boite": (0.755, 0.15, 0.195, 0.56)},
+)
 
 
 # =============================================================================================

@@ -55,6 +55,14 @@
     "bytes": 116738,
     "type": "image/webp"
   },
+  "aquarelles/gateau-bougies": {
+    "file": "baked/aquarelles/gateau-bougies.webp",
+    "sha": "d37cffa4523233f8dd06b218d068ca219a2438f68c0996f35a47036a20b568e8",
+    "w": 781,
+    "h": 800,
+    "bytes": 297448,
+    "type": "image/webp"
+  },
   "aquarelles/gateau": {
     "file": "baked/aquarelles/gateau.webp",
     "sha": "a5dcac0a9c807cbfba6a47c373a1807977509f041e136f0ed8ab88444ffc84db",
@@ -205,6 +213,14 @@
     "w": 397,
     "h": 430,
     "bytes": 51646,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/gateau-bougies": {
+    "file": "baked/aquarelles/trace/gateau-bougies.webp",
+    "sha": "69ddaed2b61c72c3de2987d081b702994d7cf4750f3159915dcd069b9565a927",
+    "w": 781,
+    "h": 800,
+    "bytes": 83142,
     "type": "image/webp"
   },
   "aquarelles/trace/gateau": {
@@ -377,18 +393,18 @@
   },
   "couverture/a/1x/contreplat-arriere": {
     "file": "baked/couverture/a/1x/contreplat-arriere.webp",
-    "sha": "7c22024a7a3c82f5f426725009e2dd243a34c1bfb2e04e32b7e090472f265b7a",
+    "sha": "ae973477b5cee6f50cc0dc4879ee24db1113cdb266b9677fa6cfa8f667eba26f",
     "w": 878,
     "h": 1238,
-    "bytes": 40772,
+    "bytes": 43802,
     "type": "image/webp"
   },
   "couverture/a/1x/contreplat": {
     "file": "baked/couverture/a/1x/contreplat.webp",
-    "sha": "ea9bd8484a7c9e8a3d99b03171219878515acf92da57789afae6a8b836a64c44",
+    "sha": "59349d42f83f3aaa7c23cc097e780d570a00b2694907b220fc7eee9dbbde4186",
     "w": 878,
     "h": 1238,
-    "bytes": 42278,
+    "bytes": 45178,
     "type": "image/webp"
   },
   "couverture/a/1x/dos": {
@@ -457,18 +473,18 @@
   },
   "couverture/a/contreplat-arriere": {
     "file": "baked/couverture/a/contreplat-arriere.webp",
-    "sha": "9636c06e62d739b5d037a25d37f1cfa4419b2371f2764b6bf796f32c5b171b2c",
+    "sha": "423940aaec5f536b87dc406c4db7eb4089ef2b0a60b4bf1fc68a8b080fe574e0",
     "w": 1756,
     "h": 2476,
-    "bytes": 137362,
+    "bytes": 142442,
     "type": "image/webp"
   },
   "couverture/a/contreplat": {
     "file": "baked/couverture/a/contreplat.webp",
-    "sha": "4e332837fd24ecccc6368ef47f9a3b219e03adc04ae24a6abe6e525f3ee2cb9f",
+    "sha": "5cc1092021996ee5a79ca831636b291a1d7356c4e65617237f06156a15b15420",
     "w": 1756,
     "h": 2476,
-    "bytes": 139954,
+    "bytes": 145240,
     "type": "image/webp"
   },
   "couverture/a/dos": {

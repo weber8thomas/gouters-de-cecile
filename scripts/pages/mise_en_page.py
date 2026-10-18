@@ -461,7 +461,7 @@ FOLIO_MAIN, FOLIO_ENCRE, FOLIO_ECHELLE = "cecile", "crayon", 0.9
 # =============================================================================================
 _BLOCS: dict = {}  # écritures déjà demandées (et vérifiées) dans ce processus
 # blocs posés AVANT le texte coulé (zones réservées : la recette coule autour)
-BLOCS_RESERVES = ("bandeau", "courant", "cadre", "etiquette")
+BLOCS_RESERVES = ("bandeau", "courant", "cadre", "etiquette", "cartouche")
 
 
 class Mise:
@@ -1904,6 +1904,19 @@ class Mise:
         self._reserver(bid, self._boite_de(len(self.mots) - sum(len(i[0]) for i in lignes if i), len(self.marques_boites), 0.3 * xh)
                        or (x0, y0, x0 + w, y0 + hh))
         self.texte.append(" ".join(lisibles))
+
+    def cartouche(self, b, idx):
+        """Cartouche (l'ex-libris du contre-plat) : un cadre tracé à la main autour de `rect` (fractions
+        de la page), `style` double ou ondule comme le cadre du mot, à l'`encre` voulue ; les lignes
+        s'écrivent dedans avec des blocs `etiquette`. La boîte est réservée."""
+        main, enc_id, outil, info, xh = self._style_bloc(b, "corps")
+        enc = ECR.nuances(enc_id or "bic", outil)
+        graine = int(b.get("graine", self.graine * 31 + idx * 7))
+        fx, fy, fw, fh = b["rect"]
+        x0, y0, x1, y1 = fx * self.W, fy * self.H, (fx + fw) * self.W, (fy + fh) * self.H
+        self.tracer(TR.cadre(x0, y0, x1, y1, self.rng, xh, b.get("style", "double")), xh, enc,
+                    self._ep(info["epaisseur"], b), graine, main)
+        self._reserver(b.get("id", "cartouche"), (x0, y0, x1, y1))
 
     def sommaire(self, b, idx):
         """Lignes « Prénom — recette ........ folio » (points de conduite à la main), regroupées par
