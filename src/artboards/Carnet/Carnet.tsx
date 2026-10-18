@@ -1,6 +1,7 @@
 // Le carnet, tel que les invités l'ouvrent : sur téléphone, tablette, ordinateur ou TV (CONTRACT
-// §§ 11–12). MotionConfig (moins d'animations) › CameraProvider › Ecran (plein écran, cadrage « double »
-// ou « page ») › SoulevementProvider (photo-vidéo et feuillet volant soulevés au-dessus du livre) ›
+// §§ 11–12). MotionConfig (niveau de mouvement) › CameraProvider › Ecran (plein écran, cadrage « double »,
+// ou « tourner » : téléphone debout, le livre fermé invite à tourner le téléphone) › SoulevementProvider
+// (photo-vidéo et feuillet volant soulevés au-dessus du livre) ›
 // Livre, avec le menu de réglages dans l'Ecran. Racine de l'application (index.html → src/app/main.tsx)
 // et de la page autonome (harness/devices.html : React UMD + bundle.js, Artboards.Carnet).
 // Plan v4 : le livre arrive sur la table ; un lien profond (QR de l'A5) l'ouvre et feuillette jusqu'à la
@@ -13,7 +14,7 @@ import { Livre, type LivreApi, type LivreProps } from '../../components/Livre';
 import { Reglages, CREDITS_REGLAGES } from '../../components/Reglages';
 import { SoulevementProvider, souleverObjet, useSoulevement } from '../../components/Soulever';
 import { CAMERA_DEFAULT, CameraProvider } from '../../lib/camera';
-import { MotionConfig, type MotionValue } from '../../lib/motion';
+import { MotionConfig, useNiveauMouvement, type MotionValue } from '../../lib/motion';
 import { useReglages } from '../../lib/reglages';
 import { ViewportOverride, type ViewportForce } from '../../lib/viewport';
 import { CREDITS_VIDEOS, SPREADS_DEMO, videoDe } from '../DemoCarnet/spreads';
@@ -70,15 +71,17 @@ export function Carnet({ ecran, liens = false, depart = -1, coteInitial }: Carne
   // Fermer le carnet (bouton, Échap) : le livre revient à sa couverture par son tourne-page (aller(-1)).
   const livreRef = React.useRef<LivreApi | null>(null);
   const fermerCarnet = React.useCallback(() => livreRef.current?.aller(-1, 'gauche'), []);
-  const [reglages] = useReglages();
-  // « Moins d'animations » : crochet CSS sur la racine (data-gc-mouvement="reduit"), en plus de MotionConfig.
+  // Niveau de mouvement (src/lib/motion.ts) : crochet CSS sur la racine (data-gc-mouvement="reduit|doux|normal"),
+  // et MotionConfig : seules les animations réduites (réglage) coupent celles des composants ; en version
+  // douce (préférence du système), elles restent.
+  const niveau = useNiveauMouvement();
   React.useEffect(() => {
     if (typeof document === 'undefined') return;
-    document.documentElement.setAttribute('data-gc-mouvement', reglages.mouvementReduit ? 'reduit' : 'normal');
-  }, [reglages.mouvementReduit]);
+    document.documentElement.setAttribute('data-gc-mouvement', niveau === 'complet' ? 'normal' : niveau);
+  }, [niveau]);
 
   const carnet = (
-    <MotionConfig reducedMotion={reglages.mouvementReduit ? 'always' : 'user'}>
+    <MotionConfig reducedMotion={niveau === 'reduit' ? 'always' : 'never'}>
       <CameraProvider keyboard persist={!simule} fixed={simule && ecran?.tactile ? { distance: 'proche' } : undefined}>
         <Ecran pleinEcran onFermerCarnet={index >= 0 ? fermerCarnet : undefined}>
           <SoulevementProvider>

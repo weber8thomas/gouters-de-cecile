@@ -12,14 +12,17 @@
 //   - aucun [data-gc-fit="overflow"] ;
 //   - bouton de réglages [data-gc-reglages="bouton"] : visible, dans la zone sûre, ≥ 44 px au doigt ;
 //   - photo collée [data-gc-objet="photo"] sur la page vidéo de chaque lien de --videos (julie, lisa) ;
-//   - #lisa ouvre la double page de Lisa (en cadrage « page » : sa page vidéo, à gauche).
+//   - #lisa ouvre la double page de Lisa.
+//   Téléphone debout (cadrage « tourner ») : le carnet reste fermé, l'invitation à tourner le téléphone
+//   remplace les flèches ; la hauteur d'x et les photos sont sans objet (INFO), #lisa garde son lien.
 //   Ce qui n'est pas encore intégré (bouton, photo, Lisa) est ATTENTE, pas KO.
 // Interactions (doigt : événements tactiles CDP → Pointer Events « touch » ; souris pour l'ordinateur) :
 //   toucher la photo (elle se soulève, Échap la repose), glisser vers l'avant et l'arrière, geste vif
 //   court, toucher la marge, lien profond (#mathis, puis à l'ouverture #rose et #inconnu), rotation
-//   portrait → paysage → portrait (on reste sur la même page ; une photo soulevée se repose).
+//   debout → couché → debout → couché (le lien attend qu'on tourne le téléphone ; la page lue revient ;
+//   une photo soulevée se repose).
 // Plan v4 (livre vivant, lot A) :
-//   - coin (iPad couché, cadrage double ; iPhone debout, cadrage page) : un simple toucher d'angle lève le
+//   - coin (iPad couché et iPhone couché, cadrage double) : un simple toucher d'angle lève le
 //     coin et le repose sans tourner ; une diagonale depuis l'angle tourne la page (relais vers le 3D) ;
 //   - curseurs (ordinateur, souris) : data-gc-curseur = grab dans un angle, pointer dans une marge, rien au
 //     milieu de la page, grabbing en glissant ; Entrée ouvre le livre fermé ; l'annonce aux lecteurs
@@ -35,7 +38,7 @@ import { join, resolve } from 'node:path';
 import {
   ROOT, lireArgs, ECRANS, ecrans, tactile, lancer, ouvrirCible, ouvrirPage, Rapport, etatLivre, calme, capture,
   toucher, glisser, glisserSouris, rectDe, existe, attendreAttr, stabiliser, cibles44, zoneSure, dansZone, planche,
-  bundleParDefaut, rel, cdpDe,
+  bundleParDefaut, rel, cdpDe, initReglages,
 } from './lib/verif.mjs';
 
 const { opt, drapeau, liste } = lireArgs();
@@ -101,7 +104,7 @@ async function mesurerRepos(page, e) {
     const d = document.querySelector('.gc-livre__emplacement--droite');
     // Pages cadrées : les deux en « double » (une seule, la droite, couverture fermée), celle du côté en « page ».
     const pages = [];
-    if (double === -1) pages.push(['couverture', rect(document.querySelector('.gc-livre-couv') ?? d)]);
+    if (double === -1 || cadrage === 'tourner') pages.push(['couverture', rect(document.querySelector('.gc-livre-couv') ?? d)]);
     else if (cadrage === 'page') pages.push([cote, rect(cote === 'gauche' ? g : d)]);
     else { pages.push(['gauche', rect(g)]); pages.push(['droite', rect(d)]); }
     const tol = 1;
@@ -117,6 +120,11 @@ async function mesurerRepos(page, e) {
       return { nom: b.getAttribute('aria-label') || b.textContent.trim().slice(0, 30), x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.w), h: Math.round(r.h), visible, dansSure };
     });
     const fleches = ctrls.filter((c) => /Page (précédente|suivante)/.test(c.nom ?? ''));
+    // Téléphone debout : l'invitation à tourner le téléphone, sous le livre fermé, dans la zone sûre.
+    const inv = document.querySelector('[data-gc-tourner]');
+    const ri = inv ? rect(inv) : null;
+    const invitation = !!ri && ri.w > 0 && ri.h > 0 && Number(getComputedStyle(inv).opacity) > 0.05
+      && ri.x >= il - tol && ri.y >= it - tol && ri.r <= vw - ir + tol && ri.b <= vh - ib + tol;
     // Hauteur d'x : plus petite valeur des tokens du cran affiché, à l'échelle de la page à l'écran.
     const roles = ['title', 'body', 'note', 'meta', 'signature', 'annotation'];
     const xs = cs ? roles.map((k) => parseFloat(cs.getPropertyValue(`--gc-x-${k}`))).filter((v) => v > 0) : [];
@@ -126,7 +134,7 @@ async function mesurerRepos(page, e) {
       vw, vh, cadrage, cote, double, distance: livre?.closest('[data-gc-distance]')?.getAttribute('data-gc-distance'),
       echelle: Math.round(echelle * 10000) / 10000, xMinToken: xMin, xPx: Math.round(xMin * echelle * 100) / 100,
       pages: pages.map(([n, r]) => ({ n, x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.w), h: Math.round(r.h) })),
-      hors, horsSure, controles: ctrls, fleches: fleches.length,
+      hors, horsSure, controles: ctrls, fleches: fleches.length, invitation,
       debordements: document.querySelectorAll('.gc-livre__page--visible [data-gc-fit="overflow"]').length,
       tactile,
     };
@@ -141,7 +149,10 @@ function juger(e, m) {
   const ok = (v) => (v ? 'OK' : 'KO');
   return {
     horsCadre: { ok: ok(!m.hors.length && !m.horsSure.length && !m.debordements), detail: [...m.hors.map((n) => `${n} hors fenêtre`), ...m.horsSure.map((n) => `${n} hors zone sûre`), m.debordements ? `${m.debordements} débordement(s)` : ''].filter(Boolean).join(', ') },
-    controles: { ok: ok(m.fleches === 2 && visibles.length >= 2 && visibles.every((c) => c.dansSure)), detail: visibles.filter((c) => !c.dansSure).map((c) => `${c.nom} hors zone sûre`).join(', ') },
+    controles: {
+      ok: ok((m.cadrage === 'tourner' ? m.invitation : m.fleches === 2) && visibles.length >= (m.cadrage === 'tourner' ? 1 : 2) && visibles.every((c) => c.dansSure)),
+      detail: [m.cadrage === 'tourner' && !m.invitation && 'invitation à tourner absente', ...visibles.filter((c) => !c.dansSure).map((c) => `${c.nom} hors zone sûre`)].filter(Boolean).join(', '),
+    },
     cibles: { ok: m.tactile ? ok(visibles.every((c) => c.w >= 44 && c.h >= 44)) : 's.o.', detail: visibles.length ? `min ${Math.min(...visibles.map((c) => Math.min(c.w, c.h)))} px` : 'aucun contrôle' },
     hauteurX: { ok: ok(mrad >= REF_MRAD - 1e-6), px: m.xPx, mrad: Math.round(mrad * 1000) / 1000, ref: Math.round(REF_MRAD * 1000) / 1000, lecture: lect.libelle },
   };
@@ -268,29 +279,46 @@ async function suiteTactile(browser, e, captures) {
   return { tests: res, erreurs };
 }
 
-/** Rotation : portrait → paysage → portrait, la page reste ; une photo soulevée se repose. */
+/**
+ * Rotation (téléphone) : debout, le carnet reste fermé et le lien attend ; couché, il s'ouvre sur la page
+ * du lien ; debout à nouveau, il se ferme (une photo soulevée se repose, le lien reste) ; couché, la même
+ * page revient.
+ */
 async function suiteRotation(browser, e, captures) {
   const { ctx, page, surv } = await ouvrirPage(browser, cible, e, '#julie');
   const res = [];
   const vp = page.viewportSize();
-  const d0 = (await etatLivre(page)).double;
+  const couche = { width: vp.height, height: vp.width };
+  const invitation = () => page.evaluate(() => {
+    const el = document.querySelector('[data-gc-tourner]');
+    return !!el && el.getBoundingClientRect().height > 0 && Number(getComputedStyle(el).opacity) > 0.05;
+  });
+  let s = await etatLivre(page);
+  let inv = await invitation();
+  res.push({ test: 'debout : carnet fermé, invitation à tourner, le lien attend', attendu: { cadrage: 'tourner', double: -1, hash: '#julie', invitation: true }, obtenu: { cadrage: s.cadrage, double: s.double, hash: s.hash, invitation: inv }, ok: s.cadrage === 'tourner' && s.double === -1 && s.hash === '#julie' && inv ? 'OK' : 'KO' });
+  captures.push(await capture(page, `${e.nom}-rotation-debout`, outDir));
+  await page.setViewportSize(couche);
+  s = await attendreEtat(page, { cadrage: 'double', julie: true }, (x) => ({ ...x, julie: sur(x, 'julie') }), 90000);
+  await repos(page, 450, 6000);
+  res.push({ test: 'couché : le carnet s\'ouvre sur la page du lien', attendu: { cadrage: 'double', julie: true }, obtenu: { cadrage: s.cadrage, double: s.double, julie: s.julie }, ok: s.cadrage === 'double' && s.julie ? 'OK' : 'KO' });
+  const d0 = s.double;
   const p = await centre(page, PHOTO);
   if (p) {
     await toucher(page, p[0], p[1]);
     await attendreAttr(page, CALQUE, 'data-gc-soulever', 'ouvert');
     await page.waitForTimeout(500);
   }
-  await page.setViewportSize({ width: vp.height, height: vp.width });
-  let s = await attendreEtat(page, { cadrage: 'double' }, (x) => x, 90000);
-  res.push({ test: 'rotation → paysage', attendu: { double: d0, cadrage: 'double' }, obtenu: { double: s.double, cadrage: s.cadrage }, ok: s.double === d0 && s.cadrage === 'double' ? 'OK' : 'KO' });
+  await page.setViewportSize(vp);
+  s = await attendreEtat(page, { cadrage: 'tourner', double: -1 }, (x) => x, 90000);
+  inv = await invitation();
+  res.push({ test: 'debout à nouveau : le carnet se ferme, la page reste dans le lien', attendu: { cadrage: 'tourner', double: -1, hash: '#julie', invitation: true }, obtenu: { cadrage: s.cadrage, double: s.double, hash: s.hash, invitation: inv }, ok: s.cadrage === 'tourner' && s.double === -1 && s.hash === '#julie' && inv ? 'OK' : 'KO' });
   if (p) {
     const f = await attendreAttr(page, CALQUE, 'data-gc-soulever', 'ferme');
     res.push({ test: 'rotation : la photo soulevée se repose', attendu: { soulever: 'ferme' }, obtenu: { soulever: (await etatLivre(page)).soulever }, ok: f ? 'OK' : 'KO' });
   } else res.push({ test: 'rotation : la photo soulevée se repose', ok: 'ATTENTE', obtenu: 'photo absente : à relancer après intégration' });
-  captures.push(await capture(page, `${e.nom}-rotation-paysage`, outDir));
-  await page.setViewportSize(vp);
-  s = await attendreEtat(page, { cadrage: 'page' }, (x) => x, 90000);
-  res.push({ test: 'retour en portrait : même page', attendu: { double: d0, cadrage: 'page', cote: 'gauche' }, obtenu: { double: s.double, cadrage: s.cadrage, cote: s.cote }, ok: s.double === d0 && s.cadrage === 'page' && s.cote === 'gauche' ? 'OK' : 'KO' });
+  await page.setViewportSize(couche);
+  s = await attendreEtat(page, { cadrage: 'double', double: d0 }, (x) => x, 90000);
+  res.push({ test: 'couché à nouveau : la même page', attendu: { double: d0, cadrage: 'double' }, obtenu: { double: s.double, cadrage: s.cadrage }, ok: s.double === d0 && s.cadrage === 'double' ? 'OK' : 'KO' });
   await repos(page, 300, 500);
   captures.push(await capture(page, `${e.nom}-rotation-retour`, outDir));
   const erreurs = [...surv.erreurs];
@@ -321,19 +349,40 @@ async function suiteSouris(browser, e) {
   return { tests: res, erreurs };
 }
 
-/** Moins de mouvement : un glisser tourne la page en fondu, sans feuillet. */
+/**
+ * Moins de mouvement. Préférence du système (mouvement doux) : les effets restent, la page tourne en
+ * feuillet. Réglage « Animations : réduites » : un glisser tourne la page en fondu, sans feuillet.
+ */
 async function suiteReduite(browser, e) {
-  const { ctx, page, surv } = await ouvrirPage(browser, cible, e, '#julie', { contexteExtra: { reducedMotion: 'reduce' } });
-  const { width: W, height: H } = page.viewportSize();
-  const d0 = (await etatLivre(page)).double;
-  await glisser(page, [W * 0.8, H * 0.5], [W * 0.3, H * 0.5], { ms: 300 });
-  await attendreEtat(page, { cote: 'droite' }, (x) => x, 20000);
-  await glisser(page, [W * 0.8, H * 0.5], [W * 0.3, H * 0.5], { ms: 300 });
-  const s = await attendreEtat(page, { double: d0 + 1 }, (x) => x, 20000);
-  const feuillet = await page.evaluate(() => document.querySelectorAll('.gc-livre-feuillet').length);
-  const erreurs = [...surv.erreurs];
-  await ctx.close();
-  return { tests: [{ test: '2 glisser ← = 2 pages, aucun feuillet', attendu: { double: d0 + 1, cote: 'gauche', feuillets: 0 }, obtenu: { double: s.double, cote: s.cote, feuillets: feuillet }, ok: s.double === d0 + 1 && s.cote === 'gauche' && feuillet === 0 ? 'OK' : 'KO' }], erreurs };
+  const tests = [];
+  const erreurs = [];
+  for (const [mode, extra] of [
+    ['doux', { contexteExtra: { reducedMotion: 'reduce' } }],
+    ['reduit', { init: [initReglages({ animations: 'reduites' })] }],
+  ]) {
+    const { ctx, page, surv } = await ouvrirPage(browser, cible, e, '#julie', extra);
+    const { width: W, height: H } = page.viewportSize();
+    const d0 = (await etatLivre(page)).double;
+    const niveau = await page.evaluate(() => document.querySelector('[data-gc-mouvement]')?.getAttribute('data-gc-mouvement') ?? null);
+    const n0 = await page.evaluate(() => (window.__gcGestesLivre ?? []).length);
+    let feuillets = 0;
+    const releve = setInterval(() => {
+      page.evaluate(() => document.querySelectorAll('.gc-livre-feuillet').length).then((n) => { feuillets = Math.max(feuillets, n); }, () => {});
+    }, 60);
+    await glisser(page, [W * 0.8, H * 0.5], [W * 0.3, H * 0.5], { ms: 300 });
+    const s = await attendreEtat(page, { double: d0 + 1 }, (x) => x, 20000);
+    clearInterval(releve);
+    const types = await page.evaluate((k) => (window.__gcGestesLivre ?? []).slice(k).map((g) => g.type), n0);
+    const tourne = types.includes('page');
+    if (mode === 'doux') {
+      tests.push({ test: 'préférence du système (doux) : la page tourne en feuillet', attendu: { niveau: 'doux', double: d0 + 1, feuillet: true }, obtenu: { niveau, double: s.double, gestes: types.join(' '), feuillets }, ok: niveau === 'doux' && s.double === d0 + 1 && (tourne || feuillets > 0) ? 'OK' : 'KO' });
+    } else {
+      tests.push({ test: 'Animations : réduites : la page tourne en fondu, aucun feuillet', attendu: { niveau: 'reduit', double: d0 + 1, feuillets: 0 }, obtenu: { niveau, double: s.double, gestes: types.join(' '), feuillets }, ok: niveau === 'reduit' && s.double === d0 + 1 && feuillets === 0 && !tourne ? 'OK' : 'KO' });
+    }
+    erreurs.push(...surv.erreurs);
+    await ctx.close();
+  }
+  return { tests, erreurs };
 }
 
 // ---- Plan v4 : le coin, les curseurs, Entrée, l'annonce, le plat arrière -----------------------------
@@ -486,13 +535,16 @@ for (const e of ECRANS_) {
       const c = await ouvrirPage(browser, cible, e, `#${v}`);
       const s = await etatLivre(c.page);
       const trouve = s.double >= 0 && s.spreads.some((id) => id.toLowerCase() === v || id.toLowerCase().endsWith(`-${v}`));
-      if (v === 'lisa') {
+      if (v === 'lisa' && s.cadrage === 'tourner') {
+        // Téléphone debout : le carnet reste fermé, le lien attend qu'on tourne le téléphone.
+        ligne.lisa = { ok: s.hash === '#lisa' && s.double === -1 ? 'OK' : 'KO', detail: `téléphone debout : double ${s.double}, ${s.hash} (le lien attend)` };
+      } else if (v === 'lisa') {
         ligne.lisa = trouve
           ? { ok: s.hash === '#lisa' && (s.cadrage !== 'page' || s.cote === 'gauche') ? 'OK' : 'KO', detail: `double ${s.double}, ${s.cadrage}${s.cadrage === 'page' ? ` (${s.cote})` : ''}, ${s.hash}` }
           : { ok: 'ATTENTE', detail: `#lisa → ${s.double < 0 ? 'couverture' : `double ${s.double} (${s.spreads.join(', ')})`} : Lisa pas encore dans le carnet` };
         if (trouve) tuiles.push([await capture(c.page, `${e.nom}-lisa`, outDir), `${e.titre} — #lisa`]);
       }
-      ligne.photos[v] = trouve ? await jugerPhoto(c.page) : { ok: 'ATTENTE', detail: `#${v} absent du carnet` };
+      ligne.photos[v] = s.cadrage === 'tourner' ? { ok: 'INFO', detail: 'téléphone debout' } : trouve ? await jugerPhoto(c.page) : { ok: 'ATTENTE', detail: `#${v} absent du carnet` };
       ligne.erreurs.push(...c.surv.erreurs, ...c.surv.reponses, ...c.surv.echecs);
       await c.ctx.close();
     }
@@ -505,9 +557,10 @@ for (const e of ECRANS_) {
     R.ajouter(e.nom, 'aucune page hors cadre, aucun débordement', c.horsCadre.ok, c.horsCadre.detail);
     R.ajouter(e.nom, 'contrôles visibles dans la zone sûre', c.controles.ok, c.controles.detail);
     if (c.cibles.ok !== 's.o.') R.ajouter(e.nom, 'cibles ≥ 44 px au doigt', c.cibles.ok, c.cibles.detail);
-    R.ajouter(e.nom, `hauteur d'x angulaire ≥ ${c.hauteurX.ref} mrad`, c.hauteurX.ok, `${c.hauteurX.mrad} mrad (${c.hauteurX.px} px, ${c.hauteurX.lecture})`);
+    if (m.cadrage === 'tourner') R.ajouter(e.nom, `hauteur d'x angulaire ≥ ${c.hauteurX.ref} mrad`, 'INFO', 'téléphone debout : carnet fermé, invitation à tourner le téléphone (on lit couché)');
+    else R.ajouter(e.nom, `hauteur d'x angulaire ≥ ${c.hauteurX.ref} mrad`, c.hauteurX.ok, `${c.hauteurX.mrad} mrad (${c.hauteurX.px} px, ${c.hauteurX.lecture})`);
     R.ajouter(e.nom, 'bouton de réglages (zone sûre, ≥ 44 px au doigt)', ligne.reglages.ok, ligne.reglages.detail);
-    for (const [v, j] of Object.entries(ligne.photos)) R.ajouter(e.nom, `photo collée sur la page vidéo #${v}`, j.ok, j.detail);
+    for (const [v, j] of Object.entries(ligne.photos)) R.ajouter(e.nom, `photo collée sur la page vidéo #${v}`, m.cadrage === 'tourner' ? 'INFO' : j.ok, m.cadrage === 'tourner' ? 'téléphone debout : carnet fermé' : j.detail);
     if (ligne.lisa) R.ajouter(e.nom, '#lisa ouvre la double page de Lisa', ligne.lisa.ok, ligne.lisa.detail);
     R.ok(e.nom, 'aucune erreur de page ni requête en échec', !ligne.erreurs.length, ligne.erreurs.slice(0, 3).join(' | '));
   } catch (x) {
@@ -519,13 +572,13 @@ for (const e of ECRANS_) {
 const interactionsRapport = [];
 if (interactions) {
   const suites = [
-    ['iphone13-portrait', 'doigt, cadrage page', (e) => suiteTactile(browser, e, captures), 'doigt'],
+    ['iphone13-paysage', 'doigt, cadrage double', (e) => suiteTactile(browser, e, captures), 'doigt'],
     ['iphone13-portrait', 'rotation', (e) => suiteRotation(browser, e, captures), 'rotation'],
-    ['iphone13-portrait', 'moins de mouvement', (e) => suiteReduite(browser, e), 'reduit'],
+    ['iphone13-paysage', 'moins de mouvement', (e) => suiteReduite(browser, e), 'reduit'],
     ['ipad-paysage', 'doigt, cadrage double', (e) => suiteTactile(browser, e, captures), 'doigt'],
     ['ordi-1440', 'souris et clavier', (e) => suiteSouris(browser, e), 'souris'],
     ['ipad-paysage', 'coin, cadrage double', (e) => suiteCoin(browser, e, captures), 'coin'],
-    ['iphone13-portrait', 'coin, cadrage page', (e) => suiteCoin(browser, e, captures), 'coin'],
+    ['iphone13-paysage', 'coin, cadrage double', (e) => suiteCoin(browser, e, captures), 'coin'],
     ['ordi-1440', 'curseurs, annonce, Entrée, plat arrière', (e) => suiteCurseurs(browser, e, captures), 'curseurs'],
   ];
   for (const [nom, titre, f, cle] of suites) {

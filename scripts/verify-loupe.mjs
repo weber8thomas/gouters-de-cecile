@@ -24,7 +24,7 @@
 // Tuiles ×4 : celles du manifeste (lot P) si elles existent ; sinon des tuiles d'essai fabriquées ici
 // (encre ×2 agrandie, verification/out/v4-b/tuiles), posées par definirSourceEncre4x().
 //
-//   node scripts/verify-loupe.mjs [--bundle dist/ds-v4-b/components] [--only iphone13-portrait,…]
+//   node scripts/verify-loupe.mjs [--bundle dist/ds-v4-b/components] [--only iphone13-paysage,…]
 //        [--out verification/out/v4-b/loupe] [--sans-trace] [--lien julie]
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -802,7 +802,8 @@ async function suitePure() {
 }
 
 // ---- Programme -------------------------------------------------------------------------------------------
-const liste_ = ecrans(liste('only', 'iphone13-portrait,pixel7,ipad-paysage,ordi-1440,tv-1080'));
+// (téléphones couchés : debout, le carnet reste fermé et invite à tourner le téléphone)
+const liste_ = ecrans(liste('only', 'iphone13-paysage,pixel7-paysage,ipad-paysage,ordi-1440,tv-1080'));
 let essai = null;
 {
   const { ctx, page } = await ouvrir(liste_[0]);

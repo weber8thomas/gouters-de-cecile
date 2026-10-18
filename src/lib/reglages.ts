@@ -13,6 +13,10 @@ import banqueMusique from '../../design-system/baked/musique/banque.json';
 export type Vitesse = 'vive' | 'normale' | 'lente';
 export const VITESSES: Vitesse[] = ['vive', 'normale', 'lente'];
 
+/** Animations du carnet : suivre la préférence du système, ou imposer complètes / réduites. */
+export type Animations = 'systeme' | 'completes' | 'reduites';
+export const ANIMATIONS: Animations[] = ['systeme', 'completes', 'reduites'];
+
 export interface Reglages {
   v: 1;
   /** Son des vidéos. */
@@ -28,18 +32,27 @@ export interface Reglages {
   lectureAuto: boolean;
   /** Vitesse des pages qui tournent (ressort « paper »). */
   vitesse: Vitesse;
-  /** Moins d'animations (en plus de la préférence du système). */
+  /**
+   * Animations : « systeme » (défaut) suit la préférence du système, qui, si elle demande moins
+   * d'animations, garde les effets du carnet en version douce (src/lib/motion.ts) ; « completes » ou
+   * « reduites » l'imposent (réduites : presque tout s'arrête).
+   */
+  animations: Animations;
+  /**
+   * Moins d'animations : vrai quand `animations` vaut « reduites » (miroir, tenu par valider). L'écrire
+   * (ancien interrupteur, anciens réglages mémorisés) règle `animations`.
+   */
   mouvementReduit: boolean;
   /**
    * Sons du livre (pages, couverture, feuillet, photo), distincts du son des vidéos.
-   * Défaut : actifs, téléphone compris. null = automatique : coupés sur téléphone, actifs ailleurs
-   * (voir sonsLivreEffectif, src/lib/son.ts).
+   * Défaut : actifs, téléphone compris. null (l'ancien « automatique », encore lu dans des réglages
+   * mémorisés) : actifs aussi (voir sonsLivreEffectif, src/lib/son.ts).
    */
   sonsLivre: boolean | null;
   /**
    * Ambiance sonore : le feu de cheminée et de rares bruits de cuisine (src/lib/ambiance.ts).
-   * Défaut : active, téléphone compris. null = automatique : active sur TV et ordinateur, coupée sur
-   * téléphone (voir ambianceEffective).
+   * Défaut : active, téléphone compris. null (l'ancien « automatique ») : active aussi (voir
+   * ambianceEffective).
    */
   ambiance: boolean | null;
   /** La lumière du feu vacille (lot L, src/lib/feu.ts) ; false : lumière chaude mais immobile. */
@@ -77,6 +90,7 @@ export const REGLAGES_DEFAUT: Reglages = {
   volumeBruitages: 0.8,
   lectureAuto: false,
   vitesse: 'normale',
+  animations: 'systeme',
   mouvementReduit: false,
   sonsLivre: true,
   ambiance: true,
@@ -99,7 +113,9 @@ function valider(x: unknown): Reglages {
   if (typeof o.volumeBruitages === 'number' && Number.isFinite(o.volumeBruitages)) r.volumeBruitages = Math.min(1, Math.max(0, o.volumeBruitages));
   if (typeof o.lectureAuto === 'boolean') r.lectureAuto = o.lectureAuto;
   if (typeof o.vitesse === 'string' && (VITESSES as string[]).includes(o.vitesse)) r.vitesse = o.vitesse as Vitesse;
-  if (typeof o.mouvementReduit === 'boolean') r.mouvementReduit = o.mouvementReduit;
+  if (typeof o.animations === 'string' && (ANIMATIONS as string[]).includes(o.animations)) r.animations = o.animations as Animations;
+  else if (o.mouvementReduit === true) r.animations = 'reduites'; // réglages d'avant le choix à trois
+  r.mouvementReduit = r.animations === 'reduites';
   if (typeof o.sonsLivre === 'boolean' || o.sonsLivre === null) r.sonsLivre = o.sonsLivre;
   if (typeof o.ambiance === 'boolean' || o.ambiance === null) r.ambiance = o.ambiance;
   if (typeof o.feu === 'boolean') r.feu = o.feu;
@@ -142,7 +158,11 @@ export const getReglages = (): Reglages => etat;
 
 /** Change un ou plusieurs réglages (objet partiel ou fonction), mémorise et prévient les abonnés. */
 export function setReglages(maj: Partial<Reglages> | ((r: Reglages) => Partial<Reglages>)): void {
-  const partiel = typeof maj === 'function' ? maj(etat) : maj;
+  let partiel = typeof maj === 'function' ? maj(etat) : maj;
+  // L'ancien interrupteur « moins d'animations » règle le choix à trois.
+  if (typeof partiel.mouvementReduit === 'boolean' && partiel.animations === undefined) {
+    partiel = { ...partiel, animations: partiel.mouvementReduit ? 'reduites' : 'systeme' };
+  }
   const suivant = valider({ ...etat, ...partiel });
   if (JSON.stringify(suivant) === JSON.stringify(etat)) return;
   etat = suivant;

@@ -13,12 +13,12 @@ import { useEcran } from '../Ecran';
 import { partScene, useViewport, type Viewport } from '../../lib/viewport';
 import { CAMERA_DEFAULT, useCamera, zoomBornes, ZOOM_STEP } from '../../lib/camera';
 import type { Distance } from '../../lib/settings';
-import { resetReglages, useReglages, type Reglages as ReglagesValeurs, type Vitesse } from '../../lib/reglages';
+import { resetReglages, useReglages, type Animations, type Reglages as ReglagesValeurs, type Vitesse } from '../../lib/reglages';
 import * as son from '../../lib/son';
 import { MORCEAUX } from '../../lib/musique';
 import { LOUPE_MAX, LOUPE_MIN, demanderLoupe, useLoupe } from '../../lib/loupe';
 import { useClavierModal } from '../../lib/clavier';
-import { LazyMotion, SPRINGS, animate, domMax, m, useMotionValue, useReducedMotion, useTransform } from '../../lib/motion';
+import { LazyMotion, SPRINGS, animate, domMax, m, useMotionValue, useNiveauMouvement, useTransform } from '../../lib/motion';
 import { assetInfo, cssUrl } from '../../lib/assets';
 import { Chevron, Croix, Engrenage, Entoure, FlecheMarge, Signe, TraitCrayon } from './traces';
 import { Reglette, auPas } from './Reglette';
@@ -40,7 +40,7 @@ export interface ReglagesProps {
   credits?: React.ReactNode;
   /**
    * Caméra fixe : masque « Taille du livre » et « Ajuster ». Par défaut, déduit de l'écran comme le
-   * fait le livre (cadrage « page », ou petit écran couché que le livre remplit déjà).
+   * fait le livre (téléphone debout, cadrage « page », ou petit écran couché que le livre remplit déjà).
    */
   cameraFixe?: boolean;
   /** Fiche ouverte dès le premier rendu, sans prendre le focus (cartes, captures). */
@@ -77,7 +77,7 @@ interface Mise {
 function miseEnPlace(vp: Viewport, papier: string | null): Mise {
   const i = vp.insets;
   const cible = vp.tactile ? 44 : 32;
-  const feuille = vp.cadrage === 'page' && vp.w < 600;
+  const feuille = (vp.cadrage === 'tourner' || vp.cadrage === 'page') && vp.w < 600;
   let fs: number;
   let place: { haut: number; bas: number; gauche: number; droite: number };
   if (feuille) {
@@ -296,36 +296,21 @@ const OUI_NON: Option<boolean>[] = [{ v: false, texte: 'non' }, { v: true, texte
 const SON: Option<boolean>[] = [{ v: false, texte: 'coupé' }, { v: true, texte: 'avec son' }];
 const TAILLES: Option<Distance>[] = [{ v: 'proche', texte: 'proche' }, { v: 'moyenne', texte: 'moyenne' }, { v: 'loin', texte: 'loin' }];
 const VITESSES_TEXTE: Option<Vitesse>[] = [{ v: 'vive', texte: 'vive' }, { v: 'normale', texte: 'normale' }, { v: 'lente', texte: 'lente' }];
-type ChoixAuto = 'auto' | 'oui' | 'non';
-const AUTO_OUI_NON: Option<ChoixAuto>[] = [{ v: 'auto', texte: 'automatique' }, { v: 'oui', texte: 'oui' }, { v: 'non', texte: 'non' }];
+/** Animations : comme le système (défaut ; s'il en demande moins, version douce), complètes ou réduites. */
+const ANIMATIONS_TEXTE: Option<Animations>[] = [{ v: 'systeme', texte: 'comme l’appareil' }, { v: 'completes', texte: 'complètes' }, { v: 'reduites', texte: 'réduites' }];
 /** Feuille du téléphone : « auto », pour que les trois choix tiennent sur une ligne. */
-const AUTO_OUI_NON_COURT: Option<ChoixAuto>[] = [{ v: 'auto', texte: 'auto' }, { v: 'oui', texte: 'oui' }, { v: 'non', texte: 'non' }];
-const versChoixAuto = (v: boolean | null): ChoixAuto => (v === null ? 'auto' : v ? 'oui' : 'non');
-const deChoixAuto = (c: ChoixAuto): boolean | null => (c === 'auto' ? null : c === 'oui');
+const ANIMATIONS_COURT: Option<Animations>[] = [{ v: 'systeme', texte: 'auto' }, { v: 'completes', texte: 'complètes' }, { v: 'reduites', texte: 'réduites' }];
 /** Musique de fond (src/lib/musique.ts) : « aucune », puis chaque morceau de la banque par son titre. */
 const OPTIONS_MUSIQUE: Option<string>[] = [{ v: 'aucune', texte: 'aucune' }, ...MORCEAUX.map((m) => ({ v: m.id, texte: m.titre }))];
 
 // ---- Ambiance (lots L et S) : lue de façon défensive tant que reglages.ts n'a pas ses champs ----------
-/** Champs de l'ambiance : `ambiance` (feu de cheminée et cuisine, null = automatique) et `feu` (la lumière vacille). */
+/** Champs de l'ambiance : `ambiance` (feu de cheminée et cuisine) et `feu` (la lumière vacille). */
 type ChampsAmbiance = { ambiance?: boolean | null; feu?: boolean };
-const ambianceDe = (r: ReglagesValeurs): boolean | null => {
-  const v = (r as ReglagesValeurs & ChampsAmbiance).ambiance;
-  return typeof v === 'boolean' ? v : null;
-};
 const feuDe = (r: ReglagesValeurs): boolean => (r as ReglagesValeurs & ChampsAmbiance).feu !== false;
 /** Écrit des champs que reglages.ts ne déclare peut-être pas encore (ignorés par lui jusque-là). */
 const partielAmbiance = (c: ChampsAmbiance) => c as unknown as Partial<ReglagesValeurs>;
-/** Nom de la fonction que le lot S pourra exporter de src/lib/son.ts (lue par clé : pas d'import manquant). */
-const AMBIANCE_EFFECTIVE = 'ambianceEffective';
-/** Ambiance active : celle de src/lib/son.ts si elle existe ; sinon automatique = coupée sur téléphone. */
-function ambianceActive(r: ReglagesValeurs): boolean {
-  const f = (son as unknown as Record<string, unknown>)[AMBIANCE_EFFECTIVE] as ((r: ReglagesValeurs) => boolean) | undefined;
-  if (typeof f === 'function') return f(r);
-  const v = ambianceDe(r);
-  if (v !== null) return v;
-  if (typeof window === 'undefined' || typeof matchMedia === 'undefined') return true;
-  return !(matchMedia('(pointer: coarse)').matches && Math.min(window.innerWidth, window.innerHeight) < 600);
-}
+/** Ambiance active : partout, téléphone compris, sauf si elle a été coupée (null, l'ancien « automatique » : oui). */
+const ambianceActive = (r: ReglagesValeurs): boolean => (r as ReglagesValeurs & ChampsAmbiance).ambiance !== false;
 const VOLUME_PAS = 0.05;
 /** Pas de la loupe dans le menu (100 à 300 %). */
 const LOUPE_PAS = 0.25;
@@ -354,7 +339,7 @@ interface MenuProps extends ReglagesProps {
 function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: cameraFixeImpose, ouvertAuDepart = false }: MenuProps) {
   const camera = useCamera();
   const [r, setR] = useReglages();
-  const reduit = useReducedMotion();
+  const reduit = useNiveauMouvement() !== 'complet';
   const reduitRef = React.useRef(reduit);
   reduitRef.current = reduit;
   const [plein, setPlein] = usePleinEcran();
@@ -372,7 +357,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   const creditsId = `${React.useId()}-credits`;
 
   // Comme le livre : quand la page (ou le livre) remplit déjà l'écran, les crans ne servent plus.
-  const cameraFixe = cameraFixeImpose ?? (!enPlace && (vp.cadrage === 'page' || partScene(vp) < 1));
+  const cameraFixe = cameraFixeImpose ?? (!enPlace && (vp.cadrage !== 'double' || partScene(vp) < 1));
   const papier = assetInfo('paper/base') ? cssUrl('paper/base') : null;
   const mise = React.useMemo(() => miseEnPlace(vp, papier), [vp, papier]);
   // Volumes indépendants : celui des vidéos (en lecture seule sur iPhone : sa ligne disparaît alors), puis
@@ -678,18 +663,18 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                   <Ligne id="vitesse" libelle="Vitesse des pages" role="radiogroup">
                     <Choix options={VITESSES_TEXTE} valeur={r.vitesse} onChoisir={(vitesse) => setR({ vitesse })} graine={g()} />
                   </Ligne>
-                  <Ligne id="mouvement" libelle="Moins d’animations" role="radiogroup">
-                    <Choix options={OUI_NON} valeur={r.mouvementReduit} onChoisir={(mouvementReduit) => setR({ mouvementReduit })} graine={g()} />
+                  <Ligne id="mouvement" libelle="Animations" role="radiogroup">
+                    <Choix options={mise.feuille ? ANIMATIONS_COURT : ANIMATIONS_TEXTE} valeur={r.animations} onChoisir={(animations) => setR({ animations })} graine={g()} />
                   </Ligne>
                   <h3 className="gc-reglages__section" data-gc-reglages-section="ambiance">
                     Ambiance
                     <TraitCrayon className="gc-reglages__souligne gc-reglages__souligne--section" />
                   </h3>
                   <Ligne id="sonsLivre" libelle="Sons du livre" role="radiogroup">
-                    <Choix options={mise.feuille ? AUTO_OUI_NON_COURT : AUTO_OUI_NON} valeur={versChoixAuto(r.sonsLivre)} onChoisir={(c) => setR({ sonsLivre: deChoixAuto(c) })} graine={g()} />
+                    <Choix options={OUI_NON} valeur={sonsLivre} onChoisir={(sonsLivre) => setR({ sonsLivre })} graine={g()} />
                   </Ligne>
                   <Ligne id="ambiance" libelle="Feu de cheminée et cuisine" role="radiogroup">
-                    <Choix options={mise.feuille ? AUTO_OUI_NON_COURT : AUTO_OUI_NON} valeur={versChoixAuto(ambianceDe(r))} onChoisir={(c) => setR(partielAmbiance({ ambiance: deChoixAuto(c) }))} graine={g()} />
+                    <Choix options={OUI_NON} valeur={ambiance} onChoisir={(a) => setR(partielAmbiance({ ambiance: a }))} graine={g()} />
                   </Ligne>
                   <Ligne id="feu" libelle="Lumière du feu" role="radiogroup">
                     <Choix options={OUI_NON} valeur={feuDe(r)} onChoisir={(feu) => setR(partielAmbiance({ feu }))} graine={g()} />

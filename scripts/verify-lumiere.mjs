@@ -8,8 +8,9 @@
 //   - le feu est vivant : l'opacité des calques varie dans le temps (valeurs distinctes, amplitude), et la
 //     flamme de la bougie aussi ;
 //   - pause quand l'onglet est caché (visibilitychange) : le moteur ne calcule plus d'image, reprise ensuite ;
-//   - mouvement réduit (prefers-reduced-motion) et réglage feu: false : lumière statique (mode « statique »,
-//     intensité 1, opacités constantes, flamme de la bougie fixe) ;
+//   - animations réduites (réglage) et réglage feu: false : lumière statique (mode « statique »,
+//     intensité 1, opacités constantes, flamme de la bougie fixe) ; moins d'animations demandé par le
+//     système (prefers-reduced-motion) : le feu vit encore, à demi-amplitude (mouvement doux) ;
 //   - performance (trace Chrome, CPU ×4) : 5 s au repos, puis un tour de page (→ sur la page du carnet) :
 //     0 Layout et 0 Paint attribuables au feu (Paint sur un calque de lumière, ou écart feu vivant / feu figé),
 //     calques composités en plus dus au feu (≤ 4) et à la bougie (≤ 4), mesurés par CDP LayerTree, lumière retirée par CSS ;
@@ -50,8 +51,9 @@ const browser = await lancer({ args: ARGS });
 console.log(`■ Lumière du feu — ${cible.type} : ${cible.depart} (${ARGS ? 'compositing logiciel' : 'SwiftShader'})`);
 
 const TV = ecran('tv-1080');
-const TEL = ecran('iphone13-portrait');
-const PIXEL = ecran('pixel7');
+// (téléphones couchés : debout, le carnet reste fermé et invite à tourner le téléphone)
+const TEL = ecran('iphone13-paysage');
+const PIXEL = ecran('pixel7-paysage');
 const CALQUES = '[data-gc-lumiere]';
 // La bougie (src/components/Bougie) : ses calques que le feu anime (lueur, flamme, cire éclairée, ombre) sont
 // échantillonnés ; la cire est fixe, la cire qui coule est dessinée dans la toile de la flamme.
@@ -223,8 +225,18 @@ async function statique(nom, options) {
   R.ok('tv-1080', `${nom} : lumière statique, à l'intensité moyenne (bougie comprise)`, f?.mode === 'statique' && f?.intensite === 1 && fixe, detail);
   await ctx.close();
 }
-if (tests.has('reduit')) await statique('mouvement réduit (système)', { contexteExtra: { reducedMotion: 'reduce' } });
-if (tests.has('reduit')) await statique('moins d\'animations (réglage du carnet)', { init: [initReglages({ mouvementReduit: true })] });
+// Préférence du système (mouvement doux, src/lib/motion.ts) : le feu vit encore, à demi-amplitude.
+async function doux(nom, options) {
+  const { ctx, page } = await ouvrir(TV, lien, options);
+  const e = await echantillonner(page, 1800);
+  const f = await etatFeu(page);
+  const vit = Object.values(e.par).some((p) => p.distinctes > 1);
+  const detail = `mode ${f?.mode}, intensité ${f?.intensite}, ${Object.entries(e.par).map(([k, p]) => `${k} ${p.distinctes}×${r3(p.max)}`).join(', ')}`;
+  R.ok('tv-1080', `${nom} : le feu vit encore (mouvement doux, demi-amplitude)`, f?.mode === 'vivant' && vit, detail);
+  await ctx.close();
+}
+if (tests.has('reduit')) await doux('moins d\'animations (système)', { contexteExtra: { reducedMotion: 'reduce' } });
+if (tests.has('reduit')) await statique('animations réduites (réglage du carnet)', { init: [initReglages({ animations: 'reduites' })] });
 // Réglage « Lumière du feu » : non (feu: false, reglages.ts). La bougie suit ce réglage.
 if (tests.has('feu-off')) await statique('réglage feu: false', { init: [initReglages({ feu: false })] });
 
@@ -380,7 +392,7 @@ if (tests.has('telephone')) {
   await figer(page, null);
   R.info('pixel7', `repos 4 s, CPU ×${throttle} : cadence et coût, feu vivant / figé`, `vivant p50 ${vif.p50} ms p95 ${vif.p95} ms, ${vif.longues} images > 25 ms, script ${vif.script} ms, style ${vif.style} ms · figé p50 ${fige.p50} p95 ${fige.p95}, ${fige.longues} > 25 ms, script ${fige.script} ms, style ${fige.style} ms`);
   R.ok('pixel7', `repos, CPU ×${throttle} : le feu coûte moins de 1,5 ms de script + style par image`, (vif.script + vif.style - fige.script - fige.style) / Math.max(1, vif.images) < 1.5, `${r3((vif.script + vif.style - fige.script - fige.style) / Math.max(1, vif.images))} ms/image`);
-  // Tour de page sur le téléphone (cadrage « page » : → glisse vers la page droite, → tourne).
+  // Tour de page sur le téléphone couché (cadrage « double »).
   await page.keyboard.press('ArrowRight');
   await page.waitForTimeout(1500);
   const n = await nGestes(page);
@@ -575,7 +587,7 @@ if (tests.has('captures')) {
       }
       return r;
     })();
-    planche([[join(out, 'avant-tv-1080.png'), 'Avant : fenêtre de fin d\'après-midi'], [ap[0], 'Après : soirée au coin du feu (intensité moyenne)'], [join(out, 'avant-iphone13-portrait.png'), 'Avant — iPhone 13'], [ap[1], 'Après — iPhone 13']],
+    planche([[join(out, 'avant-tv-1080.png'), 'Avant : fenêtre de fin d\'après-midi'], [ap[0], 'Après : soirée au coin du feu (intensité moyenne)'], [join(out, `avant-${TEL.nom}.png`), 'Avant — iPhone 13'], [ap[1], 'Après — iPhone 13']],
       join(out, 'avant-apres.png'), { titre: 'Lumière : avant / après (lot L)', colonnes: 2, tuile: 900, hauteur: 560 });
   }
   planche(planches, join(out, 'planche.png'), { titre: 'Lumière du feu — captures (lot L)', colonnes: 3, tuile: 640, hauteur: 380 });

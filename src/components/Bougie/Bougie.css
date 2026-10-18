@@ -37,9 +37,8 @@ canvas.gc-bougie__flamme {
   display: block;
 }
 
-/* ---- Téléphone en portrait : la bougie gêne, on ne garde que la lueur (le halo). ---------------- */
-@media (orientation: portrait) and (max-width: 760px) {
-  .gc-bougie__pose {
-    display: none;
-  }
+/* ---- Téléphone debout (cadrage « tourner ») : le livre fermé est cadré seul, la bougie est hors champ ;
+   on ne garde que la lueur (le halo), sans faire vivre la flamme pour rien. Couché, elle est là. ---- */
+.gc-ecran[data-gc-cadrage="tourner"] .gc-bougie__pose {
+  display: none;
 }

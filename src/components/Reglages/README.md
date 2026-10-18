@@ -43,13 +43,13 @@ Le composant exporte aussi `ReglagesInvite` (type) et `CREDITS_REGLAGES` (texte 
 | 3 | Loupe | − réglette + et la valeur en % (100 à 300 %, pas de 25 %, repère à 100 %) | `demanderLoupe(z)`, état `useLoupe()` (plan v4) | — : **sur tous les écrans**, téléphone compris |
 | 4 | Plein écran | non · oui | Fullscreen API (appelée dans le geste) | l'API manque (iPhone, écran simulé) |
 | 5 | Son des vidéos | coupé · avec son | `reglages.son` | — |
-| 6 | Sons du livre | automatique · oui · non | `reglages.sonsLivre` : `null` · `true` · `false` (automatique : coupés sur téléphone, `sonsLivreEffectif`) | — |
+| 6 | Sons du livre | oui · non | `reglages.sonsLivre` : `true` · `false` (actifs partout, téléphone compris ; `null`, l'ancien « automatique », vaut « oui ») | — |
 | 7 | Volume | réglette 0 à 100 % (pas 5 %), atténuée quand le son des vidéos est coupé | `reglages.volume` (vidéos seules) | le volume des vidéos est en lecture seule (iOS : on écrit `volume` sur un `<audio>` jetable, puis on le relit) |
 | 7 bis | Bruitages | réglette 0 à 100 % (pas 5 %, défaut 80 %), atténuée quand ni les sons du livre ni le feu et la cuisine ne sont actifs | `reglages.volumeBruitages` : pages, couverture, feuillets, photo, feu, cuisine (gain Web Audio, sans reconstruire le graphe) | — |
 | 7 ter | Musique | réglette 0 à 100 % (pas 5 %, défaut 50 %), atténuée quand la musique est coupée, mais toujours réglable (le niveau attend le prochain départ) | `reglages.volumeMusique` (la musique de fond, toujours sous le feu) | — |
 | 8 | Lancer la vidéo en arrivant sur la page | non · oui | `reglages.lectureAuto` | — |
 | 9 | Vitesse des pages | vive · normale · lente | `reglages.vitesse` (règle `SPRINGS.paper`) | — |
-| 10 | Moins d'animations | non · oui | `reglages.mouvementReduit` (lu par `useReducedMotion`) | — |
+| 10 | Animations | comme l'appareil · complètes · réduites (« auto » sur la feuille du téléphone) | `reglages.animations` : `systeme` · `completes` · `reduites` (`mouvementReduit` en est le miroir) ; niveau lu par `useNiveauMouvement` : la préférence du système garde les effets en version douce, « réduites » les arrête | — |
 | 11 | Aller à… | « choisir un invité », qui déplie les noms | `onAller(index)` | `invites` est vide |
 | 12 | remettre les réglages par défaut · crédits | — | `resetReglages()`, puis la caméra revient à `moyenne` (`proche` au doigt, comme dans `Carnet`) et au zoom 1, et la **loupe à 1×** ; « crédits » déplie le texte | — |
 
@@ -87,7 +87,7 @@ Tout se fait avec des boutons natifs, sans survol : toucher un choix, faire glis
 ## Mouvement
 
 - **Ouverture et fermeture** : une seule MotionValue (0 → 1), sur le ressort `SPRINGS.settle`. La fiche glisse depuis la droite en se redressant un peu ; la feuille monte du bas ; le voile se fond. On n'anime que `transform` et `opacity`, et `will-change` n'est posé que pendant le mouvement.
-- **Moins d'animations** (système ou réglage) : la fiche est posée et retirée d'un coup.
+- **Moins d'animations** (préférence du système ou « Animations : réduites ») : la fiche est posée et retirée d'un coup.
 - **Changement de cran pendant que la fiche est ouverte** : le voile et la fiche portent un `view-transition-name`, si bien que la transition de vue du livre passe dessous.
 - **Statique** : les tracés (engrenage, cercles de crayon, flèche de marge, réglette) sont des SVG en ligne, sans filtre ni mélange. Le papier est l'image cuite `paper/base`, posée par propriété personnalisée (aucune URL dans `bundle.css`).
 

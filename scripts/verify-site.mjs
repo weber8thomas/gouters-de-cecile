@@ -15,7 +15,7 @@
 // Ce qui n'existe pas encore dans le site (Lisa, mp4, photo) est ATTENTE.
 //
 //   node scripts/verify-site.mjs [--site dist/site] [--base /gouters-de-cecile/] [--liens lisa,julie]
-//        [--only iphone13-portrait,ordi-1440,tv-1080] [--out verification/out/t/site]
+//        [--only iphone13-paysage,ordi-1440,tv-1080] [--out verification/out/t/site]
 //   node scripts/verify-site.mjs --build [--build-out verification/out/t/site-build] [--gen]
 //        (vite build dans un dossier à part ; --gen régénère d'abord src/generated/ : gen-entry --target site)
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
@@ -123,7 +123,8 @@ if (mp4.length) {
 
 // ---- Navigateur -----------------------------------------------------------------------------------
 const browser = await lancer();
-for (const e of ecrans(liste('only', 'iphone13-portrait,ordi-1440,tv-1080'))) {
+// (téléphone couché : debout, le carnet reste fermé et invite à tourner le téléphone)
+for (const e of ecrans(liste('only', 'iphone13-paysage,ordi-1440,tv-1080'))) {
   console.log(`\n■ ${e.titre}`);
   for (const l of liens) {
     const ctx = await contexte(browser, e);

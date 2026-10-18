@@ -72,8 +72,8 @@ Noms : `page` (×5), `riffle`, `couverture-ouvrir`, `couverture-poser`, `couvert
 
 ### API pour les Réglages (lot B)
 
-- `reglages.sonsLivre: boolean | null` et `sonsLivreEffectif(r)` (`src/lib/son.ts`) : `null` = automatique (coupés sur téléphone : écran tactile dont le petit côté < 600 px). `useSonsLivre()` donne la valeur effective.
-- `reglages.ambiance: boolean | null` et `ambianceEffective(r)` (`src/lib/ambiance.ts`) : même règle automatique.
+- `reglages.sonsLivre: boolean | null` et `sonsLivreEffectif(r)` (`src/lib/son.ts`) : actifs partout, téléphone compris, sauf `false` (`null`, l'ancien « automatique », vaut « oui »). `useSonsLivre()` donne la valeur effective.
+- `reglages.ambiance: boolean | null` et `ambianceEffective(r)` (`src/lib/ambiance.ts`) : même règle.
 - `reglages.feu: boolean` (défaut `true`) : la lumière du feu vacille (lu par le lot L).
 - Activer « Sons du livre » ou « Ambiance » d'un clic dans le menu déverrouille l'audio dans ce même clic. Un petit `jouerSon('page')` juste après l'activation donne un aperçu.
 

@@ -10,7 +10,8 @@
 //
 // Modes :
 //   vivant     le moteur tourne tant qu'au moins un calque écoute (useFeu monté) et que l'onglet est visible ;
-//   statique   mouvement réduit (système ou réglage) ou réglage `feu: false` : intensite = 1 (la moyenne),
+//              à demi-amplitude quand le système demande moins d'animations (mouvement doux) ;
+//   statique   réglage « Animations : réduites » ou réglage `feu: false` : intensite = 1 (la moyenne),
 //              dx = dy = 0, aucun rAF ; la lumière reste chaude, simplement immobile ;
 //   pause      onglet caché (visibilitychange) : plus aucun rAF ; reprise sans saut au retour.
 //
@@ -28,7 +29,7 @@
 // window.__gcFeu = { etat, figer, flamber, synchroniserFeu } ; état publié window.__gcFeuSync, « gc-feu-sync ».
 import React from 'react';
 import { motionValue } from 'motion/react'; // (fabrique hors React : à réexporter par src/lib/motion.ts, demande au lead)
-import { prefersReducedMotion, type MotionValue } from './motion';
+import { mouvementDoux, prefersReducedMotion, type MotionValue } from './motion';
 import { abonnerReglages, getReglages } from './reglages';
 
 export type ModeFeu = 'vivant' | 'statique' | 'pause';
@@ -207,6 +208,8 @@ let raf = 0;
 let dernier = 0;
 let images = 0;
 let fige: { intensite: number; dx: number; dy: number } | null = null;
+/** Mouvement doux (préférence du système) : le feu vit, à demi-amplitude (relu par majMoteur). */
+let ampleur = 1;
 
 const arrondi = (v: number, p = 1e4) => Math.round(v * p) / p;
 
@@ -241,9 +244,9 @@ function pas(t: number) {
 
   // Pendant une flambée, la flamme est plus turbulente : le bruit rapide s'accélère un peu.
   const turbulence = 1 + 1.2 * flambee;
-  const i = 1 + somme(BRUIT_I, dt, turbulence) + bouffee;
-  const x = somme(BRUIT_X, dt, turbulence);
-  const y = somme(BRUIT_Y, dt, turbulence) - 18 * flambee;
+  const i = 1 + ampleur * (somme(BRUIT_I, dt, turbulence) + bouffee);
+  const x = ampleur * somme(BRUIT_X, dt, turbulence);
+  const y = ampleur * (somme(BRUIT_Y, dt, turbulence) - 18 * flambee);
 
   FEU.intensite.set(arrondi(Math.min(1.6, Math.max(0.6, i))));
   FEU.dx.set(arrondi(x, 100));
@@ -278,6 +281,7 @@ function poser(v: { intensite: number; dx: number; dy: number }) {
 
 /** Relit l'état (réglages, visibilité, écoutes) et démarre ou arrête le moteur. */
 function majMoteur() {
+  ampleur = mouvementDoux() ? 0.5 : 1;
   const mode = modeFeu();
   if (mode === 'statique') {
     arreter();

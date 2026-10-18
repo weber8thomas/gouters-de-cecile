@@ -41,6 +41,7 @@ export const ECRANS = [
   { nom: 'iphone13-portrait', titre: 'iPhone 13 debout', classe: 'telephone', ctx: tel('iPhone 13'), insets: [47, 0, 34, 0] },
   { nom: 'iphone13-paysage', titre: 'iPhone 13 couché', classe: 'telephone', ctx: tel('iPhone 13 landscape'), insets: [0, 47, 21, 47] },
   { nom: 'pixel7', titre: 'Pixel 7 debout', classe: 'telephone', ctx: tel('Pixel 7'), insets: [0, 0, 0, 0] },
+  { nom: 'pixel7-paysage', titre: 'Pixel 7 couché', classe: 'telephone', ctx: tel('Pixel 7 landscape'), insets: [0, 0, 0, 0] },
   { nom: 'ipad-portrait', titre: 'iPad (7ᵉ gén.) debout', classe: 'tablette', ctx: tel('iPad (gen 7)'), insets: [20, 0, 0, 0] },
   { nom: 'ipad-paysage', titre: 'iPad (7ᵉ gén.) couché', classe: 'tablette', ctx: tel('iPad (gen 7) landscape'), insets: [20, 0, 0, 0] },
   { nom: 'ordi-1440', titre: 'Ordinateur 1440 × 900', classe: 'ordinateur', ctx: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 }, insets: [0, 0, 0, 0] },
@@ -412,7 +413,7 @@ export async function toucher(page, x, y, { ms = 60 } = {}) {
 }
 
 /** Glisser au doigt de (x0, y0) à (x1, y1) en `ms`, en `n` pas ; avantLacher : rappel avant le lâcher. */
-export async function glisser(page, [x0, y0], [x1, y1], { ms = 500, n = 16, avantLacher } = {}) {
+export async function glisser(page, [x0, y0], [x1, y1], { ms = 500, n = 16, avantLacher, aMiChemin } = {}) {
   const cdp = await cdpDe(page);
   const t0 = Date.now() / 1000;
   const dt = ms / n / 1000;
@@ -421,6 +422,8 @@ export async function glisser(page, [x0, y0], [x1, y1], { ms = 500, n = 16, avan
     const t = i / n;
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x0 + (x1 - x0) * t, y: y0 + (y1 - y0) * t, id: 1 }], timestamp: t0 + i * dt });
     await page.waitForTimeout(ms / n);
+    // (le doigt à mi-chemin, encore posé : capture d'un geste en cours)
+    if (aMiChemin && i === Math.ceil(n / 2)) await aMiChemin();
   }
   if (avantLacher) await avantLacher();
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [], timestamp: t0 + n * dt + 0.008 });

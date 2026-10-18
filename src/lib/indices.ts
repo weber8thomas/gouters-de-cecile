@@ -19,7 +19,7 @@
 import React from 'react';
 import { clavierModalActif } from './clavier';
 import { abonnerLoupe, getLoupe, loupeOccupee, LOUPE_EVENT, type LoupeDetail } from './loupe';
-import { prefersReducedMotion } from './motion';
+import { mouvementDoux } from './motion';
 import { abonnerReglages } from './reglages';
 
 export const CLE_INDICES = 'gc:indices:v1';
@@ -99,7 +99,7 @@ const GESTE_MAX_MS = 20000;
 
 function bloque(): string | null {
   if (coupes()) return 'coupes';
-  if (prefersReducedMotion()) return 'mouvement-reduit';
+  if (mouvementDoux()) return 'mouvement-reduit'; // (préférence du système comprise : un indice n'est pas un effet)
   if (typeof document !== 'undefined' && document.hidden) return 'onglet-cache';
   const t = typeof performance !== 'undefined' ? performance.now() : 0;
   gestes.forEach((t0, k) => { if (t - t0 > GESTE_MAX_MS) gestes.delete(k); });
@@ -221,7 +221,7 @@ function installer(): void {
   window.addEventListener('keydown', activite, { capture: true, passive: true });
   window.addEventListener('wheel', activite, { capture: true, passive: true });
   document.addEventListener('visibilitychange', () => (document.hidden ? pause() : planifier()));
-  const mouvement = () => (prefersReducedMotion() ? pause() : planifier());
+  const mouvement = () => (mouvementDoux() ? pause() : planifier());
   abonnerReglages(mouvement);
   try { matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', mouvement); } catch { /* vieux navigateurs */ }
 }

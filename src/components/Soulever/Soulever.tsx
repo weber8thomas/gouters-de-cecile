@@ -18,7 +18,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { useEcran } from '../Ecran/contexte';
 import { PageCuite } from '../PageCuite';
-import { LazyMotion, SPRINGS, animate, domMax, m, useMotionValue, useReducedMotion, useTransform } from '../../lib/motion';
+import { LazyMotion, SPRINGS, animate, domMax, m, useMotionValue, useNiveauMouvement, useTransform } from '../../lib/motion';
 import { getReglages } from '../../lib/reglages';
 import { useClavierModal } from '../../lib/clavier';
 import { jouerSon, marquerVideo } from '../../lib/son';
@@ -114,7 +114,8 @@ const tailleBouton = (vp: { w: number; h: number; tactile?: boolean }) => {
 export function SoulevementProvider({ children }: SoulevementProviderProps) {
   const ecran = useEcran();
   const vp = ecran?.vp ?? null;
-  const reduit = !!useReducedMotion();
+  // (mouvement doux ou réduit : l'objet paraît en fondu, sans vol)
+  const reduit = useNiveauMouvement() !== 'complet';
   useAmbiance();
 
   const [phase, setPhase] = React.useState<EtatSoulevement>('ferme');
@@ -560,13 +561,25 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
       so?.removeEventListener?.('change', onOrientation);
     };
   }, [ouvert, fermerTout]);
-  const cleVp = vp ? `${vp.w}x${vp.h}:${vp.cadrage}` : '';
+  // Rotation (couché ↔ debout) ou changement de cadrage : l'objet se repose. La barre de Safari qui
+  // paraît ou s'efface (la hauteur change de quelques dizaines de px, au moindre glissé) ne le ferme
+  // pas : posé, il se recentre sur place.
+  const cleVp = vp ? `${vp.w > vp.h ? 'couche' : 'debout'}:${vp.cadrage}` : '';
   const cleVpAvant = React.useRef(cleVp);
   React.useEffect(() => {
     if (cleVpAvant.current === cleVp) return;
     cleVpAvant.current = cleVp;
     fermerTout();
   }, [cleVp, fermerTout]);
+  const tailleVp = vp ? `${vp.w}x${vp.h}:${vp.insets.top},${vp.insets.right},${vp.insets.bottom},${vp.insets.left}` : '';
+  React.useEffect(() => {
+    const v = vpRef.current;
+    if (!v || phaseRef.current !== 'ouvert' || !objetRef.current) return;
+    const T0 = geoRef.current.T;
+    const T = poseCible(v, T0.w / (T0.h || 1));
+    geoRef.current = { ...geoRef.current, T };
+    setCible({ T, bouton: placeBouton(T, v, tailleBouton(v)) });
+  }, [tailleVp]);
 
   // Démontage : rien ne reste caché dans la page.
   React.useEffect(() => () => {

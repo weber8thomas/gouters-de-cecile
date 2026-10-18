@@ -6,10 +6,13 @@ import { useEcran } from '../Ecran/contexte';
 import { useCamera } from '../../lib/camera';
 import type { Distance } from '../../lib/settings';
 import type { RenderMode, SpreadSpec } from '../../lib/spread';
-import { LazyMotion, SPRINGS, STAGGER, animate, domMax, m, useMotionValue, useReducedMotion, useTransform, type MotionValue } from '../../lib/motion';
-import { LOUPE_EVENT, ancrerLoupe, getLoupe, publierContenuLoupe, useLoupe, type LoupeDetail } from '../../lib/loupe';
+import { LazyMotion, SPRINGS, STAGGER, animate, domMax, m, useMotionValue, useNiveauMouvement, useTransform, type MotionValue } from '../../lib/motion';
+import { LOUPE_EVENT, ancrerLoupe, demanderLoupe, getLoupe, publierContenuLoupe, useLoupe, type LoupeDetail } from '../../lib/loupe';
 import { jouerSon } from '../../lib/son';
-import { cadrerDouble, cadrerPage, centrePage, debordNecessaire, partScene, translationMonde, type CadreCamera, type GeometrieLivre } from '../../lib/viewport';
+import {
+  PART_INVITATION, cadrerDouble, cadrerPage, cadrerTourner, centrePage, debordNecessaire, partScene, translationMonde, type CadreCamera, type GeometrieLivre,
+} from '../../lib/viewport';
+import { InvitationTourner } from '../Invitation/InvitationTourner';
 import { Camera } from './Camera';
 import { Coin } from './CoinRabat';
 import { Face, type Cote } from './Face';
@@ -316,6 +319,8 @@ function FeuilleDuRiffle({ r, p, j, n, sens, finale, recto, verso }: {
 // table, s'ouvre lesté, feuillette les grands sauts, joue ses sons de papier ; branché sur la loupe.
 // Dans un <Ecran> : la scène est mise à l'échelle de l'écran (cadrage « double » ou « page »), la
 // caméra glisse d'une page à l'autre et suit la feuille qui tourne, les contrôles passent en px d'écran.
+// Téléphone debout (cadrage « tourner ») : le livre se ferme et reste sur la table, avec l'invitation à
+// tourner le téléphone ; couché, il se rouvre sur la page que l'on lisait (ou s'ouvre, la première fois).
 export function Livre({
   spreads, index, onIndexChange, keyboard = false, cover, className, pose, coteInitial = 'gauche', onToucherPage, gestes = true,
   arrivee, invitation, couverture, apiRef, couvertureArriere,
@@ -325,7 +330,13 @@ export function Livre({
   const vp = ecran?.vp ?? null;
   const enEcran = !!ecran;
   const modePage = !!vp && vp.cadrage === 'page';
-  const reduced = !!useReducedMotion();
+  /** Téléphone debout : livre fermé, invitation à tourner le téléphone (il faut une couverture). */
+  const tourner = !!vp && vp.cadrage === 'tourner' && cover != null;
+  // Mouvement réduit (réglage) : fondus courts. Doux (préférence du système) : pas d'arrivée ni de
+  // mouvement de caméra animé, mais les pages tournent.
+  const niveau = useNiveauMouvement();
+  const reduced = niveau === 'reduit';
+  const doux = niveau !== 'complet';
   const loupe = useLoupe();
   const zoome = loupe.zoome;
   const n = spreads.length;
@@ -356,20 +367,21 @@ export function Livre({
   if (arriveeRef.current === null && arrivee && !pose) {
     const vers = arrivee === true ? null : Math.round(clamp(arrivee.vers, min, max));
     arriveeRef.current = {
-      phase: 'attente', vers: vers != null && vers >= 0 && cover != null ? vers : null, cote: (arrivee !== true && arrivee.cote) || 'gauche',
+      // Téléphone debout : le livre arrive fermé ; la page du lien attend qu'on tourne le téléphone.
+      phase: 'attente', vers: vers != null && vers >= 0 && cover != null && !tourner ? vers : null, cote: (arrivee !== true && arrivee.cote) || 'gauche',
       timers: [], anims: [], actifs: new Set(), tour: null, arriveeFinie: false,
     };
   }
   const enArrivee = () => !!arriveeRef.current && arriveeRef.current.phase !== 'fini' && arriveeRef.current.phase !== 'lien';
 
-  const [affiche, setAffiche] = React.useState(() => (arriveeRef.current?.vers != null ? -1 : borne(index)));
+  const [affiche, setAffiche] = React.useState(() => (arriveeRef.current?.vers != null || tourner ? -1 : borne(index)));
   const [tour, setTour] = React.useState<Tour | null>(null);
   // Quand la page (cadrage « page ») ou le livre (petit écran couché) remplit l'écran, la caméra ne
   // peut plus avancer : le cran ne change plus le cadrage, seulement la mise en page. On prend alors la
   // mise en page « loin », dont la hauteur d'x est la plus grande par rapport à la page (15/750 contre
   // 15/896 au cran proche : +19 % à l'écran). Les crans ne servent qu'en cadrage « double » sur un
   // grand écran (la composition de la TV).
-  const cameraFixe = !!vp && (modePage || partScene(vp) < 1);
+  const cameraFixe = !!vp && (modePage || tourner || partScene(vp) < 1);
   const cranVoulu: Distance = cameraFixe ? 'loin' : camera.distance;
   const [distance, setDistance] = React.useState<Distance>(cranVoulu);
   const [cote, setCote] = React.useState<CotePage>(arriveeRef.current?.vers != null ? arriveeRef.current.cote : coteInitial);
@@ -409,7 +421,8 @@ export function Livre({
   const surfaceRef = React.useRef<HTMLDivElement>(null);
   const mondeRef = React.useRef<HTMLDivElement>(null);
   const afficheRef = React.useRef(affiche);
-  const cibleRef = React.useRef(affiche);
+  // (téléphone debout au montage : la page du lien attend, comme cible, qu'on tourne le téléphone)
+  const cibleRef = React.useRef(tourner ? borne(index) : affiche);
   const coteRef = React.useRef<CotePage>(cote);
   const coteCibleRef = React.useRef<CotePage>(cote);
   const tourRef = React.useRef<Tour | null>(null);
@@ -426,11 +439,15 @@ export function Livre({
   /** Géométrie du cran (px de scène), lue sur le livre avant chaque geste de couverture. */
   const geoRef = React.useRef<GeometrieLivre | null>(null);
   const zoomRef = React.useRef(camera.zoom);
-  zoomRef.current = vp && (vp.cadrage === 'page' || partScene(vp) < 1) ? 1 : camera.zoom;
+  zoomRef.current = vp && (vp.cadrage !== 'double' || partScene(vp) < 1) ? 1 : camera.zoom;
   const modePageRef = React.useRef(modePage);
   modePageRef.current = modePage;
-  const vivant = React.useRef({ reduced, onIndexChange, onToucherPage, spreads });
-  vivant.current = { reduced, onIndexChange, onToucherPage, spreads };
+  /** Téléphone debout (tenu à jour par l'effet de rotation, plus bas). */
+  const tournerRef = React.useRef(tourner);
+  /** Téléphone debout : la page que l'on lisait quand le livre s'est fermé, rendue telle quelle couché. */
+  const luRef = React.useRef<{ i: number; c: CotePage } | null>(null);
+  const vivant = React.useRef({ reduced, doux, onIndexChange, onToucherPage, spreads });
+  vivant.current = { reduced, doux, onIndexChange, onToucherPage, spreads };
   if (arriveeRef.current?.vers != null && cibleRef.current === -1 && arriveeRef.current.phase === 'attente') cibleRef.current = arriveeRef.current.vers;
 
   React.useLayoutEffect(() => { afficheRef.current = affiche; }, [affiche]);
@@ -630,6 +647,7 @@ export function Livre({
   // ---- Moteur : rapproche la page affichée de la cible, sans jamais empiler -------------------
   const pousser = React.useCallback(() => {
     if (enArrivee()) return; // l'arrivée (et son lien profond) mène
+    if (tournerRef.current) return; // téléphone debout : la page voulue attend qu'on le tourne
     const T = tourRef.current;
     const cible = cibleRef.current;
     if (T) {
@@ -799,12 +817,15 @@ export function Livre({
     if (cam) cam.style.willChange = '';
     if (A.tour) return; // le lien profond (feuilletage) finit à l'atterrissage
     if (A.vers != null && afficheRef.current !== A.vers) {
-      // Lien profond : le livre s'ouvre (ouverture lestée) puis va à la page, par le moteur ordinaire.
-      A.phase = 'lien';
       cibleRef.current = A.vers;
       coteCibleRef.current = A.cote;
-      pousserRef.current();
-      return;
+      // Lien profond : le livre s'ouvre (ouverture lestée) puis va à la page, par le moteur ordinaire.
+      // Téléphone debout : il reste fermé, la page du lien attend qu'on tourne le téléphone.
+      if (!tournerRef.current) {
+        A.phase = 'lien';
+        pousserRef.current();
+        return;
+      }
     }
     A.phase = 'fini';
     el?.setAttribute('data-gc-arrivee', 'fini');
@@ -876,8 +897,8 @@ export function Livre({
     const force = typeof window !== 'undefined' && (window as unknown as { __gcArriveeToujours?: boolean }).__gcArriveeToujours === true;
     const tard = typeof performance !== 'undefined' && performance.now() > ARRIVEE_MAX_CHARGEMENT && !force;
     const cache = typeof document !== 'undefined' && document.hidden;
-    if (vivant.current.reduced || tard || cache) {
-      // Pas d'arrivée : le livre est là, ouvert sur sa double page s'il y a un lien.
+    if (vivant.current.doux || tard || cache) {
+      // Pas d'arrivée (ni en mouvement doux ou réduit) : le livre est là, ouvert sur sa double page s'il y a un lien.
       A.phase = 'fini';
       el.setAttribute('data-gc-arrivee', 'fini');
       arr.set(1);
@@ -980,6 +1001,68 @@ export function Livre({
     };
   }, [sauter, pose]);
 
+  // ---- Téléphone debout : le livre se ferme et attend qu'on tourne le téléphone -----------------
+  // Debout : tout geste en cours s'arrête et le livre se ferme d'un coup (on tourne l'écran : pas de
+  // tourne-page), en gardant la page lue ; la cible (lien, « Aller à… ») attend. Couché : la page lue
+  // revient telle quelle ; sinon le livre s'ouvre (« Tournez le téléphone pour ouvrir le carnet »), et va
+  // à la page voulue par le moteur ordinaire. Le parent (index, URL) garde la page lue.
+  React.useLayoutEffect(() => {
+    if (tournerRef.current === tourner) return;
+    tournerRef.current = tourner;
+    if (pose) return;
+    const el = livreRef.current;
+    if (tourner) {
+      if (enArrivee()) sauter(true);
+      const A = arriveeRef.current;
+      if (A?.phase === 'lien') {
+        A.phase = 'fini';
+        el?.setAttribute('data-gc-arrivee', 'fini');
+      }
+      animSeq.current++;
+      animRef.current?.stop();
+      animRef.current = null;
+      riffleAnim.current?.stop();
+      riffleAnim.current = null;
+      glisseSeq.current++;
+      glisseAnim.current?.stop();
+      glisseAnim.current = null;
+      const T0 = tourRef.current;
+      if (T0?.lance) emettre(el, 'fin', T0.feuilles && !T0.couverture ? 'riffle' : carton(T0) ? 'couverture' : 'page');
+      tourRef.current = null;
+      doigtRef.current = null;
+      el?.removeAttribute('data-gc-geste');
+      el?.removeAttribute('data-gc-coin');
+      if (getLoupe().zoome) demanderLoupe(1);
+      const a = afficheRef.current;
+      luRef.current = a !== -1 ? { i: a, c: coteRef.current } : null;
+      afficheRef.current = -1;
+      coteRef.current = 'gauche';
+      p.set(0);
+      r.set(0);
+      if (arriveeRef.current?.phase === 'fini' || !arriveeRef.current) arrFin.set(1);
+      setTour(null);
+      setCoinActif(null);
+      setAffiche(-1);
+      setCote('gauche');
+      return;
+    }
+    const lu = luRef.current;
+    luRef.current = null;
+    if (lu && afficheRef.current === -1 && !tourRef.current) {
+      afficheRef.current = lu.i;
+      coteRef.current = lu.c;
+      glisse.set(X(lu.i, lu.c));
+      setAffiche(lu.i);
+      setCote(lu.c);
+    } else if (cibleRef.current === -1) {
+      cibleRef.current = 0;
+      coteCibleRef.current = 'gauche';
+    }
+    pousser();
+    // (seulement au changement d'orientation)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tourner]);
+
   // Commandes impératives.
   React.useEffect(() => {
     if (!apiRef) return;
@@ -1024,7 +1107,7 @@ export function Livre({
     const appliquer = () => setDistance(next);
     if (rotation) { appliquer(); return; }
     if (typeof document !== 'undefined' && 'startViewTransition' in document) {
-      transitionDeVue('distance', () => flushSync(appliquer), el, !reduced);
+      transitionDeVue('distance', () => flushSync(appliquer), el, !doux);
       return;
     }
     // Repli sans View Transitions : fondu sortant, nouvelle mise en page, fondu entrant.
@@ -1037,7 +1120,7 @@ export function Livre({
       },
     });
     return () => a.stop();
-  }, [cranVoulu, distance, reduced, fondu, cameraFixe]);
+  }, [cranVoulu, distance, doux, fondu, cameraFixe]);
 
   // ---- Pose figée (aperçus, captures à mi-geste) ------------------------------------------
   const poseVers = pose?.vers;
@@ -1099,8 +1182,8 @@ export function Livre({
   // ---- Écran : cadrage, table plein écran, caméra qui suit la feuille ------------------------
   const cadre = React.useMemo<CadreCamera | null>(() => {
     if (!vp || !geo) return null;
-    return modePage ? cadrerPage(vp, geo) : cadrerDouble(vp, geo);
-  }, [vp, geo, modePage]);
+    return tourner ? cadrerTourner(vp, geo) : modePage ? cadrerPage(vp, geo) : cadrerDouble(vp, geo);
+  }, [vp, geo, modePage, tourner]);
   const debord = React.useMemo(() => {
     if (!vp || !geo || !cadre) return 0;
     const xs = modePage ? [centrePage(geo, 'couverture'), centrePage(geo, 'gauche'), centrePage(geo, 'droite')] : [cadre.cx];
@@ -1633,6 +1716,7 @@ export function Livre({
 
     const onDown = (e: PointerEvent) => {
       dernierType = e.pointerType;
+      if (tournerRef.current) return; // téléphone debout : le livre fermé attend qu'on le tourne
       if (!e.isPrimary || doigtRef.current) return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       if (surControle(e.target)) return;
@@ -2001,7 +2085,7 @@ export function Livre({
 
   const titre = affiche >= 0 ? spreads[affiche]?.titre : undefined;
   const annonce = affiche === -1
-    ? 'Carnet fermé'
+    ? (tourner ? 'Carnet fermé. Tournez le téléphone pour ouvrir le carnet.' : 'Carnet fermé')
     : dos && affiche === n
       ? 'Carnet refermé sur son plat arrière'
       : `${titre ? `${titre}, double page` : 'Double page'} ${affiche + 1} sur ${n}${modePage ? `, page de ${cote}` : ''}`;
@@ -2085,9 +2169,10 @@ export function Livre({
           <m.div ref={espaceRef} className="gc-livre__espace" style={{ transform: livreT }}>
             {leaf}
             {coins}
-            {couv && !lien && (
+            {couv && !lien && !tourner && (
               // Invitation à ouvrir (lot S) sur le tiers bas de la couverture ; sans elle, un emplacement
-              // vide et invisible (le livre en pilote déjà l'opacité).
+              // vide et invisible (le livre en pilote déjà l'opacité). Téléphone debout : l'invitation à
+              // tourner le téléphone la remplace, sous le livre.
               <div className="gc-livre__invitation" aria-hidden={invitation ? undefined : true}>
                 {invitation ? invitation(invitOp) : <m.div className="gc-livre__invitation-repli" style={{ opacity: invitOp }} />}
               </div>
@@ -2117,7 +2202,7 @@ export function Livre({
           </div>
         )}
         {modePage && affiche >= 0 && <PointsPage cote={cote} onChoisir={(c) => allerA(afficheRef.current, c)} />}
-        {fleches}
+        {tourner ? <InvitationTourner opacite={invitOp} part={PART_INVITATION} /> : fleches}
       </div>,
       ecran.controles,
     )
@@ -2128,7 +2213,7 @@ export function Livre({
       <div
         ref={surfaceRef}
         className="gc-livre-ecran"
-        data-gc-cadrage={modePage ? 'page' : 'double'}
+        data-gc-cadrage={tourner ? 'tourner' : modePage ? 'page' : 'double'}
         data-gc-double={affiche}
         data-gc-cote={cote}
         style={cadre ? undefined : { visibility: 'hidden' }}

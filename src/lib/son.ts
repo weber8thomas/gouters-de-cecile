@@ -55,19 +55,15 @@ export interface VarianteSon {
 }
 export const BANQUE_SONS = (banqueJson as { sons: Partial<Record<NomSon, VarianteSon[]>> }).sons;
 
-/** Un téléphone (écran tactile, petit côté < 600 px) : sons et ambiance coupés en réglage automatique. */
-export function estTelephone(): boolean {
-  if (typeof window === 'undefined' || typeof matchMedia === 'undefined') return false;
-  return matchMedia('(pointer: coarse)').matches && Math.min(window.innerWidth, window.innerHeight) < 600;
-}
-
-/** Sons du livre actifs pour ces réglages (automatique : coupés sur un téléphone). */
+/**
+ * Sons du livre actifs pour ces réglages : partout, téléphone compris, sauf s'ils ont été coupés (l'ancien
+ * « automatique », null, qui les coupait sur un téléphone, vaut maintenant « oui »).
+ */
 export function sonsLivreEffectif(r: Pick<Reglages, 'sonsLivre'>): boolean {
-  if (r.sonsLivre !== null) return r.sonsLivre;
-  return !estTelephone();
+  return r.sonsLivre !== false;
 }
 
-/** Sons du livre actifs (réglages + type d'écran), pour l'affichage. */
+/** Sons du livre actifs, pour l'affichage. */
 export function useSonsLivre(): boolean {
   const [r] = useReglages();
   return sonsLivreEffectif(r);
@@ -312,6 +308,19 @@ function moteur(nom: NomSon, o?: OptionsSon): void {
   const c = ctx;
   if (!c || c.state !== 'running') {
     precharger();
+    // Contexte qui se relance : le geste vient de le déverrouiller, mais resume() est asynchrone (sur
+    // iPhone, il tourne quelques images plus tard). Le son part dès qu'il tourne, s'il n'a pas pris plus de
+    // RETARD_MAX de retard : le premier son (la couverture qu'on ouvre) n'est pas perdu.
+    if (c && !premierGeste && c.state !== 'closed') {
+      const t0 = performance.now();
+      const reprendre = () => {
+        if (c.state !== 'running') return;
+        c.removeEventListener('statechange', reprendre);
+        if (performance.now() - t0 < RETARD_MAX * 1000) moteur(nom, o);
+      };
+      c.addEventListener('statechange', reprendre);
+      window.setTimeout(() => c.removeEventListener('statechange', reprendre), RETARD_MAX * 1000 + 50);
+    }
     return;
   }
   if (voix >= VOIX_MAX) return; // assez de feuilles qui bruissent déjà

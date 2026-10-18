@@ -7,7 +7,7 @@
 //   - ouvrir par le bouton, par M et par « , » ; role=dialog, aria-modal ; focus sur un contrôle du panneau ;
 //   - focus piégé (Tab et Maj+Tab ne sortent pas) ; ↓ ↑ changent de ligne ; ← → changent une valeur ;
 //   - Échap ferme et rend le focus au bouton ;
-//   - son, lecture auto, moins d'animations (gc:reglages:v3 et [data-gc-mouvement]) ; vitesse vive /
+//   - son, lecture auto, animations réduites (gc:reglages:v3 et [data-gc-mouvement]) ; vitesse vive /
 //     normale / lente choisie au menu, puis mesurée sur un tourne-page (gc-livre-geste debut → fin, deux
 //     tours entrelacés, le plus court gardé : vive < normale < lente ; écrans « double ») ; zoom borné
 //     par zoomBornes(cran) (src/lib/camera.tsx) ; « Aller à… » (double page, et l'URL #… si les liens
@@ -31,7 +31,7 @@
 // Rapport <out>/reglages.json + .md, captures, planche.
 //
 //   node scripts/verify-reglages.mjs [--site dist/site | --url … | --banc [--defaut x]] [--bundle …]
-//        [--only iphone13-portrait,ordi-1440,tv-1080] [--aller rose] [--lien julie] [--sans-vitesse-stockee]
+//        [--only iphone13-paysage,ordi-1440,tv-1080] [--aller rose] [--lien julie] [--sans-vitesse-stockee]
 //        [--out verification/out/t/reglages]
 import { resolve, join } from 'node:path';
 import { readFileSync } from 'node:fs';
@@ -239,6 +239,14 @@ async function cliquer(page, e, loc) {
 }
 /** Bascule un réglage oui / non : l'option non cochée d'un groupe radio, sinon interrupteur, case ou bouton. */
 async function basculer(page, e, cle) {
+  // « Animations » (comme l'appareil / complètes / réduites) : on bascule entre « réduites » et le défaut.
+  if (cle === 'mouvementReduit') {
+    const reduites = await premier([ligne(page, cle).getByRole('radio', { name: /^r[ée]duites$/i })]);
+    if (reduites) {
+      const vers = (await estChoisi(reduites)) ? await premier([ligne(page, cle).getByRole('radio', { name: /comme l.appareil|^auto$/i })]) : reduites;
+      if (vers) { await cliquer(page, e, vers); return true; }
+    }
+  }
   const radio = await premier([ligne(page, cle).locator('[role="radio"][aria-checked="false"]'), ligne(page, cle).locator('input[type="radio"]:not(:checked)')]);
   if (radio) { await cliquer(page, e, radio); return true; }
   const loc = await interrupteur(page, cle, NOMS[cle]);
@@ -746,7 +754,8 @@ async function suiteStockage(e) {
 }
 
 // ---- Programme -------------------------------------------------------------------------------------
-const liste_ = ecrans(liste('only', 'iphone13-portrait,ordi-1440,tv-1080'));
+// (téléphone couché : debout, le carnet reste fermé et invite à tourner le téléphone)
+const liste_ = ecrans(liste('only', 'iphone13-paysage,ordi-1440,tv-1080'));
 const ecranVitesse = liste_.find((x) => !tactile(x));
 for (const e of liste_) {
   console.log(`\n■ ${e.titre}`);

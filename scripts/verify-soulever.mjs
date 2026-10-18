@@ -34,7 +34,7 @@
 // ouvert / après, planche <out>/planche-soulever.png.
 //
 //   node scripts/verify-soulever.mjs [--site dist/site | --url harness/devices.html?b=… | --banc [--defaut x]]
-//        [--bundle dist/ds-t/components] [--only iphone13-portrait,pixel7,tv-1080]
+//        [--bundle dist/ds-t/components] [--only iphone13-paysage,pixel7-paysage,tv-1080]
 //        [--suites photo,feuillet,reduit,indices,tirage] [--lien julie] [--lien-feuillet lisa] [--lien-tirage cecile-1]
 //        [--vue 390x844] [--out verification/out/t/soulever]
 //        [--ecrans-indices ordi-1280] [--out-indices verification/out/v4-s]
@@ -670,7 +670,8 @@ async function suiteTirage(e) {
 // ---- Programme -------------------------------------------------------------------------------------
 // --vue LxH : fenêtre imposée aux écrans choisis (ex. iPhone 13 à 390×844, le descripteur Playwright étant 390×664).
 const vueForcee = opt('vue')?.match(/^(\d+)x(\d+)$/);
-const liste_ = ecrans(liste('only', 'iphone13-portrait,pixel7,tv-1080'))
+// (téléphones couchés : debout, le carnet reste fermé et invite à tourner le téléphone)
+const liste_ = ecrans(liste('only', 'iphone13-paysage,pixel7-paysage,tv-1080'))
   .map((e) => (vueForcee ? { ...e, ctx: { ...e.ctx, viewport: { width: +vueForcee[1], height: +vueForcee[2] } } } : e));
 let premier = true;
 for (const e of liste_) {

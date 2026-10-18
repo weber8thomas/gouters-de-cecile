@@ -12,9 +12,10 @@
   overflow: hidden;
   background-color: var(--gc-wood-3);
   color: var(--gc-ink);
-  /* Aucun défilement ; hors du livre (contrôles), le pincement du navigateur reste permis. Sur le
-     livre, c'est la loupe du carnet qui zoome (calque .gc-ecran__loupe, touch-action: none). */
-  touch-action: pinch-zoom;
+  /* Aucun défilement ni zoom du navigateur, même quand le premier doigt se pose sur un contrôle, la
+     photo soulevée ou le menu : zoomer la page entière décadrerait l'écran (sur iPhone, on ne s'en
+     sort plus). Sur le livre, c'est la loupe du carnet qui zoome (calque .gc-ecran__loupe). */
+  touch-action: none;
   overscroll-behavior: none;
   /* Ni sélection de texte, ni menu d'appui long, ni reflet de toucher. */
   -webkit-user-select: none;
@@ -58,7 +59,8 @@
 }
 
 /* Navigateur déjà zoomé (visualViewport.scale > 1) : la loupe se retire, le pincement du navigateur
-   revient sur le livre (on peut dézoomer). */
+   revient partout (on peut dézoomer). */
+.gc-ecran[data-gc-loupe-navigateur],
 .gc-ecran[data-gc-loupe-navigateur] .gc-ecran__loupe {
   touch-action: pinch-zoom;
 }

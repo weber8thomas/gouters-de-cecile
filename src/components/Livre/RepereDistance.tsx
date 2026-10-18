@@ -1,5 +1,5 @@
 import React from 'react';
-import { animate, m, useMotionValue, useReducedMotion, SPRINGS } from '../../lib/motion';
+import { animate, m, useMotionValue, useNiveauMouvement, SPRINGS } from '../../lib/motion';
 import type { Distance } from '../../lib/settings';
 
 export interface RepereDistanceProps {
@@ -18,7 +18,7 @@ export function RepereDistance({ distance, zoom, changedAt }: RepereDistanceProp
   const ref = React.useRef<HTMLDivElement>(null);
   const op = useMotionValue(0);
   const y = useMotionValue(10);
-  const reduced = useReducedMotion();
+  const reduced = useNiveauMouvement() !== 'complet';
 
   React.useEffect(() => {
     const el = ref.current;
