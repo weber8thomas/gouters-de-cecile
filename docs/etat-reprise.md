@@ -63,3 +63,9 @@ Le proxy cloud bloque actuellement l’URL GitHub Pages et Hugging Face. Les con
 Les modèles d’écriture ne sont pas tous téléchargés à cause de ce blocage. Cela ne bloque pas l’application ni la couverture aux tracés figés, mais la génération de nouveaux textes doit être réessayée après ouverture réseau : bash tools/ecriture/telecharger.sh.
 
 Restent au plan v8 : dessins anglais/Jack Russell, surprise lapin-carotte, vrais clips après collecte et accords, gâteau de dédicace, écoute audio, essai physique TV et Safari/iPhone. Le budget de 44 calques n’est pas encore revalidé. Papier : format écran 17×24 et export A5 existent séparément ; confirmer le choix avant impression.
+
+## Aperçu visuel publié séparément
+
+À la demande de voir l’état actuel, un aperçu a été poussé uniquement sous `essais/reprise-v8/` de gh-pages (commit 514459a). Les fichiers de la version principale et les anciens essais sont inchangés, vérifiés par comparaison des arbres Git. URL : https://weber8thomas.github.io/gouters-de-cecile/essais/reprise-v8/ ; version 20261018T173648, source 97eb352.
+
+Le sous-chemin a été vérifié localement : HTTP 200, #julie ouvre Julie, aucune erreur JavaScript ou ressource manquante. Le proxy du cloud refuse toujours la connexion au domaine GitHub Pages (CONNECT 403) : le déploiement public n’a pas été vérifié. Le lien d’essai ne vaut pas validation des deux scénarios de réglages restants.
