@@ -79,7 +79,11 @@ const ZOOM_DEFAUT = 1;
  * première rastérisation d'une page fraîchement ouverte retient les images plusieurs secondes : une
  * animation du menu ou un tourne-page mesurés pendant ce temps n'ont pas de sens.
  */
-const cadence = (page, max = 40000) => page.evaluate((max) => new Promise((resolve) => {
+const cadence = (page, max = 40000) => {
+  // Le contrôle fonctionnel du repli ne mesure pas la performance : attendre 30 i/s sur le
+  // compositeur logiciel peut retarder chaque tour de 40 s. Les pages/fontes sont déjà prêtes.
+  if (sansWebgl) return page.waitForTimeout(500).then(() => 500);
+  return page.evaluate((max) => new Promise((resolve) => {
   const t0 = performance.now();
   const ts = [];
   const tick = (t) => {
@@ -91,6 +95,7 @@ const cadence = (page, max = 40000) => page.evaluate((max) => new Promise((resol
   requestAnimationFrame(tick);
   setTimeout(() => resolve(-1), max + 2000);
 }), max).catch(() => -1);
+};
 const FEU_FIGE = {
   fn: () => {
     const t0 = Date.now();
@@ -280,7 +285,15 @@ async function mesurerTour(page) {
   await page.evaluate(() => { window.__gcImg = []; window.__gcImgOn = true; const f = (t) => { window.__gcImg.push(t); if (window.__gcImgOn) requestAnimationFrame(f); }; requestAnimationFrame(f); });
   await page.keyboard.press('ArrowRight');
   const debut = await attendreGeste(page, 'debut', 'page', { depuis: n, timeout: 20000 });
+  if (!debut) {
+    await page.evaluate(() => { window.__gcImgOn = false; });
+    throw new Error(`aucun tour de page déclenché : ${JSON.stringify(await etatLivre(page))}`);
+  }
   const fin = await attendreGeste(page, 'fin', 'page', { depuis: n, timeout: 30000 });
+  if (!fin) {
+    await page.evaluate(() => { window.__gcImgOn = false; });
+    throw new Error(`tour de page non terminé : ${JSON.stringify(await etatLivre(page))}`);
+  }
   const ressort = debut && fin ? await page.evaluate(([a, b, max]) => {
     window.__gcImgOn = false;
     const im = window.__gcImg.filter((t) => t >= a && t <= b);
