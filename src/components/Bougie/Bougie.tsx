@@ -7,6 +7,7 @@ import { cssUrl } from '../../lib/assets';
 import { ecouterPointeur } from '../../lib/pointeur';
 import geo from './geometrie.json';
 import { avancerBruit, creerRenduFlamme, etatFlamme, etatRepos, type RenduFlamme } from './flamme';
+import { creerCoulees, creerRenduCire, type Coulees, type EtatCoulee, type RenduCire } from './cire';
 import './Bougie.css';
 
 export interface BougieProps {
@@ -21,11 +22,9 @@ export interface BougieProps {
 // de scène 1920 × 1080 dans geometrie.json.
 //
 // Calques, de bas en haut : l'ombre portée par la cheminée sur la table, la lueur de la flamme sur la table,
-// la cire (flamme basse), la cire éclairée (flamme haute, fondue au rythme de la flamme : la cire vit avec
-// elle), les gouttes de cire liquide qui coulent le long de deux coulures, la flamme. La lueur, la cire
-// éclairée et l'ombre passent par transform et opacity et suivent le feu (src/lib/feu.ts) ; les gouttes
-// sont des planches d'images qu'une animation Web (transform, par paliers) fait défiler. Aucun filtre à
-// l'exécution.
+// la cire (flamme basse), la cire éclairée (flamme haute, fondue au rythme de la flamme rendue : la cire vit
+// avec elle), la toile de la flamme. La lueur et l'ombre passent par transform et opacity et suivent le feu
+// (src/lib/feu.ts), la cire éclairée par opacity. Aucun filtre à l'exécution.
 //
 // La flamme est une petite toile WebGL : un volume émissif rendu en temps réel, vu sous l'angle exact de
 // la caméra de la scène (flamme.ts). Elle bouge comme une flamme calme (balancement qui monte de la base
@@ -35,8 +34,13 @@ export interface BougieProps {
 // l'état rendu (même formule). La toile ne se dessine que visible (onglet affiché, à l'écran). Sans WebGL,
 // ou contexte perdu : l'ancienne image fixe de la flamme, animée par transform et opacity.
 //
+// La même toile couvre le puits et les coulures : la flamme s'y reflète dans la cire liquide, et, de temps
+// en temps (toutes les 20 à 40 s, sur l'une de trois coulures), la cire liquide déborde par une encoche et
+// une goutte descend lentement une coulure figée, puis se fige (cire.ts). Rien ne se dessine pour elle
+// entre deux coulées.
+//
 // Mouvement réduit (système ou réglage) ou réglage feu: false : tout est immobile (une seule image de la
-// flamme, aucune goutte). Rien ne capte le pointeur : on écoute seulement ses mouvements
+// flamme et de son reflet, aucune coulée). Rien ne capte le pointeur : on écoute seulement ses mouvements
 // (src/lib/pointeur.ts). Sur téléphone en portrait, le CSS ne garde que la lueur.
 
 const borne = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
@@ -62,12 +66,17 @@ const MILIEU_FLAMME = (() => {
 })();
 const PORTEE = 280;
 
+/** La cire éclairée (flamme haute) suit la lumière de la flamme rendue (flammeBougie = éclat × longueur). */
+const lueurCire = (lumiere: number) => r3(borne(0.45 + 1.6 * (lumiere - 1), 0.15, 0.85));
+
 type RenduVu = 'toile' | 'image';
 
 declare global {
   interface Window {
     /** Vérifications : l'état de la flamme rendue (scripts/verify-lumiere.mjs, captures). */
     __gcFlamme?: { etat: () => { rendu: RenduVu; lumiere: number; long: number; eclat: number; images: number; ms: number; cadence: number } };
+    /** Vérifications : lancer une coulée de cire, lire son état (captures). */
+    __gcBougie?: { couler: (k?: number, t?: number, fige?: boolean) => void; etat: () => EtatCoulee | null };
   }
 }
 
@@ -88,6 +97,8 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
     if (!el) return;
     const etat = etatRepos();
     let gl: RenduFlamme | null = null;
+    let cire: RenduCire | null = null;
+    const coulees: Coulees | null = fixe ? null : creerCoulees();
     let fini = false;
     const th = [0, 0]; // inclinaison due au vent (°, vecteur à l'écran)
     const om = [0, 0]; // sa vitesse (°/s)
@@ -105,8 +116,9 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
     let dedans = typeof IntersectionObserver === 'undefined';
 
     // l'état courant : la toile, ou l'image de secours ; la lumière de la bougie et la lueur sur la table
+    const dessinerCire = () => cire?.dessiner(coulees?.liquide() ?? null, etat, lueurCire(etat.eclat * etat.long));
     const montrer = (t: number) => {
-      if (gl) gl.dessiner(etat);
+      if (gl) gl.dessiner(etat, cire ? dessinerCire : undefined);
       else if (rendu === 'image') {
         const balance = fixe ? 0 : 0.6 * Math.sin(1.3 * t) + 0.3 * Math.sin(2.9 * t + 1);
         const vacille = trouble * (5 * Math.sin(23 * t) + 3 * Math.sin(37 * t + 1));
@@ -135,6 +147,8 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
         if (!gl) return perdu();
         toile.current!.addEventListener('webglcontextlost', perdu);
         mesurer();
+        const ctx = coulees ? gl.contexte() : null;
+        cire = ctx ? creerRenduCire(ctx.gl, FLAMME, ctx.triangle) : null;
       }
       if (fixe) {
         Object.assign(etat, etatRepos());
@@ -149,6 +163,7 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
       const dt = Math.min(0.05, Math.max(0, (now - avant) / 1000));
       avant = now;
       lent += 0.05 * (dt - lent);
+      coulees?.avancer(dt);
       for (let k = 0; k < 2; k++) {
         om[k] += (-RAIDEUR * th[k] - AMORTI * om[k]) * dt;
         th[k] += om[k] * dt;
@@ -228,6 +243,10 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
         images: gl?.mesure().images ?? 0, ms: gl?.mesure().ms ?? 0, cadence: lent > 0.024 ? 30 : 60,
       }),
     };
+    window.__gcBougie = {
+      couler: (k, t, fige) => coulees?.couler(k, t, fige),
+      etat: () => coulees?.etat() ?? null,
+    };
     if (fixe) {
       penche.set(0);
       etire.set(1);
@@ -245,6 +264,7 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
       document.removeEventListener('visibilitychange', surVisibilite);
       window.removeEventListener('resize', surRedim);
       toile.current?.removeEventListener('webglcontextlost', perdu);
+      cire?.detruire();
       gl?.detruire();
     };
   }, [fixe, rendu, dxFeu, penche, etire, eclat, hauteur]);
@@ -253,48 +273,6 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
 
 type Boite = { x: number; y: number; w: number; h: number };
 const place = (b: Boite): React.CSSProperties => ({ left: b.x, top: b.y, width: b.w, height: b.h });
-
-/** Une goutte toutes les CYCLE_GOUTTE secondes sur chaque coulure, en décalé. */
-const CYCLE_GOUTTE = 14;
-
-function Goutte({ g, rang, fixe }: { g: (typeof geo.gouttes)[number]; rang: number; fixe: boolean }) {
-  const feuille = React.useRef<HTMLDivElement>(null);
-  const derniere = g.images - 1; // image vide : la goutte au repos
-  const position = (i: number) => `translate(${-(i % g.colonnes) * g.w}px, ${-Math.floor(i / g.colonnes) * g.h}px)`;
-  React.useEffect(() => {
-    const el = feuille.current;
-    if (fixe || !el || typeof el.animate !== 'function') return;
-    const cycle = CYCLE_GOUTTE * 1000;
-    const images: Keyframe[] = [];
-    for (let i = 0; i < g.images; i++) {
-      images.push({ offset: (i * 1000) / g.parSeconde / cycle, transform: position(i), easing: 'steps(1, end)' });
-    }
-    images.push({ offset: 1, transform: position(derniere) });
-    const a = el.animate(images, {
-      duration: cycle,
-      iterations: Infinity,
-      delay: 2500 + rang * (cycle / 2),
-      fill: 'backwards',
-    });
-    return () => a.cancel();
-    // la géométrie est fixe (geometrie.json)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fixe]);
-  return (
-    <div className="gc-bougie__goutte" data-gc-bougie="goutte" style={place(g)}>
-      <div
-        ref={feuille}
-        className="gc-bougie__feuille"
-        style={{
-          width: g.w * g.colonnes,
-          height: g.h * g.lignes,
-          backgroundImage: cssUrl(g.nom),
-          transform: position(derniere),
-        }}
-      />
-    </div>
-  );
-}
 
 export function Bougie({ className }: BougieProps) {
   const feu = useFeu();
@@ -319,7 +297,7 @@ export function Bougie({ className }: BougieProps) {
   const etirementFlamme = useTransform([echelleFlamme, vive.etire], ([a, b]: number[]) => r3(a * b));
   const eclatFlamme = useTransform([opaciteFlamme, vive.eclat], ([a, b]: number[]) => r3(a * b));
   // La cire s'éclaire quand la flamme monte (fondu entre la cire à flamme basse et à flamme haute).
-  const opaciteVive = useTransform(intensite, (i) => r3(borne(0.45 + 0.55 * (i - 1), 0.12, 0.9)));
+  const opaciteVive = useTransform(flammeBougie, (l) => (fixeRef.current ? 0.45 : lueurCire(l)));
   // Lueur sur la table : elle suit l'intensité et l'éclat de la flamme, grandit un peu avec sa longueur et glisse à peine avec la source.
   const opaciteHalo = useTransform([intensite, vive.eclat], ([i, e]: number[]) => r3(borne(0.8 + 0.4 * (i - 1), 0.5, 1.15) * (0.55 + 0.45 * e)));
   const echelleHalo = useTransform([intensite, vive.hauteur], ([i, h]: number[]) => r3(borne(1 + 0.05 * (i - 1), 0.96, 1.04) * (1 + 0.5 * (h - 1))));
@@ -352,7 +330,6 @@ export function Bougie({ className }: BougieProps) {
           data-gc-bougie="vive"
           style={{ ...place(geo.cire), backgroundImage: cssUrl('bougie/cire-vive'), opacity: fixe ? 0.45 : opaciteVive }}
         />
-        {!fixe && geo.gouttes.map((g, k) => <Goutte key={g.nom} g={g} rang={k} fixe={fixe} />)}
         {vive.rendu === 'toile' ? (
           <canvas ref={vive.toile} className="gc-bougie__flamme gc-bougie__pose" data-gc-bougie="flamme" style={place(FLAMME)} />
         ) : (

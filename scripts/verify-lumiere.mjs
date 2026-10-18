@@ -54,7 +54,7 @@ const TEL = ecran('iphone13-portrait');
 const PIXEL = ecran('pixel7');
 const CALQUES = '[data-gc-lumiere]';
 // La bougie (src/components/Bougie) : ses calques que le feu anime (lueur, flamme, cire éclairée, ombre) sont
-// échantillonnés ; la cire est fixe, les gouttes ont leur propre horloge (animation Web, par paliers).
+// échantillonnés ; la cire est fixe, la cire qui coule est dessinée dans la toile de la flamme.
 const CALQUES_BOUGIE = '[data-gc-bougie="halo"], [data-gc-bougie="flamme"], [data-gc-bougie="vive"], [data-gc-bougie="ombre"]';
 const NOMS = ['bain', 'ombre', 'ambiance', 'voile'];
 const CATEGORIES = ['devtools.timeline', 'disabled-by-default-devtools.timeline', 'disabled-by-default-devtools.timeline.frame', 'blink.user_timing'];

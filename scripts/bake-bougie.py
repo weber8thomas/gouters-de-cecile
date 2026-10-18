@@ -10,19 +10,19 @@ l'écran, sa flaque de cire figée au pied. Ce script en cuit les calques :
   cire.webp        la bougie, flamme basse (la cire est éclairée par sa flamme)
   cire-vive.webp   la même, flamme haute : l'application fond l'une dans l'autre au rythme de la flamme
   ombre.webp       l'ombre portée par la cheminée (hors champ à gauche) sur la table, en alpha
-  goutte-<n>.webp  planche des images d'une goutte de cire liquide qui coule le long d'une coulure
   flamme-fixe.webp la flamme de secours (sans WebGL) : la photo d'une vraie flamme (Pexels, Numan Gilgil),
                    détourée, puis mise en perspective (vue d'en haut, elle pointe vers le coin de l'écran)
   halo.webp        la lueur chaude de la flamme sur la table (dessinée)
 
 et écrit leur géométrie (px de scène 1920 × 1080) dans src/components/Bougie/geometrie.json. La flamme
-elle-même est rendue en temps réel par une toile WebGL (src/components/Bougie/flamme.ts) : le script n'en
-écrit que la géométrie, la boîte de la toile autour de la mèche et la hauteur de la mèche au-dessus de la
-table (« flamme »).
+elle-même est rendue en temps réel par une toile WebGL (src/components/Bougie/flamme.ts), avec son reflet
+dans la cire liquide du puits et les gouttes de cire qui coulent de temps en temps (cire.ts) : le script
+n'en écrit que la géométrie, la boîte de la toile (autour de la mèche, du puits et des coulures), la
+hauteur de la mèche au-dessus de la table (« flamme »), et le chemin des coulures où la cire coule
+(« coulees » : la crête de la coulure figée, du puits à la flaque, relevée sur le maillage par scene.py).
 
 Entrées (hors dépôt) :
-  verification/out/v5-bougie3d/rendu/   rendu Blender : bougie.png, bougie-vive.png, ombre.png,
-                                         goutte-<n>/<image>.png, reperes.json
+  verification/out/v5-bougie3d/rendu/   rendu Blender : bougie.png, bougie-vive.png, ombre.png, reperes.json
   verification/out/v5-bougie2/originaux/pexels-9299394.jpeg   la photo de la flamme (sha256 vérifié)
 Licence et choix de la photo : design-system/sources/bougie/credits.json.
 
@@ -32,6 +32,7 @@ import hashlib
 import json
 import math
 import os
+import re
 
 import numpy as np
 from PIL import Image
@@ -50,8 +51,7 @@ TAILLE = 0.6            # et plus petite (autour de son pied) : la pointe de la 
                         # de scène du livre (bordure comprise) : on tourne les pages sans passer la main au-dessus
 OMBRE_R0, OMBRE_R1 = 90.0, 230.0   # l'ombre s'efface entre ces distances au pied (px de scène)
 ASSOMBRI = 0.9          # la pièce est sombre : la cire reste devinée plutôt que montrée
-COLONNES_GOUTTE = 8
-IMAGES_PAR_SECONDE = 16
+PXCM, HCAM = 39.0, 80.0  # la caméra de la scène (scene.py)
 
 # Photo de la flamme (repère de la photo) : canevas, mèche (pivot), seuils de détourage.
 SRC_W, SRC_H = 4272, 2848
@@ -66,7 +66,11 @@ FLAMME_RACCOURCI_MIN = 0.5   # vue presque d'en haut, la flamme se raccourcit, m
 HALO_SCENE = (800, 900)
 MECHE_Z = 5.6           # cm : bout de la mèche au-dessus de la table (scene.py : NIVEAU_PUITS + 0.78), avant TAILLE
 TOILE_FLAMME = (84, 55, 40, 71)   # px de scène autour de la mèche (gauche, haut, droite, bas) : la toile de la
-                                  # flamme WebGL, assez grande pour la flamme couchée à 35° dans tous les sens, halo compris
+                                  # flamme WebGL, assez grande pour la flamme couchée à 35° dans tous les sens, halo compris ;
+                                  # agrandie pour couvrir aussi le puits et les coulures où la cire coule (+ MARGE_TOILE)
+RAYON_NAPPE = 2.04      # cm (avant TAILLE) : le bord visible de la cire liquide, au pied de la paroi du cratère
+MARGE_TOILE = 10        # px de scène autour du puits et des coulures (la goutte déborde un peu de la crête)
+PAS_COULEE = 0.06       # cm : pas du chemin d'une coulée
 
 
 def marche(x, a, b):
@@ -200,22 +204,67 @@ def perspective(rgb, alpha, pivot, angle, sx, sy, cote=320):
     return np.clip(pm / np.maximum(pa, 1e-4)[..., None], 0, 255), pa
 
 
-def planche_goutte(dossier, n):
-    """Images d'une goutte → planche (COLONNES_GOUTTE colonnes), plus une image vide à la fin (repos)."""
-    images = []
-    for i in range(n):
-        rgb, a = lire(os.path.join(dossier, f'{i:03d}.png'))
-        images.append(adoucir(rgb, a, FLOU_CIRE * CUISSON))
-    h, w = images[0][1].shape
-    total = n + 1
-    lignes = math.ceil(total / COLONNES_GOUTTE)
-    rgb = np.zeros((lignes * h, COLONNES_GOUTTE * w, 3), np.float32)
-    al = np.zeros((lignes * h, COLONNES_GOUTTE * w), np.float32)
-    for i, (r, a) in enumerate(images):
-        y, x = (i // COLONNES_GOUTTE) * h, (i % COLONNES_GOUTTE) * w
-        rgb[y:y + h, x:x + w] = r
-        al[y:y + h, x:x + w] = a
-    return rgb, al, w, h, total, lignes
+def lisse_1d(v, sigma):
+    """Lissage gaussien d'une suite (bords répétés)."""
+    r = max(1, int(math.ceil(3 * sigma)))
+    x = np.arange(-r, r + 1, dtype=np.float64)
+    k = np.exp(-x * x / (2 * sigma * sigma))
+    k /= k.sum()
+    p = np.pad(np.asarray(v, np.float64), r, mode='edge')
+    return np.convolve(p, k, mode='valid')
+
+
+def chemin_coulee(c, rep):
+    """Le chemin de la cire qui coule sur une coulure (repère de la bougie, cm, axes de Blender) : depuis la
+    nappe liquide du puits, par l'encoche, sur la lèvre, puis le long de la crête de la coulure figée, et
+    jusque dans la flaque si la coulure y arrive. Rééchantillonné tous les PAS_COULEE cm, avec la normale à la
+    cire figée (dans le plan méridien) et la demi-largeur de la coulure. Renvoie aussi l'abscisse du bord de
+    la lèvre (où la goutte gonfle avant de tomber) et celle du pied."""
+    niveau = rep['niveau']
+    profil = np.array(c['profil'], np.float64)          # z, phi, rho, demi, flanc
+    z_haut = profil[0, 0]
+    phi0 = c['phi']
+    pts = [(1.95, niveau, phi0, 0.1)]                  # dans la nappe, devant l'encoche
+    levre = [(r, z) for r, z in c['levre'] if 2.0 <= r and z > z_haut]
+    for r, z in levre:
+        pts.append((r, max(z, niveau), phi0, 0.11))
+    n_levre = len(pts)
+    rho = lisse_1d(profil[:, 2], 1.5)
+    phi = lisse_1d(profil[:, 1], 2.0)
+    demi = lisse_1d(profil[:, 3], 2.0)
+    for k in range(len(profil)):
+        pts.append((rho[k], profil[k, 0], phi[k], demi[k]))
+    n_flanc = len(pts)
+    if c['au_pied']:
+        r_bas = rho[-1]
+        for r, z in c['pied']:
+            if r > r_bas + 0.06 and z < profil[-1, 0] and r < r_bas + 0.5:
+                pts.append((r, z, phi[-1], 0.4))
+    pts = np.array(pts)
+    xyz = np.stack([pts[:, 0] * np.cos(pts[:, 2]), pts[:, 0] * np.sin(pts[:, 2]), pts[:, 1]], axis=-1)
+    s = np.concatenate([[0.0], np.cumsum(np.linalg.norm(np.diff(xyz, axis=0), axis=1))])
+    s_levre = s[n_levre - 1]                              # le bord de la lèvre
+    s_pied = s[n_flanc - 1]
+    su = np.arange(0.0, s[-1] + 1e-6, PAS_COULEE)
+    q = np.stack([np.interp(su, s, xyz[:, k]) for k in range(3)], axis=-1)
+    largeur = np.interp(su, s, pts[:, 3])
+    # normale : perpendiculaire à la tangente dans le plan méridien, vers l'extérieur (le coin de la lèvre
+    # arrondi par le lissage)
+    rq = lisse_1d(np.hypot(q[:, 0], q[:, 1]), 1.5)
+    zq = lisse_1d(q[:, 2], 1.5)
+    dr, dz = np.gradient(rq), np.gradient(zq)
+    nn = np.hypot(dr, dz) + 1e-9
+    nr, nz = -dz / nn, dr / nn
+    ph = np.arctan2(q[:, 1], q[:, 0])
+    n = np.stack([nr * np.cos(ph), nr * np.sin(ph), nz], axis=-1)
+    return q, n, largeur, float(s_levre), float(s_pied)
+
+
+def projette(rep, p):
+    """Point du repère de la bougie (cm) → px de scène du rendu (avant le déplacement de la bougie)."""
+    bx, by = rep['base']
+    k = HCAM / (HCAM - p[2])
+    return 960 + (bx + p[0]) * k * PXCM, 540 - (by + p[1]) * k * PXCM
 
 
 def main():
@@ -244,16 +293,18 @@ def main():
     vers_webp(np.zeros(a.shape + (3,), np.float32), a, os.path.join(OUT, 'ombre.webp'))
     geo['ombre'] = en_scene(b, (bx0, by0))
 
-    # 3. les gouttes qui coulent
-    geo['gouttes'] = []
-    for g in rep['gouttes']:
-        rgb, a, w, h, total, lignes = planche_goutte(os.path.join(RENDU, f"goutte-{g['coulure']}"), g['images'])
-        nom = f"goutte-{g['coulure']}"
-        vers_webp(rgb, a, os.path.join(OUT, f'{nom}.webp'))
-        x0, y0, x1, y1 = g['boite']
-        geo['gouttes'].append({'nom': f'bougie/{nom}', 'x': x0, 'y': y0, 'w': round(w / CUISSON, 2),
-                               'h': round(h / CUISSON, 2), 'colonnes': COLONNES_GOUTTE, 'lignes': lignes,
-                               'images': total, 'parSeconde': IMAGES_PAR_SECONDE})
+    # 3. les coulées : le chemin de la cire sur les coulures où elle coule (cire.ts)
+    coulees = []
+    for c in rep['coulures']:
+        q, n, largeur, s_levre, s_pied = chemin_coulee(c, rep)
+        coulees.append({'auPied': bool(c['au_pied']), 'levre': round(s_levre, 3), 'pied': round(s_pied, 3),
+                        'q': [round(float(v), 3) for v in q.ravel()], 'n': [round(float(v), 2) for v in n.ravel()],
+                        'largeur': [round(float(v), 2) for v in largeur]})
+    px, py = rep['pied']
+    geo['coulees'] = {'pas': PAS_COULEE, 'base': rep['base'], 'niveau': rep['niveau'],
+                      'rayonLiquide': rep['rayon_liquide'], 'meche': [round(v, 3) for v in rep['meche_monde']],
+                      'pied': [round(px, 3), round(py, 3)], 'taille': TAILLE, 'decalage': list(DECALAGE),
+                      'coulures': coulees}
 
     # 4. la flamme de secours, mise en perspective : de la mèche vers la pointe projetée (la toile de la
     #    flamme WebGL, « flamme », est posée une fois la bougie déplacée)
@@ -283,7 +334,7 @@ def main():
     # la bougie est posée ailleurs sur la table, un peu plus petite : ses calques, sa lueur et son ombre
     # suivent d'un bloc, réduits autour du pied (les pixels ne changent pas, seule la géométrie bouge)
     px, py = rep['pied']
-    for calque in [geo['cire'], geo['ombre'], geo['flammeFixe'], geo['halo'], *geo['gouttes']]:
+    for calque in [geo['cire'], geo['ombre'], geo['flammeFixe'], geo['halo']]:
         calque['x'] = round(px + (calque['x'] - px) * TAILLE + DECALAGE[0], 2)
         calque['y'] = round(py + (calque['y'] - py) * TAILLE + DECALAGE[1], 2)
         calque['w'] = round(calque['w'] * TAILLE, 2)
@@ -292,17 +343,36 @@ def main():
     mx = round(px + (rep['meche'][0] - px) * TAILLE + DECALAGE[0], 2)
     my = round(py + (rep['meche'][1] - py) * TAILLE + DECALAGE[1], 2)
     g, h, d, b = TOILE_FLAMME
+    x0, y0, x1, y1 = mx - g, my - h, mx + d, my + b
+    # le puits et les coulures, déplacés comme la bougie
+    deplace = lambda o: (px + (o[0] - px) * TAILLE + DECALAGE[0], py + (o[1] - py) * TAILLE + DECALAGE[1])
+    contour = [(rep['rayon_liquide'] * math.cos(a), rep['rayon_liquide'] * math.sin(a), rep['niveau'])
+               for a in np.linspace(0, 2 * math.pi, 73)]
+    for c in geo['coulees']['coulures']:
+        contour += [tuple(c['q'][k:k + 3]) for k in range(0, len(c['q']), 3)]
+    for p in contour:
+        ex, ey = deplace(projette(rep, p))
+        x0, y0 = min(x0, ex - MARGE_TOILE), min(y0, ey - MARGE_TOILE)
+        x1, y1 = max(x1, ex + MARGE_TOILE), max(y1, ey + MARGE_TOILE)
+    g, h, d, b = math.ceil(mx - x0), math.ceil(my - y0), math.ceil(x1 - mx), math.ceil(y1 - my)
+    # la nappe liquide du puits, dans le repère de la flamme (cm, x et y comme l'écran, depuis l'aplomb du
+    # bout de la mèche) : centre (l'axe de la bougie) et rayon (jusqu'au pied de la paroi du cratère)
+    mw = rep['meche_monde']
     geo['flamme'] = {'x': round(mx - g, 2), 'y': round(my - h, 2), 'w': g + d, 'h': h + b,
-                     'meche': [mx, my], 'z': round(MECHE_Z * TAILLE, 2)}
+                     'meche': [mx, my], 'z': round(MECHE_Z * TAILLE, 2),
+                     'puits': [round(-mw[0] * TAILLE, 3), round(mw[1] * TAILLE, 3), round(RAYON_NAPPE * TAILLE, 3)]}
 
     # la planche vidéo de la flamme (v6) n'est plus utilisée : la flamme est rendue en WebGL
-    for vieux in ('bougie.webp', 'flamme.webp'):
+    # les planches de gouttes (v8) non plus : la cire qui coule est rendue en WebGL avec la flamme
+    for vieux in ('bougie.webp', 'flamme.webp', *[n for n in os.listdir(OUT) if n.startswith('goutte-')]):
         p = os.path.join(OUT, vieux)
         if os.path.exists(p):
             os.remove(p)
+    texte = json.dumps(geo, indent=2, ensure_ascii=False)
+    # les listes de nombres sur une ligne (les chemins des coulées sont longs)
+    texte = re.sub(r'\[[-0-9.,\s]+\]', lambda m: '[' + ', '.join(m.group(0)[1:-1].split()).replace(',,', ',') + ']', texte)
     with open(GEOMETRIE, 'w') as fj:
-        json.dump(geo, fj, indent=2, ensure_ascii=False)
-        fj.write('\n')
+        fj.write(texte + '\n')
     for nom in sorted(os.listdir(OUT)):
         chemin = os.path.join(OUT, nom)
         print(f'{os.path.relpath(chemin, ROOT)} {Image.open(chemin).size} {os.path.getsize(chemin) // 1024} Ko')

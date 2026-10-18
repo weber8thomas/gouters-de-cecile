@@ -24,9 +24,17 @@
 // L'état global (longueur, éclat, axe) est calculé ici en JS (etatFlamme) et passé au shader : la
 // lumière tracée de la bougie (flammeBougie) suit exactement ce qui est rendu.
 //
+// Le reflet de la flamme dans la cire liquide du puits : la nappe est un miroir faible (Fresnel ≈ 3 % vu
+// presque d'aplomb, adouci à l'œil), qu'une marche de plus parcourt le long du rayon réfléchi (le même volume, vu depuis
+// sous la nappe). Le reflet bouge avec la flamme, et une ride lente de la nappe (la convection autour de
+// la mèche) le fait frémir. Il n'existe que sur la nappe (geometrie.json : flamme.puits).
+//
+// La toile couvre aussi les coulures : la cire qui coule (cire.ts) y est dessinée avant la flamme, par
+// un second programme, dans le même contexte (dessiner(e, avant)).
+//
 // WebGL 1 (GLSL ES 1.00), un seul triangle plein écran, aucune texture. Alpha prémultiplié normal : la
-// suie couvre la cire comme une lumière très vive, la coupelle bleue et le halo restent faibles en alpha
-// (ils éclairent sans assombrir la cire crème).
+// suie couvre la cire comme une lumière très vive, la coupelle bleue, le halo et le reflet restent
+// faibles en alpha (ils éclairent sans assombrir la cire crème).
 
 /** Géométrie de la scène (scripts/bougie3d/scene.py). */
 const PXCM = 39;
@@ -43,6 +51,8 @@ export interface GeoFlamme {
   meche: number[];
   /** Hauteur du bout de la mèche au-dessus de la table (cm). */
   z: number;
+  /** La nappe liquide du puits : centre (cm, x et y comme l'écran, depuis l'aplomb de la mèche) et rayon. */
+  puits?: number[];
 }
 
 // ---- La flamme (cm ; h : hauteur au-dessus du bout de la mèche) ---------------------------------------
@@ -178,6 +188,11 @@ void main() { gl_Position = vec4(p, 0.0, 1.0); }`;
 
 /** Nombre de pas de la marche (le long de la hauteur, ≈ 0,08 cm chacun). */
 const NB_PAS = 32;
+/** Nombre de pas de la marche du reflet (sans bruit : la ride de la nappe le brouille déjà). */
+const NB_REFLET = 16;
+/** Le reflet : la part de la flamme renvoyée par la nappe (Fresnel de la cire liquide, n ≈ 1,44 : ≈ 3 %
+ *  d'aplomb), réglée à l'œil (ajoutée en gamma, elle paraît plus forte qu'en lumière linéaire). */
+const REFLET = 0.015;
 
 const FS = `#ifdef GL_FRAGMENT_PRECISION_HIGH
 precision highp float;
@@ -197,6 +212,7 @@ uniform vec4 uAxe34;    // c3, c4
 uniform vec3 uCnA;
 uniform vec3 uCnB;
 uniform float uPx;      // taille d'un pixel (cm), pour l'antialias de la mèche
+uniform vec3 uPuits;    // la nappe liquide : centre (cm, repère de la flamme) et rayon
 
 const float PXCM = ${PXCM.toFixed(1)};
 const float HCAM = ${HCAM.toFixed(1)};
@@ -216,6 +232,8 @@ const vec3 HALO = vec3(1.0, 0.42, 0.12);
 const vec3 MECHE = vec3(0.05, 0.035, 0.03);
 const float R_MECHE = 0.028;
 const int NB_PAS = ${NB_PAS};
+const int NB_REFLET = ${NB_REFLET};
+const float REFLET = ${REFLET.toFixed(3)};
 
 float lisse(float a, float b, float x) {
   float t = clamp((x - a) / (b - a), 0.0, 1.0);
@@ -280,16 +298,23 @@ void main() {
 
   vec2 c1 = uAxe12.xy, c2 = uAxe12.zw, c3 = uAxe34.xy, c4 = uAxe34.zw;
   float L = (HT - HB) * uLong;
+  // le reflet : où le rayon touche la nappe ; au-dessus, le rayon réfléchi passe à la hauteur h là où le
+  // rayon direct passerait à 2 PISCINE − h
+  vec2 pr = D - S * (PISCINE / HCAM);
+  float nappe = 1.0 - smoothstep(uPuits.z - 0.1, uPuits.z, length(pr - uPuits.xy));
   // tôt sorti : loin de l'axe à toutes les hauteurs, rien que le vide (la suie s'arrête à 1,4 R, la
-  // queue du halo y est sous 1/255)
+  // queue du halo y est sous 1/255), ni pour le rayon, ni pour son reflet
   float loin = 9.0;
+  float loinR = 9.0;
   for (int k = 0; k < 5; k++) {
     float h = HB + L * (float(k) + 0.5) / 5.0;
     float hp = max(h, 0.0);
     vec2 A = hp * (c1 + hp * (c2 + hp * (c3 + hp * c4)));
     loin = min(loin, length(D - S * (h / HCAM) - A));
+    loinR = min(loinR, length(D - S * ((2.0 * PISCINE - h) / HCAM) - A));
   }
-  if (loin > RMAX + 0.4) { gl_FragColor = vec4(0.0); return; }
+  bool reflet = nappe > 0.0 && loinR < RMAX + 0.3;
+  if (loin > RMAX + 0.4 && !reflet) { gl_FragColor = vec4(0.0); return; }
 
   float hHaut = HB + L + 0.1;
   float hBas = PISCINE;
@@ -340,6 +365,33 @@ void main() {
   vec3 accB = BLEU * (0.01 * bleu * dh * uEclat);
   // braise au bout de la mèche (≈ 1250 K)
   accL += exp(uCnB + uCnA / 1250.0) * (8.0 * exp(-dBraise * dBraise / 0.0009));
+
+  // le reflet dans la nappe : la même suie (sans le bruit des bords), le long du rayon réfléchi, que la
+  // nappe ridée fait dévier un peu (pente lente, ≈ 1 %)
+  vec3 accR = vec3(0.0);
+  if (reflet) {
+    vec2 ride = 0.012 * vec2(bruit(vec3(pr * 3.0, uTn * 0.12)) - 0.5, bruit(vec3(pr * 3.0 + 31.0, uTn * 0.12)) - 0.5);
+    float dr = (hHaut - PISCINE) / float(NB_REFLET);
+    for (int i = 0; i < NB_REFLET; i++) {
+      float h = PISCINE + (float(i) + j) * dr;
+      vec2 p = D - S * ((2.0 * PISCINE - h) / HCAM) + 2.0 * ride * (h - PISCINE);
+      float hp = max(h, 0.0);
+      vec2 A = hp * (c1 + hp * (c2 + hp * (c3 + hp * c4)));
+      float l = h > 0.0 ? length(vec3(A, h)) : h;
+      float s = (l - HB) / L;
+      if (s <= 0.0 || s >= 1.0) continue;
+      float R = RMAX * pow(s, PA) * pow(1.0 - s, PB) / NORME;
+      float q = length(p - A) / max(R, 1e-3);
+      float qd = 0.6 * (1.0 - lisse(-0.1, 0.6, h));
+      float sombre = 1.0 - 0.94 * (1.0 - lisse(qd - 0.1, qd + 0.2, q)) * lisse(0.0, 0.2, qd);
+      float dens = lisse(0.08, 0.26, s) * (1.0 - lisse(0.45, 1.0, q)) * sombre * (1.0 - 0.4 * lisse(0.5, 1.0, s));
+      if (dens <= 0.0) continue;
+      float bosse = lisse(0.05, 0.35, s) * (1.0 - 0.75 * lisse(0.4, 1.0, s));
+      float T = T_BORD + (T_COEUR - T_BORD) * (1.0 - q * q) * (0.3 + 0.7 * bosse);
+      accR += dens * exp(uCnB + uCnA / max(T, 900.0));
+    }
+    accR *= dr * uEclat * nappe * REFLET;
+  }
   vec3 cS = 1.0 - exp(-EXPO * accS);
   vec3 cB = 1.0 - exp(-EXPO * accB);
   vec3 rgb = pow(1.0 - exp(-EXPO * (accS + accB + accL)), vec3(1.0 / 2.2));
@@ -348,9 +400,10 @@ void main() {
   vec3 sS = pow(cS, vec3(1.0 / 2.2));
   float aS = mix(max(sS.r, max(sS.g, sS.b)), dot(sS, vec3(0.2126, 0.7152, 0.0722)), 0.35);
   float a = clamp(aS + max(cB.b, 0.0), 0.0, 1.0);
-  // la mèche, opaque, vue à travers ce qui brille devant elle
+  // dessous : la mèche, opaque, vue à travers ce qui brille devant elle, ou le reflet (une lumière)
   float cm = 1.0 - smoothstep(R_MECHE - uPx, R_MECHE + uPx, dm);
-  rgb += cm * (1.0 - a) * MECHE;
+  vec3 rgbR = pow(1.0 - exp(-EXPO * accR), vec3(1.0 / 2.2));
+  rgb += (1.0 - a) * mix(rgbR, MECHE, cm);
   a += cm * (1.0 - a);
   gl_FragColor = vec4(rgb, a);
 }`;
@@ -359,7 +412,10 @@ void main() {
 export interface RenduFlamme {
   /** Taille du tampon (px de l'écran) ; la toile occupe `px` cm par pixel. */
   taille(w: number, h: number): void;
-  dessiner(e: EtatFlamme): void;
+  /** Dessine la flamme ; `avant` dessine d'abord dans la toile ce qui est dessous (la cire qui coule). */
+  dessiner(e: EtatFlamme, avant?: () => void): void;
+  /** Le contexte et le triangle plein écran (attribut 0), pour un autre programme dans la même toile. */
+  contexte(): { gl: WebGLRenderingContext; triangle: WebGLBuffer } | null;
   /** Durée moyenne d'un appel à dessiner (ms, côté JS) et nombre d'images. */
   mesure(): { ms: number; images: number };
   detruire(): void;
@@ -391,23 +447,28 @@ export function creerRenduFlamme(toile: HTMLCanvasElement, geo: GeoFlamme): Rend
     }
     gl.attachShader(prog, sh);
   }
+  gl.bindAttribLocation(prog, 0, 'p');
   gl.linkProgram(prog);
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
   gl.useProgram(prog);
   const buf = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-  const ap = gl.getAttribLocation(prog, 'p');
-  gl.enableVertexAttribArray(ap);
-  gl.vertexAttribPointer(ap, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(0);
+  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
   gl.disable(gl.DEPTH_TEST);
-  gl.disable(gl.BLEND);
+  // alpha prémultiplié : la flamme par-dessus ce qui est déjà dans la toile
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  gl.clearColor(0, 0, 0, 0);
   const u = (nom: string) => gl!.getUniformLocation(prog, nom);
   const uRes = u('uRes'), uLong = u('uLong'), uEclat = u('uEclat'), uTrouble = u('uTrouble'), uTn = u('uTn');
   const uAxe12 = u('uAxe12'), uAxe34 = u('uAxe34'), uPx = u('uPx');
   gl.uniform4f(u('uBoite'), geo.x, geo.y, geo.w, geo.h);
   gl.uniform2f(u('uSm'), (geo.meche[0] - CENTRE[0]) / PXCM, (geo.meche[1] - CENTRE[1]) / PXCM);
   gl.uniform1f(u('uZ0'), geo.z);
+  const puits = geo.puits ?? [0, 0, 0];
+  gl.uniform3f(u('uPuits'), puits[0], puits[1], puits[2]);
   gl.uniform3f(u('uCnA'), CORPS_NOIR.A[0], CORPS_NOIR.A[1], CORPS_NOIR.A[2]);
   gl.uniform3f(u('uCnB'), CORPS_NOIR.B[0], CORPS_NOIR.B[1], CORPS_NOIR.B[2]);
   let w = 0;
@@ -425,9 +486,15 @@ export function creerRenduFlamme(toile: HTMLCanvasElement, geo: GeoFlamme): Rend
       gl.uniform2f(uRes, w, h);
       gl.uniform1f(uPx, geo.w / PXCM / Math.max(1, w));
     },
-    dessiner(e) {
+    dessiner(e, avant) {
       if (!gl || !w || gl.isContextLost()) return;
       const t0 = performance.now();
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      if (avant) {
+        avant();
+        gl.useProgram(prog);
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      }
       gl.uniform1f(uLong, e.long);
       gl.uniform1f(uEclat, e.eclat);
       gl.uniform1f(uTrouble, e.trouble);
@@ -439,6 +506,7 @@ export function creerRenduFlamme(toile: HTMLCanvasElement, geo: GeoFlamme): Rend
       images++;
     },
     mesure: () => ({ ms: images ? cumul / images : 0, images }),
+    contexte: () => (gl && buf ? { gl, triangle: buf } : null),
     detruire() {
       if (!gl) return;
       gl.deleteBuffer(buf);
