@@ -195,7 +195,7 @@
    "relu": true
   }
  },
- "papier/f17": "8f22783b961940f70a72f7218276f4f0184615f912183d079a3f326a8abd761b",
+ "papier/f17": "06153f11634360ab2d2849fd44d415bc2082316f2601cf11fa31df9c926136e1",
  "page/fin-gauche": {
   "cle": "bc62ca10bb4da139e641d9fd8e60030a51a62489960b1d64265a323f5581c4fa",
   "manifeste": {
@@ -468,7 +468,7 @@
    "relu": true
   }
  },
- "papier/f15": "757601d17006ed2a5fc1bbf231615c203cefef8d703c0ca65c8acd529824cf1f",
+ "papier/f15": "c0f51995b1a8ceb917939083651c3bcda615a94b2f4b30466693df27023a901a",
  "page/mathis-gauche": {
   "cle": "84f4073b6e95100b7168e633ffdd9bc597ba12f89bd9f72e89a8c72f22241c2e",
   "manifeste": {
@@ -778,10 +778,10 @@
   }
  },
  "papier1x/f19": "03375a265a66fca0089e5c8685e306b1bb7270a83af820e915c7ac7d63bbec8d",
- "papier1x/f17": "8f22783b961940f70a72f7218276f4f0184615f912183d079a3f326a8abd761b",
+ "papier1x/f17": "06153f11634360ab2d2849fd44d415bc2082316f2601cf11fa31df9c926136e1",
  "papier1x/f13": "36c983695924c1fc06cd6f0b82acb2b7e2bf4f0e242bcfa63069b5b432e21930",
  "papier1x/f11": "0e0f0cb3cabe0c3a185dc7cf09e7e9b5b80f1aff0aeadeded6b9f68b3495b2b4",
- "papier1x/f15": "757601d17006ed2a5fc1bbf231615c203cefef8d703c0ca65c8acd529824cf1f",
+ "papier1x/f15": "c0f51995b1a8ceb917939083651c3bcda615a94b2f4b30466693df27023a901a",
  "pagination/lisa": {
   "cle": "b7853b8d7bba6c602fcdd25848484b6abe2c63365c22961b20a8b839ff9b14bd",
   "pages": {
@@ -1864,7 +1864,7 @@
   }
  },
  "page/biscuits-droite": {
-  "cle": "f22723765eb3dc7f679461c2614f77d3f7e81122e42aadc5d9178ccd992be99f",
+  "cle": "67cd74a74d77b4c486d7c0a30efab65064a5769b415a9fe0fc6a5b1718778fa9",
   "manifeste": {
    "double": "biscuits",
    "cote": "droite",
@@ -1957,7 +1957,7 @@
   }
  },
  "page/biscuits-gauche": {
-  "cle": "0b08b814e8750e2b794546c2d0352ed663bb73afce3aafbee94f0848c377e245",
+  "cle": "99da61f1d49e0abb53cd3dfb50caf0783147b18cf88a5e0e78cb890e9a92d4fd",
   "manifeste": {
    "double": "biscuits",
    "cote": "gauche",
