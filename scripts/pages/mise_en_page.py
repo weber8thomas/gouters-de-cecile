@@ -461,7 +461,7 @@ FOLIO_MAIN, FOLIO_ENCRE, FOLIO_ECHELLE = "cecile", "crayon", 0.9
 # =============================================================================================
 _BLOCS: dict = {}  # écritures déjà demandées (et vérifiées) dans ce processus
 # blocs posés AVANT le texte coulé (zones réservées : la recette coule autour)
-BLOCS_RESERVES = ("bandeau", "courant", "cadre", "etiquette")
+BLOCS_RESERVES = ("bandeau", "courant", "cadre", "etiquette", "ornement")
 
 
 class Mise:
@@ -513,6 +513,8 @@ class Mise:
         self.vivants = {}
         self.zones = {}
         for v in desc.get("vivants", []):
+            if "rect" not in v:
+                continue  # posée par son bloc pendant la mise en page (vignette du sommaire)
             x, y, w, h = v["rect"]
             rect = (x * self.W, y * self.H, (x + w) * self.W, (y + h) * self.H)
             if v.get("vivant", True):
@@ -1844,6 +1846,38 @@ class Mise:
         lis = self._texte_lisible(brut, marques)
         self.texte.append((f"{titre} : " if titre else "") + lis + (f" — {sig}" if sig else ""))
 
+    def ornement(self, b, idx):
+        """Ornement tracé à la plume, sans mots (pages décorées : frontispices, sommaire) : `forme`
+        « cadre » (cadre orné : double cadre, volutes et feuille aux angles, nœud de ruban au milieu du haut
+        si `ruban`, petit cœur au milieu du bas si `coeur`) ou « frise » (rinceau qui ondule sur la largeur
+        de `rect`, à mi-hauteur ; `amplitude`, `onde` en hauteurs d'x). `rect` : fractions de la page.
+        Posé avant le texte ; une frise est réservée (le texte coule autour), un cadre ne l'est pas (les
+        zones vivantes sont dedans). Aucun trait sous une zone vivante (contrôlé)."""
+        bid = b.get("id", "ornement")
+        main, enc_id, outil, info, xh = self._style_bloc(b, "corps")
+        encre = ECR.nuances(enc_id or "terracotta", outil)
+        graine = int(b.get("graine", self.graine * 31 + idx * 7))
+        r = np.random.default_rng(graine)
+        x, y, w, h = (float(v) for v in b["rect"])
+        x0, y0, x1, y1 = x * self.W, y * self.H, (x + w) * self.W, (y + h) * self.H
+        if b.get("forme", "cadre") == "frise":
+            chemins = TR.frise(x0, x1, (y0 + y1) / 2, r, xh, float(b.get("amplitude", 0.55)), float(b.get("onde", 4.2)))
+        else:
+            chemins = TR.cadre_orne(x0, y0, x1, y1, r, xh, ruban=bool(b.get("ruban", True)), coeur_bas=bool(b.get("coeur", True)))
+        n0 = len(self.traces)
+        self.tracer(chemins, xh, encre, info["epaisseur"] * float(b.get("trait", 1.0)), graine, main)
+        for t in self.traces[n0:]:
+            P = t.pts[:, :2]
+            for nom, (a0, b0, a1, b1) in self.vivants.items():
+                if np.any((P[:, 0] > a0) & (P[:, 0] < a1) & (P[:, 1] > b0) & (P[:, 1] < b1)):
+                    self.deborde.append(f"{bid} : un trait touche la zone {nom}")
+                    break
+        if b.get("forme", "cadre") == "frise":
+            A = np.vstack([t.pts[:, :2] for t in self.traces[n0:]])
+            m = 0.3 * xh
+            self._reserver(bid, (float(A[:, 0].min()) - m, float(A[:, 1].min()) - m, float(A[:, 0].max()) + m,
+                                 float(A[:, 1].max()) + m))
+
     def etiquette(self, b, idx):
         """Quelques mots écrits à la main dans une boîte (`rect`, fractions de la page), centrés,
         coupés en lignes à sa largeur : « Scanne-moi pour voir ma vidéo » sous le QR de l'A5, la
@@ -1953,9 +1987,9 @@ class Mise:
             fol = str(l["folio"]) if l.get("folio") is not None else ""
             fm = self.ecrire_segments([{"texte": fol, "graine": g + 11}], main, enc_id, outil)[2] if fol else []
             larg_f, _, _ = self._mesure(fm, xh, info["espace"])
-            retrait = float(l.get("retrait", 0.045)) * self.W + r.normal(0, 0.004) * self.W
-            L = self.nouvelle_ligne(xh, interligne, x0=self.ml + retrait, sauter=float(l.get("avant", 0.08)), derive=False,
-                                    sigma=0.16)
+            retrait = float(l.get("retrait", b.get("retrait", 0.045))) * self.W + r.normal(0, 0.004) * self.W
+            L = self.nouvelle_ligne(xh, interligne, x0=self.ml + retrait, sauter=max(float(l.get("avant", 0)), float(b.get("avant", 0.08))),
+                                    derive=False, sigma=0.16)
             if L is None:
                 self.deborde.append(lid)
                 break
@@ -1994,7 +2028,25 @@ class Mise:
             self._marquer(l, brut, marques, [p for p in self.mots[n_m:n_m + len(mots)]], spans, xh, encre, bloc, main, g)
             if l.get("cible"):
                 self._lien(l, n_m, xh, L)
+            self._vignette(b, l, L, xh)
             self.texte.append(self._texte_lisible(brut, marques) + (f", page {fol}" if fol else ""))
+
+    def _vignette(self, b: dict, l: dict, L: Ligne, xh: float):
+        """La petite aquarelle vivante d'une entrée du sommaire (`vignettes` : invité ou cible → nom d'une
+        zone vivante de la page, déclarée sans `rect`, ou {zone, hauteur}) : dans le retrait de la ligne,
+        centrée sur ses lettres, de `vignette` (fraction de la hauteur de page) de haut."""
+        v = (b.get("vignettes") or {}).get(l.get("invite") or l.get("cible"))
+        if not v:
+            return
+        nom, hv = (v, float(b.get("vignette", 0.06))) if isinstance(v, str) else (v["zone"], float(v.get("hauteur", b.get("vignette", 0.06))))
+        hv *= self.H
+        x1 = L.x0 - 0.45 * xh
+        x0 = max(0.03 * self.W, x1 - float(b.get("vignette_largeur", 0.1)) * self.W)
+        yc = L.y(x1) - 0.55 * xh
+        rect = (x0, yc - hv / 2, x1, yc + hv / 2)
+        self.vivants[nom] = rect
+        self.zones[nom] = rect
+        self.reserves.append((rect, nom))
 
     def _lien(self, l: dict, n_m: int, xh: float, L: Ligne):
         """Rectangle cliquable d'une ligne du sommaire : toute la ligne, du début du texte au folio."""

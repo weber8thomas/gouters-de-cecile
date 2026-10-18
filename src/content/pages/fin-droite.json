@@ -10,8 +10,21 @@
  "marges": {
   "haut": 0.2
  },
- "_": "Colophon (fin du carnet, dernière page de droite) : petite note dans la main du carnet et un croquis de bougie. Textes provisoires, à modifier librement. Le dernier papier est f23 (non prévu dans papiers.json : repli sur une autre découpe, journalisé à la cuisson).",
+ "_": "Colophon (fin du carnet, dernière page de droite) : petite note dans la main du carnet et un croquis de bougie. Textes provisoires, à modifier librement. Le dernier papier est f23 (non prévu dans papiers.json : repli sur une autre découpe, journalisé à la cuisson). Page décorée : une guirlande de fanions en haut, la théière et une tranche d'orange qui vivent (aquarelles vivantes), une frise de rinceau au-dessus du colophon ; le croquis de bougie à côté de la théière.",
  "blocs": [
+  {
+   "id": "frise",
+   "type": "ornement",
+   "forme": "frise",
+   "rect": [
+    0.24,
+    0.535,
+    0.52,
+    0.03
+   ],
+   "encre": "terracotta",
+   "graine": 12021
+  },
   {
    "id": "colophon",
    "type": "etiquette",
@@ -34,13 +47,51 @@
     "bougie"
    ],
    "taille": [
-    0.13,
-    0.15
+    0.12,
+    0.14
    ],
    "pres": [
-    0.5,
-    0.5
+    0.16,
+    0.47
    ]
+  }
+ ],
+ "vivants": [
+  {
+   "nom": "aq-guirlande",
+   "rect": [
+    0.1,
+    0.05,
+    0.8,
+    0.126
+   ],
+   "aquarelle": "guirlande",
+   "anime": "balance",
+   "angle": 0
+  },
+  {
+   "nom": "aq-theiere",
+   "rect": [
+    0.24,
+    0.22,
+    0.52,
+    0.23
+   ],
+   "aquarelle": "theiere",
+   "anime": "vapeur",
+   "angle": -2
+  },
+  {
+   "nom": "aq-orange",
+   "rect": [
+    0.75,
+    0.36,
+    0.16,
+    0.101
+   ],
+   "aquarelle": "orange",
+   "anime": "fleurit",
+   "angle": 10
   }
  ]
 }

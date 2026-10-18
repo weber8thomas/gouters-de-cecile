@@ -116,7 +116,7 @@
  },
  "papier/f19": "03375a265a66fca0089e5c8685e306b1bb7270a83af820e915c7ac7d63bbec8d",
  "page/fin-droite": {
-  "cle": "ae4bdbcbe9330a1598bc288220495d01daeea0d6ef0af3da63ed8cd90e94c199",
+  "cle": "5d9a1cecb3cbfe8a34059d287d11968ed3094a3b266aa2991190dbeda468ebbf",
   "manifeste": {
    "double": "fin",
    "cote": "droite",
@@ -170,34 +170,64 @@
     ]
    },
    "texte": "Ce carnet a été rempli par les amis de Cécile pour son anniversaire, automne 2026. Les recettes sont celles qu'ils ont envoyées, mot pour mot.",
-   "vivants": {},
+   "vivants": {
+    "aq-guirlande": [
+     0.1,
+     0.05,
+     0.8,
+     0.126
+    ],
+    "aq-theiere": [
+     0.24,
+     0.22,
+     0.52,
+     0.23
+    ],
+    "aq-orange": [
+     0.75,
+     0.36,
+     0.16,
+     0.101
+    ]
+   },
    "deborde": [],
    "lignes": 0,
+   "aquarelles": {
+    "aq-guirlande": {
+     "aquarelle": "guirlande",
+     "anime": "balance",
+     "angle": 0
+    },
+    "aq-theiere": {
+     "aquarelle": "theiere",
+     "anime": "vapeur",
+     "angle": -2
+    },
+    "aq-orange": {
+     "aquarelle": "orange",
+     "anime": "fleurit",
+     "angle": 10
+    }
+   },
    "croquis": [
     {
      "nom": "bougie",
      "role": "dessin",
      "dessine": true,
      "boite": [
-      0.4308,
-      0.4415,
-      0.13,
-      0.1062
+      0.0908,
+      0.4274,
+      0.12,
+      0.0992
      ]
     }
-   ],
-   "douteux": [
-    "2026. (encre rendue lue « 2026 »)"
-   ],
-   "douteux_importants": [
-    "2026."
    ],
    "relu": true
   }
  },
- "papier/f17": "06153f11634360ab2d2849fd44d415bc2082316f2601cf11fa31df9c926136e1",
+ "papier/f17": "835567172206d00252981c7f014854f60bf1642a02e75db8e52893d3aaf070a5",
  "page/fin-gauche": {
-  "cle": "bc62ca10bb4da139e641d9fd8e60030a51a62489960b1d64265a323f5581c4fa",
+  "cle": "2d14602d01e09190cb1c442e95dd07027c8dbf7b4e2802550cc95e88f7bbbfa9",
   "manifeste": {
    "double": "fin",
    "cote": "gauche",
@@ -263,7 +293,7 @@
    "relu": true
   }
  },
- "papier/f11": "0e0f0cb3cabe0c3a185dc7cf09e7e9b5b80f1aff0aeadeded6b9f68b3495b2b4",
+ "papier/f11": "d08f7759ba432fb6e77e32fbbbafbc973e582cd483cf293e739ad2872ae4d1ae",
  "page/julie-gauche": {
   "cle": "e602da1cc3a3d24d711f6103e7281fc6aa802a28b2fcfce14d97e6066c9ad1aa",
   "manifeste": {
@@ -468,7 +498,7 @@
    "relu": true
   }
  },
- "papier/f15": "c0f51995b1a8ceb917939083651c3bcda615a94b2f4b30466693df27023a901a",
+ "papier/f15": "a18702a9c6b444129e6707d62b32380c51dffd1b00be4b57ad181b0f61b0a2a3",
  "page/mathis-gauche": {
   "cle": "84f4073b6e95100b7168e633ffdd9bc597ba12f89bd9f72e89a8c72f22241c2e",
   "manifeste": {
@@ -778,10 +808,10 @@
   }
  },
  "papier1x/f19": "03375a265a66fca0089e5c8685e306b1bb7270a83af820e915c7ac7d63bbec8d",
- "papier1x/f17": "06153f11634360ab2d2849fd44d415bc2082316f2601cf11fa31df9c926136e1",
+ "papier1x/f17": "835567172206d00252981c7f014854f60bf1642a02e75db8e52893d3aaf070a5",
  "papier1x/f13": "36c983695924c1fc06cd6f0b82acb2b7e2bf4f0e242bcfa63069b5b432e21930",
- "papier1x/f11": "0e0f0cb3cabe0c3a185dc7cf09e7e9b5b80f1aff0aeadeded6b9f68b3495b2b4",
- "papier1x/f15": "c0f51995b1a8ceb917939083651c3bcda615a94b2f4b30466693df27023a901a",
+ "papier1x/f11": "d08f7759ba432fb6e77e32fbbbafbc973e582cd483cf293e739ad2872ae4d1ae",
+ "papier1x/f15": "a18702a9c6b444129e6707d62b32380c51dffd1b00be4b57ad181b0f61b0a2a3",
  "pagination/lisa": {
   "cle": "b7853b8d7bba6c602fcdd25848484b6abe2c63365c22961b20a8b839ff9b14bd",
   "pages": {
@@ -1344,8 +1374,8 @@
    "lisa-gauche": 0.24
   }
  },
- "papier/f9": "46573638ea2468d2b33b385ef4237a8b34bda31741bd916d6732ad234ce7702a",
- "papier1x/f9": "46573638ea2468d2b33b385ef4237a8b34bda31741bd916d6732ad234ce7702a",
+ "papier/f9": "93f56c7e0aa20efd4e08e3a51c43c5e964d662f68f047041aecee4edbd9c6355",
+ "papier1x/f9": "93f56c7e0aa20efd4e08e3a51c43c5e964d662f68f047041aecee4edbd9c6355",
  "page/lisa-gauche": {
   "cle": "a4bc1d50f3aacdc5da6740a81f47b40f269da55ee89d4e4f9b9d1ebe6f907a1c",
   "manifeste": {
@@ -1957,7 +1987,7 @@
   }
  },
  "page/biscuits-gauche": {
-  "cle": "99da61f1d49e0abb53cd3dfb50caf0783147b18cf88a5e0e78cb890e9a92d4fd",
+  "cle": "45e49c21d6d65f20b055a817ad00cf12d9a2a20a0aefe61102d99c552c5a83c9",
   "manifeste": {
    "double": "biscuits",
    "cote": "gauche",
@@ -2012,9 +2042,78 @@
     ]
    },
    "texte": "",
-   "vivants": {},
+   "vivants": {
+    "aq-guirlande": [
+     0.12,
+     0.15,
+     0.76,
+     0.12
+    ],
+    "aq-orange": [
+     0.1,
+     0.38,
+     0.2,
+     0.127
+    ],
+    "aq-vanille": [
+     0.67,
+     0.34,
+     0.23,
+     0.187
+    ],
+    "aq-cupcake": [
+     0.31,
+     0.34,
+     0.38,
+     0.29
+    ],
+    "aq-pomme": [
+     0.08,
+     0.62,
+     0.3,
+     0.188
+    ],
+    "aq-noix": [
+     0.47,
+     0.7,
+     0.4,
+     0.111
+    ]
+   },
    "deborde": [],
    "lignes": 0,
+   "aquarelles": {
+    "aq-guirlande": {
+     "aquarelle": "guirlande",
+     "anime": "balance",
+     "angle": 0
+    },
+    "aq-orange": {
+     "aquarelle": "orange",
+     "anime": "fleurit",
+     "angle": -8
+    },
+    "aq-vanille": {
+     "aquarelle": "vanille",
+     "anime": "balance",
+     "angle": 6
+    },
+    "aq-cupcake": {
+     "aquarelle": "cupcake",
+     "anime": "fleurit",
+     "angle": -2
+    },
+    "aq-pomme": {
+     "aquarelle": "pomme-2",
+     "anime": "fleurit",
+     "angle": -5
+    },
+    "aq-noix": {
+     "aquarelle": "noix",
+     "anime": "fleurit",
+     "angle": 3
+    }
+   },
    "relu": true
   }
  },
@@ -2215,8 +2314,8 @@
    "relu": true
   }
  },
- "papier/f7": "42e67d62396f42049660c7d77bc147574b70be2a7a225292532b2b04a02d6397",
- "papier1x/f7": "42e67d62396f42049660c7d77bc147574b70be2a7a225292532b2b04a02d6397",
+ "papier/f7": "83e9a533f4b757e0c67ae50dd3a1a909db34ed6397b69688450950e6711ed889",
+ "papier1x/f7": "83e9a533f4b757e0c67ae50dd3a1a909db34ed6397b69688450950e6711ed889",
  "page/gateaux-droite": {
   "cle": "1d27ca800434c963d7efb87a744722de9f54292121ad399f62762210cf7ee78c",
   "manifeste": {
@@ -2294,7 +2393,7 @@
   }
  },
  "page/gateaux-gauche": {
-  "cle": "d73c4bdbc2012f09f02ce080b32208856ed38538b3a5e5cebe8fb67521fb8ff5",
+  "cle": "f212088a517e6e6e2ad98f2dc6d1a9f3c1279ee6877156106906e045fc725fda",
   "manifeste": {
    "double": "gateaux",
    "cote": "gauche",
@@ -2349,14 +2448,83 @@
     ]
    },
    "texte": "",
-   "vivants": {},
+   "vivants": {
+    "aq-guirlande": [
+     0.12,
+     0.15,
+     0.76,
+     0.12
+    ],
+    "aq-ble": [
+     0.12,
+     0.34,
+     0.15,
+     0.198
+    ],
+    "aq-oranges": [
+     0.73,
+     0.34,
+     0.15,
+     0.211
+    ],
+    "aq-cupcake": [
+     0.32,
+     0.31,
+     0.36,
+     0.37
+    ],
+    "aq-tasse": [
+     0.1,
+     0.645,
+     0.27,
+     0.18
+    ],
+    "aq-oeufs": [
+     0.65,
+     0.645,
+     0.25,
+     0.157
+    ]
+   },
    "deborde": [],
    "lignes": 0,
+   "aquarelles": {
+    "aq-guirlande": {
+     "aquarelle": "guirlande",
+     "anime": "balance",
+     "angle": 0
+    },
+    "aq-ble": {
+     "aquarelle": "ble",
+     "anime": "balance",
+     "angle": -8
+    },
+    "aq-oranges": {
+     "aquarelle": "orange-2",
+     "anime": "fleurit",
+     "angle": 6
+    },
+    "aq-cupcake": {
+     "aquarelle": "cupcake-bougie",
+     "anime": "fleurit",
+     "angle": 2
+    },
+    "aq-tasse": {
+     "aquarelle": "tasse-coeur",
+     "anime": "vapeur",
+     "angle": -3
+    },
+    "aq-oeufs": {
+     "aquarelle": "oeufs",
+     "anime": "fleurit",
+     "angle": 4
+    }
+   },
    "relu": true
   }
  },
  "page/sommaire": {
-  "cle": "5c3139867c7d0babaf19138e4aa238773c7ab5557d883bda3ff2bda2b2c275ec",
+  "cle": "e2bf797b0a53ee7439da369b4087bed310860f7c481245bc7d26e43d4237ba64",
   "manifeste": {
    "double": "sommaire",
    "cote": "droite",
@@ -2412,10 +2580,46 @@
    "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nJulie — Cake au citron, page 14\nBiscuits\nMamie Rose — Sablés, page 18\nMathis — cookies, page 20\nBernard — tarte aux pommes, page 22\nLe mot de la fin, page 24",
    "vivants": {
     "aq-tasse": [
-     0.64,
-     0.74,
-     0.22,
-     0.152
+     0.75,
+     0.045,
+     0.17,
+     0.117
+    ],
+    "vg-lisa": [
+     0.12045,
+     0.21368,
+     0.115,
+     0.082
+    ],
+    "vg-julie": [
+     0.12155,
+     0.29681,
+     0.115,
+     0.068
+    ],
+    "vg-rose": [
+     0.12167,
+     0.47005,
+     0.115,
+     0.068
+    ],
+    "vg-mathis": [
+     0.12956,
+     0.54697,
+     0.115,
+     0.068
+    ],
+    "vg-bernard": [
+     0.1219,
+     0.62011,
+     0.115,
+     0.068
+    ],
+    "vg-fin": [
+     0.12097,
+     0.69605,
+     0.115,
+     0.068
     ]
    },
    "deborde": [],
@@ -2424,9 +2628,9 @@
     {
      "cible": "gateaux",
      "rect": [
-      0.08925,
-      0.14194,
-      0.36723,
+      0.09611,
+      0.14011,
+      0.35641,
       0.0424
      ]
     },
@@ -2434,9 +2638,9 @@
      "cible": "lisa",
      "invite": "lisa",
      "rect": [
-      0.13298,
-      0.19134,
-      0.80391,
+      0.23606,
+      0.24009,
+      0.70199,
       0.02712
      ]
     },
@@ -2444,18 +2648,18 @@
      "cible": "julie",
      "invite": "julie",
      "rect": [
-      0.134,
-      0.22123,
-      0.80365,
+      0.23736,
+      0.31813,
+      0.70033,
       0.02712
      ]
     },
     {
      "cible": "biscuits",
      "rect": [
-      0.09332,
-      0.26887,
-      0.16832,
+      0.09262,
+      0.38678,
+      0.16843,
       0.0424
      ]
     },
@@ -2463,19 +2667,19 @@
      "cible": "rose",
      "invite": "rose",
      "rect": [
-      0.12365,
-      0.31438,
-      0.81269,
-      0.03209
+      0.2373,
+      0.4834,
+      0.69796,
+      0.03302
      ]
     },
     {
      "cible": "mathis",
      "invite": "mathis",
      "rect": [
-      0.1285,
-      0.34964,
-      0.80918,
+      0.24533,
+      0.5658,
+      0.6935,
       0.02712
      ]
     },
@@ -2483,19 +2687,19 @@
      "cible": "bernard",
      "invite": "bernard",
      "rect": [
-      0.12896,
-      0.3798,
-      0.8051,
-      0.02953
+      0.23826,
+      0.64059,
+      0.6952,
+      0.02712
      ]
     },
     {
      "cible": "fin",
      "rect": [
-      0.12975,
-      0.43533,
-      0.80515,
-      0.02727
+      0.23648,
+      0.71636,
+      0.70043,
+      0.02729
      ]
     }
    ],
@@ -2504,13 +2708,45 @@
      "aquarelle": "tasse-2",
      "anime": "vapeur",
      "angle": -4
+    },
+    "vg-lisa": {
+     "aquarelle": "carotte",
+     "anime": "balance",
+     "angle": -62
+    },
+    "vg-julie": {
+     "aquarelle": "citron-2",
+     "anime": "fleurit",
+     "angle": 4
+    },
+    "vg-rose": {
+     "aquarelle": "sables-etoiles",
+     "anime": "fleurit",
+     "angle": -5
+    },
+    "vg-mathis": {
+     "aquarelle": "cookies",
+     "anime": "fleurit",
+     "angle": 3
+    },
+    "vg-bernard": {
+     "aquarelle": "tarte-pommes",
+     "anime": "fleurit",
+     "angle": -3
+    },
+    "vg-fin": {
+     "aquarelle": "theiere",
+     "anime": "vapeur",
+     "angle": 2
     }
    },
    "douteux": [
-    "Rose (encre rendue lue « rose »)"
+    "Rose (encre rendue lue « rose »)",
+    "pommes (encre rendue lue « p ommes »)"
    ],
    "douteux_importants": [
-    "Rose"
+    "Rose",
+    "pommes"
    ],
    "relu": true
   }
@@ -2933,8 +3169,8 @@
    "relu": true
   }
  },
- "papier/f23": "2b5c03f54a90b1f28cc8ef73e2265c98c2992967e4333f64d982297fbd17f199",
- "papier1x/f23": "2b5c03f54a90b1f28cc8ef73e2265c98c2992967e4333f64d982297fbd17f199",
+ "papier/f23": "20d735a4e48e57a46db74e02e3ce7e91a8422f2f306d560077a314998a726389",
+ "papier1x/f23": "20d735a4e48e57a46db74e02e3ce7e91a8422f2f306d560077a314998a726389",
  "papier/f21": "ab9835c69506f98e1e4f19ba0f445b80e4dedf1124fa177802d76844a36dfc42",
  "papier1x/f21": "ab9835c69506f98e1e4f19ba0f445b80e4dedf1124fa177802d76844a36dfc42",
  "pagination/bernard": {
@@ -3732,8 +3968,8 @@
    "bernard-feuillet-recto": 1.45
   }
  },
- "papier/f25": "005beb0f1514130eaeb6d92cb63b13e7d3b8485e1204a2e8bbaaf2d2ab7c8f69",
- "papier1x/f25": "005beb0f1514130eaeb6d92cb63b13e7d3b8485e1204a2e8bbaaf2d2ab7c8f69",
+ "papier/f25": "e54408fe7bb02318799bcffa5e474f795b36618c696a2ad450a50747ca8aa4b0",
+ "papier1x/f25": "e54408fe7bb02318799bcffa5e474f795b36618c696a2ad450a50747ca8aa4b0",
  "page/bernard-gauche": {
   "cle": "253e5fab8cd821bc49f0fb4d4a0ad68ca39e2209a3cbd28acee5646b9d0982a2",
   "manifeste": {
