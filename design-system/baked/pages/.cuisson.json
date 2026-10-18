@@ -2147,12 +2147,12 @@
    "relu": true
   }
  },
- "papier/f3": "5917ae493f21534c92c148751bc8548b1d395f21fb268dc94b6e9094a5cb82d4",
- "papier1x/f3": "5917ae493f21534c92c148751bc8548b1d395f21fb268dc94b6e9094a5cb82d4",
+ "papier/f3": "0277e8a272b3ace021756d18aceaa103c1b506cc564acbef78e25bbf914946d7",
+ "papier1x/f3": "0277e8a272b3ace021756d18aceaa103c1b506cc564acbef78e25bbf914946d7",
  "papier/f5": "85fbb5527dd5e7c3da73c23d559d804d55c0126de6df3e7fc5bd1bacd72da223",
  "papier1x/f5": "85fbb5527dd5e7c3da73c23d559d804d55c0126de6df3e7fc5bd1bacd72da223",
  "page/dedicace": {
-  "cle": "7d172c63011f93dbea6d47eeafef8be0b262313fe1f8338bab658ff843d22291",
+  "cle": "6a1f26f41bbf2147bd5479af4496d2b227cc3b4af1f86aa3cad69a92791ae3ef",
   "manifeste": {
    "double": "sommaire",
    "cote": "gauche",
@@ -2205,23 +2205,42 @@
      ]
     ]
    },
-   "texte": "Pour Cécile, un goûter par page, de la part de ceux qui t'aiment.",
-   "vivants": {},
+   "texte": "Joyeux anniversaire, Cécile ! Pour tes trente ans, un goûter par page,\nde la part de ceux qui t'aiment.",
+   "vivants": {
+    "aq-theiere": [
+     0.04,
+     0.7206,
+     0.44,
+     0.1944
+    ],
+    "aq-gateau": [
+     0.42,
+     0.5667,
+     0.48,
+     0.3483
+    ],
+    "aq-cupcake": [
+     0.805,
+     0.815,
+     0.13,
+     0.1
+    ]
+   },
    "deborde": [],
    "lignes": 0,
-   "croquis": [
-    {
-     "nom": "fleur",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.4105,
-      0.4952,
-      0.17,
-      0.1204
-     ]
+   "aquarelles": {
+    "aq-theiere": {
+     "aquarelle": "theiere",
+     "anime": "vapeur"
+    },
+    "aq-gateau": {
+     "aquarelle": "gateau-bougies"
+    },
+    "aq-cupcake": {
+     "aquarelle": "cupcake",
+     "angle": 3
     }
-   ],
+   },
    "relu": true
   }
  },
@@ -2247,10 +2266,10 @@
    "relu": true
   }
  },
- "papier/garde-uni": "2795245573a7e3d5ddeb4e9bc971730b46c131fd7899615a07fbf8f57f8320c2",
- "papier1x/garde-uni": "2795245573a7e3d5ddeb4e9bc971730b46c131fd7899615a07fbf8f57f8320c2",
+ "papier/garde-uni": "f95351f4c0a79f023e7dc707eb2fe445799335a3b26efba9a6dcbc0bdeea4344",
+ "papier1x/garde-uni": "f95351f4c0a79f023e7dc707eb2fe445799335a3b26efba9a6dcbc0bdeea4344",
  "page/garde": {
-  "cle": "9937087379445bb83e433543525541d17f1637e8b07717d30b29a74895f9f877",
+  "cle": "e1b6d69360cb885a4ef1fffae42ff06edfcaecc7b7c5de2ed6d094d940f75877",
   "manifeste": {
    "double": "titre",
    "cote": "gauche",
@@ -2305,15 +2324,28 @@
      ]
     ]
    },
-   "texte": "Ce carnet appartient à Cécile",
+   "texte": "Ex-libris\nCe carnet appartient à Cécile\noffert pour ses trente ans",
    "vivants": {},
    "deborde": [],
    "lignes": 0,
+   "croquis": [
+    {
+     "nom": "fanions",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.2015,
+      0.1486,
+      0.6,
+      0.0779
+     ]
+    }
+   ],
    "relu": true
   }
  },
- "papier/f7": "83e9a533f4b757e0c67ae50dd3a1a909db34ed6397b69688450950e6711ed889",
- "papier1x/f7": "83e9a533f4b757e0c67ae50dd3a1a909db34ed6397b69688450950e6711ed889",
+ "papier/f7": "5941300ada2e4090d95ffa8a095e1ff015a98ea27a8384e7e4dbc2b5c003ce3d",
+ "papier1x/f7": "5941300ada2e4090d95ffa8a095e1ff015a98ea27a8384e7e4dbc2b5c003ce3d",
  "page/gateaux-droite": {
   "cle": "1d27ca800434c963d7efb87a744722de9f54292121ad399f62762210cf7ee78c",
   "manifeste": {
@@ -2750,7 +2782,7 @@
   }
  },
  "page/titre": {
-  "cle": "01958528c811f4f4f5faa271f383a6e22bb578639eb9ee7a631b44cea60144c1",
+  "cle": "5ab05b9a661a062c78c844b7761d971374cf47b79b08959dfb99eaa1ddd35b7b",
   "manifeste": {
    "double": "titre",
    "cote": "droite",
@@ -2804,23 +2836,34 @@
      ]
     ]
    },
-   "texte": "recettes de goûter partagées par celles et ceux qui l'aiment\nLes goûters\nde Cécile",
-   "vivants": {
-    "aq-theiere": [
-     0.17,
-     0.6,
-     0.66,
-     0.292
-    ]
-   },
+   "texte": "carnet des trente ans\nrecettes de goûter partagées par celles et ceux qui l'aiment\nLes goûters\nde Cécile",
+   "vivants": {},
    "deborde": [],
    "lignes": 2,
-   "aquarelles": {
-    "aq-theiere": {
-     "aquarelle": "theiere",
-     "anime": "vapeur"
+   "croquis": [
+    {
+     "nom": "fanions",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.0798,
+      0.031,
+      0.84,
+      0.1204
+     ]
+    },
+    {
+     "nom": "gateau-bougies",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.2987,
+      0.6495,
+      0.4,
+      0.2833
+     ]
     }
-   },
+   ],
    "douteux": [
     "Cécile (encre rendue lue « Cecile »)"
    ],

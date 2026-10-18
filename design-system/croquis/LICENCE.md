@@ -79,7 +79,8 @@ téléchargés restent dans `verification/out/c/quickdraw/` (non versionné). Ch
 Les variantes `m*` (`ma`, `mb`, `mc`) sont des dessins originaux du projet, tracés à main levée en
 coordonnées par le lot C (`scripts/croquis/maison.py`) pour ce que Quick, Draw! n'a pas (œuf, citron,
 farine, sucre, huile, beurre, noix, vanille, cannelle, muscade, fouet, moule, cupcake, part de carrot
-cake, lunettes de soleil, sachet de levure, 😎). Licence : celle du projet.
+cake, lunettes de soleil, sachet de levure, 😎 ; pour les trente ans de Cécile : gâteau à bougies, guirlande
+de fanions). Licence : celle du projet.
 
 | Fichier | Usage | Traits |
 |---|---|---|
@@ -94,10 +95,14 @@ cake, lunettes de soleil, sachet de levure, 😎). Licence : celle du projet.
 | `cupcake/ma.json` | tous | 8 |
 | `cupcake/mb.json` | dessin | 10 |
 | `cupcake/mc.json` | icone | 4 |
+| `fanions/ma.json` | dessin | 12 |
+| `fanions/mb.json` | dessin | 8 |
 | `farine/ma.json` | tous | 7 |
 | `farine/mb.json` | dessin | 7 |
 | `fouet/ma.json` | tous | 4 |
 | `fouet/mb.json` | dessin | 5 |
+| `gateau-bougies/ma.json` | dessin | 12 |
+| `gateau-bougies/mb.json` | dessin | 13 |
 | `huile/ma.json` | tous | 5 |
 | `huile/mb.json` | dessin | 6 |
 | `levure/ma.json` | tous | 5 |

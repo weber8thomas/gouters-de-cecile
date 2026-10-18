@@ -257,7 +257,7 @@
    "eviter_texte": true
   }
  },
- "_gardes": "Papiers de garde (contre-plats : page `garde`, folio 2, et page `garde-arriere`) : feuillets.feuillet avec `genre` uni (pâte d'un scan, épaissie et teintée vers `ton`) ou marbre (photo d'un papier marbré ancien, `aplanir` l'éclairage, `saturation`, `eclaircir` vers `fond`). Image dans l'orientation d'un recto : la page `garde` (à gauche) la prend en miroir (description : \"papier\": \"garde-uni\", \"papier_miroir\": true) ; `garde-arriere` (à droite) prend `garde-uni-arriere` sans miroir (même papier, autre feuille). CHOIX RETENU : garde-uni (gris-vert passé), avec une couverture de toile ancienne : calme, l'ex-libris au crayon reste lisible ; garde-marbre reste disponible (couverture en carton marbré).",
+ "_gardes": "Papiers de garde (contre-plats : page `garde`, folio 2, et page `garde-arriere`) : feuillets.feuillet avec `genre` uni (pâte d'un scan, épaissie et teintée vers `ton`) ou marbre (photo d'un papier marbré ancien, `aplanir` l'éclairage, `saturation`, `eclaircir` vers `fond`). Image dans l'orientation d'un recto : la page `garde` (à gauche) la prend en miroir (description : \"papier\": \"garde-uni\", \"papier_miroir\": true) ; `garde-arriere` (à droite) prend `garde-uni-arriere` sans miroir (même papier, autre feuille). CHOIX RETENU : garde-uni (crème chaud, accordé aux pages : ton 236/224/198), avec une couverture de toile ancienne : calme, l'ex-libris au crayon reste lisible ; garde-marbre reste disponible (couverture en carton marbré).",
  "gardes": {
   "garde-uni": {
    "genre": "uni",
@@ -267,9 +267,9 @@
    "y": 0.62,
    "rotation": 0,
    "ton": [
-    205,
-    203,
-    186
+    236,
+    224,
+    198
    ],
    "grain": 0.7,
    "marbrure": 2.2,
@@ -318,9 +318,9 @@
    "y": 0.18,
    "rotation": 180,
    "ton": [
-    205,
-    203,
-    186
+    236,
+    224,
+    198
    ],
    "grain": 0.7,
    "marbrure": 2.2,

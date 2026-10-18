@@ -977,23 +977,42 @@
      ]
     ]
    },
-   "texte": "Pour Cécile, un goûter par page, de la part de ceux qui t'aiment.",
-   "vivants": {},
+   "texte": "Joyeux anniversaire, Cécile ! Pour tes trente ans, un goûter par page,\nde la part de ceux qui t'aiment.",
+   "vivants": {
+    "aq-theiere": [
+     0.04,
+     0.7206,
+     0.44,
+     0.1944
+    ],
+    "aq-gateau": [
+     0.42,
+     0.5667,
+     0.48,
+     0.3483
+    ],
+    "aq-cupcake": [
+     0.805,
+     0.815,
+     0.13,
+     0.1
+    ]
+   },
    "deborde": [],
    "lignes": 0,
-   "croquis": [
-    {
-     "nom": "fleur",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.4105,
-      0.4952,
-      0.17,
-      0.1204
-     ]
+   "aquarelles": {
+    "aq-theiere": {
+     "aquarelle": "theiere",
+     "anime": "vapeur"
+    },
+    "aq-gateau": {
+     "aquarelle": "gateau-bougies"
+    },
+    "aq-cupcake": {
+     "aquarelle": "cupcake",
+     "angle": 3
     }
-   ],
+   },
    "relu": true
   },
   "fin-droite": {
@@ -1219,10 +1238,23 @@
      ]
     ]
    },
-   "texte": "Ce carnet appartient à Cécile",
+   "texte": "Ex-libris\nCe carnet appartient à Cécile\noffert pour ses trente ans",
    "vivants": {},
    "deborde": [],
    "lignes": 0,
+   "croquis": [
+    {
+     "nom": "fanions",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.2015,
+      0.1486,
+      0.6,
+      0.0779
+     ]
+    }
+   ],
    "relu": true
   },
   "gateaux-droite": {
@@ -3144,23 +3176,34 @@
      ]
     ]
    },
-   "texte": "recettes de goûter partagées par celles et ceux qui l'aiment\nLes goûters\nde Cécile",
-   "vivants": {
-    "aq-theiere": [
-     0.17,
-     0.6,
-     0.66,
-     0.292
-    ]
-   },
+   "texte": "carnet des trente ans\nrecettes de goûter partagées par celles et ceux qui l'aiment\nLes goûters\nde Cécile",
+   "vivants": {},
    "deborde": [],
    "lignes": 2,
-   "aquarelles": {
-    "aq-theiere": {
-     "aquarelle": "theiere",
-     "anime": "vapeur"
+   "croquis": [
+    {
+     "nom": "fanions",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.0798,
+      0.031,
+      0.84,
+      0.1204
+     ]
+    },
+    {
+     "nom": "gateau-bougies",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.2987,
+      0.6495,
+      0.4,
+      0.2833
+     ]
     }
-   },
+   ],
    "douteux": [
     "Cécile (encre rendue lue « Cecile »)"
    ],

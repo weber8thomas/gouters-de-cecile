@@ -552,7 +552,86 @@ def levure(m: Main, v: str):
     return traits, lavis, "tous"
 
 
+def gateau_bougies(m: Main, v: str):
+    """Gâteau d'anniversaire (le carnet est offert pour les trente ans de Cécile) : a, sur un plat à
+    pied, trois bougies allumées ; b, plus simple, à plat, cinq bougies."""
+    m.coins = 0.02
+    if v == "a":
+        dessus = m.boucle(0.5, 0.47, 0.33, 0.065, depart=185, tour=1.04, n=16, irr=0.02)
+        corps = m.ligne([0.17, 0.48], [0.18, 0.79], [0.5, 0.83], [0.82, 0.79], [0.83, 0.47])
+        glacage = m.festons(0.18, 0.52, 0.82, 0.52, 6, 0.045, vers=1)
+        couche = m.ligne([0.19, 0.66], [0.5, 0.69], [0.81, 0.66])
+        m.coins = 0.0
+        plat = m.ligne([0.04, 0.8], [0.2, 0.86], [0.5, 0.88], [0.8, 0.86], [0.96, 0.8])
+        pied = m.ligne([0.43, 0.88], [0.45, 0.95], [0.36, 0.985], [0.64, 0.985], [0.55, 0.95], [0.57, 0.88])
+        bougies, flammes = [], []
+        for x, haut in ((0.33, 0.24), (0.5, 0.2), (0.67, 0.25)):
+            bougies.append(m.ligne([x - 0.022, 0.47], [x - 0.02, haut], [x + 0.022, haut + 0.005], [x + 0.023, 0.47], coins=0.008))
+            flammes.append(m.boucle(x, haut - 0.065, 0.024, 0.042, depart=90, tour=1.02, n=12, irr=0.05, pointe=(-90, 0.7)))
+        traits = [dessus, corps, glacage, couche, plat, pied, *bougies, *flammes]
+        lavis = [{"teinte": "rose", "mode": "polygone",
+                  "points": [[0.18, 0.5], [0.82, 0.5], [0.82, 0.79], [0.5, 0.83], [0.18, 0.79]], "couverture": 0.72},
+                 {"teinte": "mie", "traits": [0], "mode": "remplir", "couverture": 0.6, "densite": 0.8, "reflet": False},
+                 {"teinte": "bleu", "traits": [4, 5], "mode": "remplir", "couverture": 0.55, "densite": 0.7, "reflet": False},
+                 {"teinte": "bleu", "traits": [6, 7, 8], "mode": "trait", "largeur": 0.04, "couverture": 0.9, "reflet": False},
+                 {"teinte": "miel", "traits": [9, 10, 11], "mode": "remplir", "couverture": 0.95, "densite": 1.15,
+                  "decalage": 0.5, "reflet": False}]
+        return traits, lavis, "dessin"
+    # b : à plat, cinq bougies un peu de travers
+    dessus = m.ligne([0.1, 0.5], [0.5, 0.46], [0.9, 0.5])
+    corps = m.ligne([0.1, 0.5], [0.11, 0.86], [0.5, 0.9], [0.89, 0.86], [0.9, 0.5])
+    glacage = m.festons(0.11, 0.55, 0.89, 0.55, 7, 0.04, vers=1)
+    bougies, flammes = [], []
+    for k, x in enumerate((0.22, 0.36, 0.5, 0.64, 0.78)):
+        haut = 0.27 + 0.03 * ((k * 37) % 3) / 2
+        bougies.append(m.ligne([x - 0.018, 0.48], [x - 0.016, haut], [x + 0.018, haut], [x + 0.02, 0.48], coins=0.006))
+        flammes.append(m.boucle(x, haut - 0.055, 0.02, 0.036, depart=90, tour=1.02, n=10, irr=0.05, pointe=(-90, 0.7)))
+    traits = [dessus, corps, glacage, *bougies, *flammes]
+    lavis = [{"teinte": "rose", "traits": [1], "mode": "remplir", "couverture": 0.72},
+             {"teinte": "bleu", "traits": [3, 4, 5, 6, 7], "mode": "trait", "largeur": 0.035, "couverture": 0.9, "reflet": False},
+             {"teinte": "miel", "traits": [8, 9, 10, 11, 12], "mode": "remplir", "couverture": 0.95, "densite": 1.15,
+              "decalage": 0.5, "reflet": False}]
+    return traits, lavis, "dessin"
+
+
+def fanions(m: Main, v: str):
+    """Guirlande de fanions de papier (page de titre d'un carnet d'anniversaire) : a, deux festons
+    accrochés au milieu ; b, un seul feston. La ficelle d'abord, puis chaque fanion d'un geste en V
+    sous la ficelle (elle en fait le haut) ; un lavis de couleur par fanion, posé sur sa forme."""
+    m.coins = 0.006
+    if v == "a":
+        attaches = [(0.0, 0.012), (0.5, 0.0), (1.0, 0.014)]
+        fleche, n_par, long0 = 0.05, 5, 0.1
+    else:
+        attaches = [(0.0, 0.0), (1.0, 0.004)]
+        fleche, n_par, long0 = 0.07, 7, 0.1
+    couleurs = ["fraise", "miel", "bleu", "rose", "sauge"]
+    ficelles, drapeaux, lavis = [], [], []
+    k = 0
+    for (xa, ya), (xb, yb) in zip(attaches, attaches[1:]):
+        def corde(t, xa=xa, ya=ya, xb=xb, yb=yb):  # chaînette approchée : parabole
+            return xa + (xb - xa) * t, ya + (yb - ya) * t + 4 * fleche * t * (1 - t)
+        ficelles.append(m.ligne(*[corde(t) for t in np.linspace(-0.012, 1.012, 11)], coins=0.0))
+        for i in range(n_par):
+            t0 = (i + 0.12) / n_par
+            t1 = (i + 0.88) / n_par
+            (x0, y0), (x1, y1) = corde(t0), corde(t1)
+            xm, ym = corde((t0 + t1) / 2)
+            # le fanion pend sous la ficelle, à peine tourné par la pente
+            pente = (y1 - y0) / max(x1 - x0, 1e-6)
+            long = long0 * m.rng.uniform(0.94, 1.06)
+            apex = (xm + 0.3 * pente * long + m.rng.normal(0, 0.003), ym + long)
+            drapeaux.append(m.ligne([x0, y0 + 0.003], apex, [x1, y1 + 0.003]))
+            lavis.append({"teinte": couleurs[k % len(couleurs)], "mode": "polygone",
+                          "points": [[x0 + 0.004, y0 + 0.004], [apex[0], apex[1] - 0.004], [x1 - 0.004, y1 + 0.004]],
+                          "couverture": 0.92, "densite": 0.9, "decalage": 0.0, "reflet": False})
+            k += 1
+    return [*ficelles, *drapeaux], lavis, "dessin"
+
+
 CROQUIS_MAISON = {
+    "gateau-bougies": (gateau_bougies, "ab"),
+    "fanions": (fanions, "ab"),
     "cupcake": (cupcake, "abc"),
     "lunettes-soleil": (lunettes_soleil, "ab"),
     "oeuf": (oeuf, "ab"),

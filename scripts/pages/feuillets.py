@@ -133,7 +133,7 @@ def _base_uni(cfg, larg, haut, sources_dir, echelle, fp):
     lisse = flou(a, _r(1.4, echelle))
     a = lisse + (a - lisse) * float(cfg.get("grain", 0.7))
     cible = np.array(cfg.get("ton", [214, 212, 190]), np.float32)
-    moy = a.reshape(-1, 3).mean(0)
+    moy = a.reshape(-1, 3).mean(0, dtype=np.float64).astype(np.float32)
     a = a + (cible - moy) * float(cfg.get("ton_force", 0.92))
     a += np.array(cfg.get("teinte", [0, 0, 0]), np.float32)
     a = _usure_bords(a, cfg, rng, larg, haut, echelle, fp, defaut=(0.035, 0.03, 0.035, 0.02))
@@ -904,7 +904,7 @@ def cahier(cfg: dict, larg: int, haut: int, sources_dir, face: str = "recto", ec
     lisse = flou(a, _r(1.2, echelle))
     a = lisse + (a - lisse) * float(cfg.get("grain", 0.55))
     cible = np.array(cfg.get("ton", [242, 236, 219]), np.float32)
-    moy = a.reshape(-1, 3).mean(0)
+    moy = a.reshape(-1, 3).mean(0, dtype=np.float64).astype(np.float32)
     a = a + (cible - moy) * 0.85
     rng = np.random.default_rng(int(cfg.get("graine", 3)) + (101 if face == "recto" else 202))
     g_face = grille_cahier(cfg, larg / echelle, haut / echelle, face)

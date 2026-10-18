@@ -1,7 +1,7 @@
 {
  "_": "Écrit par scripts/pages/couverture.py (lot C). Noms logiques d'assetUrl() (design-system/baked/…). Rectangles en fractions du plat [x, y, largeur, hauteur]. Plat de référence : 868 × 1222 px (page 850 × 1200 + débords du carton 18 / 6 / 16), cuit à 2× (et 1×).",
  "version": 1,
- "active": "a",
+ "active": "d",
  "plat": [
   878,
   1238
@@ -11,45 +11,45 @@
  "epaisseur": 10,
  "titre": "Les goûters de Cécile",
  "variantes": {
-  "a": {
-   "nom": "Toile vert sauge, étiquette collée",
-   "description": "Toile de reliure vert sauge (vraie toile 1899, passée et frottée), étiquette en papier ancien collée, cadre imprimé terracotta, titre à la plume (main du carnet) et une théière au crayon et à l'aquarelle.",
+  "d": {
+   "nom": "Toile vert sauge, étiquette des trente ans (encre dorée)",
+   "description": "La toile vert sauge de « a » ; l'étiquette, un peu plus haute, porte sous le titre « pour ses trente ans » écrit à l'encre dorée, et un gâteau à bougies au crayon et à l'aquarelle à la place de la théière.",
    "parties": {
     "plat": {
      "w": 1756,
      "h": 2476,
-     "ko": 592.8,
-     "ko1x": 268.4
+     "ko": 597.5,
+     "ko1x": 271.3
     },
     "arriere": {
      "w": 1756,
      "h": 2476,
-     "ko": 612.6,
-     "ko1x": 278.3
+     "ko": 611.7,
+     "ko1x": 277.9
     },
     "plat-arriere": {
      "w": 1756,
      "h": 2476,
-     "ko": 622.5,
-     "ko1x": 280.8
+     "ko": 619.0,
+     "ko1x": 280.3
     },
     "contreplat": {
      "w": 1756,
      "h": 2476,
-     "ko": 136.7,
-     "ko1x": 41.3
+     "ko": 142.2,
+     "ko1x": 44.1
     },
     "contreplat-arriere": {
      "w": 1756,
      "h": 2476,
-     "ko": 134.1,
-     "ko1x": 39.8
+     "ko": 138.6,
+     "ko1x": 42.7
     },
     "dos": {
      "w": 142,
      "h": 2476,
-     "ko": 81.4,
-     "ko1x": 33.2
+     "ko": 81.5,
+     "ko1x": 33.4
     },
     "chant": {
      "w": 20,
@@ -60,20 +60,20 @@
     "tranche": {
      "w": 80,
      "h": 2400,
-     "ko": 4.2,
-     "ko1x": 1.2
+     "ko": 3.5,
+     "ko1x": 1.3
     },
     "tranche-pied": {
      "w": 1700,
      "h": 80,
-     "ko": 2.7,
-     "ko1x": 1.1
+     "ko": 3.0,
+     "ko1x": 1.2
     },
     "etiquette": {
-     "w": 1078,
-     "h": 604,
-     "ko": 92.8,
-     "ko1x": 33.4
+     "w": 1080,
+     "h": 712,
+     "ko": 110.9,
+     "ko1x": 38.4
     }
    },
    "teinte": "#6e876b",
@@ -88,13 +88,13 @@
     }
    },
    "garde": "papiers.json:garde-uni",
-   "teinte_garde": "#c9d5b8",
+   "teinte_garde": "#eee1c7",
    "etiquette": {
     "rect": [
-     0.22305,
-     0.21303,
-     0.6139,
-     0.24394
+     0.22248,
+     0.20122,
+     0.61503,
+     0.28756
     ],
     "angle": 1.3,
     "douteux": []
@@ -102,6 +102,11 @@
   }
  },
  "comparees": {
+  "a": {
+   "nom": "Toile vert sauge, étiquette collée",
+   "description": "Toile de reliure vert sauge (vraie toile 1899, passée et frottée), étiquette en papier ancien collée, cadre imprimé terracotta, titre à la plume (main du carnet) et une théière au crayon et à l'aquarelle.",
+   "dossier": "verification/out/v4-c/variantes/couverture/a"
+  },
   "b": {
    "nom": "Carton marbré, dos et coins toilés",
    "description": "Demi-reliure : vrai papier marbré peigné (1843) sur le carton, dos et coins de toile verte, étiquette en papier ancien (cadre bleu), titre à la plume et un cupcake.",
@@ -111,6 +116,16 @@
    "nom": "Toile bleu passé, titre au feutre peinture",
    "description": "Toile bleu passé (vraie toile 1894), le titre écrit directement sur la toile au feutre peinture crème, dans la main de Cécile, avec un petit cupcake au même feutre.",
    "dossier": "verification/out/v4-c/variantes/couverture/c"
+  },
+  "e": {
+   "nom": "Toile vert sauge, médaillon doré « 30 ans »",
+   "description": "La toile vert sauge et l'étiquette de « a » (titre à la plume, théière) ; sous l'étiquette, un médaillon « 30 ans » doré à chaud dans la toile (double filet, comme celui de la 4e de couverture).",
+   "dossier": "verification/out/v4-c/variantes/couverture/e"
+  },
+  "f": {
+   "nom": "Toile vert sauge, cachet de cire et ruban",
+   "description": "La toile vert sauge de « a » ; l'étiquette porte sous le titre « pour ses trente ans » à l'encre terracotta, et, sur son coin bas droit, un cachet de cire rouge « 30 » qui retient deux pans de ruban de satin ivoire.",
+   "dossier": "verification/out/v4-c/variantes/couverture/f"
   }
  },
  "indices": {

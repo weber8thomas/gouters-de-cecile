@@ -167,6 +167,14 @@
     "bytes": 2454,
     "type": "image/webp"
   },
+  "aquarelles/gateau-bougies": {
+    "file": "baked/aquarelles/gateau-bougies.webp",
+    "sha": "d37cffa4523233f8dd06b218d068ca219a2438f68c0996f35a47036a20b568e8",
+    "w": 781,
+    "h": 800,
+    "bytes": 297448,
+    "type": "image/webp"
+  },
   "aquarelles/gateau": {
     "file": "baked/aquarelles/gateau.webp",
     "sha": "e58dea90af762291abd3da3f2f141d4a7b0d0ad201299887b622ea276261b5ab",
@@ -455,6 +463,14 @@
     "bytes": 51646,
     "type": "image/webp"
   },
+  "aquarelles/trace/gateau-bougies": {
+    "file": "baked/aquarelles/trace/gateau-bougies.webp",
+    "sha": "69ddaed2b61c72c3de2987d081b702994d7cf4750f3159915dcd069b9565a927",
+    "w": 781,
+    "h": 800,
+    "bytes": 83142,
+    "type": "image/webp"
+  },
   "aquarelles/trace/gateau": {
     "file": "baked/aquarelles/trace/gateau.webp",
     "sha": "5f7654ada8e768de31f3057c37db1bfcaad6a3f4b0e86f4da574b047aff27f32",
@@ -615,164 +631,164 @@
     "bytes": 15478,
     "type": "image/webp"
   },
-  "couverture/a/1x/arriere": {
-    "file": "baked/couverture/a/1x/arriere.webp",
-    "sha": "d532d365825558814143ad577da223b001eeb8f763cb066551a1eb6b689897a1",
+  "couverture/d/1x/arriere": {
+    "file": "baked/couverture/d/1x/arriere.webp",
+    "sha": "99a9b8840876845f7d51dd0c1b7f32c7916ec3d5db9795906615dd79d4d38b68",
     "w": 878,
     "h": 1238,
-    "bytes": 284972,
+    "bytes": 284608,
     "type": "image/webp"
   },
-  "couverture/a/1x/chant": {
-    "file": "baked/couverture/a/1x/chant.webp",
-    "sha": "6c10d9948ff053fc151452b5ed89a1aaf365a2202da95f7dc119d12392294969",
+  "couverture/d/1x/chant": {
+    "file": "baked/couverture/d/1x/chant.webp",
+    "sha": "6e387929d72aa6fec62deb171e20d79d4bbccbffb695a3b8860b3571eda4c3e5",
     "w": 10,
     "h": 1238,
-    "bytes": 6568,
+    "bytes": 6558,
     "type": "image/webp"
   },
-  "couverture/a/1x/contreplat-arriere": {
-    "file": "baked/couverture/a/1x/contreplat-arriere.webp",
-    "sha": "7c22024a7a3c82f5f426725009e2dd243a34c1bfb2e04e32b7e090472f265b7a",
+  "couverture/d/1x/contreplat-arriere": {
+    "file": "baked/couverture/d/1x/contreplat-arriere.webp",
+    "sha": "9eb06e23c8677c2ede29ddefad950bdc617d0f3c3c7d86c88851086a102e3c99",
     "w": 878,
     "h": 1238,
-    "bytes": 40772,
+    "bytes": 43698,
     "type": "image/webp"
   },
-  "couverture/a/1x/contreplat": {
-    "file": "baked/couverture/a/1x/contreplat.webp",
-    "sha": "ea9bd8484a7c9e8a3d99b03171219878515acf92da57789afae6a8b836a64c44",
+  "couverture/d/1x/contreplat": {
+    "file": "baked/couverture/d/1x/contreplat.webp",
+    "sha": "a352ff201c112c3df4d8a691d6c7e9181bc8d58bca1139da6951b4029ca637bb",
     "w": 878,
     "h": 1238,
-    "bytes": 42278,
+    "bytes": 45206,
     "type": "image/webp"
   },
-  "couverture/a/1x/dos": {
-    "file": "baked/couverture/a/1x/dos.webp",
-    "sha": "2175cce8396cb7253ebb157a98319d6437cf3bace01f1a3d4543b76bbe90fd4f",
+  "couverture/d/1x/dos": {
+    "file": "baked/couverture/d/1x/dos.webp",
+    "sha": "7c0967db786f769d7201acfa315d7ced78781d6b308b03d0ec8e81449cd5b6a8",
     "w": 71,
     "h": 1238,
-    "bytes": 33986,
+    "bytes": 34176,
     "type": "image/webp"
   },
-  "couverture/a/1x/etiquette": {
-    "file": "baked/couverture/a/1x/etiquette.webp",
-    "sha": "bc3951f78d1ba00d4acccfec6dbf4387a33191e21303f518320504bd2f012b56",
-    "w": 539,
-    "h": 302,
-    "bytes": 34194,
+  "couverture/d/1x/etiquette": {
+    "file": "baked/couverture/d/1x/etiquette.webp",
+    "sha": "17c58d8bc58fa9daadb8b68e501bb39354789198ef8c7e9f72f2464ef7695891",
+    "w": 540,
+    "h": 356,
+    "bytes": 39344,
     "type": "image/webp"
   },
-  "couverture/a/1x/plat-arriere": {
-    "file": "baked/couverture/a/1x/plat-arriere.webp",
-    "sha": "92f2c057f9e7194fb629b8dba9762242ab5fbffe7141d84f02f68abee1e88552",
+  "couverture/d/1x/plat-arriere": {
+    "file": "baked/couverture/d/1x/plat-arriere.webp",
+    "sha": "3e99dcfb3834e82c3874e7bfe318f9c806b3859f8f8fd0cb98e276fb846b8d4a",
     "w": 878,
     "h": 1238,
-    "bytes": 287534,
+    "bytes": 287068,
     "type": "image/webp"
   },
-  "couverture/a/1x/plat": {
-    "file": "baked/couverture/a/1x/plat.webp",
-    "sha": "e58247fcce685de07d3b3bc6d7d7fa1343c1b119fd90007b2508d209f8416f98",
+  "couverture/d/1x/plat": {
+    "file": "baked/couverture/d/1x/plat.webp",
+    "sha": "0ad6cec649eafd730c2c7da3720d6b5f6d0234d35fec7ce78b6de29bda4f4284",
     "w": 878,
     "h": 1238,
-    "bytes": 274890,
+    "bytes": 277850,
     "type": "image/webp"
   },
-  "couverture/a/1x/tranche-pied": {
-    "file": "baked/couverture/a/1x/tranche-pied.webp",
-    "sha": "3d7a44db02b577007c4fe6b303f82c4c6d96bb40a72924190f712b1e23f76dda",
+  "couverture/d/1x/tranche-pied": {
+    "file": "baked/couverture/d/1x/tranche-pied.webp",
+    "sha": "1ce793995bafeb08fc8387f817af1caec75499935177712f11aa9be8018fe3df",
     "w": 850,
     "h": 40,
-    "bytes": 1140,
+    "bytes": 1262,
     "type": "image/webp"
   },
-  "couverture/a/1x/tranche": {
-    "file": "baked/couverture/a/1x/tranche.webp",
-    "sha": "2ed3b2817538153fa5298ef642d819e17d94ed23f71162613a8128633584531f",
+  "couverture/d/1x/tranche": {
+    "file": "baked/couverture/d/1x/tranche.webp",
+    "sha": "db3acba7a273618fca8e56836d17e646ea8aedfac1111835bf5766b95ca5d141",
     "w": 40,
     "h": 1200,
-    "bytes": 1230,
+    "bytes": 1344,
     "type": "image/webp"
   },
-  "couverture/a/arriere": {
-    "file": "baked/couverture/a/arriere.webp",
-    "sha": "c98bfbe6073288875560b43018c45b21ce0c3940f8fe0cb0de536c3847651b40",
+  "couverture/d/arriere": {
+    "file": "baked/couverture/d/arriere.webp",
+    "sha": "6e56895e0d9f66891157d98291f1b90113b251c05aa4564e2d10bff82aff8e98",
     "w": 1756,
     "h": 2476,
-    "bytes": 627326,
+    "bytes": 626386,
     "type": "image/webp"
   },
-  "couverture/a/chant": {
-    "file": "baked/couverture/a/chant.webp",
-    "sha": "216bd36a9b237e0f6c758f23f1b8cd1dfebf36f44d7b6272028e7659c4e58e96",
+  "couverture/d/chant": {
+    "file": "baked/couverture/d/chant.webp",
+    "sha": "af4f15186072fa86601b169698c6f4aa3196386ef779054111e9aa68c34ea4e8",
     "w": 20,
     "h": 2476,
-    "bytes": 14504,
+    "bytes": 14540,
     "type": "image/webp"
   },
-  "couverture/a/contreplat-arriere": {
-    "file": "baked/couverture/a/contreplat-arriere.webp",
-    "sha": "9636c06e62d739b5d037a25d37f1cfa4419b2371f2764b6bf796f32c5b171b2c",
+  "couverture/d/contreplat-arriere": {
+    "file": "baked/couverture/d/contreplat-arriere.webp",
+    "sha": "45882ac55b9b4d596e2b81e232ab0a85bbb4a76ba410a01c47e796202db262a5",
     "w": 1756,
     "h": 2476,
-    "bytes": 137362,
+    "bytes": 141944,
     "type": "image/webp"
   },
-  "couverture/a/contreplat": {
-    "file": "baked/couverture/a/contreplat.webp",
-    "sha": "4e332837fd24ecccc6368ef47f9a3b219e03adc04ae24a6abe6e525f3ee2cb9f",
+  "couverture/d/contreplat": {
+    "file": "baked/couverture/d/contreplat.webp",
+    "sha": "5e6a0d83015001cbc49cd994e671f1e97ed7d535d505b264081c520276481351",
     "w": 1756,
     "h": 2476,
-    "bytes": 139954,
+    "bytes": 145592,
     "type": "image/webp"
   },
-  "couverture/a/dos": {
-    "file": "baked/couverture/a/dos.webp",
-    "sha": "966c40e34bdf9457acfaa055e4b7ba631a0421e81239682862e2b2118d9d6607",
+  "couverture/d/dos": {
+    "file": "baked/couverture/d/dos.webp",
+    "sha": "d60499535b6b765441626c0a76059a48df8ce67285aaa99ce45fc0b694bb49e9",
     "w": 142,
     "h": 2476,
-    "bytes": 83318,
+    "bytes": 83410,
     "type": "image/webp"
   },
-  "couverture/a/etiquette": {
-    "file": "baked/couverture/a/etiquette.webp",
-    "sha": "4af260073a5a16f292898c6c1a9a45ed765b28cdd9d276a91e9529b5e7219ce0",
-    "w": 1078,
-    "h": 604,
-    "bytes": 95076,
+  "couverture/d/etiquette": {
+    "file": "baked/couverture/d/etiquette.webp",
+    "sha": "8391aa927986b13e7350ee7f671a22914542b3c954c87e102940b21995aa7a73",
+    "w": 1080,
+    "h": 712,
+    "bytes": 113590,
     "type": "image/webp"
   },
-  "couverture/a/plat-arriere": {
-    "file": "baked/couverture/a/plat-arriere.webp",
-    "sha": "7d5aedfc00afa0e3f30829178c43f12f918f046a1015ea357f85db3a00ff9973",
+  "couverture/d/plat-arriere": {
+    "file": "baked/couverture/d/plat-arriere.webp",
+    "sha": "935dcf75c879d6abb17bf6622e9779d6bd3044457659e28f9c7aa5f2606952bd",
     "w": 1756,
     "h": 2476,
-    "bytes": 637436,
+    "bytes": 633896,
     "type": "image/webp"
   },
-  "couverture/a/plat": {
-    "file": "baked/couverture/a/plat.webp",
-    "sha": "b1c9010f4f3151e0431487cb97421f21441e0685aa3ff907ef38f37d6504f776",
+  "couverture/d/plat": {
+    "file": "baked/couverture/d/plat.webp",
+    "sha": "c5753cc0428042c698b9103fa04cfc5250d3ef584ace08501b2c5f2cf42b2312",
     "w": 1756,
     "h": 2476,
-    "bytes": 607024,
+    "bytes": 611836,
     "type": "image/webp"
   },
-  "couverture/a/tranche-pied": {
-    "file": "baked/couverture/a/tranche-pied.webp",
-    "sha": "3c5fa3ac0633240c988bc76a2f8193691f75ad89894c536c5b316ff00913c1e8",
+  "couverture/d/tranche-pied": {
+    "file": "baked/couverture/d/tranche-pied.webp",
+    "sha": "ac4faadcb0e5741ad409318590846fa4e12d4cb631ae5ccea13f983d1de9c222",
     "w": 1700,
     "h": 80,
-    "bytes": 2738,
+    "bytes": 3034,
     "type": "image/webp"
   },
-  "couverture/a/tranche": {
-    "file": "baked/couverture/a/tranche.webp",
-    "sha": "4969fd56216d9412355a52189a85859b60f35f24b80938e39351310df59247dd",
+  "couverture/d/tranche": {
+    "file": "baked/couverture/d/tranche.webp",
+    "sha": "e6ad9bb49b2830936d3048372a4705e171784b45a4470e1c125524804a1e4993",
     "w": 80,
     "h": 2400,
-    "bytes": 4294,
+    "bytes": 3620,
     "type": "image/webp"
   },
   "indices/cliquer-crayon": {
@@ -1180,10 +1196,10 @@
   },
   "pages/1x/dedicace": {
     "file": "baked/pages/1x/dedicace.webp",
-    "sha": "ece606e0fb13c950e4a81f39961a0e22816acd7dbafe26cf24aa12f6c46d4919",
+    "sha": "6b4ce8f5d7c33b3e0c91fb05848c6fcfbfd04f707e2e7b4834d21cd9b2a874fb",
     "w": 850,
     "h": 1200,
-    "bytes": 22050,
+    "bytes": 22206,
     "type": "image/webp"
   },
   "pages/1x/fin-droite": {
@@ -1212,10 +1228,10 @@
   },
   "pages/1x/garde": {
     "file": "baked/pages/1x/garde.webp",
-    "sha": "06c5fec27d72516e67143cb2953632f041e17d6e4295aa265270ec84f289925f",
+    "sha": "9189b0a0d426acc2b1d7ee5d2192d19561f5171e8aaac99407383d44abefdf5a",
     "w": 850,
     "h": 1200,
-    "bytes": 5976,
+    "bytes": 22500,
     "type": "image/webp"
   },
   "pages/1x/gateaux-droite": {
@@ -1396,10 +1412,10 @@
   },
   "pages/1x/papier/f3": {
     "file": "baked/pages/1x/papier/f3.webp",
-    "sha": "22280561259c41b7b48ef2715a343acd7a91f03ec1c1e49232bb41618571170b",
+    "sha": "b068d97b408a8a4ec66627f1db1cce08dfa1e455146e193cdacbdb8e90ebf235",
     "w": 850,
     "h": 1200,
-    "bytes": 25312,
+    "bytes": 25386,
     "type": "image/webp"
   },
   "pages/1x/papier/f5": {
@@ -1412,10 +1428,10 @@
   },
   "pages/1x/papier/f7": {
     "file": "baked/pages/1x/papier/f7.webp",
-    "sha": "dcbef1b662a65ee0b4c08b7f6ce80b4c1a7cb64e6a1b49998bf303d5853572c6",
+    "sha": "164160a19b1161076b1f30340ae5794bcb2fe31d803770b0179b21985c4e0387",
     "w": 850,
     "h": 1200,
-    "bytes": 31896,
+    "bytes": 31900,
     "type": "image/webp"
   },
   "pages/1x/papier/f9": {
@@ -1436,10 +1452,10 @@
   },
   "pages/1x/papier/garde-uni": {
     "file": "baked/pages/1x/papier/garde-uni.webp",
-    "sha": "acb0fd7f089b29645eaf1c7ad624e29d4efb7e1ca9fda7fb342898148bccc336",
+    "sha": "fcbd4196ff8be1a5f8f9068947f6ee9b7247c34f8be66248107c39027f3444da",
     "w": 850,
     "h": 1200,
-    "bytes": 20860,
+    "bytes": 21028,
     "type": "image/webp"
   },
   "pages/1x/rose-droite": {
@@ -1484,10 +1500,10 @@
   },
   "pages/1x/titre": {
     "file": "baked/pages/1x/titre.webp",
-    "sha": "a9e3223be26c0218bf8c24ddb907da7a7d7314091f660477c78273513fc5d7e3",
+    "sha": "c4b7757ceba0fec08cc6545878e99195ee89d8e0c2a2c40272f3954a23fad7da",
     "w": 850,
     "h": 1200,
-    "bytes": 24092,
+    "bytes": 63574,
     "type": "image/webp"
   },
   "pages/4x/bernard-droite-00": {
@@ -1852,37 +1868,37 @@
   },
   "pages/4x/dedicace-00": {
     "file": "baked/pages/4x/dedicace-00.webp",
-    "sha": "d7d9e930753bc01715e795b39a4a9e3a41cad03a1fa30b5cc5ecd7081315c39a",
+    "sha": "1955a7a8ca9d82573ac96e8de5d81a23d7874e40423578d92c0713383bae9e8c",
     "w": 1704,
     "h": 2404,
-    "bytes": 39442,
+    "bytes": 52188,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/dedicace-01": {
     "file": "baked/pages/4x/dedicace-01.webp",
-    "sha": "bf302699cd8f86ac1616783c10040e0a9e623094c376c89967ffe377bffbeb03",
+    "sha": "83acee85a3ad2615e7bd510cc71f37e60e11c9c672e80d24aa22e6c1556bbf62",
     "w": 1704,
     "h": 2404,
-    "bytes": 64622,
+    "bytes": 75838,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/dedicace-10": {
     "file": "baked/pages/4x/dedicace-10.webp",
-    "sha": "eabf9041612dec98257afbb32db58a8338f03f33132dc05bee06fb824fedccae",
+    "sha": "f53077c23745d5eabf05005a7c01bec969c40e83bd6eaddbb4bb5277558b9440",
     "w": 1704,
     "h": 2404,
-    "bytes": 22128,
+    "bytes": 11980,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/dedicace-11": {
     "file": "baked/pages/4x/dedicace-11.webp",
-    "sha": "16fc2c3bec254c6757d4b9d56fd075524439df5a943d2dd77e032ae509126144",
+    "sha": "2bb1169412abd68c4a5ff09c338ebf2903514064e3c3b9b3883b3b5fa422b701",
     "w": 1704,
     "h": 2404,
-    "bytes": 34122,
+    "bytes": 11422,
     "type": "image/webp",
     "site": true
   },
@@ -1960,19 +1976,19 @@
   },
   "pages/4x/garde-00": {
     "file": "baked/pages/4x/garde-00.webp",
-    "sha": "aeaf63b249435ea0dca238c91f2c052cf0f502a18cce382a57c651e7c8c2ed1e",
+    "sha": "f847ee9550ab6a4fe44291edb8cc9e830784f201b8f3d3f392ab0c159e801f38",
     "w": 1704,
     "h": 2404,
-    "bytes": 15666,
+    "bytes": 82848,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/garde-01": {
     "file": "baked/pages/4x/garde-01.webp",
-    "sha": "a013c7e1e782eb3878b2eb85c98272400d9bcd8b8d0d17bfa19932c045eb53b8",
+    "sha": "34bda51be5cd7f4f55c61c511dc7e1298e108377a48fbdb7d73f7645b841c937",
     "w": 1704,
     "h": 2404,
-    "bytes": 22288,
+    "bytes": 93906,
     "type": "image/webp",
     "site": true
   },
@@ -2608,37 +2624,37 @@
   },
   "pages/4x/titre-00": {
     "file": "baked/pages/4x/titre-00.webp",
-    "sha": "84c26bd3e2a2bc8fbc552fdd6dcb147c0dfcc4a0d556d4d8ce1b560cc7b49163",
+    "sha": "be38e02231e1b62e45067e4c9584595fdabd9486256159152bfcaca8a4f8b52c",
     "w": 1704,
     "h": 2404,
-    "bytes": 68090,
+    "bytes": 113678,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/titre-01": {
     "file": "baked/pages/4x/titre-01.webp",
-    "sha": "abc8252edb20d74f699c38c90152c9e85cac1e398ff8e5abf8e67d05084b3261",
+    "sha": "550a222db905c1e2912762e20e25f0dfd84dab3ab4d24da96463611815396920",
     "w": 1704,
     "h": 2404,
-    "bytes": 69082,
+    "bytes": 119468,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/titre-10": {
     "file": "baked/pages/4x/titre-10.webp",
-    "sha": "f38b9b881a2edb1e6373af3d5c85e34b48019903d83037a0a549c3327415fa69",
+    "sha": "d4567dfcc840ab3345000d434fb4990c44c5fe56c4c5c625a3b39788e91ddef7",
     "w": 1704,
     "h": 2404,
-    "bytes": 19274,
+    "bytes": 115646,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/titre-11": {
     "file": "baked/pages/4x/titre-11.webp",
-    "sha": "ada113e2ecbdee24d8a607ddb9cb2f1448ab4920451bbb8b460d63ca77217cbc",
+    "sha": "89c1918c7052c0bb84b892d1820841fca2ab2b6bf0ae9062c7c34b1491cd068b",
     "w": 1704,
     "h": 2404,
-    "bytes": 23912,
+    "bytes": 125174,
     "type": "image/webp",
     "site": true
   },
@@ -2732,10 +2748,10 @@
   },
   "pages/dedicace": {
     "file": "baked/pages/dedicace.webp",
-    "sha": "399deecd35a4a46dfaeff589cc38f97cf0b36563d96feff27f7b3fb05ad6b755",
+    "sha": "ff1d0996d630b7f0473e0acffe022fd634ef36890fdf754449f1242cba84e7c7",
     "w": 1700,
     "h": 2400,
-    "bytes": 60940,
+    "bytes": 59746,
     "type": "image/webp"
   },
   "pages/fin-droite": {
@@ -2764,10 +2780,10 @@
   },
   "pages/garde": {
     "file": "baked/pages/garde.webp",
-    "sha": "58e11c3324289a06fa2b6879a4f469b94739d859733ea0f05a347d5324fc62de",
+    "sha": "391e1f004896a99b52fba11f27e99ff37c8e6800dd3bd01597e34eb5a09e52ec",
     "w": 1700,
     "h": 2400,
-    "bytes": 17148,
+    "bytes": 70766,
     "type": "image/webp"
   },
   "pages/gateaux-droite": {
@@ -2964,7 +2980,7 @@
   },
   "pages/papier/f3": {
     "file": "baked/pages/papier/f3.webp",
-    "sha": "2fca944b48c5e65a9229fb311eebf0cfda23db163fe4b23c9ce615134bca73c6",
+    "sha": "696f7ebb864c0aa5a963d2451633c5fef51f2c9906bc36c81859102b19bc1f8d",
     "w": 1700,
     "h": 2400,
     "bytes": 197398,
@@ -2980,10 +2996,10 @@
   },
   "pages/papier/f7": {
     "file": "baked/pages/papier/f7.webp",
-    "sha": "bca9fb05890871273763a8544d99fe768eb4553df8018ce678ac02e6fed595da",
+    "sha": "5d2262cffb049b1b11631b17fadf9fa7ac69bf9c79866c818f8a958ee0433c4c",
     "w": 1700,
     "h": 2400,
-    "bytes": 318396,
+    "bytes": 318388,
     "type": "image/webp"
   },
   "pages/papier/f9": {
@@ -3004,10 +3020,10 @@
   },
   "pages/papier/garde-uni": {
     "file": "baked/pages/papier/garde-uni.webp",
-    "sha": "dd46a61775bef4496872940f72e2985fe23385985182f066ac278d390fdc1095",
+    "sha": "3f64a09a3efffce6fd6ab4942c6ada3f791d623b6cb5d939f1789ba8c6bb93b6",
     "w": 1700,
     "h": 2400,
-    "bytes": 128670,
+    "bytes": 128808,
     "type": "image/webp"
   },
   "pages/rose-droite": {
@@ -3116,10 +3132,10 @@
   },
   "pages/temps/dedicace": {
     "file": "baked/pages/temps/dedicace.webp",
-    "sha": "09b6997a81bdb12ae40efd1e647d5d028755b2b70e396106fce9f2fc5ea4e04d",
+    "sha": "8880de63b8d487cf1521a11554320f8eab1c442b8122ac755f98956eddbfa1a6",
     "w": 850,
     "h": 1200,
-    "bytes": 16108,
+    "bytes": 19636,
     "type": "image/webp"
   },
   "pages/temps/fin-droite": {
@@ -3140,10 +3156,10 @@
   },
   "pages/temps/garde": {
     "file": "baked/pages/temps/garde.webp",
-    "sha": "bf52ad16c0f4c01899b5df2bf1b6dbdf2574cb9637b94eaae694a06c1367a6b7",
+    "sha": "f2c6c1ddfbe12b808eb745c4cdff57d36d97dacbe240e86df62cb32f6f981739",
     "w": 850,
     "h": 1200,
-    "bytes": 5916,
+    "bytes": 18402,
     "type": "image/webp"
   },
   "pages/temps/gateaux-droite": {
@@ -3236,18 +3252,18 @@
   },
   "pages/temps/titre": {
     "file": "baked/pages/temps/titre.webp",
-    "sha": "8ab59307417a8c627a2620cbcc6543fe54698e71e76549a2f1e6960c4e1b97eb",
+    "sha": "a6d54a197af2205b71ed01bfdbc96e7613b27b7816439ceeca5d7ccd752ae1cb",
     "w": 850,
     "h": 1200,
-    "bytes": 22992,
+    "bytes": 49212,
     "type": "image/webp"
   },
   "pages/titre": {
     "file": "baked/pages/titre.webp",
-    "sha": "ce06d7c7102302b900596e1b34fa37b5f7008395342c9cc20a875012b936082b",
+    "sha": "36cca5bcea68e8edd46cc229cf7cd50bf7960609e210446867d7714d68c3ce26",
     "w": 1700,
     "h": 2400,
-    "bytes": 64288,
+    "bytes": 179260,
     "type": "image/webp"
   },
   "paper/base": {

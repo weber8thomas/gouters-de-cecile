@@ -10,23 +10,93 @@
  "contre_plat": true,
  "papier": "garde-uni",
  "papier_miroir": true,
- "_": "Contre-plat (papier de garde collé sur le carton de la couverture) : pas de page au dos, pas de folio. Papier : lot Pa (papiers.json, gardes), choisi au GATE avec la couverture. Ex-libris : encre chocolat (la main de Cécile), écrit en grand (mot × 1,6), centré dans le tiers haut.",
+ "_": "Contre-plat (papier de garde collé sur le carton de la couverture) : pas de page au dos, pas de folio. Papier : lot Pa (papiers.json, gardes), crème chaud accordé aux pages. Ex-libris d'anniversaire : un cartouche tracé à la main à l'encre terracotta (bloc « cartouche », double trait), « Ex-libris » en petit en haut, « Ce carnet appartient à Cécile » en grand à l'encre chocolat, « offert pour ses trente ans » dessous, en terracotta ; une petite guirlande de fanions (croquis « fanions », un feston, à la même encre terracotta) tendue au-dessus du cartouche.",
  "blocs": [
   {
-   "id": "ex-libris",
-   "type": "annotation",
+   "id": "ex-libris-titre",
+   "type": "etiquette",
+   "texte": "Ex-libris",
+   "main": "soignee",
+   "encre": "terracotta",
    "role": "mot",
-   "echelle": 1.6,
+   "echelle": 1.35,
+   "rect": [
+    0.3,
+    0.263,
+    0.4,
+    0.05
+   ],
+   "pente": -0.6,
+   "graine": 2051
+  },
+  {
+   "id": "ex-libris",
+   "type": "etiquette",
+   "texte": "Ce carnet appartient\nà Cécile",
+   "main": "soignee",
    "encre": "chocolat",
-   "texte": "Ce carnet appartient à Cécile",
-   "pente": -2.4,
-   "sans_parentheses": true,
+   "role": "mot",
+   "echelle": 1.75,
+   "interligne": 0.95,
+   "rect": [
+    0.17,
+    0.316,
+    0.66,
+    0.11
+   ],
+   "pente": -1.4,
+   "graine": 2052
+  },
+  {
+   "id": "ex-libris-anniversaire",
+   "type": "etiquette",
+   "texte": "offert pour ses trente ans",
+   "main": "soignee",
+   "encre": "terracotta",
+   "role": "mot",
+   "echelle": 1.15,
+   "rect": [
+    0.17,
+    0.421,
+    0.66,
+    0.05
+   ],
+   "pente": -0.8,
+   "graine": 2023
+  },
+  {
+   "id": "fanions",
+   "type": "croquis",
+   "nom": [
+    "fanions"
+   ],
+   "taille": [
+    0.6,
+    0.11
+   ],
    "places": [
     {
-     "x": 0.26,
-     "y": 0.36
+     "x": 0.2,
+     "y": 0.148
     }
-   ]
+   ],
+   "graine": 2063,
+   "encre": "terracotta",
+   "main": "soignee"
+  },
+  {
+   "id": "cartouche",
+   "type": "cartouche",
+   "rect": [
+    0.17,
+    0.24,
+    0.66,
+    0.245
+   ],
+   "style": "double",
+   "encre": "terracotta",
+   "graine": 2014,
+   "echelle": 1.6
   }
  ]
 }
