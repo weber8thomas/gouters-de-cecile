@@ -1002,7 +1002,8 @@ html[data-gc-livre-vt="distance"]::view-transition-new(root) {
   height: calc(var(--gc-ecran-cible) * 40 / 56);
 }
 
-/* Téléphone couché : une flèche de chaque côté du livre, au milieu de la bande de table, dans le bas. */
+/* Téléphone couché : une flèche de chaque côté du livre, sur la bande de table, dans le bas ; contre le
+   livre (plus loin, à gauche, il y a la bougie). */
 .gc-livre-nav--cotes {
   left: 0;
   right: 0;
@@ -1018,11 +1019,11 @@ html[data-gc-livre-vt="distance"]::view-transition-new(root) {
 }
 
 .gc-livre-nav--cotes .gc-livre-nav__fleche--prec {
-  left: calc(var(--gc-ecran-gauche) + (var(--gc-livre-bande) - var(--gc-ecran-cible)) / 2);
+  left: calc(var(--gc-ecran-gauche) + max(0px, var(--gc-livre-bande) - var(--gc-ecran-cible) - var(--gc-ecran-bord-bas)));
 }
 
 .gc-livre-nav--cotes .gc-livre-nav__fleche--suiv {
-  right: calc(var(--gc-ecran-droite) + (var(--gc-livre-bande) - var(--gc-ecran-cible)) / 2);
+  right: calc(var(--gc-ecran-droite) + max(0px, var(--gc-livre-bande) - var(--gc-ecran-cible) - var(--gc-ecran-bord-bas)));
 }
 
 /* Points de page (cadrage « page ») : sous la page, au centre. */
@@ -1097,11 +1098,30 @@ html[data-gc-livre-vt="distance"]::view-transition-new(root) {
 }
 
 /* Petit écran sans table libre (ni en bas ni sur les côtés) : les flèches sont sur le papier, à l'encre,
-   centrées en bas (de part et d'autre de la reliure : les folios sont aux coins extérieurs). */
+   centrées en bas (de part et d'autre de la reliure : les folios sont aux coins extérieurs), dans la
+   marge du bas de la page (--gc-livre-papier-bas, posé par le livre ; sous la loupe, en bas de l'écran). */
 .gc-livre-commandes[data-gc-sur="papier"] .gc-livre-nav {
   right: auto;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.gc-livre-commandes[data-gc-sur="papier"] .gc-livre-nav,
+.gc-livre-commandes[data-gc-sur="papier"] .gc-livre-points {
+  bottom: max(calc(var(--gc-ecran-bas) + var(--gc-ecran-bord-bas)), calc(var(--gc-livre-papier-bas, 0px) + var(--gc-ecran-bord-bas)));
+}
+
+/* Avec les points de page (cadrage « page ») : les points entre les deux flèches, à l'encre eux aussi. */
+.gc-livre-commandes[data-gc-sur="papier"]:has(.gc-livre-points) .gc-livre-nav {
+  gap: calc(var(--gc-ecran-cible) * 2 + var(--gc-ecran-bord-bas) * 2);
+}
+
+.gc-livre-commandes[data-gc-sur="papier"] .gc-livre-points__point {
+  color: var(--gc-ink);
+}
+
+.gc-livre-commandes[data-gc-sur="papier"] .gc-livre-points__ombre {
+  stroke: color-mix(in srgb, var(--gc-ink) 14%, transparent);
 }
 
 .gc-livre-commandes[data-gc-sur="papier"] .gc-livre-nav__fleche {

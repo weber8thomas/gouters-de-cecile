@@ -83,6 +83,14 @@
   pointer-events: none;
 }
 
+/* Téléphone couché (data-gc-bord) : la barre se range en colonne sur le bord droit, dans la bande de
+   table que laisse le livre (CONTRACT § 11). Le livre ne la recouvre plus. */
+.gc-ecran[data-gc-bord="cote"] .gc-ecran__barre {
+  top: calc(var(--gc-ecran-haut) + var(--gc-ecran-bord-bas));
+  right: calc(var(--gc-ecran-droite) + var(--gc-ecran-bord-bas));
+  flex-direction: column;
+}
+
 /* Dans la barre, la loupe et le plein écran sont en flux (la barre les aligne) : la position absolue
    que leur donne Loupe.css est annulée ici. */
 .gc-ecran__barre > .gc-loupe-bouton--ecran,

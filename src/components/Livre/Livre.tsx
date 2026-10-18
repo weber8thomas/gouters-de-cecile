@@ -2001,7 +2001,7 @@ export function Livre({
   // Flèches à l'écran : groupées en bas à droite, comme sur la TV ; sur un téléphone couché (le livre
   // remplit la hauteur), une de chaque côté du livre, sur la table. Sous la loupe, elles passent sur le
   // papier (à l'encre) : ce sont les ‹ › de la page zoomée.
-  const placeFleches = React.useMemo<{ place: 'coin' | 'cotes'; bande: number; papier: boolean }>(() => {
+  const placeFleches = React.useMemo<{ place: 'coin' | 'cotes'; bande: number; papier: boolean; bas?: number }>(() => {
     const coin = { place: 'coin' as const, bande: 0, papier: false };
     // Sur un grand écran, la composition de la TV (flèches sur la table, en bas à droite).
     if (!vp || !geo || !cadre || (!modePage && partScene(vp) >= 1)) return coin;
@@ -2018,8 +2018,10 @@ export function Livre({
     if (bandeBas >= taille + 8) return coin;
     // (sur les côtés, la cible tient dans la bande de table, à 1 px près de chaque bord)
     if (!modePage && bande >= taille + 2) return { place: 'cotes', bande, papier: false };
-    // Ni la table du bas ni celle des côtés n'a la place : les flèches se posent sur le papier, à l'encre.
-    return { ...coin, papier: true };
+    // Ni la table du bas ni celle des côtés n'a la place : les flèches se posent sur le papier, à l'encre,
+    // dans la marge du bas de la page (`bas` : du bas de l'écran au bas du papier), au-dessus du carton.
+    const basPapier = cadre.oy + (geo.bookY + geo.H - cadre.cy) * cadre.s;
+    return { ...coin, papier: true, bas: Math.max(0, vp.h - basPapier) };
   }, [vp, geo, cadre, modePage]);
   const surPapier = placeFleches.papier || (zoome && enEcran);
 
@@ -2093,7 +2095,9 @@ export function Livre({
       <div
         className="gc-livre-commandes"
         data-gc-sur={surPapier ? 'papier' : undefined}
-        style={placeFleches.place === 'cotes' && !zoome ? ({ '--gc-livre-bande': `${Math.round(placeFleches.bande)}px` } as React.CSSProperties) : undefined}
+        style={zoome ? undefined
+          : placeFleches.place === 'cotes' ? ({ '--gc-livre-bande': `${Math.round(placeFleches.bande)}px` } as React.CSSProperties)
+            : placeFleches.bas != null ? ({ '--gc-livre-papier-bas': `${Math.round(placeFleches.bas)}px` } as React.CSSProperties) : undefined}
       >
         {!cameraFixe && (
           <div className="gc-livre-commandes__repere">

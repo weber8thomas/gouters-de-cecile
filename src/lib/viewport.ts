@@ -111,7 +111,9 @@ export interface CadreCamera {
 
 /** Abscisse (scène) du centre de la page cadrée : couverture fermée, page gauche ou droite. */
 export function centrePage(geo: GeometrieLivre, cote: 'gauche' | 'droite' | 'couverture'): number {
-  if (cote === 'couverture') return geo.bookX + geo.W; // livre fermé centré sur la reliure
+  // Livre fermé : sa page est centrée sur la reliure, son carton déborde à droite (dos à gauche) ; on
+  // cadre le plat entier, la table est la même des deux côtés.
+  if (cote === 'couverture') return geo.bookX + geo.W + geo.carton.out / 2;
   return geo.bookX + geo.W * (cote === 'gauche' ? 0.5 : 1.5);
 }
 
