@@ -173,7 +173,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     if (Math.abs(toile.width - w) > 2 || Math.abs(toile.height - h) > 2) { toile.width = w; toile.height = h; }
     k = toile.width / SCENE_W;
     // sur un petit écran la scène est très réduite (téléphone couché : q ≈ 0,36) : l'or l'est moins
-    grains.grossir = poussiere.grossir = clamp(Math.sqrt(0.95 / q), 1, 1.7);
+    grains.grossir = poussiere.grossir = clamp((0.95 / q) ** 0.7, 1, 2.1);
     // la flamme : dans la scène (hors caméra), ramenée dans le repère de la toile
     const scene = toile.closest('.gc-stage') as HTMLElement | null;
     if (scene && scene.offsetWidth > 0) {
@@ -936,7 +936,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
           const a = horloge - p.t;
           if (a < 0) break;
           // le pas apparaît (un éclat d'or), reste, puis s'efface
-          const op = Math.min(1, a / 0.18) * clamp(1 - (a - 2.4) / 1.5, 0, 1) * opPose * 0.62;
+          const op = Math.min(1, a / 0.18) * clamp(1 - (a - 2.4) / 1.5, 0, 1) * opPose * 0.7;
           if (op <= 0) continue;
           const or = Math.max(0, 1 - a / 0.5);
           const [x, y] = sceneDe(v, p.x, p.y);
@@ -944,7 +944,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
           const r_ = col[0] * (1 - or) + 0.85 * or;
           const g_ = col[1] * (1 - or) + 0.6 * or;
           const b_ = col[2] * (1 - or) + 0.2 * or;
-          n = point(points, n, x, y, 21 * v.s, GENRE.pas, r_ * op, g_ * op, b_ * op, op, p.cap + Math.PI / 2);
+          n = point(points, n, x, y, 28 * v.s, GENRE.pas, r_ * op, g_ * op, b_ * op, op, p.cap + Math.PI / 2);
           if (a < 0.05 && Math.random() < 0.5) grains.ajouter({ x, y, vie: 0.5, taille: 6, lum: 0.6, frein: 0 });
         }
       }

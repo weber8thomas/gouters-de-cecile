@@ -347,7 +347,7 @@ export function promenade(g: Grille, alea: () => number = Math.random): Pas[] | 
     pts = n;
   }
   const out: Pas[] = [];
-  const FOULEE = 24;
+  const FOULEE = 31;
   let reste = 0;
   let gauche = alea() < 0.5;
   for (let q = 0; q < pts.length - 1; q++) {
@@ -360,7 +360,7 @@ export function promenade(g: Grille, alea: () => number = Math.random): Pas[] | 
       const u = s / l;
       const nx = -Math.sin(cap);
       const ny = Math.cos(cap);
-      const e = gauche ? -5.5 : 5.5;
+      const e = gauche ? -7 : 7;
       out.push({ x: a.x + (b.x - a.x) * u + nx * e, y: a.y + (b.y - a.y) * u + ny * e, cap: cap + (gauche ? -0.1 : 0.1), gauche });
       gauche = !gauche;
       s += FOULEE;
