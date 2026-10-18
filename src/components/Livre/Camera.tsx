@@ -1,5 +1,6 @@
 import React from 'react';
 import { animate, m, useMotionValue, useReducedMotion, useTransform, SPRINGS, type MotionValue } from '../../lib/motion';
+import { zoomLivre } from '../../lib/camera';
 import { cadenceStable, emettre } from './evenements';
 import { r3 } from './geometrie';
 
@@ -40,6 +41,12 @@ export function Camera({ zoom, fondu, x, arrivee, present, children }: CameraPro
   const opacity = useTransform([fondu ?? un, present ?? un], ([f, pr]: number[]) => f * pr);
 
   React.useEffect(() => () => { alive.current = false; anim.current?.stop(); }, []);
+  // le zoom à l'écran, pour les calques tracés du livre (src/lib/camera.tsx, zoomLivre)
+  React.useEffect(() => {
+    zoomLivre.set(z.get());
+    const off = z.on('change', (v) => zoomLivre.set(v));
+    return () => { off(); zoomLivre.set(1); };
+  }, [z]);
 
   React.useEffect(() => {
     const el = ref.current;

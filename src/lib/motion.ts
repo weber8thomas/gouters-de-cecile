@@ -11,6 +11,7 @@ export {
   AnimatePresence,
   domMax,
   animate,
+  motionValue,
   useMotionValue,
   useMotionValueEvent,
   useTransform,

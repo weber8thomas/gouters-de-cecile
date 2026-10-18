@@ -36,8 +36,9 @@ SCENE_W, SCENE_H = 1920, 1080
 # bougie son éclairement au coin de la page gauche le plus proche d'elle (95e centile).
 RENDU = {'bougie': (1.0, 0.62, 0.30), 'feu': (1.0, 0.5, 0.22), 'ambiance': (0.42, 0.52, 0.85)}
 COULEUR = {'bougie': (1.0, 0.78, 0.45), 'feu': (1.0, 0.56, 0.30), 'ambiance': (0.55, 0.60, 0.75)}
-POIDS = {'bougie': 1.8, 'feu': 0.42, 'ambiance': 0.12}
+POIDS = {'bougie': 0.9, 'feu': 0.42, 'ambiance': 0.12}
 BAS = {'bougie': 0.5, 'feu': 0.6}          # flamme basse : part de la source au plus bas
+BLANC_BOUGIE = 0.3                          # balance des blancs sur la bougie : en partie seulement, elle reste orangée
 BLANC = 0.6                                 # balance des blancs sur le feu (0 : aucune, 1 : complète)
 VIGNETTE = 0.22                             # assombrissement optique aux coins de l'écran
 LUM = np.array([0.2126, 0.7152, 0.0722], np.float32)
@@ -85,20 +86,33 @@ def vignette(h: int, w: int):
 
 
 def lumiere(L, N, wb, mult):
-    R = sum(POIDS[g] * mult.get(g, 1.0) / N[g] * L[g] for g in L)
+    """La pièce (feu et pénombre), la balance des blancs faite sur le feu."""
+    R = sum(POIDS[g] * mult.get(g, 1.0) / N[g] * L[g] for g in L if g != 'bougie')
     return R / wb
 
 
-def tonal(R, B):
-    """Épaule douce vers un plafond : le papier ne devient jamais plus clair que dessiné (plafond ≈ 1),
-    le sombre (bois, toile) peut s'éclaircir près de la bougie. Les dégradés restent lisibles jusqu'au
-    plafond au lieu d'être écrêtés."""
-    y = np.maximum(R @ LUM, 1e-6)[..., None]
+def plafond(B):
+    """Le plus clair que la lumière puisse rendre une surface : son dessin, exactement, pour le papier (un
+    calque qui éclaircit le papier délave l'encre posée dessus), bien plus pour le sombre (bois, toile)."""
     lb = enc(B) @ LUM
-    P = (1 + 3.2 * (1 - lb) ** 2)[..., None]
-    k = 0.72 * P
-    t = np.where(y <= k, y, k + (P - k) * (1 - np.exp(-(y - k) / (P - k))))
-    return R * t / y
+    return (1 + 10 * np.maximum(0.8 - lb, 0) ** 2)[..., None]
+
+
+def tonal(R, B):
+    """Épaule douce, canal par canal, vers le plafond : la flaque de la bougie arrive au papier tel qu'il est
+    dessiné, en gardant sa couleur tant qu'elle peut (le bleu s'éteint d'abord), sans jamais éclaircir le
+    papier ; les dégradés restent lisibles au lieu d'être écrêtés."""
+    P = plafond(B)
+    k = 0.6 * P
+    return np.where(R <= k, R, k + (P - k) * (1 - np.exp(-(R - k) / (P - k))))
+
+
+def eclairage(L, N, wb, mult, B, vg):
+    """La pièce (balance des blancs sur le feu) et la bougie, orangée (balance en partie seulement) : une
+    flaque chaude sur la table et le coin de la page près d'elle, qui décroît vers le pli ; sa part vacille
+    (voile -bougie)."""
+    bougie = POIDS['bougie'] * mult.get('bougie', 1.0) / N['bougie'] * L['bougie'] / wb ** (BLANC_BOUGIE / BLANC)
+    return tonal((lumiere(L, N, wb, mult) + bougie) * vg, B)
 
 
 def calque(T, B):
@@ -128,7 +142,7 @@ def octets(x):
 def etat(rendus: str, nom: str, N, wb):
     L, B = lire(rendus, nom)
     vg = vignette(*B.shape[:2])
-    T = lambda m: B * tonal(lumiere(L, N, wb, m) * vg, B)
+    T = lambda m: B * eclairage(L, N, wb, m, B, vg)
     haut = T({})
     return {
         '': calque(haut, B),
@@ -181,8 +195,11 @@ def apercu(calques, capture: str, sortie: str, o_bougie: float = 0.1, o_feu: flo
     img = poser(img, calques['feu'], o_feu)
     geo = json.load(open(os.path.join(ROOT, 'src/components/Bougie/geometrie.json')))
     for nom in ('cire', 'flamme'):
+        f = os.path.join(ROOT, f'design-system/baked/bougie/{nom}.webp')
+        if nom not in geo or not os.path.exists(f):
+            continue  # flamme en WebGL (Bougie.tsx) : pas d'image cuite
         g = geo[nom]
-        im = Image.open(os.path.join(ROOT, f'design-system/baked/bougie/{nom}.webp')).convert('RGBA')
+        im = Image.open(f).convert('RGBA')
         im = im.resize((round(g['w']), round(g['h'])), Image.BILINEAR)
         m = np.zeros((SCENE_H, SCENE_W), np.float32)
         x, y = round(g['x']), round(g['y'])

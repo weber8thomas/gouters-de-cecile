@@ -10,6 +10,7 @@
 //   Alt + « + » / « - » → zoom fin ±0,01 ;  0 → loupe à 1× et zoom fin remis à 1
 //   (les crans de distance ne se règlent plus que dans le menu ; ↑ / ↓ sont au feuillet volant.)
 import React from 'react';
+import { motionValue } from './motion';
 import { DEFAULT_SETTINGS, DISTANCES, type Distance } from './settings';
 import { demanderLoupe, loupeVisee, palierVoisin } from './loupe';
 
@@ -25,7 +26,9 @@ export function zoomBornes(d: Distance): [number, number] {
   return d === 'proche' ? [0.6, 1.08] : d === 'moyenne' ? [0.6, 1.12] : [0.6, 1.15];
 }
 // v2 : le zoom par défaut passe à 0,95 et le plancher à 0,6 ; l'ancien réglage (v1) n'est plus relu.
-const STORAGE_KEY = 'gc:camera:v2';
+// v3 : le zoom par défaut revient à 1, l'échelle de l'éclairage tracé (scripts/lumiere3d : le livre y est
+// rendu à 1) ; l'ancien réglage (v2, écrit à 0,95 dès la première visite au toucher) n'est plus relu.
+const STORAGE_KEY = 'gc:camera:v3';
 
 export interface CameraState {
   distance: Distance;
@@ -46,7 +49,13 @@ const clampZoom = (z: number, d?: Distance) => {
   const [lo, hi] = d ? zoomBornes(d) : [ZOOM_MIN, ZOOM_MAX];
   return Math.round(Math.min(hi, Math.max(lo, z)) * 100) / 100;
 };
-export const CAMERA_DEFAULT: CameraState = { distance: DEFAULT_SETTINGS.distance, zoom: 0.95 };
+export const CAMERA_DEFAULT: CameraState = { distance: DEFAULT_SETTINGS.distance, zoom: 1 };
+
+/**
+ * Zoom fin du livre tel qu'il est à l'écran, ressort compris (tenu à jour par la caméra du livre,
+ * src/components/Livre/Camera.tsx) : les calques tracés du livre le suivent (src/components/Lumiere).
+ */
+export const zoomLivre = motionValue(1);
 
 function load(): CameraState {
   try {
