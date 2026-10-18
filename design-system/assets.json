@@ -1,18 +1,18 @@
 {
   "aquarelles/ble": {
     "file": "baked/aquarelles/ble.webp",
-    "sha": "6fa26ef86a8c58f108fe7b2b4b77978039cbb4a90a7bc93a1952d2889bda3dc3",
+    "sha": "3f7fce434d5af7800379e77e922ff6459a892b2ff3985e9489e8846df1af530c",
     "w": 215,
     "h": 400,
-    "bytes": 68364,
+    "bytes": 68950,
     "type": "image/webp"
   },
   "aquarelles/cannelle": {
     "file": "baked/aquarelles/cannelle.webp",
-    "sha": "b71d47e58ccae2234d73c207ed0dea245d6407c5be7a8066d16185db00524f10",
+    "sha": "eac17478df15e057a3e26f978b6c8cc44ef3d4ddf0a144bd0ff5b919e6b065d9",
     "w": 624,
     "h": 800,
-    "bytes": 205040,
+    "bytes": 206342,
     "type": "image/webp"
   },
   "aquarelles/carotte": {
@@ -25,18 +25,18 @@
   },
   "aquarelles/citron-2": {
     "file": "baked/aquarelles/citron-2.webp",
-    "sha": "eb7ab4f925f2374667c216b847f39dc5b9d076ee06dc97ff2a054c5f7aa2ec94",
+    "sha": "554d80a1b52b7478fc7374d894bbc64b85dbaa8ca5eccd82cee2b58251934b52",
     "w": 486,
     "h": 751,
-    "bytes": 106846,
+    "bytes": 113412,
     "type": "image/webp"
   },
   "aquarelles/citron": {
     "file": "baked/aquarelles/citron.webp",
-    "sha": "821c3a80ac78cad7bf094f251736163a383bc218827112c5620fb64f8d01e414",
+    "sha": "a248b5282f19dbb3545f69b31b5040578a977ebdacd0e195019bd74c4fccc508",
     "w": 414,
     "h": 800,
-    "bytes": 250382,
+    "bytes": 254038,
     "type": "image/webp"
   },
   "aquarelles/cookies": {
@@ -49,66 +49,66 @@
   },
   "aquarelles/cupcake": {
     "file": "baked/aquarelles/cupcake.webp",
-    "sha": "f4680f03b6a6534a019ab8cad8e48d887bfe3a057ecf5cd225f16d6d3519a5c0",
+    "sha": "4860e866794e5d17e4236df276ea110ff822202193e2fdd7cec8934671fdfc97",
     "w": 397,
     "h": 430,
-    "bytes": 116624,
+    "bytes": 116738,
     "type": "image/webp"
   },
   "aquarelles/gateau": {
     "file": "baked/aquarelles/gateau.webp",
-    "sha": "7b51aa2c96c4adab26573a963dcffb9c226b021b6cb33ed9384e6507010a6d02",
+    "sha": "a5dcac0a9c807cbfba6a47c373a1807977509f041e136f0ed8ab88444ffc84db",
     "w": 684,
     "h": 800,
-    "bytes": 234822,
+    "bytes": 236618,
     "type": "image/webp"
   },
   "aquarelles/noix": {
     "file": "baked/aquarelles/noix.webp",
-    "sha": "8bf1eb78a89c2d6784dab643a1ab2e4c88cfdd36205402523153cfc8d41beee0",
+    "sha": "7991b59f6153e8677fd2b5809fef87c36c5bbedd4a0e4a20d146e01ab9d2c33c",
     "w": 800,
     "h": 314,
-    "bytes": 150688,
+    "bytes": 151572,
     "type": "image/webp"
   },
   "aquarelles/oeufs": {
     "file": "baked/aquarelles/oeufs.webp",
-    "sha": "f6d49f24bd4e8fc175fe027d3b4ab215cdf985d9bec7592953b490b1c4ed41c6",
+    "sha": "edc9fcf8318001070ef37e9b114944818d2de1a348569e07306f4900d4c27cfa",
     "w": 490,
     "h": 435,
-    "bytes": 216354,
+    "bytes": 218798,
     "type": "image/webp"
   },
   "aquarelles/orange-2": {
     "file": "baked/aquarelles/orange-2.webp",
-    "sha": "35a6a572f414290ea54f449111fef2464c6590083fd580991af1ea1e5bf3e0e8",
+    "sha": "e24a9d88236065f6c7bb47575b9716223e57feddb62514f0b12a10893d55b332",
     "w": 402,
     "h": 800,
-    "bytes": 135810,
+    "bytes": 140494,
     "type": "image/webp"
   },
   "aquarelles/orange": {
     "file": "baked/aquarelles/orange.webp",
-    "sha": "0969a167a2d7537015841dac6fce5240e3d172b891351f86c4775a0c3a0eeede",
+    "sha": "17f6e69ee29ccf871aa1731ba298150d06b2b2cd57d9aab76c828663cac98ee7",
     "w": 665,
     "h": 595,
-    "bytes": 84686,
+    "bytes": 88052,
     "type": "image/webp"
   },
   "aquarelles/pomme-2": {
     "file": "baked/aquarelles/pomme-2.webp",
-    "sha": "3836a221a7c10c448f8007b7630940e3d73c0d0c979d350c623bec1b799e2841",
+    "sha": "828fedd83ab742fd38611db3043e63b3125f56ec758343223a3aac11f02eaa59",
     "w": 704,
     "h": 622,
-    "bytes": 125818,
+    "bytes": 128006,
     "type": "image/webp"
   },
   "aquarelles/pomme": {
     "file": "baked/aquarelles/pomme.webp",
-    "sha": "ba653c800ebdb3f201835dad24e2bff61a177f21ad325975f1c995dcc35ce43d",
+    "sha": "9693974370863ec1b2182c56b9e88b0743914c368fc9747f254439ff2410e466",
     "w": 463,
     "h": 800,
-    "bytes": 140880,
+    "bytes": 142716,
     "type": "image/webp"
   },
   "aquarelles/sables-etoiles": {
@@ -121,74 +121,242 @@
   },
   "aquarelles/tarte-pommes": {
     "file": "baked/aquarelles/tarte-pommes.webp",
-    "sha": "af2651fe57a044db5e9d4c87b78541fcda8329392177ef0a092cd48146e9c675",
+    "sha": "69869fe9151b51fb85edffdd41330e20f0b1bfd29d6a1b45c5ed77f7f9feb851",
     "w": 800,
     "h": 508,
-    "bytes": 219256,
+    "bytes": 220922,
     "type": "image/webp"
   },
   "aquarelles/tasse-2": {
     "file": "baked/aquarelles/tasse-2.webp",
-    "sha": "8b6bac93e6808e7ccbf9646afae63cf7c8eb85a42843d0d7197fb4da432962dc",
+    "sha": "d1ac744199879a037357918b270769a97cfd6c0c669b2a370459ca0615756962",
     "w": 800,
     "h": 780,
-    "bytes": 191828,
+    "bytes": 193592,
+    "type": "image/webp"
+  },
+  "aquarelles/tasse-coeur": {
+    "file": "baked/aquarelles/tasse-coeur.webp",
+    "sha": "e44fdd27dd6868c8636021e523c1c1115f1affbdf3d1806f8d514d9bb0a4f128",
+    "w": 800,
+    "h": 747,
+    "bytes": 323248,
     "type": "image/webp"
   },
   "aquarelles/theiere": {
     "file": "baked/aquarelles/theiere.webp",
-    "sha": "5b82c38683987e7219d5dfc575afcd2a551600867ec7fa2bd3955be8cee96d63",
+    "sha": "2d25ec75e1ea839a87e31be07622222faf92e3946f6216e2d68f8ce660d5993a",
     "w": 800,
     "h": 499,
-    "bytes": 240834,
+    "bytes": 241284,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/ble": {
+    "file": "baked/aquarelles/trace/ble.webp",
+    "sha": "d122b47043e85b5e271f2166466ecd5fcf7379f02a1df313d1726917e65e2242",
+    "w": 215,
+    "h": 400,
+    "bytes": 22334,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/cannelle": {
+    "file": "baked/aquarelles/trace/cannelle.webp",
+    "sha": "24caeeab822385cbb2417f1ce91952dd31637a26a3ac80d6cb1e3bc6e224aa4a",
+    "w": 624,
+    "h": 800,
+    "bytes": 94226,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/carotte": {
+    "file": "baked/aquarelles/trace/carotte.webp",
+    "sha": "0e78265545dcc785906395103c006dfa752421877e461aae4fa077a4532bfdb9",
+    "w": 258,
+    "h": 800,
+    "bytes": 41978,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/citron-2": {
+    "file": "baked/aquarelles/trace/citron-2.webp",
+    "sha": "7c694170debc6491047195875758beaa806aacf074d7eb18604e4e4cfe097ae5",
+    "w": 486,
+    "h": 751,
+    "bytes": 57612,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/citron": {
+    "file": "baked/aquarelles/trace/citron.webp",
+    "sha": "bb405c5c7113ec2ba544a56275c0977468226a6b990fd3376ba1c91b0610ed12",
+    "w": 414,
+    "h": 800,
+    "bytes": 60606,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/cookies": {
+    "file": "baked/aquarelles/trace/cookies.webp",
+    "sha": "197664d138e3120d39347e47a36c4c1cdf89f7a119983c9a444b62475f225c67",
+    "w": 800,
+    "h": 800,
+    "bytes": 143900,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/cupcake": {
+    "file": "baked/aquarelles/trace/cupcake.webp",
+    "sha": "b8130a6296612a113c20bf0e5144e08bfb2ca110e2d9a826a346bee9d888077d",
+    "w": 397,
+    "h": 430,
+    "bytes": 51646,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/gateau": {
+    "file": "baked/aquarelles/trace/gateau.webp",
+    "sha": "5f7654ada8e768de31f3057c37db1bfcaad6a3f4b0e86f4da574b047aff27f32",
+    "w": 684,
+    "h": 800,
+    "bytes": 79104,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/noix": {
+    "file": "baked/aquarelles/trace/noix.webp",
+    "sha": "3dca2a19ba43496d74d40d17503fbbe5a408f04674c637541410db7241c339b8",
+    "w": 800,
+    "h": 314,
+    "bytes": 59572,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/oeufs": {
+    "file": "baked/aquarelles/trace/oeufs.webp",
+    "sha": "bdc041d7ae65033617fcf73fdf233755bf365aaf1218337342d3746aa35f1a81",
+    "w": 490,
+    "h": 435,
+    "bytes": 59670,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/orange-2": {
+    "file": "baked/aquarelles/trace/orange-2.webp",
+    "sha": "0266b73d62d61bb887bf4ae5ce1b7891363c4c8ebf6e40ba19cb1240a4993369",
+    "w": 402,
+    "h": 800,
+    "bytes": 47368,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/orange": {
+    "file": "baked/aquarelles/trace/orange.webp",
+    "sha": "bc061e4ea7c4f70d8c4bd45657f497988e8e0d893b5a0b323b7fb21ad3da61ec",
+    "w": 665,
+    "h": 595,
+    "bytes": 51184,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/pomme-2": {
+    "file": "baked/aquarelles/trace/pomme-2.webp",
+    "sha": "1e9129378eeeb4edad297b74f93bdd760fa624013bdabccf4e27db8f0110d741",
+    "w": 704,
+    "h": 622,
+    "bytes": 57586,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/pomme": {
+    "file": "baked/aquarelles/trace/pomme.webp",
+    "sha": "76c648f9ea1e31b4800ba1df815dd9455c15436337a09380586502ab06cb1314",
+    "w": 463,
+    "h": 800,
+    "bytes": 54790,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/sables-etoiles": {
+    "file": "baked/aquarelles/trace/sables-etoiles.webp",
+    "sha": "c21bc941073f48092113499fc64e1ef438ce7a780f723061c4d553e538e1fc90",
+    "w": 582,
+    "h": 782,
+    "bytes": 75434,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/tarte-pommes": {
+    "file": "baked/aquarelles/trace/tarte-pommes.webp",
+    "sha": "c15a8fedc7c62affbffeb86728ab90974c3f88b23a833f89f69df41f1bb86cdf",
+    "w": 800,
+    "h": 508,
+    "bytes": 75680,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/tasse-2": {
+    "file": "baked/aquarelles/trace/tasse-2.webp",
+    "sha": "9191f026466c77ee29ecb3c5cf0c59f48aea6db8be614b451077945b6239dc7a",
+    "w": 800,
+    "h": 780,
+    "bytes": 103670,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/tasse-coeur": {
+    "file": "baked/aquarelles/trace/tasse-coeur.webp",
+    "sha": "112e55a1aa1513029267533d8a4cc9291d8d3bf1470a847df64bbfc830c71451",
+    "w": 800,
+    "h": 747,
+    "bytes": 110046,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/theiere": {
+    "file": "baked/aquarelles/trace/theiere.webp",
+    "sha": "605f5c85e90addee7eef9916fce9704c28b29680b5c1c949779cc2f5842f3e03",
+    "w": 800,
+    "h": 499,
+    "bytes": 116042,
+    "type": "image/webp"
+  },
+  "aquarelles/trace/vanille": {
+    "file": "baked/aquarelles/trace/vanille.webp",
+    "sha": "076f0f4a482626f7dc8d7706d015c2130ab932fa4fe3ff07e891818dfb754058",
+    "w": 484,
+    "h": 556,
+    "bytes": 73776,
     "type": "image/webp"
   },
   "aquarelles/vanille": {
     "file": "baked/aquarelles/vanille.webp",
-    "sha": "ae9b0c9b5f29199b3fe1e4bb3a86465351e2e3a8e72242322d86cfb3629d82f4",
+    "sha": "1afa711208ee602c4f2b3c56d542ee2e2cda6935855759d44bb3ac14de03ce8a",
     "w": 484,
     "h": 556,
-    "bytes": 78762,
+    "bytes": 80100,
     "type": "image/webp"
   },
   "bougie/cire-vive": {
     "file": "baked/bougie/cire-vive.webp",
-    "sha": "ac5fec7b8c060ce676b8f4f36e6bbe1cffe167b08d84b4fe0bcd24d9926dd8f6",
+    "sha": "69460b98150033398d772773670870adb3da94fdf9c3b3bff04a5be6577d10d8",
     "w": 359,
     "h": 344,
-    "bytes": 11218,
+    "bytes": 10884,
     "type": "image/webp"
   },
   "bougie/cire": {
     "file": "baked/bougie/cire.webp",
-    "sha": "528386454b8e292ab187bd76cbeb338d30e8dccfa0ba3ba073c9ce310e47c642",
+    "sha": "530bc4585b710c4eaa7f0c334cc8624baf87fc943f3b5501abb05ea6e6e26298",
     "w": 359,
     "h": 344,
-    "bytes": 11056,
+    "bytes": 10674,
     "type": "image/webp"
   },
   "bougie/flamme": {
     "file": "baked/bougie/flamme.webp",
-    "sha": "aa73e99bc195cab3684f3dd50158de38be10e9057ee0d6752ae24175f22a7648",
-    "w": 162,
-    "h": 124,
-    "bytes": 4876,
+    "sha": "e31403af906e23daeafac2a4158193798b7c4876e4b4f80de2dfd3b425f84b88",
+    "w": 158,
+    "h": 122,
+    "bytes": 5260,
     "type": "image/webp"
   },
   "bougie/goutte-1": {
     "file": "baked/bougie/goutte-1.webp",
-    "sha": "da882645ff47987cfadc155457c24558105718de556a4112e4ab893186a85f80",
+    "sha": "6f1933260202ab733c20c417c9b0268f62a2888c3cc61f0d46dddc7f2eeff7e6",
     "w": 1200,
     "h": 585,
-    "bytes": 38518,
+    "bytes": 31470,
     "type": "image/webp"
   },
   "bougie/goutte-3": {
     "file": "baked/bougie/goutte-3.webp",
-    "sha": "9bffe81b8f04485a6d6c1820e49bffe2e5973dfe891ff2b2507d2d30d78bdaae",
+    "sha": "9ca4564bf5b0707fb53a06afca7485dace046eb469ffb22f742acb06c022ad58",
     "w": 1016,
     "h": 963,
-    "bytes": 39370,
+    "bytes": 32488,
     "type": "image/webp"
   },
   "bougie/halo": {
@@ -209,58 +377,66 @@
   },
   "couverture/a/1x/arriere": {
     "file": "baked/couverture/a/1x/arriere.webp",
-    "sha": "43c4b3d0071780a273d95ae70f60fd745f87c6fa53b0b65069fb6db2c6b9c742",
-    "w": 868,
-    "h": 1222,
-    "bytes": 279220,
+    "sha": "d532d365825558814143ad577da223b001eeb8f763cb066551a1eb6b689897a1",
+    "w": 878,
+    "h": 1238,
+    "bytes": 284972,
     "type": "image/webp"
   },
   "couverture/a/1x/chant": {
     "file": "baked/couverture/a/1x/chant.webp",
-    "sha": "81277eff3f6ed4d208c26384918e2158037f213cd95ccb7b7c28f5aae171dc03",
+    "sha": "6c10d9948ff053fc151452b5ed89a1aaf365a2202da95f7dc119d12392294969",
     "w": 10,
-    "h": 1222,
-    "bytes": 6548,
+    "h": 1238,
+    "bytes": 6568,
     "type": "image/webp"
   },
   "couverture/a/1x/contreplat-arriere": {
     "file": "baked/couverture/a/1x/contreplat-arriere.webp",
-    "sha": "f178398fb1193a46b8e6fadc1e1aaf5a9daf2a74170f5fcdcb88353495246f01",
-    "w": 868,
-    "h": 1222,
-    "bytes": 34014,
+    "sha": "7c22024a7a3c82f5f426725009e2dd243a34c1bfb2e04e32b7e090472f265b7a",
+    "w": 878,
+    "h": 1238,
+    "bytes": 40772,
     "type": "image/webp"
   },
   "couverture/a/1x/contreplat": {
     "file": "baked/couverture/a/1x/contreplat.webp",
-    "sha": "3d7f3e55b726207285704ba84e67c2696f3cba6f5ca4200b28f4f63a3a2dc42f",
-    "w": 868,
-    "h": 1222,
-    "bytes": 35394,
+    "sha": "ea9bd8484a7c9e8a3d99b03171219878515acf92da57789afae6a8b836a64c44",
+    "w": 878,
+    "h": 1238,
+    "bytes": 42278,
     "type": "image/webp"
   },
   "couverture/a/1x/dos": {
     "file": "baked/couverture/a/1x/dos.webp",
-    "sha": "498d4e83d8055907a60a8d9606f82a34ffbc21f676d6c4509c8dd7d686dad6e8",
+    "sha": "2175cce8396cb7253ebb157a98319d6437cf3bace01f1a3d4543b76bbe90fd4f",
     "w": 71,
-    "h": 1222,
-    "bytes": 33804,
+    "h": 1238,
+    "bytes": 33986,
     "type": "image/webp"
   },
   "couverture/a/1x/etiquette": {
     "file": "baked/couverture/a/1x/etiquette.webp",
-    "sha": "333345db1ed61342a2cc0bd4fb3684f747c28025ff36ea5e5a7059485d2d3006",
+    "sha": "bc3951f78d1ba00d4acccfec6dbf4387a33191e21303f518320504bd2f012b56",
     "w": 539,
     "h": 302,
-    "bytes": 34180,
+    "bytes": 34194,
+    "type": "image/webp"
+  },
+  "couverture/a/1x/plat-arriere": {
+    "file": "baked/couverture/a/1x/plat-arriere.webp",
+    "sha": "92f2c057f9e7194fb629b8dba9762242ab5fbffe7141d84f02f68abee1e88552",
+    "w": 878,
+    "h": 1238,
+    "bytes": 287534,
     "type": "image/webp"
   },
   "couverture/a/1x/plat": {
     "file": "baked/couverture/a/1x/plat.webp",
-    "sha": "3549464b58df80e48ddb1d547d9c12b2bd26ebffc78863539e497ad77d899ac8",
-    "w": 868,
-    "h": 1222,
-    "bytes": 272520,
+    "sha": "e58247fcce685de07d3b3bc6d7d7fa1343c1b119fd90007b2508d209f8416f98",
+    "w": 878,
+    "h": 1238,
+    "bytes": 274890,
     "type": "image/webp"
   },
   "couverture/a/1x/tranche-pied": {
@@ -281,58 +457,66 @@
   },
   "couverture/a/arriere": {
     "file": "baked/couverture/a/arriere.webp",
-    "sha": "7259752c371736d916e8de6bf75ec6830ac38593a960786186e76dc616d80c22",
-    "w": 1736,
-    "h": 2444,
-    "bytes": 611366,
+    "sha": "c98bfbe6073288875560b43018c45b21ce0c3940f8fe0cb0de536c3847651b40",
+    "w": 1756,
+    "h": 2476,
+    "bytes": 627326,
     "type": "image/webp"
   },
   "couverture/a/chant": {
     "file": "baked/couverture/a/chant.webp",
-    "sha": "6453bafb39a7af464ab120deae09318fe0a741d8a478d3ac6a7666b89ad64b86",
+    "sha": "216bd36a9b237e0f6c758f23f1b8cd1dfebf36f44d7b6272028e7659c4e58e96",
     "w": 20,
-    "h": 2444,
-    "bytes": 14498,
+    "h": 2476,
+    "bytes": 14504,
     "type": "image/webp"
   },
   "couverture/a/contreplat-arriere": {
     "file": "baked/couverture/a/contreplat-arriere.webp",
-    "sha": "aa025c36a8fe977717293ace01b02c934c0dbd8177361d8c12d64899cb110a96",
-    "w": 1736,
-    "h": 2444,
-    "bytes": 121866,
+    "sha": "9636c06e62d739b5d037a25d37f1cfa4419b2371f2764b6bf796f32c5b171b2c",
+    "w": 1756,
+    "h": 2476,
+    "bytes": 137362,
     "type": "image/webp"
   },
   "couverture/a/contreplat": {
     "file": "baked/couverture/a/contreplat.webp",
-    "sha": "3db1aa6ab8df61378828935a36268d09142ce938edfd55193971484014bf3167",
-    "w": 1736,
-    "h": 2444,
-    "bytes": 119356,
+    "sha": "4e332837fd24ecccc6368ef47f9a3b219e03adc04ae24a6abe6e525f3ee2cb9f",
+    "w": 1756,
+    "h": 2476,
+    "bytes": 139954,
     "type": "image/webp"
   },
   "couverture/a/dos": {
     "file": "baked/couverture/a/dos.webp",
-    "sha": "6a07dbe8ce2731fa5d57d4989e2d85417297580d3617651ec29b26d68c82c24e",
+    "sha": "966c40e34bdf9457acfaa055e4b7ba631a0421e81239682862e2b2118d9d6607",
     "w": 142,
-    "h": 2444,
-    "bytes": 83524,
+    "h": 2476,
+    "bytes": 83318,
     "type": "image/webp"
   },
   "couverture/a/etiquette": {
     "file": "baked/couverture/a/etiquette.webp",
-    "sha": "67076add0077746dab02905118efaeabaef43f7c0dcf8d9b9d2617c7f07e5ae4",
+    "sha": "4af260073a5a16f292898c6c1a9a45ed765b28cdd9d276a91e9529b5e7219ce0",
     "w": 1078,
     "h": 604,
-    "bytes": 95112,
+    "bytes": 95076,
+    "type": "image/webp"
+  },
+  "couverture/a/plat-arriere": {
+    "file": "baked/couverture/a/plat-arriere.webp",
+    "sha": "7d5aedfc00afa0e3f30829178c43f12f918f046a1015ea357f85db3a00ff9973",
+    "w": 1756,
+    "h": 2476,
+    "bytes": 637436,
     "type": "image/webp"
   },
   "couverture/a/plat": {
     "file": "baked/couverture/a/plat.webp",
-    "sha": "6a036f79408b466cf5d8150dcf641625a996498538e9ec858f4122fb9ca0fdeb",
-    "w": 1736,
-    "h": 2444,
-    "bytes": 604396,
+    "sha": "b1c9010f4f3151e0431487cb97421f21441e0685aa3ff907ef38f37d6504f776",
+    "w": 1756,
+    "h": 2476,
+    "bytes": 607024,
     "type": "image/webp"
   },
   "couverture/a/tranche-pied": {
@@ -399,6 +583,246 @@
     "bytes": 32440,
     "type": "image/webp"
   },
+  "lumiere/loin-arriere-bougie": {
+    "file": "baked/lumiere/loin-arriere-bougie.webp",
+    "sha": "d83d4cd78dc080d1ad1caf4d58b6942f081c247c159bae16d77a54cf44de90c0",
+    "w": 1360,
+    "h": 940,
+    "bytes": 70568,
+    "type": "image/webp"
+  },
+  "lumiere/loin-arriere-feu": {
+    "file": "baked/lumiere/loin-arriere-feu.webp",
+    "sha": "43457a8fb0f93930e287dbca5f957872fb737a021aadbb492949580196998284",
+    "w": 1360,
+    "h": 940,
+    "bytes": 63926,
+    "type": "image/webp"
+  },
+  "lumiere/loin-arriere": {
+    "file": "baked/lumiere/loin-arriere.webp",
+    "sha": "4ddf21ae49eb548a14c1c147a5650431335cbba8d7afdca728e01cccb823a885",
+    "w": 1360,
+    "h": 940,
+    "bytes": 174008,
+    "type": "image/webp"
+  },
+  "lumiere/loin-couverture-bougie": {
+    "file": "baked/lumiere/loin-couverture-bougie.webp",
+    "sha": "6aadae3c1433b32a9c22a020d1bd539d4c64dda5d6972fbcbc5fb1d3cd7dbbc5",
+    "w": 1360,
+    "h": 940,
+    "bytes": 69670,
+    "type": "image/webp"
+  },
+  "lumiere/loin-couverture-feu": {
+    "file": "baked/lumiere/loin-couverture-feu.webp",
+    "sha": "ba9c575bf4ef8a44c0172f817fb1822fb0e999e8964d56098fb4f134daf6cbdc",
+    "w": 1360,
+    "h": 940,
+    "bytes": 63560,
+    "type": "image/webp"
+  },
+  "lumiere/loin-couverture": {
+    "file": "baked/lumiere/loin-couverture.webp",
+    "sha": "868eccfc5e907073e4d2cc58fb29ecb7b0f1b9812bf23d6faf570aedebf91a4d",
+    "w": 1360,
+    "h": 940,
+    "bytes": 173830,
+    "type": "image/webp"
+  },
+  "lumiere/loin-ouvert-bougie": {
+    "file": "baked/lumiere/loin-ouvert-bougie.webp",
+    "sha": "28572f1dc4cec416aeba036dde8c87c6d6283a3b1f48dff48cf17d05be2d66d8",
+    "w": 1360,
+    "h": 940,
+    "bytes": 72638,
+    "type": "image/webp"
+  },
+  "lumiere/loin-ouvert-feu": {
+    "file": "baked/lumiere/loin-ouvert-feu.webp",
+    "sha": "913177a38a862a388727ffac6b973bb537e2b18868345c75b4b0544682e7a76b",
+    "w": 1360,
+    "h": 940,
+    "bytes": 70960,
+    "type": "image/webp"
+  },
+  "lumiere/loin-ouvert": {
+    "file": "baked/lumiere/loin-ouvert.webp",
+    "sha": "6052be66607fe1c4bfc321a4837f0132f28b57e448c31bd6c1ec4b64bd6a0258",
+    "w": 1360,
+    "h": 940,
+    "bytes": 179636,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-arriere-bougie": {
+    "file": "baked/lumiere/moyenne-arriere-bougie.webp",
+    "sha": "e85b2e0cbad36311e5bc39485d3cba397293bc8d4343536fac67ca15c8779490",
+    "w": 1360,
+    "h": 940,
+    "bytes": 68260,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-arriere-feu": {
+    "file": "baked/lumiere/moyenne-arriere-feu.webp",
+    "sha": "e2fad985cfbc7b4fbf4acd716e316e579b9fc88b7aecec6bff27c2a67b38666f",
+    "w": 1360,
+    "h": 940,
+    "bytes": 62948,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-arriere": {
+    "file": "baked/lumiere/moyenne-arriere.webp",
+    "sha": "d2fe0ed77187731cb71f4c1b27b9873750a36caba49872116296d0ad8b4e8612",
+    "w": 1360,
+    "h": 940,
+    "bytes": 173292,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-couverture-bougie": {
+    "file": "baked/lumiere/moyenne-couverture-bougie.webp",
+    "sha": "3cb04288a0f34fb5728d96357031cc77b6b668ab03f4b42c14d504c791be5be1",
+    "w": 1360,
+    "h": 940,
+    "bytes": 68270,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-couverture-feu": {
+    "file": "baked/lumiere/moyenne-couverture-feu.webp",
+    "sha": "c510ccca189a9fa723370eb880dd6266e0f9a3166f7566b5807989b3c26749a6",
+    "w": 1360,
+    "h": 940,
+    "bytes": 62922,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-couverture": {
+    "file": "baked/lumiere/moyenne-couverture.webp",
+    "sha": "c60deddf875e2ece0e49337883ddc5ab58c8d34dfbce63b3cc9ad1ae294c7b5b",
+    "w": 1360,
+    "h": 940,
+    "bytes": 173226,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-ouvert-bougie": {
+    "file": "baked/lumiere/moyenne-ouvert-bougie.webp",
+    "sha": "d269f69aed492238b05afb4a1cd60de435d3da356e9a24ad8331e66c4f153014",
+    "w": 1360,
+    "h": 940,
+    "bytes": 70156,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-ouvert-feu": {
+    "file": "baked/lumiere/moyenne-ouvert-feu.webp",
+    "sha": "db11e02de5026bc37ca4917a04a3d405fe0418d0b0e75307b07092e10d947f5a",
+    "w": 1360,
+    "h": 940,
+    "bytes": 68770,
+    "type": "image/webp"
+  },
+  "lumiere/moyenne-ouvert": {
+    "file": "baked/lumiere/moyenne-ouvert.webp",
+    "sha": "7a3f7b276464bd4b20612b656ceed3e86f4e35deafa918822a44178999714887",
+    "w": 1360,
+    "h": 940,
+    "bytes": 177428,
+    "type": "image/webp"
+  },
+  "lumiere/proche-arriere-bougie": {
+    "file": "baked/lumiere/proche-arriere-bougie.webp",
+    "sha": "17453c001d78a10754e91a17046d64b14a25674c7e71e49b77138729521a6851",
+    "w": 1360,
+    "h": 940,
+    "bytes": 66996,
+    "type": "image/webp"
+  },
+  "lumiere/proche-arriere-feu": {
+    "file": "baked/lumiere/proche-arriere-feu.webp",
+    "sha": "65ce9bcc017a4cdc572b5199c13ef378493544ddf1c5516181831c726b5a918a",
+    "w": 1360,
+    "h": 940,
+    "bytes": 61832,
+    "type": "image/webp"
+  },
+  "lumiere/proche-arriere": {
+    "file": "baked/lumiere/proche-arriere.webp",
+    "sha": "8e00719a64f61551f7938c245be1deff080ff22391349c5b3de185de3b8afd4e",
+    "w": 1360,
+    "h": 940,
+    "bytes": 171996,
+    "type": "image/webp"
+  },
+  "lumiere/proche-couverture-bougie": {
+    "file": "baked/lumiere/proche-couverture-bougie.webp",
+    "sha": "69a904ff3028c38731a51eb64fd090c4d9156d65b89fd83ca7290697e100ca3e",
+    "w": 1360,
+    "h": 940,
+    "bytes": 66712,
+    "type": "image/webp"
+  },
+  "lumiere/proche-couverture-feu": {
+    "file": "baked/lumiere/proche-couverture-feu.webp",
+    "sha": "dfb7209912a933b7ae22e3429d5f4bcac36a93387cf5e896f27fa64d80825370",
+    "w": 1360,
+    "h": 940,
+    "bytes": 61786,
+    "type": "image/webp"
+  },
+  "lumiere/proche-couverture": {
+    "file": "baked/lumiere/proche-couverture.webp",
+    "sha": "7363b77d03762908d1baad84c08e9e81820a3674ec08dbfa21820d53d3a63e42",
+    "w": 1360,
+    "h": 940,
+    "bytes": 173030,
+    "type": "image/webp"
+  },
+  "lumiere/proche-ouvert-bougie": {
+    "file": "baked/lumiere/proche-ouvert-bougie.webp",
+    "sha": "9994ddea2f13afeece6a93e5d63a5eefb09da348f2e1143df1cd19175efacb42",
+    "w": 1360,
+    "h": 940,
+    "bytes": 68126,
+    "type": "image/webp"
+  },
+  "lumiere/proche-ouvert-feu": {
+    "file": "baked/lumiere/proche-ouvert-feu.webp",
+    "sha": "b63d56394630b02666cb7e53c5c9e5def1231a054032f61d6a53d83c80e6fa68",
+    "w": 1360,
+    "h": 940,
+    "bytes": 67162,
+    "type": "image/webp"
+  },
+  "lumiere/proche-ouvert": {
+    "file": "baked/lumiere/proche-ouvert.webp",
+    "sha": "65db64a4650c4bd2bbb52e73596b3c7f6096e2f459cb7ef3d4aa49060f7857a7",
+    "w": 1360,
+    "h": 940,
+    "bytes": 176976,
+    "type": "image/webp"
+  },
+  "lumiere/vide-bougie": {
+    "file": "baked/lumiere/vide-bougie.webp",
+    "sha": "d5b3d0ab3001577aa89ecb86ca60261e6990f358e688f143baaaec37020fd5b6",
+    "w": 1360,
+    "h": 940,
+    "bytes": 77542,
+    "type": "image/webp"
+  },
+  "lumiere/vide-feu": {
+    "file": "baked/lumiere/vide-feu.webp",
+    "sha": "64b96474143bf72a4677865983b5c46ec15224f9f7ee006827e91074da79ad0e",
+    "w": 1360,
+    "h": 940,
+    "bytes": 64710,
+    "type": "image/webp"
+  },
+  "lumiere/vide": {
+    "file": "baked/lumiere/vide.webp",
+    "sha": "f63f673df647938e31d35223dc3420d29686ed5045879d730c6673fa778d8363",
+    "w": 1360,
+    "h": 940,
+    "bytes": 177938,
+    "type": "image/webp"
+  },
   "musique/frozen-star": {
     "file": "baked/musique/frozen-star.mp3",
     "sha": "4b646848a344e941bfa00c4341bf0bd11a2113727a8f5ee59303b6ec80a0fdbc",
@@ -460,18 +884,18 @@
   },
   "pages/1x/biscuits-droite": {
     "file": "baked/pages/1x/biscuits-droite.webp",
-    "sha": "b62bb8495c155282af5d4a0f5484d2ea8fceb9b40b4769d5608131c878a86008",
+    "sha": "17ac97ac833c380e32d30229ec3244962775966185630fca62d6e77560de8ce9",
     "w": 850,
     "h": 1200,
-    "bytes": 6772,
+    "bytes": 33096,
     "type": "image/webp"
   },
   "pages/1x/biscuits-gauche": {
     "file": "baked/pages/1x/biscuits-gauche.webp",
-    "sha": "80b7421079804a4c313ce29508d24f77689eb2682019145b175fc7d6326146f5",
+    "sha": "21385bb69d940f68df0bf63cebf37a9c9a524e4d801d246279cbb949e4bf6a2c",
     "w": 850,
     "h": 1200,
-    "bytes": 4736,
+    "bytes": 41644,
     "type": "image/webp"
   },
   "pages/1x/cecile-1-droite": {
@@ -972,64 +1396,64 @@
   },
   "pages/4x/biscuits-droite-00": {
     "file": "baked/pages/4x/biscuits-droite-00.webp",
-    "sha": "9166bf3c70aa8cfc7d5124fcb0a73f2f1205b943b68b71b24c7cb3fe302d7623",
+    "sha": "018ebac1bf32b8c8c5f56fc30c618ab35ab5c92894f94437511edf1ce3d07fc2",
     "w": 1704,
     "h": 2404,
-    "bytes": 29602,
+    "bytes": 92316,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/biscuits-droite-01": {
     "file": "baked/pages/4x/biscuits-droite-01.webp",
-    "sha": "2f9873da48053be185215512634cf90c9b580c2d42ce99c15d42fdcc6d4008ac",
+    "sha": "25e5382b6e09851a76880ca91a01e1dbad2d70ad433a88724e4ccfc5a5917957",
     "w": 1704,
     "h": 2404,
-    "bytes": 26112,
+    "bytes": 44992,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/biscuits-droite-10": {
     "file": "baked/pages/4x/biscuits-droite-10.webp",
-    "sha": "8a59bdc48cb22d5f53633e280e25d1107f9ac8c4f40aa9ae90f6be90a42d6208",
+    "sha": "d4967ee2666007bf0eceb77be5590bd617f41a831df887fc8b401eeabf31aedf",
     "w": 1704,
     "h": 2404,
-    "bytes": 7630,
+    "bytes": 32826,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/biscuits-droite-11": {
     "file": "baked/pages/4x/biscuits-droite-11.webp",
-    "sha": "8a59bdc48cb22d5f53633e280e25d1107f9ac8c4f40aa9ae90f6be90a42d6208",
+    "sha": "a5a8543da60e6e2013087925d604874cc1125d1cec0da60c3c159e09a18f553e",
     "w": 1704,
     "h": 2404,
-    "bytes": 7630,
+    "bytes": 109340,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/biscuits-gauche-00": {
     "file": "baked/pages/4x/biscuits-gauche-00.webp",
-    "sha": "b2d60fa00806f690b504ad13c5f76adfcefa3952076ce198e40ae3865dd80278",
+    "sha": "9c708c13bb00dcd921ea4c79bfc082140cfd490e34fa5a3e394ee1331538aadd",
     "w": 1704,
     "h": 2404,
-    "bytes": 11054,
+    "bytes": 111054,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/biscuits-gauche-01": {
     "file": "baked/pages/4x/biscuits-gauche-01.webp",
-    "sha": "87d561f82501785262d64e3de8ddf522010f6252b5a46c175d238de872e0dde3",
+    "sha": "bf7cc4b55769ffeadbbf06e5ff3d0b165ed4698167d4eded7fca139760f2db84",
     "w": 1704,
     "h": 2404,
-    "bytes": 21190,
+    "bytes": 151174,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/biscuits-gauche-10": {
     "file": "baked/pages/4x/biscuits-gauche-10.webp",
-    "sha": "8a59bdc48cb22d5f53633e280e25d1107f9ac8c4f40aa9ae90f6be90a42d6208",
+    "sha": "d9ded2834f091ce05005bdfd0259ccab2c2dcd947a33fb4a3f635e3325f6e1bd",
     "w": 1704,
     "h": 2404,
-    "bytes": 7630,
+    "bytes": 19748,
     "type": "image/webp",
     "site": true
   },
@@ -2012,18 +2436,18 @@
   },
   "pages/biscuits-droite": {
     "file": "baked/pages/biscuits-droite.webp",
-    "sha": "081988926b3e6d4bba5257569a38fd0c4cc411d4bd73a643b6060560cfc33163",
+    "sha": "f7bbeca4671fdb38e8d49abd1b383a9f53112ae7dd8d392e6d2cda69aa9d72d9",
     "w": 1700,
     "h": 2400,
-    "bytes": 23106,
+    "bytes": 94688,
     "type": "image/webp"
   },
   "pages/biscuits-gauche": {
     "file": "baked/pages/biscuits-gauche.webp",
-    "sha": "703c51169210bc9a3646bf50104989a36177cba0d386a1c8adaa999c83529f55",
+    "sha": "fabd01e8b8b4d24f115e2abfd96d5c2d32a64ab328f15692db5615fe9ae68753",
     "w": 1700,
     "h": 2400,
-    "bytes": 14598,
+    "bytes": 110402,
     "type": "image/webp"
   },
   "pages/cecile-1-droite": {
