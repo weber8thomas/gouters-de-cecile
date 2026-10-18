@@ -167,8 +167,10 @@ export function paraphe([x0, , x1, y1]: Rect, graine: number): Chemin[] {
   };
   const L = Math.max(80, x1 - x0);
   const y = y1 + 9 + 5 * h(1);
-  const p = new Plume(x0 - 4, y - 6, Math.PI * (0.62 + 0.1 * h(2)))
-    .arc(30, -Math.PI * (1.55 + 0.2 * h(3)))
+  // la boucle part vers le haut à droite et se referme en repartant vers la droite, sous le titre
+  const a0 = -Math.PI * (0.38 + 0.08 * h(2));
+  const p = new Plume(x0 - 4, y - 2, a0)
+    .arc(54, -(2 * Math.PI + a0) + (h(3) - 0.5) * 0.12)
     .onde(L * (0.9 + 0.12 * h(4)), 0.14 + 0.08 * h(5), 1 + Math.round(h(6)))
     .arc(14, -1.1)
     .volute(7 + 3 * h(7), 0.9, -1);
