@@ -17,8 +17,10 @@
    "type": "titre",
    "texte": "Sommaire",
    "echelle": 1.9,
+   "graine": 44,
    "position": "centre",
-   "souligne": "trait"
+   "souligne": "trait",
+   "encre": "terracotta"
   },
   {
    "id": "sommaire",

@@ -16,6 +16,7 @@
     "textures": "node scripts/bake-textures.mjs",
     "artifact": "node scripts/build-artifact.mjs",
     "assets": "node scripts/assets.mjs",
+    "invite": "node scripts/invite.mjs",
     "build:site": "node scripts/build-tokens.mjs && npm run gen && node scripts/gen-entry.mjs --target site && tsc --noEmit && vite build"
   },
   "dependencies": {

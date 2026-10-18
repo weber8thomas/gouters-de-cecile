@@ -9,8 +9,9 @@
     { "id": "lisa", "graine": 2611, "type": "video", "invites": ["lisa"], "titre": "Lisa — Carrot cake" },
     { "id": "julie", "graine": 4127, "type": "video", "invites": ["julie"], "titre": "Julie — Cake au citron" },
     { "id": "biscuits", "type": "intercalaire", "chapitre": "biscuits", "titre": "Biscuits", "sansFolio": true },
-    { "id": "rose", "graine": 811, "type": "recette", "invites": ["rose"], "titre": "Mamie Rose — Sablés" },
-    { "id": "mathis", "graine": 905, "type": "deux-recettes", "invites": ["mathis", "bernard"], "titre": "Mathis et Bernard" },
+    { "id": "rose", "graine": 811, "type": "video", "invites": ["rose"], "titre": "Mamie Rose — Sablés" },
+    { "id": "mathis", "graine": 905, "type": "video", "invites": ["mathis"], "titre": "Mathis — Cookies" },
+    { "id": "bernard", "graine": 1733, "type": "video", "invites": ["bernard"], "titre": "Bernard — Tarte aux pommes" },
     { "id": "fin", "graine": 1201, "type": "finale", "invites": ["cecile"], "titre": "Le mot de la fin" }
   ]
 }

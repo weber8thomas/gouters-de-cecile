@@ -78,12 +78,12 @@
     {
       "titre": "__Étape 5__",
       "texte": "Huiler et fariner légèrement le moule et verser la préparation."
-    },
-    {
-      "titre": "__Étape 6__",
-      "texte": "Enfourner 40 à 45 minutes selon votre four à 175° (th 5/6). Perso sur mon four je vais même jusqu’à 1h, mais vérifie tous les quarts d’heure quand même. Piquer pour vérifier que le gâteau soit cuit."
     }
   ],
+  "cuisson": {
+    "titre": "__Étape 6__",
+    "texte": "Enfourner 40 à 45 minutes selon votre four à 175° (th 5/6). Perso sur mon four je vais même jusqu’à 1h, mais vérifie tous les quarts d’heure quand même. Piquer pour vérifier que le gâteau soit cuit."
+  },
   "apres": [
     "Laisse le gâteau dans le moule jusqu’à ce qu’il refroidisse."
   ],

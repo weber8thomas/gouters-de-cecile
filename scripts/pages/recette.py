@@ -84,7 +84,7 @@ def graine_atome(slug: str, aid: str) -> int:
 @dataclass
 class Atome:
     id: str
-    genre: str  # titre | groupe-titre | ligne | phrase | fin | mot | signature
+    genre: str  # titre | groupe-titre | ligne | phrase | cuisson | fin | mot | signature
     texte: str
     graine: int
     bloc: str = ""  # bloc logique (groupe d'ingrédients, étape, paragraphe)
@@ -173,6 +173,13 @@ def atomes(rec: dict, alias: dict | None = None, cadre: bool | None = None) -> l
         eid = f"etape-{n}"
         t = {"texte": e["titre"], "graine": g(f"{eid}/titre")} if e.get("titre") else None
         paragraphe(e["texte"], eid, titre=t)
+    # cuisson (optionnelle) : sa propre ligne, après les étapes. Texte seul → label « Cuisson : » ajouté ;
+    # `{ "titre", "texte" }` → le titre du carnet (« Étape 6 ») est gardé, mot pour mot.
+    if rec.get("cuisson"):
+        c = rec["cuisson"] if isinstance(rec["cuisson"], dict) else {"texte": rec["cuisson"]}
+        t = c.get("titre") or "Cuisson :"
+        A.append(Atome("cuisson", "cuisson", c["texte"], g("cuisson"), bloc="cuisson",
+                       titre={"texte": t, "graine": g("cuisson/titre")}))
     for p, par in enumerate(rec.get("apres") or []):
         paragraphe(par, f"apres-{p + 1}")
     for i, grp in enumerate(rec.get("extras") or []):
@@ -396,6 +403,8 @@ def gabarits(rec: dict, plan: dict, papiers: dict, roster: dict | None = None) -
         commun["contexte_importants"] = ctx
     if plan.get("outil"):
         commun["outil"] = plan["outil"]
+    if plan.get("ecriture"):  # taille, epaisseur de l'écriture (mise_en_page : « ecriture » d'une page)
+        commun["ecriture"] = plan["ecriture"]
     ph = plan.get("photo", {})
     rp = rect_photo(ph, "gauche")
     nom = nom_invite(slug, roster, rec)
@@ -440,6 +449,19 @@ def gabarits(rec: dict, plan: dict, papiers: dict, roster: dict | None = None) -
                          volant={"recto": recto_id, "verso": verso_id, "angle": float(vol.get("angle", -7.0)),
                                  "rect": vol.get("rect", [rv[0] + 0.02, rv[1] + 0.025, tw, th])},
                          suite=recto_id)
+    # aquarelles vivantes du plan ({page: gauche|droite, nom, rect, aquarelle, anime, angle}) : zones
+    # réservées comme la photo, l'encre passe autour. `bande` : le texte s'arrête au-dessus du dessin, sur
+    # toute la largeur jusqu'au bas de la page (ou jusqu'à la note « suite ») : pas de bout de phrase
+    # orphelin sous les dessins
+    for aq in plan.get("aquarelles", []):
+        v = {k: x for k, x in aq.items() if k not in ("page", "bande")}
+        for d in [gauche] if aq.get("page") == "gauche" else [droite, droite_volant]:
+            zones = [v]
+            if aq.get("bande"):
+                y = v["rect"][1]
+                bas = rs[1] - 0.005 if d is droite_volant else 1.0
+                zones.append({"nom": f"{v['nom']}-bande", "rect": [0.0, y, 1.0, round(bas - y, 5)], "vivant": False})
+            d["vivants"] = d.get("vivants", []) + zones
     pid = fe.get("papier", f"c-{slug}")
     cfg = papiers.get("cahiers", {}).get(pid, {})
     base_f = dict(commun, type="feuillet", taille=taille, papier=pid, xh_facteur=float(fe.get("xh", 0.86)),
@@ -494,6 +516,14 @@ def assembler(gab: Gabarits, base: dict, A: list[Atome], tete: list | None = Non
                     blocs.append({"type": "paragraphe", "id": f"{a.bloc}@{a.id.split('/')[-1]}", "source": a.bloc,
                                   "segments": [_seg(a)], "avant": avant,
                                   "alinea": 0.04 if (a.premier and not premier) else 0.0})
+        elif a.genre == "cuisson":
+            # « Cuisson : » (ou le titre de la recette) : sur sa ligne quand il y en a un, comme une étape
+            avant = 0.0 if premier else 0.45
+            if a.titre:
+                blocs.append({"type": "paragraphe", "id": "cuisson-titre", "segments": [a.titre], "avant": avant,
+                              "alinea": 0.0})
+                avant = 0.0
+            blocs.append({"type": "paragraphe", "id": "cuisson", "segments": [_seg(a)], "avant": avant, "alinea": 0.0})
         elif a.genre == "fin":
             blocs.append({"type": "paragraphe", "id": "fin", "segments": [_seg(a)], "avant": 0.0 if premier else 0.45,
                           "alinea": 0.05})

@@ -15,7 +15,8 @@
    "type": "chapitre",
    "chapitre": "gateaux",
    "taille": 1.75,
-   "graine": 22
+   "graine": 43,
+   "encre": "terracotta"
   }
  ],
  "vivants": [

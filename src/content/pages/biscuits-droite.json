@@ -15,31 +15,32 @@
    "type": "chapitre",
    "chapitre": "biscuits",
    "taille": 1.75,
-   "graine": 12011
+   "graine": 43,
+   "encre": "terracotta"
   }
  ],
  "vivants": [
   {
-   "nom": "aq-ble",
+   "nom": "aq-sables",
    "rect": [
     0.27,
     0.4,
     0.17,
     0.224
    ],
-   "aquarelle": "ble",
+   "aquarelle": "sables-etoiles",
    "anime": "balance",
    "angle": -6
   },
   {
-   "nom": "aq-vanille",
+   "nom": "aq-cookies",
    "rect": [
     0.46,
     0.41,
     0.3,
     0.244
    ],
-   "aquarelle": "vanille",
+   "aquarelle": "cookies",
    "anime": "balance",
    "angle": 4
   }

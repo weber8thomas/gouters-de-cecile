@@ -31,15 +31,11 @@ export function videoInfo(id: string | null | undefined): VideoInfo | null {
   return { id, ...VIDEOS[id] } as VideoInfo;
 }
 
-/**
- * Vidéo posée sur chaque page qui réserve une zone `photo` : l'invité de la double page, sauf la page
- * droite de Mathis, qui est celle de Bernard.
- */
-const VIDEO_DE_PAGE: Record<string, string> = { 'mathis-droite': 'bernard' };
+/** Vidéo posée sur chaque page qui réserve une zone `photo` : l'invité de la double page. */
 const videoDePage = (page: string): string | null => {
   const info = PAGES_CUITES.pages[page];
   if (!info?.vivants?.photo) return null;
-  return VIDEO_DE_PAGE[page] ?? info.double;
+  return info.double;
 };
 
 interface VolantInfo { recto: string; verso?: string | null; angle?: number }

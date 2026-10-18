@@ -10,27 +10,21 @@
  "contre_plat": true,
  "papier": "garde-uni",
  "papier_miroir": true,
- "_": "Contre-plat (papier de garde collé sur le carton de la couverture) : pas de page au dos, pas de folio. Papier : lot Pa (papiers.json, gardes), choisi au GATE avec la couverture.",
+ "_": "Contre-plat (papier de garde collé sur le carton de la couverture) : pas de page au dos, pas de folio. Papier : lot Pa (papiers.json, gardes), choisi au GATE avec la couverture. Ex-libris : encre chocolat (la main de Cécile), écrit en grand (mot × 1,6), centré dans le tiers haut.",
  "blocs": [
   {
    "id": "ex-libris",
    "type": "annotation",
-   "role": "legende",
+   "role": "mot",
+   "echelle": 1.6,
+   "encre": "chocolat",
    "texte": "Ce carnet appartient à Cécile",
    "pente": -2.4,
    "sans_parentheses": true,
    "places": [
     {
-     "x": 0.36,
-     "y": 0.84
-    },
-    {
-     "x": 0.3,
-     "y": 0.8
-    },
-    {
-     "x": 0.4,
-     "y": 0.88
+     "x": 0.26,
+     "y": 0.36
     }
    ]
   }

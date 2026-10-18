@@ -1086,7 +1086,7 @@ VARIANTES = {
                                        "trait": 7.0, "arc": (2.3, 1.6), "the": 0.9, "rond": True}]},
         "etiquette": {"forme": "octogone", "taille": (500, 258), "centre": (0.53, 0.335), "angle": 1.3,
                       "cadre": "#a4563c", "decolle": "bas-droite", "px": 0.66, "py": 0.3, "teinte": (2, -4, -18)},
-        "titre": {"texte": TITRE, "main": "soignee", "encre": "plume", "outil": "plume", "graine": 41, "xh": 31.0,
+        "titre": {"texte": TITRE, "main": "soignee", "encre": "plume", "outil": "plume", "graine": 43, "xh": 31.0,
                   "graisse": 1.15, "lignes": [(0.065, 0.4, "g", -1.0), (0.17, 0.75, "g", -0.6)]},
         "croquis": {"nom": "theiere", "variante": "a", "boite": (0.755, 0.18, 0.195, 0.56), "graine": 5, "xh": 0.62},
         "garde": "uni",

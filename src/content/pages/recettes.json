@@ -73,12 +73,12 @@
    },
    "serrage_max": 1,
    "graines": {
-    "ingredients-1/ligne-1": 23758,
-    "ingredients-1/ligne-2": 23759,
-    "ingredients-1/ligne-4": 23760,
-    "ingredients-1/ligne-9": 8,
-    "ingredients-1/ligne-10": 1,
-    "etape-1/phrase-1": 2,
+    "ingredients-1/ligne-1": 47515,
+    "ingredients-1/ligne-2": 47516,
+    "ingredients-1/ligne-4": 47517,
+    "ingredients-1/ligne-9": 23765,
+    "ingredients-1/ligne-10": 23758,
+    "etape-1/phrase-1": 39597,
     "etape-6/phrase-1": 31694,
     "etape-1/titre": 2,
     "etape-2/titre": 2,
@@ -86,15 +86,470 @@
     "etape-4/titre": 2,
     "etape-5/titre": 2,
     "etape-6/titre": 2,
-    "ingredients-1/ligne-3": 26166588,
-    "ingredients-1/ligne-5": 53752529,
+    "ingredients-1/ligne-3": 26190345,
+    "ingredients-1/ligne-5": 53776286,
     "etape-6/phrase-2.1": 69509264,
     "etape-6/phrase-2.2": 18943010,
     "etape-6/phrase-3": 8159401,
     "extra-1/ligne-1": 89363364,
     "extra-1/ligne-2": 8742407,
-    "extra-1/ligne-3": 31968830
+    "extra-1/ligne-3": 31968830,
+    "ingredients-1/ligne-6": 32471692,
+    "ingredients-1/ligne-7": 34600499,
+    "ingredients-1/ligne-8": 64466928
+   },
+   "aquarelles": [
+    {
+     "page": "droite",
+     "nom": "aq-carotte",
+     "rect": [
+      0.3,
+      0.79,
+      0.1,
+      0.17
+     ],
+     "aquarelle": "carotte",
+     "anime": "balance",
+     "angle": -24
+    }
+   ]
+  },
+  "julie": {
+   "source": "src/content/recettes/julie.json",
+   "double": "julie",
+   "folios": [
+    14,
+    15
+   ],
+   "graine": 4127,
+   "photo": {
+    "largeur": 0.42,
+    "ratio": 0.75,
+    "x": 0.06,
+    "y": 0.035,
+    "angle": 1.8,
+    "marge": 0.028,
+    "blanc": 0.01
+   },
+   "volant": {
+    "zone": [
+     0.83,
+     0.66,
+     0.17,
+     0.215
+    ],
+    "note": [
+     0.08,
+     0.895,
+     0.7,
+     0.06
+    ],
+    "angle": -7
+   },
+   "feuillet": {
+    "papier": "c-lisa",
+    "taille": [
+     0.82,
+     0.88
+    ],
+    "xh": 0.83,
+    "haut": 0.04,
+    "bas": 0.035
+   },
+   "etapes": "auto",
+   "suite": {
+    "texte": "suite sur la feuille",
+    "main": "cecile",
+    "encre": "crayon"
+   },
+   "croquis": {
+    "pages": [
+     "gauche",
+     "fin",
+     "droite"
+    ],
+    "taille": [
+     0.19,
+     0.17
+    ]
+   },
+   "aquarelles": [
+    {
+     "page": "droite",
+     "nom": "aq-citron",
+     "rect": [
+      0.5,
+      0.5,
+      0.28,
+      0.383
+     ],
+     "aquarelle": "citron",
+     "anime": "fleurit",
+     "angle": 6,
+     "bande": true
+    },
+    {
+     "page": "droite",
+     "nom": "aq-citron-2",
+     "rect": [
+      0.16,
+      0.58,
+      0.26,
+      0.27
+     ],
+     "aquarelle": "citron-2",
+     "anime": "fleurit",
+     "angle": -5,
+     "bande": true
+    }
+   ],
+   "serrage_max": 1,
+   "graines": {
+    "ingredients-1/ligne-1": 90291740,
+    "ingredients-1/ligne-2": 55428925,
+    "ingredients-1/ligne-3": 23498915,
+    "ingredients-1/ligne-4": 18848397,
+    "ingredients-1/ligne-5": 95865138,
+    "ingredients-1/ligne-6": 9795575,
+    "ingredients-1/ligne-7": 46774182,
+    "ingredients-1/ligne-8": 90243026,
+    "ingredients-1/ligne-9": 66169804,
+    "etape-1/phrase-1": 73145822,
+    "etape-1/phrase-2": 89785983,
+    "etape-2/phrase-1.1": 98006083,
+    "etape-2/phrase-1.2": 68650087,
+    "etape-2/phrase-2": 69848608,
+    "etape-3/phrase-1.1": 18984907,
+    "etape-3/phrase-1.2": 96146689,
+    "etape-3/phrase-1.3": 29710514,
+    "etape-4/phrase-1.1": 54085041,
+    "etape-4/phrase-1.2": 50778525,
+    "etape-4/phrase-1.3": 13031234,
+    "etape-4/phrase-2": 7955800,
+    "etape-5/phrase-1": 75059076,
+    "etape-5/phrase-2": 35022468,
+    "cuisson": 73417798,
+    "apres-1/phrase-1.1": 64810461,
+    "apres-1/phrase-1.2": 63713313,
+    "extra-1/ligne-1": 73551209,
+    "extra-1/ligne-2": 18030874,
+    "extra-1/ligne-3": 50092874,
+    "cuisson/titre": 40742141
    }
+  },
+  "rose": {
+   "source": "src/content/recettes/rose.json",
+   "double": "rose",
+   "folios": [
+    18,
+    19
+   ],
+   "graine": 811,
+   "photo": {
+    "largeur": 0.42,
+    "ratio": 0.75,
+    "x": 0.06,
+    "y": 0.035,
+    "angle": -1.3,
+    "marge": 0.028,
+    "blanc": 0.01
+   },
+   "volant": {
+    "zone": [
+     0.83,
+     0.66,
+     0.17,
+     0.215
+    ],
+    "note": [
+     0.08,
+     0.895,
+     0.7,
+     0.06
+    ],
+    "angle": -7
+   },
+   "feuillet": {
+    "papier": "c-lisa",
+    "taille": [
+     0.82,
+     0.88
+    ],
+    "xh": 0.83,
+    "haut": 0.04,
+    "bas": 0.035
+   },
+   "etapes": "auto",
+   "suite": {
+    "texte": "suite sur la feuille",
+    "main": "cecile",
+    "encre": "crayon"
+   },
+   "croquis": {
+    "pages": [
+     "gauche",
+     "fin",
+     "droite"
+    ],
+    "taille": [
+     0.19,
+     0.17
+    ]
+   },
+   "aquarelles": [
+    {
+     "page": "droite",
+     "nom": "aq-cannelle",
+     "rect": [
+      0.5,
+      0.56,
+      0.32,
+      0.29
+     ],
+     "aquarelle": "cannelle",
+     "anime": "balance",
+     "angle": 5,
+     "bande": true
+    },
+    {
+     "page": "droite",
+     "nom": "aq-etoiles",
+     "rect": [
+      0.14,
+      0.6,
+      0.2,
+      0.238
+     ],
+     "aquarelle": "sables-etoiles",
+     "anime": "balance",
+     "angle": -4,
+     "bande": true
+    }
+   ],
+   "serrage_max": 1,
+   "graines": {
+    "ingredients-1/ligne-1": 57628306,
+    "ingredients-1/ligne-2": 87398188,
+    "ingredients-1/ligne-3": 42841676,
+    "ingredients-1/ligne-4": 57340284,
+    "ingredients-1/ligne-5": 36964811,
+    "ingredients-1/ligne-6": 92046154,
+    "ingredients-1/ligne-7": 80070991,
+    "ingredients-2/ligne-1": 23211678,
+    "ingredients-2/ligne-2": 37899793,
+    "etape-1/phrase-1.1": 79120790,
+    "etape-1/phrase-1.2": 17951566,
+    "etape-1/phrase-2": 73053109,
+    "extra-1/ligne-1": 45838213,
+    "extra-1/ligne-2": 75853656,
+    "extra-1/ligne-3": 62480757,
+    "etape-2/phrase-1.1": 5816667,
+    "etape-2/phrase-1.2": 59134731,
+    "etape-2/phrase-2": 36309906,
+    "etape-2/phrase-3": 28635688,
+    "etape-4/phrase-1.1": 29922272,
+    "etape-4/phrase-1.2": 83344003,
+    "etape-4/phrase-2": 30345052,
+    "etape-4/titre": 75815360
+   }
+  },
+  "mathis": {
+   "source": "src/content/recettes/mathis.json",
+   "double": "mathis",
+   "folios": [
+    20,
+    21
+   ],
+   "graine": 905,
+   "photo": {
+    "largeur": 0.42,
+    "ratio": 0.75,
+    "x": 0.06,
+    "y": 0.035,
+    "angle": 3.1,
+    "marge": 0.028,
+    "blanc": 0.01
+   },
+   "volant": {
+    "zone": [
+     0.83,
+     0.66,
+     0.17,
+     0.215
+    ],
+    "note": [
+     0.08,
+     0.895,
+     0.7,
+     0.06
+    ],
+    "angle": -7
+   },
+   "feuillet": {
+    "papier": "c-lisa",
+    "taille": [
+     0.82,
+     0.88
+    ],
+    "xh": 0.83,
+    "haut": 0.04,
+    "bas": 0.035
+   },
+   "etapes": "auto",
+   "suite": {
+    "texte": "suite sur la feuille",
+    "main": "cecile",
+    "encre": "crayon"
+   },
+   "croquis": {
+    "pages": [
+     "gauche",
+     "fin",
+     "droite"
+    ],
+    "taille": [
+     0.19,
+     0.17
+    ]
+   },
+   "aquarelles": [
+    {
+     "page": "droite",
+     "nom": "aq-cookies",
+     "rect": [
+      0.5,
+      0.62,
+      0.26,
+      0.23
+     ],
+     "aquarelle": "cookies",
+     "anime": "balance",
+     "angle": 4
+    }
+   ],
+   "serrage_max": 1,
+   "graines": {
+    "ingredients-1/ligne-1": 97196465,
+    "ingredients-1/ligne-2": 97762837,
+    "ingredients-1/ligne-3": 45333307,
+    "ingredients-1/ligne-4": 52747187,
+    "ingredients-1/ligne-5": 36237954,
+    "ingredients-1/ligne-6": 55587561,
+    "ingredients-1/ligne-7": 39778924,
+    "ingredients-2/ligne-1": 451538,
+    "ingredients-2/ligne-2": 9301937,
+    "etape-1/phrase-1": 17218149,
+    "etape-1/phrase-2": 12379362,
+    "etape-3/phrase-1": 77221930,
+    "etape-3/phrase-2": 64883059,
+    "etape-3/phrase-3.1": 50562818,
+    "etape-3/phrase-3.2": 33340691,
+    "etape-4/phrase-1": 97451935,
+    "etape-4/phrase-2": 24417151,
+    "etape-4/phrase-3": 21662136,
+    "etape-5/phrase-1.1": 79147930,
+    "etape-5/phrase-1.2": 79121885,
+    "etape-5/phrase-1.3": 63977103,
+    "cuisson": 82670050,
+    "extra-1/ligne-1": 32098777,
+    "extra-1/ligne-2": 64281409,
+    "extra-1/paragraphe-1/phrase-1": 99684043,
+    "extra-1/paragraphe-1/phrase-2": 45600112,
+    "apres-1/phrase-1": 8842490,
+    "apres-1/phrase-2": 1982313
+   },
+   "ecriture": {
+    "taille": 1.3
+   }
+  },
+  "bernard": {
+   "source": "src/content/recettes/bernard.json",
+   "double": "bernard",
+   "folios": [
+    22,
+    23
+   ],
+   "graine": 1733,
+   "photo": {
+    "largeur": 0.42,
+    "ratio": 0.75,
+    "x": 0.06,
+    "y": 0.035,
+    "angle": -3.4,
+    "marge": 0.028,
+    "blanc": 0.01
+   },
+   "volant": {
+    "zone": [
+     0.83,
+     0.66,
+     0.17,
+     0.215
+    ],
+    "note": [
+     0.08,
+     0.895,
+     0.7,
+     0.06
+    ],
+    "angle": -7
+   },
+   "feuillet": {
+    "papier": "c-lisa",
+    "taille": [
+     0.82,
+     0.88
+    ],
+    "xh": 0.83,
+    "haut": 0.04,
+    "bas": 0.035
+   },
+   "etapes": "auto",
+   "suite": {
+    "texte": "suite sur la feuille",
+    "main": "cecile",
+    "encre": "crayon"
+   },
+   "croquis": {
+    "pages": [
+     "gauche",
+     "fin",
+     "droite"
+    ],
+    "taille": [
+     0.19,
+     0.17
+    ]
+   },
+   "aquarelles": [
+    {
+     "page": "droite",
+     "nom": "aq-tarte",
+     "rect": [
+      0.42,
+      0.56,
+      0.4,
+      0.189
+     ],
+     "aquarelle": "tarte-pommes",
+     "anime": "fleurit"
+    },
+    {
+     "page": "droite",
+     "nom": "aq-pomme",
+     "rect": [
+      0.14,
+      0.62,
+      0.2,
+      0.245
+     ],
+     "aquarelle": "pomme",
+     "anime": "fleurit",
+     "angle": -6
+    }
+   ],
+   "serrage_max": 1,
+   "graines": {}
   }
  }
 }
