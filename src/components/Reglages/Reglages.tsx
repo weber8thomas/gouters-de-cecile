@@ -295,6 +295,10 @@ function Choix<T extends string | boolean>({ options, valeur, onChoisir, graine 
 const OUI_NON: Option<boolean>[] = [{ v: false, texte: 'non' }, { v: true, texte: 'oui' }];
 const SON: Option<boolean>[] = [{ v: false, texte: 'coupé' }, { v: true, texte: 'avec son' }];
 const TAILLES: Option<Distance>[] = [{ v: 'proche', texte: 'proche' }, { v: 'moyenne', texte: 'moyenne' }, { v: 'loin', texte: 'loin' }];
+/** Boutons à l'écran : ils s'effacent seuls après quelques secondes, ou restent toujours là (src/lib/controles.ts). */
+const BOUTONS: Option<boolean>[] = [{ v: false, texte: 's’effacent' }, { v: true, texte: 'toujours visibles' }];
+/** Feuille du téléphone : « visibles », pour que les deux choix tiennent sur une ligne. */
+const BOUTONS_COURT: Option<boolean>[] = [{ v: false, texte: 's’effacent' }, { v: true, texte: 'visibles' }];
 const VITESSES_TEXTE: Option<Vitesse>[] = [{ v: 'vive', texte: 'vive' }, { v: 'normale', texte: 'normale' }, { v: 'lente', texte: 'lente' }];
 type ChoixAuto = 'auto' | 'oui' | 'non';
 const AUTO_OUI_NON: Option<ChoixAuto>[] = [{ v: 'auto', texte: 'automatique' }, { v: 'oui', texte: 'oui' }, { v: 'non', texte: 'non' }];
@@ -569,6 +573,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
           className="gc-reglages__bouton"
           data-gc-reglages="bouton"
           data-gc-controle="reglages"
+          data-gc-effacable={enPlace ? undefined : ''}
           aria-haspopup="dialog"
           aria-expanded={etat === 'ouvert'}
           aria-label="Réglages"
@@ -680,6 +685,9 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                   </Ligne>
                   <Ligne id="mouvement" libelle="Moins d’animations" role="radiogroup">
                     <Choix options={OUI_NON} valeur={r.mouvementReduit} onChoisir={(mouvementReduit) => setR({ mouvementReduit })} graine={g()} />
+                  </Ligne>
+                  <Ligne id="boutons" libelle="Boutons" role="radiogroup">
+                    <Choix options={mise.feuille ? BOUTONS_COURT : BOUTONS} valeur={r.boutonsToujoursVisibles} onChoisir={(boutonsToujoursVisibles) => setR({ boutonsToujoursVisibles })} graine={g()} />
                   </Ligne>
                   <h3 className="gc-reglages__section" data-gc-reglages-section="ambiance">
                     Ambiance

@@ -25,11 +25,16 @@
 //     milieu de la page, grabbing en glissant ; Entrée ouvre le livre fermé ; l'annonce aux lecteurs
 //     d'écran reprend le titre de la double page ; Fin puis → referme le livre sur son plat arrière
 //     (ATTENTE tant que le colophon n'est pas cuit).
+// Boutons qui s'effacent (src/lib/controles.ts) : ils disparaissent seuls après 3 s sans activité ; avant chaque
+//   mesure, un petit mouvement de souris les rappelle (reveiller). Par écran : l'état caché (data-gc-controles =
+//   « caches », opacité effective nulle, mais ni display:none, ni visibility:hidden, ni inert, ni aria-hidden) et
+//   le retour au clavier (Tab) ; suite « boutons » : au doigt, le premier toucher sur un bouton effacé ne fait que
+//   les rappeler ; à la souris, le mouvement les rappelle et le réglage « toujours visibles » les garde.
 // Captures dans <out>/, planche contact <out>/planche.png, rapport <out>/devices.json + devices.md.
 //
 //   node scripts/verify-devices.mjs [--bundle dist/ds-t/components | --site dist/site]
 //        [--out verification/out/t/devices] [--only iphone13-portrait,tv-1080] [--no-interactions]
-//        [--suites doigt,rotation,reduit,souris,coin,curseurs] [--videos julie,lisa]
+//        [--suites doigt,rotation,reduit,souris,coin,curseurs,boutons] [--videos julie,lisa]
 import { writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import {
@@ -78,6 +83,23 @@ async function attendreEtat(page, attendu, f = (s) => s, ms = 45000) {
   return s;
 }
 const repos = (page, ms = 450, debutMax = 4000) => calme(page, { calme: ms, debutMax });
+
+// ---- Boutons qui s'effacent (src/lib/controles.ts) -------------------------------------------------
+/** Attend l'état des boutons (data-gc-controles = « visibles » | « caches » sur .gc-ecran) ; false si jamais atteint. */
+const attendreControles = (page, valeur, timeout = 8000) =>
+  page.waitForFunction((v) => document.querySelector('.gc-ecran')?.getAttribute('data-gc-controles') === v, valeur, { timeout }).then(() => true, () => false);
+let reveil = 0;
+/**
+ * Les boutons s'effacent après 3 s sans activité : un petit mouvement de souris (toujours près du bord haut, au
+ * milieu, où il n'y a rien) les rappelle, puis on laisse finir le fondu (0,2 s). Deux fois le même point ne
+ * compterait pas : on alterne. À faire juste avant de mesurer ou de photographier les contrôles.
+ */
+async function reveiller(page) {
+  const { width: W } = page.viewportSize();
+  await page.mouse.move(W * 0.5 + (reveil++ % 2 ? 7 : -7), 3, { steps: 2 });
+  await attendreControles(page, 'visibles', 5000);
+  await page.waitForTimeout(350);
+}
 /** La double page affichée est celle de l'invité `id` (identifiant « id » ou « …-id »). */
 const sur = (s, id) => s.double >= 0 && s.spreads.some((x) => x.toLowerCase() === id || x.toLowerCase().endsWith(`-${id}`));
 // Les attentes sont relatives à la double page de départ (#julie) : l'ordre des invités peut changer
@@ -109,10 +131,13 @@ async function mesurerRepos(page, e) {
     // Zone sûre : côtés et haut (le papier peut passer sous la barre d'accueil, pas un contrôle).
     const horsSure = pages.filter(([, r]) => r.x < il - tol || r.y < it - tol || r.r > vw - ir + tol).map(([n]) => n);
     // Contrôles : boutons du calque de l'écran.
+    // Opacité effective : celle du bouton fois celles de ses ancêtres (la barre, les flèches et les points
+    // s'effacent en bloc : le bouton, lui, garde sa propre opacité).
+    const effective = (el) => { let o = 1; for (let n = el; n && n !== document.documentElement; n = n.parentElement) o *= Number(getComputedStyle(n).opacity); return o; };
     const ctrls = [...document.querySelectorAll('.gc-ecran__controles button')].map((b) => {
       const r = rect(b);
       const st = getComputedStyle(b);
-      const visible = r.w > 0 && r.h > 0 && st.visibility !== 'hidden' && st.display !== 'none' && Number(st.opacity) > 0.05 && !b.closest('[inert], [hidden]');
+      const visible = r.w > 0 && r.h > 0 && st.visibility !== 'hidden' && st.display !== 'none' && effective(b) > 0.05 && !b.closest('[inert], [hidden]');
       const dansSure = r.x >= il - tol && r.y >= it - tol && r.r <= vw - ir + tol && r.b <= vh - ib + tol;
       return { nom: b.getAttribute('aria-label') || b.textContent.trim().slice(0, 30), x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.w), h: Math.round(r.h), visible, dansSure };
     });
@@ -155,6 +180,39 @@ async function jugerReglages(page, e) {
   const c = (await cibles44(page, BOUTON_REGLAGES))[0];
   const pb = [!b.visible && 'invisible', b.visible && !dansZone(b, z) && 'hors zone sûre', tactile(e) && c && !c.ok && `cible ${c.w}×${c.h} px`].filter(Boolean);
   return { ok: pb.length ? 'KO' : 'OK', detail: pb.join(', ') || `${Math.round(b.w)}×${Math.round(b.h)} à ${Math.round(b.x)},${Math.round(b.y)}` };
+}
+
+/**
+ * Boutons effacés : après 3 s sans activité, data-gc-controles = « caches » et l'opacité effective des boutons est
+ * nulle, mais ils restent là (ni display:none, ni visibility:hidden, ni inert, ni aria-hidden) ; Tab les atteint et
+ * les rappelle. À faire en dernier sur la page : le focus qu'on y laisse empêche les boutons de s'effacer.
+ */
+async function jugerEffacement(page, e, captures) {
+  await reveiller(page);
+  const ok = await attendreControles(page, 'caches', 9000);
+  await page.waitForTimeout(600); // fin du fondu (0,4 s)
+  if (captures) captures.push(await capture(page, `${e.nom}-julie-boutons-caches`, outDir));
+  const m = await page.evaluate(() => {
+    const effective = (el) => { let o = 1; for (let n = el; n && n !== document.documentElement; n = n.parentElement) o *= Number(getComputedStyle(n).opacity); return o; };
+    const boutons = [...document.querySelectorAll('.gc-ecran__controles [data-gc-effacable] button, .gc-ecran__controles button[data-gc-effacable]')];
+    const caches = boutons.filter((b) => {
+      const st = getComputedStyle(b);
+      const r = b.getBoundingClientRect();
+      return st.display === 'none' || st.visibility === 'hidden' || r.width === 0 || r.height === 0 || !!b.closest('[inert], [aria-hidden="true"], [hidden]');
+    }).length;
+    return { n: boutons.length, opMax: Math.max(0, ...boutons.map(effective)), retires: caches };
+  });
+  await page.keyboard.press('Tab');
+  let atteint = await page.evaluate(() => !!document.activeElement?.closest('[data-gc-effacable]'));
+  let tabs = 1;
+  while (!atteint && tabs < 20) {
+    await page.keyboard.press('Tab');
+    tabs++;
+    atteint = await page.evaluate(() => !!document.activeElement?.closest('[data-gc-effacable]'));
+  }
+  const revenus = await attendreControles(page, 'visibles', 3000);
+  const pb = [!ok && 'jamais effacés', m.n < 2 && `${m.n} bouton(s)`, m.opMax > 0.02 && `opacité ${m.opMax.toFixed(2)}`, m.retires && `${m.retires} bouton(s) retiré(s) (display, visibility, inert, aria-hidden)`, !atteint && 'Tab n\'atteint aucun bouton', !revenus && 'Tab ne les rappelle pas'].filter(Boolean);
+  return { ok: pb.length ? 'KO' : 'OK', detail: pb.join(', ') || `${m.n} boutons effacés (opacité ${m.opMax.toFixed(2)}), Tab les atteint au ${tabs}ᵉ appui et les rappelle` };
 }
 
 /** Photo collée sur la page vidéo affichée (ATTENTE tant que Soulever n'est pas intégré). */
@@ -458,6 +516,91 @@ async function suiteCurseurs(browser, e, captures) {
   return { tests: res, erreurs };
 }
 
+// ---- Boutons qui s'effacent : le toucher de rappel, la souris, le réglage ---------------------------------
+/** Au doigt : un toucher sur un bouton effacé ne fait que les rappeler ; un toucher sur le livre fait son action ET les rappelle. */
+async function suiteBoutonsDoigt(browser, e, captures) {
+  const { ctx, page, surv } = await ouvrirPage(browser, cible, e, '#julie');
+  const res = [];
+  const mesure = () => page.evaluate(() => document.querySelector('.gc-ecran')?.getAttribute('data-gc-controles'));
+  const effaces = async () => { const ok = await attendreControles(page, 'caches', 9000); await page.waitForTimeout(600); return ok; };
+  const d0 = (await etatLivre(page)).double;
+  // 1. Toucher le livre (la photo) quand les boutons sont effacés : elle se soulève, et ils reviennent.
+  const photo = await centre(page, PHOTO);
+  if (!photo) res.push({ test: 'boutons effacés, toucher la photo : elle se soulève ET les boutons reviennent', ok: 'ATTENTE', obtenu: 'photo absente : à relancer après intégration' });
+  else {
+    const ok0 = await effaces();
+    await toucher(page, photo[0], photo[1]);
+    const leve = await attendreAttr(page, CALQUE, 'data-gc-soulever', 'ouvert');
+    const revenus = await attendreControles(page, 'visibles', 3000);
+    res.push({ test: 'boutons effacés, toucher la photo : elle se soulève ET les boutons reviennent', attendu: { effaces: true, soulevee: true, controles: 'visibles' }, obtenu: { effaces: ok0, soulevee: leve, controles: await mesure() }, ok: ok0 && leve && revenus ? 'OK' : 'KO' });
+    await page.waitForTimeout(600);
+    await page.keyboard.press('Escape');
+    await attendreAttr(page, CALQUE, 'data-gc-soulever', 'ferme');
+    await stabiliser(page, PHOTO);
+  }
+  // 2. Toucher la flèche « suivante » effacée : la page ne tourne pas, les boutons reviennent.
+  const ok1 = await effaces();
+  const fl = await rectDe(page, '[aria-label="Page suivante"]');
+  if (!fl) { res.push({ test: 'boutons effacés, toucher la flèche : la page ne tourne pas', ok: 'KO', obtenu: 'flèche « Page suivante » introuvable' }); }
+  else {
+    await toucher(page, fl.cx, fl.cy);
+    await page.waitForTimeout(1200);
+    await repos(page, 400, 1500);
+    const apres = await etatLivre(page);
+    const vus = await mesure();
+    res.push({ test: 'boutons effacés, toucher la flèche : la page ne tourne pas, les boutons reviennent', attendu: { effaces: true, double: d0, controles: 'visibles' }, obtenu: { effaces: ok1, double: apres.double, controles: vus }, ok: ok1 && apres.double === d0 && vus === 'visibles' ? 'OK' : 'KO' });
+    captures.push(await capture(page, `${e.nom}-boutons-rappeles`, outDir));
+    // 3. Boutons revenus : la flèche agit.
+    await toucher(page, fl.cx, fl.cy);
+    const s2 = await attendreEtat(page, { double: d0 + 1 });
+    await repos(page);
+    res.push({ test: 'boutons visibles, toucher la flèche : la page tourne', attendu: { double: d0 + 1 }, obtenu: { double: s2.double }, ok: s2.double === d0 + 1 ? 'OK' : 'KO' });
+  }
+  const erreurs = [...surv.erreurs];
+  await ctx.close();
+  return { tests: res, erreurs };
+}
+
+/** À la souris : un mouvement les rappelle, ils s'effacent de nouveau ; « toujours visibles » (menu) les garde. */
+async function suiteBoutonsSouris(browser, e, captures) {
+  const { ctx, page, surv } = await ouvrirPage(browser, cible, e, '#julie');
+  const res = [];
+  const attr = () => page.evaluate(() => document.querySelector('.gc-ecran')?.getAttribute('data-gc-controles'));
+  const op = () => page.evaluate(() => Math.min(...[...document.querySelectorAll('[data-gc-effacable]')].map((el) => { let o = 1; for (let n = el; n && n !== document.documentElement; n = n.parentElement) o *= Number(getComputedStyle(n).opacity); return o; })));
+  const ok0 = await attendreControles(page, 'caches', 9000);
+  await page.waitForTimeout(600);
+  const opCache = await op();
+  await page.mouse.move(300, 3, { steps: 2 });
+  const revenus = await attendreControles(page, 'visibles', 3000);
+  await page.waitForTimeout(350);
+  const opVu = await op();
+  res.push({ test: 'souris : un mouvement rappelle les boutons', attendu: { avant: 'caches', apres: 'visibles' }, obtenu: { effaces: ok0, opaciteEffacee: Math.round(opCache * 100) / 100, revenus, opaciteRappelee: Math.round(opVu * 100) / 100 }, ok: ok0 && revenus && opCache < 0.02 && opVu > 0.5 ? 'OK' : 'KO' });
+  const denouveau = await attendreControles(page, 'caches', 9000);
+  res.push({ test: 'souris : sans activité, ils s\'effacent de nouveau', attendu: { controles: 'caches' }, obtenu: { controles: await attr() }, ok: denouveau ? 'OK' : 'KO' });
+  // Le menu : Boutons → « toujours visibles » ; la fiche ouverte les garde visibles, et fermée aussi.
+  await page.keyboard.press('m');
+  const radio = page.locator('[data-gc-reglages-ligne="boutons"] [role="radio"]').nth(1);
+  const present = await radio.count();
+  if (!present) res.push({ test: 'menu : « Boutons — toujours visibles » garde les boutons à l\'écran', ok: 'KO', obtenu: 'ligne « Boutons » absente du menu' });
+  else {
+    const visiblesFiche = await attendreControles(page, 'visibles', 3000);
+    await radio.click();
+    await page.waitForTimeout(300);
+    const memo = await page.evaluate(() => { try { return JSON.parse(localStorage.getItem('gc:reglages:v3') || '{}').boutonsToujoursVisibles; } catch { return null; } });
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(600);
+    await page.mouse.move(900, 3, { steps: 2 });
+    await page.waitForTimeout(5000);
+    const encore = await attr();
+    const opApres = await op();
+    captures.push(await capture(page, `${e.nom}-boutons-toujours-visibles`, outDir));
+    res.push({ test: 'menu : « Boutons — toujours visibles » garde les boutons à l\'écran (et se mémorise)', attendu: { memo: true, controles: 'visibles' }, obtenu: { fiche: visiblesFiche, memo, controles: encore, opacite: Math.round(opApres * 100) / 100 }, ok: visiblesFiche && memo === true && encore === 'visibles' && opApres > 0.5 ? 'OK' : 'KO' });
+  }
+  const erreurs = [...surv.erreurs];
+  await ctx.close();
+  return { tests: res, erreurs };
+}
+
 // ---- Programme -------------------------------------------------------------------------------------
 const browser = await lancer();
 const ecransRapport = [];
@@ -468,17 +611,22 @@ for (const e of ECRANS_) {
   try {
     // Couverture
     const a = await ouvrirPage(browser, cible, e, '');
+    await reveiller(a.page);
     const fc = await capture(a.page, `${e.nom}-couverture`, outDir);
+    await reveiller(a.page);
     ligne.couverture = await mesurerRepos(a.page, e);
     ligne.erreurs.push(...a.surv.erreurs, ...a.surv.reponses, ...a.surv.echecs);
     await a.ctx.close();
     // Julie (page vidéo)
     const b = await ouvrirPage(browser, cible, e, '#julie');
+    await reveiller(b.page);
     const fj = await capture(b.page, `${e.nom}-julie`, outDir);
+    await reveiller(b.page);
     const m = await mesurerRepos(b.page, e);
     ligne.julie = m;
     ligne.reglages = await jugerReglages(b.page, e);
     ligne.photos = { julie: await jugerPhoto(b.page) };
+    ligne.effacement = await jugerEffacement(b.page, e, captures);
     ligne.erreurs.push(...b.surv.erreurs, ...b.surv.reponses, ...b.surv.echecs);
     await b.ctx.close();
     // #lisa, et les autres pages vidéo de --videos
@@ -507,6 +655,7 @@ for (const e of ECRANS_) {
     if (c.cibles.ok !== 's.o.') R.ajouter(e.nom, 'cibles ≥ 44 px au doigt', c.cibles.ok, c.cibles.detail);
     R.ajouter(e.nom, `hauteur d'x angulaire ≥ ${c.hauteurX.ref} mrad`, c.hauteurX.ok, `${c.hauteurX.mrad} mrad (${c.hauteurX.px} px, ${c.hauteurX.lecture})`);
     R.ajouter(e.nom, 'bouton de réglages (zone sûre, ≥ 44 px au doigt)', ligne.reglages.ok, ligne.reglages.detail);
+    R.ajouter(e.nom, 'boutons effacés après 3 s (opacité nulle, toujours atteignables au clavier)', ligne.effacement.ok, ligne.effacement.detail);
     for (const [v, j] of Object.entries(ligne.photos)) R.ajouter(e.nom, `photo collée sur la page vidéo #${v}`, j.ok, j.detail);
     if (ligne.lisa) R.ajouter(e.nom, '#lisa ouvre la double page de Lisa', ligne.lisa.ok, ligne.lisa.detail);
     R.ok(e.nom, 'aucune erreur de page ni requête en échec', !ligne.erreurs.length, ligne.erreurs.slice(0, 3).join(' | '));
@@ -527,6 +676,8 @@ if (interactions) {
     ['ipad-paysage', 'coin, cadrage double', (e) => suiteCoin(browser, e, captures), 'coin'],
     ['iphone13-portrait', 'coin, cadrage page', (e) => suiteCoin(browser, e, captures), 'coin'],
     ['ordi-1440', 'curseurs, annonce, Entrée, plat arrière', (e) => suiteCurseurs(browser, e, captures), 'curseurs'],
+    ['iphone13-paysage', 'boutons qui s\'effacent, au doigt', (e) => suiteBoutonsDoigt(browser, e, captures), 'boutons'],
+    ['ordi-1440', 'boutons qui s\'effacent, souris et menu', (e) => suiteBoutonsSouris(browser, e, captures), 'boutons'],
   ];
   for (const [nom, titre, f, cle] of suites) {
     if (suitesVoulues && !suitesVoulues.includes(cle)) continue;

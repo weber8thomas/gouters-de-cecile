@@ -45,7 +45,7 @@ function Trace({ d }: { d: typeof GAUCHE }) {
 export function Fleches({ onPrecedente, onSuivante, debut, fin, place = 'scene' }: FlechesProps) {
   const cls = place === 'scene' ? 'gc-livre-nav' : `gc-livre-nav gc-livre-nav--ecran gc-livre-nav--${place}`;
   return (
-    <nav className={cls} aria-label="Feuilleter le carnet">
+    <nav className={cls} aria-label="Feuilleter le carnet" data-gc-effacable={place === 'scene' ? undefined : ''}>
       <button type="button" className="gc-livre-nav__fleche gc-livre-nav__fleche--prec" aria-label="Page précédente" aria-disabled={debut || undefined} onClick={onPrecedente}>
         <Trace d={GAUCHE} />
       </button>

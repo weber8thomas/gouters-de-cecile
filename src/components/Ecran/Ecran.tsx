@@ -1,8 +1,9 @@
 import React from 'react';
 import { ViewportOverride, useViewport } from '../../lib/viewport';
-import { LazyMotion, domMax, m, useMotionValue, useTransform } from '../../lib/motion';
+import { LazyMotion, domMax, m, useMotionValue, useReducedMotion, useTransform } from '../../lib/motion';
 import { LOUPE_ZOOME, brancherLoupe, getLoupe, useLoupe } from '../../lib/loupe';
 import { clavierModalActif } from '../../lib/clavier';
+import { useControlesCaches } from '../../lib/controles';
 import { BoutonLoupe } from '../Loupe/BoutonLoupe';
 import { BoutonHautParleur } from '../Haut-parleur/BoutonHautParleur';
 import { BoutonMusique } from '../Haut-parleur/BoutonMusique';
@@ -112,6 +113,8 @@ function BoutonPleinEcran() {
 // Coque plein écran du carnet : occupe toute la fenêtre (100dvh, zones sûres), donne au livre la
 // fenêtre d'affichage et son cadrage (contexte), et porte le calque des contrôles en px d'écran
 // (flèches, points de page, repère de distance : posés par le livre ; barre du haut, plein écran et loupe : ici).
+// Les contrôles marqués data-gc-effacable (barre, engrenage, flèches, points) s'effacent seuls après 3 s
+// sans activité : la racine porte alors data-gc-controles="caches" (src/lib/controles.ts, fondu en CSS).
 // Le livre est posé dans le calque de la LOUPE (.gc-ecran__loupe : translate3d + scale, plan v4) ; les
 // contrôles, la photo soulevée et le menu sont en portail hors de ce calque : ils ne zooment jamais.
 // Sous un ViewportOverride (cartes, tests), l'écran est une boîte de la taille imposée.
@@ -133,6 +136,9 @@ export function Ecran({ children, className, pleinEcran = true, loupe = true, on
   const vpRef = React.useRef(vp);
   vpRef.current = vp;
   const etatGlobal = useLoupe();
+  // Les boutons s'effacent seuls (src/lib/controles.ts) ; un écran simulé (carte, test) les garde.
+  const controlesCaches = useControlesCaches() && !simule;
+  const reduit = useReducedMotion();
   const [zLocal, setZLocal] = React.useState(1);
   const z = simule ? zLocal : etatGlobal.z;
 
@@ -195,6 +201,8 @@ export function Ecran({ children, className, pleinEcran = true, loupe = true, on
         data-gc-tactile={vp.tactile ? '' : undefined}
         data-gc-bord={barreCote ? 'cote' : undefined}
         data-gc-loupe={loupe ? (z > LOUPE_ZOOME ? 'zoome' : 'repos') : undefined}
+        data-gc-controles={simule ? undefined : controlesCaches ? 'caches' : 'visibles'}
+        data-gc-reduit={reduit ? '' : undefined}
         style={style}
       >
         <LazyMotion features={domMax}>
@@ -203,7 +211,7 @@ export function Ecran({ children, className, pleinEcran = true, loupe = true, on
           </m.div>
         </LazyMotion>
         <div ref={setControles} className="gc-ecran__controles">
-          <div className="gc-ecran__barre">
+          <div className="gc-ecran__barre" data-gc-effacable>
             {onFermerCarnet && <BoutonFermerCarnet onFermer={onFermerCarnet} />}
             <BoutonMusique />
             <BoutonHautParleur />

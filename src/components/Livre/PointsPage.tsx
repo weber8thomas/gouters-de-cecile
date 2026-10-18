@@ -16,7 +16,7 @@ const ROND = {
 
 export function PointsPage({ cote, onChoisir }: PointsPageProps) {
   return (
-    <div className="gc-livre-points" role="group" aria-label="Page de la double page">
+    <div className="gc-livre-points" role="group" aria-label="Page de la double page" data-gc-effacable>
       {(['gauche', 'droite'] as const).map((c) => (
         <button
           key={c}

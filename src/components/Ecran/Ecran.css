@@ -21,6 +21,21 @@
   user-select: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
+  /* Fondu des boutons qui s'effacent (voir plus bas) : retour vite, départ doucement ; nul en mouvement réduit. */
+  --gc-effacer-retour: 0.2s;
+  --gc-effacer-depart: 0.4s;
+}
+
+.gc-ecran[data-gc-reduit] {
+  --gc-effacer-retour: 0s;
+  --gc-effacer-depart: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gc-ecran {
+    --gc-effacer-retour: 0s;
+    --gc-effacer-depart: 0s;
+  }
 }
 
 .gc-ecran[data-gc-tactile] {
@@ -170,4 +185,18 @@
 .gc-ecran[data-gc-loupe="zoome"] .gc-ecran__ombre path {
   stroke: color-mix(in srgb, var(--gc-paper-lace) 70%, transparent);
   stroke-width: 4.2;
+}
+
+/* ---- Boutons qui s'effacent (src/lib/controles.ts) : barre du haut, engrenage, flèches, points de page.
+   Le script pose data-gc-controles="caches" après 3 s sans activité et le retire au moindre geste. Seule
+   l'opacité change (ni :hover, ni filtre) ; jamais display, visibility, inert ni aria-hidden : Tab atteint
+   toujours les boutons (et les rappelle), et un lecteur d'écran les trouve. Un contrôle qui a le focus au
+   clavier reste visible. Zoomé, le magasin ne les efface pas non plus. ---- */
+.gc-ecran [data-gc-effacable] {
+  transition: opacity var(--gc-effacer-retour) ease-out;
+}
+
+.gc-ecran[data-gc-controles="caches"] [data-gc-effacable]:not(:focus-visible, :has(:focus-visible)) {
+  opacity: 0;
+  transition-duration: var(--gc-effacer-depart);
 }

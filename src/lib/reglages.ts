@@ -7,6 +7,7 @@
 // ramené au défaut, comme avant).
 // Les volumes des bruitages et de la musique (volumeBruitages, volumeMusique) n'ont pas de clé à part :
 // absents d'une clé v3, ils prennent leur défaut (0,8 et 0,5), comme les autres champs ajoutés.
+// Même chose pour boutonsToujoursVisibles (les boutons s'effacent seuls par défaut, src/lib/controles.ts).
 import React from 'react';
 import banqueMusique from '../../design-system/baked/musique/banque.json';
 
@@ -65,6 +66,12 @@ export interface Reglages {
    * coupée : le niveau attend le prochain départ. Défaut : 0,5.
    */
   volumeMusique: number;
+  /**
+   * Les boutons à l'écran (barre du haut, engrenage, flèches, points de page) restent toujours visibles.
+   * Défaut : faux, ils s'effacent seuls après quelques secondes sans activité et reviennent au moindre
+   * geste (src/lib/controles.ts).
+   */
+  boutonsToujoursVisibles: boolean;
 }
 
 /** Identifiants des morceaux de musique de fond (la banque cuite par scripts/bake-musique.mjs). */
@@ -85,6 +92,7 @@ export const REGLAGES_DEFAUT: Reglages = {
   musique: MUSIQUES_IDS[0] ?? 'aucune',
   musiqueActive: false,
   volumeMusique: 0.5,
+  boutonsToujoursVisibles: false,
 };
 const CLE = 'gc:reglages:v3';
 const CLE_V2 = 'gc:reglages:v2';
@@ -107,6 +115,7 @@ function valider(x: unknown): Reglages {
   if (typeof o.musique === 'string' && (o.musique === 'aucune' || MUSIQUES_IDS.includes(o.musique))) r.musique = o.musique;
   if (typeof o.musiqueActive === 'boolean') r.musiqueActive = o.musiqueActive;
   if (typeof o.volumeMusique === 'number' && Number.isFinite(o.volumeMusique)) r.volumeMusique = Math.min(1, Math.max(0, o.volumeMusique));
+  if (typeof o.boutonsToujoursVisibles === 'boolean') r.boutonsToujoursVisibles = o.boutonsToujoursVisibles;
   // « aucune » ne joue pas : le bouton musique repart du premier morceau.
   if (r.musique === 'aucune') r.musiqueActive = false;
   return r;

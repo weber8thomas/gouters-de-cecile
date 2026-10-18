@@ -50,6 +50,7 @@ Le composant exporte aussi `ReglagesInvite` (type) et `CREDITS_REGLAGES` (texte 
 | 8 | Lancer la vidéo en arrivant sur la page | non · oui | `reglages.lectureAuto` | — |
 | 9 | Vitesse des pages | vive · normale · lente | `reglages.vitesse` (règle `SPRINGS.paper`) | — |
 | 10 | Moins d'animations | non · oui | `reglages.mouvementReduit` (lu par `useReducedMotion`) | — |
+| 10 bis | Boutons | s'effacent · toujours visibles (« visibles » sur la feuille du téléphone) | `reglages.boutonsToujoursVisibles` (défaut : s'effacent ; lu par `src/lib/controles.ts`) | — |
 | 11 | Aller à… | « choisir un invité », qui déplie les noms | `onAller(index)` | `invites` est vide |
 | 12 | remettre les réglages par défaut · crédits | — | `resetReglages()`, puis la caméra revient à `moyenne` (`proche` au doigt, comme dans `Carnet`) et au zoom 1, et la **loupe à 1×** ; « crédits » déplie le texte | — |
 
