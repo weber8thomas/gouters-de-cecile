@@ -25,31 +25,21 @@
 
 .gc-bougie__ombre,
 .gc-bougie__halo,
-.gc-bougie__flamme,
+.gc-bougie__flamme--image,
 .gc-bougie__cire[data-gc-bougie='vive'] {
   will-change: opacity, transform;
 }
 
-/* ---- Les gouttes : une fenêtre sur la planche des images, qui défile par paliers (Bougie.tsx). ---- */
-.gc-bougie__goutte {
-  position: absolute;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.gc-bougie__feuille {
-  position: absolute;
-  left: 0;
-  top: 0;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  will-change: transform;
+/* La flamme est une petite toile WebGL (un calque à elle seule, qui ne repeint qu'elle : flamme.ts), qui
+   couvre aussi le puits (le reflet de la flamme) et les coulures (la cire qui coule, cire.ts) ; sans
+   WebGL, l'image de secours (--image) bouge par transform et opacity. */
+canvas.gc-bougie__flamme {
+  display: block;
 }
 
 /* ---- Téléphone en portrait : la bougie gêne, on ne garde que la lueur (le halo). ---------------- */
 @media (orientation: portrait) and (max-width: 760px) {
-  .gc-bougie__pose,
-  .gc-bougie__goutte {
+  .gc-bougie__pose {
     display: none;
   }
 }

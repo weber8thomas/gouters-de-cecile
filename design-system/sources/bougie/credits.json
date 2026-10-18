@@ -1,5 +1,5 @@
 {
-  "description": "Bougie du carnet (composant Bougie, v5) : la cire (corps, coulures, flaque au pied, gouttes qui coulent, ombre) est un rendu 3D fait ici (scripts/bougie3d/scene.py, Blender, aucune source tierce). Seule la flamme vient d'une vraie photo de bougie allumée, détourée puis mise en perspective par scripts/bake-bougie.py. Original de la photo hors dépôt dans verification/out/v5-bougie2/originaux/ (vérifié par sha256).",
+  "description": "Bougie du carnet (composant Bougie, v7) : la cire (corps, coulures, flaque au pied, ombre) est un rendu 3D fait ici (scripts/bougie3d/scene.py, Blender, aucune source tierce). La flamme et la cire qui coule sont rendues en temps réel (WebGL, src/components/Bougie/flamme.ts et cire.ts, aucune source tierce). Seule la flamme de secours, affichée sans WebGL, vient d'une vraie photo de bougie allumée, détourée puis mise en perspective par scripts/bake-bougie.py. Original de la photo hors dépôt dans verification/out/v5-bougie2/originaux/ (vérifié par sha256). La boucle vidéo de la v6 (Wikimedia Commons, CC0) n'est plus utilisée.",
   "licence": {
     "nom": "Licence Pexels (« Free Stock Photo & Video License »)",
     "url": "https://www.pexels.com/license/",
@@ -27,11 +27,9 @@
       "design-system/baked/bougie/cire.webp",
       "design-system/baked/bougie/cire-vive.webp",
       "design-system/baked/bougie/ombre.webp",
-      "design-system/baked/bougie/goutte-1.webp",
-      "design-system/baked/bougie/goutte-3.webp",
-      "design-system/baked/bougie/flamme.webp",
+      "design-system/baked/bougie/flamme-fixe.webp",
       "design-system/baked/bougie/halo.webp"
     ],
-    "remarque": "Cire, ombre et gouttes : rendu 3D original. Flamme : la photo ci-dessus. Halo : une lueur chaude dessinée par le script à partir de la position de la flamme."
+    "remarque": "Cire et ombre : rendu 3D original. Flamme de secours (flamme-fixe) : la photo ci-dessus. La flamme vivante et la cire qui coule ne sont pas des images : elles sont calculées à l'exécution. Halo : une lueur chaude dessinée par le script à partir de la position de la flamme."
   }
 }
