@@ -37,6 +37,10 @@ const voulu = (n) => !seulement?.length || seulement.includes(n);
 
 // ---- Instrumentation : contexte audio (état, sons réellement lancés) --------------------------------
 function INIT_AUDIO() {
+  // lâchers reçus par la page : sur une machine chargée, CPU ralenti, les événements du doigt arrivent
+  // avec plusieurs secondes de retard ; on attend qu'ils soient tous là avant de juger le geste
+  window.__gcLachers = 0;
+  addEventListener('pointerup', (ev) => { if (ev.isTrusted) window.__gcLachers++; }, { capture: true });
   if (window.__gcAudio) return;
   const A = (window.__gcAudio = { etats: [], sons: 0, sonsCoupes: 0, premier: null });
   const Base = window.AudioContext || window.webkitAudioContext;
@@ -60,6 +64,11 @@ function INIT_AUDIO() {
     return start.apply(this, a);
   };
 }
+const lachers = (page) => page.evaluate(() => window.__gcLachers ?? 0);
+/** Attend que la page ait reçu `n` lâchers (30 s au plus). */
+const attendreLachers = (page, n) => page.waitForFunction((k) => (window.__gcLachers ?? 0) >= k, n, { timeout: 30000, polling: 50 }).then(() => true, () => false);
+/** Attend l'état de la loupe (data-gc-loupe sur l'écran). */
+const attendreLoupe = (page, etat, ms = 8000) => page.waitForFunction((v) => document.querySelector('.gc-ecran')?.getAttribute('data-gc-loupe') === v, etat, { timeout: ms, polling: 50 }).then(() => true, () => false);
 const audio = (page) => page.evaluate(() => {
   const A = window.__gcAudio ?? {};
   return { etat: A.ctx?.state ?? 'aucun', sons: A.sons ?? 0, coupes: A.sonsCoupes ?? 0 };
@@ -125,6 +134,7 @@ const releveFlamme = (page, ms) => page.evaluate((d) => new Promise((res) => {
 /** Pincement à deux doigts autour de c, de l'écart d0 à d1 (axe : 'x' horizontal, 'y' vertical). */
 async function pincer(page, c, d0, d1, { n = 14, ms = 320, axe = 'x' } = {}) {
   const cdp = await cdpDe(page);
+  const u0 = await lachers(page);
   const t0 = Date.now() / 1000;
   const pts = (d) => (axe === 'x'
     ? [{ x: c.x - d / 2, y: c.y, id: 11 }, { x: c.x + d / 2, y: c.y, id: 12 }]
@@ -135,6 +145,7 @@ async function pincer(page, c, d0, d1, { n = 14, ms = 320, axe = 'x' } = {}) {
     await page.waitForTimeout(ms / n);
   }
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [], timestamp: t0 + ms / 1000 + 0.01 });
+  await attendreLachers(page, u0 + 2);
 }
 
 const ouvrir = async (e, hash = '') => {
@@ -228,17 +239,39 @@ async function couche(e, complet) {
   await toucher(page, G.g.x + G.g.w * 0.05, G.g.cy);
   R.ok(n, 'tape dans la marge gauche : page précédente', await attendreDouble(page, 2), await livre(page));
 
-  // Souffle du doigt sur la bougie (sur la table, hors du livre).
+  // Souffle du doigt sur la bougie (sur la table, hors du livre). Relevé pendant tout le geste, jusqu'à ce
+  // que le lâcher soit reçu, et sans ralenti du CPU : ralentie ×4 sur cette machine, la page reçoit les
+  // mouvements du doigt à plus de 120 ms d'écart, et la vitesse du pointeur (src/lib/pointeur.ts, lissée
+  // sur des mouvements rapprochés) y est nulle ; un vrai doigt en envoie 60 à 120 par seconde.
   const b = await rectDe(page, '.gc-bougie__pose');
   if (b?.visible) {
-    const repos = await releveFlamme(page, 500);
+    const cdp = await cdpDe(page);
+    await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
+    await page.waitForTimeout(400);
+    await page.evaluate(() => {
+      const F = window.__gcFlamme;
+      const R = (window.__gcReleve = { trouble: 0, penche: 0, i0: F?.etat().images ?? 0, fini: false });
+      const tick = () => {
+        const e = F?.etat();
+        if (e) { R.trouble = Math.max(R.trouble, e.trouble ?? 0); R.penche = Math.max(R.penche, e.penche ?? 0); }
+        if (!R.fini) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+    const u0 = await lachers(page);
     // un glisser vertical (il ne tourne pas la page) qui passe tout près de la flamme
     const x = b.cx + b.w * 0.3;
-    const releve = releveFlamme(page, 1100);
     await glisser(page, [x, Math.max(8, b.y - b.h * 0.6)], [x, Math.min(page.viewportSize().height - 8, b.b)], { ms: 260, n: 12 });
-    const pendant = await releve;
-    R.ok(n, 'souffle du doigt : la flamme se trouble', !!pendant && pendant.min < Math.min(0.95, (repos?.min ?? 1) - 0.03), { repos, pendant });
-  } else R.ok(n, 'souffle du doigt : la flamme se trouble', false, 'bougie invisible');
+    await attendreLachers(page, u0 + 1);
+    await page.waitForTimeout(200);
+    const r = await page.evaluate(() => {
+      const R = window.__gcReleve;
+      R.fini = true;
+      return { trouble: R.trouble, penche: R.penche, images: (window.__gcFlamme?.etat().images ?? 0) - R.i0 };
+    });
+    R.ok(n, 'souffle du doigt : la flamme se couche et se trouble', r.trouble > 0.05 && r.penche > 3, r);
+    await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+  } else R.ok(n, 'souffle du doigt : la flamme se couche et se trouble', false, 'bougie invisible');
   await fermer(o);
 
   // #lisa : photo, barre de Safari, dessin, pincement sur la page.
@@ -293,7 +326,7 @@ async function couche(e, complet) {
 
   G = await geo(page);
   await pincer(page, { x: G.d.cx, y: G.d.cy }, 60, 200);
-  await page.waitForTimeout(900);
+  await attendreLoupe(page, 'zoome');
   L = await livre(page);
   R.ok(n, 'pincement sur la page : la loupe zoome, le navigateur ne zoome pas', L.loupe === 'zoome' && L.vv === 1, L);
   await cap(page, `${n}-loupe`, `${e.titre} : loupe pincée`);
@@ -307,7 +340,7 @@ async function couche(e, complet) {
   // (sur la table à gauche du livre ; doigts l'un au-dessus de l'autre : la bande de table est étroite)
   const xm = Math.max(12, Math.round(G.g.x / 2));
   await pincer(page, { x: xm, y: G.g.cy }, 40, 160, { axe: 'y' });
-  await page.waitForTimeout(900);
+  await attendreLoupe(page, 'zoome');
   L = await livre(page);
   R.ok(n, 'pincement dans la marge : la loupe zoome, le navigateur ne zoome pas', L.loupe === 'zoome' && L.vv === 1, { ...L, x: Math.round(xm) });
   await fermer(o);
@@ -380,10 +413,11 @@ async function doux(e) {
   R.ok(n, 'la flamme vit encore', !!fl && fl.images > 3, fl);
   const G = await geo(page);
   if (G.couv) await toucher(page, G.couv.cx, G.couv.cy);
-  await attendreDouble(page, 0);
-  await page.waitForTimeout(1200);
+  const ouvert = await attendreDouble(page, 0, 15000);
+  // (la plume part 280 ms après l'arrivée, à l'écran, d'une page posée)
+  await page.waitForFunction(() => [...document.querySelectorAll('.gc-livre__page--visible .gc-page-cuite__plume')].some((c) => c.width > 300), null, { timeout: 8000, polling: 100 }).catch(() => {});
   const E = await encre(page);
-  R.ok(n, 'l’encre s’écrit encore', E.some((p) => p.plume), E);
+  R.ok(n, 'l’encre s’écrit encore', ouvert && E.some((p) => p.plume), { ouvert, encre: E });
   await cap(page, `${n}-double`, `${e.titre} : moins d’animations (système)`);
   await fermer(o);
 }

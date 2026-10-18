@@ -550,7 +550,21 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   React.useEffect(() => {
     if (!ouvert) return undefined;
     const onHash = () => reposerRef.current();
-    const onOrientation = () => fermerTout();
+    // Seulement à une vraie rotation (couché ↔ debout, comparé à la forme de l'écran quand l'objet s'est
+    // levé) : certains navigateurs signalent « orientationchange » quand la fenêtre change de hauteur
+    // (barre d'adresse qui paraît), ou avec un type d'orientation qui ne suivait pas encore l'écran.
+    const sens = (): 'couche' | 'debout' | null => {
+      const so = typeof screen !== 'undefined' ? screen.orientation : undefined;
+      if (so?.type) return so.type.startsWith('landscape') ? 'couche' : 'debout';
+      const w = (window as unknown as { orientation?: number }).orientation;
+      return typeof w === 'number' ? (Math.abs(w) === 90 ? 'couche' : 'debout') : null;
+    };
+    const v0 = vpRef.current;
+    const depart = v0 ? (v0.w > v0.h ? 'couche' : 'debout') : sens();
+    const onOrientation = () => {
+      const s = sens();
+      if (s && s !== depart) fermerTout();
+    };
     window.addEventListener('hashchange', onHash);
     window.addEventListener('orientationchange', onOrientation);
     const so = typeof screen !== 'undefined' ? screen.orientation : undefined;

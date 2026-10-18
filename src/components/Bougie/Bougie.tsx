@@ -74,7 +74,7 @@ type RenduVu = 'toile' | 'image';
 declare global {
   interface Window {
     /** Vérifications : l'état de la flamme rendue (scripts/verify-lumiere.mjs, captures). */
-    __gcFlamme?: { etat: () => { rendu: RenduVu; lumiere: number; long: number; eclat: number; images: number; ms: number; cadence: number } };
+    __gcFlamme?: { etat: () => { rendu: RenduVu; lumiere: number; long: number; eclat: number; trouble: number; penche: number; images: number; ms: number; cadence: number } };
     /** Vérifications : lancer une coulée de cire, lire son état (captures). */
     __gcBougie?: { couler: (k?: number, t?: number, fige?: boolean) => void; etat: () => EtatCoulee | null };
   }
@@ -243,7 +243,8 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
     window.addEventListener('resize', surRedim);
     window.__gcFlamme = {
       etat: () => ({
-        rendu, lumiere: flammeBougie.get(), long: etat.long, eclat: etat.eclat,
+        rendu, lumiere: flammeBougie.get(), long: etat.long, eclat: etat.eclat, trouble: r3(trouble),
+        penche: r2(Math.hypot(th[0], th[1])),
         images: gl?.mesure().images ?? 0, ms: gl?.mesure().ms ?? 0, cadence: lent > 0.024 ? 30 : 60,
       }),
     };
