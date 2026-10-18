@@ -85,9 +85,12 @@ BLOC = 40  # épaisseur du bloc de pages (≈ 80 feuillets d'un papier épais : 
 DOS_W = int(round(1.18 * (BLOC + 2 * EP)))  # dos arrondi : un peu plus large que l'épaisseur
 PW, PH = PLAT_W * ECH, PLAT_H * ECH
 Q_TOILE, Q_ALPHA = 80, 90
-# Variante retenue (plan v4, sans GATE : choix du lot C). Elle seule est cuite dans design-system/baked/ ;
-# les autres (comparaison) vont dans verification/out/v4-c/variantes/ et ne partent ni sur le site ni dans l'artifact.
-ACTIVE = os.environ.get("GC_COUVERTURE_ACTIVE") or "a"  # GC_COUVERTURE_ACTIVE : essayer une proposition dans le site
+# Variante retenue. Elle seule est cuite dans design-system/baked/ ; les autres (comparaison) vont dans
+# verification/out/v4-c/variantes/ et ne partent ni sur le site ni dans l'artifact. Les trente ans de Cécile :
+# « d » (étiquette de « a », gâteau à bougies, « pour ses trente ans » à l'encre dorée) remplace « a », parce
+# qu'elle dit « anniversaire » au premier regard (le gâteau) et « trente ans » en toutes lettres, sans rien
+# ajouter sur la toile ; « f » (cachet de cire et ruban) reste la seconde proposition.
+ACTIVE = os.environ.get("GC_COUVERTURE_ACTIVE") or "d"  # GC_COUVERTURE_ACTIVE : essayer une proposition dans le site
 BAKED = RACINE / "design-system/baked"
 COMPAREES = VERIF / "variantes"
 

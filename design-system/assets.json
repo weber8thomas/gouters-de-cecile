@@ -375,164 +375,164 @@
     "bytes": 15478,
     "type": "image/webp"
   },
-  "couverture/a/1x/arriere": {
-    "file": "baked/couverture/a/1x/arriere.webp",
-    "sha": "d532d365825558814143ad577da223b001eeb8f763cb066551a1eb6b689897a1",
+  "couverture/d/1x/arriere": {
+    "file": "baked/couverture/d/1x/arriere.webp",
+    "sha": "99a9b8840876845f7d51dd0c1b7f32c7916ec3d5db9795906615dd79d4d38b68",
     "w": 878,
     "h": 1238,
-    "bytes": 284972,
+    "bytes": 284608,
     "type": "image/webp"
   },
-  "couverture/a/1x/chant": {
-    "file": "baked/couverture/a/1x/chant.webp",
-    "sha": "6c10d9948ff053fc151452b5ed89a1aaf365a2202da95f7dc119d12392294969",
+  "couverture/d/1x/chant": {
+    "file": "baked/couverture/d/1x/chant.webp",
+    "sha": "6e387929d72aa6fec62deb171e20d79d4bbccbffb695a3b8860b3571eda4c3e5",
     "w": 10,
     "h": 1238,
-    "bytes": 6568,
+    "bytes": 6558,
     "type": "image/webp"
   },
-  "couverture/a/1x/contreplat-arriere": {
-    "file": "baked/couverture/a/1x/contreplat-arriere.webp",
-    "sha": "ae973477b5cee6f50cc0dc4879ee24db1113cdb266b9677fa6cfa8f667eba26f",
+  "couverture/d/1x/contreplat-arriere": {
+    "file": "baked/couverture/d/1x/contreplat-arriere.webp",
+    "sha": "9eb06e23c8677c2ede29ddefad950bdc617d0f3c3c7d86c88851086a102e3c99",
     "w": 878,
     "h": 1238,
-    "bytes": 43802,
+    "bytes": 43698,
     "type": "image/webp"
   },
-  "couverture/a/1x/contreplat": {
-    "file": "baked/couverture/a/1x/contreplat.webp",
-    "sha": "59349d42f83f3aaa7c23cc097e780d570a00b2694907b220fc7eee9dbbde4186",
+  "couverture/d/1x/contreplat": {
+    "file": "baked/couverture/d/1x/contreplat.webp",
+    "sha": "a352ff201c112c3df4d8a691d6c7e9181bc8d58bca1139da6951b4029ca637bb",
     "w": 878,
     "h": 1238,
-    "bytes": 45178,
+    "bytes": 45206,
     "type": "image/webp"
   },
-  "couverture/a/1x/dos": {
-    "file": "baked/couverture/a/1x/dos.webp",
-    "sha": "2175cce8396cb7253ebb157a98319d6437cf3bace01f1a3d4543b76bbe90fd4f",
+  "couverture/d/1x/dos": {
+    "file": "baked/couverture/d/1x/dos.webp",
+    "sha": "7c0967db786f769d7201acfa315d7ced78781d6b308b03d0ec8e81449cd5b6a8",
     "w": 71,
     "h": 1238,
-    "bytes": 33986,
+    "bytes": 34176,
     "type": "image/webp"
   },
-  "couverture/a/1x/etiquette": {
-    "file": "baked/couverture/a/1x/etiquette.webp",
-    "sha": "bc3951f78d1ba00d4acccfec6dbf4387a33191e21303f518320504bd2f012b56",
-    "w": 539,
-    "h": 302,
-    "bytes": 34194,
+  "couverture/d/1x/etiquette": {
+    "file": "baked/couverture/d/1x/etiquette.webp",
+    "sha": "17c58d8bc58fa9daadb8b68e501bb39354789198ef8c7e9f72f2464ef7695891",
+    "w": 540,
+    "h": 356,
+    "bytes": 39344,
     "type": "image/webp"
   },
-  "couverture/a/1x/plat-arriere": {
-    "file": "baked/couverture/a/1x/plat-arriere.webp",
-    "sha": "92f2c057f9e7194fb629b8dba9762242ab5fbffe7141d84f02f68abee1e88552",
+  "couverture/d/1x/plat-arriere": {
+    "file": "baked/couverture/d/1x/plat-arriere.webp",
+    "sha": "3e99dcfb3834e82c3874e7bfe318f9c806b3859f8f8fd0cb98e276fb846b8d4a",
     "w": 878,
     "h": 1238,
-    "bytes": 287534,
+    "bytes": 287068,
     "type": "image/webp"
   },
-  "couverture/a/1x/plat": {
-    "file": "baked/couverture/a/1x/plat.webp",
-    "sha": "e58247fcce685de07d3b3bc6d7d7fa1343c1b119fd90007b2508d209f8416f98",
+  "couverture/d/1x/plat": {
+    "file": "baked/couverture/d/1x/plat.webp",
+    "sha": "0ad6cec649eafd730c2c7da3720d6b5f6d0234d35fec7ce78b6de29bda4f4284",
     "w": 878,
     "h": 1238,
-    "bytes": 274890,
+    "bytes": 277850,
     "type": "image/webp"
   },
-  "couverture/a/1x/tranche-pied": {
-    "file": "baked/couverture/a/1x/tranche-pied.webp",
-    "sha": "3d7a44db02b577007c4fe6b303f82c4c6d96bb40a72924190f712b1e23f76dda",
+  "couverture/d/1x/tranche-pied": {
+    "file": "baked/couverture/d/1x/tranche-pied.webp",
+    "sha": "1ce793995bafeb08fc8387f817af1caec75499935177712f11aa9be8018fe3df",
     "w": 850,
     "h": 40,
-    "bytes": 1140,
+    "bytes": 1262,
     "type": "image/webp"
   },
-  "couverture/a/1x/tranche": {
-    "file": "baked/couverture/a/1x/tranche.webp",
-    "sha": "2ed3b2817538153fa5298ef642d819e17d94ed23f71162613a8128633584531f",
+  "couverture/d/1x/tranche": {
+    "file": "baked/couverture/d/1x/tranche.webp",
+    "sha": "db3acba7a273618fca8e56836d17e646ea8aedfac1111835bf5766b95ca5d141",
     "w": 40,
     "h": 1200,
-    "bytes": 1230,
+    "bytes": 1344,
     "type": "image/webp"
   },
-  "couverture/a/arriere": {
-    "file": "baked/couverture/a/arriere.webp",
-    "sha": "c98bfbe6073288875560b43018c45b21ce0c3940f8fe0cb0de536c3847651b40",
+  "couverture/d/arriere": {
+    "file": "baked/couverture/d/arriere.webp",
+    "sha": "6e56895e0d9f66891157d98291f1b90113b251c05aa4564e2d10bff82aff8e98",
     "w": 1756,
     "h": 2476,
-    "bytes": 627326,
+    "bytes": 626386,
     "type": "image/webp"
   },
-  "couverture/a/chant": {
-    "file": "baked/couverture/a/chant.webp",
-    "sha": "216bd36a9b237e0f6c758f23f1b8cd1dfebf36f44d7b6272028e7659c4e58e96",
+  "couverture/d/chant": {
+    "file": "baked/couverture/d/chant.webp",
+    "sha": "af4f15186072fa86601b169698c6f4aa3196386ef779054111e9aa68c34ea4e8",
     "w": 20,
     "h": 2476,
-    "bytes": 14504,
+    "bytes": 14540,
     "type": "image/webp"
   },
-  "couverture/a/contreplat-arriere": {
-    "file": "baked/couverture/a/contreplat-arriere.webp",
-    "sha": "423940aaec5f536b87dc406c4db7eb4089ef2b0a60b4bf1fc68a8b080fe574e0",
+  "couverture/d/contreplat-arriere": {
+    "file": "baked/couverture/d/contreplat-arriere.webp",
+    "sha": "45882ac55b9b4d596e2b81e232ab0a85bbb4a76ba410a01c47e796202db262a5",
     "w": 1756,
     "h": 2476,
-    "bytes": 142442,
+    "bytes": 141944,
     "type": "image/webp"
   },
-  "couverture/a/contreplat": {
-    "file": "baked/couverture/a/contreplat.webp",
-    "sha": "5cc1092021996ee5a79ca831636b291a1d7356c4e65617237f06156a15b15420",
+  "couverture/d/contreplat": {
+    "file": "baked/couverture/d/contreplat.webp",
+    "sha": "5e6a0d83015001cbc49cd994e671f1e97ed7d535d505b264081c520276481351",
     "w": 1756,
     "h": 2476,
-    "bytes": 145240,
+    "bytes": 145592,
     "type": "image/webp"
   },
-  "couverture/a/dos": {
-    "file": "baked/couverture/a/dos.webp",
-    "sha": "966c40e34bdf9457acfaa055e4b7ba631a0421e81239682862e2b2118d9d6607",
+  "couverture/d/dos": {
+    "file": "baked/couverture/d/dos.webp",
+    "sha": "d60499535b6b765441626c0a76059a48df8ce67285aaa99ce45fc0b694bb49e9",
     "w": 142,
     "h": 2476,
-    "bytes": 83318,
+    "bytes": 83410,
     "type": "image/webp"
   },
-  "couverture/a/etiquette": {
-    "file": "baked/couverture/a/etiquette.webp",
-    "sha": "4af260073a5a16f292898c6c1a9a45ed765b28cdd9d276a91e9529b5e7219ce0",
-    "w": 1078,
-    "h": 604,
-    "bytes": 95076,
+  "couverture/d/etiquette": {
+    "file": "baked/couverture/d/etiquette.webp",
+    "sha": "8391aa927986b13e7350ee7f671a22914542b3c954c87e102940b21995aa7a73",
+    "w": 1080,
+    "h": 712,
+    "bytes": 113590,
     "type": "image/webp"
   },
-  "couverture/a/plat-arriere": {
-    "file": "baked/couverture/a/plat-arriere.webp",
-    "sha": "7d5aedfc00afa0e3f30829178c43f12f918f046a1015ea357f85db3a00ff9973",
+  "couverture/d/plat-arriere": {
+    "file": "baked/couverture/d/plat-arriere.webp",
+    "sha": "935dcf75c879d6abb17bf6622e9779d6bd3044457659e28f9c7aa5f2606952bd",
     "w": 1756,
     "h": 2476,
-    "bytes": 637436,
+    "bytes": 633896,
     "type": "image/webp"
   },
-  "couverture/a/plat": {
-    "file": "baked/couverture/a/plat.webp",
-    "sha": "b1c9010f4f3151e0431487cb97421f21441e0685aa3ff907ef38f37d6504f776",
+  "couverture/d/plat": {
+    "file": "baked/couverture/d/plat.webp",
+    "sha": "c5753cc0428042c698b9103fa04cfc5250d3ef584ace08501b2c5f2cf42b2312",
     "w": 1756,
     "h": 2476,
-    "bytes": 607024,
+    "bytes": 611836,
     "type": "image/webp"
   },
-  "couverture/a/tranche-pied": {
-    "file": "baked/couverture/a/tranche-pied.webp",
-    "sha": "3c5fa3ac0633240c988bc76a2f8193691f75ad89894c536c5b316ff00913c1e8",
+  "couverture/d/tranche-pied": {
+    "file": "baked/couverture/d/tranche-pied.webp",
+    "sha": "ac4faadcb0e5741ad409318590846fa4e12d4cb631ae5ccea13f983d1de9c222",
     "w": 1700,
     "h": 80,
-    "bytes": 2738,
+    "bytes": 3034,
     "type": "image/webp"
   },
-  "couverture/a/tranche": {
-    "file": "baked/couverture/a/tranche.webp",
-    "sha": "4969fd56216d9412355a52189a85859b60f35f24b80938e39351310df59247dd",
+  "couverture/d/tranche": {
+    "file": "baked/couverture/d/tranche.webp",
+    "sha": "e6ad9bb49b2830936d3048372a4705e171784b45a4470e1c125524804a1e4993",
     "w": 80,
     "h": 2400,
-    "bytes": 4294,
+    "bytes": 3620,
     "type": "image/webp"
   },
   "indices/cliquer-crayon": {
