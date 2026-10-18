@@ -242,7 +242,7 @@ if (suites.includes('autonomie')) {
   }
   resultats.vitesse = avances;
 
-  // Préférence système et réglage du carnet : aucun canvas animé, originales visibles dès l'ouverture.
+  // Contrat motion.ts : système réduit => doux (effets conservés) ; choix explicite => dessins fixes.
   for (const [nom, options] of [
     ['système', { contexteExtra: { reducedMotion: 'reduce' } }],
     ['réglage', { init: [initReglages({ animations: 'reduites' })] }],
@@ -252,12 +252,16 @@ if (suites.includes('autonomie')) {
       const pages = [...document.querySelectorAll('.gc-livre__page--visible')];
       const images = pages.flatMap((p) => [...p.querySelectorAll('[data-gc-aquarelle] img')]);
       return {
+        mouvement: document.documentElement.getAttribute('data-gc-mouvement'),
+        pretes: (window.__gcDessins?.etat() ?? []).filter((t) => t.pret).length,
         toiles: pages.reduce((n, p) => n + p.querySelectorAll('.gc-aquarelles-toile').length, 0),
         images: images.length,
         visibles: images.filter((i) => i.complete && i.naturalWidth > 0 && getComputedStyle(i).visibility === 'visible').length,
       };
     });
-    rapport.ajouter(null, `[autonomie] mouvement réduit (${nom}) : dessins fixes`, fixe.toiles === 0 && fixe.images > 0 && fixe.visibles === fixe.images ? 'OK' : 'KO', fixe);
+    const originals = fixe.images > 0 && fixe.visibles === fixe.images;
+    const ok = nom === 'système' ? fixe.mouvement === 'doux' && (fixe.pretes > 0 || originals) : fixe.mouvement === 'reduit' && fixe.toiles === 0 && originals;
+    rapport.ajouter(null, nom === 'système' ? '[autonomie] préférence système : mode doux et dessins disponibles' : '[autonomie] mouvement réduit explicite : dessins fixes', ok ? 'OK' : 'KO', fixe);
     await p.screenshot({ path: join(out, `tv-reduit-${nom === 'système' ? 'systeme' : 'reglage'}.png`) });
     await c.close();
   }

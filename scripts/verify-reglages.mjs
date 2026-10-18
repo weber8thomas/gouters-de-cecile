@@ -34,7 +34,9 @@
 //
 //   node scripts/verify-reglages.mjs [--site dist/site | --url … | --banc [--defaut x]] [--bundle …]
 //        [--only iphone13-paysage,ordi-1440,tv-1080] [--aller rose] [--lien julie] [--sans-vitesse-stockee]
-//        [--out verification/out/t/reglages]
+//        [--out verification/out/t/reglages] [--sans-webgl]
+// --sans-webgl : contrôle le menu et les vitesses dans le repli sans WebGL ; les effets WebGL sont
+// vérifiés séparément par verify-dessins et verify-lumiere-v8. Utile sur Chromium logiciel en cloud.
 import { resolve, join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import {
@@ -50,7 +52,8 @@ const lien = opt('lien', 'julie');
 if (drapeau('banc')) medias();
 const cible = await ouvrirCible({ site: opt('site'), url: opt('url'), banc: drapeau('banc'), defaut: opt('defaut'), bundle: opt('bundle') });
 const R = new Rapport('reglages', { dir: out, meta: { cible: cible.type, depart: cible.depart } });
-const browser = await lancer();
+const sansWebgl = drapeau('sans-webgl');
+const browser = await lancer({ args: sansWebgl ? ['--disable-webgl', '--disable-webgl2'] : undefined });
 const insetsDe = (e) => (cible.type === 'site' || cible.type === 'url' ? null : e.insets);
 const BORNES = zoomBornes();
 /**
@@ -97,7 +100,7 @@ const FEU_FIGE = {
     }, 50);
   },
 };
-console.log(`■ Réglages — ${cible.type} : ${cible.depart}`);
+console.log(`■ Réglages — ${cible.type} : ${cible.depart}${sansWebgl ? ' (repli sans WebGL, effets vérifiés séparément)' : ''}`);
 
 const BOUTON = '[data-gc-reglages="bouton"]';
 const PANNEAU = '[data-gc-reglages="panneau"]';

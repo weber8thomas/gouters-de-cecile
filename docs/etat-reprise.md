@@ -9,6 +9,8 @@
 - L’utilisateur autorise sous-agents, modifications du code, Git et publication ; cela supplante les interdits historiques correspondants de CONTRACT.md.
 - Le quota descend rapidement : ne pas multiplier les agents, finir les contrôles pertinents puis sauvegarder. Une reprise nécessite un nouveau message de l’utilisateur ; aucune relance automatique n’est programmée.
 
+Sauvegarde GitHub : branche `codex/reprise-v8`. Le bilan fourni est archivé dans [bilan-claude-2026-10-18.md](bilan-claude-2026-10-18.md).
+
 ## Sources et intégration
 
 Le cloud ne récupérait que main, restée au commit initial aa52e4f. Les sources étaient bien sur GitHub.
@@ -33,7 +35,9 @@ Base récupérée : feat/epic-wright-58442e, commit 2a47969 (finitions, mobile2,
 
 npm ci et dépendances Python épinglées installés. Le build:site fusionné puis corrigé passe (TypeScript inclus).
 Avant les corrections visuelles, verify-site a validé 57 contrôles et signalé le faux échec de déduplication décrit ci-dessus ; aucun échec réseau ou JavaScript sur iPhone couché, ordinateur et TV.
-Les contrôles finaux lumière, aquarelle, réglages et site sont à lire dans verification/out/ et les journaux de cette session avant publication. Les captures ne prouvent ni la lisibilité à 3 m ni la fluidité de la TV réelle.
+Contrôles finaux terminés : site TV 34 OK / 0 KO ; lumière 31 OK / 0 KO ; aquarelle (autonomie et iPhone) 10 OK / 0 KO ; publication 4 tests OK. Serveur de développement : HTTP 200, un livre rendu, aucune exception ni ressource en erreur.
+Le contrôle complet des réglages est encore en cours. Le premier essai avec WebGL logiciel a été interrompu après sa phase UI, trop lente ; nouvelle exécution explicite --sans-webgl pour le menu et les vitesses, effets WebGL vérifiés séparément. Ne pas le présenter comme déjà terminé.
+Rapports : verification/out/v8/site-final/site.json, verification/out/lumiere-v8/lumiere-v8.json, verification/out/dessins-v8-final/dessins.json. Les captures ne prouvent ni la lisibilité à 3 m ni la fluidité de la TV réelle.
 
 Commandes : npm run dev ; npm run build:site ; GC_CHROME=/usr/bin/chromium node scripts/verify-site.mjs --site dist/site --only tv-1080 ; node --test scripts/tests/publish-pages.test.mjs.
 Ne pas lancer de mesures de fluidité en parallèle. Le cloud a quatre cœurs CPU effectifs et utilise Chromium logiciel.
