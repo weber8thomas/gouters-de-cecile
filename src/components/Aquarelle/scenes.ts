@@ -35,6 +35,8 @@ export interface Fx {
   vent: number;
   /** Force de l'ondulation des fanions (1 : au repos). */
   fanions: number;
+  /** Les flammes se couchent toutes ensemble (−1 : à gauche, 1 : à droite ; 0 : au repos). */
+  penche: number;
 }
 
 export interface Ctx {
@@ -159,6 +161,19 @@ export const SCENES: Record<string, Scene> = {
       const t1 = 1.4 + n * 0.42 + 0.2;
       fx.confettis = s - t1;
       saut(corps, s, t1 - 0.1, 0.32, 0.025, 0.08);
+    },
+  },
+  // bougies qui vacillent (toute aquarelle à `flammes`, effets.ts : bougies()) : un courant d'air passe,
+  // les flammes se couchent d'un côté puis de l'autre, tremblent, baissent et repartent, sans s'éteindre
+  bougies: {
+    duree: 3.8,
+    jouer({ s, fx, h }) {
+      const k = cloche(s, 0, 3.8);
+      fx.penche = k * (0.9 * Math.sin(PI2 * 0.55 * s + h * 3) + 0.25 * Math.sin(PI2 * 2.3 * s));
+      fx.fl = fx.fl.map((_, i) => {
+        const tremble = 0.22 * Math.sin(PI2 * (3.1 + i * 0.37) * s + i * 1.7 + h * 5);
+        return 1 + k * tremble - 0.3 * cloche(s, 0.8 + i * 0.12, 1.9 + i * 0.12);
+      });
     },
   },
   // on souffle : les flammes se couchent et s'éteignent de gauche à droite, la fumée monte, puis elles

@@ -10,7 +10,7 @@
  "marges": {
   "haut": 0.2
  },
- "_": "Colophon (fin du carnet, dernière page de droite) : petite note dans la main du carnet et un croquis de bougie. Textes provisoires, à modifier librement. Le dernier papier est f23 (non prévu dans papiers.json : repli sur une autre découpe, journalisé à la cuisson). Page décorée : une guirlande de fanions en haut, la théière et une tranche d'orange qui vivent (aquarelles vivantes), une frise de rinceau au-dessus du colophon ; le croquis de bougie à côté de la théière.",
+ "_": "Colophon (fin du carnet, dernière page de droite) : petite note dans la main du carnet. Textes provisoires, à modifier librement. Le dernier papier est f23 (non prévu dans papiers.json : repli sur une autre découpe, journalisé à la cuisson). Page décorée : une guirlande de fanions en haut, la théière et une tranche d'orange qui vivent (aquarelles vivantes), une frise de rinceau au-dessus du colophon ; à la place de l'ancien croquis de bougie, le cupcake d'anniversaire dont on souffle la bougie (un filet de fumée, puis elle se rallume : effets.ts, SCENES_PAGE).",
  "blocs": [
   {
    "id": "frise",
@@ -39,21 +39,6 @@
     0.3
    ],
    "pente": -0.8
-  },
-  {
-   "id": "croquis",
-   "type": "croquis",
-   "nom": [
-    "bougie"
-   ],
-   "taille": [
-    0.12,
-    0.14
-   ],
-   "pres": [
-    0.16,
-    0.47
-   ]
   }
  ],
  "vivants": [
@@ -80,6 +65,18 @@
    "aquarelle": "theiere",
    "anime": "vapeur",
    "angle": -2
+  },
+  {
+   "nom": "aq-cupcake",
+   "rect": [
+    0.075,
+    0.31,
+    0.16,
+    0.165
+   ],
+   "aquarelle": "cupcake-bougie",
+   "anime": "fleurit",
+   "angle": -4
   },
   {
    "nom": "aq-orange",

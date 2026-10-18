@@ -19,7 +19,7 @@
 
 import { ecouterPointeur } from '../../lib/pointeur';
 import { facteurAnimations } from '../../lib/vitesse';
-import { EFFETS, type Effets } from './effets';
+import { EFFETS, SCENES_PAGE, type Effets } from './effets';
 import { REPOS, SCENES, poseNeutre, type Ctx, type Fx } from './scenes';
 import { essaimDe, ESPECES, type Essaim } from './creatures';
 import partiesJson from './parties.json';
@@ -599,7 +599,9 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
   // ---- placement : la boîte de chaque aquarelle, son image « contain » dans la zone ----
   for (const d of [...opts.dessins].sort((a, b) => a.ordre - b.ordre)) {
     const [x, y, w, h] = d.zone;
-    const e = EFFETS[d.nom] ?? {};
+    // les scènes propres à cette page, s'il y en a, remplacent celles de l'aquarelle
+    const sp = SCENES_PAGE[opts.page]?.[d.nom];
+    const e: Effets = { ...(EFFETS[d.nom] ?? {}), ...(sp ? { scenes: sp } : {}) };
     const [dg, dh, dd] = DEBORD;
     // des confettis retombent sous l'aquarelle : la boîte descend plus bas
     const db = e.confettis ? 0.5 : DEBORD[3];
@@ -744,6 +746,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     confettis: -1,
     vent: 1,
     fanions: 1,
+    penche: 0,
   });
 
   const poser = (s: Sprite, dt: number, t: number) => {
@@ -849,7 +852,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     const flammes = (s.e.flammes ?? []).slice(0, MAX_FLAMMES);
     flammes.forEach((f, k) => {
       fl.set([f[0], f[1], f[2], fx.fl[k] ?? 1], k * 4);
-      flv.set([Math.max(-1.2, Math.min(1.2, s.penche.x * 60)), fx.fumee[k] ?? 0, 0, 0], k * 4);
+      flv.set([Math.max(-1.2, Math.min(1.2, s.penche.x * 60 + fx.penche)), fx.fumee[k] ?? 0, 0, 0], k * 4);
     });
     g.uniform4fv(ud.fl, fl);
     g.uniform4fv(ud.flv, flv);

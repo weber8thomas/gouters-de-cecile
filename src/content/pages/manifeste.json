@@ -1062,6 +1062,12 @@
      0.52,
      0.23
     ],
+    "aq-cupcake": [
+     0.075,
+     0.31,
+     0.16,
+     0.165
+    ],
     "aq-orange": [
      0.75,
      0.36,
@@ -1082,25 +1088,17 @@
      "anime": "vapeur",
      "angle": -2
     },
+    "aq-cupcake": {
+     "aquarelle": "cupcake-bougie",
+     "anime": "fleurit",
+     "angle": -4
+    },
     "aq-orange": {
      "aquarelle": "orange",
      "anime": "fleurit",
      "angle": 10
     }
    },
-   "croquis": [
-    {
-     "nom": "bougie",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.0908,
-      0.4274,
-      0.12,
-      0.0992
-     ]
-    }
-   ],
    "relu": true
   },
   "fin-gauche": {

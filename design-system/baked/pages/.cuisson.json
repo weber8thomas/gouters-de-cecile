@@ -116,7 +116,7 @@
  },
  "papier/f19": "03375a265a66fca0089e5c8685e306b1bb7270a83af820e915c7ac7d63bbec8d",
  "page/fin-droite": {
-  "cle": "5d9a1cecb3cbfe8a34059d287d11968ed3094a3b266aa2991190dbeda468ebbf",
+  "cle": "ad53551fa0ff7999a35c0a55f204cf0c75bb6538e32b4a4cd10564b607d3913d",
   "manifeste": {
    "double": "fin",
    "cote": "droite",
@@ -183,6 +183,12 @@
      0.52,
      0.23
     ],
+    "aq-cupcake": [
+     0.075,
+     0.31,
+     0.16,
+     0.165
+    ],
     "aq-orange": [
      0.75,
      0.36,
@@ -203,25 +209,17 @@
      "anime": "vapeur",
      "angle": -2
     },
+    "aq-cupcake": {
+     "aquarelle": "cupcake-bougie",
+     "anime": "fleurit",
+     "angle": -4
+    },
     "aq-orange": {
      "aquarelle": "orange",
      "anime": "fleurit",
      "angle": 10
     }
    },
-   "croquis": [
-    {
-     "nom": "bougie",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.0908,
-      0.4274,
-      0.12,
-      0.0992
-     ]
-    }
-   ],
    "relu": true
   }
  },
@@ -3169,8 +3167,8 @@
    "relu": true
   }
  },
- "papier/f23": "20d735a4e48e57a46db74e02e3ce7e91a8422f2f306d560077a314998a726389",
- "papier1x/f23": "20d735a4e48e57a46db74e02e3ce7e91a8422f2f306d560077a314998a726389",
+ "papier/f23": "6e6a7c7565332b977dde0dfe0c5bece2200d906d4327ae3f895bd161620d0aeb",
+ "papier1x/f23": "6e6a7c7565332b977dde0dfe0c5bece2200d906d4327ae3f895bd161620d0aeb",
  "papier/f21": "ab9835c69506f98e1e4f19ba0f445b80e4dedf1124fa177802d76844a36dfc42",
  "papier1x/f21": "ab9835c69506f98e1e4f19ba0f445b80e4dedf1124fa177802d76844a36dfc42",
  "pagination/bernard": {
@@ -3968,8 +3966,8 @@
    "bernard-feuillet-recto": 1.45
   }
  },
- "papier/f25": "e54408fe7bb02318799bcffa5e474f795b36618c696a2ad450a50747ca8aa4b0",
- "papier1x/f25": "e54408fe7bb02318799bcffa5e474f795b36618c696a2ad450a50747ca8aa4b0",
+ "papier/f25": "95a33dea66e1e55ce179be85b797911a30b4b1c995e188135c154a6970b951db",
+ "papier1x/f25": "95a33dea66e1e55ce179be85b797911a30b4b1c995e188135c154a6970b951db",
  "page/bernard-gauche": {
   "cle": "253e5fab8cd821bc49f0fb4d4a0ad68ca39e2209a3cbd28acee5646b9d0982a2",
   "manifeste": {

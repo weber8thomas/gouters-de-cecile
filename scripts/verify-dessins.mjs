@@ -112,34 +112,24 @@ out.save(a["sortie"])
 }
 
 /**
- * Images en temps réel : les trames que le navigateur compose (screencast CDP, horodatées), une toutes
- * les `pas` ms pendant `duree` ms, recadrées sur `clip`. Une capture d'écran par image serait trop lente
- * en rendu logiciel (plusieurs secondes chacune) : le film ne serait plus en temps réel.
+ * Un film : une image toutes les `pas` ms du temps des toiles, pendant `duree` ms. Le temps des toiles est
+ * figé (window.__gcDessins.figer) puis avancé de `pas` entre deux images : chaque image est exactement à
+ * son instant. (En rendu logiciel, le navigateur ne compose ici que 1 à 3 images par seconde en 1920 × 1080 :
+ * des captures prises au vol ne seraient pas espacées de 0,3 s. Que les toiles jouent en temps réel est
+ * vérifié à part : suite iphone, l'horloge avance.)
  */
 async function film(page, clip, dossier, prefixe, { pas = 300, duree = 4000 } = {}) {
   mkdirSync(dossier, { recursive: true });
-  const cdp = await page.context().newCDPSession(page);
-  const trames = [];
-  cdp.on('Page.screencastFrame', (f) => {
-    trames.push({ t: f.metadata.timestamp, data: f.data, w: f.metadata.deviceWidth, h: f.metadata.deviceHeight });
-    cdp.send('Page.screencastFrameAck', { sessionId: f.sessionId }).catch(() => {});
-  });
-  await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 88, everyNthFrame: 1 });
-  await attendre(duree);
-  await cdp.send('Page.stopScreencast').catch(() => {});
-  await cdp.detach().catch(() => {});
+  await page.evaluate(() => window.__gcDessins?.figer(true));
   const images = [];
-  if (!trames.length) return images;
-  const t0 = trames[0].t;
-  let k = 0;
-  for (const tr of trames) {
-    if (tr.t - t0 < (k * pas) / 1000) continue;
-    const f = join(dossier, `${prefixe}-${String(k).padStart(2, '0')}.jpg`);
-    writeFileSync(f, Buffer.from(tr.data, 'base64'));
-    // recadrage en fractions de l'écran (la trame peut être réduite)
-    images.push([f, `${(tr.t - t0).toFixed(2)} s`, [clip.x / tr.w, clip.y / tr.h, (clip.x + clip.width) / tr.w, (clip.y + clip.height) / tr.h]]);
-    k = Math.floor((tr.t - t0) / (pas / 1000)) + 1;
+  for (let k = 0, t = 0; t <= duree; k++, t += pas) {
+    await attendre(150); // la dernière image de la toile est présentée
+    const f = join(dossier, `${prefixe}-${String(k).padStart(2, '0')}.png`);
+    await page.screenshot({ path: f, clip, timeout: 60000 });
+    images.push([f, `${(t / 1000).toFixed(1)} s`]);
+    await page.evaluate((ms) => window.__gcDessins?.avancer(ms), pas);
   }
+  await page.evaluate(() => window.__gcDessins?.figer(false));
   return images;
 }
 
@@ -191,11 +181,13 @@ if (suites.includes('pages')) {
 // ---- films de marionnettes ---------------------------------------------------------------------------
 const FILMS = [
   ['gateaux', 'cupcake-bougie', 'allume', 0.5],
+  ['gateaux', 'cupcake-bougie', 'bougies', 0.5],
   ['gateaux', 'tasse-coeur', 'bat', 0.1],
   ['biscuits', 'noix', 'domino', 0.1],
   ['biscuits', 'cupcake', 'rebond', 0.1],
   ['fin', 'theiere', 'bouillir', 0.1],
   ['fin', 'guirlande', 'fete', 0.5],
+  ['fin', 'cupcake-bougie', 'souffle', 0.5],
   ['mathis', 'cookies', 'casse', 0.1],
 ];
 if (suites.includes('films')) {
@@ -212,9 +204,12 @@ if (suites.includes('films')) {
         rapport.ajouter(null, `[films] ${nom}`, 'KO', `aquarelle introuvable sur ${spread}`);
         continue;
       }
-      await page.evaluate(([n, s]) => window.__gcDessins?.scene(n, s), [nom, scene]);
+      await page.evaluate(([n, s]) => {
+        window.__gcDessins?.figer(true);
+        window.__gcDessins?.scene(n, s);
+      }, [nom, scene]);
       const images = await film(page, clip, TMP, `${nom}-${scene}`, { pas: 300, duree: 4200 });
-      const f = bande(images, join(out, `film-${nom}-${scene}.png`), `${nom} : scène « ${scene} » (temps réel, une image toutes les ~0,3 s)`, { hauteur: 220, colonnes: 8 });
+      const f = bande(images, join(out, `film-${nom}-${scene}.png`), `${nom} : scène « ${scene} » (une image toutes les 0,3 s du temps de l'animation)`, { hauteur: 220, colonnes: 8 });
       rapport.ajouter(null, `[films] ${nom} « ${scene} »`, 'INFO', rel(f));
       await attendre(800);
     }

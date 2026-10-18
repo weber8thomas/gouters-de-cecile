@@ -1188,10 +1188,10 @@
   },
   "pages/1x/fin-droite": {
     "file": "baked/pages/1x/fin-droite.webp",
-    "sha": "4727e6599181058a4020637d7074765d5f4213d6fd2ce0944b2ab4df2aceceed",
+    "sha": "6e9be4e3cb2013566b602e89e1e3310621a3ce63ff984d8e97437c840156ce62",
     "w": 850,
     "h": 1200,
-    "bytes": 19582,
+    "bytes": 16134,
     "type": "image/webp"
   },
   "pages/1x/fin-gauche": {
@@ -1888,10 +1888,10 @@
   },
   "pages/4x/fin-droite-00": {
     "file": "baked/pages/4x/fin-droite-00.webp",
-    "sha": "35554252d76be9b37fc4e79b0d3c7638e8a60224541e4ee7a9c58ab0980f84e3",
+    "sha": "81f47a0955aba919303060e607495b4c2ab54856828da6ad91dcc5ab71fabd32",
     "w": 1704,
     "h": 2404,
-    "bytes": 29858,
+    "bytes": 14172,
     "type": "image/webp",
     "site": true
   },
@@ -1906,19 +1906,19 @@
   },
   "pages/4x/fin-droite-10": {
     "file": "baked/pages/4x/fin-droite-10.webp",
-    "sha": "bce683fab8589faa40dd3018c1c2f48d3e569977e8677746f072432dbe1f2e79",
+    "sha": "49770847701c5fb68e1c625a021897566f42b7ea61c42eee90de2947682c5965",
     "w": 1704,
     "h": 2404,
-    "bytes": 59514,
+    "bytes": 53100,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/fin-droite-11": {
     "file": "baked/pages/4x/fin-droite-11.webp",
-    "sha": "8b191b4105b5b3ab82557362a131496d320acdf4de9ed51e9d7442217929785b",
+    "sha": "b84936cd08ee48317bc4664a4a62231ea44c844e03c74099d75ddb0634cad501",
     "w": 1704,
     "h": 2404,
-    "bytes": 57978,
+    "bytes": 57336,
     "type": "image/webp",
     "site": true
   },
@@ -2740,10 +2740,10 @@
   },
   "pages/fin-droite": {
     "file": "baked/pages/fin-droite.webp",
-    "sha": "039641ed8653a97f06395a9126c3c19014efe8113bd60a7ef0cfa3ca152c6b64",
+    "sha": "d7c9290e89aa1373428b377e5e650adcc08ad5378d2be3f2a6028aa35419d196",
     "w": 1700,
     "h": 2400,
-    "bytes": 59818,
+    "bytes": 49492,
     "type": "image/webp"
   },
   "pages/fin-gauche": {
@@ -3124,10 +3124,10 @@
   },
   "pages/temps/fin-droite": {
     "file": "baked/pages/temps/fin-droite.webp",
-    "sha": "3ed8594b5cb17c1722860096822b91a2f7787163ec55331e407c6b1633883dc6",
+    "sha": "4cd568e02940c7d58e4670a531efd99bfa46e4c7fa0a34190c3586901124e2ad",
     "w": 850,
     "h": 1200,
-    "bytes": 19324,
+    "bytes": 17270,
     "type": "image/webp"
   },
   "pages/temps/fin-gauche": {

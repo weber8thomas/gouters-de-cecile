@@ -37,6 +37,24 @@ export interface Effets {
   perchoirs?: [number, number][];
 }
 
+/**
+ * Bougies qui vacillent, à brancher sur n'importe quelle aquarelle : le cœur de chaque flamme peinte
+ * [x, y] (fractions de l'image), leur rayon (fraction de la hauteur de l'image). Cinq au plus. Scènes :
+ * « bougies » (un courant d'air, elles vacillent), « souffle » (soufflées une à une, un filet de fumée,
+ * rallumées), « allume » (éteintes d'un souffle, rallumées une à une ; confettis si l'aquarelle en a).
+ */
+export const bougies = (centres: [number, number][], rayon: number): Effets => ({
+  flammes: centres.slice(0, 5).map(([x, y]) => [x, y, rayon]),
+  scenes: ['bougies', 'souffle', 'allume'],
+});
+
+/**
+ * Fanions qui ondulent, à brancher sur une guirlande peinte : y de la ficelle à ses deux bouts, creux de la
+ * ficelle au milieu (fractions de l'image ; la ficelle va d'un bord à l'autre). Scènes : « brise »,
+ * « fete » (confettis si l'aquarelle en a).
+ */
+export const fanions = (y: number, creux: number): Effets => ({ fanions: [y, creux], scenes: ['brise', 'fete'] });
+
 export const EFFETS: Record<string, Effets> = {
   // théière et deux tasses : le couvercle se soulève et claque, le bec crache sa vapeur, la cuillère tinte
   theiere: {
@@ -76,21 +94,20 @@ export const EFFETS: Record<string, Effets> = {
   'cupcake-bougie': {
     flammes: [[0.7, 0.0765, 0.03]],
     confettis: [0.5, 0.3, 0.5],
-    scenes: ['allume', 'rebond', 'souffle'],
+    scenes: ['allume', 'rebond', 'bougies', 'souffle'],
     perchoirs: [[0.47, 0.28], [0.2, 0.45]],
   },
-  // le gâteau d'anniversaire rose et ses cinq bougies (piste anniversaire : dédicace)
+  // le gâteau d'anniversaire et ses cinq bougies (piste anniversaire : titre et dédicace ; l'aquarelle
+  // arrive à la fusion, design-system/aquarelles/gateau-bougies.png)
   'gateau-bougies': {
-    flammes: [[0.215, 0.222, 0.053], [0.375, 0.169, 0.054], [0.565, 0.157, 0.054], [0.725, 0.193, 0.054], [0.83, 0.216, 0.052]],
+    ...bougies([[0.215, 0.175], [0.375, 0.14], [0.567, 0.11], [0.734, 0.15], [0.858, 0.2]], 0.06),
     confettis: [0.5, 0.4, 0.7],
-    scenes: ['souffle', 'allume'],
     perchoirs: [[0.3, 0.55], [0.7, 0.56]],
   },
   // la guirlande : les fanions ondulent, la brise les fait claquer (ficelle : scripts/aquarelles_dessins.py)
   guirlande: {
-    fanions: [0.07, 0.12],
+    ...fanions(0.07, 0.12),
     confettis: [0.5, 0.3, 0.8],
-    scenes: ['brise', 'fete'],
     perchoirs: [[0.27, 0.16], [0.71, 0.17]],
   },
   // les fanes frémissent, et se secouent
@@ -118,6 +135,12 @@ export const EFFETS: Record<string, Effets> = {
   oeufs: { pied: [0.5, 0.78], scenes: ['dandine'], perchoirs: [[0.5, 0.15]] },
   // les noix sautent l'une après l'autre
   noix: { scenes: ['domino'], perchoirs: [[0.2, 0.1], [0.85, 0.1]] },
+};
+
+/** Scènes propres à une page : elles remplacent celles de l'aquarelle sur cette page. */
+export const SCENES_PAGE: Record<string, Record<string, string[]>> = {
+  // la dernière page : on souffle la bougie du cupcake (un filet de fumée), puis elle se rallume
+  'fin-droite': { 'cupcake-bougie': ['souffle', 'bougies'] },
 };
 
 /** Créatures de chaque double page (creatures.ts) : elles traversent les deux pages, se posent, s'envolent.
