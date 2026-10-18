@@ -42,6 +42,20 @@ export const abonnerEcriture = (f: () => void) => {
 };
 export const versionEcriture = () => version;
 
+/** La plume au travail (début, fin) : la magie du livre fait suivre la pointe par des paillettes d'or. */
+export interface EvenementPlume {
+  page: string;
+  phase: 'debut' | 'fin';
+  /** Instant du départ (performance.now) et durée de l'écriture (ms) : la pointe est à t / 0,85. */
+  t0: number;
+  duree: number;
+}
+const plumes = new Set<(e: EvenementPlume) => void>();
+export const ecouterPlume = (f: (e: EvenementPlume) => void) => {
+  plumes.add(f);
+  return () => { plumes.delete(f); };
+};
+
 const VS = `attribute vec2 p;varying vec2 uv;
 void main(){uv=vec2((p.x+1.)*.5,(1.-p.y)*.5);gl_Position=vec4(p,0.,1.);}`;
 // L'encre sort du papier à la pointe, d'abord dorée et humide, puis sèche à sa couleur ; un halo doré suit
@@ -86,10 +100,12 @@ export function ecrire(canvas: HTMLCanvasElement, page: string, encre: string, d
   let arrete = false;
   let raf = 0;
   let gl: WebGLRenderingContext | null = null;
+  let t0 = 0;
   const terminer = () => {
     if (arrete) return;
     arrete = true;
     enCours.delete(page);
+    if (t0) plumes.forEach((f) => f({ page, phase: 'fin', t0, duree }));
     cancelAnimationFrame(raf);
     gl?.getExtension('WEBGL_lose_context')?.loseContext();
     fin();
@@ -133,7 +149,8 @@ export function ecrire(canvas: HTMLCanvasElement, page: string, encre: string, d
       gl.uniform2f(gl.getUniformLocation(prog, 'px'), 1 / imT.naturalWidth, 1 / imT.naturalHeight);
       const uT = gl.getUniformLocation(prog, 't');
       gl.viewport(0, 0, canvas.width, canvas.height);
-      const t0 = performance.now();
+      t0 = performance.now();
+      plumes.forEach((f) => f({ page, phase: 'debut', t0, duree }));
       const image = (now: number) => {
         if (arrete || !gl) return;
         // la plume va à vitesse constante (la carte des temps suit la longueur écrite)

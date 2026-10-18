@@ -22,7 +22,7 @@ import { TOUCHER_EVENT, cadenceStable, emettre, pret, type GesteType, type Touch
 import { CARTON, PLANCHER, clamp, lisse, r3, reculCouverture } from './geometrie';
 import { MARGE_TOUCHER, SEUIL_AMORCE, SEUIL_GLISSER, SEUIL_P, TOUCHER_MAX_MS, VIF, elastique, entreElastique, garder, pElastique, vitesse, type Echantillon } from './doigt';
 import { RELAIS_COIN, angleSaisi, leve, pRelais, plier, zoneCoin, type Coin as AngleCoin } from './coin';
-import { traineeDoree } from './etincelles';
+import { Magie } from '../Magie';
 import './Livre.css';
 
 export type { ToucherPage };
@@ -1770,7 +1770,7 @@ export function Livre({
     // ---- Main invisible (clavier) ------------------------------------------------------------
     // → ou ← : une main invisible tourne la page par le même chemin qu'un doigt (coin saisi, rabat, relais
     // au feuillet 3D, lancer) : le coin bas se soulève, suit un arc en accélérant, puis la page part sur
-    // son élan. Une traînée d'étincelles dorées suit la main. Faux si elle ne peut pas (fermé, cadrage
+    // son élan (la magie du livre fait suivre le coin par des étincelles d'or). Faux si elle ne peut pas (fermé, cadrage
     // « page », mouvement réduit, bout du livre…) : le clavier fait alors un pas ordinaire.
     let main = 0;
     const mainInvisible = (dir: 1 | -1): boolean => {
@@ -1795,7 +1795,6 @@ export function Livre({
       doigtRef.current = d;
       saisirCoin(d, c, 'bas');
       if (!d.coin) { annulerAmorce(d); doigtRef.current = null; return false; }
-      const trainee = traineeDoree();
       const LEVER = 170; // ms : le coin se soulève sous la main
       const TIRER = 520; // ms : la main tire le coin en arc
       const D = 0.8 * L; // course de la main vers le dos du livre
@@ -1803,10 +1802,9 @@ export function Livre({
       const image = () => {
         main = 0;
         const now = performance.now();
-        if (doigtRef.current !== d) { trainee.finir(); return; } // abandonnée (la loupe a pris la main)
+        if (doigtRef.current !== d) return; // abandonnée (la loupe a pris la main)
         const ecoule = now - t0;
         if (ecoule < LEVER) {
-          trainee.ajouter(x0, y0, ecoule / LEVER / 2);
           main = requestAnimationFrame(image);
           return;
         }
@@ -1830,7 +1828,6 @@ export function Livre({
         garder(d.pts, now);
         if (d.etat === 'coin') piloterCoin(d, { clientX: x, clientY: y } as PointerEvent);
         else if (d.etat === 'tour') piloter(d, x - d.x0);
-        trainee.ajouter(x, y, 1);
         if (u < 1) {
           main = requestAnimationFrame(image);
           return;
@@ -1841,7 +1838,6 @@ export function Livre({
           relayer(d, x, plier(d.coin.angle, R.fx.get(), R.fy.get(), g.W, g.H).ex);
         }
         relacherTour(d, vitesse(d.pts, now));
-        trainee.finir();
       };
       main = requestAnimationFrame(image);
       return true;
@@ -2094,6 +2090,7 @@ export function Livre({
             )}
           </m.div>
         </div>
+        {!pose && <Magie p={p} tour={tourRef} rabats={rabats} livre={livreRef} zoom={zoomRef} geo={geo} />}
       </Camera>
       <p className="gc-livre__annonce" aria-live="polite">{annonce}</p>
     </Stage>
