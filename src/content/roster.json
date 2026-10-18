@@ -43,7 +43,8 @@
       "video": {
         "id": "julie",
         "caption": "Julie, depuis Lyon"
-      }
+      },
+      "recette": "src/content/recettes/julie.json"
     },
     {
       "slug": "hugo",
@@ -90,7 +91,8 @@
       "video": {
         "id": "mathis",
         "caption": "Mathis, depuis Lille"
-      }
+      },
+      "recette": "src/content/recettes/mathis.json"
     },
     {
       "slug": "ines",
@@ -108,7 +110,8 @@
       "video": {
         "id": "bernard",
         "caption": "Bernard et sa tarte aux pommes"
-      }
+      },
+      "recette": "src/content/recettes/bernard.json"
     },
     {
       "slug": "camille",
@@ -166,7 +169,8 @@
       "video": {
         "id": "rose",
         "caption": "Mamie Rose, depuis Vannes"
-      }
+      },
+      "recette": "src/content/recettes/rose.json"
     },
     {
       "slug": "noe",

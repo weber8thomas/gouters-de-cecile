@@ -15,7 +15,8 @@
    "type": "chapitre",
    "chapitre": "biscuits",
    "taille": 1.75,
-   "graine": 12011
+   "graine": 43,
+   "encre": "terracotta"
   }
  ],
  "vivants": [

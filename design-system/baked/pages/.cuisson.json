@@ -1,7 +1,7 @@
 {
- "papier/f13": "48c76ed3d2c190feeedc31a744a926981fe305ce273c0880a66d0fa4a339724d",
+ "papier/f13": "36c983695924c1fc06cd6f0b82acb2b7e2bf4f0e242bcfa63069b5b432e21930",
  "page/julie-droite": {
-  "cle": "4a82cbf6b25fcc20c21518a5fec5180644a15bf8f5cddff6bddcae2019b8efa5",
+  "cle": "1213305177583ac21e879c7475232589751bc8f92bec1936e3a4ae522bdaedad",
   "manifeste": {
    "double": "julie",
    "cote": "droite",
@@ -54,23 +54,29 @@
      ]
     ]
    },
-   "texte": "Julie",
+   "texte": "Julie\npuis la farine, la levure et le sel, en mélangeant à la spatule sans trop travailler la pâte.\nÉtape 4\nAjoute les graines de pavot, puis le beurre fondu et tiède en filet, tout en continuant de mélanger. La pâte doit être lisse et un peu brillante.\nÉtape 5\nVerse dans le moule et lisse le dessus avec le dos d'une cuillère. Le cake lève tout seul, pas besoin de tapoter le moule.\nÉtape 6\nEnfourne 40 min à th. 6 (180 °C). Pique la lame d'un couteau au centre : si elle ressort sèche, il est cuit. Le dessus doit être bien doré.\nLaisse-le reposer 10 minutes dans le moule, puis démoule-le sur une grille pour qu'il refroidisse complètement.\nsuite sur la feuille",
    "vivants": {
+    "volant": [
+     0.83,
+     0.66,
+     0.17,
+     0.215
+    ],
     "aq-citron": [
-     0.55,
-     0.22,
+     0.5,
+     0.5,
      0.28,
      0.383
     ],
     "aq-citron-2": [
      0.16,
-     0.56,
+     0.58,
      0.26,
-     0.285
+     0.27
     ]
    },
    "deborde": [],
-   "lignes": 0,
+   "lignes": 14,
    "aquarelles": {
     "aq-citron": {
      "aquarelle": "citron",
@@ -83,20 +89,42 @@
      "angle": -5
     }
    },
+   "volant": {
+    "recto": "julie-feuillet-recto",
+    "verso": "julie-feuillet-verso",
+    "angle": -7.0,
+    "rect": [
+     0.85,
+     0.685,
+     0.82,
+     0.88
+    ]
+   },
+   "suite": "julie-feuillet-recto",
+   "recette": "julie",
+   "douteux": [
+    "moule, (groupe « moule, » lu « mouter »)",
+    "beurre (encre rendue lue « benrre »)",
+    "moule, (encre rendue lue « mouter »)"
+   ],
+   "douteux_importants": [
+    "beurre",
+    "moule,"
+   ],
    "relu": true
   }
  },
- "papier/f19": "9dd98f84a9121728eeed7645b4fd371749ac76f9f5cd6b70e60caa2458729ebd",
+ "papier/f19": "03375a265a66fca0089e5c8685e306b1bb7270a83af820e915c7ac7d63bbec8d",
  "page/fin-droite": {
-  "cle": "91eb0412186c1d0bddb642c1a5deedb2dff14100289ff59179a78237c7ec41ba",
+  "cle": "ae4bdbcbe9330a1598bc288220495d01daeea0d6ef0af3da63ed8cd90e94c199",
   "manifeste": {
    "double": "fin",
    "cote": "droite",
-   "folio": 23,
-   "papier": "pages/papier/f23",
+   "folio": 25,
+   "papier": "pages/papier/f25",
    "miroir": false,
    "encre": "pages/fin-droite",
-   "papier1x": "pages/1x/papier/f23",
+   "papier1x": "pages/1x/papier/f25",
    "encre1x": "pages/1x/fin-droite",
    "encre4x": {
     "base": "pages/4x/fin-droite",
@@ -158,20 +186,26 @@
      ]
     }
    ],
+   "douteux": [
+    "2026. (encre rendue lue « 2026 »)"
+   ],
+   "douteux_importants": [
+    "2026."
+   ],
    "relu": true
   }
  },
- "papier/f17": "ff2baa5a135d9771f34c7f88419d8eec60d3edfabc1526c3558f94fc8a59a364",
+ "papier/f17": "8f22783b961940f70a72f7218276f4f0184615f912183d079a3f326a8abd761b",
  "page/fin-gauche": {
-  "cle": "356d46c36307de70ded3f7c7859128f776022792e2b7cbd0d177c9ba6ab6488e",
+  "cle": "bc62ca10bb4da139e641d9fd8e60030a51a62489960b1d64265a323f5581c4fa",
   "manifeste": {
    "double": "fin",
    "cote": "gauche",
-   "folio": 22,
-   "papier": "pages/papier/f21",
+   "folio": 24,
+   "papier": "pages/papier/f23",
    "miroir": true,
    "encre": "pages/fin-gauche",
-   "papier1x": "pages/1x/papier/f21",
+   "papier1x": "pages/1x/papier/f23",
    "encre1x": "pages/1x/fin-gauche",
    "encre4x": {
     "base": "pages/4x/fin-gauche",
@@ -229,9 +263,9 @@
    "relu": true
   }
  },
- "papier/f11": "515c5ff624588bd3652ae6b1cbc8f0cd9675b69ad1586d63c4b9a2c58d082d50",
+ "papier/f11": "0e0f0cb3cabe0c3a185dc7cf09e7e9b5b80f1aff0aeadeded6b9f68b3495b2b4",
  "page/julie-gauche": {
-  "cle": "0cf7f146307c5fed2cbd4afd1c84ef2f81600a37a842c840459a22d0205eff6b",
+  "cle": "e602da1cc3a3d24d711f6103e7281fc6aa802a28b2fcfce14d97e6066c9ad1aa",
   "manifeste": {
    "double": "julie",
    "cote": "gauche",
@@ -284,39 +318,52 @@
      ]
     ]
    },
-   "texte": "Julie, depuis Lyon\nPour Cécile : Pour toutes nos pauses goûter à refaire le monde. Joyeux anniversaire ma Cécile ! — Julie\nLe cake citron de Julie\n3 œufs 120 g de sucre 2 citrons non traités 180 g de farine\n½ sachet de levure 125 g de beurre 1 c. à s. de pavot 1 pincée de sel\nFour à th. 6 (180 °C). Fouette les œufs avec le sucre jusqu'à ce que ça blanchisse, ajoute les zestes et le jus des citrons, puis la farine, la levure, le sel, le pavot et enfin le beurre fondu. Moule à cake beurré, 40 min au four.\n(testé le 3 mars, un régal !)",
+   "texte": "Julie, depuis Lyon\nPour Cécile : Pour toutes nos pauses goûter à refaire le monde. Joyeux anniversaire ma Cécile ! — Julie\nLe cake citron de Julie\nPour le cake :\n3 œufs\n120 g de sucre en poudre\n2 citrons non traités (zestes et jus)\n180 g de farine\n½ sachet de levure chimique\n1 pincée de sel\n1 c. à s. de graines de pavot\n125 g de beurre, fondu et tiède\n1 noix de beurre et 1 c. à s. de farine pour le moule\nÉtape 1\nPréchauffe le four à th. 6 (180 °C). Beurre le moule à cake et saupoudre-le de farine, sinon le citron colle.\nÉtape 2\nFouette les œufs avec le sucre pendant 3 bonnes minutes, jusqu'à ce que le mélange blanchisse et gonfle. C'est le moment où je mets de la musique, ça passe plus vite.\nÉtape 3\nAjoute les zestes et le jus des citrons,\n(meilleur le lendemain !)",
    "vivants": {
     "photo": [
      0.06,
-     0.04,
-     0.42,
-     0.22313
+     0.035,
+     0.48569,
+     0.27203
     ]
    },
    "deborde": [],
-   "lignes": 16,
+   "lignes": 24,
+   "recette": "julie",
+   "croquis": [
+    {
+     "nom": "citron",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.7479,
+      0.3691,
+      0.19,
+      0.1204
+     ]
+    }
+   ],
    "douteux": [
     "œufs (encre rendue lue « cents . »)",
-    "125 g (encre rendue lue « 125 9 »)",
-    "1 c. à s. (encre rendue lue « 1 cas »)",
-    "œufs (encre rendue lue « cents »)",
-    "sel, (encre rendue lue « sef »)",
-    "beurré, (encre rendue lue « beurrie »)",
+    "(zestes (encre rendue lue « Creates »)",
+    "1 (encre rendue lue « n »)",
+    "1 c. à s. (encre rendue lue « 1c d s »)",
+    "1 (encre rendue lue « 1 »)",
+    "1 c. à s. (encre rendue lue « 1cas »)",
     "3 (encre rendue lue « 3 »)"
    ],
    "douteux_importants": [
+    "(zestes",
+    "1",
     "1 c. à s.",
-    "125 g",
     "3",
-    "beurré,",
-    "sel,",
     "œufs"
    ],
    "relu": true
   }
  },
  "page/mathis-droite": {
-  "cle": "58f36ed6a04b5d2c1d1cad0efa5f396df876266bb90fcb6080abb9b9d2f23580",
+  "cle": "e27b78cd3f230ae8cf0e8e3f512ae724afbb04444cdfb7f53b89130862aed3bf",
   "manifeste": {
    "double": "mathis",
    "cote": "droite",
@@ -369,62 +416,61 @@
      ]
     ]
    },
-   "texte": "Bernard, depuis Dijon\nPour Cécile : Joyeux anniversaire Cécile, garde-moi une part de tarte ! — Bernard\nMa tarte aux pommes\n1 pâte brisée, 5 pommes, 2 c. à s. de sucre, 1 noix de beurre. Étale la pâte dans le moule, pique-la, mets les pommes en lamelles, sucre et beurre en noisettes. 40 min à th. 7.",
+   "texte": "Mathis\nÉtape 1\nPréchauffe le four à 170 °C. Sors le beurre une heure avant, il doit être mou, pas fondu !!\nÉtape 2\nFouette le beurre avec les deux sucres pendant 2 minutes, jusqu'à ce que ça devienne crémeux. J'ai mis de la musique, ça aide.\nÉtape 3\nAjoute l'œuf et mélange bien. Puis la farine, la levure et le sel, doucement à la spatule. Pas besoin de trop travailler, sinon les cookies deviennent durs.\nÉtape 4\nIncorpore les pépites et les morceaux de chocolat noir. Mets beaucoup de pépites !! C'est le meilleur moment, et tu as le droit de goûter (une fois).\nÉtape 5\nForme des boules de la taille d'une noix, espacées de 5 cm sur la plaque couverte de papier sulfurisé, et aplatis-les un peu avec la paume.\nsuite sur la feuille",
    "vivants": {
-    "photo": [
-     0.06,
-     0.04,
-     0.42,
-     0.22313
+    "volant": [
+     0.83,
+     0.66,
+     0.17,
+     0.215
     ],
-    "aq-tarte": [
-     0.46,
-     0.56,
-     0.42,
-     0.189
-    ],
-    "aq-pomme": [
-     0.14,
+    "aq-cookies": [
+     0.5,
      0.62,
-     0.2,
-     0.245
+     0.26,
+     0.23
     ]
    },
    "deborde": [],
-   "lignes": 8,
+   "lignes": 22,
    "aquarelles": {
-    "aq-tarte": {
-     "aquarelle": "tarte-pommes",
-     "anime": "fleurit"
-    },
-    "aq-pomme": {
-     "aquarelle": "pomme",
-     "anime": "fleurit",
-     "angle": -6
+    "aq-cookies": {
+     "aquarelle": "cookies",
+     "anime": "balance",
+     "angle": 4
     }
    },
+   "volant": {
+    "recto": "mathis-feuillet-recto",
+    "verso": "mathis-feuillet-verso",
+    "angle": -7.0,
+    "rect": [
+     0.85,
+     0.685,
+     0.82,
+     0.88
+    ]
+   },
+   "suite": "mathis-feuillet-recto",
+   "recette": "mathis",
    "douteux": [
-    "Cécile (encre rendue lue « C recite »)",
-    "pommes, (encre rendue lue « pom mes , »)",
-    "2 c. à s. (encre rendue lue « 2C d s »)",
-    "noix (encre rendue lue « in ox »)",
-    "pommes (encre rendue lue « p.g.m.mes. »)",
-    "th. 7. (encre rendue lue « th ? »)"
+    "l'œuf",
+    "farine, (encre rendue lue « famine . »)",
+    "sel, (encre rendue lue « sch. »)",
+    "pépites (encre rendue lue « pepites »)"
    ],
    "douteux_importants": [
-    "2 c. à s.",
-    "Cécile",
-    "noix",
-    "pommes",
-    "pommes,",
-    "th. 7."
+    "farine,",
+    "l'œuf",
+    "pépites",
+    "sel,"
    ],
    "relu": true
   }
  },
- "papier/f15": "012c5cad90621a5ca6cfb49fd1b47540b40805aba4b6113dfd6330c89e26f461",
+ "papier/f15": "757601d17006ed2a5fc1bbf231615c203cefef8d703c0ca65c8acd529824cf1f",
  "page/mathis-gauche": {
-  "cle": "039f5d06d4616bf40217e5fa95a8c14fd287244af37db4fc73554ff98e552799",
+  "cle": "84f4073b6e95100b7168e633ffdd9bc597ba12f89bd9f72e89a8c72f22241c2e",
   "manifeste": {
    "double": "mathis",
    "cote": "gauche",
@@ -477,60 +523,55 @@
      ]
     ]
    },
-   "texte": "Mathis, depuis Lille\nPour Cécile : Joyeux anniv Cécile !! — Mathis\nLes cookies de Mathis\n1 œuf, 100 g de beurre mou, 75 g de sucre roux, 50 g de sucre blanc, 200 g de farine, ½ sachet de levure, 1 pincée de sel, 150 g de pépites de choco.\nMélange tout, mets beaucoup de pépites !! 10 min à 170 °C, ils restent mous au milieu.",
+   "texte": "Mathis, depuis Lille\nPour Cécile : Joyeux anniv Cécile !! Les cookies c'est pour toi, mais laisse-m'en au moins trois !! — Mathis\nLes cookies de Mathis\nPour la pâte :\n1 œuf\n100 g de beurre mou\n75 g de sucre roux\n50 g de sucre blanc\n200 g de farine\n½ sachet de levure chimique\n1 pincée de sel\nPour le choco :\n150 g de pépites de chocolat\n50 g de chocolat noir coupé en morceaux\n(la meilleure, je jure !)",
    "vivants": {
     "photo": [
      0.06,
-     0.04,
-     0.42,
-     0.22313
+     0.035,
+     0.49242,
+     0.27855
     ]
    },
    "deborde": [],
-   "lignes": 7,
+   "lignes": 17,
+   "recette": "mathis",
    "croquis": [
     {
      "nom": "cookie",
      "role": "dessin",
      "dessine": true,
      "boite": [
-      0.7498,
-      0.8106,
-      0.16,
-      0.1133
+      0.7687,
+      0.4694,
+      0.19,
+      0.1204
      ]
     }
    ],
    "douteux": [
-    "50 (groupe « 50 g » lu « 50 9 »)",
-    "pépites (groupe « pépites » lu « petites »)",
-    "roux, (encre rendue lue « row , »)",
-    "50 g (encre rendue lue « 60 g »)",
-    "200 g (encre rendue lue « 200 9 »)",
+    "½ (groupe « ½ » lu « 1 ft »)",
+    "Mathis (encre rendue lue « Mathis »)",
+    "œuf (encre rendue lue « auf . »)",
+    "beurre (encre rendue lue « Vcurre »)",
+    "75 g (encre rendue lue « 25 9 »)",
     "½ (encre rendue lue « 1 ft »)",
-    "1 (encre rendue lue « 1 »)",
-    "sel, (encre rendue lue « set »)",
-    "150 g (encre rendue lue « 150 9 »)",
-    "pépites (encre rendue lue « pipepites »)",
-    "170 °C, (encre rendue lue « 170 kg . »)"
+    "sel (encre rendue lue « set »)",
+    "coupé (encre rendue lue « roype »)"
    ],
    "douteux_importants": [
-    "1",
-    "150 g",
-    "170 °C,",
-    "200 g",
-    "50",
-    "50 g",
-    "pépites",
-    "roux,",
-    "sel,",
-    "½"
+    "75 g",
+    "Mathis",
+    "beurre",
+    "coupé",
+    "sel",
+    "½",
+    "œuf"
    ],
    "relu": true
   }
  },
  "page/rose-droite": {
-  "cle": "a752923a037399aeb8185ae774258cef6b1a464be0cd08640506e858265b22e3",
+  "cle": "bafc15ec4e7ba2e26dc2bc58785f1c0f954ec0ccb0ef8933d3f1ba25a29f402b",
   "manifeste": {
    "double": "rose",
    "cote": "droite",
@@ -583,46 +624,67 @@
      ]
     ]
    },
-   "texte": "Mamie Rose\nLes garder dans la boîte en fer.\nPour Noël\nJe remplace le zeste par 1 c. à c. de cannelle et je les découpe en étoiles. Glaçage : 1 blanc d'œuf battu avec 150 g de sucre glace et quelques gouttes de citron, au pinceau sur les sablés refroidis.",
+   "texte": "Mamie Rose\nÉtape 2\nAjoute le sucre glace, le sel, la cannelle et le zeste, puis le jaune. Pétris juste ce qu'il faut, sinon les sablés deviennent durs. Ma mère disait : on caresse la pâte, on ne la pétrit pas.\nÉtape 3\nFais une boule, enveloppe-la de film et mets-la une heure au frais. Moi je la prépare la veille, c'est plus facile à étaler.\nÉtape 4\nÉtale la pâte sur ½ cm d'épaisseur, entre deux feuilles de papier cuisson, puis découpe au verre. Repasse les chutes une seule fois, pas plus.\nÉtape 5\nPose les sablés sur la plaque, dore-les au jaune battu avec l'eau, et raie le dessus à la fourchette. Les petits traits, c'est ma signature depuis toujours.\nÉtape 6\nCuis 12 min à th. 6 (180 °C) : ils doivent rester blonds, surtout pas dorés. Laisse-les refroidir sur la plaque avant de les toucher.\nsuite sur la feuille",
    "vivants": {
+    "volant": [
+     0.83,
+     0.66,
+     0.17,
+     0.215
+    ],
     "aq-cannelle": [
      0.5,
-     0.42,
-     0.34,
-     0.309
+     0.56,
+     0.32,
+     0.29
     ],
-    "aq-ble": [
+    "aq-etoiles": [
+     0.14,
+     0.6,
      0.2,
-     0.48,
-     0.13,
-     0.171
+     0.238
     ]
    },
    "deborde": [],
-   "lignes": 5,
+   "lignes": 16,
    "aquarelles": {
     "aq-cannelle": {
      "aquarelle": "cannelle",
      "anime": "balance",
      "angle": 5
     },
-    "aq-ble": {
-     "aquarelle": "ble",
+    "aq-etoiles": {
+     "aquarelle": "sables-etoiles",
      "anime": "balance",
      "angle": -4
     }
    },
+   "volant": {
+    "recto": "rose-feuillet-recto",
+    "verso": "rose-feuillet-verso",
+    "angle": -7.0,
+    "rect": [
+     0.85,
+     0.685,
+     0.82,
+     0.88
+    ]
+   },
+   "suite": "rose-feuillet-recto",
+   "recette": "rose",
    "douteux": [
-    "1 c. à c. (encre rendue lue « 1c. d.c. »)"
+    "sel, (encre rendue lue « seh »)",
+    "4 (encre rendue lue « U »)"
    ],
    "douteux_importants": [
-    "1 c. à c."
+    "4",
+    "sel,"
    ],
    "relu": true
   }
  },
  "page/rose-gauche": {
-  "cle": "b8f48dacf7010401a5c73953a0cf2c13212dcff3f5b13bef5207f45391f561f9",
+  "cle": "fdb06878e0c0a97da6810370bee3dc03a5efac71f17292a98ac30493b43735d4",
   "manifeste": {
    "double": "rose",
    "cote": "gauche",
@@ -675,43 +737,53 @@
      ]
     ]
    },
-   "texte": "Mamie Rose, depuis Vannes\nPour Cécile : Ma recette de toujours, pour ma Cécile qui en volait toujours un de plus. — Mamie Rose\nLes sablés de Rose.\nPour une boîte en fer : 250 g de farine, 125 g de beurre bien froid, 100 g de sucre glace, 1 jaune d'œuf, 1 pincée de sel et 1 de cannelle , le zeste d'un citron.\nSabler la farine et le beurre du bout des doigts, ajouter le sucre, le sel, le zeste puis le jaune. Faire une boule sans trop la travailler et la laisser une heure au frais. Étaler sur ½ cm, découper au verre, dorer au jaune et rayer à la fourchette. Cuire 12 min à th. 6, ils doivent rester blonds.",
+   "texte": "Mamie Rose, depuis Vannes\nPour Cécile : Ma recette de toujours, pour ma Cécile qui en volait toujours un de plus. Joyeux anniversaire, mon trésor ! — Mamie Rose\nLes sablés de Rose\nPour la pâte :\n250 g de farine\n125 g de beurre bien froid, coupé en dés\n100 g de sucre glace\n1 jaune d'œuf\n1 pincée de sel\n1 pincée de cannelle\nle zeste d'un citron non traité\nPour dorer :\n1 jaune d'œuf en plus\n1 c. à c. d'eau\nÉtape 1\nDans un grand saladier, sable la farine et le beurre du bout des doigts, jusqu'à ce que ça ressemble à de la semoule. Ça prend un bon quart d'heure, ne te presse pas.\n(beurre bien froid !)",
    "vivants": {
     "photo": [
      0.06,
-     0.04,
-     0.42,
-     0.22313
+     0.035,
+     0.48304,
+     0.26948
     ]
    },
    "deborde": [],
-   "lignes": 11,
+   "lignes": 20,
+   "recette": "rose",
+   "croquis": [
+    {
+     "nom": "beurre",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.7486,
+      0.3691,
+      0.19,
+      0.1204
+     ]
+    }
+   ],
    "douteux": [
-    "Mamie (encre rendue lue « Namie »)",
-    "1 (encre rendue lue « d »)",
-    "sel, (encre rendue lue « seh »)",
-    "1 (encre rendue lue « 1 »)",
-    "beurre (encre rendue lue « benrre »)",
-    "sel, (encre rendue lue « seh »)",
-    "½ cm, (encre rendue lue « 1/2 cm »)"
+    "Mamie (encre rendue lue « Marie »)",
+    "Cécile (encre rendue lue « exile »)",
+    "Rose (encre rendue lue « rose »)",
+    "1 c. à c. (encre rendue lue « 1c.dc. »)"
    ],
    "douteux_importants": [
-    "1",
+    "1 c. à c.",
+    "Cécile",
     "Mamie",
-    "beurre",
-    "sel,",
-    "½ cm,"
+    "Rose"
    ],
    "relu": true
   }
  },
- "papier1x/f19": "9dd98f84a9121728eeed7645b4fd371749ac76f9f5cd6b70e60caa2458729ebd",
- "papier1x/f17": "ff2baa5a135d9771f34c7f88419d8eec60d3edfabc1526c3558f94fc8a59a364",
- "papier1x/f13": "48c76ed3d2c190feeedc31a744a926981fe305ce273c0880a66d0fa4a339724d",
- "papier1x/f11": "515c5ff624588bd3652ae6b1cbc8f0cd9675b69ad1586d63c4b9a2c58d082d50",
- "papier1x/f15": "012c5cad90621a5ca6cfb49fd1b47540b40805aba4b6113dfd6330c89e26f461",
+ "papier1x/f19": "03375a265a66fca0089e5c8685e306b1bb7270a83af820e915c7ac7d63bbec8d",
+ "papier1x/f17": "8f22783b961940f70a72f7218276f4f0184615f912183d079a3f326a8abd761b",
+ "papier1x/f13": "36c983695924c1fc06cd6f0b82acb2b7e2bf4f0e242bcfa63069b5b432e21930",
+ "papier1x/f11": "0e0f0cb3cabe0c3a185dc7cf09e7e9b5b80f1aff0aeadeded6b9f68b3495b2b4",
+ "papier1x/f15": "757601d17006ed2a5fc1bbf231615c203cefef8d703c0ca65c8acd529824cf1f",
  "pagination/lisa": {
-  "cle": "fcef5e65c1f768ef3affbd0b7cbb84cc6662536f1bb7d1bcef03c0985e25c384",
+  "cle": "b7853b8d7bba6c602fcdd25848484b6abe2c63365c22961b20a8b839ff9b14bd",
   "pages": {
    "lisa-gauche": {
     "double": "lisa",
@@ -796,61 +868,61 @@
       "lignes": [
        {
         "texte": "250g de sucre",
-        "graine": 23758,
+        "graine": 47515,
         "puce": "carotte",
         "atome": "ingredients-1/ligne-1"
        },
        {
         "texte": "180 g d’huile de coco (ou autre huile végétale)",
-        "graine": 23759,
+        "graine": 47516,
         "puce": "carotte",
         "atome": "ingredients-1/ligne-2"
        },
        {
         "texte": "1 sachet de levure chimique",
-        "graine": 26166588,
+        "graine": 26190345,
         "puce": "carotte",
         "atome": "ingredients-1/ligne-3"
        },
        {
         "texte": "300g de carottes (3 à 4 grosses carottes)",
-        "graine": 23760,
+        "graine": 47517,
         "puce": "carotte",
         "atome": "ingredients-1/ligne-4"
        },
        {
         "texte": "250g de farine fluide",
-        "graine": 53752529,
+        "graine": 53776286,
         "puce": "carotte",
         "atome": "ingredients-1/ligne-5"
        },
        {
         "texte": "2 cuillères à café d’extrait de vanille",
-        "graine": 32447935,
+        "graine": 32471692,
         "puce": "carotte",
         "atome": "ingredients-1/ligne-6"
        },
        {
         "texte": "2 cuillères de muscade",
-        "graine": 34576742,
+        "graine": 34600499,
         "puce": "carotte",
         "atome": "ingredients-1/ligne-7"
        },
        {
         "texte": "2 à 3 cuillères à café de cannelle (moins selon les goûts)",
-        "graine": 64443171,
+        "graine": 64466928,
         "puce": "carotte",
         "atome": "ingredients-1/ligne-8"
        },
        {
         "texte": "4 œufs",
-        "graine": 8,
+        "graine": 23765,
         "puce": "carotte",
         "atome": "ingredients-1/ligne-9"
        },
        {
         "texte": "120g de noix concassées",
-        "graine": 1,
+        "graine": 23758,
         "puce": "carotte",
         "atome": "ingredients-1/ligne-10"
        }
@@ -867,7 +939,7 @@
       "segments": [
        {
         "texte": "Mélanger au fouet électrique les 4 œufs et le sucre.",
-        "graine": 2,
+        "graine": 39597,
         "atome": "etape-1/phrase-1"
        }
       ],
@@ -917,11 +989,6 @@
         "texte": "Commencer à mélanger avec le fouet éteint (pour éviter les projections),",
         "graine": 5913742,
         "atome": "etape-3/phrase-1.1"
-       },
-       {
-        "texte": "puis allumer le fouet en augmentant de puissance progressivement jusqu'à obtention d'une pâte lisse.",
-        "graine": 40293936,
-        "atome": "etape-3/phrase-1.2"
        }
       ],
       "disposition": "ligne",
@@ -1015,8 +1082,7 @@
      "etape-2/phrase-1.1",
      "etape-2/phrase-1.2",
      "etape-2/phrase-1.3",
-     "etape-3/phrase-1.1",
-     "etape-3/phrase-1.2"
+     "etape-3/phrase-1.1"
     ]
    },
    "lisa-droite": {
@@ -1047,12 +1113,40 @@
     "folio": 13,
     "graine": 2613,
     "gabarit": "D",
+    "vivants": [
+     {
+      "nom": "aq-carotte",
+      "rect": [
+       0.3,
+       0.79,
+       0.1,
+       0.17
+      ],
+      "aquarelle": "carotte",
+      "anime": "balance",
+      "angle": -24
+     }
+    ],
     "blocs": [
      {
       "type": "courant",
       "id": "courant",
       "texte": "Lisa",
       "graine": 78291561
+     },
+     {
+      "type": "paragraphe",
+      "id": "etape-3@phrase-1.2",
+      "source": "etape-3",
+      "segments": [
+       {
+        "texte": "puis allumer le fouet en augmentant de puissance progressivement jusqu'à obtention d'une pâte lisse.",
+        "graine": 40293936,
+        "atome": "etape-3/phrase-1.2"
+       }
+      ],
+      "avant": 0.0,
+      "alinea": 0.0
      },
      {
       "type": "etape",
@@ -1075,7 +1169,7 @@
        }
       ],
       "disposition": "ligne",
-      "avant": 0.0,
+      "avant": 0.12,
       "alinea": 0.0
      },
      {
@@ -1098,37 +1192,28 @@
       "alinea": 0.0
      },
      {
-      "type": "etape",
-      "id": "etape-6",
-      "source": "etape-6",
-      "titre": {
-       "texte": "__Étape 6__",
-       "graine": 2
-      },
+      "type": "paragraphe",
+      "id": "cuisson-titre",
       "segments": [
        {
-        "texte": "Enfourner 40 à 45 minutes selon votre four à 175° (th 5/6).",
-        "graine": 31694,
-        "atome": "etape-6/phrase-1"
-       },
-       {
-        "texte": "Perso sur mon four je vais même jusqu’à 1h,",
-        "graine": 69509264,
-        "atome": "etape-6/phrase-2.1"
-       },
-       {
-        "texte": "mais vérifie tous les quarts d’heure quand même.",
-        "graine": 18943010,
-        "atome": "etape-6/phrase-2.2"
-       },
-       {
-        "texte": "Piquer pour vérifier que le gâteau soit cuit.",
-        "graine": 8159401,
-        "atome": "etape-6/phrase-3"
+        "texte": "__Étape 6__",
+        "graine": 15504960
        }
       ],
-      "disposition": "ligne",
-      "avant": 0.12,
+      "avant": 0.45,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "cuisson",
+      "segments": [
+       {
+        "texte": "Enfourner 40 à 45 minutes selon votre four à 175° (th 5/6). Perso sur mon four je vais même jusqu’à 1h, mais vérifie tous les quarts d’heure quand même. Piquer pour vérifier que le gâteau soit cuit.",
+        "graine": 46919150,
+        "atome": "cuisson"
+       }
+      ],
+      "avant": 0.0,
       "alinea": 0.0
      },
      {
@@ -1231,13 +1316,11 @@
      }
     ],
     "atomes": [
+     "etape-3/phrase-1.2",
      "etape-4/phrase-1",
      "etape-4/phrase-2",
      "etape-5/phrase-1",
-     "etape-6/phrase-1",
-     "etape-6/phrase-2.1",
-     "etape-6/phrase-2.2",
-     "etape-6/phrase-3",
+     "cuisson",
      "apres-1/phrase-1",
      "extra-1/titre",
      "extra-1/ligne-1",
@@ -1258,13 +1341,13 @@
   "disposition": "ligne",
   "ajustements": {},
   "trous": {
-   "lisa-gauche": 0.37
+   "lisa-gauche": 0.24
   }
  },
- "papier/f9": "5e9eb46f288353d5558b142218ce6a6d6b83fd98ca7a44de7d77c0c507723fda",
- "papier1x/f9": "5e9eb46f288353d5558b142218ce6a6d6b83fd98ca7a44de7d77c0c507723fda",
+ "papier/f9": "46573638ea2468d2b33b385ef4237a8b34bda31741bd916d6732ad234ce7702a",
+ "papier1x/f9": "46573638ea2468d2b33b385ef4237a8b34bda31741bd916d6732ad234ce7702a",
  "page/lisa-gauche": {
-  "cle": "aca237b5059cc41ddbd55120b6e65328aca3aa3ca884be8a91a05dad2b4d84fd",
+  "cle": "a4bc1d50f3aacdc5da6740a81f47b40f269da55ee89d4e4f9b9d1ebe6f907a1c",
   "manifeste": {
    "double": "lisa",
    "cote": "gauche",
@@ -1317,7 +1400,7 @@
      ]
     ]
    },
-   "texte": "Lisa\nPour Cécile : mot à venir\nCarrot cake\n250g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300g de carottes (3 à 4 grosses carottes)\n250g de farine fluide\n2 cuillères à café d’extrait de vanille\n2 cuillères de muscade\n2 à 3 cuillères à café de cannelle (moins selon les goûts)\n4 œufs\n120g de noix concassées\nÉtape 1\nMélanger au fouet électrique les 4 œufs et le sucre.\nÉtape 2\nIncorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours à l'aide du fouet électrique.\nÉtape 3\nCommencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer le fouet en augmentant de puissance progressivement jusqu'à obtention d'une pâte lisse.\n(tiptop pour la saison !)",
+   "texte": "Lisa\nPour Cécile : mot à venir\nCarrot cake\n250g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300g de carottes (3 à 4 grosses carottes)\n250g de farine fluide\n2 cuillères à café d’extrait de vanille\n2 cuillères de muscade\n2 à 3 cuillères à café de cannelle (moins selon les goûts)\n4 œufs\n120g de noix concassées\nÉtape 1\nMélanger au fouet électrique les 4 œufs et le sucre.\nÉtape 2\nIncorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours à l'aide du fouet électrique.\nÉtape 3\nCommencer à mélanger avec le fouet éteint (pour éviter les projections),\n(tiptop pour la saison !)",
    "vivants": {
     "photo": [
      0.06,
@@ -1412,8 +1495,8 @@
      "role": "puce",
      "dessine": true,
      "boite": [
-      0.0625,
-      0.5782,
+      0.0613,
+      0.5791,
       0.0199,
       0.0141
      ]
@@ -1423,10 +1506,10 @@
      "role": "puce",
      "dessine": true,
      "boite": [
-      0.0633,
-      0.6093,
-      0.0192,
-      0.0136
+      0.0617,
+      0.6343,
+      0.0176,
+      0.0125
      ]
     },
     {
@@ -1434,10 +1517,10 @@
      "role": "puce",
      "dessine": true,
      "boite": [
-      0.0611,
-      0.6354,
-      0.0201,
-      0.0142
+      0.0592,
+      0.6637,
+      0.019,
+      0.0135
      ]
     },
     {
@@ -1445,48 +1528,44 @@
      "role": "dessin",
      "dessine": true,
      "boite": [
-      0.7888,
-      0.2706,
-      0.1672,
-      0.106
+      0.7523,
+      0.4409,
+      0.19,
+      0.1204
      ]
     }
    ],
    "douteux": [
-    "1 (groupe « 1 » lu « . I »)",
     "1 (groupe « 1 » lu « A »)",
-    "250g (encre rendue lue « 450g »)",
-    "180 g (encre rendue lue « ISO g »)",
+    "250g (encre rendue lue « 3509 »)",
+    "d’huile (encre rendue lue « dihuile »)",
+    "huile (encre rendue lue « hike . »)",
     "1 (encre rendue lue « n »)",
-    "300g (encre rendue lue « 3009 »)",
-    "(3 (encre rendue lue « C3 »)",
-    "4 (encre rendue lue « \" 4 »)",
-    "250g (encre rendue lue « 2sog »)",
-    "2 (encre rendue lue « ' L »)",
-    "2 (encre rendue lue « q »)",
-    "goûts) (encre rendue lue « goats ) »)",
-    "4 (encre rendue lue « _ U »)",
-    "1 (encre rendue lue « A »)",
+    "300g (encre rendue lue « 2009 »)",
+    "2 (encre rendue lue « 2 »)",
+    "4 (encre rendue lue « 4 »)",
     "œufs (encre rendue lue « cents . »)",
-    "sucre. (encre rendue lue « sucre »)"
+    "120g (encre rendue lue « (209 »)",
+    "1 (encre rendue lue « A »)",
+    "muscade, (encre rendue lue « muscade . »)"
    ],
    "douteux_importants": [
-    "(3",
     "1",
-    "180 g",
+    "120g",
     "2",
     "250g",
     "300g",
     "4",
-    "goûts)",
-    "sucre.",
+    "d’huile",
+    "huile",
+    "muscade,",
     "œufs"
    ],
    "relu": true
   }
  },
  "page/lisa-droite": {
-  "cle": "4c8e06618160a282494f0519acf597f5691ea86a9af5a718819aaa20e89fdf1e",
+  "cle": "f42452ad2e4be0d85bbd4bc4478570820d07c86a062fbbe737a176887e6e979a",
   "manifeste": {
    "double": "lisa",
    "cote": "droite",
@@ -1539,10 +1618,24 @@
      ]
     ]
    },
-   "texte": "Lisa\nÉtape 4\nAjouter les carottes râpées et les noix concassées. Mélanger au fouet doucement jusqu'à ce que la pâte soit homogène.\nÉtape 5\nHuiler et fariner légèrement le moule et verser la préparation.\nÉtape 6\nEnfourner 40 à 45 minutes selon votre four à 175° (th 5/6). Perso sur mon four je vais même jusqu’à 1h, mais vérifie tous les quarts d’heure quand même. Piquer pour vérifier que le gâteau soit cuit.\nLaisse le gâteau dans le moule jusqu’à ce qu’il refroidisse.\nOption avec le glaçage plutôt healthy, sans beurre quoi…\n3 cuillères à soupe de sucre glace\nJus de citron ou fleur d’oranger selon préférences\nBonus : Colorant alimentaire\nAttention le mélange ne doit pas trop être liquide, il faut qu’il soit crémeux. Il durcira au séchage !\nYummy après c’est la régalade\nLisa",
-   "vivants": {},
+   "texte": "Lisa\npuis allumer le fouet en augmentant de puissance progressivement jusqu'à obtention d'une pâte lisse.\nÉtape 4\nAjouter les carottes râpées et les noix concassées. Mélanger au fouet doucement jusqu'à ce que la pâte soit homogène.\nÉtape 5\nHuiler et fariner légèrement le moule et verser la préparation.\nÉtape 6\nEnfourner 40 à 45 minutes selon votre four à 175° (th 5/6). Perso sur mon four je vais même jusqu’à 1h, mais vérifie tous les quarts d’heure quand même. Piquer pour vérifier que le gâteau soit cuit.\nLaisse le gâteau dans le moule jusqu’à ce qu’il refroidisse.\nOption avec le glaçage plutôt healthy, sans beurre quoi…\n3 cuillères à soupe de sucre glace\nJus de citron ou fleur d’oranger selon préférences\nBonus : Colorant alimentaire\nAttention le mélange ne doit pas trop être liquide, il faut qu’il soit crémeux. Il durcira au séchage !\nYummy après c’est la régalade\nLisa",
+   "vivants": {
+    "aq-carotte": [
+     0.3,
+     0.79,
+     0.1,
+     0.17
+    ]
+   },
    "deborde": [],
-   "lignes": 20,
+   "lignes": 22,
+   "aquarelles": {
+    "aq-carotte": {
+     "aquarelle": "carotte",
+     "anime": "balance",
+     "angle": -24
+    }
+   },
    "recette": "lisa",
    "croquis": [
     {
@@ -1550,10 +1643,10 @@
      "role": "puce",
      "dessine": true,
      "boite": [
-      0.0913,
-      0.5006,
-      0.0193,
-      0.0136
+      0.0995,
+      0.5737,
+      0.0182,
+      0.0129
      ]
     },
     {
@@ -1561,10 +1654,10 @@
      "role": "puce",
      "dessine": true,
      "boite": [
-      0.0909,
-      0.5291,
-      0.0185,
-      0.0131
+      0.099,
+      0.5994,
+      0.0199,
+      0.0141
      ]
     },
     {
@@ -1572,10 +1665,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.6158,
-      0.6693,
-      0.0239,
-      0.0169
+      0.6133,
+      0.7388,
+      0.0215,
+      0.0152
      ]
     },
     {
@@ -1583,30 +1676,32 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.6418,
-      0.6708,
-      0.0223,
-      0.0158
+      0.6388,
+      0.737,
+      0.0225,
+      0.0159
      ]
     }
    ],
    "douteux": [
-    "4 (encre rendue lue « _ 4 »)",
-    "1h, (encre rendue lue « th »)"
+    "6). (encre rendue lue « oj »)",
+    "1h, (encre rendue lue « th »)",
+    "beurre (encre rendue lue « bencre »)"
    ],
    "douteux_importants": [
     "1h,",
-    "4"
+    "6).",
+    "beurre"
    ],
    "relu": true
   }
  },
- "papier/c-lisa-recto": "d42d22b242f72d0e37d795f826a8b297d526bd60f914359ad72002aab4d7f232",
- "papier1x/c-lisa-recto": "d42d22b242f72d0e37d795f826a8b297d526bd60f914359ad72002aab4d7f232",
- "papier/c-lisa-verso": "a9c16f712b51eab8172a74f234a6e50e15aacb98065fc32da53ff13f56fa8d5b",
- "papier1x/c-lisa-verso": "a9c16f712b51eab8172a74f234a6e50e15aacb98065fc32da53ff13f56fa8d5b",
+ "papier/c-lisa-recto": "635b7c1b58e12dd54781d74d847c2021c40707037849c87d84925b08fb4d5368",
+ "papier1x/c-lisa-recto": "635b7c1b58e12dd54781d74d847c2021c40707037849c87d84925b08fb4d5368",
+ "papier/c-lisa-verso": "7ea7c0c68397d1d1c61009285076752f7449fce3f2e060425acab519b21db9b2",
+ "papier1x/c-lisa-verso": "7ea7c0c68397d1d1c61009285076752f7449fce3f2e060425acab519b21db9b2",
  "page/lisa-feuillet-recto": {
-  "cle": "6d94ff0e1f067397ec1c8efb507b0c8a7144d33fa569da7de8dd970507a7840c",
+  "cle": "6774ed3aea50fb77c2e61da418acae52e654b545c425433ef0c79f28de7998e0",
   "manifeste": {
    "double": "lisa",
    "cote": "droite",
@@ -1616,40 +1711,91 @@
    "encre": "pages/lisa-feuillet-recto",
    "papier1x": "pages/1x/papier/c-lisa-recto",
    "encre1x": "pages/1x/lisa-feuillet-recto",
-   "texte": "(suite)\nÉtape 3\nCommencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer le fouet en augmentant de puissance progressivement jusqu'à obtention d'une pâte lisse.\nÉtape 4\nAjouter les carottes râpées et les noix concassées. Mélanger au fouet doucement jusqu'à ce que la pâte soit homogène.\nÉtape 5\nHuiler et fariner légèrement le moule et verser la préparation.\nÉtape 6\nEnfourner 40 à 45 minutes selon votre four à 175° (th 5/6). Perso sur mon four je vais même jusqu’à 1h,",
+   "encre4x": {
+    "base": "pages/4x/lisa-feuillet-recto",
+    "echelle": 4.0,
+    "px": [
+     2788,
+     4224
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      0,
+      1,
+      0.498565,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499053,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      1,
+      0.498565,
+      0.499053,
+      0.501435,
+      0.500947
+     ]
+    ]
+   },
+   "texte": "(suite)\nYummy après c’est la régalade\nLisa",
    "vivants": {},
    "deborde": [],
-   "lignes": 19,
+   "lignes": 3,
    "type": "feuillet",
    "taille": [
     697,
-    845
+    1056
    ],
    "face": "recto",
    "dos": "lisa-feuillet-verso",
    "suite": "lisa-feuillet-verso",
    "recette": "lisa",
-   "douteux": [
-    "1h, (groupe « 1h, » lu « 1h. »)",
-    "4 (encre rendue lue « _ 4 »)",
-    "5 (encre rendue lue « 5 »)",
-    "40 (encre rendue lue « * 0 »)",
-    "45 (encre rendue lue « 4s »)",
-    "5 (encre rendue lue « 5 »)",
-    "1h, (encre rendue lue « 1h. »)"
-   ],
-   "douteux_importants": [
-    "1h,",
-    "4",
-    "40",
-    "45",
-    "5"
+   "croquis": [
+    {
+     "nom": "carotte",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.6422,
+      0.0786,
+      0.0222,
+      0.0146
+     ]
+    },
+    {
+     "nom": "sourire-lunettes",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.6686,
+      0.0798,
+      0.0213,
+      0.014
+     ]
+    }
    ],
    "relu": true
   }
  },
  "page/lisa-feuillet-verso": {
-  "cle": "f476a3f4d364a4fa0c9115b8ca936984d1ffd68124449c39538152d3af303102",
+  "cle": "a2da3d44c97fbf3412e04d08a6eeb8dfeb99f19e7bf9d46332d8d48319bf3b6e",
   "manifeste": {
    "double": "lisa",
    "cote": "droite",
@@ -1659,77 +1805,66 @@
    "encre": "pages/lisa-feuillet-verso",
    "papier1x": "pages/1x/papier/c-lisa-verso",
    "encre1x": "pages/1x/lisa-feuillet-verso",
-   "texte": "mais vérifie tous les quarts d’heure quand même. Piquer pour vérifier que le gâteau soit cuit.\nLaisse le gâteau dans le moule jusqu’à ce qu’il refroidisse.\nOption avec le glaçage plutôt healthy, sans beurre quoi…\n3 cuillères à soupe de sucre glace\nJus de citron ou fleur d’oranger selon préférences\nBonus : Colorant alimentaire\nAttention le mélange ne doit pas trop être liquide, il faut qu’il soit crémeux. Il durcira au séchage !\nYummy après c’est la régalade\nLisa",
+   "encre4x": {
+    "base": "pages/4x/lisa-feuillet-verso",
+    "echelle": 4.0,
+    "px": [
+     2788,
+     4224
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      0,
+      1,
+      0.498565,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499053,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      1,
+      0.498565,
+      0.499053,
+      0.501435,
+      0.500947
+     ]
+    ]
+   },
+   "texte": "",
    "vivants": {},
    "deborde": [],
-   "lignes": 16,
+   "lignes": 0,
    "type": "feuillet",
    "taille": [
     697,
-    845
+    1056
    ],
    "face": "verso",
    "dos": "lisa-feuillet-recto",
    "recette": "lisa",
-   "croquis": [
-    {
-     "nom": "cupcake",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.1183,
-      0.4397,
-      0.0298,
-      0.0246
-     ]
-    },
-    {
-     "nom": "cupcake",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.1243,
-      0.4813,
-      0.0298,
-      0.0246
-     ]
-    },
-    {
-     "nom": "carotte",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.8853,
-      0.7839,
-      0.0349,
-      0.0288
-     ]
-    },
-    {
-     "nom": "sourire-lunettes",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.9234,
-      0.7846,
-      0.0368,
-      0.0304
-     ]
-    }
-   ],
-   "douteux": [
-    "beurre (encre rendue lue « berivre »)",
-    "Colorant (encre rendue lue « colorant »)"
-   ],
-   "douteux_importants": [
-    "Colorant",
-    "beurre"
-   ],
    "relu": true
   }
  },
  "page/biscuits-droite": {
-  "cle": "47a419a95e586dafc3d17f2afbe24aeb74ec879e15a7ff4433e1eeaff4009124",
+  "cle": "f22723765eb3dc7f679461c2614f77d3f7e81122e42aadc5d9178ccd992be99f",
   "manifeste": {
    "double": "biscuits",
    "cote": "droite",
@@ -1785,13 +1920,13 @@
    },
    "texte": "Biscuits\nMamie Rose, Mathis et Bernard",
    "vivants": {
-    "aq-ble": [
+    "aq-sables": [
      0.27,
      0.4,
      0.17,
      0.224
     ],
-    "aq-vanille": [
+    "aq-cookies": [
      0.46,
      0.41,
      0.3,
@@ -1801,13 +1936,13 @@
    "deborde": [],
    "lignes": 1,
    "aquarelles": {
-    "aq-ble": {
-     "aquarelle": "ble",
+    "aq-sables": {
+     "aquarelle": "sables-etoiles",
      "anime": "balance",
      "angle": -6
     },
-    "aq-vanille": {
-     "aquarelle": "vanille",
+    "aq-cookies": {
+     "aquarelle": "cookies",
      "anime": "balance",
      "angle": 4
     }
@@ -1822,7 +1957,7 @@
   }
  },
  "page/biscuits-gauche": {
-  "cle": "051f4b22d9955532a49d0865c551a4e5fa8ad45a5f0f6cacaaa3d7cba8257709",
+  "cle": "0b08b814e8750e2b794546c2d0352ed663bb73afce3aafbee94f0848c377e245",
   "manifeste": {
    "double": "biscuits",
    "cote": "gauche",
@@ -1915,12 +2050,12 @@
    "relu": true
   }
  },
- "papier/f3": "02180fb6998823bbf0959db97bfbc74f3e9dc2c2eedef72d7275310b14ee90bf",
- "papier1x/f3": "02180fb6998823bbf0959db97bfbc74f3e9dc2c2eedef72d7275310b14ee90bf",
- "papier/f5": "cb6f4193b45d1e60a9ae6cd60e8f1d5feb121b0558f1ed6d548ac5a6bf93e9be",
- "papier1x/f5": "cb6f4193b45d1e60a9ae6cd60e8f1d5feb121b0558f1ed6d548ac5a6bf93e9be",
+ "papier/f3": "5917ae493f21534c92c148751bc8548b1d395f21fb268dc94b6e9094a5cb82d4",
+ "papier1x/f3": "5917ae493f21534c92c148751bc8548b1d395f21fb268dc94b6e9094a5cb82d4",
+ "papier/f5": "85fbb5527dd5e7c3da73c23d559d804d55c0126de6df3e7fc5bd1bacd72da223",
+ "papier1x/f5": "85fbb5527dd5e7c3da73c23d559d804d55c0126de6df3e7fc5bd1bacd72da223",
  "page/dedicace": {
-  "cle": "0f0fb7b2f72b2f7f32477038c79eb7f5ebd491bc0ab2a63170a2a5d2f0ac9201",
+  "cle": "7d172c63011f93dbea6d47eeafef8be0b262313fe1f8338bab658ff843d22291",
   "manifeste": {
    "double": "sommaire",
    "cote": "gauche",
@@ -2015,10 +2150,10 @@
    "relu": true
   }
  },
- "papier/garde-uni": "a3e0c3cc6e0b6ba1063105b1ea5e7136d39fe16b977974fa009c8789a61ab4a2",
- "papier1x/garde-uni": "a3e0c3cc6e0b6ba1063105b1ea5e7136d39fe16b977974fa009c8789a61ab4a2",
+ "papier/garde-uni": "2795245573a7e3d5ddeb4e9bc971730b46c131fd7899615a07fbf8f57f8320c2",
+ "papier1x/garde-uni": "2795245573a7e3d5ddeb4e9bc971730b46c131fd7899615a07fbf8f57f8320c2",
  "page/garde": {
-  "cle": "68d5069ef1888c36907f1511cc4e31ca82be1d2ea19167d00619afc7e0a9ab61",
+  "cle": "9937087379445bb83e433543525541d17f1637e8b07717d30b29a74895f9f877",
   "manifeste": {
    "double": "titre",
    "cote": "gauche",
@@ -2080,10 +2215,10 @@
    "relu": true
   }
  },
- "papier/f7": "8889bd8e309706c033e233e7704396b7a1ff719e5f50b0e0977482aca3e6887f",
- "papier1x/f7": "8889bd8e309706c033e233e7704396b7a1ff719e5f50b0e0977482aca3e6887f",
+ "papier/f7": "42e67d62396f42049660c7d77bc147574b70be2a7a225292532b2b04a02d6397",
+ "papier1x/f7": "42e67d62396f42049660c7d77bc147574b70be2a7a225292532b2b04a02d6397",
  "page/gateaux-droite": {
-  "cle": "7b57ac6f11702b148d7b569841a72dc5340bc15beb3ddb64e4b2c07546220b3c",
+  "cle": "1d27ca800434c963d7efb87a744722de9f54292121ad399f62762210cf7ee78c",
   "manifeste": {
    "double": "gateaux",
    "cote": "droite",
@@ -2159,7 +2294,7 @@
   }
  },
  "page/gateaux-gauche": {
-  "cle": "adfe382533319f9cdef14215e0e5b73606d0d8f12d44aff610467223999e9662",
+  "cle": "d73c4bdbc2012f09f02ce080b32208856ed38538b3a5e5cebe8fb67521fb8ff5",
   "manifeste": {
    "double": "gateaux",
    "cote": "gauche",
@@ -2221,7 +2356,7 @@
   }
  },
  "page/sommaire": {
-  "cle": "80952c6b0d42632d8b203ca73d1b579aed5c19905e828bcfa0711803201868fc",
+  "cle": "5c3139867c7d0babaf19138e4aa238773c7ab5557d883bda3ff2bda2b2c275ec",
   "manifeste": {
    "double": "sommaire",
    "cote": "droite",
@@ -2274,7 +2409,7 @@
      ]
     ]
    },
-   "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nJulie — Cake au citron, page 14\nBiscuits\nMamie Rose — Sablés, page 18\nMathis — cookies, page 20\nBernard — tarte aux pommes, page 21\nLe mot de la fin, page 22",
+   "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nJulie — Cake au citron, page 14\nBiscuits\nMamie Rose — Sablés, page 18\nMathis — cookies, page 20\nBernard — tarte aux pommes, page 22\nLe mot de la fin, page 24",
    "vivants": {
     "aq-tasse": [
      0.64,
@@ -2345,22 +2480,22 @@
      ]
     },
     {
-     "cible": "mathis",
+     "cible": "bernard",
      "invite": "bernard",
      "rect": [
       0.12896,
-      0.38101,
-      0.80518,
-      0.02832
+      0.3798,
+      0.8051,
+      0.02953
      ]
     },
     {
      "cible": "fin",
      "rect": [
       0.12975,
-      0.43529,
-      0.80438,
-      0.02731
+      0.43533,
+      0.80515,
+      0.02727
      ]
     }
    ],
@@ -2381,7 +2516,7 @@
   }
  },
  "page/titre": {
-  "cle": "de830028097f6fea75e4833ed8e8ecd8e506489df120b5a4a29149b350b9d778",
+  "cle": "01958528c811f4f4f5faa271f383a6e22bb578639eb9ee7a631b44cea60144c1",
   "manifeste": {
    "double": "titre",
    "cote": "droite",
@@ -2435,7 +2570,7 @@
      ]
     ]
    },
-   "texte": "Les goûters\nde Cécile\nrecettes de goûter offertes par ses amis",
+   "texte": "recettes de goûter partagées par celles et ceux qui l'aiment\nLes goûters\nde Cécile",
    "vivants": {
     "aq-theiere": [
      0.17,
@@ -2445,7 +2580,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 3,
+   "lignes": 2,
    "aquarelles": {
     "aq-theiere": {
      "aquarelle": "theiere",
@@ -2453,7 +2588,7 @@
     }
    },
    "douteux": [
-    "Cécile (encre rendue lue « ' Cecile »)"
+    "Cécile (encre rendue lue « Cecile »)"
    ],
    "douteux_importants": [
     "Cécile"
@@ -2462,7 +2597,7 @@
   }
  },
  "page/cecile-1-droite": {
-  "cle": "6031aaf5b5ed40a8907884152f60bec2d205628da8f21b66ba4a4126d1680eb9",
+  "cle": "0c6fcde5353f24fe5d1420b2ab8fdea52a1440dc60b747c9b9c3dc85d29ec6cf",
   "manifeste": {
    "double": "cecile-1",
    "cote": "droite",
@@ -2543,7 +2678,7 @@
   }
  },
  "page/cecile-1-gauche": {
-  "cle": "361a181f148681af769117317d70b55658d3fd6438bc259107741c10ec909bee",
+  "cle": "c71c1dcd2e7520796975025f0a75edd69f72b97ba0ffd9ecda07132b0b1ea734",
   "manifeste": {
    "double": "cecile-1",
    "cote": "gauche",
@@ -2631,7 +2766,7 @@
   }
  },
  "page/cecile-2-droite": {
-  "cle": "2f755590acc6398bf4bee50b3e4383b8f8fc274a083561af27250e5fc27a2278",
+  "cle": "6d63aabd3fef2a0fd0f29d5fb3561ee0233e7d3fc78d088c673953037182dc7e",
   "manifeste": {
    "double": "cecile-2",
    "cote": "droite",
@@ -2711,7 +2846,7 @@
   }
  },
  "page/cecile-2-gauche": {
-  "cle": "ef0c207792a5ef8bf8b36c5efab42dba49bccc6779a14c23424307e8536db6e9",
+  "cle": "2a5700cff18fea903e9afe83a98ea3b8eff5b88f4593c7823b5972b65d3dc104",
   "manifeste": {
    "double": "cecile-2",
    "cote": "gauche",
@@ -2798,8 +2933,4097 @@
    "relu": true
   }
  },
- "papier/f23": "e1d4f1a6032eeaa1a05c469941ce19a4ba8ccaf5e2e3cf2841e14a5eab85e6f7",
- "papier1x/f23": "e1d4f1a6032eeaa1a05c469941ce19a4ba8ccaf5e2e3cf2841e14a5eab85e6f7",
- "papier/f21": "86a01f084b362e66b8c0674013f1418ea198daa81d8885ec8e9adc96cf0f3bdf",
- "papier1x/f21": "86a01f084b362e66b8c0674013f1418ea198daa81d8885ec8e9adc96cf0f3bdf"
+ "papier/f23": "2b5c03f54a90b1f28cc8ef73e2265c98c2992967e4333f64d982297fbd17f199",
+ "papier1x/f23": "2b5c03f54a90b1f28cc8ef73e2265c98c2992967e4333f64d982297fbd17f199",
+ "papier/f21": "ab9835c69506f98e1e4f19ba0f445b80e4dedf1124fa177802d76844a36dfc42",
+ "papier1x/f21": "ab9835c69506f98e1e4f19ba0f445b80e4dedf1124fa177802d76844a36dfc42",
+ "pagination/bernard": {
+  "cle": "ffa0874cb04e7c1eab7b9fe585ecab1f6c30fbda9e703e29602384929739ba0a",
+  "pages": {
+   "bernard-gauche": {
+    "double": "bernard",
+    "main": "papa",
+    "encre": "noire",
+    "recette": "bernard",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 c. à c. d'eau chaude pour la rendre fluide",
+      "1 c. à c. de cannelle",
+      "1 c. à c. de jus de citron",
+      "1 c. à s. de crème de cassis",
+      "1 c. à s. de farine pour le plan de travail",
+      "1 jaune d'œuf battu, pour dorer le bord",
+      "1 noix de beurre (environ 20 g)",
+      "1 pâte brisée (environ 250 g)",
+      "2 c. à s. de sucre en poudre",
+      "5 pommes (reinettes ou golden)",
+      "un peu de beurre pour le moule"
+     ]
+    },
+    "id": "bernard-gauche",
+    "cote": "gauche",
+    "folio": 22,
+    "graine": 1734,
+    "gabarit": "C",
+    "vivants": [
+     {
+      "nom": "photo",
+      "rect": [
+       0.06,
+       0.035,
+       0.49394,
+       0.28004
+      ]
+     }
+    ],
+    "marges": {
+     "haut": 0.32504
+    },
+    "blocs": [
+     {
+      "type": "bandeau",
+      "id": "bandeau",
+      "texte": "Bernard",
+      "graine": 82504425,
+      "sous": "depuis Dijon",
+      "sous_graine": 54180232
+     },
+     {
+      "type": "cadre",
+      "id": "cadre",
+      "texte": "Joyeux anniversaire Cécile, garde-moi une part de tarte ! Je repasse la chercher dimanche.",
+      "signature": "Bernard",
+      "graine": 39658161,
+      "signature_graine": 73781532,
+      "style": "double",
+      "position": "bandeau"
+     },
+     {
+      "type": "titre",
+      "id": "titre",
+      "segments": [
+       {
+        "texte": "Ma tarte aux pommes",
+        "graine": 76353088,
+        "atome": "titre"
+       }
+      ],
+      "position": "fer",
+      "souligne": "trait",
+      "avant": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "ingredients-1/titre",
+      "segments": [
+       {
+        "texte": "Pour le fond :",
+        "graine": 47893613,
+        "atome": "ingredients-1/titre"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 82960466,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "1 pâte brisée (environ 250 g)",
+        "graine": 2648503,
+        "puce": null,
+        "atome": "ingredients-1/ligne-1"
+       },
+       {
+        "texte": "un peu de beurre pour le moule",
+        "graine": 90688005,
+        "puce": null,
+        "atome": "ingredients-1/ligne-2"
+       },
+       {
+        "texte": "1 c. à s. de farine pour le plan de travail",
+        "graine": 36851951,
+        "puce": null,
+        "atome": "ingredients-1/ligne-3"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "ingredients-2/titre",
+      "segments": [
+       {
+        "texte": "Pour la garniture :",
+        "graine": 89222803,
+        "atome": "ingredients-2/titre"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-2@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 73611965,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "5 pommes (reinettes ou golden)",
+        "graine": 42104405,
+        "puce": null,
+        "atome": "ingredients-2/ligne-1"
+       },
+       {
+        "texte": "1 c. à c. de jus de citron",
+        "graine": 21158928,
+        "puce": null,
+        "atome": "ingredients-2/ligne-2"
+       },
+       {
+        "texte": "2 c. à s. de sucre en poudre",
+        "graine": 86636148,
+        "puce": null,
+        "atome": "ingredients-2/ligne-3"
+       }
+      ]
+     },
+     {
+      "type": "annotation",
+      "id": "note-1",
+      "texte": "des reinettes !",
+      "main": "papa",
+      "encre": "noire",
+      "graine": 27583862,
+      "pente": -4.0,
+      "places": [
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 3.0
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 2.2
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 4.0
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 5.0
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.56,
+        "dy": 3.0
+       },
+       {
+        "apres": "titre",
+        "dx": 1.6,
+        "dy": -0.5
+       },
+       {
+        "apres": "titre",
+        "dx": 1.1,
+        "dy": 0.4
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.25,
+        "dy": 1.2
+       }
+      ]
+     },
+     {
+      "type": "croquis",
+      "id": "croquis-1",
+      "nom": [
+       "pomme"
+      ],
+      "taille": [
+       0.19,
+       0.17
+      ],
+      "pres": [
+       0.84,
+       0.2
+      ],
+      "graine": 21997370
+     }
+    ],
+    "atomes": [
+     "titre",
+     "ingredients-1/titre",
+     "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
+     "ingredients-1/ligne-3",
+     "ingredients-2/titre",
+     "ingredients-2/ligne-1",
+     "ingredients-2/ligne-2",
+     "ingredients-2/ligne-3"
+    ]
+   },
+   "bernard-droite": {
+    "double": "bernard",
+    "main": "papa",
+    "encre": "noire",
+    "recette": "bernard",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 c. à c. d'eau chaude pour la rendre fluide",
+      "1 c. à c. de cannelle",
+      "1 c. à c. de jus de citron",
+      "1 c. à s. de crème de cassis",
+      "1 c. à s. de farine pour le plan de travail",
+      "1 jaune d'œuf battu, pour dorer le bord",
+      "1 noix de beurre (environ 20 g)",
+      "1 pâte brisée (environ 250 g)",
+      "2 c. à s. de sucre en poudre",
+      "5 pommes (reinettes ou golden)",
+      "un peu de beurre pour le moule"
+     ]
+    },
+    "id": "bernard-droite",
+    "cote": "droite",
+    "folio": 23,
+    "graine": 1735,
+    "gabarit": "D",
+    "vivants": [
+     {
+      "nom": "volant",
+      "rect": [
+       0.83,
+       0.66,
+       0.17,
+       0.215
+      ]
+     },
+     {
+      "nom": "suite",
+      "rect": [
+       0.08,
+       0.895,
+       0.7,
+       0.06
+      ],
+      "vivant": false
+     },
+     {
+      "nom": "aq-tarte",
+      "rect": [
+       0.42,
+       0.56,
+       0.4,
+       0.189
+      ],
+      "aquarelle": "tarte-pommes",
+      "anime": "fleurit"
+     },
+     {
+      "nom": "aq-pomme",
+      "rect": [
+       0.14,
+       0.62,
+       0.2,
+       0.245
+      ],
+      "aquarelle": "pomme",
+      "anime": "fleurit",
+      "angle": -6
+     }
+    ],
+    "volant": {
+     "recto": "bernard-feuillet-recto",
+     "verso": "bernard-feuillet-verso",
+     "angle": -7.0,
+     "rect": [
+      0.85,
+      0.685,
+      0.82,
+      0.88
+     ]
+    },
+    "suite": "bernard-feuillet-recto",
+    "blocs": [
+     {
+      "type": "courant",
+      "id": "courant",
+      "texte": "Bernard",
+      "graine": 27907228
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-2@ligne-4",
+      "disposition": "puces",
+      "graine_puces": 73611965,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "1 c. à c. de cannelle",
+        "graine": 31991951,
+        "puce": null,
+        "atome": "ingredients-2/ligne-4"
+       },
+       {
+        "texte": "1 noix de beurre (environ 20 g)",
+        "graine": 52945456,
+        "puce": null,
+        "atome": "ingredients-2/ligne-5"
+       },
+       {
+        "texte": "1 jaune d'œuf battu, pour dorer le bord",
+        "graine": 42938427,
+        "puce": null,
+        "atome": "ingredients-2/ligne-6"
+       }
+      ]
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "__Étape 1__",
+       "graine": 28726664
+      },
+      "segments": [
+       {
+        "texte": "Préchauffe le four à th. 7 (210 °C).",
+        "graine": 57884019,
+        "atome": "etape-1/phrase-1"
+       },
+       {
+        "texte": "Beurre le moule à tarte, étale la pâte dedans et pique-la plusieurs fois à la fourchette.",
+        "graine": 54340263,
+        "atome": "etape-1/phrase-2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.45,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "__Étape 2__",
+       "graine": 17895061
+      },
+      "segments": [
+       {
+        "texte": "Pèle les pommes, coupe-les en quartiers puis en lamelles pas trop fines.",
+        "graine": 76324609,
+        "atome": "etape-2/phrase-1"
+       },
+       {
+        "texte": "Arrose-les tout de suite de jus de citron, sinon elles noircissent.",
+        "graine": 80397233,
+        "atome": "etape-2/phrase-2"
+       },
+       {
+        "texte": "C'est ce que faisait ma mère.",
+        "graine": 82474857,
+        "atome": "etape-2/phrase-3"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-3",
+      "source": "etape-3",
+      "titre": {
+       "texte": "__Étape 3__",
+       "graine": 19345418
+      },
+      "segments": [
+       {
+        "texte": "Dispose les lamelles en rosace,",
+        "graine": 63220852,
+        "atome": "etape-3/phrase-1.1"
+       },
+       {
+        "texte": "en partant du bord et en serrant bien : elles s'affaissent un peu à la cuisson, c'est normal.",
+        "graine": 74727690,
+        "atome": "etape-3/phrase-1.2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-4",
+      "source": "etape-4",
+      "titre": {
+       "texte": "__Étape 4__",
+       "graine": 28115005
+      },
+      "segments": [
+       {
+        "texte": "Saupoudre de sucre et de cannelle,",
+        "graine": 7484313,
+        "atome": "etape-4/phrase-1.1"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "annotation",
+      "id": "suite-note",
+      "texte": "suite sur la feuille",
+      "main": "cecile",
+      "encre": "crayon",
+      "role": "annotation",
+      "graine": 14160063,
+      "pente": -2.5,
+      "dans": "suite",
+      "aligne": "droite",
+      "sans_parentheses": true,
+      "fleche": {
+       "depuis": "fin",
+       "vers_zone": "volant",
+       "fx": 0.16,
+       "fy": 0.8,
+       "courbure": 0.25
+      }
+     }
+    ],
+    "atomes": [
+     "ingredients-2/ligne-4",
+     "ingredients-2/ligne-5",
+     "ingredients-2/ligne-6",
+     "etape-1/phrase-1",
+     "etape-1/phrase-2",
+     "etape-2/phrase-1",
+     "etape-2/phrase-2",
+     "etape-2/phrase-3",
+     "etape-3/phrase-1.1",
+     "etape-3/phrase-1.2",
+     "etape-4/phrase-1.1"
+    ]
+   },
+   "bernard-feuillet-recto": {
+    "double": "bernard",
+    "main": "papa",
+    "encre": "noire",
+    "recette": "bernard",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 c. à c. d'eau chaude pour la rendre fluide",
+      "1 c. à c. de cannelle",
+      "1 c. à c. de jus de citron",
+      "1 c. à s. de crème de cassis",
+      "1 c. à s. de farine pour le plan de travail",
+      "1 jaune d'œuf battu, pour dorer le bord",
+      "1 noix de beurre (environ 20 g)",
+      "1 pâte brisée (environ 250 g)",
+      "2 c. à s. de sucre en poudre",
+      "5 pommes (reinettes ou golden)",
+      "un peu de beurre pour le moule"
+     ]
+    },
+    "type": "feuillet",
+    "taille": [
+     697,
+     1056
+    ],
+    "papier": "c-lisa",
+    "xh_facteur": 0.83,
+    "cote": "droite",
+    "marges": {
+     "haut": 0.04,
+     "bas": 0.035
+    },
+    "id": "bernard-feuillet-recto",
+    "face": "recto",
+    "dos": "bernard-feuillet-verso",
+    "graine": 1736,
+    "suite": "bernard-feuillet-verso",
+    "grille": {
+     "carreau": 21.0,
+     "angle": 0.35,
+     "xc": 348.5,
+     "yc": 528.0,
+     "x0": 356.1994309078812,
+     "y0": 538.5789560011625,
+     "marge_x": 72.91864325266444
+    },
+    "blocs": [
+     {
+      "type": "paragraphe",
+      "id": "suite-tete",
+      "segments": [
+       {
+        "texte": "(suite)",
+        "graine": 48313025
+       }
+      ],
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "etape-4@phrase-1.2",
+      "source": "etape-4",
+      "segments": [
+       {
+        "texte": "puis répartis le beurre en petites noisettes sur le dessus.",
+        "graine": 87392871,
+        "atome": "etape-4/phrase-1.2"
+       }
+      ],
+      "avant": 0.3,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-5",
+      "source": "etape-5",
+      "titre": {
+       "texte": "__Étape 5__",
+       "graine": 6644664
+      },
+      "segments": [
+       {
+        "texte": "Replie le bord de la pâte sur les pommes et dore-le au jaune d'œuf battu.",
+        "graine": 942919,
+        "atome": "etape-5/phrase-1"
+       },
+       {
+        "texte": "Il faut être patient avec le pinceau, mais ça vaut le coup.",
+        "graine": 44915695,
+        "atome": "etape-5/phrase-2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "cuisson-titre",
+      "segments": [
+       {
+        "texte": "Cuisson :",
+        "graine": 87463205
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "cuisson",
+      "segments": [
+       {
+        "texte": "40 min à th. 7. La pâte doit être bien dorée sur les bords, et les pommes un peu caramélisées.",
+        "graine": 69856509,
+        "atome": "cuisson"
+       }
+      ],
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "apres-1@phrase-1.1",
+      "source": "apres-1",
+      "segments": [
+       {
+        "texte": "Laisse-la refroidir au moins 20 minutes avant de la découper,",
+        "graine": 53803249,
+        "atome": "apres-1/phrase-1.1"
+       },
+       {
+        "texte": "sinon les lamelles glissent.",
+        "graine": 70922217,
+        "atome": "apres-1/phrase-1.2"
+       },
+       {
+        "texte": "Elle est aussi bonne tiède que froide, mais je préfère tiède.",
+        "graine": 17377301,
+        "atome": "apres-1/phrase-2"
+       }
+      ],
+      "avant": 0.3,
+      "alinea": 0.04
+     },
+     {
+      "type": "paragraphe",
+      "id": "extra-1/titre",
+      "segments": [
+       {
+        "texte": "Option de Dijon :",
+        "graine": 68173398,
+        "atome": "extra-1/titre"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "ingredients",
+      "id": "extra-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 51188399,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "1 c. à s. de crème de cassis",
+        "graine": 15829009,
+        "puce": null,
+        "atome": "extra-1/ligne-1"
+       },
+       {
+        "texte": "1 c. à c. d'eau chaude pour la rendre fluide",
+        "graine": 17126786,
+        "puce": null,
+        "atome": "extra-1/ligne-2"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "extra-1/paragraphe-1@phrase-1",
+      "source": "extra-1/paragraphe-1",
+      "segments": [
+       {
+        "texte": "Au sortir du four, nappe les pommes de crème de cassis tiède au pinceau.",
+        "graine": 205822,
+        "atome": "extra-1/paragraphe-1/phrase-1"
+       },
+       {
+        "texte": "C'est la touche de chez nous, et ça",
+        "graine": 74051872,
+        "atome": "extra-1/paragraphe-1/phrase-2~a"
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.04
+     }
+    ],
+    "atomes": [
+     "etape-4/phrase-1.2",
+     "etape-5/phrase-1",
+     "etape-5/phrase-2",
+     "cuisson",
+     "apres-1/phrase-1.1",
+     "apres-1/phrase-1.2",
+     "apres-1/phrase-2",
+     "extra-1/titre",
+     "extra-1/ligne-1",
+     "extra-1/ligne-2",
+     "extra-1/paragraphe-1/phrase-1",
+     "extra-1/paragraphe-1/phrase-2~a"
+    ]
+   },
+   "bernard-feuillet-verso": {
+    "double": "bernard",
+    "main": "papa",
+    "encre": "noire",
+    "recette": "bernard",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 c. à c. d'eau chaude pour la rendre fluide",
+      "1 c. à c. de cannelle",
+      "1 c. à c. de jus de citron",
+      "1 c. à s. de crème de cassis",
+      "1 c. à s. de farine pour le plan de travail",
+      "1 jaune d'œuf battu, pour dorer le bord",
+      "1 noix de beurre (environ 20 g)",
+      "1 pâte brisée (environ 250 g)",
+      "2 c. à s. de sucre en poudre",
+      "5 pommes (reinettes ou golden)",
+      "un peu de beurre pour le moule"
+     ]
+    },
+    "type": "feuillet",
+    "taille": [
+     697,
+     1056
+    ],
+    "papier": "c-lisa",
+    "xh_facteur": 0.83,
+    "cote": "droite",
+    "marges": {
+     "haut": 0.04,
+     "bas": 0.035
+    },
+    "id": "bernard-feuillet-verso",
+    "face": "verso",
+    "dos": "bernard-feuillet-recto",
+    "graine": 1737,
+    "grille": {
+     "carreau": 21.0,
+     "angle": 0.3793075408006112,
+     "xc": 348.5,
+     "yc": 528.0,
+     "x0": 352.4377127185676,
+     "y0": 536.7782485297435,
+     "marge_x": 67.16661933272653
+    },
+    "blocs": [
+     {
+      "type": "paragraphe",
+      "id": "extra-1/paragraphe-1@phrase-2~b",
+      "source": "extra-1/paragraphe-1",
+      "segments": [
+       {
+        "texte": "brille joliment.",
+        "graine": 68924415,
+        "atome": "extra-1/paragraphe-1/phrase-2~b"
+       }
+      ],
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "fin",
+      "segments": [
+       {
+        "texte": "__Bon appétit à toute la tablée, bon anniversaire !__ :tasse:",
+        "graine": 77846555,
+        "atome": "fin"
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.05
+     }
+    ],
+    "atomes": [
+     "extra-1/paragraphe-1/phrase-2~b",
+     "fin"
+    ]
+   }
+  },
+  "ordre": [
+   "bernard-gauche",
+   "bernard-droite",
+   "bernard-feuillet-recto",
+   "bernard-feuillet-verso"
+  ],
+  "disposition": "ligne",
+  "ajustements": {
+   "bernard-feuillet-recto": "phrase coupée (8)"
+  },
+  "trous": {
+   "bernard-gauche": 0.1,
+   "bernard-droite": 0.35,
+   "bernard-feuillet-recto": 1.45
+  }
+ },
+ "papier/f25": "005beb0f1514130eaeb6d92cb63b13e7d3b8485e1204a2e8bbaaf2d2ab7c8f69",
+ "papier1x/f25": "005beb0f1514130eaeb6d92cb63b13e7d3b8485e1204a2e8bbaaf2d2ab7c8f69",
+ "page/bernard-gauche": {
+  "cle": "253e5fab8cd821bc49f0fb4d4a0ad68ca39e2209a3cbd28acee5646b9d0982a2",
+  "manifeste": {
+   "double": "bernard",
+   "cote": "gauche",
+   "folio": 22,
+   "papier": "pages/papier/f21",
+   "miroir": true,
+   "encre": "pages/bernard-gauche",
+   "papier1x": "pages/1x/papier/f21",
+   "encre1x": "pages/1x/bernard-gauche",
+   "encre4x": {
+    "base": "pages/4x/bernard-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Bernard, depuis Dijon\nPour Cécile : Joyeux anniversaire Cécile, garde-moi une part de tarte ! Je repasse la chercher dimanche. — Bernard\nMa tarte aux pommes\nPour le fond :\n1 pâte brisée (environ 250 g)\nun peu de beurre pour le moule\n1 c. à s. de farine pour le plan de travail\nPour la garniture :\n5 pommes (reinettes ou golden)\n1 c. à c. de jus de citron\n2 c. à s. de sucre en poudre\n(des reinettes !)",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.49394,
+     0.28004
+    ]
+   },
+   "deborde": [],
+   "lignes": 14,
+   "recette": "bernard",
+   "croquis": [
+    {
+     "nom": "pomme",
+     "role": "dessin",
+     "dessine": true,
+     "boite": [
+      0.7492,
+      0.1429,
+      0.19,
+      0.1204
+     ]
+    }
+   ],
+   "douteux": [
+    "moule (groupe « moule » lu « m oule »)",
+    "Cécile (encre rendue lue « Cecile »)",
+    "Cécile, (encre rendue lue « Ceciler »)",
+    "brisée (encre rendue lue « briske »)",
+    "beurre (encre rendue lue « bevrre »)",
+    "moule (encre rendue lue « mcile »)",
+    "1 c. à s. (encre rendue lue « 1 c a s »)",
+    "pommes (encre rendue lue « pom meg »)",
+    "1 c. à c. (encre rendue lue « 1'c. a c. »)",
+    "2 c. à s. (encre rendue lue « 2 a d s. »)"
+   ],
+   "douteux_importants": [
+    "1 c. à c.",
+    "1 c. à s.",
+    "2 c. à s.",
+    "Cécile",
+    "Cécile,",
+    "beurre",
+    "brisée",
+    "moule",
+    "pommes"
+   ],
+   "relu": true
+  }
+ },
+ "page/bernard-droite": {
+  "cle": "4360437431070c99aff21ccd6141e2302432e34a9c0b3b3b6abc9df6f31e86e3",
+  "manifeste": {
+   "double": "bernard",
+   "cote": "droite",
+   "folio": 23,
+   "papier": "pages/papier/f23",
+   "miroir": false,
+   "encre": "pages/bernard-droite",
+   "papier1x": "pages/1x/papier/f23",
+   "encre1x": "pages/1x/bernard-droite",
+   "encre4x": {
+    "base": "pages/4x/bernard-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Bernard\n1 c. à c. de cannelle\n1 noix de beurre (environ 20 g)\n1 jaune d'œuf battu, pour dorer le bord\nÉtape 1\nPréchauffe le four à th. 7 (210 °C). Beurre le moule à tarte, étale la pâte dedans et pique-la plusieurs fois à la fourchette.\nÉtape 2\nPèle les pommes, coupe-les en quartiers puis en lamelles pas trop fines. Arrose-les tout de suite de jus de citron, sinon elles noircissent. C'est ce que faisait ma mère.\nÉtape 3\nDispose les lamelles en rosace, en partant du bord et en serrant bien : elles s'affaissent un peu à la cuisson, c'est normal.\nÉtape 4\nSaupoudre de sucre et de cannelle,\nsuite sur la feuille",
+   "vivants": {
+    "volant": [
+     0.83,
+     0.66,
+     0.17,
+     0.215
+    ],
+    "aq-tarte": [
+     0.42,
+     0.56,
+     0.4,
+     0.189
+    ],
+    "aq-pomme": [
+     0.14,
+     0.62,
+     0.2,
+     0.245
+    ]
+   },
+   "deborde": [],
+   "lignes": 20,
+   "aquarelles": {
+    "aq-tarte": {
+     "aquarelle": "tarte-pommes",
+     "anime": "fleurit"
+    },
+    "aq-pomme": {
+     "aquarelle": "pomme",
+     "anime": "fleurit",
+     "angle": -6
+    }
+   },
+   "volant": {
+    "recto": "bernard-feuillet-recto",
+    "verso": "bernard-feuillet-verso",
+    "angle": -7.0,
+    "rect": [
+     0.85,
+     0.685,
+     0.82,
+     0.88
+    ]
+   },
+   "suite": "bernard-feuillet-recto",
+   "recette": "bernard",
+   "douteux": [
+    "battu, (groupe « battu, » lu « b a ttu »)",
+    "noix (encre rendue lue « n oix »)",
+    "battu, (encre rendue lue « b a ttu »)",
+    "dorer (encre rendue lue « dorier »)",
+    "cannelle, (encre rendue lue « cannelle »)"
+   ],
+   "douteux_importants": [
+    "battu,",
+    "cannelle,",
+    "dorer",
+    "noix"
+   ],
+   "relu": true
+  }
+ },
+ "pagination/julie": {
+  "cle": "b659ce19e09bfedcacc13300aaf7e608b164c4d74395829961494e913a901c8b",
+  "pages": {
+   "julie-gauche": {
+    "double": "julie",
+    "main": "soignee",
+    "encre": "bic",
+    "recette": "julie",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 c. à s. de graines de pavot",
+      "1 c. à s. de jus de citron",
+      "1 noix de beurre et 1 c. à s. de farine pour le moule",
+      "1 pincée de sel",
+      "100 g de sucre glace",
+      "120 g de sucre en poudre",
+      "125 g de beurre, fondu et tiède",
+      "180 g de farine",
+      "2 citrons non traités (zestes et jus)",
+      "3 œufs",
+      "quelques gouttes de colorant jaune (facultatif)",
+      "½ sachet de levure chimique"
+     ]
+    },
+    "id": "julie-gauche",
+    "cote": "gauche",
+    "folio": 14,
+    "graine": 4128,
+    "gabarit": "C",
+    "vivants": [
+     {
+      "nom": "photo",
+      "rect": [
+       0.06,
+       0.035,
+       0.48569,
+       0.27203
+      ]
+     }
+    ],
+    "marges": {
+     "haut": 0.31703
+    },
+    "blocs": [
+     {
+      "type": "bandeau",
+      "id": "bandeau",
+      "texte": "Julie",
+      "graine": 48943294,
+      "sous": "depuis Lyon",
+      "sous_graine": 65687842
+     },
+     {
+      "type": "cadre",
+      "id": "cadre",
+      "texte": "Pour toutes nos pauses goûter à refaire le monde. Joyeux anniversaire ma Cécile !",
+      "signature": "Julie",
+      "graine": 65060936,
+      "signature_graine": 74534242,
+      "style": "double",
+      "position": "bandeau"
+     },
+     {
+      "type": "titre",
+      "id": "titre",
+      "segments": [
+       {
+        "texte": "Le cake citron de Julie",
+        "graine": 87516039,
+        "atome": "titre"
+       }
+      ],
+      "position": "fer",
+      "souligne": "trait",
+      "avant": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "ingredients-1/titre",
+      "segments": [
+       {
+        "texte": "Pour le cake :",
+        "graine": 34058543,
+        "atome": "ingredients-1/titre"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 8293447,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "3 œufs",
+        "graine": 90291740,
+        "puce": null,
+        "atome": "ingredients-1/ligne-1"
+       },
+       {
+        "texte": "120 g de sucre en poudre",
+        "graine": 55428925,
+        "puce": null,
+        "atome": "ingredients-1/ligne-2"
+       },
+       {
+        "texte": "2 citrons non traités (zestes et jus)",
+        "graine": 23498915,
+        "puce": null,
+        "atome": "ingredients-1/ligne-3"
+       },
+       {
+        "texte": "180 g de farine",
+        "graine": 18848397,
+        "puce": null,
+        "atome": "ingredients-1/ligne-4"
+       },
+       {
+        "texte": "½ sachet de levure chimique",
+        "graine": 95865138,
+        "puce": null,
+        "atome": "ingredients-1/ligne-5"
+       },
+       {
+        "texte": "1 pincée de sel",
+        "graine": 9795575,
+        "puce": null,
+        "atome": "ingredients-1/ligne-6"
+       },
+       {
+        "texte": "1 c. à s. de graines de pavot",
+        "graine": 46774182,
+        "puce": null,
+        "atome": "ingredients-1/ligne-7"
+       },
+       {
+        "texte": "125 g de beurre, fondu et tiède",
+        "graine": 90243026,
+        "puce": null,
+        "atome": "ingredients-1/ligne-8"
+       },
+       {
+        "texte": "1 noix de beurre et 1 c. à s. de farine pour le moule",
+        "graine": 66169804,
+        "puce": null,
+        "atome": "ingredients-1/ligne-9"
+       }
+      ]
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "__Étape 1__",
+       "graine": 95976053
+      },
+      "segments": [
+       {
+        "texte": "Préchauffe le four à th. 6 (180 °C).",
+        "graine": 73145822,
+        "atome": "etape-1/phrase-1"
+       },
+       {
+        "texte": "Beurre le moule à cake et saupoudre-le de farine, sinon le citron colle.",
+        "graine": 89785983,
+        "atome": "etape-1/phrase-2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.45,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "__Étape 2__",
+       "graine": 48179527
+      },
+      "segments": [
+       {
+        "texte": "Fouette les œufs avec le sucre pendant 3 bonnes minutes,",
+        "graine": 98006083,
+        "atome": "etape-2/phrase-1.1"
+       },
+       {
+        "texte": "jusqu'à ce que le mélange blanchisse et gonfle.",
+        "graine": 68650087,
+        "atome": "etape-2/phrase-1.2"
+       },
+       {
+        "texte": "C'est le moment où je mets de la musique, ça passe plus vite.",
+        "graine": 69848608,
+        "atome": "etape-2/phrase-2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-3",
+      "source": "etape-3",
+      "titre": {
+       "texte": "__Étape 3__",
+       "graine": 63651500
+      },
+      "segments": [
+       {
+        "texte": "Ajoute les zestes et le jus des citrons,",
+        "graine": 18984907,
+        "atome": "etape-3/phrase-1.1"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "annotation",
+      "id": "note-1",
+      "texte": "meilleur le lendemain !",
+      "main": "soignee",
+      "encre": "bic",
+      "graine": 92608199,
+      "pente": -4.0,
+      "places": [
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 3.0
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 2.2
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 4.0
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 5.0
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.56,
+        "dy": 3.0
+       },
+       {
+        "apres": "titre",
+        "dx": 1.6,
+        "dy": -0.5
+       },
+       {
+        "apres": "titre",
+        "dx": 1.1,
+        "dy": 0.4
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.25,
+        "dy": 1.2
+       }
+      ]
+     },
+     {
+      "type": "croquis",
+      "id": "croquis-1",
+      "nom": [
+       "citron"
+      ],
+      "taille": [
+       0.19,
+       0.17
+      ],
+      "pres": [
+       0.84,
+       0.2
+      ],
+      "graine": 81562478
+     }
+    ],
+    "atomes": [
+     "titre",
+     "ingredients-1/titre",
+     "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
+     "ingredients-1/ligne-3",
+     "ingredients-1/ligne-4",
+     "ingredients-1/ligne-5",
+     "ingredients-1/ligne-6",
+     "ingredients-1/ligne-7",
+     "ingredients-1/ligne-8",
+     "ingredients-1/ligne-9",
+     "etape-1/phrase-1",
+     "etape-1/phrase-2",
+     "etape-2/phrase-1.1",
+     "etape-2/phrase-1.2",
+     "etape-2/phrase-2",
+     "etape-3/phrase-1.1"
+    ]
+   },
+   "julie-droite": {
+    "double": "julie",
+    "main": "soignee",
+    "encre": "bic",
+    "recette": "julie",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 c. à s. de graines de pavot",
+      "1 c. à s. de jus de citron",
+      "1 noix de beurre et 1 c. à s. de farine pour le moule",
+      "1 pincée de sel",
+      "100 g de sucre glace",
+      "120 g de sucre en poudre",
+      "125 g de beurre, fondu et tiède",
+      "180 g de farine",
+      "2 citrons non traités (zestes et jus)",
+      "3 œufs",
+      "quelques gouttes de colorant jaune (facultatif)",
+      "½ sachet de levure chimique"
+     ]
+    },
+    "id": "julie-droite",
+    "cote": "droite",
+    "folio": 15,
+    "graine": 4129,
+    "gabarit": "D",
+    "vivants": [
+     {
+      "nom": "volant",
+      "rect": [
+       0.83,
+       0.66,
+       0.17,
+       0.215
+      ]
+     },
+     {
+      "nom": "suite",
+      "rect": [
+       0.08,
+       0.895,
+       0.7,
+       0.06
+      ],
+      "vivant": false
+     },
+     {
+      "nom": "aq-citron",
+      "rect": [
+       0.5,
+       0.5,
+       0.28,
+       0.383
+      ],
+      "aquarelle": "citron",
+      "anime": "fleurit",
+      "angle": 6
+     },
+     {
+      "nom": "aq-citron-bande",
+      "rect": [
+       0.0,
+       0.5,
+       1.0,
+       0.39
+      ],
+      "vivant": false
+     },
+     {
+      "nom": "aq-citron-2",
+      "rect": [
+       0.16,
+       0.58,
+       0.26,
+       0.27
+      ],
+      "aquarelle": "citron-2",
+      "anime": "fleurit",
+      "angle": -5
+     },
+     {
+      "nom": "aq-citron-2-bande",
+      "rect": [
+       0.0,
+       0.58,
+       1.0,
+       0.31
+      ],
+      "vivant": false
+     }
+    ],
+    "volant": {
+     "recto": "julie-feuillet-recto",
+     "verso": "julie-feuillet-verso",
+     "angle": -7.0,
+     "rect": [
+      0.85,
+      0.685,
+      0.82,
+      0.88
+     ]
+    },
+    "suite": "julie-feuillet-recto",
+    "blocs": [
+     {
+      "type": "courant",
+      "id": "courant",
+      "texte": "Julie",
+      "graine": 85128238
+     },
+     {
+      "type": "paragraphe",
+      "id": "etape-3@phrase-1.2",
+      "source": "etape-3",
+      "segments": [
+       {
+        "texte": "puis la farine, la levure et le sel,",
+        "graine": 96146689,
+        "atome": "etape-3/phrase-1.2"
+       },
+       {
+        "texte": "en mélangeant à la spatule sans trop travailler la pâte.",
+        "graine": 29710514,
+        "atome": "etape-3/phrase-1.3"
+       }
+      ],
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-4",
+      "source": "etape-4",
+      "titre": {
+       "texte": "__Étape 4__",
+       "graine": 20152812
+      },
+      "segments": [
+       {
+        "texte": "Ajoute les graines de pavot,",
+        "graine": 54085041,
+        "atome": "etape-4/phrase-1.1"
+       },
+       {
+        "texte": "puis le beurre fondu et tiède en filet,",
+        "graine": 50778525,
+        "atome": "etape-4/phrase-1.2"
+       },
+       {
+        "texte": "tout en continuant de mélanger.",
+        "graine": 13031234,
+        "atome": "etape-4/phrase-1.3"
+       },
+       {
+        "texte": "La pâte doit être lisse et un peu brillante.",
+        "graine": 7955800,
+        "atome": "etape-4/phrase-2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-5",
+      "source": "etape-5",
+      "titre": {
+       "texte": "__Étape 5__",
+       "graine": 53953813
+      },
+      "segments": [
+       {
+        "texte": "Verse dans le moule et lisse le dessus avec le dos d'une cuillère.",
+        "graine": 75059076,
+        "atome": "etape-5/phrase-1"
+       },
+       {
+        "texte": "Le cake lève tout seul, pas besoin de tapoter le moule.",
+        "graine": 35022468,
+        "atome": "etape-5/phrase-2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "cuisson-titre",
+      "segments": [
+       {
+        "texte": "__Étape 6__",
+        "graine": 40742141
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "cuisson",
+      "segments": [
+       {
+        "texte": "Enfourne 40 min à th. 6 (180 °C). Pique la lame d'un couteau au centre : si elle ressort sèche, il est cuit. Le dessus doit être bien doré.",
+        "graine": 73417798,
+        "atome": "cuisson"
+       }
+      ],
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "apres-1@phrase-1.1",
+      "source": "apres-1",
+      "segments": [
+       {
+        "texte": "Laisse-le reposer 10 minutes dans le moule,",
+        "graine": 64810461,
+        "atome": "apres-1/phrase-1.1"
+       },
+       {
+        "texte": "puis démoule-le sur une grille pour qu'il refroidisse complètement.",
+        "graine": 63713313,
+        "atome": "apres-1/phrase-1.2"
+       }
+      ],
+      "avant": 0.3,
+      "alinea": 0.04
+     },
+     {
+      "type": "annotation",
+      "id": "suite-note",
+      "texte": "suite sur la feuille",
+      "main": "cecile",
+      "encre": "crayon",
+      "role": "annotation",
+      "graine": 96030316,
+      "pente": -2.5,
+      "dans": "suite",
+      "aligne": "droite",
+      "sans_parentheses": true,
+      "fleche": {
+       "depuis": "fin",
+       "vers_zone": "volant",
+       "fx": 0.16,
+       "fy": 0.8,
+       "courbure": 0.25
+      }
+     }
+    ],
+    "atomes": [
+     "etape-3/phrase-1.2",
+     "etape-3/phrase-1.3",
+     "etape-4/phrase-1.1",
+     "etape-4/phrase-1.2",
+     "etape-4/phrase-1.3",
+     "etape-4/phrase-2",
+     "etape-5/phrase-1",
+     "etape-5/phrase-2",
+     "cuisson",
+     "apres-1/phrase-1.1",
+     "apres-1/phrase-1.2"
+    ]
+   },
+   "julie-feuillet-recto": {
+    "double": "julie",
+    "main": "soignee",
+    "encre": "bic",
+    "recette": "julie",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 c. à s. de graines de pavot",
+      "1 c. à s. de jus de citron",
+      "1 noix de beurre et 1 c. à s. de farine pour le moule",
+      "1 pincée de sel",
+      "100 g de sucre glace",
+      "120 g de sucre en poudre",
+      "125 g de beurre, fondu et tiède",
+      "180 g de farine",
+      "2 citrons non traités (zestes et jus)",
+      "3 œufs",
+      "quelques gouttes de colorant jaune (facultatif)",
+      "½ sachet de levure chimique"
+     ]
+    },
+    "type": "feuillet",
+    "taille": [
+     697,
+     1056
+    ],
+    "papier": "c-lisa",
+    "xh_facteur": 0.83,
+    "cote": "droite",
+    "marges": {
+     "haut": 0.04,
+     "bas": 0.035
+    },
+    "id": "julie-feuillet-recto",
+    "face": "recto",
+    "dos": "julie-feuillet-verso",
+    "graine": 4130,
+    "suite": "julie-feuillet-verso",
+    "grille": {
+     "carreau": 21.0,
+     "angle": 0.35,
+     "xc": 348.5,
+     "yc": 528.0,
+     "x0": 356.1994309078812,
+     "y0": 538.5789560011625,
+     "marge_x": 72.91864325266444
+    },
+    "blocs": [
+     {
+      "type": "paragraphe",
+      "id": "suite-tete",
+      "segments": [
+       {
+        "texte": "(suite)",
+        "graine": 8805663
+       }
+      ],
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "extra-1/titre",
+      "segments": [
+       {
+        "texte": "Glaçage au citron (en option) :",
+        "graine": 65423451,
+        "atome": "extra-1/titre"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "ingredients",
+      "id": "extra-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 14955610,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "100 g de sucre glace",
+        "graine": 73551209,
+        "puce": "citron",
+        "atome": "extra-1/ligne-1"
+       },
+       {
+        "texte": "1 c. à s. de jus de citron",
+        "graine": 18030874,
+        "puce": "citron",
+        "atome": "extra-1/ligne-2"
+       },
+       {
+        "texte": "quelques gouttes de colorant jaune (facultatif)",
+        "graine": 50092874,
+        "puce": null,
+        "atome": "extra-1/ligne-3"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "extra-1/paragraphe-1@phrase-1",
+      "source": "extra-1/paragraphe-1",
+      "segments": [
+       {
+        "texte": "Mélange doucement, il doit être épais et crémeux.",
+        "graine": 81326840,
+        "atome": "extra-1/paragraphe-1/phrase-1"
+       },
+       {
+        "texte": "Nappe le cake une fois refroidi : le glaçage durcit en séchant, comme une fine coque.",
+        "graine": 46280687,
+        "atome": "extra-1/paragraphe-1/phrase-2"
+       },
+       {
+        "texte": "C'est mon côté gourmand.",
+        "graine": 86123600,
+        "atome": "extra-1/paragraphe-1/phrase-3"
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.04
+     },
+     {
+      "type": "paragraphe",
+      "id": "fin",
+      "segments": [
+       {
+        "texte": "__Bonne dégustation, et à la prochaine pause goûter !__ :sourire:",
+        "graine": 5844218,
+        "atome": "fin"
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.05
+     }
+    ],
+    "atomes": [
+     "extra-1/titre",
+     "extra-1/ligne-1",
+     "extra-1/ligne-2",
+     "extra-1/ligne-3",
+     "extra-1/paragraphe-1/phrase-1",
+     "extra-1/paragraphe-1/phrase-2",
+     "extra-1/paragraphe-1/phrase-3",
+     "fin"
+    ]
+   },
+   "julie-feuillet-verso": {
+    "double": "julie",
+    "main": "soignee",
+    "encre": "bic",
+    "recette": "julie",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 c. à s. de graines de pavot",
+      "1 c. à s. de jus de citron",
+      "1 noix de beurre et 1 c. à s. de farine pour le moule",
+      "1 pincée de sel",
+      "100 g de sucre glace",
+      "120 g de sucre en poudre",
+      "125 g de beurre, fondu et tiède",
+      "180 g de farine",
+      "2 citrons non traités (zestes et jus)",
+      "3 œufs",
+      "quelques gouttes de colorant jaune (facultatif)",
+      "½ sachet de levure chimique"
+     ]
+    },
+    "type": "feuillet",
+    "taille": [
+     697,
+     1056
+    ],
+    "papier": "c-lisa",
+    "xh_facteur": 0.83,
+    "cote": "droite",
+    "marges": {
+     "haut": 0.04,
+     "bas": 0.035
+    },
+    "id": "julie-feuillet-verso",
+    "face": "verso",
+    "dos": "julie-feuillet-recto",
+    "graine": 4131,
+    "grille": {
+     "carreau": 21.0,
+     "angle": 0.3793075408006112,
+     "xc": 348.5,
+     "yc": 528.0,
+     "x0": 352.4377127185676,
+     "y0": 536.7782485297435,
+     "marge_x": 67.16661933272653
+    },
+    "blocs": [],
+    "atomes": []
+   }
+  },
+  "ordre": [
+   "julie-gauche",
+   "julie-droite",
+   "julie-feuillet-recto",
+   "julie-feuillet-verso"
+  ],
+  "disposition": "ligne",
+  "ajustements": {},
+  "trous": {
+   "julie-gauche": 0.25,
+   "julie-droite": 1.09
+  }
+ },
+ "pagination/rose": {
+  "cle": "daa2b0be72aeb8991c6637f2831c4856dd09602e142ce69da88eede47d5624e4",
+  "pages": {
+   "rose-gauche": {
+    "double": "rose",
+    "main": "mamie",
+    "encre": "brune",
+    "recette": "rose",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 blanc d'œuf battu avec 150 g de sucre glace",
+      "1 c. à c. d'eau",
+      "1 jaune d'œuf",
+      "1 jaune d'œuf en plus",
+      "1 pincée de cannelle",
+      "1 pincée de sel",
+      "100 g de sucre glace",
+      "125 g de beurre bien froid, coupé en dés",
+      "250 g de farine",
+      "le zeste d'un citron non traité",
+      "le zeste remplacé par 1 c. à c. de cannelle",
+      "quelques gouttes de citron"
+     ]
+    },
+    "id": "rose-gauche",
+    "cote": "gauche",
+    "folio": 18,
+    "graine": 812,
+    "gabarit": "C",
+    "vivants": [
+     {
+      "nom": "photo",
+      "rect": [
+       0.06,
+       0.035,
+       0.48304,
+       0.26948
+      ]
+     }
+    ],
+    "marges": {
+     "haut": 0.31448
+    },
+    "blocs": [
+     {
+      "type": "bandeau",
+      "id": "bandeau",
+      "texte": "Mamie Rose",
+      "graine": 66657252,
+      "sous": "depuis Vannes",
+      "sous_graine": 49783412
+     },
+     {
+      "type": "cadre",
+      "id": "cadre",
+      "texte": "Ma recette de toujours, pour ma Cécile qui en volait toujours un de plus. Joyeux anniversaire, mon trésor !",
+      "signature": "Mamie Rose",
+      "graine": 59434056,
+      "signature_graine": 26539242,
+      "style": "double",
+      "position": "bandeau"
+     },
+     {
+      "type": "titre",
+      "id": "titre",
+      "segments": [
+       {
+        "texte": "Les sablés de Rose",
+        "graine": 56210269,
+        "atome": "titre"
+       }
+      ],
+      "position": "fer",
+      "souligne": "trait",
+      "avant": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "ingredients-1/titre",
+      "segments": [
+       {
+        "texte": "Pour la pâte :",
+        "graine": 92055252,
+        "atome": "ingredients-1/titre"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 17993744,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "250 g de farine",
+        "graine": 57628306,
+        "puce": null,
+        "atome": "ingredients-1/ligne-1"
+       },
+       {
+        "texte": "125 g de beurre bien froid, coupé en dés",
+        "graine": 87398188,
+        "puce": null,
+        "atome": "ingredients-1/ligne-2"
+       },
+       {
+        "texte": "100 g de sucre glace",
+        "graine": 42841676,
+        "puce": null,
+        "atome": "ingredients-1/ligne-3"
+       },
+       {
+        "texte": "1 jaune d'œuf",
+        "graine": 57340284,
+        "puce": null,
+        "atome": "ingredients-1/ligne-4"
+       },
+       {
+        "texte": "1 pincée de sel",
+        "graine": 36964811,
+        "puce": null,
+        "atome": "ingredients-1/ligne-5"
+       },
+       {
+        "texte": "1 pincée de cannelle",
+        "graine": 92046154,
+        "puce": null,
+        "atome": "ingredients-1/ligne-6"
+       },
+       {
+        "texte": "le zeste d'un citron non traité",
+        "graine": 80070991,
+        "puce": null,
+        "atome": "ingredients-1/ligne-7"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "ingredients-2/titre",
+      "segments": [
+       {
+        "texte": "Pour dorer :",
+        "graine": 32249954,
+        "atome": "ingredients-2/titre"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-2@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 54433966,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "1 jaune d'œuf en plus",
+        "graine": 23211678,
+        "puce": null,
+        "atome": "ingredients-2/ligne-1"
+       },
+       {
+        "texte": "1 c. à c. d'eau",
+        "graine": 37899793,
+        "puce": null,
+        "atome": "ingredients-2/ligne-2"
+       }
+      ]
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "__Étape 1__",
+       "graine": 50842339
+      },
+      "segments": [
+       {
+        "texte": "Dans un grand saladier, sable la farine et le beurre du bout des doigts,",
+        "graine": 79120790,
+        "atome": "etape-1/phrase-1.1"
+       },
+       {
+        "texte": "jusqu'à ce que ça ressemble à de la semoule.",
+        "graine": 17951566,
+        "atome": "etape-1/phrase-1.2"
+       },
+       {
+        "texte": "Ça prend un bon quart d'heure, ne te presse pas.",
+        "graine": 73053109,
+        "atome": "etape-1/phrase-2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.45,
+      "alinea": 0.0
+     },
+     {
+      "type": "annotation",
+      "id": "note-1",
+      "texte": "beurre bien froid !",
+      "main": "mamie",
+      "encre": "brune",
+      "graine": 79608301,
+      "pente": -4.0,
+      "places": [
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 3.0
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 2.2
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 4.0
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 5.0
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.56,
+        "dy": 3.0
+       },
+       {
+        "apres": "titre",
+        "dx": 1.6,
+        "dy": -0.5
+       },
+       {
+        "apres": "titre",
+        "dx": 1.1,
+        "dy": 0.4
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.25,
+        "dy": 1.2
+       }
+      ]
+     },
+     {
+      "type": "croquis",
+      "id": "croquis-1",
+      "nom": [
+       "beurre"
+      ],
+      "taille": [
+       0.19,
+       0.17
+      ],
+      "pres": [
+       0.84,
+       0.2
+      ],
+      "graine": 21432158
+     }
+    ],
+    "atomes": [
+     "titre",
+     "ingredients-1/titre",
+     "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
+     "ingredients-1/ligne-3",
+     "ingredients-1/ligne-4",
+     "ingredients-1/ligne-5",
+     "ingredients-1/ligne-6",
+     "ingredients-1/ligne-7",
+     "ingredients-2/titre",
+     "ingredients-2/ligne-1",
+     "ingredients-2/ligne-2",
+     "etape-1/phrase-1.1",
+     "etape-1/phrase-1.2",
+     "etape-1/phrase-2"
+    ]
+   },
+   "rose-droite": {
+    "double": "rose",
+    "main": "mamie",
+    "encre": "brune",
+    "recette": "rose",
+    "serrage_max": 2,
+    "contexte_importants": {
+     "ingredients": [
+      "1 blanc d'œuf battu avec 150 g de sucre glace",
+      "1 c. à c. d'eau",
+      "1 jaune d'œuf",
+      "1 jaune d'œuf en plus",
+      "1 pincée de cannelle",
+      "1 pincée de sel",
+      "100 g de sucre glace",
+      "125 g de beurre bien froid, coupé en dés",
+      "250 g de farine",
+      "le zeste d'un citron non traité",
+      "le zeste remplacé par 1 c. à c. de cannelle",
+      "quelques gouttes de citron"
+     ]
+    },
+    "id": "rose-droite",
+    "cote": "droite",
+    "folio": 19,
+    "graine": 813,
+    "gabarit": "D",
+    "vivants": [
+     {
+      "nom": "volant",
+      "rect": [
+       0.83,
+       0.66,
+       0.17,
+       0.215
+      ]
+     },
+     {
+      "nom": "suite",
+      "rect": [
+       0.08,
+       0.895,
+       0.7,
+       0.06
+      ],
+      "vivant": false
+     },
+     {
+      "nom": "aq-cannelle",
+      "rect": [
+       0.5,
+       0.56,
+       0.32,
+       0.29
+      ],
+      "aquarelle": "cannelle",
+      "anime": "balance",
+      "angle": 5
+     },
+     {
+      "nom": "aq-cannelle-bande",
+      "rect": [
+       0.0,
+       0.56,
+       1.0,
+       0.33
+      ],
+      "vivant": false
+     },
+     {
+      "nom": "aq-etoiles",
+      "rect": [
+       0.14,
+       0.6,
+       0.2,
+       0.238
+      ],
+      "aquarelle": "sables-etoiles",
+      "anime": "balance",
+      "angle": -4
+     },
+     {
+      "nom": "aq-etoiles-bande",
+      "rect": [
+       0.0,
+       0.6,
+       1.0,
+       0.29
+      ],
+      "vivant": false
+     }
+    ],
+    "volant": {
+     "recto": "rose-feuillet-recto",
+     "verso": "rose-feuillet-verso",
+     "angle": -7.0,
+     "rect": [
+      0.85,
+      0.685,
+      0.82,
+      0.88
+     ]
+    },
+    "suite": "rose-feuillet-recto",
+    "blocs": [
+     {
+      "type": "courant",
+      "id": "courant",
+      "texte": "Mamie Rose",
+      "graine": 92952913
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "__Étape 2__",
+       "graine": 72040367
+      },
+      "segments": [
+       {
+        "texte": "Ajoute le sucre glace, le sel,",
+        "graine": 5816667,
+        "atome": "etape-2/phrase-1.1"
+       },
+       {
+        "texte": "la cannelle et le zeste, puis le jaune.",
+        "graine": 59134731,
+        "atome": "etape-2/phrase-1.2"
+       },
+       {
+        "texte": "Pétris juste ce qu'il faut, sinon les sablés deviennent durs.",
+        "graine": 36309906,
+        "atome": "etape-2/phrase-2"
+       },
+       {
+        "texte": "Ma mère disait : on caresse la pâte, on ne la pétrit pas.",
+        "graine": 28635688,
+        "atome": "etape-2/phrase-3"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-3",
+      "source": "etape-3",
+      "titre": {
+       "texte": "__Étape 3__",
+       "graine": 86102354
+      },
+      "segments": [
+       {
+        "texte": "Fais une boule, enveloppe-la de film et mets-la une heure au frais.",
+        "graine": 73622876,
+        "atome": "etape-3/phrase-1"
+       },
+       {
+        "texte": "Moi je la prépare la veille, c'est plus facile à étaler.",
+        "graine": 68428275,
+        "atome": "etape-3/phrase-2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-4",
+      "source": "etape-4",
+      "titre": {
+       "texte": "__Étape 4__",
+       "graine": 75815360
+      },
+      "segments": [
+       {
+        "texte": "Étale la pâte sur ½ cm d'épaisseur,",
+        "graine": 29922272,
+        "atome": "etape-4/phrase-1.1"
+       },
+       {
+        "texte": "entre deux feuilles de papier cuisson, puis découpe au verre.",
+        "graine": 83344003,
+        "atome": "etape-4/phrase-1.2"
+       },
+       {
+        "texte": "Repasse les chutes une seule fois, pas plus.",
+        "graine": 30345052,
+        "atome": "etape-4/phrase-2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-5",
+      "source": "etape-5",
+      "titre": {
+       "texte": "__Étape 5__",
+       "graine": 87438318
+      },
+      "segments": [
+       {
+        "texte": "Pose les sablés sur la plaque,",
+        "graine": 29901880,
+        "atome": "etape-5/phrase-1.1"
+       },
+       {
+        "texte": "dore-les au jaune battu avec l'eau,",
+        "graine": 15938129,
+        "atome": "etape-5/phrase-1.2"
+       },
+       {
+        "texte": "et raie le dessus à la fourchette.",
+        "graine": 53106788,
+        "atome": "etape-5/phrase-1.3"
+       },
+       {
+        "texte": "Les petits traits, c'est ma signature depuis toujours.",
+        "graine": 46894511,
+        "atome": "etape-5/phrase-2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "cuisson-titre",
+      "segments": [
+       {
+        "texte": "__Étape 6__",
+        "graine": 28579745
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "cuisson",
+      "segments": [
+       {
+        "texte": "Cuis 12 min à th. 6 (180 °C) : ils doivent rester blonds, surtout pas dorés. Laisse-les refroidir sur la plaque avant de les toucher.",
+        "graine": 24772504,
+        "atome": "cuisson"
+       }
+      ],
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "annotation",
+      "id": "suite-note",
+      "texte": "suite sur la feuille",
+      "main": "cecile",
+      "encre": "crayon",
+      "role": "annotation",
+      "graine": 72299238,
+      "pente": -2.5,
+      "dans": "suite",
+      "aligne": "droite",
+      "sans_parentheses": true,
+      "fleche": {
+       "depuis": "fin",
+       "vers_zone": "volant",
+       "fx": 0.16,
+       "fy": 0.8,
+       "courbure": 0.25
+      }
+     }
+    ],
+    "atomes": [
+     "etape-2/phrase-1.1",
+     "etape-2/phrase-1.2",
+     "etape-2/phrase-2",
+     "etape-2/phrase-3",
+     "etape-3/phrase-1",
+     "etape-3/phrase-2",
+     "etape-4/phrase-1.1",
+     "etape-4/phrase-1.2",
+     "etape-4/phrase-2",
+     "etape-5/phrase-1.1",
+     "etape-5/phrase-1.2",
+     "etape-5/phrase-1.3",
+     "etape-5/phrase-2",
+     "cuisson"
+    ]
+   },
+   "rose-feuillet-recto": {
+    "double": "rose",
+    "main": "mamie",
+    "encre": "brune",
+    "recette": "rose",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 blanc d'œuf battu avec 150 g de sucre glace",
+      "1 c. à c. d'eau",
+      "1 jaune d'œuf",
+      "1 jaune d'œuf en plus",
+      "1 pincée de cannelle",
+      "1 pincée de sel",
+      "100 g de sucre glace",
+      "125 g de beurre bien froid, coupé en dés",
+      "250 g de farine",
+      "le zeste d'un citron non traité",
+      "le zeste remplacé par 1 c. à c. de cannelle",
+      "quelques gouttes de citron"
+     ]
+    },
+    "type": "feuillet",
+    "taille": [
+     697,
+     1056
+    ],
+    "papier": "c-lisa",
+    "xh_facteur": 0.83,
+    "cote": "droite",
+    "marges": {
+     "haut": 0.04,
+     "bas": 0.035
+    },
+    "id": "rose-feuillet-recto",
+    "face": "recto",
+    "dos": "rose-feuillet-verso",
+    "graine": 814,
+    "suite": "rose-feuillet-verso",
+    "grille": {
+     "carreau": 21.0,
+     "angle": 0.35,
+     "xc": 348.5,
+     "yc": 528.0,
+     "x0": 356.1994309078812,
+     "y0": 538.5789560011625,
+     "marge_x": 72.91864325266444
+    },
+    "blocs": [
+     {
+      "type": "paragraphe",
+      "id": "suite-tete",
+      "segments": [
+       {
+        "texte": "(suite)",
+        "graine": 79122230
+       }
+      ],
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "apres-1@phrase-1",
+      "source": "apres-1",
+      "segments": [
+       {
+        "texte": "Une fois froids, range-les dans la boîte en fer.",
+        "graine": 5033004,
+        "atome": "apres-1/phrase-1"
+       },
+       {
+        "texte": "C'est là qu'ils restent le plus tendres,",
+        "graine": 10086200,
+        "atome": "apres-1/phrase-2.1"
+       },
+       {
+        "texte": "et qu'on les garde pour les jours de fête.",
+        "graine": 67324700,
+        "atome": "apres-1/phrase-2.2"
+       }
+      ],
+      "avant": 0.3,
+      "alinea": 0.04
+     },
+     {
+      "type": "paragraphe",
+      "id": "extra-1/titre",
+      "segments": [
+       {
+        "texte": "Pour Noël, je change un peu :",
+        "graine": 86029035,
+        "atome": "extra-1/titre"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "ingredients",
+      "id": "extra-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 41528573,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "le zeste remplacé par 1 c. à c. de cannelle",
+        "graine": 45838213,
+        "puce": null,
+        "atome": "extra-1/ligne-1"
+       },
+       {
+        "texte": "1 blanc d'œuf battu avec 150 g de sucre glace",
+        "graine": 75853656,
+        "puce": null,
+        "atome": "extra-1/ligne-2"
+       },
+       {
+        "texte": "quelques gouttes de citron",
+        "graine": 62480757,
+        "puce": null,
+        "atome": "extra-1/ligne-3"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "extra-1/paragraphe-1@phrase-1.1",
+      "source": "extra-1/paragraphe-1",
+      "segments": [
+       {
+        "texte": "Je les découpe en étoiles avec le petit emporte-pièce,",
+        "graine": 50894716,
+        "atome": "extra-1/paragraphe-1/phrase-1.1"
+       },
+       {
+        "texte": "et je nappe le glaçage au pinceau sur les sablés refroidis.",
+        "graine": 68612672,
+        "atome": "extra-1/paragraphe-1/phrase-1.2"
+       },
+       {
+        "texte": "Tout le monde en veut dans la boîte.",
+        "graine": 21870433,
+        "atome": "extra-1/paragraphe-1/phrase-2"
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.04
+     },
+     {
+      "type": "paragraphe",
+      "id": "fin",
+      "segments": [
+       {
+        "texte": "__Bonne dégustation, et laisse-m'en quelques-uns !__ :sourire:",
+        "graine": 76616418,
+        "atome": "fin"
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.05
+     }
+    ],
+    "atomes": [
+     "apres-1/phrase-1",
+     "apres-1/phrase-2.1",
+     "apres-1/phrase-2.2",
+     "extra-1/titre",
+     "extra-1/ligne-1",
+     "extra-1/ligne-2",
+     "extra-1/ligne-3",
+     "extra-1/paragraphe-1/phrase-1.1",
+     "extra-1/paragraphe-1/phrase-1.2",
+     "extra-1/paragraphe-1/phrase-2",
+     "fin"
+    ]
+   },
+   "rose-feuillet-verso": {
+    "double": "rose",
+    "main": "mamie",
+    "encre": "brune",
+    "recette": "rose",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 blanc d'œuf battu avec 150 g de sucre glace",
+      "1 c. à c. d'eau",
+      "1 jaune d'œuf",
+      "1 jaune d'œuf en plus",
+      "1 pincée de cannelle",
+      "1 pincée de sel",
+      "100 g de sucre glace",
+      "125 g de beurre bien froid, coupé en dés",
+      "250 g de farine",
+      "le zeste d'un citron non traité",
+      "le zeste remplacé par 1 c. à c. de cannelle",
+      "quelques gouttes de citron"
+     ]
+    },
+    "type": "feuillet",
+    "taille": [
+     697,
+     1056
+    ],
+    "papier": "c-lisa",
+    "xh_facteur": 0.83,
+    "cote": "droite",
+    "marges": {
+     "haut": 0.04,
+     "bas": 0.035
+    },
+    "id": "rose-feuillet-verso",
+    "face": "verso",
+    "dos": "rose-feuillet-recto",
+    "graine": 815,
+    "grille": {
+     "carreau": 21.0,
+     "angle": 0.3793075408006112,
+     "xc": 348.5,
+     "yc": 528.0,
+     "x0": 352.4377127185676,
+     "y0": 536.7782485297435,
+     "marge_x": 67.16661933272653
+    },
+    "blocs": [],
+    "atomes": []
+   }
+  },
+  "ordre": [
+   "rose-gauche",
+   "rose-droite",
+   "rose-feuillet-recto",
+   "rose-feuillet-verso"
+  ],
+  "disposition": "ligne",
+  "ajustements": {
+   "rose-droite": "serrage 2"
+  },
+  "trous": {
+   "rose-gauche": 0.09,
+   "rose-droite": 0.23
+  }
+ },
+ "pagination/mathis": {
+  "cle": "728331e65600b45ef15e5503fa555a81089e14af4cb1472587ef93dfd162cdee",
+  "pages": {
+   "mathis-gauche": {
+    "double": "mathis",
+    "main": "pressee",
+    "encre": "feutre",
+    "recette": "mathis",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 pincée de fleur de sel sur le dessus, avant la cuisson",
+      "1 pincée de sel",
+      "1 œuf",
+      "100 g de beurre mou",
+      "150 g de pépites de chocolat",
+      "200 g de farine",
+      "50 g de chocolat noir coupé en morceaux",
+      "50 g de sucre blanc",
+      "75 g de sucre roux",
+      "quelques pépites en plus, bien enfoncées",
+      "½ sachet de levure chimique"
+     ]
+    },
+    "ecriture": {
+     "taille": 1.3
+    },
+    "id": "mathis-gauche",
+    "cote": "gauche",
+    "folio": 20,
+    "graine": 906,
+    "gabarit": "C",
+    "vivants": [
+     {
+      "nom": "photo",
+      "rect": [
+       0.06,
+       0.035,
+       0.49242,
+       0.27855
+      ]
+     }
+    ],
+    "marges": {
+     "haut": 0.32355
+    },
+    "blocs": [
+     {
+      "type": "bandeau",
+      "id": "bandeau",
+      "texte": "Mathis",
+      "graine": 38765341,
+      "sous": "depuis Lille",
+      "sous_graine": 58780587
+     },
+     {
+      "type": "cadre",
+      "id": "cadre",
+      "texte": "Joyeux anniv Cécile !! Les cookies c'est pour toi, mais laisse-m'en au moins trois !!",
+      "signature": "Mathis",
+      "graine": 6354106,
+      "signature_graine": 23562373,
+      "style": "double",
+      "position": "bandeau"
+     },
+     {
+      "type": "titre",
+      "id": "titre",
+      "segments": [
+       {
+        "texte": "Les cookies de Mathis",
+        "graine": 41381477,
+        "atome": "titre"
+       }
+      ],
+      "position": "fer",
+      "souligne": "double",
+      "avant": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "ingredients-1/titre",
+      "segments": [
+       {
+        "texte": "Pour la pâte :",
+        "graine": 25565985,
+        "atome": "ingredients-1/titre"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 48596121,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "1 œuf",
+        "graine": 97196465,
+        "puce": null,
+        "atome": "ingredients-1/ligne-1"
+       },
+       {
+        "texte": "100 g de beurre mou",
+        "graine": 97762837,
+        "puce": null,
+        "atome": "ingredients-1/ligne-2"
+       },
+       {
+        "texte": "75 g de sucre roux",
+        "graine": 45333307,
+        "puce": null,
+        "atome": "ingredients-1/ligne-3"
+       },
+       {
+        "texte": "50 g de sucre blanc",
+        "graine": 52747187,
+        "puce": null,
+        "atome": "ingredients-1/ligne-4"
+       },
+       {
+        "texte": "200 g de farine",
+        "graine": 36237954,
+        "puce": null,
+        "atome": "ingredients-1/ligne-5"
+       },
+       {
+        "texte": "½ sachet de levure chimique",
+        "graine": 55587561,
+        "puce": null,
+        "atome": "ingredients-1/ligne-6"
+       },
+       {
+        "texte": "1 pincée de sel",
+        "graine": 39778924,
+        "puce": null,
+        "atome": "ingredients-1/ligne-7"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "ingredients-2/titre",
+      "segments": [
+       {
+        "texte": "Pour le choco :",
+        "graine": 31633241,
+        "atome": "ingredients-2/titre"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-2@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 71575169,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "150 g de pépites de chocolat",
+        "graine": 451538,
+        "puce": null,
+        "atome": "ingredients-2/ligne-1"
+       },
+       {
+        "texte": "50 g de chocolat noir coupé en morceaux",
+        "graine": 9301937,
+        "puce": null,
+        "atome": "ingredients-2/ligne-2"
+       }
+      ]
+     },
+     {
+      "type": "annotation",
+      "id": "note-1",
+      "texte": "la meilleure, je jure !",
+      "main": "pressee",
+      "encre": "feutre",
+      "graine": 38857285,
+      "pente": -4.0,
+      "places": [
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 3.0
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 2.2
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 4.0
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.5,
+        "dy": 5.0
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.56,
+        "dy": 3.0
+       },
+       {
+        "apres": "titre",
+        "dx": 1.6,
+        "dy": -0.5
+       },
+       {
+        "apres": "titre",
+        "dx": 1.1,
+        "dy": 0.4
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.25,
+        "dy": 1.2
+       }
+      ]
+     },
+     {
+      "type": "croquis",
+      "id": "croquis-1",
+      "nom": [
+       "cookie"
+      ],
+      "taille": [
+       0.19,
+       0.17
+      ],
+      "pres": [
+       0.84,
+       0.2
+      ],
+      "graine": 55169469
+     }
+    ],
+    "atomes": [
+     "titre",
+     "ingredients-1/titre",
+     "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
+     "ingredients-1/ligne-3",
+     "ingredients-1/ligne-4",
+     "ingredients-1/ligne-5",
+     "ingredients-1/ligne-6",
+     "ingredients-1/ligne-7",
+     "ingredients-2/titre",
+     "ingredients-2/ligne-1",
+     "ingredients-2/ligne-2"
+    ]
+   },
+   "mathis-droite": {
+    "double": "mathis",
+    "main": "pressee",
+    "encre": "feutre",
+    "recette": "mathis",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 pincée de fleur de sel sur le dessus, avant la cuisson",
+      "1 pincée de sel",
+      "1 œuf",
+      "100 g de beurre mou",
+      "150 g de pépites de chocolat",
+      "200 g de farine",
+      "50 g de chocolat noir coupé en morceaux",
+      "50 g de sucre blanc",
+      "75 g de sucre roux",
+      "quelques pépites en plus, bien enfoncées",
+      "½ sachet de levure chimique"
+     ]
+    },
+    "ecriture": {
+     "taille": 1.3
+    },
+    "id": "mathis-droite",
+    "cote": "droite",
+    "folio": 21,
+    "graine": 907,
+    "gabarit": "D",
+    "vivants": [
+     {
+      "nom": "volant",
+      "rect": [
+       0.83,
+       0.66,
+       0.17,
+       0.215
+      ]
+     },
+     {
+      "nom": "suite",
+      "rect": [
+       0.08,
+       0.895,
+       0.7,
+       0.06
+      ],
+      "vivant": false
+     },
+     {
+      "nom": "aq-cookies",
+      "rect": [
+       0.5,
+       0.62,
+       0.26,
+       0.23
+      ],
+      "aquarelle": "cookies",
+      "anime": "balance",
+      "angle": 4
+     }
+    ],
+    "volant": {
+     "recto": "mathis-feuillet-recto",
+     "verso": "mathis-feuillet-verso",
+     "angle": -7.0,
+     "rect": [
+      0.85,
+      0.685,
+      0.82,
+      0.88
+     ]
+    },
+    "suite": "mathis-feuillet-recto",
+    "blocs": [
+     {
+      "type": "courant",
+      "id": "courant",
+      "texte": "Mathis",
+      "graine": 73347579
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "__Étape 1__",
+       "graine": 80259333
+      },
+      "segments": [
+       {
+        "texte": "Préchauffe le four à 170 °C.",
+        "graine": 17218149,
+        "atome": "etape-1/phrase-1"
+       },
+       {
+        "texte": "Sors le beurre une heure avant, il doit être mou, pas fondu !!",
+        "graine": 12379362,
+        "atome": "etape-1/phrase-2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "__Étape 2__",
+       "graine": 42727873
+      },
+      "segments": [
+       {
+        "texte": "Fouette le beurre avec les deux sucres pendant 2 minutes,",
+        "graine": 32521074,
+        "atome": "etape-2/phrase-1.1"
+       },
+       {
+        "texte": "jusqu'à ce que ça devienne crémeux.",
+        "graine": 21601853,
+        "atome": "etape-2/phrase-1.2"
+       },
+       {
+        "texte": "J'ai mis de la musique, ça aide.",
+        "graine": 10797179,
+        "atome": "etape-2/phrase-2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-3",
+      "source": "etape-3",
+      "titre": {
+       "texte": "__Étape 3__",
+       "graine": 85899143
+      },
+      "segments": [
+       {
+        "texte": "Ajoute l'œuf et mélange bien.",
+        "graine": 77221930,
+        "atome": "etape-3/phrase-1"
+       },
+       {
+        "texte": "Puis la farine, la levure et le sel, doucement à la spatule.",
+        "graine": 64883059,
+        "atome": "etape-3/phrase-2"
+       },
+       {
+        "texte": "Pas besoin de trop travailler,",
+        "graine": 50562818,
+        "atome": "etape-3/phrase-3.1"
+       },
+       {
+        "texte": "sinon les cookies deviennent durs.",
+        "graine": 33340691,
+        "atome": "etape-3/phrase-3.2"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-4",
+      "source": "etape-4",
+      "titre": {
+       "texte": "__Étape 4__",
+       "graine": 4632837
+      },
+      "segments": [
+       {
+        "texte": "Incorpore les pépites et les morceaux de chocolat noir.",
+        "graine": 97451935,
+        "atome": "etape-4/phrase-1"
+       },
+       {
+        "texte": "Mets beaucoup de pépites !!",
+        "graine": 24417151,
+        "atome": "etape-4/phrase-2"
+       },
+       {
+        "texte": "C'est le meilleur moment, et tu as le droit de goûter (une fois).",
+        "graine": 21662136,
+        "atome": "etape-4/phrase-3"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-5",
+      "source": "etape-5",
+      "titre": {
+       "texte": "__Étape 5__",
+       "graine": 17120028
+      },
+      "segments": [
+       {
+        "texte": "Forme des boules de la taille d'une noix,",
+        "graine": 79147930,
+        "atome": "etape-5/phrase-1.1"
+       },
+       {
+        "texte": "espacées de 5 cm sur la plaque couverte de papier sulfurisé,",
+        "graine": 79121885,
+        "atome": "etape-5/phrase-1.2"
+       },
+       {
+        "texte": "et aplatis-les un peu avec la paume.",
+        "graine": 63977103,
+        "atome": "etape-5/phrase-1.3"
+       }
+      ],
+      "disposition": "ligne",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "annotation",
+      "id": "suite-note",
+      "texte": "suite sur la feuille",
+      "main": "cecile",
+      "encre": "crayon",
+      "role": "annotation",
+      "graine": 7444800,
+      "pente": -2.5,
+      "dans": "suite",
+      "aligne": "droite",
+      "sans_parentheses": true,
+      "fleche": {
+       "depuis": "fin",
+       "vers_zone": "volant",
+       "fx": 0.16,
+       "fy": 0.8,
+       "courbure": 0.25
+      }
+     }
+    ],
+    "atomes": [
+     "etape-1/phrase-1",
+     "etape-1/phrase-2",
+     "etape-2/phrase-1.1",
+     "etape-2/phrase-1.2",
+     "etape-2/phrase-2",
+     "etape-3/phrase-1",
+     "etape-3/phrase-2",
+     "etape-3/phrase-3.1",
+     "etape-3/phrase-3.2",
+     "etape-4/phrase-1",
+     "etape-4/phrase-2",
+     "etape-4/phrase-3",
+     "etape-5/phrase-1.1",
+     "etape-5/phrase-1.2",
+     "etape-5/phrase-1.3"
+    ]
+   },
+   "mathis-feuillet-recto": {
+    "double": "mathis",
+    "main": "pressee",
+    "encre": "feutre",
+    "recette": "mathis",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 pincée de fleur de sel sur le dessus, avant la cuisson",
+      "1 pincée de sel",
+      "1 œuf",
+      "100 g de beurre mou",
+      "150 g de pépites de chocolat",
+      "200 g de farine",
+      "50 g de chocolat noir coupé en morceaux",
+      "50 g de sucre blanc",
+      "75 g de sucre roux",
+      "quelques pépites en plus, bien enfoncées",
+      "½ sachet de levure chimique"
+     ]
+    },
+    "ecriture": {
+     "taille": 1.3
+    },
+    "type": "feuillet",
+    "taille": [
+     697,
+     1056
+    ],
+    "papier": "c-lisa",
+    "xh_facteur": 0.83,
+    "cote": "droite",
+    "marges": {
+     "haut": 0.04,
+     "bas": 0.035
+    },
+    "id": "mathis-feuillet-recto",
+    "face": "recto",
+    "dos": "mathis-feuillet-verso",
+    "graine": 908,
+    "suite": "mathis-feuillet-verso",
+    "grille": {
+     "carreau": 21.0,
+     "angle": 0.35,
+     "xc": 348.5,
+     "yc": 528.0,
+     "x0": 356.1994309078812,
+     "y0": 538.5789560011625,
+     "marge_x": 72.91864325266444
+    },
+    "blocs": [
+     {
+      "type": "paragraphe",
+      "id": "suite-tete",
+      "segments": [
+       {
+        "texte": "(suite)",
+        "graine": 93659042
+       }
+      ],
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "cuisson-titre",
+      "segments": [
+       {
+        "texte": "Cuisson :",
+        "graine": 43337194
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "cuisson",
+      "segments": [
+       {
+        "texte": "10 min à 170 °C. Ils restent mous au milieu, c'est normal. Laisse-les 5 minutes sur la plaque avant de les décoller.",
+        "graine": 82670050,
+        "atome": "cuisson"
+       }
+      ],
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "apres-1@phrase-1",
+      "source": "apres-1",
+      "segments": [
+       {
+        "texte": "Attends qu'ils refroidissent un peu, sinon ils cassent.",
+        "graine": 8842490,
+        "atome": "apres-1/phrase-1"
+       },
+       {
+        "texte": "Après, tu peux les manger à la pelle !!",
+        "graine": 1982313,
+        "atome": "apres-1/phrase-2"
+       }
+      ],
+      "avant": 0.3,
+      "alinea": 0.04
+     },
+     {
+      "type": "paragraphe",
+      "id": "extra-1/titre",
+      "segments": [
+       {
+        "texte": "Le petit plus de Mathis :",
+        "graine": 26071740,
+        "atome": "extra-1/titre"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "ingredients",
+      "id": "extra-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 28364662,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "1 pincée de fleur de sel sur le dessus, avant la cuisson",
+        "graine": 32098777,
+        "puce": null,
+        "atome": "extra-1/ligne-1"
+       },
+       {
+        "texte": "quelques pépites en plus, bien enfoncées",
+        "graine": 64281409,
+        "puce": null,
+        "atome": "extra-1/ligne-2"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "extra-1/paragraphe-1@phrase-1",
+      "source": "extra-1/paragraphe-1",
+      "segments": [
+       {
+        "texte": "Le sel avec le chocolat, c'est trop bon.",
+        "graine": 99684043,
+        "atome": "extra-1/paragraphe-1/phrase-1"
+       },
+       {
+        "texte": "Essaie, tu me remercieras !",
+        "graine": 45600112,
+        "atome": "extra-1/paragraphe-1/phrase-2"
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.04
+     },
+     {
+      "type": "paragraphe",
+      "id": "fin",
+      "segments": [
+       {
+        "texte": "__Bon anniv Cécile, on mange les cookies ensemble !!__ :sourire:",
+        "graine": 1667573,
+        "atome": "fin"
+       }
+      ],
+      "avant": 0.45,
+      "alinea": 0.05
+     }
+    ],
+    "atomes": [
+     "cuisson",
+     "apres-1/phrase-1",
+     "apres-1/phrase-2",
+     "extra-1/titre",
+     "extra-1/ligne-1",
+     "extra-1/ligne-2",
+     "extra-1/paragraphe-1/phrase-1",
+     "extra-1/paragraphe-1/phrase-2",
+     "fin"
+    ]
+   },
+   "mathis-feuillet-verso": {
+    "double": "mathis",
+    "main": "pressee",
+    "encre": "feutre",
+    "recette": "mathis",
+    "serrage_max": 1,
+    "contexte_importants": {
+     "ingredients": [
+      "1 pincée de fleur de sel sur le dessus, avant la cuisson",
+      "1 pincée de sel",
+      "1 œuf",
+      "100 g de beurre mou",
+      "150 g de pépites de chocolat",
+      "200 g de farine",
+      "50 g de chocolat noir coupé en morceaux",
+      "50 g de sucre blanc",
+      "75 g de sucre roux",
+      "quelques pépites en plus, bien enfoncées",
+      "½ sachet de levure chimique"
+     ]
+    },
+    "ecriture": {
+     "taille": 1.3
+    },
+    "type": "feuillet",
+    "taille": [
+     697,
+     1056
+    ],
+    "papier": "c-lisa",
+    "xh_facteur": 0.83,
+    "cote": "droite",
+    "marges": {
+     "haut": 0.04,
+     "bas": 0.035
+    },
+    "id": "mathis-feuillet-verso",
+    "face": "verso",
+    "dos": "mathis-feuillet-recto",
+    "graine": 909,
+    "grille": {
+     "carreau": 21.0,
+     "angle": 0.3793075408006112,
+     "xc": 348.5,
+     "yc": 528.0,
+     "x0": 352.4377127185676,
+     "y0": 536.7782485297435,
+     "marge_x": 67.16661933272653
+    },
+    "blocs": [],
+    "atomes": []
+   }
+  },
+  "ordre": [
+   "mathis-gauche",
+   "mathis-droite",
+   "mathis-feuillet-recto",
+   "mathis-feuillet-verso"
+  ],
+  "disposition": "ligne",
+  "ajustements": {},
+  "trous": {
+   "mathis-gauche": 1.46,
+   "mathis-droite": 2.02
+  }
+ },
+ "page/julie-feuillet-recto": {
+  "cle": "5747d9c6b2e1d6e0fe68885e453ff2ce7a161c76585f2d4164981d6f33b2ea07",
+  "manifeste": {
+   "double": "julie",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-recto",
+   "miroir": false,
+   "encre": "pages/julie-feuillet-recto",
+   "papier1x": "pages/1x/papier/c-lisa-recto",
+   "encre1x": "pages/1x/julie-feuillet-recto",
+   "encre4x": {
+    "base": "pages/4x/julie-feuillet-recto",
+    "echelle": 4.0,
+    "px": [
+     2788,
+     4224
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      0,
+      1,
+      0.498565,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499053,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      1,
+      0.498565,
+      0.499053,
+      0.501435,
+      0.500947
+     ]
+    ]
+   },
+   "texte": "(suite)\nGlaçage au citron (en option) :\n100 g de sucre glace\n1 c. à s. de jus de citron\nquelques gouttes de colorant jaune (facultatif)\nMélange doucement, il doit être épais et crémeux. Nappe le cake une fois refroidi : le glaçage durcit en séchant, comme une fine coque. C'est mon côté gourmand.\nBonne dégustation, et à la prochaine pause goûter !",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 9,
+   "type": "feuillet",
+   "taille": [
+    697,
+    1056
+   ],
+   "face": "recto",
+   "dos": "julie-feuillet-verso",
+   "suite": "julie-feuillet-verso",
+   "recette": "julie",
+   "croquis": [
+    {
+     "nom": "citron",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.1248,
+      0.1205,
+      0.0188,
+      0.0124
+     ]
+    },
+    {
+     "nom": "citron",
+     "role": "puce",
+     "dessine": true,
+     "boite": [
+      0.1259,
+      0.1589,
+      0.0192,
+      0.0127
+     ]
+    },
+    {
+     "nom": "sourire",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.9294,
+      0.3545,
+      0.0253,
+      0.0167
+     ]
+    }
+   ],
+   "douteux": [
+    "1 c. à s. (encre rendue lue « 1 ca s »)"
+   ],
+   "douteux_importants": [
+    "1 c. à s."
+   ],
+   "relu": true
+  }
+ },
+ "page/julie-feuillet-verso": {
+  "cle": "62da9ce5c4be29e49d60c994a7420754dd7ea38dbaeb108bc065b5902817ae72",
+  "manifeste": {
+   "double": "julie",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-verso",
+   "miroir": false,
+   "encre": "pages/julie-feuillet-verso",
+   "papier1x": "pages/1x/papier/c-lisa-verso",
+   "encre1x": "pages/1x/julie-feuillet-verso",
+   "encre4x": {
+    "base": "pages/4x/julie-feuillet-verso",
+    "echelle": 4.0,
+    "px": [
+     2788,
+     4224
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      0,
+      1,
+      0.498565,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499053,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      1,
+      0.498565,
+      0.499053,
+      0.501435,
+      0.500947
+     ]
+    ]
+   },
+   "texte": "",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 0,
+   "type": "feuillet",
+   "taille": [
+    697,
+    1056
+   ],
+   "face": "verso",
+   "dos": "julie-feuillet-recto",
+   "recette": "julie",
+   "relu": true
+  }
+ },
+ "page/rose-feuillet-recto": {
+  "cle": "d13f6b28845517af4890d4969fbc14d163d88814b52cf2898754fac1086c2b20",
+  "manifeste": {
+   "double": "rose",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-recto",
+   "miroir": false,
+   "encre": "pages/rose-feuillet-recto",
+   "papier1x": "pages/1x/papier/c-lisa-recto",
+   "encre1x": "pages/1x/rose-feuillet-recto",
+   "encre4x": {
+    "base": "pages/4x/rose-feuillet-recto",
+    "echelle": 4.0,
+    "px": [
+     2788,
+     4224
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      0,
+      1,
+      0.498565,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499053,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      1,
+      0.498565,
+      0.499053,
+      0.501435,
+      0.500947
+     ]
+    ]
+   },
+   "texte": "(suite)\nUne fois froids, range-les dans la boîte en fer. C'est là qu'ils restent le plus tendres, et qu'on les garde pour les jours de fête.\nPour Noël, je change un peu :\nle zeste remplacé par 1 c. à c. de cannelle\n1 blanc d'œuf battu avec 150 g de sucre glace\nquelques gouttes de citron\nJe les découpe en étoiles avec le petit emporte-pièce, et je nappe le glaçage au pinceau sur les sablés refroidis. Tout le monde en veut dans la boîte.\nBonne dégustation, et laisse-m'en quelques-uns !",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 12,
+   "type": "feuillet",
+   "taille": [
+    697,
+    1056
+   ],
+   "face": "recto",
+   "dos": "rose-feuillet-verso",
+   "suite": "rose-feuillet-verso",
+   "recette": "rose",
+   "croquis": [
+    {
+     "nom": "sourire",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.7834,
+      0.4765,
+      0.0223,
+      0.0147
+     ]
+    }
+   ],
+   "douteux": [
+    "1 c. à c. (encre rendue lue « 1 C. A C. »)"
+   ],
+   "douteux_importants": [
+    "1 c. à c."
+   ],
+   "relu": true
+  }
+ },
+ "page/rose-feuillet-verso": {
+  "cle": "03b4871d604df864839328a5f7ec953ed14b18527458ea3bcc6a141716306282",
+  "manifeste": {
+   "double": "rose",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-verso",
+   "miroir": false,
+   "encre": "pages/rose-feuillet-verso",
+   "papier1x": "pages/1x/papier/c-lisa-verso",
+   "encre1x": "pages/1x/rose-feuillet-verso",
+   "encre4x": {
+    "base": "pages/4x/rose-feuillet-verso",
+    "echelle": 4.0,
+    "px": [
+     2788,
+     4224
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      0,
+      1,
+      0.498565,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499053,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      1,
+      0.498565,
+      0.499053,
+      0.501435,
+      0.500947
+     ]
+    ]
+   },
+   "texte": "",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 0,
+   "type": "feuillet",
+   "taille": [
+    697,
+    1056
+   ],
+   "face": "verso",
+   "dos": "rose-feuillet-recto",
+   "recette": "rose",
+   "relu": true
+  }
+ },
+ "page/mathis-feuillet-recto": {
+  "cle": "4e90c31a25d3f036b75056ff4497b0c4b16fb0ae5be37738cce55c6e2b9d4b4e",
+  "manifeste": {
+   "double": "mathis",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-recto",
+   "miroir": false,
+   "encre": "pages/mathis-feuillet-recto",
+   "papier1x": "pages/1x/papier/c-lisa-recto",
+   "encre1x": "pages/1x/mathis-feuillet-recto",
+   "encre4x": {
+    "base": "pages/4x/mathis-feuillet-recto",
+    "echelle": 4.0,
+    "px": [
+     2788,
+     4224
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      0,
+      1,
+      0.498565,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499053,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      1,
+      0.498565,
+      0.499053,
+      0.501435,
+      0.500947
+     ]
+    ]
+   },
+   "texte": "(suite)\nCuisson :\n10 min à 170 °C. Ils restent mous au milieu, c'est normal. Laisse-les 5 minutes sur la plaque avant de les décoller.\nAttends qu'ils refroidissent un peu, sinon ils cassent. Après, tu peux les manger à la pelle !!\nLe petit plus de Mathis :\n1 pincée de fleur de sel sur le dessus, avant la cuisson\nquelques pépites en plus, bien enfoncées\nLe sel avec le chocolat, c'est trop bon. Essaie, tu me remercieras !\nBon anniv Cécile, on mange les cookies ensemble !!",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 16,
+   "type": "feuillet",
+   "taille": [
+    697,
+    1056
+   ],
+   "face": "recto",
+   "dos": "mathis-feuillet-verso",
+   "suite": "mathis-feuillet-verso",
+   "recette": "mathis",
+   "croquis": [
+    {
+     "nom": "sourire",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.3082,
+      0.6862,
+      0.0303,
+      0.02
+     ]
+    }
+   ],
+   "douteux": [
+    "Cuisson (encre rendue lue « Crisson »)",
+    "avant (encre rendue lue « avant »)",
+    "cuisson (encre rendue lue « unison »)",
+    "enfoncées (encre rendue lue « enforces »)",
+    "sel (encre rendue lue « set »)",
+    "Cécile, (encre rendue lue « Cecile . »)"
+   ],
+   "douteux_importants": [
+    "Cuisson",
+    "Cécile,",
+    "avant",
+    "cuisson",
+    "enfoncées",
+    "sel"
+   ],
+   "relu": true
+  }
+ },
+ "page/mathis-feuillet-verso": {
+  "cle": "6b01e12942fb2bacc322e74b8d67bd066cf9bf9fe6c88c1b743475ee86b31eb5",
+  "manifeste": {
+   "double": "mathis",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-verso",
+   "miroir": false,
+   "encre": "pages/mathis-feuillet-verso",
+   "papier1x": "pages/1x/papier/c-lisa-verso",
+   "encre1x": "pages/1x/mathis-feuillet-verso",
+   "encre4x": {
+    "base": "pages/4x/mathis-feuillet-verso",
+    "echelle": 4.0,
+    "px": [
+     2788,
+     4224
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      0,
+      1,
+      0.498565,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499053,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      1,
+      0.498565,
+      0.499053,
+      0.501435,
+      0.500947
+     ]
+    ]
+   },
+   "texte": "",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 0,
+   "type": "feuillet",
+   "taille": [
+    697,
+    1056
+   ],
+   "face": "verso",
+   "dos": "mathis-feuillet-recto",
+   "recette": "mathis",
+   "relu": true
+  }
+ },
+ "page/bernard-feuillet-recto": {
+  "cle": "8df42ad991678b86fab9ec284f26c101ad3bf705a5bfddf749bcf7e4f6e1263b",
+  "manifeste": {
+   "double": "bernard",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-recto",
+   "miroir": false,
+   "encre": "pages/bernard-feuillet-recto",
+   "papier1x": "pages/1x/papier/c-lisa-recto",
+   "encre1x": "pages/1x/bernard-feuillet-recto",
+   "encre4x": {
+    "base": "pages/4x/bernard-feuillet-recto",
+    "echelle": 4.0,
+    "px": [
+     2788,
+     4224
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      0,
+      1,
+      0.498565,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499053,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      1,
+      0.498565,
+      0.499053,
+      0.501435,
+      0.500947
+     ]
+    ]
+   },
+   "texte": "(suite)\npuis répartis le beurre en petites noisettes sur le dessus.\nÉtape 5\nReplie le bord de la pâte sur les pommes et dore-le au jaune d'œuf battu. Il faut être patient avec le pinceau, mais ça vaut le coup.\nCuisson :\n40 min à th. 7. La pâte doit être bien dorée sur les bords, et les pommes un peu caramélisées.\nLaisse-la refroidir au moins 20 minutes avant de la découper, sinon les lamelles glissent. Elle est aussi bonne tiède que froide, mais je préfère tiède.\nOption de Dijon :\n1 c. à s. de crème de cassis\n1 c. à c. d'eau chaude pour la rendre fluide\nAu sortir du four, nappe les pommes de crème de cassis tiède au pinceau. C'est la touche de chez nous, et ça",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 23,
+   "type": "feuillet",
+   "taille": [
+    697,
+    1056
+   ],
+   "face": "recto",
+   "dos": "bernard-feuillet-verso",
+   "suite": "bernard-feuillet-verso",
+   "recette": "bernard",
+   "douteux": [
+    "beurre (encre rendue lue « benvre »)",
+    "5 (encre rendue lue « t »)",
+    "th. 7. (encre rendue lue « th ? »)",
+    "20 (encre rendue lue « 2 0 »)",
+    "1 c. à s. (encre rendue lue « 1c a s »)",
+    "1 c. à c. (encre rendue lue « 1 c a c. »)"
+   ],
+   "douteux_importants": [
+    "1 c. à c.",
+    "1 c. à s.",
+    "20",
+    "5",
+    "beurre",
+    "th. 7."
+   ],
+   "relu": true
+  }
+ },
+ "page/bernard-feuillet-verso": {
+  "cle": "b11849905c14d0aaba65c95bf21b8d90e00987d75c55dc8d31c7b557af5d04b1",
+  "manifeste": {
+   "double": "bernard",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-verso",
+   "miroir": false,
+   "encre": "pages/bernard-feuillet-verso",
+   "papier1x": "pages/1x/papier/c-lisa-verso",
+   "encre1x": "pages/1x/bernard-feuillet-verso",
+   "encre4x": {
+    "base": "pages/4x/bernard-feuillet-verso",
+    "echelle": 4.0,
+    "px": [
+     2788,
+     4224
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      0,
+      1,
+      0.498565,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499053,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      1,
+      0.498565,
+      0.499053,
+      0.501435,
+      0.500947
+     ]
+    ]
+   },
+   "texte": "brille joliment.\nBon appétit à toute la tablée, bon anniversaire !",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 3,
+   "type": "feuillet",
+   "taille": [
+    697,
+    1056
+   ],
+   "face": "verso",
+   "dos": "bernard-feuillet-recto",
+   "recette": "bernard",
+   "croquis": [
+    {
+     "nom": "tasse",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.3426,
+      0.1113,
+      0.0253,
+      0.0167
+     ]
+    }
+   ],
+   "relu": true
+  }
+ }
 }

@@ -32,8 +32,11 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------
 ENCRES: dict[str, dict] = {
     # id        outil       charge     clair      notes
-    "plume": dict(outil="plume", charge="#30375a", clair="#7f8199",
-                  source="plume bleu-noir ; bleu tiré vers le gris du papier (réf. 29, 30)"),
+    "plume": dict(outil="plume", charge="#24357a", clair="#6b78b0",
+                  source="plume bleu-noir, plus franche que les réf. 29, 30 (retour : couleurs plus vives)"),
+    # titres de chapitre et du sommaire : une encre de couleur, comme on change de plume pour les titres
+    "terracotta": dict(outil="plume", charge="#9a4a2e", clair="#c98a70",
+                       source="encre terre cuite des titres (sœur du « rouge » de correction, à la plume)"),
     "brune": dict(outil="plume", charge="#60533f", clair="#9a8a6c",
                   source="ferrogallique brune (réf. 09 : cœur #60533f, milieu #887a60)"),
     "noire": dict(outil="plume", charge="#2a1d12", clair="#6e5b42",

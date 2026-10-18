@@ -1,0 +1,92 @@
+{
+  "_": "Invité fictif de démonstration : texte écrit pour l'exemple (aucun vrai message).",
+  "slug": "mathis",
+  "source": null,
+  "adaptations": [
+    "Invité fictif : texte écrit pour la démonstration, rien d'adapté."
+  ],
+  "style": {
+    "main": "pressee",
+    "encre": "feutre",
+    "graine": 905
+  },
+  "video": "mathis",
+  "titre": "Les cookies de Mathis",
+  "titreSouligne": "double",
+  "notesMarge": [
+    {
+      "texte": "la meilleure, je jure !",
+      "pres": "titre"
+    }
+  ],
+  "ingredients": [
+    {
+      "titre": "Pour la pâte :",
+      "lignes": [
+        { "texte": "1 œuf" },
+        { "texte": "100 g de beurre mou" },
+        { "texte": "75 g de sucre roux" },
+        { "texte": "50 g de sucre blanc" },
+        { "texte": "200 g de farine" },
+        { "texte": "½ sachet de levure chimique" },
+        { "texte": "1 pincée de sel" }
+      ]
+    },
+    {
+      "titre": "Pour le choco :",
+      "lignes": [
+        { "texte": "150 g de pépites de chocolat" },
+        { "texte": "50 g de chocolat noir coupé en morceaux" }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "__Étape 1__",
+      "texte": "Préchauffe le four à 170 °C. Sors le beurre une heure avant, il doit être mou, pas fondu !!"
+    },
+    {
+      "titre": "__Étape 2__",
+      "texte": "Fouette le beurre avec les deux sucres pendant 2 minutes, jusqu'à ce que ça devienne crémeux. J'ai mis de la musique, ça aide."
+    },
+    {
+      "titre": "__Étape 3__",
+      "texte": "Ajoute l'œuf et mélange bien. Puis la farine, la levure et le sel, doucement à la spatule. Pas besoin de trop travailler, sinon les cookies deviennent durs."
+    },
+    {
+      "titre": "__Étape 4__",
+      "texte": "Incorpore les pépites et les morceaux de chocolat noir. Mets beaucoup de pépites !! C'est le meilleur moment, et tu as le droit de goûter (une fois)."
+    },
+    {
+      "titre": "__Étape 5__",
+      "texte": "Forme des boules de la taille d'une noix, espacées de 5 cm sur la plaque couverte de papier sulfurisé, et aplatis-les un peu avec la paume."
+    }
+  ],
+  "cuisson": "10 min à 170 °C. Ils restent mous au milieu, c'est normal. Laisse-les 5 minutes sur la plaque avant de les décoller.",
+  "apres": [
+    "Attends qu'ils refroidissent un peu, sinon ils cassent. Après, tu peux les manger à la pelle !!"
+  ],
+  "extras": [
+    {
+      "titre": "Le petit plus de Mathis :",
+      "lignes": [
+        { "texte": "1 pincée de fleur de sel sur le dessus, avant la cuisson" },
+        { "texte": "quelques pépites en plus, bien enfoncées" }
+      ],
+      "paragraphes": [
+        "Le sel avec le chocolat, c'est trop bon. Essaie, tu me remercieras !"
+      ]
+    }
+  ],
+  "fin": {
+    "texte": "__Bon anniv Cécile, on mange les cookies ensemble !!__",
+    "croquis": [
+      "sourire"
+    ]
+  },
+  "croquis": [
+    "cookie"
+  ],
+  "mot": "Joyeux anniv Cécile !! Les cookies c'est pour toi, mais laisse-m'en au moins trois !!",
+  "signature": "Mathis"
+}

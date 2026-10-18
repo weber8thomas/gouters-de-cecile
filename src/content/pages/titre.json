@@ -10,7 +10,7 @@
  "marges": {
   "haut": 0.2
  },
- "_": "Page de titre : titre en deux lignes centrées, à la plume, en grand ; sous-titre discret au crayon ; grande illustration (cupcake ou théière, ≥ 0,35 × la largeur) centrée sous le titre, dans l'air.",
+ "_": "Page de titre : titre en deux lignes centrées, à la plume, en grand ; sous-titre en deux lignes centrées, à l'encre chocolat de la main de Cécile (étiquette, echelle 1,2 : lisible à 3 m) ; grande illustration (théière) centrée sous le sous-titre, dans l'air.",
  "blocs": [
   {
    "id": "titre-1",
@@ -33,14 +33,19 @@
   },
   {
    "id": "sous-titre",
-   "type": "titre",
-   "texte": "recettes de goûter offertes par ses amis",
-   "echelle": 0.8,
-   "position": "centre",
-   "souligne": "aucun",
-   "avant": 0.8,
-   "encre": "crayon",
+   "type": "etiquette",
+   "texte": "recettes de goûter partagées\npar celles et ceux qui l'aiment",
+   "role": "titre",
+   "echelle": 1.2,
+   "encre": "chocolat",
    "main": "cecile",
+   "rect": [
+    0.12,
+    0.46,
+    0.76,
+    0.13
+   ],
+   "pente": -0.8,
    "graine": 3013
   }
  ],

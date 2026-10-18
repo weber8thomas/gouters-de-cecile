@@ -532,7 +532,8 @@ class Carnet(Base):
         attendu = {"garde": 2, "titre": 3, "cecile-1-gauche": 4, "cecile-1-droite": 5, "cecile-2-gauche": 6,
                    "cecile-2-droite": 7, "dedicace": 8, "sommaire": 9, "gateaux-gauche": 10,
                    "lisa-gauche": 12, "lisa-droite": 13, "julie-gauche": 14, "julie-droite": 15, "biscuits-droite": 17,
-                   "rose-gauche": 18, "rose-droite": 19, "mathis-gauche": 20, "mathis-droite": 21, "fin-gauche": 22, "fin-droite": 23}
+                   "rose-gauche": 18, "rose-droite": 19, "mathis-gauche": 20, "mathis-droite": 21,
+                   "bernard-gauche": 22, "bernard-droite": 23, "fin-gauche": 24, "fin-droite": 25}
         for pid, folio in attendu.items():
             self.assertEqual(f[pid]["folio"], folio, pid)
         for pid in ("garde", "titre", "gateaux-gauche", "gateaux-droite", "biscuits-gauche", "biscuits-droite"):
@@ -581,8 +582,8 @@ class Carnet(Base):
         self.assertEqual(par_invite["lisa"]["folio"], 12)
         self.assertEqual(par_invite["julie"]["folio"], 14)
         self.assertEqual(par_invite["rose"]["folio"], 18)
-        self.assertEqual((par_invite["mathis"]["folio"], par_invite["bernard"]["folio"]), (20, 21))
-        self.assertEqual(par_invite["bernard"]["cible"], "mathis")
+        self.assertEqual((par_invite["mathis"]["folio"], par_invite["bernard"]["folio"]), (20, 22))
+        self.assertEqual(par_invite["bernard"]["cible"], "bernard")
         self.assertEqual([l["texte"] for l in lignes if l.get("chapitre")], ["Gâteaux & cakes", "Biscuits"])
         self.assertTrue(all(l["cible"] in ids for l in lignes))
         # une page de sommaire : chaque ligne donne un lien cliquable dans la page
@@ -596,7 +597,7 @@ class Carnet(Base):
             self.assertEqual(lien["cible"], l["cible"])
             x0, y0, x1, y1 = lien["rect"]
             self.assertTrue(0 <= x0 < x1 <= m.W and 0 <= y0 < y1 <= m.H)
-        folios = [w for w in m.mots if w.texte == "21"]  # folio de Bernard (double page mathis, après l'album)
+        folios = [w for w in m.mots if w.texte == "22"]  # folio de Bernard (sa double page, après l'album)
         self.assertEqual(len(folios), 1)
         # les rects ne se chevauchent pas (une ligne = un lien)
         for a, b in zip(m.liens, m.liens[1:]):
@@ -692,15 +693,20 @@ class A5(Base):
         # aucun mot perdu entre l'écran et l'A5
         ecran = []
         for pid in ("julie-gauche", "julie-droite"):
-            ecran += [w for w in re.split(r"\s+", " ".join(MEP.mettre_en_page(res_pages_ecran(pid)).texte)) if w]
+            textes = [t for t in MEP.mettre_en_page(res_pages_ecran(pid)).texte if t != "suite sur la feuille"]  # renvoi d'écran
+            ecran += [w for w in re.split(r"\s+", " ".join(textes)) if w]
         a5 = [w for pid in res.ordre for w in re.split(r"\s+", " ".join(MEP.mettre_en_page(res.pages[pid]).texte)) if w]
         for w in ecran:
             self.assertIn(w.strip("()"), " ".join(a5), f"« {w} » perdu en A5")
 
 
 def res_pages_ecran(pid):
-    pages, _, _ = CU.charger_descriptions()
-    return CU.appliquer_carnet(pages, RC.charger_carnet(), RC.charger_roster())[pid]
+    pages, papiers_, plan = CU.charger_descriptions()
+    carnet, roster = RC.charger_carnet(), RC.charger_roster()
+    pages = CU.appliquer_carnet(pages, carnet, roster)
+    gen, _ = CU.paginer_recettes(plan, papiers_, {}, "test", "test", False, [], None, carnet, roster)  # recettes reçues
+    pages.update(gen)
+    return pages[pid]
 
 
 LONGS = os.environ.get("GC_TESTS_LONGS") == "1"  # passe ×4 et A5 cuits (reportés : prototype d'abord)

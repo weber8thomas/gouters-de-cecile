@@ -14,7 +14,7 @@ import { useRenderMode } from '../../lib/spread';
 import { LOUPE_EVENT, LOUPE_HD, LOUPE_HD_SORTIE, abonnerLoupe, getLoupe, loupeOccupee } from '../../lib/loupe';
 import { GESTE_EVENT, type GesteDetail } from '../Livre/evenements';
 import manifesteJson from '../../content/pages/manifeste.json';
-import { aEcrire, abonnerEcriture, ecrire, marquerEcrite, versionEcriture } from './encreVivante';
+import { aEcrire, abonnerEcriture, ecrire, marquerEcrite, plumeOccupee, versionEcriture } from './encreVivante';
 import './PageCuite.css';
 
 /** Rectangle en fractions de la page : [x, y, largeur, hauteur]. */
@@ -378,7 +378,8 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
     const feuille = el?.closest('.gc-livre__page');
     const livre = el?.closest('.gc-livre');
     if (!el || !feuille || !livre || !info || mode !== 'live') return;
-    const duree = Math.min(3400, Math.max(1500, 900 + info.texte.length * 4));
+    // à vitesse de plume (environ 22 signes par seconde), de 4 à 14 s
+    const duree = Math.min(14000, Math.max(4000, 900 + info.texte.length * 45));
     const dpr = typeof devicePixelRatio === 'number' ? devicePixelRatio : 1;
     const encre = dpr > 1.25 || !info.encre1x ? info.encre : info.encre1x;
     let arreter: (() => void) | null = null;
@@ -393,21 +394,37 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
         return;
       }
       if (pose && !arreter && !minuteur) {
-        minuteur = window.setTimeout(() => {
+        const lancer = () => {
           minuteur = 0;
+          // une plume à la fois : la page de droite attend que la gauche ait fini
+          if (plumeOccupee()) {
+            minuteur = window.setTimeout(lancer, 250);
+            return;
+          }
           if (plume.current) arreter = ecrire(plume.current, page, encre, duree, () => marquerEcrite(page));
-        }, 280);
+        };
+        minuteur = window.setTimeout(lancer, info.cote === 'droite' ? 400 : 280);
       } else if (!pose && minuteur) {
         window.clearTimeout(minuteur);
         minuteur = 0;
       }
     };
+    // un clic dans le livre finit d'écrire (la page en cours comme celle qui attend)
+    const finir = () => {
+      if (!feuille.classList.contains('gc-livre__page--visible')) return;
+      window.clearTimeout(minuteur);
+      minuteur = 0;
+      if (arreter) arreter();
+      else marquerEcrite(page);
+    };
+    livre.addEventListener('pointerdown', finir);
     const obs = new MutationObserver(verifier);
     obs.observe(feuille, { attributes: true, attributeFilter: ['class'] });
     obs.observe(livre, { attributes: true, attributeFilter: ['data-gc-geste', 'data-gc-etat'] });
     verifier();
     return () => {
       obs.disconnect();
+      livre.removeEventListener('pointerdown', finir);
       window.clearTimeout(minuteur);
       if (arreter) arreter();
     };

@@ -105,6 +105,9 @@ export interface RecetteRecue {
   notesMarge?: { texte: string; pres?: string; main?: MainId; encre?: EncreId }[];
   ingredients: GroupeRecette[];
   etapes: { titre?: string; texte: string }[];
+  /** Cuisson, sur sa propre ligne après les étapes : un texte (label « Cuisson : » ajouté), ou { titre, texte }
+   *  quand la recette porte son propre titre (« Étape 6 »), gardé tel quel. */
+  cuisson?: string | { titre?: string; texte: string };
   /** Paragraphes après les étapes (« Laisse le gâteau dans le moule… »). */
   apres?: string[];
   /** Options, glaçage, variantes. */

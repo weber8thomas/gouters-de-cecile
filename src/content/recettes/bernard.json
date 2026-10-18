@@ -1,0 +1,92 @@
+{
+  "_": "Invité fictif de démonstration : texte écrit pour l'exemple (aucun vrai message).",
+  "slug": "bernard",
+  "source": null,
+  "adaptations": [
+    "Invité fictif : texte écrit pour la démonstration, rien d'adapté."
+  ],
+  "style": {
+    "main": "papa",
+    "encre": "noire",
+    "graine": 1733
+  },
+  "video": "bernard",
+  "titre": "Ma tarte aux pommes",
+  "titreSouligne": "trait",
+  "notesMarge": [
+    {
+      "texte": "des reinettes !",
+      "pres": "titre"
+    }
+  ],
+  "ingredients": [
+    {
+      "titre": "Pour le fond :",
+      "lignes": [
+        { "texte": "1 pâte brisée (environ 250 g)" },
+        { "texte": "un peu de beurre pour le moule" },
+        { "texte": "1 c. à s. de farine pour le plan de travail" }
+      ]
+    },
+    {
+      "titre": "Pour la garniture :",
+      "lignes": [
+        { "texte": "5 pommes (reinettes ou golden)" },
+        { "texte": "1 c. à c. de jus de citron" },
+        { "texte": "2 c. à s. de sucre en poudre" },
+        { "texte": "1 c. à c. de cannelle" },
+        { "texte": "1 noix de beurre (environ 20 g)" },
+        { "texte": "1 jaune d'œuf battu, pour dorer le bord" }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "__Étape 1__",
+      "texte": "Préchauffe le four à th. 7 (210 °C). Beurre le moule à tarte, étale la pâte dedans et pique-la plusieurs fois à la fourchette."
+    },
+    {
+      "titre": "__Étape 2__",
+      "texte": "Pèle les pommes, coupe-les en quartiers puis en lamelles pas trop fines. Arrose-les tout de suite de jus de citron, sinon elles noircissent. C'est ce que faisait ma mère."
+    },
+    {
+      "titre": "__Étape 3__",
+      "texte": "Dispose les lamelles en rosace, en partant du bord et en serrant bien : elles s'affaissent un peu à la cuisson, c'est normal."
+    },
+    {
+      "titre": "__Étape 4__",
+      "texte": "Saupoudre de sucre et de cannelle, puis répartis le beurre en petites noisettes sur le dessus."
+    },
+    {
+      "titre": "__Étape 5__",
+      "texte": "Replie le bord de la pâte sur les pommes et dore-le au jaune d'œuf battu. Il faut être patient avec le pinceau, mais ça vaut le coup."
+    }
+  ],
+  "cuisson": "40 min à th. 7. La pâte doit être bien dorée sur les bords, et les pommes un peu caramélisées.",
+  "apres": [
+    "Laisse-la refroidir au moins 20 minutes avant de la découper, sinon les lamelles glissent. Elle est aussi bonne tiède que froide, mais je préfère tiède."
+  ],
+  "extras": [
+    {
+      "titre": "Option de Dijon :",
+      "lignes": [
+        { "texte": "1 c. à s. de crème de cassis" },
+        { "texte": "1 c. à c. d'eau chaude pour la rendre fluide" }
+      ],
+      "paragraphes": [
+        "Au sortir du four, nappe les pommes de crème de cassis tiède au pinceau. C'est la touche de chez nous, et ça brille joliment."
+      ]
+    }
+  ],
+  "fin": {
+    "texte": "__Bon appétit à toute la tablée, bon anniversaire !__",
+    "croquis": [
+      "tasse"
+    ]
+  },
+  "croquis": [
+    "pomme"
+  ],
+  "mot": "Joyeux anniversaire Cécile, garde-moi une part de tarte ! Je repasse la chercher dimanche.",
+  "signature": "Bernard"
+}
