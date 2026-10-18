@@ -734,9 +734,9 @@ export function zoomBornes() {
 
 export const REGLAGES_DEFAUT = { v: 1, son: true, volume: 1, volumeBruitages: 0.5, lectureAuto: false, vitesse: 'normale', mouvementReduit: false, volumeMusique: 0.5 };
 
-/** Script d'init : écrit des réglages (gc:reglages:v3) avant le chargement de l'application. */
+/** Script d'init : écrit des réglages (gc:reglages:v4) avant le chargement de l'application. */
 export const initReglages = (r) => ({
-  fn: (x) => { try { if (!sessionStorage.getItem('__gcInitFait')) { localStorage.setItem('gc:reglages:v3', JSON.stringify(x)); sessionStorage.setItem('__gcInitFait', '1'); } } catch { /* stockage indisponible */ } },
+  fn: (x) => { try { if (!sessionStorage.getItem('__gcInitFait')) { localStorage.setItem('gc:reglages:v4', JSON.stringify(x)); sessionStorage.setItem('__gcInitFait', '1'); } } catch { /* stockage indisponible */ } },
   arg: { v: 1, ...r },
 });
 

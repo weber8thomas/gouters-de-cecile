@@ -3,6 +3,7 @@ import { LazyMotion, domMax, m, useTransform } from '../../lib/motion';
 import { flammeBougie, useFeu } from '../../lib/feu';
 import { assetInfo, cssUrl } from '../../lib/assets';
 import { useSettings } from '../../lib/settings';
+import { zoomLivre } from '../../lib/camera';
 import tracee from './tracee.json';
 import './Lumiere.css';
 
@@ -147,13 +148,14 @@ function LumiereTracee() {
         {ETATS.map((e) => {
           const nom = e === 'vide' ? 'vide' : `${distance}-${e}`;
           if (!assetInfo(`lumiere/${nom}`)) return null;
+          // le livre rendu à l'échelle 1 : ses calques suivent le zoom fin de la caméra (même centre)
           return (
-            <div key={e} className="gc-lumiere-tracee" data-gc-lumiere-etat={e}>
+            <m.div key={e} className="gc-lumiere-tracee" data-gc-lumiere-etat={e} style={e === 'vide' ? undefined : { scale: zoomLivre }}>
               {/* au-delà des calques (téléphone, tablette) : PenombreTable, sur la table */}
               <div className="gc-lumiere-tracee__fond" style={{ ...boite, backgroundImage: cssUrl(`lumiere/${nom}`) }} />
               <m.div className="gc-lumiere-tracee__voile" data-gc-lumiere="feu" style={{ ...boite, backgroundImage: cssUrl(`lumiere/${nom}-feu`), opacity: feuOp }} />
               <m.div className="gc-lumiere-tracee__voile" data-gc-lumiere="bougie" style={{ ...boite, backgroundImage: cssUrl(`lumiere/${nom}-bougie`), opacity: bougieOp }} />
-            </div>
+            </m.div>
           );
         })}
       </div>

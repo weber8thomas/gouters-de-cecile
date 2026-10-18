@@ -33,7 +33,7 @@ export interface CarnetProps {
   coteInitial?: 'gauche' | 'droite';
 }
 
-const CLE_CAMERA = 'gc:camera:v2';
+const CLE_CAMERA = 'gc:camera:v3';
 
 /** Sur un écran tactile, le cran par défaut est « proche » (s'il n'a jamais été réglé). */
 function cranTactileParDefaut(tactile: boolean): void {
