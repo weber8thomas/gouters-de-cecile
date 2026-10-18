@@ -263,7 +263,7 @@ export function ornementsDe(id: string, cp: CartePage, g: Grille, cote: 'gauche'
     for (const [cy] of essais) {
       if (libre(g, [cx - d - 12, cy - 22, cx + d + 12, cy + 22])) {
         const coul = enRvb(cible[cible.length - 1].c, encre);
-        out.push({ chemins: frise(cx, cy, d), duree: 2.6, couleur: coul, largeur: 2.6 });
+        out.push({ chemins: frise(cx, cy, d), duree: 2.6, couleur: coul, largeur: 3 });
         break;
       }
     }
@@ -284,7 +284,7 @@ export function ornementsDe(id: string, cp: CartePage, g: Grille, cote: 'gauche'
     const r: Rect = [Math.min(cx, cx + ex * T), Math.min(cy, cy + ey * T), Math.max(cx, cx + ex * T), Math.max(cy, cy + ey * T)];
     r[0] = Math.max(9, r[0]); r[1] = Math.max(9, r[1]); r[2] = Math.min(PAGE_W - 9, r[2]); r[3] = Math.min(PAGE_H - 9, r[3]);
     if (!libre(g, r)) continue;
-    out.push({ chemins: coin(cx, cy, ex, ey, T), duree: 2.2, couleur: encre, largeur: 2.1 });
+    out.push({ chemins: coin(cx, cy, ex, ey, T), duree: 2.2, couleur: encre, largeur: 2.6 });
     n++;
   }
   return out;

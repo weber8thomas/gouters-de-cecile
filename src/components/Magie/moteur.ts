@@ -137,6 +137,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   let lueurBord: { x: number; y0: number; y1: number } | null = null;
   const apex: Record<'gauche' | 'droite', { x: number; y: number } | null> = { gauche: null, droite: null };
   let ouverture = false; // la couverture s'ouvre : gerbe plus généreuse
+  let feuParti = false; // le feu d'artifice de cette ouverture est parti
   let opPose = 0; // opacité de ce qui est posé sur les pages (ornements, pas, paraphes)
   let poussiereVue = true;
   let cachee = false; // loupe
@@ -303,9 +304,9 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     lueur = Math.min(1, Math.max(lueur, ad / Math.max(1e-3, dt) / 1500));
     lueurBord = b;
     if (ad < 0.3) return;
-    const dens = (tactile ? 0.17 : 0.27) * (ouverture ? 2.3 : 1);
+    const dens = (tactile ? 0.22 : 0.34) * (ouverture ? 2.1 : 1);
     reste += ad * dens;
-    const n = Math.min(tactile ? 22 : 40, Math.floor(reste));
+    const n = Math.min(tactile ? 26 : 48, Math.floor(reste));
     reste -= Math.floor(reste);
     const v = dx / Math.max(1e-3, dt);
     for (let i = 0; i < n; i++) {
@@ -314,6 +315,15 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       const y = b.y0 + (b.y1 - b.y0) * clamp(u, 0, 1);
       const x = avant_.x + dx * Math.random();
       etincelle(x, y, v * (0.06 + 0.14 * Math.random()) + (Math.random() - 0.5) * 60, (Math.random() - 0.62) * 80, ouverture ? 1.15 : 1);
+    }
+    // le sillage : une poussière d'or fine qui reste un instant en l'air derrière le bord, et ondoie
+    const nd = Math.min(tactile ? 12 : 24, Math.round(ad * (tactile ? 0.13 : 0.2) * (ouverture ? 1.6 : 1)));
+    for (let i = 0; i < nd; i++) {
+      grains.ajouter({
+        x: avant_.x + dx * Math.random(), y: b.y0 + (b.y1 - b.y0) * Math.random(),
+        vx: v * 0.03 + (Math.random() - 0.5) * 24, vy: -8 - Math.random() * 22,
+        vie: 0.9 + Math.random() * 1.1, taille: 2.6 + Math.random() * 2.6, frein: 2.4, grav: -5, ondule: 9, lum: 0.5 + Math.random() * 0.35,
+      });
     }
   }
 
@@ -355,6 +365,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
 
   /** Un petit feu d'artifice d'or, sobre : trois fusées montent du livre qui s'ouvre et éclatent en étoile au-dessus. */
   function feuDArtifice(g: GeoMagie): void {
+    feuParti = true;
     const centres: [number, number, number][] = [
       [g.bookX + g.W * 0.55, g.bookY + g.H * 0.3, 0],
       [g.bookX + g.W * 1.45, g.bookY + g.H * 0.26, 0.32],
@@ -521,6 +532,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       if (d.phase === 'debut' && d.type === 'couverture') {
         const T = L.tour.current;
         ouverture = !!T && T.couverture && T.but === 1;
+        feuParti = false;
       }
       if (d.phase === 'debut' && d.type === 'fondu' && g && reduit()) scintillement(g, tactile ? 10 : 16);
       return;
@@ -531,7 +543,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     if ((d.type === 'page' || d.type === 'couverture') && g && dernierTour && !reduit()) {
       const pv = L.p.get();
       bouffeeDePose(bordLibre(dernierTour, pv, g), g);
-      if (d.type === 'couverture' && dernierTour.couverture && pv > 0.97) feuDArtifice(g);
+      if (d.type === 'couverture' && dernierTour.couverture && pv > 0.97 && !feuParti) feuDArtifice(g);
     } else if (d.type === 'couverture' && g && reduit() && L.p.get() > 0.97) scintillement(g, tactile ? 12 : 20);
     if (d.type === 'couverture') ouverture = false;
     mesureDue = Math.min(mesureDue, 0.08);
@@ -670,9 +682,12 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     if (g && !lent) {
       if (T) {
         dernierTour = { sens: T.sens, couverture: T.couverture, arriere: T.arriere, but: T.but };
-        const b = bordLibre(T, L.p.get(), g);
+        const pv = L.p.get();
+        const b = bordLibre(T, pv, g);
         if (bordAvant) gerbeDuBord(b, bordAvant, dt);
         bordAvant = b;
+        // la couverture arrive à gauche : le feu d'artifice part (la caméra, elle, recule encore)
+        if (ouverture && !feuParti && T.couverture && pv > 0.82) { feuParti = true; feuDArtifice(g); }
       } else bordAvant = null;
       gerbeDuCoin(g, dt);
     }
