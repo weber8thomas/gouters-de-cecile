@@ -33,6 +33,8 @@ export class Poussiere {
   fy = 800;
   /** Éclat d'une flambée (0 à 1), qui retombe. */
   eclat = 0;
+  /** Grossissement à l'écran (comme Grains.grossir). */
+  grossir = 1;
 
   constructor(n: number) {
     this.n = n;
@@ -114,7 +116,7 @@ export class Poussiere {
       let e = l * vie * sc * feu;
       if (this.flou[i]) e *= 0.22;
       if (e < 0.012) continue;
-      o = point(buf, o, this.x[i], this.y[i], this.taille[i], GENRE.halo, e, 0.8 * e, 0.5 * e, 0, 0);
+      o = point(buf, o, this.x[i], this.y[i], this.taille[i] * this.grossir, GENRE.halo, e, 0.8 * e, 0.5 * e, 0, 0);
     }
     return o;
   }

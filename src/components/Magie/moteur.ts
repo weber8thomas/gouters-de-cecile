@@ -170,6 +170,8 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     const h = Math.max(1, Math.round(SCENE_H * k));
     if (Math.abs(toile.width - w) > 2 || Math.abs(toile.height - h) > 2) { toile.width = w; toile.height = h; }
     k = toile.width / SCENE_W;
+    // sur un petit écran la scène est très réduite (téléphone couché : q ≈ 0,36) : l'or l'est moins
+    grains.grossir = poussiere.grossir = clamp(Math.sqrt(0.95 / q), 1, 1.7);
     // la flamme : dans la scène (hors caméra), ramenée dans le repère de la toile
     const scene = toile.closest('.gc-stage') as HTMLElement | null;
     if (scene && scene.offsetWidth > 0) {
@@ -285,13 +287,13 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
 
   // ---- Les gerbes ------------------------------------------------------------------------------------
   function etincelle(x: number, y: number, vx: number, vy: number, gros = 1): void {
-    const etoile = Math.random() < 0.08;
+    const etoile = Math.random() < 0.11;
     grains.ajouter({
       x, y, vx, vy,
-      vie: 0.6 + Math.random() * 0.9,
-      taille: (etoile ? 12 + Math.random() * 10 : 2.6 + Math.random() * 5.2) * gros,
+      vie: 0.7 + Math.random() * 1.0,
+      taille: (etoile ? 16 + Math.random() * 14 : 4.2 + Math.random() * 7) * gros,
       grav: 38, frein: 2.1, etoile, trainee: !etoile && Math.random() < 0.55,
-      ondule: Math.random() < 0.3 ? 16 : 0, lum: 0.7 + Math.random() * 0.55,
+      ondule: Math.random() < 0.3 ? 16 : 0, lum: 0.75 + Math.random() * 0.5,
     });
   }
 
@@ -346,38 +348,62 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       grains.ajouter({
         x: b.x + sens * Math.random() * 6, y,
         vx: sens * (50 + Math.random() * 140), vy: -15 - Math.random() * 35,
-        vie: 0.5 + Math.random() * 0.7, taille: 2.4 + Math.random() * 3.6, frein: 2.6, grav: 20, trainee: true, lum: 0.8,
+        vie: 0.5 + Math.random() * 0.7, taille: 3.4 + Math.random() * 4.2, frein: 2.6, grav: 20, trainee: true, lum: 0.85,
       });
     }
   }
 
-  /** Un petit feu d'artifice d'or, sobre : trois gerbes en étoile au-dessus du livre qui s'ouvre. */
+  /** Un petit feu d'artifice d'or, sobre : trois fusées montent du livre qui s'ouvre et éclatent en étoile au-dessus. */
   function feuDArtifice(g: GeoMagie): void {
     const centres: [number, number, number][] = [
       [g.bookX + g.W * 0.55, g.bookY + g.H * 0.3, 0],
-      [g.bookX + g.W * 1.45, g.bookY + g.H * 0.26, 0.3],
-      [g.bookX + g.W, g.bookY + g.H * 0.12, 0.58],
+      [g.bookX + g.W * 1.45, g.bookY + g.H * 0.26, 0.32],
+      [g.bookX + g.W, g.bookY + g.H * 0.12, 0.62],
     ];
+    const MONTEE = 0.38; // s : la fusée monte du pli du livre
     for (const [cx, cy, quand] of centres) {
-      plusTard(quand, () => {
+      // la fusée : une étincelle vive qui monte, une traînée qui retombe derrière elle
+      const x0 = g.bookX + g.W + (cx - g.bookX - g.W) * 0.25;
+      const y0 = g.bookY + g.H * 0.78;
+      const pas = tactile ? 7 : 11;
+      for (let j = 0; j <= pas; j++) {
+        const u = j / pas;
+        const e = 1 - (1 - u) * (1 - u); // elle ralentit en haut
+        plusTard(quand + u * MONTEE, () => {
+          if (reduit()) return;
+          const x = x0 + (cx - x0) * e;
+          const y = y0 + (cy - y0) * e;
+          grains.ajouter({ x, y, vie: 0.22, taille: 12, couleur: ORS[3], lum: 0.9, frein: 0 });
+          grains.ajouter({ x: x + (Math.random() - 0.5) * 4, y, vx: (Math.random() - 0.5) * 30, vy: 20 + Math.random() * 30, vie: 0.5 + Math.random() * 0.4, taille: 3.5 + Math.random() * 2.5, grav: 60, frein: 2, lum: 0.85 });
+        });
+      }
+      plusTard(quand + MONTEE, () => {
         if (reduit()) return;
-        grains.ajouter({ x: cx, y: cy, vie: 0.4, taille: 70, couleur: ORS[3], lum: 0.55, frein: 0 });
-        const n = tactile ? 34 : 60;
+        grains.ajouter({ x: cx, y: cy, vie: 0.45, taille: 120, couleur: ORS[3], lum: 0.6, frein: 0 });
+        grains.ajouter({ x: cx, y: cy, vie: 0.7, taille: 46, etoile: true, enveloppe: 1, couleur: ORS[3], frein: 0, lum: 1 });
+        const n = tactile ? 40 : 72;
         for (let i = 0; i < n; i++) {
-          const a = (i / n) * Math.PI * 2 + Math.random() * 0.2;
-          const v = 150 + Math.random() * 110;
+          const a = (i / n) * Math.PI * 2 + Math.random() * 0.15;
+          const v = 220 + Math.random() * 170;
           grains.ajouter({
             x: cx, y: cy, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 30,
-            vie: 1.1 + Math.random() * 0.7, taille: 2.8 + Math.random() * 3, grav: 110, frein: 1.7, trainee: true,
-            couleur: unOr(Math.random() * 0.8), lum: 0.95,
+            vie: 1.3 + Math.random() * 0.8, taille: 4.5 + Math.random() * 3.5, grav: 90, frein: 1.5, trainee: true,
+            couleur: unOr(Math.random() * 0.8), lum: 1,
           });
         }
-        // crépitement : des étoiles qui s'allument là où la gerbe retombe
-        plusTard(0.75, () => {
-          for (let i = 0; i < (tactile ? 7 : 12); i++) {
+        // une pluie de paillettes qui retombe en feuille morte, puis un crépitement d'étoiles
+        plusTard(0.55, () => {
+          for (let i = 0; i < (tactile ? 14 : 26); i++) {
             const a = Math.random() * Math.PI * 2;
-            const r = 70 + Math.random() * 110;
-            grains.ajouter({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r + 40, vy: 18, vie: 0.45 + Math.random() * 0.4, taille: 10 + Math.random() * 8, etoile: true, enveloppe: 1, frein: 1, lum: 0.9 });
+            const r = Math.sqrt(Math.random()) * 170;
+            grains.ajouter({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r * 0.8 + 30, vy: 22 + Math.random() * 18, vie: 1.5 + Math.random() * 1.1, taille: 3.5 + Math.random() * 3, grav: 10, frein: 1, ondule: 20, lum: 0.9 });
+          }
+        });
+        plusTard(0.8, () => {
+          for (let i = 0; i < (tactile ? 8 : 15); i++) {
+            const a = Math.random() * Math.PI * 2;
+            const r = 90 + Math.random() * 140;
+            grains.ajouter({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r + 50, vy: 18, vie: 0.45 + Math.random() * 0.45, taille: 14 + Math.random() * 10, etoile: true, enveloppe: 1, frein: 1, lum: 0.95 });
           }
         });
       });
@@ -398,7 +424,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     for (let i = 0; i < n; i++) {
       const a = Math.random() * Math.PI * 2;
       const v = (35 + Math.random() * 85) * force;
-      grains.ajouter({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 20, vie: 0.45 + Math.random() * 0.5, taille: 2.4 + Math.random() * 3.4, frein: 3, grav: 15, lum: 0.9 });
+      grains.ajouter({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 20, vie: 0.45 + Math.random() * 0.5, taille: 3.4 + Math.random() * 4, frein: 3, grav: 15, lum: 0.9 });
     }
     grains.ajouter({ x, y, vie: 0.6, taille: 18 + 6 * force, etoile: true, enveloppe: 1, frein: 0, lum: 0.9 });
   }
@@ -843,7 +869,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       lier(c, R, bTrait, [['a_p', 2], ['a_d', 3]]);
       c.uniform1f(R.unif.u_lum, 1);
       c.uniform1f(R.unif.u_t, 1);
-      c.uniform1f(R.unif.u_op, lueur * (ouverture ? 0.42 : 0.3));
+      c.uniform1f(R.unif.u_op, lueur * (ouverture ? 0.6 : 0.45));
       c.drawArrays(c.TRIANGLES, 0, 6);
       c.uniform1f(R.unif.u_lum, 0);
     }

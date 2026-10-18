@@ -22,12 +22,17 @@ float s=a_t*u_k;gl_PointSize=clamp(s,1.,u_max);
 v_c=a_c*min(1.,s*s/2.25);v_g=a_g;v_r=a_r;v_px=gl_PointSize;}`;
 
 // halo : cœur chaud et lueur douce ; étoile : quatre rayons fins ; pas : semelle et talon, tournés.
+// La lumière seule (additive) blanchit sur le papier clair et s'y perd : l'or a aussi un corps, un
+// pigment d'or profond qui couvre un peu (alpha), sous sa lumière ; il se voit sur la page comme sur la table.
 const FS_POINTS = `precision mediump float;
 varying vec4 v_c;varying float v_g;varying float v_r;varying float v_px;
 void main(){vec2 q=gl_PointCoord*2.-1.;float d2=dot(q,q);
-if(v_g<.5){gl_FragColor=v_c*(exp(-d2*5.)*.5+exp(-d2*26.));}
-else if(v_g<1.5){float r=exp(-abs(q.x)*20.-q.y*q.y*2.6)+exp(-abs(q.y)*20.-q.x*q.x*2.6);
-gl_FragColor=v_c*(exp(-d2*34.)*1.3+exp(-d2*7.)*.25+r*.75);}
+float e=min(1.,max(v_c.r,max(v_c.g,v_c.b)));vec3 pig=v_c.rgb*vec3(.74,.5,.17);
+if(v_g<.5){float c=exp(-d2*22.);float h=exp(-d2*4.5);float p=c*.85+h*.24;
+gl_FragColor=vec4(pig*p+v_c.rgb*(c*.7+h*.3),min(.9,p)*e);}
+else if(v_g<1.5){float r=exp(-abs(q.x)*16.-q.y*q.y*2.4)+exp(-abs(q.y)*16.-q.x*q.x*2.4);
+float c=exp(-d2*30.);float p=c*1.1+r*.55+exp(-d2*6.)*.18;
+gl_FragColor=vec4(pig*p+v_c.rgb*(c*1.4+exp(-d2*7.)*.3+r*.8),min(.9,p)*e);}
 else{float c=cos(v_r),s=sin(v_r);vec2 u=vec2(c*q.x+s*q.y,-s*q.x+c*q.y);
 float a1=length((u-vec2(0.,-.3))/vec2(.3,.5))-1.;float a2=length((u-vec2(0.,.58))/vec2(.23,.24))-1.;
 float d=min(a1*.3,a2*.23);float aa=1.6/v_px;float a=1.-smoothstep(-aa,aa,d);
@@ -43,14 +48,14 @@ void main(){vec2 s=u_page.xy+a_p*u_page.z;vec2 c=s/u_scene*2.-1.;gl_Position=vec
 v_d=vec3(a_d.x,a_d.y,a_d.z*u_page.z*u_k);v_q=a_p;}`;
 
 // Encre : bord net anticrénelé, grain du papier, or humide à la pointe qui sèche en encre (u_sec = 0 :
-// reste d'or, pour un paraphe de lumière). Lumière (u_lum = 1) : profil doux, additif.
+// reste d'or, pour un paraphe de lumière). Lumière (u_lum = 1) : profil doux, or couvrant et additif.
 const FS_TRAITS = `precision mediump float;
 varying vec3 v_d;varying vec2 v_q;
 uniform float u_t;uniform float u_dur;uniform float u_op;uniform float u_lum;uniform float u_sec;
 uniform vec3 u_encre;uniform vec3 u_or;
 float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
 void main(){if(v_d.y>u_t)discard;
-if(u_lum>.5){float a=exp(-v_d.x*v_d.x*3.2)*u_op;gl_FragColor=vec4(u_or*a,0.);return;}
+if(u_lum>.5){float a=exp(-v_d.x*v_d.x*3.2)*u_op;gl_FragColor=vec4(u_or*vec3(.78,.55,.2)*a*.6+u_or*a*.7,a*.5);return;}
 float e=1.-abs(v_d.x);float aa=1./max(v_d.z,.6);float a=smoothstep(0.,aa*1.5,e);
 float age=(u_t-v_d.y)*u_dur;float m=mix(1.,exp(-age*1.6),u_sec);
 a*=(.8+.2*h(floor(v_q*1.3)))*u_op;
