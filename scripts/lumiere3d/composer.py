@@ -15,12 +15,15 @@ Les calques sont en demi-définition (1 px pour 2 px de scène) et débordent de
 l'écran ; src/components/Lumiere/tracee.json donne leur boîte et, au-delà, la couleur de leur bord.
 
   tools/ecriture/.venv/bin/python scripts/lumiere3d/composer.py <rendus> [--apercu <capture.png> <etat> <sortie.png>]
+  python3 scripts/lumiere3d/composer.py --retoucher-cuisson [--seulement moyenne-ouvert]
 """
 from __future__ import annotations
 
 import json
 import os
 import sys
+import zipfile
+import hashlib
 
 import numpy as np
 from PIL import Image
@@ -42,11 +45,20 @@ BLANC_BOUGIE = 0.3                          # balance des blancs sur la bougie :
 BLANC = 0.6                                 # balance des blancs sur le feu (0 : aucune, 1 : complète)
 VIGNETTE = 0.22                             # assombrissement optique aux coins de l'écran
 LUM = np.array([0.2126, 0.7152, 0.0722], np.float32)
+SOURCES = os.path.join(os.path.dirname(__file__), 'calques-cycles-v1.zip')
+LIVRES = {'proche': (252, 40, 708, 1000), 'moyenne': (280, 60, 680, 960), 'loin': (331, 96, 629, 888)}
+PAPIER = np.array((0.822, 0.701, 0.477), np.float32)
+TOILE = np.array((0.181, 0.267, 0.170), np.float32)
 
 
 def enc(x):
     x = np.clip(x, 0, 1)
     return np.where(x <= 0.0031308, 12.92 * x, 1.055 * np.power(x, 1 / 2.4) - 0.055)
+
+
+def dec(x):
+    x = np.clip(x, 0, 1)
+    return np.where(x <= 0.04045, x / 12.92, ((x + 0.055) / 1.055) ** 2.4)
 
 
 def lire(rendus: str, etat: str):
@@ -144,15 +156,109 @@ def etat(rendus: str, nom: str, N, wb):
     vg = vignette(*B.shape[:2])
     T = lambda m: B * eclairage(L, N, wb, m, B, vg)
     haut = T({})
-    return {
+    return retoucher({
         '': calque(haut, B),
         'bougie': voile(haut, T({'bougie': BAS['bougie']}), B),
         'feu': voile(haut, T({'feu': BAS['feu']}), B),
-    }
+    }, nom)
+
+
+def retoucher(calques, nom):
+    """Transport Cycles sur le vrai livre, sans dessiner une deuxième arête de carton.
+
+    Combined / DiffCol contient le biseau spéculaire du modèle simplifié. Ce biseau n'est pas une
+    lumière réutilisable sur une autre texture : il doublait les chants déjà cuits dans la couverture.
+    Sur les 28 px de repli, on prolonge donc l'éclairement diffus de la surface voisine. Les ombres
+    portées sur le bois restent intactes. La contribution bougie reste celle de Cycles (-bougie),
+    simplement plus présente sur le papier, avec un plafond à l'albédo pour garder l'encre sombre.
+    """
+    if nom == 'vide':
+        return calques
+    cran, pose = nom.split('-')
+    bx, by, w, h = LIVRES[cran]
+    if pose == 'ouvert':
+        x0, x1, y0, y1 = bx, 960 + w, by, by + h
+        B = PAPIER
+    elif pose == 'couverture':
+        x0, x1, y0, y1 = 960 - w / 2, 960 + w / 2 + 28, by - 12, by + h + 26
+        B = TOILE
+    else:
+        x0, x1, y0, y1 = 960 - w / 2 - 28, 960 + w / 2, by - 12, by + h + 26
+        B = TOILE
+    fond = calques[''].copy()
+    bougie = calques['bougie'].copy()
+    feu = calques['feu'].copy()
+    yy, xx = np.mgrid[:fond.shape[0], :fond.shape[1]]
+    sx, sy = xx * ECHELLE - MARGE, yy * ECHELLE - MARGE
+    surface = (sx >= x0) & (sx <= x1) & (sy >= y0) & (sy <= y1)
+    Bs = enc(B)
+    haut = (1 - fond[..., 3:]) * Bs + fond[..., :3] * fond[..., 3:]
+    # -bougie est l'écart réellement tracé entre une source à 100 % et à 50 %. En doubler la
+    # contribution élargit sa lumière sur la page, sans inventer un halo ni agrandir la flamme.
+    apport = 1 - (1 - bougie[..., 3:]) ** 2.2
+    eclaire = np.minimum(Bs, haut * (1 + 1.45 * apport))
+    fond[surface] = calque(dec(eclaire), np.broadcast_to(B, fond.shape[:2] + (3,)))[surface]
+    bougie[surface, 3] = np.minimum(0.3, bougie[surface, 3] * 1.22)
+    if pose == 'ouvert':
+        # Le carton visible et le dessus des pages ne sont pas le même matériau. On transporte
+        # l'illumination, pas les couleurs RGBA du papier, jusqu'au bord du carton.
+        anneau = (sx >= x0 - 28) & (sx <= x1 + 28) & (sy >= y0 - 12) & (sy <= y1 + 26) & ~surface
+        ix = np.clip(xx, int((x0 + MARGE + 8) / ECHELLE), int((x1 + MARGE - 8) / ECHELLE))
+        iy = np.clip(yy, int((y0 + MARGE + 8) / ECHELLE), int((y1 + MARGE - 8) / ECHELLE))
+        voisin = fond[iy, ix]
+        Tp = (1 - voisin[..., 3:]) * enc(PAPIER) + voisin[..., :3] * voisin[..., 3:]
+        transport = np.minimum(1, dec(Tp) / PAPIER)
+        bord = calque(TOILE * transport, np.broadcast_to(TOILE, transport.shape))
+        fond[anneau] = bord[anneau]
+        bougie[anneau] = bougie[iy, ix][anneau]
+        feu[anneau] = feu[iy, ix][anneau]
+    else:
+        # Le biseau fermé est aussi dessiné dans l'image de couverture : son transport doit venir
+        # du plat voisin, et non d'un reflet du petit modèle 3D.
+        bord = surface & ((sx < x0 + 14) | (sx > x1 - 14) | (sy < y0 + 14) | (sy > y1 - 14))
+        ix = np.clip(xx, int((x0 + MARGE + 16) / ECHELLE), int((x1 + MARGE - 16) / ECHELLE))
+        iy = np.clip(yy, int((y0 + MARGE + 16) / ECHELLE), int((y1 + MARGE - 16) / ECHELLE))
+        for c in (fond, bougie, feu):
+            c[bord] = c[iy, ix][bord]
+    return {'': fond, 'bougie': bougie, 'feu': feu}
+
+
+def retoucher_cuisson(seulement=None):
+    """Reproductible sans les 332 Mo de passes EXR : toujours relire les originaux, jamais la sortie.
+
+    L'archive contient les trente calques Cycles v1 suivis avant cette correction. Relancer cette
+    commande est idempotent. Les prochains rendus passent par la même fonction retoucher().
+    """
+    import io
+    geo = json.load(open(GEO))
+    with zipfile.ZipFile(SOURCES) as sources:
+        empreintes = json.loads(sources.read('manifest.json'))
+        for f, attendu in empreintes.items():
+            if hashlib.sha256(sources.read(f)).hexdigest() != attendu:
+                raise ValueError(f'calque source altéré : {f}')
+        noms = sorted(n[:-5] for n in sources.namelist() if n.endswith('.webp') and not n.endswith(('-bougie.webp', '-feu.webp')))
+        if seulement:
+            noms = [n for n in noms if n in seulement]
+        for nom in noms:
+            cs = {}
+            for suffixe in ('', 'bougie', 'feu'):
+                f = f'{nom}-{suffixe}.webp' if suffixe else f'{nom}.webp'
+                cs[suffixe] = np.asarray(Image.open(io.BytesIO(sources.read(f))).convert('RGBA'), np.float32) / 255
+            for suffixe, c in retoucher(cs, nom).items():
+                f = f'{nom}-{suffixe}.webp' if suffixe else f'{nom}.webp'
+                Image.fromarray(octets(c), 'RGBA').save(os.path.join(DEST, f), 'WEBP', quality=90, method=4)
+            print(nom, flush=True)
+    geo['revision'] = 'diffus-cartons-bougie-v2'
+    with open(GEO, 'w') as f:
+        json.dump(geo, f, indent=1)
 
 
 def main():
     args = sys.argv[1:]
+    if '--retoucher-cuisson' in args:
+        seulement = args[args.index('--seulement') + 1].split(',') if '--seulement' in args else None
+        retoucher_cuisson(seulement)
+        return
     rendus = args[0]
     N, chroma = normes(rendus)
     wb = chroma ** BLANC
@@ -162,7 +268,7 @@ def main():
         apercu(etat(rendus, nom, N, wb), capture, sortie)
         return
     os.makedirs(DEST, exist_ok=True)
-    geo = {'marge': MARGE, 'echelle': ECHELLE, 'bords': {}}
+    geo = {'marge': MARGE, 'echelle': ECHELLE, 'bords': {}, 'revision': 'diffus-cartons-bougie-v2'}
     etats = sorted(d for d in os.listdir(rendus) if os.path.isfile(os.path.join(rendus, d, 'feu.npy')))
     for nom in etats:
         for suffixe, c in etat(rendus, nom, N, wb).items():

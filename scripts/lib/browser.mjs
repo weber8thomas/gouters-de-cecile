@@ -3,6 +3,7 @@ import { chromium } from 'playwright';
 import { existsSync } from 'node:fs';
 
 export async function launch() {
+  if (process.env.GC_CHROME) return chromium.launch({ executablePath: process.env.GC_CHROME });
   try {
     return await chromium.launch();
   } catch (e) {

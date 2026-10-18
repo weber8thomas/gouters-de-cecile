@@ -8,29 +8,31 @@
 //   films     planches de films en temps réel (une image toutes les ~0,3 s) de scènes de marionnettes :
 //             la scène est lancée (window.__gcDessins.scene), les images sont prises pendant qu'elle joue ;
 //   creature  une créature arrive, se pose ; on la touche, elle s'envole (planche de la double page) ;
-//   iphone    iPhone 13 couché (844 × 390, dpr 3, tactile) : les toiles jouent, le temps avance, un doigt
-//             qui glisse sur une aquarelle la bombe, une tape lance sa scène ; captures.
+//   iphone    iPhone 13 couché (844 × 390, dpr 3, tactile) : les toiles jouent, le temps avance ;
+//             une tape lance sa scène ; captures.
+//   autonomie aucune entrée : scènes spontanées, horloge proportionnelle à la vitesse,
+//             pause hors vue / onglet masqué, images fixes avec mouvement réduit.
 // Sorties : verification/out/dessins (planches film-*.png, page-*.png, iphone-*.png, dessins.json).
 //
 //   node scripts/verify-dessins.mjs [--site dist/site | --carnet [--bundle dist/ds/components]]
-//        [--suites pages,films,creature,iphone] [--films cupcake-bougie,…] [--out verification/out/dessins]
+//        [--url http://127.0.0.1:5173] [--suites pages,films,creature,iphone,autonomie] [--films cupcake-bougie,…] [--out verification/out/dessins]
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { ROOT, lireArgs, ecran, lancer, ouvrirCible, ouvrirPage as ouvrir, Rapport, rel, toucher, glisser, attendre, ARGS_GPU } from './lib/verif.mjs';
+import { ROOT, lireArgs, ecran, lancer, ouvrirCible, ouvrirPage as ouvrir, Rapport, rel, toucher, attendre, initReglages, ARGS_GPU } from './lib/verif.mjs';
 
 const { opt, liste, drapeau } = lireArgs();
-const suites = liste('suites', 'pages,films,creature,iphone');
+const suites = liste('suites', 'pages,films,creature,iphone,autonomie');
 const out = resolve(ROOT, opt('out', 'verification/out/dessins'));
 mkdirSync(out, { recursive: true });
-const cible = await ouvrirCible(drapeau('carnet') ? { bundle: opt('bundle') } : { site: opt('site', 'dist/site') });
+const cible = await ouvrirCible(opt('url') ? { url: opt('url') } : drapeau('carnet') ? { bundle: opt('bundle') } : { site: opt('site', 'dist/site') });
 const browser = await lancer({ args: ['--use-gl=angle', ...ARGS_GPU, '--ignore-gpu-blocklist', '--mute-audio'], media: false });
 const rapport = new Rapport('dessins', { dir: out });
 const resultats = {};
 
 /** Ouvre le carnet sur une double page (lien profond) et attend le livre ouvert, posé. */
-async function ouvrirPage(b, c, e, hash) {
-  const r = await ouvrir(b, c, e, hash);
+async function ouvrirPage(b, c, e, hash, options = {}) {
+  const r = await ouvrir(b, c, e, hash, options);
   await r.page.waitForFunction(() => {
     const l = document.querySelector('.gc-livre');
     return l?.getAttribute('data-gc-etat') === 'ouvert' && !l.hasAttribute('data-gc-geste');
@@ -178,6 +180,89 @@ if (suites.includes('pages')) {
   }
 }
 
+// ---- autonomie, vitesse, pauses, mouvement réduit ----------------------------------------------------
+if (suites.includes('autonomie')) {
+  const { ctx, page } = await ouvrirPage(browser, cible, TV, '#gateaux');
+  await toilesPretes(page, 1);
+  await page.evaluate(() => { window.__gcDessins?.finir(); window.__gcDessins?.figer(true); });
+  const scenes = new Set();
+  // Le moteur choisit et lance ses scènes : aucun appel à scene(), aucun pointeur ni toucher.
+  for (let k = 0; k < 24; k++) {
+    await page.evaluate(() => window.__gcDessins?.avancer(300));
+    for (const t of await etat(page)) if (t.joue) for (const d of t.dessins) if (d.scene) scenes.add(`${d.nom}/${d.scene}`);
+  }
+  rapport.ajouter(null, '[autonomie] scènes lancées sans entrée', scenes.size ? 'OK' : 'KO', [...scenes].join(' · ') || 'aucune scène en 7,2 s après la peinture');
+  await page.screenshot({ path: join(out, 'tv-autonome.png') });
+  await page.evaluate(() => window.__gcDessins?.figer(false));
+
+  // La vraie boucle doit s'arrêter quand la page perd sa classe de visibilité.
+  const visibles = await page.evaluate(() => {
+    const ps = [...document.querySelectorAll('.gc-livre__page--visible')];
+    ps.forEach((p) => { p.setAttribute('data-gc-test-visible', ''); p.classList.remove('gc-livre__page--visible'); });
+    return ps.length;
+  });
+  await attendre(200);
+  const pauseVue = await etat(page);
+  await attendre(400);
+  const apresVue = await etat(page);
+  const pauses = pauseVue.filter((t) => t.pret);
+  rapport.ajouter(null, '[autonomie] hors vue : horloge arrêtée', visibles > 0 && pauses.length > 0 && pauses.every((t) => !t.joue && apresVue.find((x) => x.page === t.page)?.horloge === t.horloge) ? 'OK' : 'KO', `${visibles} pages masquées ; ${pauses.map((t) => `${t.page} ${t.horloge} ms`).join(' · ')}`);
+  await page.evaluate(() => document.querySelectorAll('[data-gc-test-visible]').forEach((p) => { p.classList.add('gc-livre__page--visible'); p.removeAttribute('data-gc-test-visible'); }));
+  await attendre(200);
+
+  // Visibilité de document simulée : vérifie le gestionnaire, sans dépendre du focus de Chromium headless.
+  await page.evaluate(() => {
+    Object.defineProperty(document, 'hidden', { configurable: true, get: () => true });
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  const pauseOnglet = await etat(page);
+  await attendre(400);
+  const apresOnglet = await etat(page);
+  rapport.ajouter(null, '[autonomie] onglet masqué : horloge arrêtée', pauseOnglet.length > 0 && pauseOnglet.every((t) => !t.joue && apresOnglet.find((x) => x.page === t.page)?.horloge === t.horloge) ? 'OK' : 'KO', 'document.hidden simulé, événement visibilitychange');
+  await page.evaluate(() => { delete document.hidden; document.dispatchEvent(new Event('visibilitychange')); });
+  await page.waitForFunction((avant) => (window.__gcDessins?.etat() ?? []).some((t) => t.joue && t.horloge > (avant.find((x) => x.page === t.page)?.horloge ?? Infinity)), apresOnglet, { timeout: 10000, polling: 100 }).catch(() => {});
+  const reprise = await etat(page);
+  rapport.ajouter(null, '[autonomie] retour visible : reprise', reprise.some((t) => t.joue && t.horloge > (apresOnglet.find((x) => x.page === t.page)?.horloge ?? Infinity)) ? 'OK' : 'KO', reprise.map((t) => `${t.page} : joue=${t.joue}, ${apresOnglet.find((x) => x.page === t.page)?.horloge} → ${t.horloge} ms`).join(' · '));
+  resultats.autonomie = { scenes: [...scenes], reprise };
+  await ctx.close();
+
+  const avances = [];
+  for (const vitesse of [0.5, 2]) {
+    const { ctx: c, page: p } = await ouvrirPage(browser, cible, TV, '#gateaux', { init: [initReglages({ vitesseAnimations: vitesse })] });
+    await toilesPretes(p, 1);
+    await p.evaluate(() => window.__gcDessins?.figer(true));
+    const a = await etat(p);
+    await p.evaluate(() => window.__gcDessins?.avancer(1000));
+    const b = await etat(p);
+    const t = b.find((x) => x.pret && x.joue);
+    const delta = t ? t.horloge - (a.find((x) => x.page === t.page)?.horloge ?? 0) : NaN;
+    avances.push({ vitesse, delta });
+    rapport.ajouter(null, `[autonomie] vitesse ${vitesse * 100} %`, Math.abs(delta - vitesse * 1000) <= 2 ? 'OK' : 'KO', `${delta} ms d'animation pour 1 000 ms demandées`);
+    await c.close();
+  }
+  resultats.vitesse = avances;
+
+  // Préférence système et réglage du carnet : aucun canvas animé, originales visibles dès l'ouverture.
+  for (const [nom, options] of [
+    ['système', { contexteExtra: { reducedMotion: 'reduce' } }],
+    ['réglage', { init: [initReglages({ animations: 'reduites' })] }],
+  ]) {
+    const { ctx: c, page: p } = await ouvrirPage(browser, cible, TV, '#gateaux', options);
+    const fixe = await p.evaluate(() => {
+      const pages = [...document.querySelectorAll('.gc-livre__page--visible')];
+      const images = pages.flatMap((p) => [...p.querySelectorAll('[data-gc-aquarelle] img')]);
+      return {
+        toiles: pages.reduce((n, p) => n + p.querySelectorAll('.gc-aquarelles-toile').length, 0),
+        images: images.length,
+        visibles: images.filter((i) => i.complete && i.naturalWidth > 0 && getComputedStyle(i).visibility === 'visible').length,
+      };
+    });
+    rapport.ajouter(null, `[autonomie] mouvement réduit (${nom}) : dessins fixes`, fixe.toiles === 0 && fixe.images > 0 && fixe.visibles === fixe.images ? 'OK' : 'KO', fixe);
+    await p.screenshot({ path: join(out, `tv-reduit-${nom === 'système' ? 'systeme' : 'reglage'}.png`) });
+    await c.close();
+  }
+}
+
 // ---- films de marionnettes ---------------------------------------------------------------------------
 const FILMS = [
   ['gateaux', 'cupcake-bougie', 'allume', 0.5],
@@ -271,7 +356,7 @@ if (suites.includes('iphone')) {
   await page.screenshot({ path: join(out, 'iphone-peinture.png') });
   rapport.ajouter(null, '[iphone] les toiles jouent et le temps avance', avance ? 'OK' : 'KO',
     e1.map((t, k) => `${t.page} ${t.joue ? 'joue' : 'arrêtée'} ${h0[k]} → ${t.horloge} ms (en 2 s)`).join(' · ') || `aucune toile (${JSON.stringify(e0)})`);
-  // un doigt qui glisse lentement sur le cupcake, puis une tape dessus
+  // Le cupcake vit sans suivre le doigt ; une tape reste un raccourci vers sa scène.
   await page.evaluate(() => window.__gcDessins?.finir());
   await attendre(1500);
   const r = await page.evaluate(() => {
@@ -280,8 +365,7 @@ if (suites.includes('iphone')) {
     return b ? { x: b.left + b.width / 2, y: b.top + b.height * 0.55, w: b.width } : null;
   });
   if (r) {
-    await glisser(page, [r.x - r.w * 0.25, r.y], [r.x + r.w * 0.25, r.y + 4], { ms: 700, n: 14 });
-    await page.screenshot({ path: join(out, 'iphone-doigt.png') });
+    await page.screenshot({ path: join(out, 'iphone-autonome.png') });
     const tourne = await page.evaluate(() => document.querySelector('.gc-livre')?.getAttribute('data-gc-etat'));
     await attendre(600);
     await toucher(page, r.x, r.y);

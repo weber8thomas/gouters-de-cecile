@@ -20,6 +20,7 @@
 //        (vite build dans un dossier à part ; --gen régénère d'abord src/generated/ : gen-entry --target site)
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve, relative, basename } from 'node:path';
+import { createHash } from 'node:crypto';
 import { inventory, siteSeulement } from './assets.mjs';
 import { spawnSync } from 'node:child_process';
 import {
@@ -102,9 +103,12 @@ for (const f of mp4) {
   }
   if (!tuiles.length) R.attente(null, 'encre ×4 (pages/4x/**) dans le site', 'aucune tuile cuite : à relancer après le lot P');
   else {
-    const publies = fichiers.filter((f) => f.endsWith('.webp')).map((f) => ({ nom: basename(f), octets: statSync(f).size }));
-    const manquent = tuiles.filter(([n, a]) => !publies.some((p) => p.nom.startsWith(`${n.split('/').pop()}-`) && p.octets === a.bytes)).map(([n]) => n);
-    R.ok(null, `encre ×4 : ${tuiles.length} tuiles publiées avec le site (même taille)`, !manquent.length, manquent.slice(0, 6).join(', '));
+    // Vite déduplique les images identiques (notamment les tuiles sans encre). Leur nom de sortie
+    // peut donc être celui d'une autre page : vérifier leur contenu, pas une copie par nom logique.
+    const publies = new Set(fichiers.filter((f) => f.endsWith('.webp')).map((f) =>
+      createHash('sha256').update(readFileSync(f)).digest('hex')));
+    const manquent = tuiles.filter(([, a]) => !publies.has(a.sha)).map(([n]) => n);
+    R.ok(null, `encre ×4 : ${tuiles.length} tuiles publiées avec le site (SHA-256, déduplication permise)`, !manquent.length, manquent.slice(0, 6).join(', '));
     R.ok(null, 'encre ×4 : référencée par le JavaScript du site', /baked\/pages\/4x\//.test(texteJs));
   }
 }

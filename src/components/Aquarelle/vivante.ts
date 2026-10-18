@@ -5,19 +5,18 @@
 //
 // À la première arrivée sur la page, chaque aquarelle se dessine toute seule : le crayon trace les traits
 // l'un après l'autre (carte du tracé cuite par scripts/bake-trace-aquarelles.py), puis la couleur s'étend
-// zone par zone depuis leur cœur, front mouillé plus sombre, pigment humide qui sèche.
+// zone par zone depuis leur cœur, en conservant exactement les pigments du dessin cuit.
 // Puis elle vit : elle respire et se balance, et ses parties mobiles (parties.json, cuites par
 // scripts/bake-parties-aquarelles.py) jouent de petites scènes de marionnette (scenes.ts) toutes les 6 à 15 s
 // et au toucher : le couvercle de la théière se soulève et claque, la framboise rebondit, le cookie se
-// casse… Ses effets (effets.ts) : vapeur en volutes, bougies qui vacillent, vent, reflet, miettes et
-// gouttes, ronds dans le café, confettis, fanions qui ondulent. Sous le curseur ou le doigt qui glisse,
-// l'image se bombe et ses parties sont bousculées (ressorts).
+// casse… Ses effets (effets.ts) : vapeur en volutes, bougies qui vacillent, vent, miettes et
+// gouttes, ronds dans le café, confettis, fanions qui ondulent. Ces gestes vivent seuls ;
+// une tape peut les relancer, sans déformer les dessins au passage du pointeur.
 //
 // Les aquarelles cuites sont teintées du papier (bake-aquarelles.py) : la toile se pose simplement sur la
 // page (alpha prémultiplié), sans mode de fusion. 30 images/s au plus, rien quand la page est cachée, le
 // livre en mouvement ou l'onglet masqué. Contexte WebGL perdu : les images fixes reviennent.
 
-import { ecouterPointeur } from '../../lib/pointeur';
 import { facteurAnimations } from '../../lib/vitesse';
 import { EFFETS, SCENES_PAGE, type Effets } from './effets';
 import { REPOS, SCENES, poseNeutre, type Ctx, type Fx } from './scenes';
@@ -86,13 +85,12 @@ uniform vec4 rect;              // l'image dans la boîte : x, y, l, h
 uniform vec2 asp;               // proportions de la boîte (l/h), de l'image (l/h)
 uniform vec4 tp;                // temps (s), peinture (0 à 1), carte du tracé (0/1), nombre de parties
 uniform vec2 tpx;               // un texel de la carte du tracé
-uniform vec3 souris;            // la main dans la boîte (0 à 1), force (0 : absente)
 uniform vec4 gA,gB;             // pose du corps : pivot (x, y), translation ; angle, sx, sy, ploiement
 uniform vec4 pA[${MAX_PARTIES}],pB[${MAX_PARTIES}],pC[${MAX_PARTIES}]; // parties : idem, et pC.x : elle a bougé (0 à 1)
 uniform vec4 vap[${MAX_VAPEUR}];   // vapeur : x, y, largeur, force
 uniform vec4 fl[${MAX_FLAMMES}];   // flammes : x, y, rayon, intensité
 uniform vec4 flv[${MAX_FLAMMES}];  // flammes : penche, fumée
-uniform vec4 ef;                // vent, reflet, nombre de flammes, 0
+uniform vec4 ef;                // vent, 0, nombre de flammes, 0
 uniform vec4 fa;                // fanions : y de la ficelle, creux, force
 uniform vec4 ge,geB;            // gerbe : x, y, largeur, âge ; élan, sol, x, y de la couleur
 uniform vec4 on;                // ondes : x, y, rayon, âge
@@ -169,16 +167,6 @@ void main(){
   vec2 uv=(v-rect.xy)/rect.zw;
   float ai=asp.y;
   vec3 lu=vec3(.3,.59,.11);
-  // la main : sous le curseur ou le doigt, l'image se bombe (loupe douce) et ondule en cercles
-  float o=0.;
-  if(souris.z>0.){
-    vec2 d=(v-souris.xy)*vec2(asp.x,1.);
-    float r=length(d);
-    o=exp(-r*r/.03)*souris.z;
-    float onde=.007*sin(r*50.-t*8.)*exp(-r*5.)*souris.z;
-    vec2 dv=d*(.3*o)+d/(r+.0001)*onde;
-    uv-=vec2(dv.x/asp.x,dv.y)/rect.zw;
-  }
   // fanions : la ficelle ondule (fixe aux deux bouts), chaque fanion se balance sous elle
   if(fa.z>0.){
     float x=clamp(uv.x,0.,1.);
@@ -192,9 +180,8 @@ void main(){
   // pose du corps (saut, balancement, écrasement)
   vec2 q=inv(vec2(uv.x*ai,uv.y),gA,gB);
   vec2 ub0=vec2(q.x/ai,q.y);
-  // le pigment respire : un léger courant dans la couleur
-  vec2 res=.0035*vec2(n(ub0*5.+vec2(t*.13,0.))-.5,n(ub0*5.+vec2(7.,t*.11))-.5);
-  vec2 ub=ub0+res;
+  // Le grain reste ancré au papier : seuls le corps et ses parties se déplacent.
+  vec2 ub=ub0;
   // vent : le haut ploie, le pied reste fixe
   if(ef.x>0.){
     float haut=1.-clamp(ub.y,0.,1.);
@@ -229,75 +216,44 @@ void main(){
     float w=pC[k].x;
     if(w<=0.)continue;
     vec2 qk=inv(q,pA[k],pB[k]);
-    vec2 uk=flam(vec2(qk.x/ai,qk.y)+res);
+    vec2 uk=flam(vec2(qk.x/ai,qk.y));
     if(uk.x<-.5)continue;
     if(abs(ident(uk)-float(k+1))<.5)c=sur(lire(uk)*w,c);
   }
-  // où en est la couleur (la vapeur vient avec elle)
-  float pk=tp.z>.5?clamp((peint-.52)/.48,0.,1.):peint;
+  // Le tracé et le lavis se chevauchent : le dessin reste lisible pendant l'apparition.
+  // On ne retouche jamais la couleur, le contraste ou le grain de l'aquarelle originale.
+  float pk=tp.z>.5?clamp((peint-.26)/.74,0.,1.):peint;
   if(peint<1.&&tp.z>.5){
-    // elle se dessine : le crayon suit la carte du tracé, trait après trait (les 60 premiers %), puis la
-    // couleur s'étend zone par zone depuis leur cœur, front mouillé plus sombre, pigment humide qui sèche
-    float pc=clamp(peint/.6,0.,1.);
+    float pc=clamp(peint/.52,0.,1.);
     float tb=texture2D(carteL,clamp(ub,0.,1.)).b*(255./254.);
-    float f=pk*1.08;
-    float m=1.-smoothstep(f-.06,f,tb);
-    float bord=smoothstep(f-.12,f-.02,tb)*m;
-    float humide=smoothstep(f-.3,f-.04,tb);
-    vec2 e=vec2(.006,.0045)*humide;
-    vec4 flou=(lire(ub+e)+lire(ub-e)+lire(ub+vec2(e.x,-e.y))+lire(ub-vec2(e.x,-e.y)))*.25;
-    c=mix(c,flou,humide*.8);
-    c.rgb*=1.-.3*bord;
+    float front=pk*1.2-.08;
+    float m=1.-smoothstep(front-.14,front+.02,tb);
     c*=m;
     vec2 a=tpx*.35;
     float x1=tc(ub+vec2(-a.x,-a.y)),x2=tc(ub+vec2(a.x,-a.y)),x3=tc(ub+vec2(-a.x,a.y)),x4=tc(ub+a);
     float tr=(trace(x1,pc)+trace(x2,pc)+trace(x3,pc)+trace(x4,pc))*.25;
-    float x=min(min(x1,x2),min(x3,x4));
-    float pointe=tr*(1.-smoothstep(0.,.015,pc-x));
     tr*=.6+.4*n(ub*90.);
-    tr*=1.-.8*m;
-    float al=tr*.62+pointe*.25;
+    float al=tr*.58*(1.-m);
     c=sur(c,vec4(vec3(.32,.29,.27)*pap*al,al));
   } else if(peint<1.){
-    // sans carte : l'esquisse puis la couleur partent du cœur du motif
+    // Sans carte : même lavis, révélé depuis son cœur, sans flou ni surbrillance.
     float k=length((ub-vec2(.5,.56))*vec2(1.,1.15))*.95+fbm(ub*3.2)*.55;
     float fe=clamp(peint/.36,0.,1.)*1.35;
-    float front=clamp((peint-.3)/.66,0.,1.)*1.35;
-    float m=1.-smoothstep(front-.07,front,k);
-    float bord=smoothstep(front-.16,front-.04,k)*m;
-    float humide=smoothstep(front-.4,front-.08,k);
-    vec2 e=vec2(.006,.0045)*humide;
-    vec4 flou=(lire(ub+e)+lire(ub-e)+lire(ub+vec2(e.x,-e.y))+lire(ub-vec2(e.x,-e.y)))*.25;
-    c=mix(c,flou,humide*.8);
-    c.rgb*=1.-.28*bord;
+    float front=clamp((peint-.2)/.8,0.,1.)*1.5-.06;
+    float m=1.-smoothstep(front-.16,front,k);
     c*=m;
     vec2 px=vec2(.0028,.0028*ai);
     vec4 a1=lire(ub+vec2(px.x,0.)),a2=lire(ub-vec2(px.x,0.)),a3=lire(ub+vec2(0.,px.y)),a4=lire(ub-vec2(0.,px.y));
     float g=abs(dot(a1.rgb+1.-a1.a,lu)-dot(a2.rgb+1.-a2.a,lu))+abs(dot(a3.rgb+1.-a3.a,lu)-dot(a4.rgb+1.-a4.a,lu));
     float trait=smoothstep(.05,.22,g)*(1.-smoothstep(fe-.05,fe,k));
-    trait*=.55+.45*n(ub*90.);
-    trait*=1.-m;
+    trait*=(.55+.45*n(ub*90.))*(1.-m);
     c=sur(c,vec4(vec3(.36,.33,.3)*pap*trait*.6,trait*.6));
   }
-  // reflet : une bande claire glisse lentement sur le fruit
-  if(ef.y>0.&&c.a>0.){
-    float b=fract(t/6.);
-    float d=(ub.x*.6+ub.y*.4)-(b*1.8-.4);
-    float band=exp(-d*d/.003)*smoothstep(.2,.6,c.a);
-    c.rgb=mix(c.rgb,vec3(c.a)*pap,band*.42*ef.y);
-  }
-  // sous la main, les couleurs se ravivent
-  if(o>0.){float l=dot(c.rgb,lu);c.rgb=clamp(mix(vec3(l),c.rgb,1.+.7*o),0.,c.a);}
-  // les flammes rayonnent (un lavis orangé qui pulse) ; une fumée monte d'une mèche éteinte
+  // Les flammes gardent leur aquarelle native ; une fumée monte d'une mèche éteinte.
   vec4 s=vec4(0.);
   for(int k=0;k<${MAX_FLAMMES};k++){
     if(float(k)>=ef.z)break;
     vec4 F=fl[k];
-    vec2 f=(ub0-F.xy)/F.z;
-    f.y/=ai;
-    float i=min(F.w,1.6);
-    float g=exp(-dot(f,f)*.12)*(.2+.07*sin(t*6.3+float(k))+.04*sin(t*11.))*i*pk;
-    c=sur(vec4(vec3(.98,.62,.28)*pap*g,g),c);
     if(flv[k].y>0.)s+=volute(vec4(F.x,F.y+F.z*.9,max(F.z*1.6,.07),flv[k].y),ub0,ai)*vec4(.85,.85,.85,1.); // un filet de fumée visible même sur une petite bougie
   }
   // une gerbe (miettes qui tombent, gouttes qui sautent et retombent)
@@ -535,20 +491,10 @@ export interface Toile {
   finir(): void;
   /** Vérification : fige le temps (true), qui n'avance plus que par `avancer`. */
   figer(oui: boolean): void;
-  /** Vérification : fait avancer le temps de `ms`, image par image, et dessine. */
+  /** Vérification : avance la simulation par petits pas, puis dessine l'image finale. */
   avancer(ms: number): void;
   etat(): Record<string, unknown>;
 }
-
-interface Ressort {
-  a: number;
-  va: number;
-  x: number;
-  vx: number;
-  y: number;
-  vy: number;
-}
-const ressort = (): Ressort => ({ a: 0, va: 0, x: 0, vx: 0, y: 0, vy: 0 });
 
 interface Sprite {
   d: DessinPage;
@@ -574,9 +520,6 @@ interface Sprite {
   scene: { nom: string; debut: number; h: number } | null;
   prochaine: number;
   rang: number;
-  ressorts: Ressort[];
-  penche: Ressort;
-  main: { x: number; y: number; f: number; cible: number; bouge: number };
 }
 
 const AMORCE = 1500; // ms : la première scène après la peinture
@@ -594,7 +537,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
   const A = opts.aspect;
   const essaim: Essaim | null = essaimDe(opts.double);
   let attache = false;
-  const micro = opts.douce ? 0.3 : 1;
+  const micro = opts.douce ? 0 : 1;
 
   // ---- placement : la boîte de chaque aquarelle, son image « contain » dans la zone ----
   for (const d of [...opts.dessins].sort((a, b) => a.ordre - b.ordre)) {
@@ -621,13 +564,10 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       sin: Math.sin(an),
       debut: d.peindre && !opts.douce ? -1 : Infinity,
       duree: 3000,
-      delai: 650 + d.ordre * 450,
+      delai: 350 + d.ordre * 350,
       scene: null,
       prochaine: Infinity,
       rang: 0,
-      ressorts: [],
-      penche: ressort(),
-      main: { x: 0.5, y: 0.5, f: 0, cible: 0, bouge: -1e9 },
     });
   }
   const placer = (s: Sprite, iw: number, ih: number) => {
@@ -645,17 +585,6 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     s.aspB = (bw * A) / bh;
   };
 
-  // ---- la main (souris, stylet, doigt qui glisse) ----
-  let boiteToile: DOMRect | null = null;
-  let lue = -1e9;
-  const versPage = (x: number, y: number, t: number): [number, number] | null => {
-    if (!boiteToile || t - lue > 500) {
-      boiteToile = canvas.getBoundingClientRect();
-      lue = t;
-    }
-    if (!boiteToile.width || !boiteToile.height) return null;
-    return [(x - boiteToile.left) / boiteToile.width, (y - boiteToile.top) / boiteToile.height];
-  };
   /** D'un point de la page à la boîte d'une aquarelle (0 à 1 dans la boîte). */
   const versBoite = (s: Sprite, px: number, py: number): [number, number] => {
     const dx = (px - s.cx) * A;
@@ -664,49 +593,6 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     const ry = -dx * s.sin + dy * s.cos;
     return [(s.cx + rx / A - s.boite[0]) / s.boite[2], (s.cy + ry - s.boite[1]) / s.boite[3]];
   };
-  const desabonner = ecouterPointeur((p) => {
-    if (!joue) return;
-    const pp = versPage(p.x, p.y, p.t);
-    if (!pp || !boiteToile) return;
-    const [px, py] = pp;
-    const vitesse = Math.hypot(p.vx, p.vy);
-    // vitesse en unités de l'image : la hauteur de la page vaut 1
-    const vx = p.vx / boiteToile.height;
-    const vy = p.vy / boiteToile.height;
-    for (const s of sprites) {
-      const [bx, by] = versBoite(s, px, py);
-      const dedans = bx > -0.05 && bx < 1.05 && by > -0.05 && by < 1.05;
-      if (!dedans) {
-        s.main.cible = 0;
-        continue;
-      }
-      s.main.x = bx;
-      s.main.y = by;
-      s.main.cible = p.type === 'touch' ? Math.min(0.8, 0.3 + vitesse / 1500) : Math.min(1, 0.5 + vitesse / 1200);
-      s.main.bouge = performance.now();
-      // les ressorts : la main bouscule ce qu'elle touche (en unités de l'image : sa hauteur vaut 1)
-      const hImg = s.rect[3] * s.boite[3];
-      const ix = (bx - s.rect[0]) / s.rect[2];
-      const iy = (by - s.rect[1]) / s.rect[3];
-      const kx = Math.max(-3, Math.min(3, vx / hImg)) * micro;
-      const ky = Math.max(-3, Math.min(3, vy / hImg)) * micro;
-      const pousse = (r: Ressort, f: number) => {
-        r.va += kx * 0.5 * f;
-        r.vx += kx * 0.012 * f;
-        r.vy += ky * 0.008 * f;
-      };
-      if (ix > -0.05 && ix < 1.05 && iy > -0.05 && iy < 1.05) {
-        pousse(s.ressorts[0], 0.25);
-        s.parties.forEach((pt, k) => {
-          const [x0, y0, x1, y1] = pt.boite;
-          if (ix > x0 - 0.06 && ix < x1 + 0.06 && iy > y0 - 0.06 && iy < y1 + 0.06) pousse(s.ressorts[k + 1], 1);
-        });
-        s.penche.vx += kx * 0.6;
-      }
-    }
-    essaim?.main(opts.cote, px, py, vx, vy, p.type);
-  });
-
   // ---- dessiner ----
   let progD: WebGLProgram | null = null;
   let progC: WebGLProgram | null = null;
@@ -715,18 +601,8 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
   let vide: WebGLTexture | null = null;
   const texCreatures = new Map<string, { tx: WebGLTexture; ai: number }>();
 
-  const avancerRessort = (r: Ressort, dt: number) => {
-    const K = 70;
-    const D = 6.5;
-    r.va += (-K * r.a - D * r.va) * dt;
-    r.a = Math.max(-0.3, Math.min(0.3, r.a + r.va * dt));
-    r.vx += (-K * r.x - D * r.vx) * dt;
-    r.x = Math.max(-0.03, Math.min(0.03, r.x + r.vx * dt));
-    r.vy += (-K * r.y - D * r.vy) * dt;
-    r.y = Math.max(-0.03, Math.min(0.03, r.y + r.vy * dt));
-  };
-
   const lancerScene = (s: Sprite, nom?: string) => {
+    if (opts.douce) return false;
     const liste = (s.e.scenes ?? []).filter((n) => SCENES[n]);
     if (!liste.length) return false;
     const n = nom && SCENES[nom] ? nom : liste[s.rang++ % liste.length];
@@ -749,7 +625,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     penche: 0,
   });
 
-  const poser = (s: Sprite, dt: number, t: number) => {
+  const poser = (s: Sprite, t: number) => {
     const corps = poseNeutre();
     const poses = s.parties.map(() => poseNeutre());
     const fx = fxNeutre(s);
@@ -769,40 +645,35 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     const r0 = 1 + 0.007 * micro * Math.sin(t * 0.83 + s.d.ordre);
     corps.sx *= r0;
     corps.sy *= r0;
-    if (s.e.repos && REPOS[s.e.repos]) REPOS[s.e.repos](ctx);
+    if (!opts.douce && s.e.repos && REPOS[s.e.repos]) REPOS[s.e.repos](ctx);
     // la scène en cours
     if (s.scene) {
       const sc = SCENES[s.scene.nom];
       const ts = (horloge - s.scene.debut) / 1000;
-      if (!sc || ts > sc.duree) {
-        s.scene = null;
-        s.prochaine = horloge + 6000 + Math.random() * 9000;
-      } else {
+      if (sc && ts <= sc.duree) {
         ctx.s = ts;
         ctx.h = s.scene.h;
         sc.jouer(ctx);
       }
     }
-    // les ressorts (la main)
-    s.ressorts.forEach((r, k) => {
-      avancerRessort(r, dt);
-      const p = k === 0 ? corps : poses[k - 1];
-      if (!p) return;
-      p.a += r.a;
-      p.tx += r.x;
-      p.ty += r.y;
-    });
-    avancerRessort(s.penche, dt);
     return { corps, poses, fx };
   };
 
-  const dessinerSprite = (s: Sprite, t: number, dt: number) => {
-    if (!gl || !s.img) return;
-    const g = gl;
-    // la peinture
+  const avancement = (s: Sprite) => s.debut === Infinity ? 1 : s.debut === -1 ? 0 : Math.min(1, (horloge - s.debut) / s.duree);
+
+  const avancerSprite = (s: Sprite) => {
+    if (!s.img) return;
+    // Les scènes et leur cadence avancent avec l'horloge, indépendamment du rendu.
+    if (s.scene) {
+      const sc = SCENES[s.scene.nom];
+      if (!sc || horloge - s.scene.debut > sc.duree * 1000) {
+        s.scene = null;
+        s.prochaine = horloge + 6000 + Math.random() * 9000;
+      }
+    }
     if (s.debut === -1 && horloge >= s.delai) s.debut = horloge;
     // debut : -1 en attente, Infinity peinte ; finir() la met très loin dans le passé (peinte d'un coup)
-    const peint = s.debut === Infinity ? 1 : s.debut === -1 ? 0 : Math.min(1, (horloge - s.debut) / s.duree);
+    const peint = avancement(s);
     if (peint >= 1 && s.debut !== Infinity) {
       s.debut = Infinity;
       opts.peinte(s.d.nom);
@@ -813,10 +684,13 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       if (horloge - derniereScene > 2500) lancerScene(s);
       else s.prochaine = derniereScene + 2500 + Math.random() * 1500;
     }
-    const { corps, poses, fx } = poser(s, dt / 1000, peint >= 1 ? t : 0);
-    // la main : la force monte vite, retombe doucement
-    if (performance.now() - s.main.bouge > 300) s.main.cible = Math.min(s.main.cible, 0);
-    s.main.f += (s.main.cible - s.main.f) * (s.main.cible > s.main.f ? 0.3 : 0.06);
+  };
+
+  const dessinerSprite = (s: Sprite, t: number) => {
+    if (!gl || !s.img) return;
+    const g = gl;
+    const peint = avancement(s);
+    const { corps, poses, fx } = poser(s, peint >= 1 ? t : 0);
 
     g.uniform4f(ud.boite, ...s.boite);
     g.uniform4f(ud.rot, s.cx, s.cy, s.cos, s.sin);
@@ -824,7 +698,6 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     g.uniform2f(ud.asp, s.aspB, s.ai);
     g.uniform4f(ud.tp, t, peint, s.carte ? 1 : 0, s.parts ? s.parties.length : 0);
     g.uniform2f(ud.tpx, ...s.carteTpx);
-    g.uniform3f(ud.souris, s.main.x, s.main.y, s.main.f < 0.01 ? 0 : s.main.f * micro);
     // pose du corps : pivot au pied (défaut : milieu du bas), en unités de l'image (hauteur 1)
     const pied = s.e.pied ?? [0.5, 1];
     g.uniform4f(ud.gA, pied[0] * s.ai, pied[1], corps.tx, corps.ty);
@@ -852,11 +725,11 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     const flammes = (s.e.flammes ?? []).slice(0, MAX_FLAMMES);
     flammes.forEach((f, k) => {
       fl.set([f[0], f[1], f[2], fx.fl[k] ?? 1], k * 4);
-      flv.set([Math.max(-1.2, Math.min(1.2, s.penche.x * 60 + fx.penche)), fx.fumee[k] ?? 0, 0, 0], k * 4);
+      flv.set([Math.max(-1.2, Math.min(1.2, fx.penche)), fx.fumee[k] ?? 0, 0, 0], k * 4);
     });
     g.uniform4fv(ud.fl, fl);
     g.uniform4fv(ud.flv, flv);
-    g.uniform4f(ud.ef, (s.e.vent ?? 0) * fx.vent * micro, s.e.reflet ?? 0, flammes.length, 0);
+    g.uniform4f(ud.ef, (s.e.vent ?? 0) * fx.vent * micro, 0, flammes.length, 0);
     g.uniform4f(ud.fa, s.e.fanions?.[0] ?? 0, s.e.fanions?.[1] ?? 0, s.e.fanions ? fx.fanions * micro : 0, 0);
     const ge = s.e.gerbe;
     g.uniform4f(ud.ge, ge?.[0] ?? 0, ge?.[1] ?? 0, ge?.[2] ?? 0, ge ? fx.gerbe : -1);
@@ -914,17 +787,17 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     }
   };
 
-  const dessiner = (dt: number) => {
+  const dessiner = () => {
     if (!gl || !progD) return;
     const g = gl;
-    const t = (horloge / 1000) % 3600;
+    const t = opts.douce ? 0 : (horloge / 1000) % 3600;
     g.viewport(0, 0, canvas.width, canvas.height);
     g.clearColor(0, 0, 0, 0);
     g.clear(g.COLOR_BUFFER_BIT);
     g.useProgram(progD);
     g.uniform1f(ud.aspP, A);
     g.uniform3f(ud.pap, ...PAPIER);
-    for (const s of sprites) dessinerSprite(s, t, dt);
+    for (const s of sprites) dessinerSprite(s, t);
     dessinerCreatures();
   };
 
@@ -934,9 +807,10 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     if (now - dernier >= 30) {
       const dt = pas(now - dernier);
       horloge += dt;
+      sprites.forEach(avancerSprite);
       dernier = now;
       if (essaim?.maitre === opts.cote) essaim.avancer(dt / 1000, opts.douce);
-      dessiner(dt);
+      dessiner();
     }
     raf = requestAnimationFrame(boucle);
   };
@@ -986,7 +860,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       progD = programme(g, VS_DESSIN, FS_DESSIN);
       progC = programme(g, VS_CREATURE, FS_CREATURE);
       if (!progD || !progC) return opts.perdu();
-      for (const n of ['boite', 'rot', 'aspP', 'img', 'carteN', 'carteL', 'parts', 'fond', 'rect', 'asp', 'tp', 'tpx', 'souris', 'gA', 'gB', 'pA', 'pB', 'pC', 'vap', 'fl', 'flv', 'ef', 'fa', 'ge', 'geB', 'on', 'cf', 'cft', 'pap'])
+      for (const n of ['boite', 'rot', 'aspP', 'img', 'carteN', 'carteL', 'parts', 'fond', 'rect', 'asp', 'tp', 'tpx', 'gA', 'gB', 'pA', 'pB', 'pC', 'vap', 'fl', 'flv', 'ef', 'fa', 'ge', 'geB', 'on', 'cf', 'cft', 'pap'])
         ud[n] = g.getUniformLocation(progD, n);
       for (const n of ['cr', 'cap', 'aspP', 'tex', 'cp', 'om', 'pap']) uc[n] = g.getUniformLocation(progC, n);
       const buf = g.createBuffer();
@@ -1003,13 +877,12 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         if (carte) {
           s.carte = [texture(g, carte, true, g.NEAREST), texture(g, carte, true, g.LINEAR)];
           s.carteTpx = [1 / carte.naturalWidth, 1 / carte.naturalHeight];
-          s.duree = 7000;
+          s.duree = 5200;
         } else if (s.debut === -1) s.duree = 3000;
         if (parts && fond) {
           s.parts = texture(g, parts, true, g.NEAREST);
           s.fond = texture(g, fond, false, g.LINEAR);
         }
-        s.ressorts = [ressort(), ...s.parties.map(() => ressort())];
         if (s.debut === Infinity) s.prochaine = AMORCE + s.d.ordre * 1800 + Math.random() * 2500;
       }
       for (const { e, im } of creatures) if (im) texCreatures.set(e, { tx: texture(g, im, false, g.LINEAR), ai: im.naturalWidth / im.naturalHeight });
@@ -1033,7 +906,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       ['img', 'carteN', 'carteL', 'parts', 'fond'].forEach((n, k) => g.uniform1i(ud[n], k));
       g.useProgram(progC);
       g.uniform1i(uc.tex, 0);
-      dessiner(0);
+      dessiner();
       opts.pret();
       if (joue) {
         dernier = performance.now();
@@ -1060,7 +933,6 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       if (arrete) return;
       arrete = true;
       cancelAnimationFrame(raf);
-      desabonner();
       canvas.removeEventListener('webglcontextlost', perdu);
       // quittée en cours de peinture : elle est peinte
       for (const s of sprites) if (s.debut !== Infinity) opts.peinte(s.d.nom);
@@ -1098,9 +970,12 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       for (let reste = ms; reste > 0; reste -= 33) {
         const dt = pas(Math.min(33, reste));
         horloge += dt;
+        sprites.forEach(avancerSprite);
         if (essaim?.maitre === opts.cote) essaim.avancer(dt / 1000, opts.douce);
-        dessiner(dt);
       }
+      // Les étapes intermédiaires gardent la physique et la cadence ; seule l'image finale est utile
+      // aux captures. Évite des centaines de rendus WebGL invisibles en Chromium logiciel.
+      dessiner();
     },
     etat() {
       return {

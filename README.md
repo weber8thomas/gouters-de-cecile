@@ -4,6 +4,33 @@ Carnet numérique de recettes de goûter offert à Cécile pour son anniversaire
 
 Ce dépôt contient le design system du carnet.
 
+## Développer et vérifier
+
+Le carnet utilise React 18, TypeScript et Vite. Node 22 est utilisé en CI ; Node 24 est aussi validé dans le cloud.
+Les pages, écritures et illustrations déjà cuites sont versionnées : aucun modèle ni service externe n'est nécessaire pour lancer le site.
+
+```bash
+npm ci
+npm run dev
+npm run build:site
+GC_CHROME=/usr/bin/chromium node scripts/verify-site.mjs --site dist/site --only tv-1080
+node --test scripts/tests/publish-pages.test.mjs
+```
+
+`GC_CHROME` désigne le navigateur installé dans le cloud ; omettre cette variable si Playwright trouve déjà Chromium.
+Les rapports et captures vont dans `verification/out/`, ignoré par Git. Ne pas lancer plusieurs mesures de fluidité en parallèle.
+
+La cuisson de nouveaux textes et l'ajout d'invités utilisent `tools/ecriture/` et ses modèles publics :
+voir [ses instructions](tools/ecriture/README.md). Une couverture dont les tracés sont déjà figés se recuit avec Python, NumPy et Pillow.
+
+## Publier
+
+Après construction et vérification : `node scripts/publish-pages.mjs`. Cette commande met à jour la racine de `gh-pages`, conserve `essais/` et l'historique, et refuse un push divergent.
+
+Le workflow de `main` déploie le site complet avec les actions officielles Pages. Pour cette automatisation, sélectionner **Settings → Pages → Source → GitHub Actions** ; autoriser `main` si l'environnement `github-pages` limite les branches de déploiement. Aucun nouveau secret n'est nécessaire.
+
+La reprise et les priorités de livraison sont décrites dans [le plan v8](docs/plan-v8.md) et [l'état de reprise](docs/etat-reprise.md).
+
 ## Crédits
 
 L'écriture des invités est générée trait par trait (`tools/ecriture/`, détails et licences dans son README) :

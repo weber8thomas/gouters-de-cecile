@@ -87,10 +87,9 @@ PW, PH = PLAT_W * ECH, PLAT_H * ECH
 Q_TOILE, Q_ALPHA = 80, 90
 # Variante retenue. Elle seule est cuite dans design-system/baked/ ; les autres (comparaison) vont dans
 # verification/out/v4-c/variantes/ et ne partent ni sur le site ni dans l'artifact. Les trente ans de Cécile :
-# « d » (étiquette de « a », gâteau à bougies, « pour ses trente ans » à l'encre dorée) remplace « a », parce
-# qu'elle dit « anniversaire » au premier regard (le gâteau) et « trente ans » en toutes lettres, sans rien
-# ajouter sur la toile ; « f » (cachet de cire et ruban) reste la seconde proposition.
-ACTIVE = os.environ.get("GC_COUVERTURE_ACTIVE") or "d"  # GC_COUVERTURE_ACTIVE : essayer une proposition dans le site
+# « f » (cachet de cire « 30 », ruban ivoire et mention « pour ses trente ans ») est le choix retenu
+# le 18 octobre 2026 ; les autres propositions restent disponibles pour comparaison.
+ACTIVE = os.environ.get("GC_COUVERTURE_ACTIVE") or "f"  # GC_COUVERTURE_ACTIVE : essayer une proposition dans le site
 BAKED = RACINE / "design-system/baked"
 COMPAREES = VERIF / "variantes"
 

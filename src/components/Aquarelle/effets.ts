@@ -8,7 +8,7 @@ export interface Effets {
   vapeur?: [number, number, number][];
   /** Bougies qui vacillent : flammes peintes, [x, y, rayon] (x, y : le cœur de la flamme, la mèche est
    *  1,2 rayon plus bas ; la flamme monte jusqu'à 2,8 rayons au-dessus ; rayon en fraction de la hauteur).
-   *  Elles vacillent toujours, rayonnent, se penchent sous la main. Cinq au plus. Scènes : « souffle »
+   *  Elles vacillent et se penchent pendant leurs scènes. Cinq au plus. Scènes : « souffle »
    *  (elles s'éteignent une à une, fument, se rallument), « allume » (éteintes d'un souffle, rallumées une à
    *  une, confettis), « souffle-rallume » (une bougie, le gâteau gonfle). */
   flammes?: [number, number, number][];
@@ -18,8 +18,6 @@ export interface Effets {
   fanions?: [number, number];
   /** Vent : amplitude (1 = un brin de blé), le pied reste fixe. Scène « rafale ». */
   vent?: number;
-  /** Reflet qui glisse sur un fruit (0 à 1). */
-  reflet?: number;
   /** Gerbe (miettes, gouttes) : [x, y, largeur, élan vertical (négatif : vers le haut), sol (y où elles
    *  retombent), x, y de la couleur à prendre dans l'image]. */
   gerbe?: [number, number, number, number, number, number, number];
@@ -124,13 +122,13 @@ export const EFFETS: Record<string, Effets> = {
   },
   // les sablés tournent sur eux-mêmes
   'sables-etoiles': { scenes: ['tournoie'], perchoirs: [[0.36, 0.24], [0.7, 0.77]] },
-  // un reflet glisse sur les fruits ; ils roulent, sautent, tournent
-  citron: { reflet: 1, scenes: ['roule'], perchoirs: [[0.5, 0.05], [0.5, 0.75]] },
-  'citron-2': { reflet: 1, scenes: ['roule', 'rondelle'], perchoirs: [[0.55, 0.03], [0.6, 0.8]] },
-  pomme: { reflet: 0.8, scenes: ['saut-pomme'], perchoirs: [[0.42, 0.1]] },
-  'pomme-2': { reflet: 0.8, scenes: ['saut'], perchoirs: [[0.45, 0.2]] },
-  orange: { reflet: 1, pied: [0.48, 0.5], scenes: ['toupie'], perchoirs: [[0.5, 0.5]] },
-  'orange-2': { reflet: 1, scenes: ['saut'] },
+  // les fruits roulent, sautent et tournent ; leurs pigments restent mats
+  citron: { scenes: ['roule'], perchoirs: [[0.5, 0.05], [0.5, 0.75]] },
+  'citron-2': { scenes: ['roule', 'rondelle'], perchoirs: [[0.55, 0.03], [0.6, 0.8]] },
+  pomme: { scenes: ['saut-pomme'], perchoirs: [[0.42, 0.1]] },
+  'pomme-2': { scenes: ['saut'], perchoirs: [[0.45, 0.2]] },
+  orange: { pied: [0.48, 0.5], scenes: ['toupie'], perchoirs: [[0.5, 0.5]] },
+  'orange-2': { scenes: ['saut'] },
   // l'œuf se dandine
   oeufs: { pied: [0.5, 0.78], scenes: ['dandine'], perchoirs: [[0.5, 0.15]] },
   // les noix sautent l'une après l'autre

@@ -117,7 +117,7 @@ export function Aquarelle({ nom, anime = 'fleurit', angle = 0, ordre = 0, page }
  * La toile vivante d'une page : une seule toile WebGL sur toute la page, pour toutes ses aquarelles et les
  * créatures de la double page (vivante.ts). Seulement sur la page vivante du livre (pas sur le feuillet qui
  * tourne ni hors du livre). Elle ne s'anime que page visible et livre posé, onglet affiché. Moins
- * d'animations : la version douce (pas de peinture, pas de scène d'elle-même, à peine de mouvement).
+ * d'animations : les aquarelles originales restent fixes, sans toile ni boucle d'animation.
  * Contexte WebGL perdu : les images fixes reviennent.
  */
 export function ToileAquarelles({ page }: { page: string }) {
@@ -128,7 +128,7 @@ export function ToileAquarelles({ page }: { page: string }) {
   const dessins = React.useMemo(() => dessinsDe(page), [page]);
   const creatures = info ? CREATURES[info.double] ?? [] : [];
   const actif =
-    mode === 'live' && !!info && (dessins.length > 0 || creatures.length > 0) && !echouees.has(page) && typeof document !== 'undefined' && webglOk();
+    mode === 'live' && !reduit && !!info && (dessins.length > 0 || creatures.length > 0) && !echouees.has(page) && typeof document !== 'undefined' && webglOk();
   const ref = React.useRef<HTMLCanvasElement>(null);
 
   React.useEffect(() => {

@@ -1,5 +1,42 @@
 # Lumiere
 
+## Éclairage Cycles (actif)
+
+Quand `lumiere/vide` est présent dans l'inventaire, les anciens dégradés CSS ci-dessous sont remplacés
+par trois images par état : fond, variation du feu, variation de la bougie. La flamme de la bougie
+pilote l'opacité de son voile ; aucune animation de filtre ou de peinture supplémentaire.
+
+La cuisson `scripts/lumiere3d/composer.py` prolonge l'illumination du papier sur le repli des cartons.
+Le modèle 3D simplifié possédait son propre biseau spéculaire, qui dessinait une deuxième bande claire
+ou sombre par-dessus les chants déjà présents dans les images du livre. La correction conserve les
+ombres portées sur la table. La bougie contribue davantage sur le papier à partir de sa variation
+tracée, avec un plafond à l'albédo du papier : la flamme et la taille de la bougie ne changent pas.
+Cette retouche est une correction de composition des rendus existants, pas un nouveau lancer de rayons.
+
+Reproduire sans les lourdes passes EXR :
+
+```sh
+python3 scripts/lumiere3d/composer.py --retoucher-cuisson
+npm run assets
+```
+
+`scripts/lumiere3d/calques-cycles-v1.zip` conserve les trente calques originaux et leurs SHA256,
+vérifiés avant lecture. La commande relit toujours ces originaux ; la sortie n'est jamais son entrée.
+`--seulement moyenne-ouvert` permet une vérification ciblée. Les prochains rendus bruts passent par
+la même correction dans le compositeur. Dépendances : Python 3, NumPy, Pillow.
+
+Vérification adaptée aux calques Cycles :
+
+```sh
+GC_CHROME=/usr/bin/chromium node scripts/verify-lumiere-v8.mjs --site dist/site
+```
+
+Le script couvre les trois crans, livre fermé et ouvert, deux orientations de tablette, le zoom fin,
+les modes réduit et feu désactivé, et le contraste sur les mêmes pixels d'encre en remplaçant uniquement
+les images de lumière par les originaux Cycles. Il ne mesure pas la cadence GPU de la TV physique.
+
+## Dégradés CSS (repli sans images Cycles)
+
 La lumière d'un feu de cheminée hors champ, **à gauche** de la table (plan v4, lot L). Calques de dégradés statiques, peints une fois ; le feu (`src/lib/feu.ts`) ne change que leur opacité et leur translation (MotionValues, aucun rendu React).
 
 | Composant | Où | Contenu | Vivant |

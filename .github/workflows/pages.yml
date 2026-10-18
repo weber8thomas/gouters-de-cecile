@@ -1,5 +1,7 @@
-# Publie le carnet (application Vite, dist/site) sur GitHub Pages, branche gh-pages.
-# Une seule fois : Settings → Pages → Source « Deploy from a branch » → gh-pages / (root).
+# Conserve le carnet et les essais sur gh-pages, puis déploie exactement ce commit sur Pages.
+# Une seule fois : Settings → Pages → Build and deployment → Source « GitHub Actions ».
+# configure-pages ne convertit pas automatiquement une source « Deploy from a branch » existante.
+# Si l'environnement github-pages restreint les branches autorisées, y autoriser main.
 name: Carnet sur GitHub Pages
 
 on:
@@ -9,6 +11,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages
@@ -17,6 +21,9 @@ concurrency:
 jobs:
   publier:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     env:
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
     steps:
@@ -25,14 +32,27 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Lire la configuration Pages existante
+        uses: actions/configure-pages@v5
       - run: npm ci
       - run: npm run build:site
+      - name: Vérifier la publication sans toucher au dépôt distant
+        run: node --test scripts/tests/publish-pages.test.mjs
       - name: Publier dist/site sur la branche gh-pages
+        id: publication
+        # Réutilise l'authentification installée par actions/checkout ; aucun jeton dans l'URL.
+        # Conserve l'historique gh-pages et tous les essais déjà publiés.
+        run: node scripts/publish-pages.mjs
+      - name: Préparer le site complet publié, essais inclus
+        shell: bash
+        env:
+          PAGES_COMMIT: ${{ steps.publication.outputs.commit }}
         run: |
-          cd dist/site
-          touch .nojekyll
-          git init -q -b gh-pages
-          git add -A
-          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-            commit -q -m "Carnet publié depuis ${GITHUB_SHA::7} (${GITHUB_REF_NAME})"
-          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages
+          mkdir -p "$RUNNER_TEMP/carnet-pages"
+          git archive "$PAGES_COMMIT" | tar -x -C "$RUNNER_TEMP/carnet-pages"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/carnet-pages
+      - name: Déployer le site sur GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
