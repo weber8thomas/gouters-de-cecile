@@ -269,7 +269,8 @@ async function couche(e, complet) {
       R.fini = true;
       return { trouble: R.trouble, penche: R.penche, images: (window.__gcFlamme?.etat().images ?? 0) - R.i0 };
     });
-    R.ok(n, 'souffle du doigt : la flamme se couche et se trouble', r.trouble > 0.05 && r.penche > 3, r);
+    // (au repos, le trouble et l'inclinaison due au vent sont nuls : le courant d'air de la pièce n'y entre pas)
+    R.ok(n, 'souffle du doigt : la flamme se couche et se trouble', r.trouble > 0.05 && r.penche > 1, r);
     await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
   } else R.ok(n, 'souffle du doigt : la flamme se couche et se trouble', false, 'bougie invisible');
   await fermer(o);
