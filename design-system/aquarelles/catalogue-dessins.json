@@ -1,0 +1,44 @@
+{
+  "papillon-paon": {
+    "sujet": "paon-du-jour (Aglais io), vu de dessus, planche gravée et coloriée à la main",
+    "source": "https://commons.wikimedia.org/wiki/File:Histoire_naturelle_des_l%C3%A9pidopt%C3%A8res_d%27Europe_(Plate_1)_(6053240027).jpg",
+    "auteur": "Alexis Nicolas Noël (dessin), H. Lucas, « Histoire naturelle des lépidoptères d'Europe », Paris, 1845, planche 1 (Biodiversity Heritage Library)",
+    "licence": "domaine public (œuvre ancienne, auteur mort depuis plus de 70 ans ; Wikimedia Commons : Public domain)",
+    "fichier": "papillon-paon.png"
+  },
+  "papillon-vulcain": {
+    "sujet": "vulcain (Vanessa atalanta), vu de dessus, planche gravée et coloriée à la main",
+    "source": "https://commons.wikimedia.org/wiki/File:Histoire_naturelle_des_l%C3%A9pidopt%C3%A8res_d%27Europe_(Plate_1)_(6053240027).jpg",
+    "auteur": "Alexis Nicolas Noël (dessin), H. Lucas, « Histoire naturelle des lépidoptères d'Europe », Paris, 1845, planche 1 (Biodiversity Heritage Library)",
+    "licence": "domaine public (œuvre ancienne, auteur mort depuis plus de 70 ans ; Wikimedia Commons : Public domain)",
+    "fichier": "papillon-vulcain.png"
+  },
+  "papillon-bleu": {
+    "sujet": "thècle (Atlides halesus), vu de dessus (figure de gauche), planche coloriée à la main",
+    "source": "https://commons.wikimedia.org/wiki/File:Atlides_halesus_CramerStoll.png",
+    "auteur": "Pieter Cramer et Caspar Stoll, « De uitlandsche Kapellen », Amsterdam, 1779 (Biodiversity Heritage Library)",
+    "licence": "domaine public (œuvre ancienne, auteur mort depuis plus de 70 ans ; Wikimedia Commons : Public domain)",
+    "fichier": "papillon-bleu.png"
+  },
+  "guirlande": {
+    "sujet": "guirlande de fanions de papier sur une ficelle, aquarelle (peinte par le script)",
+    "source": "scripts/aquarelles_dessins.py (peinte)",
+    "auteur": "peinte par le script du carnet",
+    "licence": "création du carnet",
+    "fichier": "guirlande.png"
+  },
+  "cupcake-bougie": {
+    "sujet": "cupcake à la crème et à la framboise, une bougie d'anniversaire allumée plantée dedans (la bougie est peinte par le script)",
+    "source": "https://pixabay.com/illustrations/cupcake-watercolor-food-sweets-4054535/ (cupcake) ; bougie peinte par scripts/aquarelles_dessins.py",
+    "auteur": "Nic0leta (Pixabay) pour le cupcake ; la bougie : le script du carnet",
+    "licence": "Pixabay Content License (usage libre, modification permise) (cupcake) ; la bougie : création du carnet",
+    "fichier": "cupcake-bougie.png"
+  },
+  "coccinelle": {
+    "sujet": "coccinelle à sept points (Coccinella septempunctata), vue de dessus, planche chromolithographiée (figure 17, déjà détourée sur Commons)",
+    "source": "https://commons.wikimedia.org/wiki/File:Coccinella_septempunctata_Jacobson.png",
+    "auteur": "Georgiy Jacobson, « Жуки России и Западной Европы » (Les coléoptères de Russie et d'Europe occidentale), Saint-Pétersbourg, 1905-1915, planche 24, figure 17",
+    "licence": "domaine public (œuvre ancienne, auteur mort depuis plus de 70 ans ; Wikimedia Commons : Public domain)",
+    "fichier": "coccinelle.png"
+  }
+}

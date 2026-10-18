@@ -342,6 +342,8 @@ export interface PageCuiteProps {
    */
   cadre?: 'parent' | 'propre';
   className?: string;
+  /** Posé sur toute la page, par-dessus l'encre et les zones vivantes (la toile des aquarelles vivantes). */
+  dessus?: React.ReactNode;
 }
 
 const pc = (v: number) => `${+(v * 100).toFixed(4)}%`;
@@ -351,7 +353,7 @@ const pc = (v: number) => `${+(v * 100).toFixed(4)}%`;
  * son encre. Le Livre les pré-décode (`decode()`) avant un tourne-page ; elles sont partagées
  * (même URL) par les copies du feuillet.
  */
-export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuiteProps) {
+export function PageCuite({ page, slots, cadre = 'parent', className, dessus }: PageCuiteProps) {
   const info = PAGES_CUITES.pages[page];
   const mode = useRenderMode();
   const voulue = useEncre4xVoulue(info?.cote ?? 'gauche');
@@ -507,6 +509,7 @@ export function PageCuite({ page, slots, cadre = 'parent', className }: PageCuit
           </div>
         ) : null,
       )}
+      {dessus}
     </div>
   );
 }
