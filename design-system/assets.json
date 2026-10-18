@@ -3296,6 +3296,15 @@
     "type": "audio/mpeg",
     "site": true
   },
+  "sons/cuisine-assiette": {
+    "file": "baked/sons/cuisine-assiette.mp3",
+    "sha": "583def38b4057830e58beb6dec6578fc14ef16c7961e4330c3d951893e9b836b",
+    "w": 0,
+    "h": 0,
+    "bytes": 23530,
+    "type": "audio/mpeg",
+    "site": true
+  },
   "sons/cuisine-boite": {
     "file": "baked/sons/cuisine-boite.mp3",
     "sha": "a4a1fbf3c350b5daef41bbd23d4f61014494f3fafd55dbc8ee8055d23432e62d",
@@ -3314,12 +3323,93 @@
     "type": "audio/mpeg",
     "site": true
   },
+  "sons/cuisine-chaise": {
+    "file": "baked/sons/cuisine-chaise.mp3",
+    "sha": "e7a170c366d8ed6fb11028c5fcf24128e1c815fe8fd1883e01168b3a91c3e652",
+    "w": 0,
+    "h": 0,
+    "bytes": 30113,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-chat-1": {
+    "file": "baked/sons/cuisine-chat-1.mp3",
+    "sha": "8ed984ef4f0f7f37e16a54f3c30f8fe6523f4333b7280d41547cb514ecdf5aea",
+    "w": 0,
+    "h": 0,
+    "bytes": 27918,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-chat-2": {
+    "file": "baked/sons/cuisine-chat-2.mp3",
+    "sha": "8f3e962a0887041b0ca6adcceb1f17515dda7e5a85d916b3e462cdbfea732508",
+    "w": 0,
+    "h": 0,
+    "bytes": 14439,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-couteau": {
+    "file": "baked/sons/cuisine-couteau.mp3",
+    "sha": "115f777a77d1170bf1de4ae922827b34b1d1e85ac7fc8e4beacb279725c65753",
+    "w": 0,
+    "h": 0,
+    "bytes": 49861,
+    "type": "audio/mpeg",
+    "site": true
+  },
   "sons/cuisine-cuillere": {
     "file": "baked/sons/cuisine-cuillere.mp3",
     "sha": "3b261fd175fd5cda93ff126ad1580a99775df956fbc2b4483d42812c609989a3",
     "w": 0,
     "h": 0,
     "bytes": 39203,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-horloge": {
+    "file": "baked/sons/cuisine-horloge.mp3",
+    "sha": "c2fcd2a798afaf89fdde063bc116c487b786aa9fe6acd2183637e05938cd1676",
+    "w": 0,
+    "h": 0,
+    "bytes": 48921,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-minuteur": {
+    "file": "baked/sons/cuisine-minuteur.mp3",
+    "sha": "75edf77067a2d375977f45e16b0737dba56561b60f30ad090068d1ab9fe1675b",
+    "w": 0,
+    "h": 0,
+    "bytes": 23530,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-paquet-1": {
+    "file": "baked/sons/cuisine-paquet-1.mp3",
+    "sha": "5914ad91521a27e0deed2b1109ff37bdd90c84dc0f7ea1bc72e33b84b85bac33",
+    "w": 0,
+    "h": 0,
+    "bytes": 25411,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-paquet-2": {
+    "file": "baked/sons/cuisine-paquet-2.mp3",
+    "sha": "14d054ccd0dfcf4a38c6a704e90ebfc28bb455da1b782b4dff7b37471d0c188b",
+    "w": 0,
+    "h": 0,
+    "bytes": 16006,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-sel": {
+    "file": "baked/sons/cuisine-sel.mp3",
+    "sha": "aecde8a41d23cc394521ea0719170617d869345cb800887c440e97853dc8faa9",
+    "w": 0,
+    "h": 0,
+    "bytes": 37949,
     "type": "audio/mpeg",
     "site": true
   },
@@ -3347,6 +3437,33 @@
     "w": 0,
     "h": 0,
     "bytes": 24470,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-tiroir-1": {
+    "file": "baked/sons/cuisine-tiroir-1.mp3",
+    "sha": "72c4d32b620e9513611065da4edd394e6a2c73b0e1bf0c856c94413e59b82a24",
+    "w": 0,
+    "h": 0,
+    "bytes": 11304,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-tiroir-2": {
+    "file": "baked/sons/cuisine-tiroir-2.mp3",
+    "sha": "11abbbced70d18839115b22ecf49df897ebdde5ea436364d0bf0e0fbdf938030",
+    "w": 0,
+    "h": 0,
+    "bytes": 9110,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "sons/cuisine-verre": {
+    "file": "baked/sons/cuisine-verre.mp3",
+    "sha": "02e1e7f04b930f1e935e5466d08191f2f610c78ba9563cce2bceacb338e86686",
+    "w": 0,
+    "h": 0,
+    "bytes": 11304,
     "type": "audio/mpeg",
     "site": true
   },

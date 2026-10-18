@@ -61,6 +61,39 @@
       ],
       "cuisine-boite": [
         { "f": "cuisine-boite", "g": 0.257, "d": 1.77 }
+      ],
+      "cuisine-couteau": [
+        { "f": "cuisine-couteau", "g": 0.137, "d": 4.1 }
+      ],
+      "cuisine-assiette": [
+        { "f": "cuisine-assiette", "g": 0.156, "d": 1.9 }
+      ],
+      "cuisine-sel": [
+        { "f": "cuisine-sel", "g": 0.258, "d": 3.1 }
+      ],
+      "cuisine-minuteur": [
+        { "f": "cuisine-minuteur", "g": 0.172, "d": 1.9 }
+      ],
+      "cuisine-chat": [
+        { "f": "cuisine-chat-1", "g": 0.132, "d": 2.25 },
+        { "f": "cuisine-chat-2", "g": 0.135, "d": 1.127 }
+      ],
+      "cuisine-horloge": [
+        { "f": "cuisine-horloge", "g": 0.124, "d": 4 }
+      ],
+      "cuisine-paquet": [
+        { "f": "cuisine-paquet-1", "g": 0.325, "d": 2.06 },
+        { "f": "cuisine-paquet-2", "g": 0.295, "d": 1.265 }
+      ],
+      "cuisine-chaise": [
+        { "f": "cuisine-chaise", "g": 0.122, "d": 2.45 }
+      ],
+      "cuisine-tiroir": [
+        { "f": "cuisine-tiroir-1", "g": 0.148, "d": 0.88 },
+        { "f": "cuisine-tiroir-2", "g": 0.265, "d": 0.69 }
+      ],
+      "cuisine-verre": [
+        { "f": "cuisine-verre", "g": 0.425, "d": 0.87 }
       ]
     }
   }

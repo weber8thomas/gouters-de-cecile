@@ -1,12 +1,18 @@
 // Sons du livre (plan v4, lot S) : pages, feuilletage, couverture, feuillet volant, photo, coin ; et
-// l'ambiance : la boucle du feu de cheminée et de rares bruits de cuisine délicats.
+// l'ambiance : la boucle du feu de cheminée et des bruits de cuisine délicats.
 //
 //   node scripts/bake-sons.mjs [--synthese] [--only page,coin,ambiance] [--sans-ecoute]
 //
 // Entrées
-//   design-system/sources/sons/licences.json      sources CC0 vérifiées (page Freesound, auteur, sha256)
+//   design-system/sources/sons/licences.json      sources CC0 ou domaine public vérifiées (page Freesound,
+//                                                  OpenGameArt ou Wikimedia Commons, auteur, sha256)
 //   design-system/sources/sons/freesound-<id>.mp3  aperçus HQ téléchargés tels quels ; s'il manque, il est
 //                                                  retéléchargé (curl) et son sha256 vérifié ; sinon : synthèse
+//   design-system/sources/sons/oga-<auteur>-<nom>.* OpenGameArt (CC0) et Wikimedia Commons (domaine public) : le
+//   design-system/sources/sons/commons-<nom>.*     fichier téléchargé tel quel (« url »), ou, quand l'original est
+//                                                  une longue prise ou dans une archive, l'extrait gardé ici
+//                                                  (FLAC 16 bits mono) ou le fichier sorti de l'archive : leur
+//                                                  « origine » (url, sha256, découpe) est dans licences.json
 // Sorties (noms logiques d'assetUrl() entre crochets)
 //   design-system/baked/sons/<nom>[-k].mp3         [sons/<nom>[-k]]  mono, 44,1 kHz, MP3 96 kb/s, ≤ 30 Ko,
 //                                                  crête à −3 dBFS
@@ -17,7 +23,9 @@
 //                                                  forces }, cuisine: { <nom>: [{ f, g, d }] } } (src/lib/ambiance.ts)
 //   design-system/baked/sons/ambiance-feu.mp3      [sons/ambiance-feu]  boucle du feu, mono 96 kb/s : jouée en
 //                                                  fondu croisé (boucle + fondu s, la fin sur le début suivant)
-//   design-system/baked/sons/cuisine-<nom>[-k].mp3 cuillère, tasse, bouilloire au loin, thé, boîte à biscuits
+//   design-system/baked/sons/cuisine-<nom>[-k].mp3 cuillère, tasse, bouilloire au loin, thé, boîte à biscuits, puis
+//                                                  couteau sur la planche, assiette, sel, minuteur, chat, horloge,
+//                                                  paquet de biscuits, chaise, tiroir, verre (AMBIANCE.cuisine).
 //                                                  Lu par src/lib/son.ts (importé, donc dans le bundle).
 //   design-system/sources/sons/licences.json       « fichiers » : chaque son cuit → sa source et son extrait,
 //                                                  ou { "source": "synthese" }
@@ -26,6 +34,8 @@
 //   verification/out/v4-s/ambiance.mp3 (+ .txt)    30 s d'ambiance (stéréo) : le feu en boucle (une couture
 //                                                  à 14 s), les bruits de cuisine à gauche et à droite, deux
 //                                                  pages tournées pour juger le niveau
+//   verification/out/v4-s/cuisine.mp3 (+ .txt)     tous les bruits de cuisine, un toutes les 6 s, sur le feu,
+//                                                  au gain du moteur (banque × GAIN_CUISINE)
 //
 // Chaîne : extrait (ffmpeg, -ss/-to) → mono 44,1 kHz → passe-haut (et débruitage léger des prises
 // calmes) → fondus en cosinus → crête à −3 dBFS → MP3 96 kb/s (LAME, bitexact). Le gain de mixage g
@@ -89,7 +99,7 @@ export const RECETTES = {
 export const NOMS = Object.keys(RECETTES);
 
 // Ambiance (src/lib/ambiance.ts) : le feu (boucle de `boucle` s, fondu croisé de `fondu` s : l'extrait dure
-// boucle + fondu) et la cuisine (joués au hasard toutes les 20 à 60 s, très bas, un peu à gauche ou à droite).
+// boucle + fondu) et la cuisine (joués au hasard toutes les 5 à 15 s, un peu à gauche ou à droite).
 export const AMBIANCE = {
   // Deux couches : les crépitements doux (florianreichelt) et, plus bas, le souffle grave des bûches (giddster).
   feu: {
@@ -108,6 +118,27 @@ export const AMBIANCE = {
     'cuisine-bouilloire': { cible: -42, filtre: 'highpass=f=150:p=2,lowpass=f=2400:p=2', fondu: [1.8, 2.4], variantes: [{ source: 'freesound-740168', extrait: [0.4, 8.4] }] },
     'cuisine-the': { cible: -39, filtre: 'highpass=f=200:p=2', fondu: [0.25, 0.45], variantes: [{ source: 'freesound-457276', extrait: [1.82, 3.8] }] },
     'cuisine-boite': { cible: -38, filtre: 'highpass=f=150:p=2', fondu: [0.02, 0.3], variantes: [{ source: 'freesound-387967', extrait: [1.18, 2.95] }] },
+    // Plus de bruits de goûter (OpenGameArt CC0, une pièce de Wikimedia Commons en domaine public). L'extrait est
+    // relatif au fichier gardé dans design-system/sources/sons (une découpe de l'original quand il est long).
+    'cuisine-couteau': { cible: -38, filtre: 'highpass=f=120:p=2', fondu: [0.01, 0.5], variantes: [{ source: 'oga-bretbernhoft-kitchencuttingboard01', extrait: [1.0, 5.1] }] },
+    'cuisine-assiette': { cible: -38, filtre: 'highpass=f=250:p=2', fondu: [0.01, 0.35], variantes: [{ source: 'oga-bretbernhoft-forkonplate01', extrait: [0.15, 2.05] }] },
+    'cuisine-sel': { cible: -41, filtre: 'highpass=f=300:p=2', fondu: [0.25, 0.7], variantes: [{ source: 'oga-tinyworlds-adding_salt_01', extrait: [0.0, 3.1] }] },
+    'cuisine-minuteur': { cible: -38, filtre: 'highpass=f=500:p=2', fondu: [0.002, 0.6], variantes: [{ source: 'oga-laleksic-bell', extrait: [0.0, 1.9] }] },
+    'cuisine-chat': {
+      cible: -38, filtre: 'highpass=f=150:p=2', fondu: [0.06, 0.3],
+      variantes: [{ source: 'oga-kerzoven-cat_softmew', extrait: [0.15, 2.4] }, { source: 'oga-kerzoven-cat_mewfood', extrait: [0.0, 1.13] }],
+    },
+    'cuisine-horloge': { cible: -40, filtre: 'highpass=f=300:p=2,lowpass=f=3500:p=2', fondu: [0.3, 0.8], variantes: [{ source: 'oga-bart-ticking_clock', extrait: [0.0, 4.0] }] },
+    'cuisine-paquet': {
+      cible: -40, filtre: 'highpass=f=400:p=2', fondu: [0.05, 0.3],
+      variantes: [{ source: 'oga-jumbosizedfish-opening_0', extrait: [0.0, 2.06] }, { source: 'oga-jumbosizedfish-grabbing2_0', extrait: [0.0, 1.27] }],
+    },
+    'cuisine-chaise': { cible: -40, filtre: 'highpass=f=200:p=2', fondu: [0.2, 0.5], variantes: [{ source: 'commons-creaky_wooden_swivel_chair', extrait: [2.55, 5.0] }] },
+    'cuisine-tiroir': {
+      cible: -38, filtre: 'highpass=f=120:p=2', fondu: [0.01, 0.15],
+      variantes: [{ source: 'oga-laleksic-drawer_open', extrait: [0.0, 0.88] }, { source: 'oga-laleksic-drawer_close', extrait: [0.0, 0.69] }],
+    },
+    'cuisine-verre': { cible: -37, filtre: 'highpass=f=500:p=2', fondu: [0.003, 0.2], variantes: [{ source: 'oga-laleksic-clang_glass', extrait: [0.0, 0.87] }] },
   },
 };
 
@@ -216,9 +247,10 @@ const licences = JSON.parse(readFileSync(LICENCES, 'utf8'));
 /** Chemin de la source (retéléchargée si elle manque) ou null (→ synthèse). */
 function source(cle) {
   const s = licences.sources?.[cle];
-  if (!s || !/^CC0/.test(s.licence ?? '')) return null;
+  if (!s || !/^(CC0|Domaine public)/.test(s.licence ?? '')) return null;
   const f = join(SOURCES, s.fichier.nom);
   if (!existsSync(f)) {
+    if (!s.fichier.url) return null; // extrait ou fichier d'archive : pas de téléchargement direct (voir « origine »)
     try {
       console.log(`  ↓ ${s.fichier.url}`);
       execFileSync('curl', ['-sS', '-L', '--retry', '3', '-o', f, s.fichier.url]);
@@ -367,7 +399,11 @@ export function syntheseAmbiance(nom, k = 0) {
     for (let t = 0.05; t < d - 0.05; t += -Math.log(1 - r.next()) / 3) claquement(r, x, t, 0.1 + 0.5 * r.next() ** 2, 0.004 + 0.01 * r.next(), 1800 + 5000 * r.next());
     return x;
   }
-  const duree = { 'cuisine-cuillere': 3, 'cuisine-tasse': 0.8, 'cuisine-bouilloire': 7, 'cuisine-the': 2, 'cuisine-boite': 1.6 }[nom] ?? 1;
+  const duree = {
+    'cuisine-cuillere': 3, 'cuisine-tasse': 0.8, 'cuisine-bouilloire': 7, 'cuisine-the': 2, 'cuisine-boite': 1.6,
+    'cuisine-couteau': 4, 'cuisine-assiette': 1.9, 'cuisine-sel': 3, 'cuisine-minuteur': 1.9, 'cuisine-chat': 2, 'cuisine-horloge': 4,
+    'cuisine-paquet': 1.6, 'cuisine-chaise': 2.4, 'cuisine-tiroir': 0.8, 'cuisine-verre': 0.9,
+  }[nom] ?? 1;
   const x = new Float32Array(Math.round(duree * SR));
   switch (nom) {
     case 'cuisine-cuillere':
@@ -576,12 +612,14 @@ function ecoute(sons, sortie, titre) {
   console.log(`écoute : ${sortie.replace(ROOT + '/', '')} (${t.toFixed(1)} s)`);
 }
 
+/** Relevé des bruits de cuisine par le moteur (src/lib/ambiance.ts, GAIN_CUISINE) : le fichier d'écoute le reprend. */
+const GAIN_CUISINE = 2;
+const EVENEMENTS = [[5, 'cuisine-cuillere', -0.5], [11, 'cuisine-tasse', 0.45], [16, 'cuisine-bouilloire', -0.6], [23, 'cuisine-the', 0.5], [28.3, 'cuisine-boite', -0.35]];
 // Ambiance : 32 s en stéréo, comme le moteur la joue (src/lib/ambiance.ts) : fondu d'entrée de 3 s, le feu
 // en fondu croisé (couture à 14 s), la cuisine un peu à gauche ou à droite, deux pages pour le niveau.
-function ecouteAmbiance(sortie) {
+function ecouteAmbiance(sortie, { D = 32, evenements = EVENEMENTS, pages = [[8.5, 0], [20, 2]], titre = 'Ambiance — le feu et la cuisine, au niveau du carnet (volume 1).' } = {}) {
   const A = banque.ambiance;
   if (!A) return;
-  const D = 32;
   const N = Math.round(D * SR);
   const G = new Float32Array(N);
   const Dr = new Float32Array(N);
@@ -601,17 +639,16 @@ function ecouteAmbiance(sortie) {
   const P = A.feu.boucle;
   const F = A.feu.fondu;
   const notes = ['0.00 s  fondu d\'entrée (3 s)', `14.00 s  couture de la boucle du feu (fondu croisé de ${F} s)`];
-  for (let k = -1; k <= 0; k++) {
+  for (let k = -1; 14 + k * P < D; k++) {
     poser(feu.subarray(0, Math.round((P + F) * SR)), 14 + k * P, A.feu.g, 0, (t) => (t < F ? Math.sin((Math.PI / 2) * (t / F)) : t > P ? Math.cos((Math.PI / 2) * ((t - P) / F)) : 1));
   }
-  const evenements = [[5, 'cuisine-cuillere', -0.5], [11, 'cuisine-tasse', 0.45], [16, 'cuisine-bouilloire', -0.6], [23, 'cuisine-the', 0.5], [28.3, 'cuisine-boite', -0.35]];
-  for (const [t, nom, pan] of evenements) {
-    const e = A.cuisine[nom]?.[0];
+  for (const [t, nom, pan, k = 0] of evenements) {
+    const e = A.cuisine[nom]?.[k];
     if (!e) continue;
-    poser(decoder(join(BAKED, `${e.f}.mp3`)), t, e.g, pan);
-    notes.push(`${t.toFixed(2)} s  ${nom} (${pan < 0 ? 'à gauche' : 'à droite'})`);
+    poser(decoder(join(BAKED, `${e.f}.mp3`)), t, e.g * GAIN_CUISINE, pan);
+    notes.push(`${t.toFixed(2)} s  ${e.f} (${pan < 0 ? 'à gauche' : 'à droite'})`);
   }
-  for (const [t, i] of [[8.5, 0], [20, 2]]) {
+  for (const [t, i] of pages) {
     const e = banque.sons.page?.[i];
     if (!e) continue;
     poser(decoder(join(BAKED, `${e.f}.mp3`)), t, e.g * 0.675);
@@ -623,13 +660,19 @@ function ecouteAmbiance(sortie) {
   const entree = Buffer.from(x.buffer, x.byteOffset, x.byteLength);
   const r = spawnSync(FFMPEG, ['-v', 'error', '-y', '-f', 'f32le', '-ar', String(SR), '-ac', '2', '-i', '-', '-c:a', 'libmp3lame', '-b:a', '160k', '-map_metadata', '-1', '-fflags', '+bitexact', '-flags:a', '+bitexact', sortie], { input: entree, maxBuffer: 1 << 28 });
   if (r.status !== 0) throw new Error(`ffmpeg (ambiance) : ${r.stderr}`);
-  writeFileSync(sortie.replace(/\.mp3$/, '.txt'), `Ambiance — le feu et la cuisine, au niveau du carnet (volume 1).\n\n${notes.join('\n')}\n`);
+  writeFileSync(sortie.replace(/\.mp3$/, '.txt'), `${titre}\n\n${notes.join('\n')}\n`);
   console.log(`écoute : ${sortie.replace(ROOT + '/', '')} (${D} s, stéréo)`);
 }
 
 if (!sansEcoute && !seuls) {
   mkdirSync(ECOUTE, { recursive: true });
   ecouteAmbiance(join(ECOUTE, 'ambiance.mp3'));
+  // Toute la cuisine, chaque fichier à son tour, un toutes les 6 s, tantôt à gauche tantôt à droite.
+  const fichiers = Object.entries(banque.ambiance?.cuisine ?? {}).flatMap(([n, vs]) => vs.map((_, k) => [n, k]));
+  ecouteAmbiance(join(ECOUTE, 'cuisine.mp3'), {
+    D: 6 * fichiers.length + 4, pages: [], evenements: fichiers.map(([n, k], i) => [3 + 6 * i, n, i % 2 ? 0.45 : -0.45, k]),
+    titre: `Cuisine — les ${fichiers.length} fichiers, un toutes les 6 s sur le feu, au gain du moteur (banque × ${GAIN_CUISINE}).`,
+  });
   ecoute(banque.sons, join(ECOUTE, 'sons.mp3'), 'Sons du livre — chaque son à son gain de mixage, puis une petite scène.');
   // Banque de repli (synthèse) : cuite à part, dans un dossier temporaire, pour comparer à l'oreille.
   if (!forcerSynthese) {

@@ -1,5 +1,5 @@
 {
-  "description": "Sons du livre et ambiance (plan v4, lot S) : sources CC0 vérifiées une à une sur la page Freesound du son (lien « Go to the full license text » → creativecommons.org/publicdomain/zero/1.0), aperçus HQ (MP3 128 kb/s) téléchargés tels quels. scripts/bake-sons.mjs coupe, filtre et encode ; il remplit « fichiers » (un son cuit → sa source et son extrait, ou « synthese »).",
+  "description": "Sons du livre et ambiance (plan v4, lot S) : sources CC0 vérifiées une à une sur la page Freesound du son (lien « Go to the full license text » → creativecommons.org/publicdomain/zero/1.0), aperçus HQ (MP3 128 kb/s) téléchargés tels quels. scripts/bake-sons.mjs coupe, filtre et encode ; il remplit « fichiers » (un son cuit → sa source et son extrait, ou « synthese »). Les bruits de cuisine ajoutés ensuite viennent d'OpenGameArt (CC0 1.0, licence lue sur la page du pack) et de Wikimedia Commons (domaine public, fiche du fichier) ; la fiche « sources » de chacun dit d'où vient le fichier gardé (« fichier » : le téléchargement tel quel ; « origine » : l'original, quand on n'en garde qu'un extrait ou un fichier sorti d'une archive).",
   "licence": {
     "nom": "Creative Commons Zero v1.0 Universal (CC0 1.0), dédicace au domaine public",
     "url": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -310,6 +310,300 @@
         "octets": 1809072,
         "sha256": "dc187159238d196ed9c7071c932d5fec2d148d8b810ebe2b83838a4aee589d43"
       }
+    },
+    "oga-bretbernhoft-kitchencuttingboard01": {
+      "plateforme": "OpenGameArt",
+      "titre": "General Household Sound Effects (kitchencuttingboard01.wav)",
+      "auteur": "bretbernhoft",
+      "auteurPage": "https://opengameart.org/users/bretbernhoft/",
+      "url": "https://opengameart.org/content/general-household-sound-effects",
+      "licence": "CC0 1.0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenceLue": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "verifiee": "2026-10-18",
+      "date": "2025-09-23",
+      "role": "cuisine-couteau : un couteau qui coupe sur une planche, quelques coups",
+      "fichier": {
+        "nom": "oga-bretbernhoft-kitchencuttingboard01.flac",
+        "octets": 163869,
+        "sha256": "2c4c87d4a8366569203de520a50aff3f93a6c9a2be26e62dc586baa67f9424a6"
+      },
+      "origine": {
+        "url": "https://opengameart.org/sites/default/files/kitchencuttingboard01.wav",
+        "octets": 42336044,
+        "sha256": "8caa77e924eb2e55fa1b225183d2f25e47be0099adfcb959d2d0d0ebe905c556",
+        "fichier": "kitchencuttingboard01.wav",
+        "decoupe": [
+          40.9,
+          46.2
+        ]
+      }
+    },
+    "oga-bretbernhoft-forkonplate01": {
+      "plateforme": "OpenGameArt",
+      "titre": "General Household Sound Effects (forkonplate01.wav)",
+      "auteur": "bretbernhoft",
+      "auteurPage": "https://opengameart.org/users/bretbernhoft/",
+      "url": "https://opengameart.org/content/general-household-sound-effects",
+      "licence": "CC0 1.0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenceLue": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "verifiee": "2026-10-18",
+      "date": "2025-09-23",
+      "role": "cuisine-assiette : une fourchette qui tinte sur l'assiette",
+      "fichier": {
+        "nom": "oga-bretbernhoft-forkonplate01.flac",
+        "octets": 114097,
+        "sha256": "542391e289db44e16e7351b250fde4cdaf87b528c6ba2284a1dddc0649e29a03"
+      },
+      "origine": {
+        "url": "https://opengameart.org/sites/default/files/forkonplate01.wav",
+        "octets": 42336052,
+        "sha256": "f0ded35a69cfecdf307f3dd7331c17f32369d84fd3d015776f7c615e418db885",
+        "fichier": "forkonplate01.wav",
+        "decoupe": [
+          2.5,
+          5.9
+        ]
+      }
+    },
+    "oga-tinyworlds-adding_salt_01": {
+      "plateforme": "OpenGameArt",
+      "titre": "adding salt",
+      "auteur": "TinyWorlds",
+      "auteurPage": "https://opengameart.org/users/tinyworlds/",
+      "url": "https://opengameart.org/content/adding-salt",
+      "licence": "CC0 1.0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenceLue": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "verifiee": "2026-10-18",
+      "date": "2012-10-08",
+      "role": "cuisine-sel : du sel qu'on laisse tomber sur un plat (des grains versés, pour le sucre ou la farine)",
+      "fichier": {
+        "nom": "oga-tinyworlds-adding_salt_01.ogg",
+        "url": "https://opengameart.org/sites/default/files/adding_salt_01.ogg",
+        "octets": 67538,
+        "sha256": "94629e6e149af81a4edf24e1f8716609b24587e9b0ab1e32584eb0104e34ccc8"
+      }
+    },
+    "oga-laleksic-bell": {
+      "plateforme": "OpenGameArt",
+      "titre": "Various Sound Effects (bell.wav)",
+      "auteur": "laleksic",
+      "auteurPage": "https://opengameart.org/users/laleksic/",
+      "url": "https://opengameart.org/content/various-sound-effects",
+      "licence": "CC0 1.0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenceLue": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "verifiee": "2026-10-18",
+      "date": "2022-10-18",
+      "role": "cuisine-minuteur : une petite cloche qui sonne, le « ding » du minuteur",
+      "fichier": {
+        "nom": "oga-laleksic-bell.wav",
+        "octets": 201612,
+        "sha256": "d84af0785bb340834f2028c832e678b03706e1f4ccf226f45b122e235d8519b3"
+      },
+      "origine": {
+        "url": "https://opengameart.org/sites/default/files/sounds_8.zip",
+        "octets": 2537204,
+        "sha256": "82c945e5f3c97e4d38dbf18fa27bcea78dbed73b4078c5bbafc04ad89b4096db",
+        "chemin": "bell.wav"
+      }
+    },
+    "oga-laleksic-drawer_open": {
+      "plateforme": "OpenGameArt",
+      "titre": "Various Sound Effects (drawer_open.wav)",
+      "auteur": "laleksic",
+      "auteurPage": "https://opengameart.org/users/laleksic/",
+      "url": "https://opengameart.org/content/various-sound-effects",
+      "licence": "CC0 1.0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenceLue": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "verifiee": "2026-10-18",
+      "date": "2022-10-18",
+      "role": "cuisine-tiroir : un tiroir qu'on ouvre",
+      "fichier": {
+        "nom": "oga-laleksic-drawer_open.wav",
+        "octets": 84932,
+        "sha256": "0f1a31835c07e0722e9b506f1f38b726d4ed9579a947721b8e633125c46f3586"
+      },
+      "origine": {
+        "url": "https://opengameart.org/sites/default/files/sounds_8.zip",
+        "octets": 2537204,
+        "sha256": "82c945e5f3c97e4d38dbf18fa27bcea78dbed73b4078c5bbafc04ad89b4096db",
+        "chemin": "drawer_open.wav"
+      }
+    },
+    "oga-laleksic-drawer_close": {
+      "plateforme": "OpenGameArt",
+      "titre": "Various Sound Effects (drawer_close.wav)",
+      "auteur": "laleksic",
+      "auteurPage": "https://opengameart.org/users/laleksic/",
+      "url": "https://opengameart.org/content/various-sound-effects",
+      "licence": "CC0 1.0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenceLue": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "verifiee": "2026-10-18",
+      "date": "2022-10-18",
+      "role": "cuisine-tiroir : un tiroir qu'on referme",
+      "fichier": {
+        "nom": "oga-laleksic-drawer_close.wav",
+        "octets": 66506,
+        "sha256": "a97d950015ea8300d41ea1002de0eecb17bbabdb455d454a6cc786f095b3da22"
+      },
+      "origine": {
+        "url": "https://opengameart.org/sites/default/files/sounds_8.zip",
+        "octets": 2537204,
+        "sha256": "82c945e5f3c97e4d38dbf18fa27bcea78dbed73b4078c5bbafc04ad89b4096db",
+        "chemin": "drawer_close.wav"
+      }
+    },
+    "oga-laleksic-clang_glass": {
+      "plateforme": "OpenGameArt",
+      "titre": "Various Sound Effects (clang_glass.wav)",
+      "auteur": "laleksic",
+      "auteurPage": "https://opengameart.org/users/laleksic/",
+      "url": "https://opengameart.org/content/various-sound-effects",
+      "licence": "CC0 1.0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenceLue": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "verifiee": "2026-10-18",
+      "date": "2022-10-18",
+      "role": "cuisine-verre : un verre qui tinte",
+      "fichier": {
+        "nom": "oga-laleksic-clang_glass.wav",
+        "octets": 83618,
+        "sha256": "38ba8f304d0cf48dc01ccdb2982f21335416ee1f0aa49dfa6f5901414b6edebf"
+      },
+      "origine": {
+        "url": "https://opengameart.org/sites/default/files/sounds_8.zip",
+        "octets": 2537204,
+        "sha256": "82c945e5f3c97e4d38dbf18fa27bcea78dbed73b4078c5bbafc04ad89b4096db",
+        "chemin": "clang_glass.wav"
+      }
+    },
+    "oga-kerzoven-cat_softmew": {
+      "plateforme": "OpenGameArt",
+      "titre": "Cat Purr & Meow (cat_softmew.wav)",
+      "auteur": "Kerzoven",
+      "auteurPage": "https://opengameart.org/users/kerzoven/",
+      "url": "https://opengameart.org/content/cat-purr-meow",
+      "licence": "CC0 1.0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenceLue": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "verifiee": "2026-10-18",
+      "date": "2022-04-16",
+      "role": "cuisine-chat : un petit miaulement doux",
+      "fichier": {
+        "nom": "oga-kerzoven-cat_softmew.wav",
+        "url": "https://opengameart.org/sites/default/files/cat_softmew.wav",
+        "octets": 218620,
+        "sha256": "7de9fed4401b677ccbf072781182857d875093a8e9b5727fc21b38028cfd5a90"
+      }
+    },
+    "oga-jumbosizedfish-opening_0": {
+      "plateforme": "OpenGameArt",
+      "titre": "Chips Bag Sounds (opening_0.wav)",
+      "auteur": "JumboSizedFish",
+      "auteurPage": "https://opengameart.org/users/jumbosizedfish/",
+      "url": "https://opengameart.org/content/chips-bag-sounds",
+      "licence": "CC0 1.0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenceLue": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "verifiee": "2026-10-18",
+      "date": "2026-05-06",
+      "role": "cuisine-paquet : un paquet qu'on ouvre (un paquet de chips, pour le paquet de biscuits)",
+      "fichier": {
+        "nom": "oga-jumbosizedfish-opening_0.wav",
+        "url": "https://opengameart.org/sites/default/files/opening_0.wav",
+        "octets": 364786,
+        "sha256": "1f025222696c14ee4879521d6237bc99e286f1f98d36ada65bc255c75944f254"
+      }
+    },
+    "oga-jumbosizedfish-grabbing2_0": {
+      "plateforme": "OpenGameArt",
+      "titre": "Chips Bag Sounds (grabbing2_0.wav)",
+      "auteur": "JumboSizedFish",
+      "auteurPage": "https://opengameart.org/users/jumbosizedfish/",
+      "url": "https://opengameart.org/content/chips-bag-sounds",
+      "licence": "CC0 1.0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenceLue": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "verifiee": "2026-10-18",
+      "date": "2026-05-06",
+      "role": "cuisine-paquet : une main qui prend dans le paquet (un paquet de chips, pour le paquet de biscuits)",
+      "fichier": {
+        "nom": "oga-jumbosizedfish-grabbing2_0.wav",
+        "url": "https://opengameart.org/sites/default/files/grabbing2_0.wav",
+        "octets": 223474,
+        "sha256": "dfa2f2215d6e029bd950a9882999aa0f111c1a724c226d409d27e23d72802ab8"
+      }
+    },
+    "oga-bart-ticking_clock": {
+      "plateforme": "OpenGameArt",
+      "titre": "Ticking clock. (ticking_clock.wav)",
+      "auteur": "bart",
+      "auteurPage": "https://opengameart.org/users/bart/",
+      "url": "https://opengameart.org/content/ticking-clock",
+      "licence": "CC0 1.0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenceLue": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "verifiee": "2026-10-18",
+      "date": "2011-05-01",
+      "role": "cuisine-horloge : une horloge qui bat la seconde, au loin",
+      "fichier": {
+        "nom": "oga-bart-ticking_clock.flac",
+        "octets": 144898,
+        "sha256": "180816b60d4ebdd24665d221a1605907ba3c6adac9582db07098a68c907943a2"
+      },
+      "origine": {
+        "url": "https://opengameart.org/sites/default/files/ticking_clock.wav",
+        "octets": 2822588,
+        "sha256": "dc4dc1bf2c4bbeee5fd0841a87610ed19d851a92abc973ce0f5ff3caec40d537",
+        "fichier": "ticking_clock.wav",
+        "decoupe": [
+          2.9,
+          6.9
+        ]
+      }
+    },
+    "commons-creaky_wooden_swivel_chair": {
+      "plateforme": "Wikimedia Commons",
+      "titre": "Creaky wooden swivel chair",
+      "auteur": "chocoholic",
+      "auteurPage": "https://commons.wikimedia.org/wiki/File:Creaky_wooden_swivel_chair.ogg",
+      "url": "https://commons.wikimedia.org/wiki/File:Creaky_wooden_swivel_chair.ogg",
+      "licence": "Domaine public",
+      "licenceUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "licenceLue": "Public domain (pd) : fiche Wikimedia Commons, source PDSounds http://www.pdsounds.org/sounds/creaky_wooden_swivel_chair, AttributionRequired false",
+      "verifiee": "2026-10-18",
+      "date": "2008-05-06",
+      "role": "cuisine-chaise : une chaise de bois qui grince",
+      "fichier": {
+        "nom": "commons-creaky_wooden_swivel_chair.ogg",
+        "url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Creaky_wooden_swivel_chair.ogg",
+        "octets": 90505,
+        "sha256": "4593efa9c75a66a66771a5ea4c8b706940cd43d653923cd342de48755b50d54a"
+      }
+    },
+    "oga-kerzoven-cat_mewfood": {
+      "plateforme": "OpenGameArt",
+      "titre": "Cat Purr & Meow (cat_mewfood.wav)",
+      "auteur": "Kerzoven",
+      "auteurPage": "https://opengameart.org/users/kerzoven/",
+      "url": "https://opengameart.org/content/cat-purr-meow",
+      "licence": "CC0 1.0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenceLue": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "verifiee": "2026-10-18",
+      "date": "2022-04-16",
+      "role": "cuisine-chat : deux petits miaulements (le chat réclame sa part)",
+      "fichier": {
+        "nom": "oga-kerzoven-cat_mewfood.wav",
+        "url": "https://opengameart.org/sites/default/files/cat_mewfood.wav",
+        "octets": 99450,
+        "sha256": "3550f080882b52e236c8810a353756b2e0395fb7dadf0aeface0a06893cd181f"
+      }
     }
   },
   "fichiers": {
@@ -388,6 +682,16 @@
       "octets": 5975,
       "sha256": "95bf70e5373d6415a4e000a504144d547e943d14e8b4c50548e211eb1b1f4f70"
     },
+    "cuisine-assiette": {
+      "source": "oga-bretbernhoft-forkonplate01",
+      "extrait": [
+        0.15,
+        2.05
+      ],
+      "filtre": "highpass=f=250:p=2",
+      "octets": 23530,
+      "sha256": "583def38b4057830e58beb6dec6578fc14ef16c7961e4330c3d951893e9b836b"
+    },
     "cuisine-boite": {
       "source": "freesound-387967",
       "extrait": [
@@ -408,6 +712,46 @@
       "octets": 96882,
       "sha256": "d40f2ea316bc5f8b879e24e62a6aeafbce59b3666223d2fdb04b6bc72951e564"
     },
+    "cuisine-chaise": {
+      "source": "commons-creaky_wooden_swivel_chair",
+      "extrait": [
+        2.55,
+        5
+      ],
+      "filtre": "highpass=f=200:p=2",
+      "octets": 30113,
+      "sha256": "e7a170c366d8ed6fb11028c5fcf24128e1c815fe8fd1883e01168b3a91c3e652"
+    },
+    "cuisine-chat-1": {
+      "source": "oga-kerzoven-cat_softmew",
+      "extrait": [
+        0.15,
+        2.4
+      ],
+      "filtre": "highpass=f=150:p=2",
+      "octets": 27918,
+      "sha256": "8ed984ef4f0f7f37e16a54f3c30f8fe6523f4333b7280d41547cb514ecdf5aea"
+    },
+    "cuisine-chat-2": {
+      "source": "oga-kerzoven-cat_mewfood",
+      "extrait": [
+        0,
+        1.13
+      ],
+      "filtre": "highpass=f=150:p=2",
+      "octets": 14439,
+      "sha256": "8f3e962a0887041b0ca6adcceb1f17515dda7e5a85d916b3e462cdbfea732508"
+    },
+    "cuisine-couteau": {
+      "source": "oga-bretbernhoft-kitchencuttingboard01",
+      "extrait": [
+        1,
+        5.1
+      ],
+      "filtre": "highpass=f=120:p=2",
+      "octets": 49861,
+      "sha256": "115f777a77d1170bf1de4ae922827b34b1d1e85ac7fc8e4beacb279725c65753"
+    },
     "cuisine-cuillere": {
       "source": "freesound-444892",
       "extrait": [
@@ -417,6 +761,56 @@
       "filtre": "highpass=f=250:p=2",
       "octets": 39203,
       "sha256": "3b261fd175fd5cda93ff126ad1580a99775df956fbc2b4483d42812c609989a3"
+    },
+    "cuisine-horloge": {
+      "source": "oga-bart-ticking_clock",
+      "extrait": [
+        0,
+        4
+      ],
+      "filtre": "highpass=f=300:p=2,lowpass=f=3500:p=2",
+      "octets": 48921,
+      "sha256": "c2fcd2a798afaf89fdde063bc116c487b786aa9fe6acd2183637e05938cd1676"
+    },
+    "cuisine-minuteur": {
+      "source": "oga-laleksic-bell",
+      "extrait": [
+        0,
+        1.9
+      ],
+      "filtre": "highpass=f=500:p=2",
+      "octets": 23530,
+      "sha256": "75edf77067a2d375977f45e16b0737dba56561b60f30ad090068d1ab9fe1675b"
+    },
+    "cuisine-paquet-1": {
+      "source": "oga-jumbosizedfish-opening_0",
+      "extrait": [
+        0,
+        2.06
+      ],
+      "filtre": "highpass=f=400:p=2",
+      "octets": 25411,
+      "sha256": "5914ad91521a27e0deed2b1109ff37bdd90c84dc0f7ea1bc72e33b84b85bac33"
+    },
+    "cuisine-paquet-2": {
+      "source": "oga-jumbosizedfish-grabbing2_0",
+      "extrait": [
+        0,
+        1.27
+      ],
+      "filtre": "highpass=f=400:p=2",
+      "octets": 16006,
+      "sha256": "14d054ccd0dfcf4a38c6a704e90ebfc28bb455da1b782b4dff7b37471d0c188b"
+    },
+    "cuisine-sel": {
+      "source": "oga-tinyworlds-adding_salt_01",
+      "extrait": [
+        0,
+        3.1
+      ],
+      "filtre": "highpass=f=300:p=2",
+      "octets": 37949,
+      "sha256": "aecde8a41d23cc394521ea0719170617d869345cb800887c440e97853dc8faa9"
     },
     "cuisine-tasse-1": {
       "source": "freesound-568758",
@@ -447,6 +841,36 @@
       "filtre": "highpass=f=200:p=2",
       "octets": 24470,
       "sha256": "5538888dd5e50b47dccf510244083c09bbdbfee4158c20914f3ca91de83e94c4"
+    },
+    "cuisine-tiroir-1": {
+      "source": "oga-laleksic-drawer_open",
+      "extrait": [
+        0,
+        0.88
+      ],
+      "filtre": "highpass=f=120:p=2",
+      "octets": 11304,
+      "sha256": "72c4d32b620e9513611065da4edd394e6a2c73b0e1bf0c856c94413e59b82a24"
+    },
+    "cuisine-tiroir-2": {
+      "source": "oga-laleksic-drawer_close",
+      "extrait": [
+        0,
+        0.69
+      ],
+      "filtre": "highpass=f=120:p=2",
+      "octets": 9110,
+      "sha256": "11abbbced70d18839115b22ecf49df897ebdde5ea436364d0bf0e0fbdf938030"
+    },
+    "cuisine-verre": {
+      "source": "oga-laleksic-clang_glass",
+      "extrait": [
+        0,
+        0.87
+      ],
+      "filtre": "highpass=f=500:p=2",
+      "octets": 11304,
+      "sha256": "02e1e7f04b930f1e935e5466d08191f2f610c78ba9563cce2bceacb338e86686"
     },
     "feuillet-1": {
       "source": "freesound-509878",
