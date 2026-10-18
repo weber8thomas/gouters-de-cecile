@@ -1,0 +1,59 @@
+<!-- @dsCard group="Mouvement" width=1440 height=720 subtitle="Invitation à ouvrir : l'étiquette au crayon posée sur la couverture fermée, qui respire très doucement (opacité seule, coupée en mouvement réduit). Elle suit la façon dont on touche le carnet : touchez, cliquez, ou appuyez sur Entrée (essayez la souris puis une touche). À droite, les trois étiquettes" -->
+<style>
+  .demo-inv { position: absolute; inset: 0; display: grid; grid-template-columns: 560px 1fr; gap: 72px; padding: 48px 72px; box-sizing: border-box; background: var(--gc-wood-3); }
+  .demo-inv__couv { position: relative; border-radius: 6px 14px 14px 6px; overflow: hidden; background: var(--gc-sage-700) center / cover no-repeat; box-shadow: 0 18px 40px color-mix(in srgb, var(--gc-ink-noire) 45%, transparent); }
+  .demo-inv__pose { position: absolute; left: 22%; width: 56%; top: 70%; }
+  .demo-inv__liste { display: grid; align-content: center; gap: 44px; }
+  .demo-inv__ligne { display: grid; grid-template-columns: 170px 1fr; align-items: center; gap: 24px; }
+  .demo-inv__nom { font: 600 26px var(--font-serif); color: var(--gc-paper-aged); opacity: 0.8; }
+  .demo-inv__case { width: 420px; }
+  .demo-inv__note { position: absolute; right: 72px; bottom: 26px; font: 22px var(--font-hand); color: var(--gc-paper-aged); opacity: 0.7; }
+</style>
+<div id="root"></div>
+<script>
+  (async function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    var MODALITES = ['toucher', 'cliquer', 'entree'];
+    var TEXTES = { toucher: 'touchez pour ouvrir', cliquer: 'cliquez pour ouvrir', entree: 'appuyez sur Entrée pour ouvrir' };
+
+    // En attendant les étiquettes cuites du lot C (indices/<modalité>) : une étiquette provisoire, un
+    // bout de papier écrit au crayon (Caveat), dessinée ici pour la carte seulement.
+    var cuites = MODALITES.every(function (m) { return !!G.assetInfo('indices/' + m); });
+    var provisoires;
+    if (!cuites) {
+      await document.fonts.load('64px Caveat');
+      var css = getComputedStyle(document.documentElement);
+      var papier = css.getPropertyValue('--gc-paper-aged').trim() || '#e8d8b8';
+      var crayon = css.getPropertyValue('--gc-ink-crayon').trim() || '#46423e';
+      provisoires = {};
+      MODALITES.forEach(function (m, i) {
+        var c = document.createElement('canvas');
+        c.width = 900; c.height = 200;
+        var x = c.getContext('2d');
+        x.translate(450, 100); x.rotate((i % 2 ? 1 : -1) * 0.018);
+        x.fillStyle = papier;
+        x.beginPath(); x.moveTo(-420, -70); x.lineTo(416, -76); x.lineTo(424, 68); x.lineTo(-416, 74); x.closePath(); x.fill();
+        x.font = (m === 'entree' ? 62 : 74) + 'px Caveat'; x.textAlign = 'center'; x.textBaseline = 'middle';
+        x.fillStyle = crayon; x.globalAlpha = 0.82; x.fillText(TEXTES[m], 0, 4);
+        x.globalAlpha = 0.35; x.fillText(TEXTES[m], 1.2, 5.4);
+        provisoires[m] = c.toDataURL('image/png');
+      });
+    }
+
+    var plat = G.assetInfo('couverture/a/plat') ? G.assetUrl('couverture/a/plat') : null;
+    function Carte() {
+      return h('div', { className: 'demo-inv' },
+        h('div', { className: 'demo-inv__couv', style: plat ? { backgroundImage: 'url("' + plat + '")' } : undefined },
+          h('div', { className: 'demo-inv__pose' }, h(G.InvitationOuvrir, { etiquettes: provisoires }))),
+        h('div', { className: 'demo-inv__liste' },
+          MODALITES.map(function (m) {
+            return h('div', { key: m, className: 'demo-inv__ligne' },
+              h('span', { className: 'demo-inv__nom' }, m),
+              h('div', { className: 'demo-inv__case' }, h(G.InvitationOuvrir, { modalite: m, etiquettes: provisoires })));
+          })),
+        cuites ? null : h('div', { className: 'demo-inv__note' }, 'étiquettes provisoires : les étiquettes cuites du lot C les remplaceront'));
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(h(Carte));
+  })();
+</script>

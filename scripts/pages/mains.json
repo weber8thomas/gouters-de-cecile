@@ -1,0 +1,26 @@
+{
+  "f": [
+    "ecole",
+    "mamie",
+    "ado"
+  ],
+  "m": [
+    "papa",
+    "pressee"
+  ],
+  "notes": {
+    "mamie": "Cursive ancienne, liée, ronde et penchée : plutôt féminine. Lisible ; 0, 1 et 7 nets.",
+    "ecole": "Cursive scolaire droite et ronde : plutôt féminine, la plus lisible. 0, 1, 7 et nombres à deux chiffres nets.",
+    "soignee": "Script adulte net et serré : neutre, absent des listes f et m. Lisible ; 0, 1 et 7 nets.",
+    "ado": "Ronde, grosse, aérée : plutôt féminine. Lisible ; un « 1 » relu douteux (lu « I ») au contrôle des chiffres, les autres nets.",
+    "papa": "Script carré, droit, appuyé, lettres proches des capitales : plutôt masculine. Très lisible ; 0, 1 et 7 nets.",
+    "pressee": "Rapide, penchée, anguleuse, petite : plutôt masculine. Mots lisibles, mais « œufs » et « Joyeux » bâclés ; à petite taille, le 1 et le 7 se touchent dans « 107 » et « 701 »."
+  },
+  "recommandation": {
+    "lisa": "ecole",
+    "julie": "ado",
+    "rose": "mamie",
+    "mathis": "pressee",
+    "bernard": "papa"
+  }
+}

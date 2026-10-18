@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="fr" data-gc-mouvement="normal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Banc factice : soulever et réglages</title>
+<link rel="icon" href="data:,">
+<!--
+  Banc FACTICE des vérifications du lot T (scripts/verify-soulever.mjs, verify-reglages.mjs, fps.mjs).
+  Il n'utilise aucun composant du carnet : il imite seulement les attributs et les comportements du
+  CONTRACT § 12 pour prouver que les tests détectent ce qu'ils doivent détecter.
+
+    livre      .gc-livre-ecran[data-gc-double][data-gc-cote][data-gc-cadrage], pages
+               .gc-livre__emplacement--gauche/--droite (.gc-livre__page--visible) > .gc-livre-face[data-gc-spread]
+               événements « gc-livre-geste » { phase: debut|fin, type: page|glisse|fondu, t }
+    soulever   calque [data-gc-soulever="ouvert|ferme"], photo [data-gc-objet="photo"],
+               coin du feuillet [data-gc-objet="feuillet"], vidéo unique [data-gc-video] (play() dans le geste)
+    réglages   bouton [data-gc-reglages="bouton"], panneau [data-gc-reglages="panneau"] (role=dialog,
+               aria-modal), lignes [data-gc-reglage=distance|zoom|son|volume|lectureAuto|vitesse|
+               mouvementReduit|aller|defaut], clé gc:reglages:v1, caméra gc:camera:v1
+    clavier    ← → PageUp PageDown Début Fin · Entrée/Espace vidéo · ↑ feuillet · ↓ Échap Retour arrière
+               reposer · M ou « , » menu ; un objet soulevé ou le menu reçoit seul les touches.
+
+  Options : ?insets=haut,droite,bas,gauche (encoches simulées, px) · &video=webm|mp4 (défaut webm :
+  ce Chromium ne décode pas H.264) · &defaut=a,b (défauts injectés) :
+    play-hors-geste    play() appelé 30 ms après le geste
+    glisser-tourne     le livre n'est pas inerte pendant l'envol : un glisser tourne la page
+    retour-decale      la photo se repose 10 px à côté
+    fin-ignoree        la fin de la vidéo ne repose pas la photo
+    transforme-reduit  « moins d'animations » garde l'envol en transform
+    focus-fuit         Tab sort du menu
+    echap-focus        Échap ne rend pas le focus au bouton
+    stockage-plante    localStorage.setItem non protégé (exception)
+    petite-cible       bouton et lignes de 30 px
+    hors-zone          bouton collé au bord, sous l'encoche
+    vitesse-inversee   « vive » plus lente que « lente »
+    zoom-hors-bornes   zoom de 0,5 à 2 quel que soit le cran
+    layout             l'envol anime left/top/width/height (Layout à chaque image)
+  Instrumentation : window.__gcBanc { ready, error, etat() }.
+-->
+<style>
+  :root { --bois: #5a3a26; --papier: #f3e9d6; --encre: #3b2a1e; --sepia: #a07a4f; }
+  html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; background: var(--bois); font: 16px/1.3 system-ui, sans-serif; color: var(--encre); }
+  .gc-ecran { position: fixed; inset: 0; --gc-ecran-haut: 0px; --gc-ecran-droite: 0px; --gc-ecran-bas: 0px; --gc-ecran-gauche: 0px; }
+  .gc-livre-ecran { position: absolute; inset: 0; overflow: hidden; touch-action: pinch-zoom; }
+  .gc-livre-ecran[inert] { filter: saturate(.7) brightness(.85); }
+  .gc-livre { position: absolute; left: 0; top: 0; display: flex; transform-origin: 0 0; }
+  .gc-livre__emplacement { position: relative; background: var(--papier); box-shadow: 0 2px 10px #0006; overflow: visible; }
+  .gc-livre-face { position: absolute; inset: 0; padding: 6%; box-sizing: border-box; }
+  .gc-livre-face h2 { margin: 0 0 .4em; font: 600 1.6em Georgia, serif; }
+  .gc-livre-face p { margin: .2em 0; }
+  .banc-photo { position: absolute; left: 12%; top: 22%; width: 70%; aspect-ratio: 16 / 9; transform: rotate(-2.5deg); background: #fff; padding: 2.5%; box-sizing: content-box; box-shadow: 0 2px 6px #0005; cursor: pointer; }
+  .banc-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .banc-photo::after { content: '▶'; position: absolute; right: 6%; bottom: 6%; color: #fffb; font-size: 1.4em; }
+  .banc-photo:focus-visible, [data-gc-objet="feuillet"]:focus-visible { outline: 3px solid #c84; outline-offset: 4px; }
+  [data-gc-objet="feuillet"] { position: absolute; right: -6%; bottom: 8%; width: 34%; height: 22%; background: repeating-linear-gradient(#fdfaf2 0 14px, #b9c8e8 14px 15px); box-shadow: -2px 2px 6px #0005; transform: rotate(4deg); cursor: pointer; touch-action: none; }
+  .banc-tourne { position: absolute; top: 0; background: var(--papier); box-shadow: 0 0 20px #0008; transform-origin: 0 50%; pointer-events: none; }
+  .gc-ecran__controles { position: absolute; inset: 0; pointer-events: none; }
+  .gc-ecran__controles > * { pointer-events: auto; }
+  .banc-fleche, [data-gc-reglages="bouton"] { position: absolute; width: 48px; height: 48px; border: 0; border-radius: 50%; background: #fff3; color: #fff; font-size: 22px; }
+  [data-gc-reglages="bouton"] { left: calc(var(--gc-ecran-gauche) + 10px); top: calc(var(--gc-ecran-haut) + 10px); }
+  .banc-fleche--prec { left: calc(var(--gc-ecran-gauche) + 10px); top: 50%; }
+  .banc-fleche--suiv { right: calc(var(--gc-ecran-droite) + 10px); top: 50%; }
+  html.petite-cible [data-gc-reglages="bouton"] { width: 30px; height: 30px; font-size: 14px; }
+  html.hors-zone [data-gc-reglages="bouton"] { left: 2px; top: 2px; }
+  /* Soulever */
+  [data-gc-soulever] { position: fixed; inset: 0; pointer-events: none; }
+  [data-gc-soulever="ouvert"] { pointer-events: auto; }
+  .banc-voile { position: absolute; inset: 0; background: #0007; opacity: 0; transition: opacity .2s; will-change: opacity; }
+  [data-gc-soulever="ouvert"] .banc-voile { opacity: 1; }
+  /* défaut « glisser-tourne » : le calque laisse passer le pointeur jusqu'au livre (qui n'est pas inerte) */
+  html.glisser-tourne [data-gc-soulever="ouvert"], html.glisser-tourne [data-gc-soulever="ouvert"] * { pointer-events: none; }
+  .banc-vole { position: fixed; visibility: hidden; background: #fff; box-shadow: 0 10px 40px #000a; transform-origin: 0 0; will-change: transform; }
+  .banc-vole img, .banc-vole video { position: absolute; inset: 3%; width: 94%; height: 94%; object-fit: cover; }
+  .banc-vole video { opacity: 0; will-change: opacity; }
+  .banc-feuille { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .banc-feuille > div { position: absolute; inset: 0; backface-visibility: hidden; padding: 8%; box-sizing: border-box; font: 1.4em Georgia, serif; }
+  .banc-recto { background: repeating-linear-gradient(#fdfaf2 0 22px, #b9c8e8 22px 23px); }
+  .banc-verso { background: repeating-linear-gradient(90deg, #fff6e0 0 22px, #e8c9a0 22px 23px); transform: rotateY(180deg); }
+  /* Réglages */
+  [data-gc-reglages="panneau"] { position: fixed; right: calc(var(--gc-ecran-droite) + 16px); top: calc(var(--gc-ecran-haut) + 16px); bottom: calc(var(--gc-ecran-bas) + 16px); width: min(420px, calc(100vw - 32px - var(--gc-ecran-gauche) - var(--gc-ecran-droite))); overflow: auto; background: #fbf7ee; border-radius: 10px; box-shadow: 0 10px 40px #000a; padding: 12px 16px; box-sizing: border-box; }
+  [data-gc-reglages="panneau"][hidden] { display: none; }
+  @media (max-aspect-ratio: 1/1) {
+    [data-gc-reglages="panneau"] { left: calc(var(--gc-ecran-gauche) + 8px); right: calc(var(--gc-ecran-droite) + 8px); top: auto; bottom: 0; width: auto; max-height: 75vh; padding-bottom: calc(var(--gc-ecran-bas) + 12px); border-radius: 14px 14px 0 0; }
+  }
+  [data-gc-reglages="panneau"] h2 { margin: 4px 0 8px; font: 600 20px Georgia, serif; }
+  .ligne { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px solid #0001; }
+  .ligne > span { flex: 1 0 100%; font-size: 14px; opacity: .8; }
+  .ligne button, .ligne [role="slider"] { min-width: 44px; min-height: 44px; border: 1px solid #0003; border-radius: 8px; background: #fff; font: inherit; }
+  html.petite-cible .ligne button, html.petite-cible .ligne [role="slider"] { min-height: 30px; min-width: 30px; height: 30px; padding: 0 4px; }
+  .ligne [aria-checked="true"], .ligne [aria-pressed="true"] { background: #e8c9a0; border-color: #8a5a2b; }
+  .ligne [role="slider"] { display: inline-flex; align-items: center; justify-content: center; padding: 0 10px; }
+  :focus-visible { outline: 3px solid #c84; outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="gc-ecran" id="ecran">
+  <div class="gc-livre-ecran" id="livreEcran" data-gc-double="0" data-gc-cote="gauche" data-gc-cadrage="double">
+    <div class="gc-livre" id="livre">
+      <div class="gc-livre__emplacement gc-livre__emplacement--gauche" id="g"></div>
+      <div class="gc-livre__emplacement gc-livre__emplacement--droite" id="d"></div>
+    </div>
+  </div>
+  <div class="gc-ecran__controles" id="controles">
+    <button type="button" class="banc-fleche banc-fleche--prec" aria-label="Page précédente">‹</button>
+    <button type="button" class="banc-fleche banc-fleche--suiv" aria-label="Page suivante">›</button>
+    <button type="button" data-gc-reglages="bouton" aria-label="Réglages" aria-haspopup="dialog" aria-expanded="false">⚙</button>
+    <div data-gc-soulever="ferme" data-gc-phase="ferme" id="calque">
+      <div class="banc-voile" id="voile"></div>
+      <div class="banc-vole" id="vole">
+        <img id="voleImg" alt="">
+        <video data-gc-video id="video" playsinline preload="auto"></video>
+        <div class="banc-feuille" id="feuille" hidden><div class="banc-recto">Suite de la recette (recto)<br>ÉTAPE 3 : enfourner.</div><div class="banc-verso">Verso<br>ÉTAPE 4 : glaçage.</div></div>
+      </div>
+    </div>
+    <div data-gc-reglages="panneau" id="panneau" role="dialog" aria-modal="true" aria-labelledby="titreReglages" hidden>
+      <h2 id="titreReglages">Réglages</h2>
+      <div class="ligne" data-gc-reglage="distance" role="radiogroup" aria-label="Taille du livre"><span>Taille du livre</span>
+        <button type="button" role="radio" data-valeur="loin">Petit</button><button type="button" role="radio" data-valeur="moyenne">Moyen</button><button type="button" role="radio" data-valeur="proche">Grand</button></div>
+      <div class="ligne" data-gc-reglage="zoom"><span>Zoom</span>
+        <button type="button" data-pas="-1" aria-label="Zoom moins">−</button><div role="slider" tabindex="0" aria-label="Zoom" id="zoom"></div><button type="button" data-pas="1" aria-label="Zoom plus">+</button></div>
+      <div class="ligne" data-gc-reglage="son"><span>Son</span><button type="button" role="switch" aria-label="Son" data-champ="son"></button></div>
+      <div class="ligne" data-gc-reglage="volume" id="ligneVolume"><span>Volume</span><div role="slider" tabindex="0" aria-label="Volume" id="volume"></div></div>
+      <div class="ligne" data-gc-reglage="lectureAuto"><span>Lecture automatique</span><button type="button" role="switch" aria-label="Lecture automatique" data-champ="lectureAuto"></button></div>
+      <div class="ligne" data-gc-reglage="vitesse" role="radiogroup" aria-label="Vitesse des pages"><span>Vitesse des pages</span>
+        <button type="button" role="radio" data-valeur="vive">Vive</button><button type="button" role="radio" data-valeur="normale">Normale</button><button type="button" role="radio" data-valeur="lente">Lente</button></div>
+      <div class="ligne" data-gc-reglage="mouvementReduit"><span>Moins d'animations</span><button type="button" role="switch" aria-label="Moins d'animations" data-champ="mouvementReduit"></button></div>
+      <div class="ligne" data-gc-reglage="aller"><span>Aller à…</span></div>
+      <div class="ligne" data-gc-reglage="defaut"><button type="button" id="defaut">Réglages par défaut</button><button type="button" id="fermer" aria-label="Fermer les réglages">Fermer</button></div>
+    </div>
+  </div>
+</div>
+<script>
+(() => {
+  const B = (window.__gcBanc = { ready: false, error: null });
+  try {
+    const q = new URLSearchParams(location.search);
+    const DEFAUTS = new Set((q.get('defaut') || '').split(',').filter(Boolean));
+    const defaut = (k) => DEFAUTS.has(k);
+    for (const k of DEFAUTS) document.documentElement.classList.add(k);
+    const $ = (id) => document.getElementById(id);
+    const ecran = $('ecran'), livreEcran = $('livreEcran'), livre = $('livre'), G = $('g'), D = $('d');
+    const calque = $('calque'), vole = $('vole'), voleImg = $('voleImg'), video = $('video'), feuille = $('feuille'), voile = $('voile');
+    const bouton = document.querySelector('[data-gc-reglages="bouton"]'), panneau = $('panneau');
+    const AFFICHE = '../verification/out/t/media/essai-sepia.webp';
+    video.src = `../verification/out/t/media/essai.${q.get('video') === 'mp4' ? 'mp4' : 'webm'}`;
+    video.poster = AFFICHE;
+    voleImg.src = AFFICHE; // une fois : recharger l'image à chaque envol coûte un Layout
+
+    // ---- Encoches simulées -------------------------------------------------------------------
+    const ins = (q.get('insets') || '0,0,0,0').split(',').map(Number);
+    ['haut', 'droite', 'bas', 'gauche'].forEach((k, i) => ecran.style.setProperty(`--gc-ecran-${k}`, `${ins[i] || 0}px`));
+    const zone = () => ({ x: ins[3] || 0, y: ins[0] || 0, r: innerWidth - (ins[1] || 0), b: innerHeight - (ins[2] || 0) });
+
+    // ---- Réglages (gc:reglages:v1) et caméra (gc:camera:v1) ------------------------------------
+    const DEF = { v: 1, son: true, volume: 1, lectureAuto: false, vitesse: 'normale', mouvementReduit: false };
+    const lire = (cle, d) => { try { return { ...d, ...(JSON.parse(localStorage.getItem(cle)) || {}) }; } catch { return { ...d }; } };
+    const ecrire = (cle, v) => {
+      if (defaut('stockage-plante')) { localStorage.setItem(cle, JSON.stringify(v)); return; }
+      try { localStorage.setItem(cle, JSON.stringify(v)); } catch { /* stockage indisponible : en mémoire */ }
+    };
+    let R = lire('gc:reglages:v1', DEF);
+    let C = lire('gc:camera:v1', { distance: 'moyenne', zoom: 1 });
+    const BORNES = defaut('zoom-hors-bornes') ? { proche: [0.5, 2], moyenne: [0.5, 2], loin: [0.5, 2] } : { proche: [0.85, 1.08], moyenne: [0.87, 1.12], loin: [0.95, 1.15] };
+    const systemeReduit = matchMedia('(prefers-reduced-motion: reduce)');
+    const reduit = () => R.mouvementReduit || systemeReduit.matches;
+    const DUREES = defaut('vitesse-inversee') ? { vive: 1300, normale: 900, lente: 600 } : { vive: 600, normale: 900, lente: 1300 };
+    const regler = (maj) => { const n = { ...R, ...maj }; ecrire('gc:reglages:v1', n); R = n; rendreReglages(); };
+    const camera = (maj) => {
+      const n = { ...C, ...maj };
+      const [lo, hi] = BORNES[n.distance];
+      n.zoom = Math.round(Math.min(hi, Math.max(lo, n.zoom)) * 100) / 100;
+      ecrire('gc:camera:v1', n); C = n; poser(); rendreReglages();
+    };
+
+    // ---- Livre ------------------------------------------------------------------------------
+    const SPREADS = [
+      { id: 'p00-julie', titre: 'Julie', photo: true, feuillet: false },
+      { id: 'p01-rose', titre: 'Rose', photo: true, feuillet: false },
+      { id: 'p02-lisa', titre: 'Lisa', photo: true, feuillet: true },
+      { id: 'p03-fin', titre: 'Fin', photo: false, feuillet: false },
+    ];
+    const indexDuLien = (h) => { const id = h.replace(/^#/, '').toLowerCase(); return SPREADS.findIndex((s) => s.id === id || s.id.endsWith(`-${id}`)); };
+    let index = Math.max(0, indexDuLien(location.hash));
+    let cote = 'gauche';
+    let occupe = false;
+    const cadrage = () => (innerWidth < innerHeight ? 'page' : 'double');
+    const geste = (phase, type) => livreEcran.dispatchEvent(new CustomEvent('gc-livre-geste', { bubbles: true, detail: { phase, type, t: performance.now() } }));
+    let pw = 0, ph = 0;
+    function poser() {
+      const z = zone();
+      const zw = z.r - z.x, zh = z.b - z.y;
+      const ratio = 850 / 960;
+      if (cadrage() === 'page') { pw = Math.min(zw * 0.92, zh * 0.86 * ratio); }
+      else { pw = Math.min((zw * 0.9) / 2, zh * 0.84 * ratio); }
+      ph = pw / ratio;
+      for (const p of [G, D]) { p.style.width = `${pw}px`; p.style.height = `${ph}px`; }
+      const s = C.zoom;
+      const larg = cadrage() === 'page' ? pw : 2 * pw;
+      const ox = z.x + (zw - larg * s) / 2 - (cadrage() === 'page' && cote === 'droite' ? pw * s : 0);
+      const oy = z.y + (zh - ph * s) / 2;
+      livre.style.transform = `translate(${ox}px, ${oy}px) scale(${s})`;
+      livre.style.fontSize = `${pw / 28}px`;
+      livreEcran.setAttribute('data-gc-cadrage', cadrage());
+      livreEcran.setAttribute('data-gc-double', String(index));
+      livreEcran.setAttribute('data-gc-cote', cadrage() === 'page' ? cote : 'gauche');
+      G.classList.toggle('gc-livre__page--visible', cadrage() === 'double' || cote === 'gauche');
+      D.classList.toggle('gc-livre__page--visible', cadrage() === 'double' || cote === 'droite');
+    }
+    function remplir() {
+      const s = SPREADS[index];
+      G.innerHTML = `<div class="gc-livre-face gc-livre-face--gauche" data-gc-spread="${s.id}"><h2>${s.titre}</h2><p>Page vidéo</p>${s.photo ? `<div class="banc-photo" data-gc-objet="photo" role="button" tabindex="0" aria-label="Vidéo de ${s.titre}"><img src="${AFFICHE}" alt=""></div>` : ''}</div>`;
+      D.innerHTML = `<div class="gc-livre-face gc-livre-face--droite" data-gc-spread="${s.id}"><h2>La recette de ${s.titre}</h2><p>250 g de farine</p><p>3 œufs</p><p>ÉTAPE 1 : mélanger.</p>${s.feuillet ? '<div data-gc-objet="feuillet" role="button" tabindex="0" aria-label="Feuillet volant : la suite"></div>' : ''}</div>`;
+      try { history.replaceState(null, '', `${location.pathname}${location.search}#${s.id.split('-').pop()}`); } catch { /* rien */ }
+      poser();
+    }
+    async function tourner(sens) {
+      if (occupe || soul.etat !== 'ferme' && !defaut('glisser-tourne')) return;
+      const page = cadrage() === 'page';
+      if (page && ((sens > 0 && cote === 'gauche') || (sens < 0 && cote === 'droite'))) { // glisse de caméra
+        occupe = true;
+        geste('debut', 'glisse');
+        const avant = livre.style.transform;
+        cote = sens > 0 ? 'droite' : 'gauche';
+        poser();
+        const apres = livre.style.transform;
+        await livre.animate([{ transform: avant }, { transform: apres }], { duration: reduit() ? 1 : 350, easing: 'ease-out' }).finished;
+        geste('fin', 'glisse');
+        occupe = false;
+        return;
+      }
+      const cible = index + sens;
+      if (cible < 0 || cible >= SPREADS.length) return;
+      occupe = true;
+      const type = reduit() ? 'fondu' : 'page';
+      const duree = reduit() ? 200 : DUREES[R.vitesse];
+      const f = document.createElement('div');
+      f.className = 'banc-tourne';
+      f.style.cssText = `left:${pw}px;width:${pw}px;height:${ph}px`;
+      livre.appendChild(f);
+      geste('debut', type);
+      const anim = reduit()
+        ? f.animate([{ opacity: 0 }, { opacity: 1 }, { opacity: 0 }], { duration: duree })
+        : f.animate([{ transform: `rotateY(${sens > 0 ? 0 : -180}deg)` }, { transform: `rotateY(${sens > 0 ? -180 : 0}deg)` }], { duration: duree, easing: 'cubic-bezier(.3,.1,.2,1)' });
+      await anim.finished;
+      f.remove();
+      index = cible;
+      cote = sens > 0 ? 'gauche' : 'droite';
+      if (cadrage() === 'page' && sens > 0) cote = 'gauche';
+      remplir();
+      geste('fin', type);
+      occupe = false;
+    }
+    function allerA(i) { if (i < 0 || i >= SPREADS.length) return; index = i; cote = 'gauche'; remplir(); }
+
+    // Glisser horizontal sur le livre (doigt ou souris).
+    let appui = null;
+    const surLivre = (e) => !e.target.closest('button, [data-gc-objet], [data-gc-reglages], [role="slider"]');
+    window.addEventListener('pointerdown', (e) => { if (surLivre(e) && (livreEcran.contains(e.target) || defaut('glisser-tourne'))) appui = { x: e.clientX, y: e.clientY, id: e.pointerId }; });
+    window.addEventListener('pointerup', (e) => {
+      if (!appui || e.pointerId !== appui.id) return;
+      const dx = e.clientX - appui.x, dy = e.clientY - appui.y;
+      appui = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) tourner(dx < 0 ? 1 : -1);
+    });
+    window.addEventListener('pointercancel', () => { appui = null; });
+    document.querySelector('.banc-fleche--prec').addEventListener('click', () => tourner(-1));
+    document.querySelector('.banc-fleche--suiv').addEventListener('click', () => tourner(1));
+
+    // ---- Soulever ----------------------------------------------------------------------------
+    const soul = { etat: 'ferme', objet: null, source: null, face: 'recto' };
+    const transformDepuis = (src, cible, angle) => `translate(${src.x - cible.x}px, ${src.y - cible.y}px) scale(${src.w / cible.w}, ${src.h / cible.h}) rotate(${angle}deg)`;
+    const rectDe = (el) => { const r = el.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height }; };
+    function boiteCible(objet) {
+      const z = zone();
+      const m = 16;
+      const zw = z.r - z.x - 2 * m, zh = z.b - z.y - 2 * m;
+      const ratio = objet === 'photo' ? 16 / 9 : 850 / 960;
+      let w = Math.min(zw * 0.92, zh * 0.88 * ratio);
+      let h = w / ratio;
+      return { x: z.x + m + (zw - w) / 2, y: z.y + m + (zh - h) / 2, w, h };
+    }
+    function animerLayout(de, a, duree, fin) { // défaut « layout » : left/top/width/height à chaque image
+      const t0 = performance.now();
+      const pas = (t) => {
+        const k = Math.min(1, (t - t0) / duree);
+        const e = 1 - (1 - k) ** 3;
+        for (const p of ['x', 'y', 'w', 'h']) vole.style[{ x: 'left', y: 'top', w: 'width', h: 'height' }[p]] = `${de[p] + (a[p] - de[p]) * e}px`;
+        if (k < 1) requestAnimationFrame(pas); else fin?.();
+      };
+      requestAnimationFrame(pas);
+    }
+    let animSoul = null;
+    function soulever(objet, source) {
+      if (soul.etat !== 'ferme' || !source) return;
+      if (objet === 'photo') {
+        // Dans le geste, avant tout setState ou await : son, volume, début, play().
+        video.muted = !R.son;
+        try { video.volume = R.volume; } catch { /* lecture seule (iOS) */ }
+        video.currentTime = 0;
+        if (defaut('play-hors-geste')) setTimeout(() => video.play().catch(() => {}), 30);
+        else video.play().catch(() => {});
+      }
+      soul.etat = 'ouvert'; soul.objet = objet; soul.source = source; soul.face = 'recto';
+      const angle = objet === 'photo' ? -2.5 : 4;
+      const src = rectDe(source);
+      const cible = boiteCible(objet);
+      voleImg.style.visibility = objet === 'photo' ? '' : 'hidden';
+      video.style.visibility = objet === 'photo' ? '' : 'hidden';
+      apparition?.cancel(); // la vidéo reste transparente jusqu'à « playing »
+      feuille.hidden = objet !== 'feuillet';
+      feuille.style.transform = '';
+      Object.assign(vole.style, { left: `${cible.x}px`, top: `${cible.y}px`, width: `${cible.w}px`, height: `${cible.h}px`, visibility: 'visible' });
+      if (!defaut('glisser-tourne')) livreEcran.inert = true;
+      source.style.visibility = 'hidden';
+      calque.setAttribute('data-gc-soulever', 'ouvert');
+      calque.setAttribute('data-gc-phase', 'envol');
+      calque.setAttribute('data-gc-objet-ouvert', objet);
+      vole.setAttribute('data-gc-actif', '');
+      animSoul?.cancel();
+      const pose = () => { if (soul.etat === 'ouvert') calque.setAttribute('data-gc-phase', 'ouvert'); };
+      if (defaut('layout')) {
+        vole.style.transform = '';
+        animerLayout(src, cible, 450, pose);
+      } else if (reduit() && !defaut('transforme-reduit')) {
+        animSoul = vole.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220 });
+      } else {
+        animSoul = vole.animate([{ transform: transformDepuis(src, cible, angle) }, { transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      }
+      animSoul?.finished.then(pose, () => {});
+      (objet === 'feuillet' ? feuille : vole).setAttribute('tabindex', '-1');
+      vole.focus({ preventScroll: true });
+    }
+    function reposer() {
+      if (soul.etat !== 'ouvert') return;
+      soul.etat = 'retour';
+      calque.setAttribute('data-gc-phase', 'retour');
+      video.pause();
+      const source = soul.source;
+      const angle = soul.objet === 'photo' ? -2.5 : 4;
+      const src = rectDe(source);
+      const cible = rectDe(vole);
+      const finir = () => {
+        animSoul?.cancel();
+        vole.style.visibility = 'hidden';
+        calque.setAttribute('data-gc-soulever', 'ferme');
+        calque.setAttribute('data-gc-phase', 'ferme');
+        calque.removeAttribute('data-gc-objet-ouvert');
+        vole.removeAttribute('data-gc-actif');
+        livreEcran.inert = false;
+        source.style.visibility = '';
+        if (defaut('retour-decale')) source.style.translate = '10px 6px';
+        source.focus({ preventScroll: true });
+        soul.etat = 'ferme'; soul.objet = null; soul.source = null;
+      };
+      animSoul?.cancel();
+      if (defaut('layout')) { animerLayout(cible, src, 380, finir); return; }
+      animSoul = reduit() && !defaut('transforme-reduit')
+        ? vole.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: 'forwards' })
+        : vole.animate([{ transform: 'none' }, { transform: transformDepuis(src, cible, angle) }], { duration: 380, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+      animSoul.finished.then(finir, finir);
+    }
+    function retourner(sens) {
+      if (soul.objet !== 'feuillet' || soul.etat !== 'ouvert') return;
+      const verso = sens == null ? soul.face === 'recto' : sens > 0;
+      if ((soul.face === 'verso') === verso) return;
+      soul.face = verso ? 'verso' : 'recto';
+      feuille.setAttribute('data-gc-face', soul.face);
+      const de = verso ? 'rotateY(0deg)' : 'rotateY(180deg)', a = verso ? 'rotateY(180deg)' : 'rotateY(0deg)';
+      feuille.style.transform = a;
+      if (!reduit()) feuille.animate([{ transform: de }, { transform: a }], { duration: 400, easing: 'ease-in-out' });
+    }
+    // La vidéo apparaît à « playing » par une animation d'opacité (compositeur), sans changer de classe :
+    // un changement de style sur <video> coûte un Layout.
+    let apparition = null;
+    video.addEventListener('playing', () => { apparition = video.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, fill: 'forwards' }); });
+    video.addEventListener('ended', () => { if (!defaut('fin-ignoree')) reposer(); });
+    voile.addEventListener('click', () => reposer());
+    vole.addEventListener('click', () => (soul.objet === 'feuillet' ? retourner() : reposer()));
+    addEventListener('hashchange', () => { reposer(); const i = indexDuLien(location.hash); if (i >= 0 && i !== index) allerA(i); });
+    addEventListener('resize', () => { reposer(); poser(); });
+
+    // Photo et feuillet posés : toucher / clic ; feuillet : glisser vers le haut.
+    document.addEventListener('click', (e) => {
+      const o = e.target.closest('[data-gc-objet]');
+      if (!o || soul.etat !== 'ferme' || o.closest('[data-gc-soulever]')) return;
+      soulever(o.getAttribute('data-gc-objet'), o);
+    });
+    let appuiF = null;
+    document.addEventListener('pointerdown', (e) => { const f = e.target.closest('[data-gc-objet="feuillet"]'); if (f) appuiF = { y: e.clientY, x: e.clientX, f }; });
+    document.addEventListener('pointerup', (e) => {
+      if (!appuiF) return;
+      const { f, x, y } = appuiF;
+      appuiF = null;
+      if (y - e.clientY > 30 && Math.abs(e.clientX - x) < y - e.clientY) soulever('feuillet', f);
+    });
+
+    // ---- Réglages : le menu -----------------------------------------------------------------
+    const ligneVolume = $('ligneVolume');
+    if (/iPhone|iPad/.test(navigator.userAgent)) ligneVolume.hidden = true; // volume en lecture seule sur iOS
+    const aller = panneau.querySelector('[data-gc-reglage="aller"]');
+    SPREADS.forEach((s, i) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = s.titre; b.dataset.index = i; aller.appendChild(b); });
+    const focusables = () => [...panneau.querySelectorAll('button, [role="slider"], [tabindex="0"]')].filter((el) => !el.closest('[hidden]') && el.getClientRects().length);
+    const lignes = () => [...panneau.querySelectorAll('.ligne')].filter((l) => !l.hidden);
+    function rendreReglages() {
+      for (const b of panneau.querySelectorAll('[data-gc-reglage="vitesse"] [role="radio"]')) b.setAttribute('aria-checked', String(b.dataset.valeur === R.vitesse));
+      for (const b of panneau.querySelectorAll('[data-gc-reglage="distance"] [role="radio"]')) b.setAttribute('aria-checked', String(b.dataset.valeur === C.distance));
+      for (const b of panneau.querySelectorAll('[role="switch"]')) b.setAttribute('aria-checked', String(!!R[b.dataset.champ]));
+      for (const b of panneau.querySelectorAll('[role="switch"]')) b.textContent = R[b.dataset.champ] ? 'oui' : 'non';
+      const z = $('zoom'); const [lo, hi] = BORNES[C.distance];
+      z.setAttribute('aria-valuemin', lo); z.setAttribute('aria-valuemax', hi); z.setAttribute('aria-valuenow', C.zoom); z.textContent = `${Math.round(C.zoom * 100)} %`;
+      const v = $('volume'); v.setAttribute('aria-valuemin', 0); v.setAttribute('aria-valuemax', 1); v.setAttribute('aria-valuenow', R.volume); v.textContent = `${Math.round(R.volume * 100)} %`;
+      document.documentElement.setAttribute('data-gc-mouvement', reduit() ? 'reduit' : 'normal');
+    }
+    let menuOuvert = false;
+    function ouvrirMenu() {
+      if (menuOuvert || soul.etat !== 'ferme') return;
+      menuOuvert = true; panneau.hidden = false; bouton.setAttribute('aria-expanded', 'true');
+      livreEcran.inert = true;
+      rendreReglages();
+      (panneau.querySelector('[aria-checked="true"]') || focusables()[0]).focus();
+    }
+    function fermerMenu() {
+      if (!menuOuvert) return;
+      menuOuvert = false; panneau.hidden = true; bouton.setAttribute('aria-expanded', 'false');
+      livreEcran.inert = false;
+      if (defaut('echap-focus')) document.activeElement?.blur(); else bouton.focus();
+    }
+    bouton.addEventListener('click', () => (menuOuvert ? fermerMenu() : ouvrirMenu()));
+    $('fermer').addEventListener('click', fermerMenu);
+    $('defaut').addEventListener('click', () => { regler({ ...DEF }); camera({ distance: 'moyenne', zoom: 1 }); });
+    panneau.addEventListener('click', (e) => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      const l = b.closest('[data-gc-reglage]')?.getAttribute('data-gc-reglage');
+      if (l === 'vitesse') regler({ vitesse: b.dataset.valeur });
+      else if (l === 'distance') camera({ distance: b.dataset.valeur });
+      else if (l === 'zoom' && b.dataset.pas) camera({ zoom: C.zoom + Number(b.dataset.pas) * 0.01 });
+      else if (b.getAttribute('role') === 'switch') regler({ [b.dataset.champ]: !R[b.dataset.champ] });
+      else if (l === 'aller') { allerA(Number(b.dataset.index)); fermerMenu(); }
+    });
+    // ↑ ↓ : ligne précédente / suivante ; ← → : valeur ; Tab piégé ; Échap ferme.
+    function clavierMenu(e) {
+      const f = focusables();
+      const a = document.activeElement;
+      const ligne = a?.closest('.ligne');
+      if (e.key === 'Escape') { fermerMenu(); return true; }
+      if (e.key === 'Tab') {
+        if (defaut('focus-fuit')) return false;
+        const i = f.indexOf(a);
+        const j = e.shiftKey ? (i <= 0 ? f.length - 1 : i - 1) : (i < 0 || i === f.length - 1 ? 0 : i + 1);
+        f[j].focus();
+        return true;
+      }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        const L = lignes();
+        const i = L.indexOf(ligne);
+        const n = L[Math.min(L.length - 1, Math.max(0, i + (e.key === 'ArrowDown' ? 1 : -1)))];
+        (n.querySelector('[aria-checked="true"]') || n.querySelector('button, [role="slider"]'))?.focus();
+        return true;
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        const s = e.key === 'ArrowRight' ? 1 : -1;
+        if (a?.id === 'zoom') camera({ zoom: C.zoom + s * 0.01 });
+        else if (a?.id === 'volume') regler({ volume: Math.round(Math.min(1, Math.max(0, R.volume + s * 0.1)) * 10) / 10 });
+        else if (ligne?.getAttribute('role') === 'radiogroup') {
+          const rs = [...ligne.querySelectorAll('[role="radio"]')];
+          const n = rs[Math.min(rs.length - 1, Math.max(0, rs.indexOf(a) + s))];
+          n.click(); n.focus();
+        } else if (ligne) {
+          const bs = [...ligne.querySelectorAll('button')];
+          bs[Math.min(bs.length - 1, Math.max(0, bs.indexOf(a) + s))]?.focus();
+        }
+        return true;
+      }
+      return false; // Entrée, Espace : au bouton
+    }
+
+    // ---- Clavier : un modal ouvert reçoit seul les touches ----------------------------------
+    window.addEventListener('keydown', (e) => {
+      let pris = false;
+      if (menuOuvert) pris = clavierMenu(e) !== false && e.key !== 'Enter' && e.key !== ' ';
+      else if (soul.etat !== 'ferme') {
+        pris = true;
+        if (['Escape', 'Backspace', 'ArrowDown'].includes(e.key)) reposer();
+        else if (e.key === 'ArrowRight') retourner(1);
+        else if (e.key === 'ArrowLeft') retourner(-1);
+      } else if (e.key === 'm' || e.key === 'M' || e.key === ',') { ouvrirMenu(); pris = true; }
+      else if (['ArrowRight', 'PageDown'].includes(e.key)) { tourner(1); pris = true; }
+      else if (['ArrowLeft', 'PageUp'].includes(e.key)) { tourner(-1); pris = true; }
+      else if (e.key === 'Home') { allerA(0); pris = true; }
+      else if (e.key === 'End') { allerA(SPREADS.length - 1); pris = true; }
+      else if ((e.key === 'Enter' || e.key === ' ') && !e.target.closest?.('button')) {
+        const o = SPREADS[index].photo && G.querySelector('[data-gc-objet="photo"]');
+        if (o) { soulever('photo', o); pris = true; }
+      } else if (e.key === 'ArrowUp') {
+        const f = D.querySelector('[data-gc-objet="feuillet"]');
+        if (f) { soulever('feuillet', f); pris = true; }
+      } else if ((e.key === 'Enter' || e.key === ' ') && e.target.closest?.('[data-gc-objet]')) {
+        const o = e.target.closest('[data-gc-objet]');
+        soulever(o.getAttribute('data-gc-objet'), o); pris = true;
+      }
+      if (pris) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+
+    remplir();
+    rendreReglages();
+    B.etat = () => ({ index, cote, cadrage: cadrage(), soulever: soul.etat, objet: soul.objet, face: soul.face, menu: menuOuvert, reglages: R, camera: C });
+    requestAnimationFrame(() => requestAnimationFrame(() => { B.ready = true; }));
+  } catch (e) {
+    B.error = String(e && e.stack || e);
+    B.ready = true;
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+{
+  "description": "Bois de la table (Stage, planches à l'échelle réelle). Le fichier installé est design-system/textures/wood.webp (wood_table_large, 2560 px, tuile sans couture visible). Les autres candidats sont dans design-system/textures/table-candidats/. Originaux 8k hors dépôt (verification/out/a1/dl/8k/), vérifiés par md5 contre l'API Poly Haven.",
+  "licence": {
+    "nom": "CC0 1.0 (domaine public), Poly Haven",
+    "url": "https://polyhaven.com/license",
+    "verifiee": "2026-10-17",
+    "methode": "page de licence lue le 2026-10-17 (« Our assets are all licensed as CC0 ») ; métadonnées lues via api.polyhaven.com/assets?t=textures&categories=wood et /files/<id> le 2026-10-17 ; md5 des fichiers 8k téléchargés = md5 de l'API.",
+    "permis": "Domaine public (CC0) : utilisation, modification et redistribution libres, y compris commerciales, sans attribution obligatoire.",
+    "notre_usage": "Recadrage 2560 px natif d'un original 8k (sans rééchantillonnage), tuilage par décalage avec fondu sous le livre, teinte chaude et légèrement assombrie ; intégré au site (carnet en ligne)."
+  },
+  "textures": [
+    {
+      "id": "wood_table_large",
+      "titre": "Wood Table Large",
+      "auteur": "Dimitrios Savva",
+      "page": "https://polyhaven.com/a/wood_table_large",
+      "fichier": "wood_table_large_diff_8k.jpg",
+      "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/wood_table_large/wood_table_large_diff_8k.jpg",
+      "md5": "8fd1682687e2d65bdc3b9aab38f87bb4",
+      "sha256": "8a04ca3e5dc9675beacc7107d482c0c1c96388e8b4185e14971d3240b63e7f87",
+      "dimensions": "8192 × 8192",
+      "licence": "cc0",
+      "installee": "design-system/textures/wood.webp",
+      "choix": "planches larges à joints visibles, patine, nœuds et clous ; teinte chaude de noyer-chêne ; retenue sur quatre candidats"
+    },
+    {
+      "id": "wood_table",
+      "titre": "Wood Table",
+      "auteur": "Dimitrios Savva",
+      "page": "https://polyhaven.com/a/wood_table",
+      "fichier": "wood_table_diff_8k.jpg",
+      "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/wood_table/wood_table_diff_8k.jpg",
+      "md5": "5f44e8333b185a3e9bade51a0e9aff48",
+      "sha256": "0713cdcad4baa07681677c6fa8f197c72d1dcac2433b25ae7074c3b558584492",
+      "dimensions": "8192 × 8192",
+      "licence": "cc0",
+      "installee": "design-system/textures/table-candidats/wood_table.webp",
+      "choix": "candidat écarté : griffures très marquées, veinage en mosaïque, trop chargé autour du livre"
+    },
+    {
+      "id": "wood_planks",
+      "titre": "Wood Planks",
+      "auteur": "Amal Kumar",
+      "page": "https://polyhaven.com/a/wood_planks",
+      "fichier": "wood_planks_diff_8k.jpg",
+      "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/wood_planks/wood_planks_diff_8k.jpg",
+      "md5": "2e5b1da88d4794ad80764368a8e6dc68",
+      "sha256": "9dcf4b82c815556b5fe27c471acbebf255abc8c48a2318f2c9256dd47d1fb11d",
+      "dimensions": "8192 × 8192",
+      "licence": "cc0",
+      "installee": "design-system/textures/table-candidats/wood_planks.webp",
+      "choix": "candidat écarté : bon patiné mais terne, lignes de joints trop noires et régulières"
+    },
+    {
+      "id": "oak_wood_planks",
+      "titre": "Oak Wood Planks",
+      "auteur": "Dimitrios Savva",
+      "page": "https://polyhaven.com/a/oak_wood_planks",
+      "fichier": "oak_wood_planks_diff_8k.jpg",
+      "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/oak_wood_planks/oak_wood_planks_diff_8k.jpg",
+      "md5": "a8c58d0e0e0e792eafa992685a775a30",
+      "sha256": "e43dcf1004e3c8f7e90bccc35b8121bd08fb2906fd9e367f1973ceb6d5bf62be",
+      "dimensions": "8192 × 8192",
+      "licence": "cc0",
+      "installee": "design-system/textures/table-candidats/oak_wood_planks.webp",
+      "choix": "candidat écarté : chêne au veinage fin et vernis neuf, plus de table de bureau que de vieille table de cuisine"
+    }
+  ],
+  "cuisson": {
+    "outils": "ImageMagick 6 (convert) ; 4 candidats en 8k, recadrage 2560 px natif (+2816+2816) ; tuilage par décalage (roll +1280+1280) avec fondu de 120 px au centre (sous le livre) ; teinte -modulate 90,112,100 puis -colorize 7 % #b8763c ; webp q84, méthode 6.",
+    "remarque": "Les étapes sont dans verification/out/a1/build_tiles.sh et build_tiles2.sh (hors dépôt). Les textures ne passent pas par scripts/bake-textures.mjs (qui produit encore l'ancien bois procédural, design-system/textures/src/wood.svg)."
+  }
+}

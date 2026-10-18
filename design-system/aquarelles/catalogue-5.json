@@ -1,0 +1,30 @@
+{
+  "carotte": {
+    "sujet": "carotte entière avec ses fanes, aquarelle (biscuits « carottes » et goûter du jardin)",
+    "source": "https://pixabay.com/illustrations/carrot-vegetable-watercolor-food-5934702/",
+    "auteur": "non affiché sur la page Pixabay (image 5934702)",
+    "licence": "Pixabay Content License (usage libre, modification permise)",
+    "fichier": "carotte.png"
+  },
+  "sables-etoiles": {
+    "sujet": "sablés en étoiles glacés, aquarelle (motif de biscuits de Noël, trois étoiles entières)",
+    "source": "https://pixabay.com/illustrations/cookies-pattern-seamless-christmas-8416230/",
+    "auteur": "RadishAndSquirrel (Pixabay)",
+    "licence": "Pixabay Content License (usage libre, modification permise)",
+    "fichier": "sables-etoiles.png"
+  },
+  "cookies": {
+    "sujet": "pile de cookies aux pépites de chocolat, miettes devant (image générée par IA, étiquette Pixabay)",
+    "source": "https://pixabay.com/illustrations/milk-cookies-chocolate-chip-cookies-10379921/",
+    "auteur": "Królestwo_Nauki (Pixabay)",
+    "licence": "Pixabay Content License (usage libre, modification permise)",
+    "fichier": "cookies.png"
+  },
+  "tasse-coeur": {
+    "sujet": "tasse et biscuits en forme de cœur, aquarelle (image générée par IA, étiquette Pixabay)",
+    "source": "https://pixabay.com/illustrations/mug-watercolor-cookie-heart-shape-10097479/",
+    "auteur": "TyliJura (Pixabay)",
+    "licence": "Pixabay Content License (usage libre, modification permise)",
+    "fichier": "tasse-coeur.png"
+  }
+}

@@ -1,0 +1,68 @@
+{
+ "id": "cecile-1-droite",
+ "double": "cecile-1",
+ "cote": "droite",
+ "folio": 5,
+ "graine": 4012,
+ "main": "cecile",
+ "encre": "crayon",
+ "_": "Album « Cécile en cuisine », 1re double page (droite) : deux photos (photo-4 grande, photo-5 plus petite, en diagonale), chacune avec sa légende au crayon.",
+ "vivants": [
+  {
+   "nom": "photo-4",
+   "rect": [
+    0.14,
+    0.1,
+    0.56,
+    0.295
+   ]
+  },
+  {
+   "nom": "photo-5",
+   "rect": [
+    0.4,
+    0.55,
+    0.5,
+    0.263
+   ]
+  }
+ ],
+ "blocs": [
+  {
+   "id": "legende-photo-4",
+   "type": "annotation",
+   "role": "legende",
+   "main": "cecile",
+   "encre": "crayon",
+   "texte": "Cécile, ……… ans",
+   "sans_parentheses": true,
+   "pente": -1.8,
+   "places": [
+    {
+     "sous": "photo-4",
+     "dx": 0.0,
+     "dy": 0.03
+    }
+   ],
+   "graine": 4041
+  },
+  {
+   "id": "legende-photo-5",
+   "type": "annotation",
+   "role": "legende",
+   "main": "cecile",
+   "encre": "crayon",
+   "texte": "Cécile, ……… ans",
+   "sans_parentheses": true,
+   "pente": -2.4,
+   "places": [
+    {
+     "sous": "photo-5",
+     "dx": 0.0,
+     "dy": 0.03
+    }
+   ],
+   "graine": 4042
+  }
+ ]
+}

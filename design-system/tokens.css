@@ -1,0 +1,261 @@
+/* Les goûters de Cécile — generated from tokens.json */
+:root, [data-theme="carnet"] {
+  --gc-paper: #f4ebda;
+  --gc-paper-lit: #f6eedd;
+  --gc-paper-edge: #e7d6b8;
+  --gc-paper-lace: #fbf6ec;
+  --gc-linen: #e8dfcf;
+  --gc-linen-shade: #d8ccb6;
+  --gc-kraft: #c49a6c;
+  --gc-wood-1: #8a5a3b;
+  --gc-wood-2: #6b4429;
+  --gc-wood-3: #4a2e1f;
+  --gc-ink: #3a2216;
+  --gc-chocolate: #5b3a28;
+  --gc-ink-night: #26324a;
+  --gc-ink-title: var(--gc-terracotta-700);
+  --gc-terracotta-100: #f2dacf;
+  --gc-terracotta-300: #d58a6e;
+  --gc-terracotta-500: #b4583b;
+  --gc-terracotta-700: #7f3322;
+  --gc-pink-100: #f6e4de;
+  --gc-pink-300: #e7c3b9;
+  --gc-pink-500: #c98f86;
+  --gc-pink-700: #7e3a45;
+  --gc-sage-100: #e3eadf;
+  --gc-sage-300: #b9c8b1;
+  --gc-sage-500: #8da285;
+  --gc-sage-700: #3d5739;
+  --gc-honey-100: #f8e7c4;
+  --gc-honey-300: #ebc57e;
+  --gc-honey-500: #d9a44e;
+  --gc-honey-700: #8a6220;
+  --gc-glow: #ffd89a;
+  --gc-sepia-0: #f3e6cc;
+  --gc-sepia-1: #e2c9a0;
+  --gc-sepia-2: #c29a6b;
+  --gc-sepia-3: #8e6643;
+  --gc-sepia-4: var(--gc-chocolate);
+  --gc-porcelain: #fdfbf6;
+  --gc-porcelain-shade: #e6e0d5;
+  --gc-glass-highlight: rgba(255, 255, 255, 0.55);
+  --gc-glass-tint: rgba(226, 236, 230, 0.16);
+  --gc-tea: #b9743a;
+  --gc-cafe-au-lait: #a0704a;
+  --gc-jam: #9e2f3a;
+  --gc-crust: #d9a15e;
+  --gc-crumb: #f1d9a8;
+  --gc-stain-tea: rgba(154, 107, 58, 0.14);
+  --gc-stain-jam: rgba(158, 47, 58, 0.10);
+  --gc-skin-1: #f6d7c3;
+  --gc-skin-2: #edc0a2;
+  --gc-skin-3: #d9a27e;
+  --gc-skin-4: #b97b56;
+  --gc-skin-5: #8d5a3b;
+  --gc-skin-6: #5e3a26;
+  --gc-hair-1: #2b1d16;
+  --gc-hair-2: #5a3a24;
+  --gc-hair-3: #9a6a3c;
+  --gc-hair-4: #d2a35e;
+  --gc-hair-5: #b5552f;
+  --gc-hair-6: #c9c3bc;
+  --gc-ink-plume: #2e3a5c;
+  --gc-ink-bic: #35446b;
+  --gc-ink-crayon: #46423e;
+  --gc-ink-brune: #5b3920;
+  --gc-ink-noire: #26221f;
+  --gc-ink-feutre: #4a3a5c;
+  --gc-ink-rouge: #9c3b30;
+  --gc-paper-aged: #e8d8b8;
+  --gc-paper-foxed: #d9c29a;
+  --gc-graphite: #5a5650;
+  --gc-sh-contact: 1px 1px 1px rgba(58, 34, 22, 0.22);
+  --gc-sh-lift: 3px 5px 8px rgba(58, 34, 22, 0.16), 1px 1px 2px rgba(58, 34, 22, 0.18);
+  --gc-sh-object: 10px 16px 24px rgba(58, 34, 22, 0.22), 2px 3px 4px rgba(58, 34, 22, 0.2);
+  --gc-sh-book: 28px 36px 64px rgba(40, 22, 12, 0.45), 8px 10px 18px rgba(40, 22, 12, 0.3);
+}
+:root {
+  --gc-space-1: 4px;
+  --gc-space-2: 8px;
+  --gc-space-3: 12px;
+  --gc-space-4: 16px;
+  --gc-space-5: 24px;
+  --gc-space-6: 32px;
+  --gc-space-7: 48px;
+  --gc-space-8: 64px;
+  --gc-space-9: 96px;
+  --gc-space-10: 128px;
+  --gc-radius-none: 0;
+  --gc-radius-photo: 2px;
+  --gc-radius-paper: 3px;
+  --gc-radius-tag: 10px;
+  --gc-radius-round: 50%;
+  --gc-stage-w: 1920px;
+  --gc-stage-h: 1080px;
+  --gc-book-x: 252px;
+  --gc-book-y: 40px;
+  --gc-page-w: 708px;
+  --gc-page-h: 1000px;
+  --gc-page-pad-outer: 72px;
+  --gc-page-pad-spine: 64px;
+  --gc-page-pad-top: 52px;
+  --gc-page-pad-bottom: 60px;
+  --gc-gutter-shadow: 70px;
+  --gc-safe-x: 96px;
+  --gc-safe-y: 54px;
+  --gc-cup-size: 112px;
+  --gc-nav-size: 56px;
+  --gc-x-title: 26px;
+  --gc-x-body: 16px;
+  --gc-x-note: 16.5px;
+  --gc-x-meta: 15px;
+  --gc-x-signature: 20px;
+  --gc-x-annotation: 15px;
+  --gc-zoom: 1;
+  --gc-a5-w: 148mm;
+  --gc-a5-h: 210mm;
+  --gc-a5-bleed: 3mm;
+  --gc-a5-margin-top: 12mm;
+  --gc-a5-margin-outer: 12mm;
+  --gc-a5-margin-inner: 16mm;
+  --gc-a5-margin-bottom: 14mm;
+  --gc-a5-qr: 26mm;
+  --gc-a5-texture-opacity: 0.4;
+  --gc-dur-page: 500ms;
+  --gc-dur-state: 700ms;
+  --gc-dur-dome: 900ms;
+  --gc-ease: cubic-bezier(0.22, 0.8, 0.24, 1);
+  --gc-spring-paper: linear(0, 0.015, 0.055, 0.111, 0.177, 0.248, 0.32, 0.391, 0.459, 0.524, 0.583, 0.638, 0.687, 0.731, 0.771, 0.805, 0.835, 0.862, 0.884, 0.904, 0.92, 0.935, 0.947, 0.957, 0.965, 0.972, 0.978, 0.983, 0.986, 0.99, 0.992, 0.994, 0.996, 0.997, 0.998, 0.999, 0.999, 1, 1);
+  --gc-dur-spring-paper: 1200ms;
+  --gc-spring-cover: linear(0, 0.014, 0.051, 0.104, 0.165, 0.232, 0.3, 0.367, 0.433, 0.494, 0.552, 0.605, 0.654, 0.698, 0.738, 0.773, 0.804, 0.832, 0.856, 0.877, 0.895, 0.911, 0.925, 0.937, 0.947, 0.955, 0.963, 0.969, 0.974, 0.979, 0.983, 0.986, 0.988, 0.99, 0.992, 0.994, 0.995, 0.996, 0.997, 0.998, 0.998, 1);
+  --gc-dur-spring-cover: 1936ms;
+  --gc-spring-dome: linear(0, 0.033, 0.115, 0.221, 0.337, 0.451, 0.558, 0.653, 0.734, 0.802, 0.858, 0.902, 0.935, 0.961, 0.979, 0.992, 1.001, 1.007, 1.01, 1.011, 1.011, 1.01, 1.009, 1.008, 1.007, 1.006, 1.005, 1.004, 1.003, 1.002, 1.001, 1);
+  --gc-dur-spring-dome: 1456ms;
+  --gc-spring-camera: linear(0, 0.028, 0.095, 0.182, 0.276, 0.369, 0.458, 0.538, 0.611, 0.674, 0.728, 0.775, 0.814, 0.848, 0.875, 0.898, 0.917, 0.933, 0.946, 0.956, 0.964, 0.971, 0.977, 0.982, 0.985, 0.988, 0.991, 0.992, 0.994, 0.995, 0.996, 0.997, 0.998, 0.998, 0.998, 1);
+  --gc-dur-spring-camera: 1104ms;
+  --gc-spring-toast: linear(0, 0.034, 0.117, 0.228, 0.35, 0.471, 0.584, 0.685, 0.771, 0.842, 0.899, 0.943, 0.975, 0.998, 1.013, 1.023, 1.027, 1.028, 1.027, 1.025, 1.022, 1.018, 1.015, 1.012, 1.009, 1.007, 1.004, 1.003, 1.002, 1.001, 1, 1, 1);
+  --gc-dur-spring-toast: 1008ms;
+  --gc-spring-settle: linear(0, 0.013, 0.046, 0.094, 0.152, 0.215, 0.282, 0.349, 0.414, 0.477, 0.537, 0.592, 0.644, 0.691, 0.733, 0.771, 0.805, 0.835, 0.861, 0.884, 0.904, 0.921, 0.936, 0.948, 0.959, 0.968, 0.975, 0.981, 0.986, 0.99, 0.994, 0.996, 0.998, 1, 1.001, 1.002, 1.002, 1.003, 1);
+  --gc-dur-spring-settle: 608ms;
+  --gc-spring-lift: linear(0, 0.025, 0.086, 0.167, 0.258, 0.351, 0.44, 0.524, 0.599, 0.667, 0.725, 0.776, 0.819, 0.854, 0.884, 0.909, 0.929, 0.945, 0.958, 0.968, 0.976, 0.983, 0.987, 0.991, 0.994, 0.996, 0.998, 0.999, 0.999, 1, 1);
+  --gc-dur-spring-lift: 960ms;
+  --gc-spring-arrivee: linear(0, 0.019, 0.069, 0.138, 0.217, 0.302, 0.386, 0.467, 0.544, 0.614, 0.677, 0.732, 0.781, 0.823, 0.859, 0.889, 0.914, 0.935, 0.952, 0.965, 0.976, 0.984, 0.991, 0.995, 0.999, 1.001, 1.003, 1.004, 1.005, 1);
+  --gc-dur-spring-arrivee: 912ms;
+  --gc-spring-riffle: linear(0, 0.038, 0.125, 0.233, 0.344, 0.45, 0.545, 0.629, 0.7, 0.759, 0.808, 0.848, 0.88, 0.905, 0.926, 0.942, 0.955, 0.965, 0.973, 0.979, 0.984, 0.988, 0.991, 0.993, 0.994, 0.996, 0.997, 0.998, 0.998, 0.999, 1);
+  --gc-dur-spring-riffle: 960ms;
+  --gc-glow-alpha: 0.22;
+  --gc-nav-alpha: 0.8;
+  --gc-xh-cecile: 0.37;
+  --gc-xh-mamie: 0.517;
+  --gc-xh-ecole: 0.517;
+  --gc-xh-soignee: 0.51;
+  --gc-xh-feutre: 0.502;
+  --gc-xh-capitales: 0.46;
+  --gc-xh-pressee: 0.355;
+  --gc-lh-cecile: 1.12;
+  --gc-lh-mamie: 1.45;
+  --gc-lh-ecole: 1.4;
+  --gc-lh-soignee: 1.28;
+  --gc-lh-feutre: 1.18;
+  --gc-lh-capitales: 1.22;
+  --gc-lh-pressee: 1.5;
+  --gc-boost-cecile: 1;
+  --gc-boost-mamie: 1;
+  --gc-boost-ecole: 1;
+  --gc-boost-soignee: 1;
+  --gc-boost-feutre: 1;
+  --gc-boost-capitales: 1;
+  --gc-boost-pressee: 1.08;
+  --gc-d-proche-book-x: 252px;
+  --gc-d-proche-book-y: 40px;
+  --gc-d-proche-page-w: 708px;
+  --gc-d-proche-page-h: 1000px;
+  --gc-d-proche-page-pad-outer: 72px;
+  --gc-d-proche-page-pad-spine: 64px;
+  --gc-d-proche-page-pad-top: 52px;
+  --gc-d-proche-page-pad-bottom: 60px;
+  --gc-d-moyenne-book-x: 280px;
+  --gc-d-moyenne-book-y: 60px;
+  --gc-d-moyenne-page-w: 680px;
+  --gc-d-moyenne-page-h: 960px;
+  --gc-d-moyenne-page-pad-outer: 64px;
+  --gc-d-moyenne-page-pad-spine: 56px;
+  --gc-d-moyenne-page-pad-top: 48px;
+  --gc-d-moyenne-page-pad-bottom: 52px;
+  --gc-d-loin-book-x: 331px;
+  --gc-d-loin-book-y: 96px;
+  --gc-d-loin-page-w: 629px;
+  --gc-d-loin-page-h: 888px;
+  --gc-d-loin-page-pad-outer: 52px;
+  --gc-d-loin-page-pad-spine: 44px;
+  --gc-d-loin-page-pad-top: 44px;
+  --gc-d-loin-page-pad-bottom: 48px;
+  --gc-d-proche-x-title: 27px;
+  --gc-d-moyenne-x-title: 26px;
+  --gc-d-loin-x-title: 24px;
+  --gc-d-proche-x-body: 16.5px;
+  --gc-d-moyenne-x-body: 16px;
+  --gc-d-loin-x-body: 15px;
+  --gc-d-proche-x-note: 17px;
+  --gc-d-moyenne-x-note: 16.5px;
+  --gc-d-loin-x-note: 15.5px;
+  --gc-d-proche-x-meta: 15.5px;
+  --gc-d-moyenne-x-meta: 15px;
+  --gc-d-loin-x-meta: 15px;
+  --gc-d-proche-x-signature: 21px;
+  --gc-d-moyenne-x-signature: 20px;
+  --gc-d-loin-x-signature: 19px;
+  --gc-d-proche-x-annotation: 15px;
+  --gc-d-moyenne-x-annotation: 15px;
+  --gc-d-loin-x-annotation: 15px;
+  --font-hand: "Caveat", "Segoe Print", "Bradley Hand", cursive;
+  --font-serif: "Playfair Display", Didot, Georgia, serif;
+  --font-mamie: "Playwrite FR Trad", "Segoe Script", cursive;
+  --font-ecole: "Playwrite FR Moderne", "Segoe Script", cursive;
+  --font-soignee: "Kalam", "Segoe Print", cursive;
+  --font-feutre: "Shantell Sans", "Comic Sans MS", cursive;
+  --font-capitales: "Patrick Hand SC", "Segoe Print", cursive;
+  --font-pressee: "La Belle Aurore", "Segoe Script", cursive;
+}
+.gc-cover-title { font-family: var(--font-serif); font-size: 150px; line-height: 1; font-weight: 600; }
+.gc-chapter-title { font-family: var(--font-serif); font-size: 116px; line-height: 1.05; font-weight: 700; }
+.gc-recipe-title { font-family: var(--font-serif); font-size: 72px; line-height: 1.05; font-weight: 600; }
+.gc-section-label { font-family: var(--font-serif); font-size: 36px; line-height: 1.2; font-weight: 600; font-style: italic; }
+.gc-folio { font-family: var(--font-serif); font-size: 28px; line-height: 1; font-weight: 600; }
+.gc-hand-body { font-family: var(--font-hand); font-size: 44px; line-height: 1.12; font-weight: 500; }
+.gc-hand-compact { font-family: var(--font-hand); font-size: 40px; line-height: 1.12; font-weight: 500; }
+.gc-hand-note { font-family: var(--font-hand); font-size: 46px; line-height: 1.15; font-weight: 500; }
+.gc-hand-signature { font-family: var(--font-hand); font-size: 56px; line-height: 1; font-weight: 700; }
+.gc-hand-meta { font-family: var(--font-hand); font-size: 40px; line-height: 1.1; font-weight: 600; }
+.gc-hand-caption { font-family: var(--font-hand); font-size: 42px; line-height: 1.15; font-weight: 500; }
+.gc-main-cecile { font-family: var(--font-hand); font-size: 43.2px; line-height: 1.12; font-weight: 500; }
+.gc-main-mamie { font-family: var(--font-mamie); font-size: 30.9px; line-height: 1.45; font-weight: 400; }
+.gc-main-ecole { font-family: var(--font-ecole); font-size: 30.9px; line-height: 1.4; font-weight: 400; }
+.gc-main-soignee { font-family: var(--font-soignee); font-size: 31.4px; line-height: 1.28; font-weight: 400; }
+.gc-main-feutre { font-family: var(--font-feutre); font-size: 31.9px; line-height: 1.18; font-weight: 400; }
+.gc-main-capitales { font-family: var(--font-capitales); font-size: 34.8px; line-height: 1.22; font-weight: 400; }
+.gc-main-pressee { font-family: var(--font-pressee); font-size: 48.7px; line-height: 1.5; font-weight: 400; }
+.gc-a5-recipe-title { font-family: var(--font-serif); font-size: 29.33px; line-height: 1.05; font-weight: 600; }
+.gc-a5-section-label { font-family: var(--font-serif); font-size: 14.67px; line-height: 1.2; font-weight: 600; font-style: italic; }
+.gc-a5-hand-body { font-family: var(--font-hand); font-size: 17.33px; line-height: 1.15; font-weight: 500; }
+.gc-a5-hand-note { font-family: var(--font-hand); font-size: 18.67px; line-height: 1.18; font-weight: 500; }
+.gc-a5-hand-signature { font-family: var(--font-hand); font-size: 22.67px; line-height: 1; font-weight: 700; }
+.gc-a5-hand-meta { font-family: var(--font-hand); font-size: 16px; line-height: 1.1; font-weight: 600; }
+.gc-a5-scan { font-family: var(--font-hand); font-size: 21.33px; line-height: 1.1; font-weight: 600; }
+.gc-a5-folio { font-family: var(--font-serif); font-size: 12px; line-height: 1; font-weight: 600; }
+@font-face { font-family: "Caveat"; src: url("fonts/caveat-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Caveat"; src: url("fonts/caveat-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: block; }
+@font-face { font-family: "Caveat"; src: url("fonts/caveat-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: block; }
+@font-face { font-family: "Caveat"; src: url("fonts/caveat-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: block; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: block; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-latin-600-italic.woff2") format("woff2"); font-weight: 600; font-style: italic; font-display: block; }
+@font-face { font-family: "Playwrite FR Trad"; src: url("fonts/playwrite-fr-trad-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Playwrite FR Moderne"; src: url("fonts/playwrite-fr-moderne-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Kalam"; src: url("fonts/kalam-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Kalam"; src: url("fonts/kalam-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Shantell Sans"; src: url("fonts/shantell-sans-latin-full-normal.woff2") format("woff2"); font-weight: 300 800; font-style: normal; font-display: block; }
+@font-face { font-family: "Patrick Hand SC"; src: url("fonts/patrick-hand-sc-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "La Belle Aurore"; src: url("fonts/la-belle-aurore-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }

@@ -1,0 +1,118 @@
+/* Page cuite : papier scanné + encre cuite, alignés au pixel, en plein cadre de la feuille. */
+.gc-page-cuite {
+  position: absolute;
+  inset: 0;
+  /* les objets vivants (coin du feuillet volant) peuvent dépasser du bord de la page */
+  overflow: visible;
+  /* la feuille est déjà le fond : la page cuite le recouvre entièrement */
+  background-color: var(--gc-paper-aged);
+}
+
+/* Cadre propre : dans le flux, à la proportion de la page (feuillet volant soulevé, aperçus). */
+.gc-page-cuite--propre {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: auto;
+}
+
+/* Feuillet volant (feuille de cahier) : un papier plus clair que celui du carnet. */
+.gc-page-cuite--feuillet {
+  background-color: var(--gc-paper);
+}
+
+.gc-page-cuite__papier,
+.gc-page-cuite__encre {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* L'encre qui s'écrit (encreVivante.ts) : tant que la page n'est pas écrite, son encre cuite est cachée et
+   la plume (canvas WebGL) la révèle trait après trait ; ensuite l'image cuite revient, identique. */
+.gc-page-cuite[data-gc-ecrit] .gc-page-cuite__encre,
+.gc-page-cuite[data-gc-ecrit] .gc-page-cuite__tuile {
+  visibility: hidden;
+}
+
+.gc-page-cuite__plume {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Verso d'un feuillet du carnet : la même pâte, retournée (le bord extérieur reste le même bord). */
+.gc-page-cuite__papier--miroir {
+  transform: scaleX(-1);
+}
+
+/* Texte réel de la page : lu par les lecteurs d'écran, invisible. */
+.gc-page-cuite__texte {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: normal;
+}
+
+.gc-page-cuite__texte p {
+  margin: 0;
+}
+
+/* Zone d'un élément vivant (photo collée, coin du feuillet) : la page cuite n'a aucune encre dessous. */
+.gc-page-cuite__vivant {
+  position: absolute;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+/* Encre ×4 sous la loupe (≥ 1,5×) : une tuile par quart de page, posée sur l'encre ×2 ; l'image
+   n'est demandée que si la tuile est à l'écran, puis apparaît en fondu une fois décodée. */
+.gc-page-cuite__tuile {
+  position: absolute;
+  pointer-events: none;
+}
+
+.gc-page-cuite__tuile img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity var(--gc-dur-spring-settle) var(--gc-spring-settle);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.gc-page-cuite__tuile[data-gc-tuile-etat="prete"] img,
+.gc-page-cuite__tuile[data-gc-tuile-etat="couverte"] img {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gc-page-cuite__tuile img {
+    transition: none;
+  }
+}
+
+/* Lignes cliquables du sommaire : transparentes sur l'encre cuite ; le focus garde son contour. */
+.gc-page-cuite__lien {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  cursor: pointer;
+  border-radius: 6px;
+  -webkit-tap-highlight-color: transparent;
+}

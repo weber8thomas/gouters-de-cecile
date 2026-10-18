@@ -1,0 +1,100 @@
+{
+  "v": 1,
+  "sons": {
+    "page": [
+      { "f": "page-1", "g": 1, "d": 0.79, "a": 0.39 },
+      { "f": "page-2", "g": 0.819, "d": 0.79, "a": 0.49 },
+      { "f": "page-3", "g": 0.94, "d": 0.71, "a": 0.48 },
+      { "f": "page-4", "g": 0.78, "d": 0.78, "a": 0.43 },
+      { "f": "page-5", "g": 1, "d": 0.71, "a": 0.18 }
+    ],
+    "riffle": [
+      { "f": "riffle", "g": 1, "d": 0.93, "a": 0.83 }
+    ],
+    "couverture-ouvrir": [
+      { "f": "couverture-ouvrir", "g": 0.689, "d": 1.24, "a": 0.53 }
+    ],
+    "couverture-poser": [
+      { "f": "couverture-poser", "g": 0.339, "d": 0.42, "a": 0.04 }
+    ],
+    "couverture-fermer": [
+      { "f": "couverture-fermer", "g": 0.653, "d": 0.95, "a": 0.54 }
+    ],
+    "feuillet": [
+      { "f": "feuillet-1", "g": 0.627, "d": 0.48, "a": 0.11 },
+      { "f": "feuillet-2", "g": 0.485, "d": 0.41, "a": 0.12 }
+    ],
+    "photo-lever": [
+      { "f": "photo-lever", "g": 0.502, "d": 0.37, "a": 0.16 }
+    ],
+    "photo-poser": [
+      { "f": "photo-poser", "g": 0.568, "d": 0.093, "a": 0.03 }
+    ],
+    "coin": [
+      { "f": "coin-1", "g": 0.113, "d": 0.36, "a": 0.15 },
+      { "f": "coin-2", "g": 0.134, "d": 0.32, "a": 0.19 }
+    ]
+  },
+  "ambiance": {
+    "feu": {
+      "f": "ambiance-feu",
+      "g": 0.248,
+      "d": 44.5,
+      "boucle": 42,
+      "fondu": 2.5,
+      "onsets": [0.01, 0.41, 0.9, 1.91, 2.54, 2.88, 3.56, 4.45, 4.56, 4.73, 7.18, 8.74, 9.31, 9.6, 9.88, 11, 11.5, 12.45, 13.63, 13.92, 14.19, 14.56, 16.08, 16.38, 17.14, 18.21, 18.52, 19.35, 20.31, 20.67, 21.14, 21.35, 21.6, 22.52, 24.07, 24.96, 25.97, 26.6, 26.82, 27.11, 28.51, 30.25, 31.42, 32.79, 33.65, 33.88, 35.06, 35.55, 36, 37.97, 38.25, 38.47, 38.62, 39.15, 40.32, 41.2],
+      "forces": [0.31, 0.11, 0.16, 0.1, 0.1, 0.1, 0.1, 0.1, 0.17, 0.2, 0.16, 0.1, 0.1, 0.14, 0.11, 0.29, 0.16, 0.1, 0.2, 0.1, 0.14, 0.1, 0.15, 0.1, 0.1, 0.12, 0.1, 0.1, 0.15, 0.1, 0.1, 0.1, 0.1, 0.14, 0.32, 0.18, 0.1, 0.1, 0.1, 0.12, 0.1, 0.1, 0.2, 0.1, 0.16, 0.19, 0.3, 0.18, 0.12, 0.1, 0.16, 0.1, 0.1, 0.1, 0.18, 0.1]
+    },
+    "cuisine": {
+      "cuisine-cuillere": [
+        { "f": "cuisine-cuillere", "g": 0.158, "d": 3.2 }
+      ],
+      "cuisine-tasse": [
+        { "f": "cuisine-tasse-1", "g": 0.239, "d": 0.68 },
+        { "f": "cuisine-tasse-2", "g": 0.341, "d": 1.15 }
+      ],
+      "cuisine-bouilloire": [
+        { "f": "cuisine-bouilloire", "g": 0.053, "d": 8 }
+      ],
+      "cuisine-the": [
+        { "f": "cuisine-the", "g": 0.244, "d": 1.98 }
+      ],
+      "cuisine-boite": [
+        { "f": "cuisine-boite", "g": 0.257, "d": 1.77 }
+      ],
+      "cuisine-couteau": [
+        { "f": "cuisine-couteau", "g": 0.137, "d": 4.1 }
+      ],
+      "cuisine-assiette": [
+        { "f": "cuisine-assiette", "g": 0.156, "d": 1.9 }
+      ],
+      "cuisine-sel": [
+        { "f": "cuisine-sel", "g": 0.258, "d": 3.1 }
+      ],
+      "cuisine-minuteur": [
+        { "f": "cuisine-minuteur", "g": 0.172, "d": 1.9 }
+      ],
+      "cuisine-chat": [
+        { "f": "cuisine-chat-1", "g": 0.132, "d": 2.25 },
+        { "f": "cuisine-chat-2", "g": 0.135, "d": 1.127 }
+      ],
+      "cuisine-horloge": [
+        { "f": "cuisine-horloge", "g": 0.124, "d": 4 }
+      ],
+      "cuisine-paquet": [
+        { "f": "cuisine-paquet-1", "g": 0.325, "d": 2.06 },
+        { "f": "cuisine-paquet-2", "g": 0.295, "d": 1.265 }
+      ],
+      "cuisine-chaise": [
+        { "f": "cuisine-chaise", "g": 0.122, "d": 2.45 }
+      ],
+      "cuisine-tiroir": [
+        { "f": "cuisine-tiroir-1", "g": 0.148, "d": 0.88 },
+        { "f": "cuisine-tiroir-2", "g": 0.265, "d": 0.69 }
+      ],
+      "cuisine-verre": [
+        { "f": "cuisine-verre", "g": 0.425, "d": 0.87 }
+      ]
+    }
+  }
+}

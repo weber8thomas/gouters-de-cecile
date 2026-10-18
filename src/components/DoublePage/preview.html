@@ -1,0 +1,33 @@
+<!-- @dsCard group="Scène & livre" width=1920 height=1080 -->
+<div id="root"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    var ink = { margin: 0, color: 'var(--gc-ink)' };
+    function lines(arr) {
+      return arr.map(function (t, i) { return h('p', { key: i, className: 'gc-hand-body', style: ink }, t); });
+    }
+    var left = h(React.Fragment, null, lines([
+      '250 g de framboises',
+      '80 g de sucre blond',
+      '2 c. à s. de jus de citron',
+      '1 sachet de sucre vanillé',
+    ]));
+    var right = h(React.Fragment, null, lines([
+      'Écrase les framboises à la fourchette.',
+      'Laisse compoter dix minutes',
+      'à feu doux, en remuant souvent.',
+      'Verse dans un pot bien propre.',
+    ]));
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      h(G.Stage, null,
+        h(G.DoublePage, {
+          left: left,
+          right: right,
+          folios: [12, 13],
+          dogEars: ['bl'],
+          stains: [{ page: 'right', kind: 'confiture', x: 690, y: 820, r: 34, seed: 5 }],
+        })));
+  })();
+</script>

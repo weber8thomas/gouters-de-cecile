@@ -1,0 +1,44 @@
+/* Une bougie posée sur la table, dans le coin bas gauche de la scène, à gauche du livre, vue presque d'en
+   haut comme toute la table (rendu 3D, scripts/bougie3d/scene.py ; calques cuits par scripts/bake-bougie.py).
+   La géométrie de chaque calque (px de scène 1920 × 1080, la scène est fixe) vient de geometrie.json et
+   est posée en ligne par Bougie.tsx ; ce fichier ne fait que l'habillage. Animation : transform et opacity
+   seulement. Rien ne capte le pointeur. */
+
+.gc-bougie {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  /* Curseur figé : le curseur du livre (data-gc-curseur, hérité) ne recalcule pas ce calque. */
+  cursor: auto;
+}
+
+.gc-bougie__ombre,
+.gc-bougie__halo,
+.gc-bougie__cire,
+.gc-bougie__flamme {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+.gc-bougie__ombre,
+.gc-bougie__halo,
+.gc-bougie__flamme--image,
+.gc-bougie__cire[data-gc-bougie='vive'] {
+  will-change: opacity, transform;
+}
+
+/* La flamme est une petite toile WebGL (un calque à elle seule, qui ne repeint qu'elle : flamme.ts), qui
+   couvre aussi le puits (le reflet de la flamme) et les coulures (la cire qui coule, cire.ts) ; sans
+   WebGL, l'image de secours (--image) bouge par transform et opacity. */
+canvas.gc-bougie__flamme {
+  display: block;
+}
+
+/* ---- Téléphone debout (cadrage « tourner ») : le livre fermé est cadré seul, la bougie est hors champ ;
+   on ne garde que la lueur (le halo), sans faire vivre la flamme pour rien. Couché, elle est là. ---- */
+.gc-ecran[data-gc-cadrage="tourner"] .gc-bougie__pose {
+  display: none;
+}

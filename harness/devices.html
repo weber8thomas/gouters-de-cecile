@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr" data-theme="carnet">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le carnet sur tous les écrans</title>
+<link rel="icon" href="data:,">
+<!-- Page autonome du carnet (scripts/verify-devices.mjs) : tokens.css + polices, React 18 UMD,
+     bundle.js + bundle.css, puis GoutersDeCecile.Artboards.Carnet monté plein écran, liens profonds
+     actifs (#julie, #rose…).
+     Options : ?b=dist/ds-r1/components (bundle) · &insets=haut,droite,bas,gauche (encoches simulées, px)
+               · &reduit (moins de mouvement, comme prefers-reduced-motion : géré par le navigateur).
+     Instrumentation : window.__gcDevices { ready, gestes[], actifs[], attendreCalme(), etat() } ;
+     etat() : { double, cote, cadrage, hash, soulever, photo, menu }. -->
+<link rel="stylesheet" href="../design-system/tokens.css">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; background-color: var(--gc-wood-3); }
+</style>
+<script src="../node_modules/react/umd/react.production.min.js"></script>
+<script src="../node_modules/react-dom/umd/react-dom.production.min.js"></script>
+<script>
+  const B = '../' + (new URLSearchParams(location.search).get('b') || 'dist/ds-r1/components');
+  document.write('<link rel="stylesheet" href="' + B + '/bundle.css"><script src="' + B + '/bundle.js"><\/script>');
+</script>
+</head>
+<body>
+<div id="carnet"></div>
+<script>
+(async () => {
+  const q = new URLSearchParams(location.search);
+  const D = (window.__gcDevices = { ready: false, gestes: [], actifs: [] });
+  document.addEventListener('gc-livre-geste', (e) => {
+    const d = e.detail;
+    D.gestes.push(d);
+    if (d.phase === 'fin') D.actifs = D.actifs.filter((t) => t !== d.type);
+    else if (!D.actifs.includes(d.type)) D.actifs.push(d.type);
+  });
+  // Attend qu'un geste démarre (au plus debutMax ms), puis qu'aucun ne soit en cours pendant `calme` ms.
+  D.attendreCalme = (calme = 500, debutMax = 6000) => new Promise((resolve) => {
+    const n0 = D.gestes.length;
+    const t0 = performance.now();
+    let depuis = 0;
+    const tick = () => {
+      const now = performance.now();
+      const parti = D.gestes.length > n0 || now - t0 > debutMax;
+      if (parti && D.actifs.length === 0) {
+        if (!depuis) depuis = now;
+        if (now - depuis >= calme) return resolve({ ms: Math.round(now - t0), gestes: D.gestes.slice(n0) });
+      } else depuis = 0;
+      setTimeout(tick, 40);
+    };
+    tick();
+  });
+  // État lisible par les tests : double page, côté, cadrage, calque « soulever » (CONTRACT § 12.3 :
+  // ouvert | ferme, null s'il n'est pas encore intégré), photo posée sur une page visible, menu de réglages.
+  D.etat = () => {
+    const s = document.querySelector('.gc-livre-ecran');
+    const sv = document.querySelector('[data-gc-soulever]');
+    const pan = document.querySelector('[data-gc-reglages="panneau"]');
+    return {
+      double: s ? Number(s.getAttribute('data-gc-double')) : null,
+      cote: s ? s.getAttribute('data-gc-cote') : null,
+      cadrage: s ? s.getAttribute('data-gc-cadrage') : null,
+      hash: location.hash,
+      soulever: sv ? sv.getAttribute('data-gc-soulever') : null,
+      photo: !!document.querySelector('.gc-livre__page--visible [data-gc-objet="photo"]'),
+      menu: !!pan && !pan.hidden && pan.getClientRects().length > 0,
+    };
+  };
+  const ins = (q.get('insets') || '').split(',').map(Number);
+  const ecran = ins.length === 4 && ins.every((v) => Number.isFinite(v))
+    ? { insets: { top: ins[0], right: ins[1], bottom: ins[2], left: ins[3] } }
+    : undefined;
+  const G = GoutersDeCecile;
+  ReactDOM.createRoot(document.getElementById('carnet')).render(React.createElement(G.Artboards.Carnet, { liens: true, ecran }));
+  await document.fonts.ready;
+  await new Promise((r) => setTimeout(r, 120));
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  D.ready = true;
+})().catch((e) => { window.__gcDevices = { ready: true, error: String(e) }; });
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+/* Page : boîte de contenu d'une page du carnet (zone utile 760 × 888 sur la scène TV). */
+.gc-page {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-top: var(--gc-page-pad-top);
+  padding-bottom: var(--gc-page-pad-bottom);
+  color: var(--gc-ink);
+}
+
+/* Page de gauche : la reliure est à droite. */
+.gc-page--left {
+  padding-left: var(--gc-page-pad-outer);
+  padding-right: var(--gc-page-pad-spine);
+}
+
+/* Page de droite : la reliure est à gauche. */
+.gc-page--right {
+  padding-left: var(--gc-page-pad-spine);
+  padding-right: var(--gc-page-pad-outer);
+}
+
+/* Pleine page (photo, illustration) : aucune marge. */
+.gc-page--bleed {
+  padding: 0;
+}
+
+/* Garde de débordement : bien visible pendant la fabrication, jamais en situation normale. */
+.gc-page--overflow {
+  outline: 3px dashed var(--gc-jam);
+  outline-offset: -3px;
+}

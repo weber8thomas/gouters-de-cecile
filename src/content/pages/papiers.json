@@ -1,0 +1,406 @@
+{
+ "_": "Papier des pages cuites : un feuillet du carnet = une image (recto = folio impair ; le verso, folio pair suivant, est la même image en miroir). Sources : design-system/sources/papier/ (domaine public, voir les .licence.md). echelle : facteur appliqué au scan avant découpe (0,54 ≈ grain à 1,3 × l'échelle réelle d'un A5) ; x, y : position de la découpe dans la marge du scan (0–1) ; rotation : 0 ou 180 ; teinte : décalage R, V, B en niveaux ; transparence : force de la page au dos vue par transparence (assombrissement maximal).",
+ "_v4": "Dosage retenu : léger (le carnet a vécu, sans en faire trop). Plan v4 (scripts/pages/feuillets.py). Une clé absente = aucun effet. Graine stable : celle du feuillet (décalée par effet) ou `graine` dans l'effet. miroir : scan retourné avant la découpe. rousseurs : { amas (grappes, 3 au plus par double page en comptant les deux feuillets), points (piqûres isolées près des bords), force, taille }. pouce : { force, taille (largeurs de page), haut (part du coin du haut), bas, lustre } : coin bas extérieur assombri, fibres grisées, à peine lustré. taches : liste de 0 à 2 { genre : gras | cafe | chocolat | tasse, force, taille, x, y (fractions de la page, orientation du recto ; sans x/y : placée par la graine dans une marge, jamais sur le texte), zone, angle, graine } : pages de recette seulement (la tache traverse : elle se voit aussi, en miroir, sur le verso). lumiere : amplitude du dégradé de lumière (0,03 : le haut 1 % plus clair, le bas 1 % plus sombre). ombre_reliure : force de l'ombre du pli quand la cuisson la demande (A5). folio : false pour poser des taches sur la zone du folio. eviter_texte : la cuisson passe les boîtes des mots des deux faces (feuillets.zones_mise) ; rousseurs et taches peuvent alors aller dans les blancs de la page, jamais sous le texte (sans cela : marges communes aux deux faces). genre : feuillet (défaut) | uni | marbre (voir gardes).",
+ "feuillets": {
+  "f3": {
+   "source": "wellcome-ms4489-i51-verge-creme",
+   "echelle": 0.54,
+   "x": 0.5,
+   "y": 0.85,
+   "rotation": 180,
+   "miroir": true,
+   "teinte": [
+    2,
+    2,
+    1
+   ],
+   "transparence": 0.05,
+   "graine": 3,
+   "rousseurs": {
+    "amas": 1,
+    "points": 20,
+    "force": 1.4
+   },
+   "pouce": {
+    "force": 0.8
+   },
+   "lumiere": 0.05,
+   "eviter_texte": true
+  },
+  "f5": {
+   "source": "wellcome-ms4489-i51-verge-creme",
+   "echelle": 0.54,
+   "x": 0.5,
+   "y": 0.45,
+   "rotation": 0,
+   "miroir": true,
+   "teinte": [
+    1,
+    0,
+    -1
+   ],
+   "transparence": 0.055,
+   "graine": 5,
+   "rousseurs": {
+    "amas": 1,
+    "points": 26,
+    "force": 1.4
+   },
+   "pouce": {
+    "force": 0.9
+   },
+   "lumiere": 0.05,
+   "eviter_texte": true
+  },
+  "f7": {
+   "source": "wellcome-ms4489-i55-rousseur",
+   "echelle": 0.54,
+   "x": 0.5,
+   "y": 0.55,
+   "rotation": 180,
+   "miroir": true,
+   "teinte": [
+    0,
+    0,
+    -1
+   ],
+   "transparence": 0.06,
+   "graine": 7,
+   "rousseurs": {
+    "amas": 1,
+    "points": 28,
+    "force": 1.4
+   },
+   "pouce": {
+    "force": 1.0
+   },
+   "lumiere": 0.05,
+   "eviter_texte": true
+  },
+  "f9": {
+   "source": "wellcome-ms4489-i51-verge-creme",
+   "echelle": 0.54,
+   "x": 0.15,
+   "y": 0.55,
+   "rotation": 180,
+   "teinte": [
+    1,
+    1,
+    0
+   ],
+   "transparence": 0.055,
+   "graine": 9,
+   "rousseurs": {
+    "amas": 1,
+    "points": 30,
+    "force": 1.4
+   },
+   "pouce": {
+    "force": 1.0
+   },
+   "taches": [
+    {
+     "genre": "gras"
+    }
+   ],
+   "lumiere": 0.05,
+   "eviter_texte": true
+  },
+  "f11": {
+   "source": "wellcome-ms4489-i51-verge-creme",
+   "echelle": 0.54,
+   "x": 0.5,
+   "y": 0.04,
+   "rotation": 0,
+   "teinte": [
+    2,
+    1,
+    -1
+   ],
+   "transparence": 0.05,
+   "graine": 11,
+   "rousseurs": {
+    "amas": 2,
+    "points": 30,
+    "force": 1.4
+   },
+   "pouce": {
+    "force": 1.1
+   },
+   "lumiere": 0.05,
+   "eviter_texte": true
+  },
+  "f13": {
+   "source": "wellcome-ms4489-i51-verge-creme",
+   "echelle": 0.54,
+   "x": 0.4,
+   "y": 0.06,
+   "rotation": 180,
+   "teinte": [
+    3,
+    2,
+    0
+   ],
+   "transparence": 0.075,
+   "graine": 13,
+   "rousseurs": {
+    "amas": 1,
+    "points": 24,
+    "force": 1.4
+   },
+   "pouce": {
+    "force": 0.9
+   },
+   "lumiere": 0.05,
+   "eviter_texte": true
+  },
+  "f15": {
+   "source": "wellcome-ms4489-i55-rousseur",
+   "echelle": 0.54,
+   "x": 0.55,
+   "y": 0.92,
+   "rotation": 0,
+   "teinte": [
+    0,
+    0,
+    0
+   ],
+   "transparence": 0.06,
+   "graine": 15,
+   "rousseurs": {
+    "amas": 1,
+    "points": 32,
+    "force": 1.4
+   },
+   "pouce": {
+    "force": 1.1
+   },
+   "taches": [
+    {
+     "genre": "cafe"
+    }
+   ],
+   "lumiere": 0.05,
+   "eviter_texte": true
+  },
+  "f17": {
+   "source": "wellcome-ms4489-i55-rousseur",
+   "echelle": 0.54,
+   "x": 0.45,
+   "y": 0.04,
+   "rotation": 180,
+   "teinte": [
+    1,
+    0,
+    -2
+   ],
+   "transparence": 0.065,
+   "graine": 17,
+   "rousseurs": {
+    "amas": 2,
+    "points": 28,
+    "force": 1.4
+   },
+   "pouce": {
+    "force": 1.0
+   },
+   "lumiere": 0.05,
+   "eviter_texte": true
+  },
+  "f19": {
+   "source": "wellcome-ms4489-i61-aureoles",
+   "echelle": 0.54,
+   "x": 0.6,
+   "y": 0.35,
+   "rotation": 0,
+   "teinte": [
+    2,
+    2,
+    1
+   ],
+   "transparence": 0.05,
+   "graine": 19,
+   "rousseurs": {
+    "amas": 1,
+    "points": 34,
+    "force": 1.4
+   },
+   "pouce": {
+    "force": 1.2
+   },
+   "lumiere": 0.05,
+   "eviter_texte": true
+  },
+  "f21": {
+   "source": "wellcome-ms4489-i61-aureoles",
+   "echelle": 0.54,
+   "x": 0.4,
+   "y": 0.75,
+   "rotation": 180,
+   "miroir": true,
+   "teinte": [
+    2,
+    2,
+    1
+   ],
+   "transparence": 0.05,
+   "graine": 21,
+   "rousseurs": {
+    "amas": 1,
+    "points": 26,
+    "force": 1.4
+   },
+   "pouce": {
+    "force": 0.8
+   },
+   "lumiere": 0.05,
+   "eviter_texte": true
+  }
+ },
+ "_gardes": "Papiers de garde (contre-plats : page `garde`, folio 2, et page `garde-arriere`) : feuillets.feuillet avec `genre` uni (pâte d'un scan, épaissie et teintée vers `ton`) ou marbre (photo d'un papier marbré ancien, `aplanir` l'éclairage, `saturation`, `eclaircir` vers `fond`). Image dans l'orientation d'un recto : la page `garde` (à gauche) la prend en miroir (description : \"papier\": \"garde-uni\", \"papier_miroir\": true) ; `garde-arriere` (à droite) prend `garde-uni-arriere` sans miroir (même papier, autre feuille). CHOIX RETENU : garde-uni (gris-vert passé), avec une couverture de toile ancienne : calme, l'ex-libris au crayon reste lisible ; garde-marbre reste disponible (couverture en carton marbré).",
+ "gardes": {
+  "garde-uni": {
+   "genre": "uni",
+   "source": "wellcome-ms4489-i51-verge-creme",
+   "echelle": 0.54,
+   "x": 0.5,
+   "y": 0.62,
+   "rotation": 0,
+   "ton": [
+    205,
+    203,
+    186
+   ],
+   "grain": 0.7,
+   "marbrure": 2.2,
+   "bords": {
+    "exterieur": 0.035,
+    "tete": 0.03,
+    "pied": 0.035,
+    "reliure": 0.02
+   },
+   "pouce": {
+    "force": 0.5,
+    "haut": 0.2
+   },
+   "lumiere": 0.05,
+   "graine": 2
+  },
+  "garde-marbre": {
+   "genre": "marbre",
+   "source": "met-brookes1815-plat-marbre",
+   "echelle": 1.0,
+   "x": 0.5,
+   "y": 0.4,
+   "rotation": 0,
+   "aplanir": 0.6,
+   "saturation": 0.88,
+   "eclaircir": 0.1,
+   "teinte": [
+    0,
+    0,
+    0
+   ],
+   "bords": {
+    "exterieur": 0.03,
+    "tete": 0.025,
+    "pied": 0.03,
+    "reliure": 0.02
+   },
+   "lumiere": 0.05,
+   "graine": 4
+  },
+  "garde-uni-arriere": {
+   "genre": "uni",
+   "source": "wellcome-ms4489-i51-verge-creme",
+   "echelle": 0.54,
+   "x": 0.5,
+   "y": 0.18,
+   "rotation": 180,
+   "ton": [
+    205,
+    203,
+    186
+   ],
+   "grain": 0.7,
+   "marbrure": 2.2,
+   "bords": {
+    "exterieur": 0.035,
+    "tete": 0.03,
+    "pied": 0.035,
+    "reliure": 0.02
+   },
+   "pouce": {
+    "force": 0.5,
+    "haut": 0.2
+   },
+   "lumiere": 0.05,
+   "graine": 12
+  },
+  "garde-marbre-arriere": {
+   "genre": "marbre",
+   "source": "met-brookes1815-plat-marbre",
+   "echelle": 1.0,
+   "x": 0.5,
+   "y": 0.85,
+   "rotation": 180,
+   "aplanir": 0.6,
+   "saturation": 0.88,
+   "eclaircir": 0.1,
+   "teinte": [
+    0,
+    0,
+    0
+   ],
+   "bords": {
+    "exterieur": 0.03,
+    "tete": 0.025,
+    "pied": 0.03,
+    "reliure": 0.02
+   },
+   "lumiere": 0.05,
+   "graine": 14
+  }
+ },
+ "_decalque": "Décalque de l'encre de la page en vis-à-vis (feuillets.decalque, appelé par la cuisson) : force (assombrissement maximal), flou (px à 2×), decalage (px de page), taches (inégalité du dépôt, 0–1).",
+ "decalque": {
+  "force": 0.05,
+  "flou": 2.4,
+  "decalage": 2.5,
+  "taches": 0.6
+ },
+ "_cahiers": "Feuillets volants (feuille de cahier glissée dans le carnet, feuillets.cahier) : pâte prise sur un scan (source, echelle, x, y, rotation) puis éclaircie vers `ton` (R, V, B) avec un grain adouci (`grain`) ; petits carreaux de `carreau` px de page (l'écriture se pose une ligne tous les deux carreaux), réglure tournée de `angle` degrés et décalée de `phase` (fractions de carreau), marge saumon à `marge` × la largeur ; `pli` : la feuille a été pliée en deux ; `transparence` : l'écriture de l'autre face vue au travers.",
+ "cahiers": {
+  "c-lisa": {
+   "source": "wellcome-ms4489-i51-verge-creme",
+   "echelle": 0.54,
+   "x": 0.72,
+   "y": 0.4,
+   "rotation": 0,
+   "teinte": [
+    0,
+    0,
+    0
+   ],
+   "ton": [
+    243,
+    237,
+    221
+   ],
+   "grain": 0.55,
+   "carreau": 21.0,
+   "angle": 0.35,
+   "phase": [
+    0.37,
+    0.61
+   ],
+   "marge": 0.1,
+   "pli": true,
+   "pli_y": 0.53,
+   "pli_angle": -0.7,
+   "transparence": 0.07,
+   "transparence_reglure": 0.16,
+   "graine": 26
+  }
+ }
+}

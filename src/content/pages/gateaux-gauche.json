@@ -1,0 +1,11 @@
+{
+ "main": "soignee",
+ "encre": "plume",
+ "gabarit": "carnet",
+ "id": "gateaux-gauche",
+ "double": "gateaux",
+ "cote": "gauche",
+ "graine": 601,
+ "_": "Intercalaire : le dos d'une page, quasi blanc (on devine la page au dos par transparence).",
+ "blocs": []
+}

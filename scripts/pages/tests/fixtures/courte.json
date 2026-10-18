@@ -1,0 +1,52 @@
+{
+ "style": {
+  "main": "ado",
+  "encre": "feutre",
+  "graine": 2611
+ },
+ "titreSouligne": "double",
+ "notesMarge": [
+  {
+   "texte": "tiptop pour la saison !",
+   "pres": "titre"
+  }
+ ],
+ "slug": "test",
+ "source": "scripts/pages/tests/fixtures",
+ "titre": "Gâteau d'essai",
+ "video": "test",
+ "mot": null,
+ "signature": "Test",
+ "ingredients": [
+  {
+   "puce": "carotte",
+   "lignes": [
+    {
+     "texte": "250g de sucre"
+    },
+    {
+     "texte": "180 g d’huile de coco (ou autre huile végétale)"
+    },
+    {
+     "texte": "1 sachet de levure chimique"
+    },
+    {
+     "texte": "300g de carottes (3 à 4 grosses carottes)"
+    }
+   ]
+  }
+ ],
+ "etapes": [
+  {
+   "titre": "__Étape 1__",
+   "texte": "Mélanger au fouet électrique les 4 œufs et le sucre."
+  },
+  {
+   "titre": "__Étape 2__",
+   "texte": "Incorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours à l'aide du fouet électrique."
+  }
+ ],
+ "croquis": [
+  "carrot-cake"
+ ]
+}

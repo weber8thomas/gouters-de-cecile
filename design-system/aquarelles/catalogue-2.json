@@ -1,0 +1,65 @@
+{
+  "citron": {
+    "sujet": "citron Eureka (entier et demi-coupe)",
+    "source": "https://commons.wikimedia.org/wiki/File:Pomological_Watercolor_POM00000128.jpg",
+    "auteur": "Ellen Isham Schutt (1873-1955)",
+    "licence": "Domaine public (USDA, oeuvre fédérale américaine)",
+    "fichier": "citron.png"
+  },
+  "citron-2": {
+    "sujet": "citron Pica (entier et demi-coupe)",
+    "source": "https://commons.wikimedia.org/wiki/File:Pomological_Watercolor_POM00000090.jpg",
+    "auteur": "Amanda Almira Newton (morte en 1943)",
+    "licence": "Domaine public (USDA, oeuvre fédérale américaine)",
+    "fichier": "citron-2.png"
+  },
+  "pomme": {
+    "sujet": "pomme Yankee (entière et demi-coupe)",
+    "source": "https://commons.wikimedia.org/wiki/File:Pomological_Watercolor_POM00000131.jpg",
+    "auteur": "Amanda Almira Newton (morte en 1943)",
+    "licence": "Domaine public (USDA, oeuvre fédérale américaine)",
+    "fichier": "pomme.png"
+  },
+  "pomme-2": {
+    "sujet": "pomme Dominie (entière)",
+    "source": "https://commons.wikimedia.org/wiki/File:Pomological_Watercolor_POM00000147.jpg",
+    "auteur": "Amanda Almira Newton (morte en 1943)",
+    "licence": "Domaine public (USDA, oeuvre fédérale américaine)",
+    "fichier": "pomme-2.png"
+  },
+  "orange": {
+    "sujet": "orange Valencia (demi-coupe)",
+    "source": "https://commons.wikimedia.org/wiki/File:Pomological_Watercolor_POM00000260.jpg",
+    "auteur": "Royal Charles Steadman (1875-1964)",
+    "licence": "Domaine public (USDA, oeuvre fédérale américaine)",
+    "fichier": "orange.png"
+  },
+  "orange-2": {
+    "sujet": "deux oranges Valencia",
+    "source": "https://commons.wikimedia.org/wiki/File:Pomological_Watercolor_POM00000261.jpg",
+    "auteur": "Royal Charles Steadman (1875-1964)",
+    "licence": "Domaine public (USDA, oeuvre fédérale américaine)",
+    "fichier": "orange-2.png"
+  },
+  "cannelle": {
+    "sujet": "branche de cannellier (Cinnamomum verum), planche botanique",
+    "source": "https://commons.wikimedia.org/wiki/File:Cinnamomum_verum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-182.jpg",
+    "auteur": "Franz Eugen Köhler",
+    "licence": "Domaine public (marque PDM 1.0)",
+    "fichier": "cannelle.png"
+  },
+  "vanille": {
+    "sujet": "plant de vanille (Vanilla planifolia), planche botanique",
+    "source": "https://commons.wikimedia.org/wiki/File:Vanilla_planifolia_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-278.jpg",
+    "auteur": "Franz Eugen Köhler",
+    "licence": "Domaine public (marque PDM 1.0)",
+    "fichier": "vanille.png"
+  },
+  "noix": {
+    "sujet": "noix (Juglans), une variété",
+    "source": "https://commons.wikimedia.org/wiki/File:Pomological_Watercolor_POM00007469.jpg",
+    "auteur": "Amanda Almira Newton (morte en 1943)",
+    "licence": "Domaine public (USDA, oeuvre fédérale américaine)",
+    "fichier": "noix.png"
+  }
+}

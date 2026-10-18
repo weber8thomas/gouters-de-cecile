@@ -1,0 +1,243 @@
+/* Lumière du soir au coin du feu (plan v4, lot L).
+   Cheminée hors champ à GAUCHE de la scène, un peu au-dessus du milieu (--gc-feu-x, --gc-feu-y, en px de
+   scène) : bain orangé sur la table côté feu, ombres vers la droite, voile plus fort à gauche.
+   Dégradés statiques (peints une fois) ; le feu n'anime que opacity et transform (MotionValues).
+   Géométrie en px de scène 1920 × 1080, prolongée du débord (--gc-stage-debord, composant Ecran) :
+   chaque calque s'étend de D + M (M : marge pour le déplacement de la source) et place ses dégradés
+   depuis l'origine de la scène, --gc-lumiere-o = D + M dans sa boîte. */
+
+.gc-stage,
+.gc-lumiere,
+.gc-ombre-feu {
+  /* Couleurs de la lumière (mélanges de tokens ; tokens gc-feu-* proposés au lead). */
+  --gc-feu-flamme: color-mix(in srgb, color-mix(in srgb, var(--gc-glow) 62%, var(--gc-honey-500)) 82%, var(--gc-terracotta-300));
+  --gc-feu-braise: color-mix(in srgb, var(--gc-honey-500) 45%, var(--gc-terracotta-500));
+  --gc-feu-nuit: color-mix(in srgb, var(--gc-ink) 60%, var(--gc-ink-noire));
+  /* Source : hors champ à gauche, un peu au-dessus du milieu. */
+  --gc-feu-x: calc(var(--gc-stage-w) * -0.2);
+  --gc-feu-y: calc(var(--gc-stage-h) * 0.4);
+  --gc-lumiere-d: var(--gc-stage-debord, 0px);
+}
+
+.gc-lumiere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Curseur figé : le curseur du livre (data-gc-curseur, hérité) ne recalcule pas ces calques. */
+  cursor: auto;
+}
+
+
+.gc-lumiere__bain,
+.gc-lumiere__ambiance,
+.gc-lumiere__voile {
+  --gc-lumiere-m: 48px;
+  --gc-lumiere-o: calc(var(--gc-lumiere-d) + var(--gc-lumiere-m));
+  position: absolute;
+  top: calc(-1 * var(--gc-lumiere-o));
+  bottom: calc(-1 * var(--gc-lumiere-o));
+  left: calc(-1 * var(--gc-lumiere-o));
+  pointer-events: none;
+  background-repeat: no-repeat;
+}
+
+.gc-lumiere__bain,
+.gc-lumiere__voile,
+.gc-ombre-feu {
+  /* Calques promus une fois pour toutes : le feu tourne en continu (opacité et translation composées). */
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}
+
+/* ---- 1. Bain de lumière sur la table, côté feu (v5 : lueur indirecte) ---------------------------------
+   Une seule lueur, très large et très douce, qui vient de la cheminée hors champ à gauche : ni tache ni
+   cercle net. Elle éclaire surtout le livre et le bord gauche de la table, et se fond dans la nuit vers la
+   droite. Elle suit la flamme (translation du calque, opacité). */
+.gc-lumiere__bain {
+  width: calc(var(--gc-stage-w) * 0.98 + var(--gc-lumiere-o));
+  background-image:
+    radial-gradient(calc(var(--gc-stage-w) * 1.05) calc(var(--gc-stage-h) * 1.25) at calc(var(--gc-lumiere-o) + var(--gc-feu-x)) calc(var(--gc-lumiere-o) + var(--gc-feu-y)),
+      color-mix(in srgb, var(--gc-feu-flamme) 60%, transparent) 0%,
+      color-mix(in srgb, var(--gc-feu-flamme) 48%, transparent) 20%,
+      color-mix(in srgb, var(--gc-feu-braise) 36%, transparent) 36%,
+      color-mix(in srgb, var(--gc-feu-braise) 24%, transparent) 52%,
+      color-mix(in srgb, var(--gc-feu-braise) 13%, transparent) 68%,
+      color-mix(in srgb, var(--gc-feu-braise) 5%, transparent) 84%,
+      transparent 100%);
+}
+
+/* ---- 2. Ombre portée du livre, du côté opposé au feu --------------------------------------------
+   Une barre fine au bord droit du carton : seule son ombre (box-shadow statique, peinte une fois) se
+   voit, longue et douce vers la droite, un peu vers le bas. Générique : calée sur le livre ouvert au
+   repos (--gc-book-*, --gc-page-*), effacée livre fermé, pendant l'arrivée, et dès que le livre pose sa
+   propre ombre (OmbreFeu dans .gc-livre__corps, lot A). Peinte dans le calque du bain (budget de
+   calques) : elle vacille avec lui. */
+.gc-lumiere__ombre {
+  position: absolute;
+  left: calc(var(--gc-lumiere-o) + var(--gc-book-x) + var(--gc-page-w) * 2 + 28px - 4px);
+  top: calc(var(--gc-lumiere-o) + var(--gc-book-y) + var(--gc-page-h) * 0.035);
+  width: 4px;
+  height: calc(var(--gc-page-h) * 0.95);
+  border-radius: 2px;
+  box-shadow:
+    26px 14px 58px 10px color-mix(in srgb, var(--gc-feu-nuit) 58%, transparent),
+    9px 5px 14px 2px color-mix(in srgb, var(--gc-feu-nuit) 34%, transparent);
+}
+
+.gc-stage:has(.gc-livre[data-gc-etat="couverture"]) .gc-lumiere__ombre,
+.gc-stage:has(.gc-livre[data-gc-arrivee="en-cours"]) .gc-lumiere__ombre,
+.gc-stage:has(.gc-ombre-feu) .gc-lumiere__ombre {
+  visibility: hidden;
+}
+
+/* Ombre du livre posée par le livre lui-même (OmbreFeu, branchement du lot A) : dans .gc-livre__corps,
+   au bord droit du carton (28 px hors du bloc de pages, comme --gc-livre-carton-out). */
+.gc-ombre-feu {
+  position: absolute;
+  left: calc(100% + 28px - 4px);
+  top: 3.5%;
+  width: 4px;
+  height: 95%;
+  border-radius: 2px;
+  pointer-events: none;
+  /* Ombre longue et nette au bord, vers la droite : elle doit se lire sur la table sombre (v5). */
+  box-shadow:
+    34px 16px 80px 14px color-mix(in srgb, var(--gc-ink-noire) 90%, transparent),
+    12px 6px 18px 3px color-mix(in srgb, var(--gc-ink-noire) 55%, transparent);
+}
+
+/* ---- 3. Ambiance du soir : les bords et les coins s'enfoncent dans la nuit -----------------------------
+   Quatre bandes raides le long des bords de la scène (plus sombres côté ombre et en bas, à peine côté
+   feu) : elles assombrissent la table et la marge du papier, jamais la colonne de texte ; les coins,
+   où deux bandes se croisent, sont les plus sombres. Au-delà de la scène (débord : téléphone,
+   tablette), un vignettage elliptique continue de plonger la table dans la pénombre. Enfin la lumière
+   décroît en s'éloignant du feu : une pénombre très légère (≤ 6 % sur le texte) gagne la page droite.
+   Un voile sombre coûte peu de contraste (l'encre est déjà sombre) : c'est lui qui fait le soir. */
+.gc-lumiere__ambiance {
+  right: calc(-1 * var(--gc-lumiere-o));
+  background-image:
+    radial-gradient(calc(var(--gc-stage-w) * 0.62) calc(var(--gc-stage-h) * 0.66) at calc(var(--gc-lumiere-o) + var(--gc-stage-w) * 0.47) calc(var(--gc-lumiere-o) + var(--gc-stage-h) * 0.5),
+      transparent 100%,
+      color-mix(in srgb, var(--gc-feu-nuit) 14%, transparent) 125%,
+      color-mix(in srgb, var(--gc-feu-nuit) 30%, transparent) 175%),
+    linear-gradient(90deg,
+      transparent calc(var(--gc-lumiere-o) + var(--gc-stage-w) - 146px),
+      color-mix(in srgb, var(--gc-feu-nuit) 3%, transparent) calc(var(--gc-lumiere-o) + var(--gc-stage-w) - 124px),
+      color-mix(in srgb, var(--gc-feu-nuit) 8%, transparent) calc(var(--gc-lumiere-o) + var(--gc-stage-w) - 104px),
+      color-mix(in srgb, var(--gc-feu-nuit) 17%, transparent) calc(var(--gc-lumiere-o) + var(--gc-stage-w) - 66px),
+      color-mix(in srgb, var(--gc-feu-nuit) 29%, transparent) calc(var(--gc-lumiere-o) + var(--gc-stage-w))),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--gc-feu-nuit) 26%, transparent) var(--gc-lumiere-o),
+      color-mix(in srgb, var(--gc-feu-nuit) 16%, transparent) calc(var(--gc-lumiere-o) + 34px),
+      color-mix(in srgb, var(--gc-feu-nuit) 8%, transparent) calc(var(--gc-lumiere-o) + 62px),
+      color-mix(in srgb, var(--gc-feu-nuit) 3%, transparent) calc(var(--gc-lumiere-o) + 92px),
+      transparent calc(var(--gc-lumiere-o) + 118px)),
+    linear-gradient(0deg,
+      color-mix(in srgb, var(--gc-feu-nuit) 31%, transparent) var(--gc-lumiere-o),
+      color-mix(in srgb, var(--gc-feu-nuit) 20%, transparent) calc(var(--gc-lumiere-o) + 32px),
+      color-mix(in srgb, var(--gc-feu-nuit) 10%, transparent) calc(var(--gc-lumiere-o) + 62px),
+      color-mix(in srgb, var(--gc-feu-nuit) 3%, transparent) calc(var(--gc-lumiere-o) + 96px),
+      transparent calc(var(--gc-lumiere-o) + 128px)),
+    linear-gradient(90deg,
+      color-mix(in srgb, var(--gc-feu-nuit) 6%, transparent) var(--gc-lumiere-o),
+      color-mix(in srgb, var(--gc-feu-nuit) 2%, transparent) calc(var(--gc-lumiere-o) + 70px),
+      transparent calc(var(--gc-lumiere-o) + 120px)),
+    radial-gradient(circle calc(var(--gc-stage-w) * 1.25) at calc(var(--gc-lumiere-o) + var(--gc-feu-x)) calc(var(--gc-lumiere-o) + var(--gc-feu-y)),
+      color-mix(in srgb, var(--gc-feu-nuit) 0.3%, transparent) 18%,
+      color-mix(in srgb, var(--gc-feu-nuit) 1.3%, transparent) 30%,
+      color-mix(in srgb, var(--gc-feu-nuit) 2.1%, transparent) 55%,
+      color-mix(in srgb, var(--gc-feu-nuit) 3%, transparent) 75%,
+      color-mix(in srgb, var(--gc-feu-nuit) 3.6%, transparent) 88%,
+      color-mix(in srgb, var(--gc-feu-nuit) 5.2%, transparent) 100%);
+}
+
+/* Avec un débord (téléphone, tablette, écran 16:10), les bords de la scène ne sont plus ceux de l'écran :
+   pas de bandes raides au milieu de la table, seulement un vignettage elliptique qui s'assombrit
+   doucement en s'éloignant du livre, et la même décroissance depuis le feu. */
+.gc-stage--debord .gc-lumiere__ambiance {
+  background-image:
+    radial-gradient(calc(var(--gc-stage-w) * 0.62) calc(var(--gc-stage-h) * 0.66) at calc(var(--gc-lumiere-o) + var(--gc-stage-w) * 0.47) calc(var(--gc-lumiere-o) + var(--gc-stage-h) * 0.5),
+      transparent 88%,
+      color-mix(in srgb, var(--gc-feu-nuit) 9%, transparent) 104%,
+      color-mix(in srgb, var(--gc-feu-nuit) 22%, transparent) 128%,
+      color-mix(in srgb, var(--gc-feu-nuit) 34%, transparent) 160%,
+      color-mix(in srgb, var(--gc-feu-nuit) 40%, transparent) 220%),
+    radial-gradient(circle calc(var(--gc-stage-w) * 1.25) at calc(var(--gc-lumiere-o) + var(--gc-feu-x)) calc(var(--gc-lumiere-o) + var(--gc-feu-y)),
+      color-mix(in srgb, var(--gc-feu-nuit) 0.3%, transparent) 18%,
+      color-mix(in srgb, var(--gc-feu-nuit) 1.3%, transparent) 30%,
+      color-mix(in srgb, var(--gc-feu-nuit) 2.1%, transparent) 55%,
+      color-mix(in srgb, var(--gc-feu-nuit) 3%, transparent) 75%,
+      color-mix(in srgb, var(--gc-feu-nuit) 3.6%, transparent) 88%,
+      color-mix(in srgb, var(--gc-feu-nuit) 5.2%, transparent) 100%);
+}
+
+/* ---- 4. Voile chaud sur le livre, plus fort côté feu ----------------------------------------------
+   Décroît vite depuis le bord gauche (≈ 1/d²) : ≤ 4,2 % sur la colonne de texte gauche au plus fort
+   d'une flambée, ≈ 1 % au pli, rien à droite. L'encre garde ≥ 90 % de son contraste. */
+.gc-lumiere__voile {
+  width: calc(var(--gc-stage-w) * 0.92 + var(--gc-lumiere-o));
+  background-image:
+    radial-gradient(calc(var(--gc-stage-w) * 1.0) calc(var(--gc-stage-h) * 1.25) at calc(var(--gc-lumiere-o) + var(--gc-feu-x)) calc(var(--gc-lumiere-o) + var(--gc-feu-y)),
+      color-mix(in srgb, var(--gc-feu-flamme) 16%, transparent) 0%,
+      color-mix(in srgb, var(--gc-feu-flamme) 11%, transparent) 20%,
+      color-mix(in srgb, var(--gc-feu-flamme) 7%, transparent) 25%,
+      color-mix(in srgb, var(--gc-feu-flamme) 4.2%, transparent) 29%,
+      color-mix(in srgb, var(--gc-feu-flamme) 3.2%, transparent) 36%,
+      color-mix(in srgb, var(--gc-feu-flamme) 2.2%, transparent) 51%,
+      color-mix(in srgb, var(--gc-feu-flamme) 1.1%, transparent) 70%,
+      color-mix(in srgb, var(--gc-feu-flamme) 0.3%, transparent) 90%,
+      transparent 100%);
+}
+
+/* ---- 5. Éclairage tracé (scripts/lumiere3d, Lumiere.tsx LumiereTracee) --------------------------------
+   Un groupe de calques par état du livre ; seul celui de l'état courant se voit, avec un fondu quand le
+   livre s'ouvre, se ferme, ou arrive sur la table vide. Les calques sont en px de scène et débordent de la
+   scène (marge du rendu, 400 px) ; au-delà, la table prend la couleur de leur bord (PenombreTable). */
+.gc-lumiere-tracee {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.9s ease, visibility 0s linear 0.9s;
+}
+
+.gc-lumiere-tracee__fond,
+.gc-lumiere-tracee__voile {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+.gc-lumiere-tracee__voile {
+  will-change: opacity;
+  backface-visibility: hidden;
+}
+
+.gc-stage:not(:has(.gc-livre)) .gc-lumiere-tracee[data-gc-lumiere-etat="vide"],
+.gc-stage:has(.gc-livre[data-gc-arrivee="en-cours"]) .gc-lumiere-tracee[data-gc-lumiere-etat="vide"],
+.gc-stage:has(.gc-livre[data-gc-etat="couverture"]:not([data-gc-arrivee="en-cours"])) .gc-lumiere-tracee[data-gc-lumiere-etat="couverture"],
+.gc-stage:has(.gc-livre[data-gc-etat="arriere"]:not([data-gc-arrivee="en-cours"])) .gc-lumiere-tracee[data-gc-lumiere-etat="arriere"],
+.gc-stage:has(.gc-livre[data-gc-etat="ouvert"]:not([data-gc-arrivee="en-cours"])) .gc-lumiere-tracee[data-gc-lumiere-etat="ouvert"] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.9s ease, visibility 0s;
+}
+
+/* Les ombres génériques du livre posé sont dans les calques tracés (elles restent pendant l'arrivée). */
+.gc-stage--tracee .gc-livre:not([data-gc-arrivee="en-cours"]) .gc-livre__ombre--gauche,
+.gc-stage--tracee .gc-livre:not([data-gc-arrivee="en-cours"]) .gc-livre__ombre--droite,
+.gc-stage--tracee .gc-livre:not([data-gc-arrivee="en-cours"]) .gc-livre__ombre--epaisseur {
+  visibility: hidden;
+}
+
+/* Au-delà de la marge des calques tracés, quand la table déborde de la scène (--gc-stage-debord) : un cadre
+   de la couleur de leur bord, peint avec la table (aucun calque). Sa bordure va du bord de la table à la
+   marge des calques ; sans débord (TV), elle est nulle. */
+.gc-lumiere-penombre {
+  position: absolute;
+  inset: 0;
+  border-style: solid;
+  border-width: max(0px, calc(var(--gc-stage-debord, 0px) - var(--gc-lumiere-marge)));
+  pointer-events: none;
+}

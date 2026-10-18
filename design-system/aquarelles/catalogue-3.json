@@ -1,0 +1,16 @@
+{
+  "ble": {
+    "sujet": "épi et tige de blé (Triticum aestivum), planche botanique de Köhler ; recadré sur la tige",
+    "source": "https://commons.wikimedia.org/wiki/File:Triticum_aestivum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-274.jpg",
+    "auteur": "Walther Otto Müller (planche de Köhler's Medizinal-Pflanzen)",
+    "licence": "Domaine public (Köhler's Medizinal-Pflanzen, planche PD)",
+    "fichier": "ble.png"
+  },
+  "oeufs": {
+    "sujet": "œuf d'oiseau bleu tacheté, aquarelle sur papier crème (œuf sauvage, pas un œuf de poule)",
+    "source": "https://commons.wikimedia.org/wiki/File:James_Sowerby_-_A_Bird%27s_Egg_-_B1978.43.100_-_Yale_Center_for_British_Art.jpg",
+    "auteur": "James Sowerby (1757-1822), Yale Center for British Art",
+    "licence": "CC0 1.0 (Yale Center for British Art)",
+    "fichier": "oeufs.png"
+  }
+}

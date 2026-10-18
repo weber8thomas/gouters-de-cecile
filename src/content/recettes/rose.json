@@ -1,0 +1,97 @@
+{
+  "_": "Invité fictif de démonstration : texte écrit pour l'exemple (aucun vrai message).",
+  "slug": "rose",
+  "source": null,
+  "adaptations": [
+    "Invitée fictive : texte écrit pour la démonstration, rien d'adapté."
+  ],
+  "style": {
+    "main": "mamie",
+    "encre": "brune",
+    "graine": 811
+  },
+  "video": "rose",
+  "nom": "Mamie Rose",
+  "titre": "Les sablés de Rose",
+  "titreSouligne": "trait",
+  "notesMarge": [
+    {
+      "texte": "beurre bien froid !",
+      "pres": "titre"
+    }
+  ],
+  "ingredients": [
+    {
+      "titre": "Pour la pâte :",
+      "lignes": [
+        { "texte": "250 g de farine" },
+        { "texte": "125 g de beurre bien froid, coupé en dés" },
+        { "texte": "100 g de sucre glace" },
+        { "texte": "1 jaune d'œuf" },
+        { "texte": "1 pincée de sel" },
+        { "texte": "1 pincée de cannelle" },
+        { "texte": "le zeste d'un citron non traité" }
+      ]
+    },
+    {
+      "titre": "Pour dorer :",
+      "lignes": [
+        { "texte": "1 jaune d'œuf en plus" },
+        { "texte": "1 c. à c. d'eau" }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "__Étape 1__",
+      "texte": "Dans un grand saladier, sable la farine et le beurre du bout des doigts, jusqu'à ce que ça ressemble à de la semoule. Ça prend un bon quart d'heure, ne te presse pas."
+    },
+    {
+      "titre": "__Étape 2__",
+      "texte": "Ajoute le sucre glace, le sel, la cannelle et le zeste, puis le jaune. Pétris juste ce qu'il faut, sinon les sablés deviennent durs. Ma mère disait : on caresse la pâte, on ne la pétrit pas."
+    },
+    {
+      "titre": "__Étape 3__",
+      "texte": "Fais une boule, enveloppe-la de film et mets-la une heure au frais. Moi je la prépare la veille, c'est plus facile à étaler."
+    },
+    {
+      "titre": "__Étape 4__",
+      "texte": "Étale la pâte sur ½ cm d'épaisseur, entre deux feuilles de papier cuisson, puis découpe au verre. Repasse les chutes une seule fois, pas plus."
+    },
+    {
+      "titre": "__Étape 5__",
+      "texte": "Pose les sablés sur la plaque, dore-les au jaune battu avec l'eau, et raie le dessus à la fourchette. Les petits traits, c'est ma signature depuis toujours."
+    }
+  ],
+  "cuisson": {
+    "titre": "__Étape 6__",
+    "texte": "Cuis 12 min à th. 6 (180 °C) : ils doivent rester blonds, surtout pas dorés. Laisse-les refroidir sur la plaque avant de les toucher."
+  },
+  "apres": [
+    "Une fois froids, range-les dans la boîte en fer. C'est là qu'ils restent le plus tendres, et qu'on les garde pour les jours de fête."
+  ],
+  "extras": [
+    {
+      "titre": "Pour Noël, je change un peu :",
+      "lignes": [
+        { "texte": "le zeste remplacé par 1 c. à c. de cannelle" },
+        { "texte": "1 blanc d'œuf battu avec 150 g de sucre glace" },
+        { "texte": "quelques gouttes de citron" }
+      ],
+      "paragraphes": [
+        "Je les découpe en étoiles avec le petit emporte-pièce, et je nappe le glaçage au pinceau sur les sablés refroidis. Tout le monde en veut dans la boîte."
+      ]
+    }
+  ],
+  "fin": {
+    "texte": "__Bonne dégustation, et laisse-m'en quelques-uns !__",
+    "croquis": [
+      "sourire"
+    ]
+  },
+  "croquis": [
+    "beurre"
+  ],
+  "mot": "Ma recette de toujours, pour ma Cécile qui en volait toujours un de plus. Joyeux anniversaire, mon trésor !",
+  "signature": "Mamie Rose"
+}

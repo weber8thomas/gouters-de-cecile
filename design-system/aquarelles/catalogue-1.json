@@ -1,0 +1,23 @@
+{
+  "cupcake": {
+    "sujet": "cupcake aquarelle, crème rose et framboise, moule lilas",
+    "source": "https://pixabay.com/illustrations/cupcake-watercolor-food-sweets-4054535/",
+    "auteur": "Nic0leta (Pixabay)",
+    "licence": "Pixabay Content License (usage libre, modification permise)",
+    "fichier": "cupcake.png"
+  },
+  "tasse-2": {
+    "sujet": "tasse à café en grès, aquarelle (café, pas thé)",
+    "source": "https://pixabay.com/illustrations/mug-cup-coffee-tea-watercolor-8032892/",
+    "auteur": "ZAIDoopro (Pixabay)",
+    "licence": "Pixabay Content License (usage libre, modification permise)",
+    "fichier": "tasse-2.png"
+  },
+  "theiere": {
+    "sujet": "théière fleurie avec ses tasses et des pétales, aquarelle",
+    "source": "https://pixabay.com/illustrations/teapot-teacup-drink-watercolor-10035657/",
+    "auteur": "ZAIDoopro (Pixabay)",
+    "licence": "Pixabay Content License (usage libre, modification permise)",
+    "fichier": "theiere.png"
+  }
+}

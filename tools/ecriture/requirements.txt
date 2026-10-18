@@ -1,0 +1,7 @@
+# Écriture générée — dépendances Python (environnement : tools/ecriture/.venv, non versionné)
+# Inférence du réseau d'écriture : NumPy seul.
+numpy==2.5.4
+# Relecture des candidats (TrOCR en ONNX) : facultative (--rapide s'en passe).
+onnxruntime==1.31.0
+tokenizers==0.23.3
+pillow==12.3.0

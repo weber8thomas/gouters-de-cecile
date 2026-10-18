@@ -1,0 +1,174 @@
+/* Formats : cinq écrans simulés côte à côte, à la même échelle, sur un fond clair (tons lin). */
+.gc-formats {
+  position: relative;
+  width: var(--gc-stage-w);
+  height: var(--gc-stage-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 140px;
+  overflow: hidden;
+  background-color: var(--gc-linen);
+  background-image:
+    radial-gradient(ellipse 70% 80% at 24% 16%, color-mix(in srgb, var(--gc-paper-lace) 60%, transparent), transparent 72%),
+    radial-gradient(ellipse 90% 90% at 100% 100%, color-mix(in srgb, var(--gc-linen-shade) 70%, transparent), transparent 70%);
+  color: var(--gc-ink);
+}
+
+.gc-formats__colonne {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.gc-formats__colonne--petits {
+  gap: 40px;
+}
+
+.gc-formats__rang {
+  display: flex;
+  align-items: flex-end;
+  gap: 64px;
+}
+
+/* ---- Un appareil : cadre sobre (aucune marque), écran à l'échelle, légende manuscrite ------- */
+.gc-formats__appareil {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gc-formats__cadre {
+  position: relative;
+  padding: var(--gc-formats-bord);
+  border-radius: var(--gc-formats-rayon);
+  background-color: var(--gc-ink-noire);
+  background-image: linear-gradient(160deg, color-mix(in srgb, var(--gc-paper-lace) 10%, transparent), transparent 40%);
+  box-shadow:
+    var(--gc-sh-object),
+    inset 0 0 0 1.5px color-mix(in srgb, var(--gc-paper-lace) 14%, transparent);
+}
+
+.gc-formats__ecran {
+  position: relative;
+  width: var(--gc-formats-w);
+  height: var(--gc-formats-h);
+  overflow: hidden;
+  border-radius: var(--gc-formats-rayon-ecran);
+  background-color: var(--gc-wood-3);
+}
+
+/* L'écran simulé est rendu à sa taille en px CSS, puis réduit à l'échelle commune. */
+.gc-formats__echelle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: scale(var(--gc-formats-k));
+  transform-origin: 0 0;
+}
+
+.gc-formats__appareil--telephone {
+  --gc-formats-bord: 7px;
+  --gc-formats-rayon: 24px;
+  --gc-formats-rayon-ecran: 18px;
+}
+
+.gc-formats__appareil--tablette {
+  --gc-formats-bord: 12px;
+  --gc-formats-rayon: 22px;
+  --gc-formats-rayon-ecran: 10px;
+}
+
+.gc-formats__appareil--ordinateur {
+  --gc-formats-bord: 10px;
+  --gc-formats-rayon: 12px 12px 3px 3px;
+  --gc-formats-rayon-ecran: 3px;
+}
+
+.gc-formats__appareil--tv {
+  --gc-formats-bord: 8px;
+  --gc-formats-rayon: 5px;
+  --gc-formats-rayon-ecran: 1px;
+}
+
+/* Ordinateur : le socle (clavier vu de face), un peu plus large que l'écran. */
+.gc-formats__socle {
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  top: 100%;
+  height: 14px;
+  border-radius: 2px 2px 16px 16px;
+  background-image: linear-gradient(to bottom, var(--gc-graphite), color-mix(in srgb, var(--gc-graphite) 70%, var(--gc-ink-noire)));
+  box-shadow: var(--gc-sh-lift);
+}
+
+.gc-formats__socle::after {
+  content: '';
+  position: absolute;
+  left: 42%;
+  right: 42%;
+  top: 0;
+  height: 4px;
+  border-radius: 0 0 6px 6px;
+  background-color: color-mix(in srgb, var(--gc-ink-noire) 60%, var(--gc-graphite));
+}
+
+/* TV : un pied discret. */
+.gc-formats__pied {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 180px;
+  height: 26px;
+  transform: translateX(-50%);
+}
+
+.gc-formats__pied::before,
+.gc-formats__pied::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--gc-ink-noire);
+}
+
+.gc-formats__pied::before {
+  top: 0;
+  width: 34px;
+  height: 18px;
+}
+
+.gc-formats__pied::after {
+  bottom: 0;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  box-shadow: var(--gc-sh-lift);
+}
+
+/* ---- Légendes (main de Cécile) ---------------------------------------------------------------- */
+.gc-formats__legende {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 14px;
+  line-height: 1;
+}
+
+.gc-formats__appareil--ordinateur .gc-formats__legende { margin-top: 26px; }
+.gc-formats__appareil--tv .gc-formats__legende { margin-top: 34px; }
+
+.gc-formats__nom {
+  color: var(--gc-ink);
+  white-space: nowrap;
+}
+
+.gc-formats__detail {
+  color: color-mix(in srgb, var(--gc-ink) 62%, transparent);
+  white-space: nowrap;
+  transform: scale(0.72);
+  margin-top: -6px;
+}

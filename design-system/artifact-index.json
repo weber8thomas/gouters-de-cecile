@@ -1,0 +1,457 @@
+{
+  "v": 3,
+  "layout": "files",
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-16T08:55:09Z"
+  },
+  "title": "Les goûters de Cécile",
+  "namespace": "GoutersDeCecile",
+  "libraries": [
+    {
+      "name": "react",
+      "version": "18"
+    },
+    {
+      "name": "react-dom",
+      "version": "18"
+    }
+  ],
+  "sections": {},
+  "groups": [
+    "Pages",
+    "Photos",
+    "Affiches",
+    "Papier"
+  ],
+  "assetGroups": {
+    "Pages": {
+      "name": "Pages cuites",
+      "tile": "m",
+      "order": [
+        "1x/fin-droite.webp",
+        "1x/fin-gauche.webp",
+        "1x/julie-droite.webp",
+        "1x/julie-gauche.webp",
+        "1x/lisa-droite.webp",
+        "1x/lisa-feuillet-recto.webp",
+        "1x/lisa-feuillet-verso.webp",
+        "1x/lisa-gauche.webp",
+        "1x/mathis-droite.webp",
+        "1x/mathis-gauche.webp",
+        "1x/papier/c-lisa-recto.webp",
+        "1x/papier/c-lisa-verso.webp",
+        "1x/papier/f11.webp",
+        "1x/papier/f13.webp",
+        "1x/papier/f15.webp",
+        "1x/papier/f17.webp",
+        "1x/papier/f19.webp",
+        "1x/papier/f9.webp",
+        "1x/rose-droite.webp",
+        "1x/rose-gauche.webp",
+        "fin-droite.webp",
+        "fin-gauche.webp",
+        "julie-droite.webp",
+        "julie-gauche.webp",
+        "lisa-droite.webp",
+        "lisa-feuillet-recto.webp",
+        "lisa-feuillet-verso.webp",
+        "lisa-gauche.webp",
+        "mathis-droite.webp",
+        "mathis-gauche.webp",
+        "papier/c-lisa-recto.webp",
+        "papier/c-lisa-verso.webp",
+        "papier/f11.webp",
+        "papier/f13.webp",
+        "papier/f15.webp",
+        "papier/f17.webp",
+        "papier/f19.webp",
+        "papier/f9.webp",
+        "rose-droite.webp",
+        "rose-gauche.webp"
+      ],
+      "files": {
+        "1x/fin-droite.webp": {
+          "name": "1x/fin-droite.webp",
+          "blob": "4a8a07e096f386c617d0ece02028aec7",
+          "size": 12088,
+          "type": "image/webp"
+        },
+        "1x/fin-gauche.webp": {
+          "name": "1x/fin-gauche.webp",
+          "blob": "d060138925eb782f1462c625888d58dd",
+          "size": 38074,
+          "type": "image/webp"
+        },
+        "1x/julie-droite.webp": {
+          "name": "1x/julie-droite.webp",
+          "blob": "1471dfe4286ca9db8466159174a4741d",
+          "size": 70768,
+          "type": "image/webp"
+        },
+        "1x/julie-gauche.webp": {
+          "name": "1x/julie-gauche.webp",
+          "blob": "ec867c26e0bea41bcec29e036b2ebae6",
+          "size": 40592,
+          "type": "image/webp"
+        },
+        "1x/lisa-droite.webp": {
+          "name": "1x/lisa-droite.webp",
+          "blob": "02b90fd9aab752a89e50a08e6fcb8fb9",
+          "size": 55084,
+          "type": "image/webp"
+        },
+        "1x/lisa-feuillet-recto.webp": {
+          "name": "1x/lisa-feuillet-recto.webp",
+          "blob": "5ae660f2d35b66f5e61ef5ac81ab2dda",
+          "size": 85310,
+          "type": "image/webp"
+        },
+        "1x/lisa-feuillet-verso.webp": {
+          "name": "1x/lisa-feuillet-verso.webp",
+          "blob": "7eab35ec42bb0f42e42e5a2980754098",
+          "size": 81314,
+          "type": "image/webp"
+        },
+        "1x/lisa-gauche.webp": {
+          "name": "1x/lisa-gauche.webp",
+          "blob": "396384c92322ed346b831ec087a602f3",
+          "size": 27088,
+          "type": "image/webp"
+        },
+        "1x/mathis-droite.webp": {
+          "name": "1x/mathis-droite.webp",
+          "blob": "134139bdee606cab45660fe35ef8ce62",
+          "size": 44374,
+          "type": "image/webp"
+        },
+        "1x/mathis-gauche.webp": {
+          "name": "1x/mathis-gauche.webp",
+          "blob": "a06201fe0f70e3e212e6ecf501376e66",
+          "size": 85338,
+          "type": "image/webp"
+        },
+        "1x/papier/c-lisa-recto.webp": {
+          "name": "1x/papier/c-lisa-recto.webp",
+          "blob": "d736f332e71513e9de0db299747b7bf6",
+          "size": 27448,
+          "type": "image/webp"
+        },
+        "1x/papier/c-lisa-verso.webp": {
+          "name": "1x/papier/c-lisa-verso.webp",
+          "blob": "6d25e382e582de2a579d01658b73caf3",
+          "size": 27092,
+          "type": "image/webp"
+        },
+        "1x/papier/f11.webp": {
+          "name": "1x/papier/f11.webp",
+          "blob": "46cd89a35dfbb4d59dc93f9e595b0105",
+          "size": 25676,
+          "type": "image/webp"
+        },
+        "1x/papier/f13.webp": {
+          "name": "1x/papier/f13.webp",
+          "blob": "fd9216490f6ba5e020ae5f4de7240912",
+          "size": 21466,
+          "type": "image/webp"
+        },
+        "1x/papier/f15.webp": {
+          "name": "1x/papier/f15.webp",
+          "blob": "f2363826bfe76f3a19720e20970548c3",
+          "size": 26336,
+          "type": "image/webp"
+        },
+        "1x/papier/f17.webp": {
+          "name": "1x/papier/f17.webp",
+          "blob": "0d80410ca5e982b37cadc0944bcc8f91",
+          "size": 30598,
+          "type": "image/webp"
+        },
+        "1x/papier/f19.webp": {
+          "name": "1x/papier/f19.webp",
+          "blob": "809323baa50be71edb6625da1cb58041",
+          "size": 56198,
+          "type": "image/webp"
+        },
+        "1x/papier/f9.webp": {
+          "name": "1x/papier/f9.webp",
+          "blob": "95008163ea1611de9a0d2d954932c54b",
+          "size": 23430,
+          "type": "image/webp"
+        },
+        "1x/rose-droite.webp": {
+          "name": "1x/rose-droite.webp",
+          "blob": "6ef6b0273243f0b5f4c50bda96a6a4c5",
+          "size": 86286,
+          "type": "image/webp"
+        },
+        "1x/rose-gauche.webp": {
+          "name": "1x/rose-gauche.webp",
+          "blob": "98b3880539cc6dfee843ae4c24bdfbd1",
+          "size": 70440,
+          "type": "image/webp"
+        },
+        "fin-droite.webp": {
+          "name": "fin-droite.webp",
+          "blob": "9163d71807d10ea617b4d0e293f9108a",
+          "size": 33010,
+          "type": "image/webp"
+        },
+        "fin-gauche.webp": {
+          "name": "fin-gauche.webp",
+          "blob": "6c0913ea49a62ff8f707566b792cc87e",
+          "size": 98718,
+          "type": "image/webp"
+        },
+        "julie-droite.webp": {
+          "name": "julie-droite.webp",
+          "blob": "02cf1352cf74104f350d4140d13f3794",
+          "size": 190786,
+          "type": "image/webp"
+        },
+        "julie-gauche.webp": {
+          "name": "julie-gauche.webp",
+          "blob": "4eaa4b024d5a9abba2a0be03cfca187d",
+          "size": 110964,
+          "type": "image/webp"
+        },
+        "lisa-droite.webp": {
+          "name": "lisa-droite.webp",
+          "blob": "e64ca4c971395b8737d6d8f3ed1abf77",
+          "size": 162026,
+          "type": "image/webp"
+        },
+        "lisa-feuillet-recto.webp": {
+          "name": "lisa-feuillet-recto.webp",
+          "blob": "5a74faecc02dfdec1ba11aef823678de",
+          "size": 237400,
+          "type": "image/webp"
+        },
+        "lisa-feuillet-verso.webp": {
+          "name": "lisa-feuillet-verso.webp",
+          "blob": "b2ae22faa94de7519f61e8e4c947ba4f",
+          "size": 224312,
+          "type": "image/webp"
+        },
+        "lisa-gauche.webp": {
+          "name": "lisa-gauche.webp",
+          "blob": "492cf8a6fa8f4591936ff9b36b2d3e73",
+          "size": 80364,
+          "type": "image/webp"
+        },
+        "mathis-droite.webp": {
+          "name": "mathis-droite.webp",
+          "blob": "7324d4ca264e6ce9caea8fa32ac6b72c",
+          "size": 117766,
+          "type": "image/webp"
+        },
+        "mathis-gauche.webp": {
+          "name": "mathis-gauche.webp",
+          "blob": "8b31ea74befa99dae7b2f73b2aa60723",
+          "size": 246344,
+          "type": "image/webp"
+        },
+        "papier/c-lisa-recto.webp": {
+          "name": "papier/c-lisa-recto.webp",
+          "blob": "4b7efdcbc868502ea0f0e97b7c460022",
+          "size": 104386,
+          "type": "image/webp"
+        },
+        "papier/c-lisa-verso.webp": {
+          "name": "papier/c-lisa-verso.webp",
+          "blob": "a3560288f9d17d9d0ce4b151da34304f",
+          "size": 98174,
+          "type": "image/webp"
+        },
+        "papier/f11.webp": {
+          "name": "papier/f11.webp",
+          "blob": "bc1e4a3d534109903f3daf2f406ad377",
+          "size": 170940,
+          "type": "image/webp"
+        },
+        "papier/f13.webp": {
+          "name": "papier/f13.webp",
+          "blob": "5cca9329f613e963b756eb0ab7fdf1d6",
+          "size": 154164,
+          "type": "image/webp"
+        },
+        "papier/f15.webp": {
+          "name": "papier/f15.webp",
+          "blob": "cc8fd2ce7ba50462fbdccaedb1981279",
+          "size": 258728,
+          "type": "image/webp"
+        },
+        "papier/f17.webp": {
+          "name": "papier/f17.webp",
+          "blob": "96f01fc349790c17c38109b7ac2a1742",
+          "size": 254562,
+          "type": "image/webp"
+        },
+        "papier/f19.webp": {
+          "name": "papier/f19.webp",
+          "blob": "0d8c8163b3091bc668927fc743e90aa6",
+          "size": 335284,
+          "type": "image/webp"
+        },
+        "papier/f9.webp": {
+          "name": "papier/f9.webp",
+          "blob": "6252388a726ef2a914740fa998084719",
+          "size": 165324,
+          "type": "image/webp"
+        },
+        "rose-droite.webp": {
+          "name": "rose-droite.webp",
+          "blob": "a8fabebb8bcdfe8c8f6df986d603a4aa",
+          "size": 244056,
+          "type": "image/webp"
+        },
+        "rose-gauche.webp": {
+          "name": "rose-gauche.webp",
+          "blob": "c5ae7416b6d4d80a37812750eb9788d5",
+          "size": 211610,
+          "type": "image/webp"
+        }
+      }
+    },
+    "Photos": {
+      "name": "Photos collées",
+      "tile": "m",
+      "order": [
+        "bernard/coins.webp",
+        "bernard/tirage.webp",
+        "julie/coins.webp",
+        "julie/tirage.webp",
+        "lisa/coins.webp",
+        "lisa/tirage.webp",
+        "mathis/coins.webp",
+        "mathis/tirage.webp",
+        "rose/coins.webp",
+        "rose/tirage.webp"
+      ],
+      "files": {
+        "bernard/coins.webp": {
+          "name": "bernard/coins.webp",
+          "blob": "863c2e95d704e373bac91af154409dd0",
+          "size": 15862,
+          "type": "image/webp"
+        },
+        "bernard/tirage.webp": {
+          "name": "bernard/tirage.webp",
+          "blob": "27ea86f20df325ef8c59ef9e4faa208b",
+          "size": 150844,
+          "type": "image/webp"
+        },
+        "julie/coins.webp": {
+          "name": "julie/coins.webp",
+          "blob": "1b6170fa48e4af6d3d77a77256bf19b6",
+          "size": 13822,
+          "type": "image/webp"
+        },
+        "julie/tirage.webp": {
+          "name": "julie/tirage.webp",
+          "blob": "fa13677f75bb81609dfeb5063350ce54",
+          "size": 150662,
+          "type": "image/webp"
+        },
+        "lisa/coins.webp": {
+          "name": "lisa/coins.webp",
+          "blob": "423a25216b61f8196348549fa6da25e2",
+          "size": 30820,
+          "type": "image/webp"
+        },
+        "lisa/tirage.webp": {
+          "name": "lisa/tirage.webp",
+          "blob": "17149e5b3e53085fec9284258d208582",
+          "size": 128760,
+          "type": "image/webp"
+        },
+        "mathis/coins.webp": {
+          "name": "mathis/coins.webp",
+          "blob": "193a032fae21deb854f4d188266915cb",
+          "size": 28506,
+          "type": "image/webp"
+        },
+        "mathis/tirage.webp": {
+          "name": "mathis/tirage.webp",
+          "blob": "5078d14f82b5676c68d9f3dfae604b23",
+          "size": 137704,
+          "type": "image/webp"
+        },
+        "rose/coins.webp": {
+          "name": "rose/coins.webp",
+          "blob": "27a13d8aafe59923e725430244b2cdd9",
+          "size": 24088,
+          "type": "image/webp"
+        },
+        "rose/tirage.webp": {
+          "name": "rose/tirage.webp",
+          "blob": "13143bec8cd9cf46b39de48961e76f50",
+          "size": 187094,
+          "type": "image/webp"
+        }
+      }
+    },
+    "Affiches": {
+      "name": "Affiches des vidéos",
+      "tile": "m",
+      "order": [
+        "bernard-affiche.webp",
+        "julie-affiche.webp",
+        "lisa-affiche.webp",
+        "mathis-affiche.webp",
+        "rose-affiche.webp"
+      ],
+      "files": {
+        "bernard-affiche.webp": {
+          "name": "bernard-affiche.webp",
+          "blob": "f8007d569a8570b2e5c5d0dd99fde909",
+          "size": 40926,
+          "type": "image/webp"
+        },
+        "julie-affiche.webp": {
+          "name": "julie-affiche.webp",
+          "blob": "fce13875a8120dc62be66d96912582b4",
+          "size": 54512,
+          "type": "image/webp"
+        },
+        "lisa-affiche.webp": {
+          "name": "lisa-affiche.webp",
+          "blob": "2c054371e0b85c5c67e3c8d5115edccb",
+          "size": 26142,
+          "type": "image/webp"
+        },
+        "mathis-affiche.webp": {
+          "name": "mathis-affiche.webp",
+          "blob": "74a9fef7b694fe8f7088ad23a06c6755",
+          "size": 49572,
+          "type": "image/webp"
+        },
+        "rose-affiche.webp": {
+          "name": "rose-affiche.webp",
+          "blob": "05635ddd1a404d269fe9c5ad3658c642",
+          "size": 85402,
+          "type": "image/webp"
+        }
+      }
+    },
+    "Papier": {
+      "name": "Papier",
+      "tile": "m",
+      "order": [
+        "base.webp"
+      ],
+      "files": {
+        "base.webp": {
+          "name": "base.webp",
+          "blob": "f64423f22e27ad044f885cb81dd62c0d",
+          "size": 75854,
+          "type": "image/webp"
+        }
+      }
+    }
+  },
+  "blobs": {},
+  "docs": {
+    "sections": []
+  }
+}

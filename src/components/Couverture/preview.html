@@ -1,0 +1,35 @@
+<!-- @dsCard group="Scène & livre" width=1920 height=1080 subtitle="Couverture cuite : vraie toile de reliure vert sauge (1899, domaine public), étiquette en papier ancien collée, titre à la plume trait par trait et théière au crayon et à l'aquarelle ; plat arrière (anneau de tasse), contre-plats avec la garde, et les étiquettes « … pour ouvrir » au crayon" -->
+<div id="root"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    function pose(style, enfant) {
+      return h('div', { style: Object.assign({ position: 'absolute', boxShadow: '6px 10px 18px color-mix(in srgb, var(--gc-wood-3) 55%, transparent)', borderRadius: '3px 8px 8px 3px' }, style) }, enfant);
+    }
+    function legende(texte, style) {
+      return h('p', { className: 'gc-hand-caption', style: Object.assign({ position: 'absolute', margin: 0, color: 'var(--gc-paper-lace)' }, style) }, texte);
+    }
+    var vars = G.couvertureVars();
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      h(G.Stage, { distance: 'moyenne' },
+        h('div', { style: Object.assign({ position: 'absolute', inset: 0 }, vars) },
+          pose({ left: '80px', top: '70px', width: '440px', transform: 'rotate(-2.2deg)' },
+            h(G.Couverture, { face: 'avant' },
+              h('div', { style: { position: 'absolute', left: '22%', top: '72%', width: '56%', transform: 'rotate(-2deg)' } },
+                h(G.IndiceOuvrir, { modalite: 'toucher' })))),
+          legende('le plat avant, fermé', { left: '150px', top: '600px', transform: 'rotate(-2deg)' }),
+          pose({ left: '575px', top: '95px', width: '440px', transform: 'rotate(1.4deg)', borderRadius: '8px 3px 3px 8px' },
+            h(G.Couverture, { face: 'arriere' })),
+          legende('le plat arrière', { left: '690px', top: '615px', transform: 'rotate(1deg)' }),
+          pose({ left: '1080px', top: '110px', width: '390px', borderRadius: '8px 3px 3px 8px' }, h(G.Couverture, { face: 'contreplat' })),
+          pose({ left: '1470px', top: '110px', width: '390px' }, h(G.Couverture, { face: 'contreplat-arriere' })),
+          legende('les contre-plats, garde collée', { left: '1330px', top: '570px' }),
+          h('div', { style: { position: 'absolute', left: '1150px', top: '660px', width: '560px', display: 'flex', flexDirection: 'column', gap: '26px', alignItems: 'flex-start' } },
+            h(G.IndiceOuvrir, { modalite: 'toucher' }),
+            h(G.IndiceOuvrir, { modalite: 'cliquer', style: { marginLeft: '40px' } }),
+            h(G.IndiceOuvrir, { modalite: 'entree' })),
+          h('img', { src: G.assetUrl('couverture/' + G.VARIANTE_COUVERTURE + '/dos'), alt: '', style: { position: 'absolute', left: '527px', top: '82px', height: '500px', width: 'auto', transform: 'rotate(0.4deg)' } }),
+          legende('le dos', { left: '515px', top: '600px' }))));
+  })();
+</script>

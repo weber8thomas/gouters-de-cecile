@@ -1,0 +1,92 @@
+{
+  "_": "Invité fictif de démonstration : texte écrit pour l'exemple (aucun vrai message).",
+  "slug": "julie",
+  "source": null,
+  "adaptations": [
+    "Invitée fictive : texte écrit pour la démonstration, rien d'adapté."
+  ],
+  "style": {
+    "main": "soignee",
+    "encre": "bic",
+    "graine": 4127
+  },
+  "video": "julie",
+  "titre": "Le cake citron de Julie",
+  "titreSouligne": "trait",
+  "notesMarge": [
+    {
+      "texte": "meilleur le lendemain !",
+      "pres": "titre"
+    }
+  ],
+  "ingredients": [
+    {
+      "titre": "Pour le cake :",
+      "lignes": [
+        { "texte": "3 œufs" },
+        { "texte": "120 g de sucre en poudre" },
+        { "texte": "2 citrons non traités (zestes et jus)" },
+        { "texte": "180 g de farine" },
+        { "texte": "½ sachet de levure chimique" },
+        { "texte": "1 pincée de sel" },
+        { "texte": "1 c. à s. de graines de pavot" },
+        { "texte": "125 g de beurre, fondu et tiède" },
+        { "texte": "1 noix de beurre et 1 c. à s. de farine pour le moule" }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "__Étape 1__",
+      "texte": "Préchauffe le four à th. 6 (180 °C). Beurre le moule à cake et saupoudre-le de farine, sinon le citron colle."
+    },
+    {
+      "titre": "__Étape 2__",
+      "texte": "Fouette les œufs avec le sucre pendant 3 bonnes minutes, jusqu'à ce que le mélange blanchisse et gonfle. C'est le moment où je mets de la musique, ça passe plus vite."
+    },
+    {
+      "titre": "__Étape 3__",
+      "texte": "Ajoute les zestes et le jus des citrons, puis la farine, la levure et le sel, en mélangeant à la spatule sans trop travailler la pâte."
+    },
+    {
+      "titre": "__Étape 4__",
+      "texte": "Ajoute les graines de pavot, puis le beurre fondu et tiède en filet, tout en continuant de mélanger. La pâte doit être lisse et un peu brillante."
+    },
+    {
+      "titre": "__Étape 5__",
+      "texte": "Verse dans le moule et lisse le dessus avec le dos d'une cuillère. Le cake lève tout seul, pas besoin de tapoter le moule."
+    }
+  ],
+  "cuisson": {
+    "titre": "__Étape 6__",
+    "texte": "Enfourne 40 min à th. 6 (180 °C). Pique la lame d'un couteau au centre : si elle ressort sèche, il est cuit. Le dessus doit être bien doré."
+  },
+  "apres": [
+    "Laisse-le reposer 10 minutes dans le moule, puis démoule-le sur une grille pour qu'il refroidisse complètement."
+  ],
+  "extras": [
+    {
+      "titre": "Glaçage au citron (en option) :",
+      "puce": "citron",
+      "lignes": [
+        { "texte": "100 g de sucre glace" },
+        { "texte": "1 c. à s. de jus de citron" },
+        { "texte": "quelques gouttes de colorant jaune (facultatif)", "puce": null }
+      ],
+      "paragraphes": [
+        "Mélange doucement, il doit être épais et crémeux. Nappe le cake une fois refroidi : le glaçage durcit en séchant, comme une fine coque. C'est mon côté gourmand."
+      ]
+    }
+  ],
+  "fin": {
+    "texte": "__Bonne dégustation, et à la prochaine pause goûter !__",
+    "croquis": [
+      "sourire"
+    ]
+  },
+  "croquis": [
+    "citron"
+  ],
+  "mot": "Pour toutes nos pauses goûter à refaire le monde. Joyeux anniversaire ma Cécile !",
+  "signature": "Julie"
+}

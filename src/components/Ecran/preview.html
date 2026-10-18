@@ -1,0 +1,60 @@
+<!-- @dsCard group="Mouvement" width=1920 height=1080 page subtitle="Ecran : le carnet plein écran sur un téléphone debout (une page à la fois) et une tablette couchée (la double page). Glissez à la souris pour tourner ; touchez une marge pour la page voisine" -->
+<style>
+  .demo-ecrans { display: flex; align-items: center; justify-content: center; gap: 96px; width: var(--gc-stage-w); height: var(--gc-stage-h); background: var(--gc-linen); }
+  .demo-appareil { display: flex; flex-direction: column; align-items: center; gap: 18px; margin: 0; }
+  .demo-cadre { padding: 9px; border-radius: 34px; background: var(--gc-ink-noire); box-shadow: var(--gc-sh-object); }
+  .demo-cadre--tablette { padding: 14px; border-radius: 26px; }
+  .demo-boite { position: relative; overflow: hidden; border-radius: 26px; }
+  .demo-cadre--tablette .demo-boite { border-radius: 12px; }
+  .demo-echelle { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+  .demo-legende { margin: 0; color: var(--gc-ink); }
+  .demo-page { display: flex; flex-direction: column; height: 100%; color: var(--gc-ink); }
+  .demo-visuel { position: relative; flex: 1; min-height: 0; }
+  .demo-tache { position: absolute; inset: 7% 5% 9% 3%; }
+  .demo-num { position: absolute; left: 50%; top: 48%; margin: 0; transform: translate(-50%, -50%) scale(3.4); color: var(--gc-ink); }
+  .demo-ligne { margin: 0; }
+</style>
+<div id="root"></div>
+<script>
+  (function () {
+    var h = React.createElement;
+    var G = GoutersDeCecile;
+    var DECORS = ['terracotta-100', 'sage-100', 'honey-100', 'pink-100', 'terracotta-300', 'sage-300', 'honey-300', 'pink-300'];
+    var FORMES = ['58% 42% 51% 49% / 46% 57% 43% 54%', '44% 56% 62% 38% / 52% 41% 59% 48%', '61% 39% 45% 55% / 38% 60% 40% 62%', '49% 51% 37% 63% / 57% 44% 56% 43%'];
+    var TEXTES = [
+      ['Ici commence le goûter :', 'glisse du doigt.'], ['Madeleines au miel,', 'la bosse bien dorée.'],
+      ['Le cake de Julie,', 'encore tiède.'], ['Crêpes du dimanche,', 'une pincée de sel.'],
+      ['Tarte aux pommes,', 'en rosace.'], ['Cookies de Mathis,', 'gros éclats.'],
+      ['Clafoutis,', 'on garde les noyaux !'], ['Fin du goûter :', 'merci !'],
+    ];
+    function page(num) {
+      var i = num - 1;
+      return h('div', { className: 'demo-page' },
+        h('div', { className: 'demo-visuel' },
+          h('div', { className: 'demo-tache', style: { background: 'color-mix(in srgb, var(--gc-' + DECORS[i] + ') 78%, transparent)', borderRadius: FORMES[i % 4], transform: 'rotate(' + ((i % 3) - 1) * 2.5 + 'deg)' } }),
+          h('p', { className: 'gc-hand-body demo-num' }, String(num))),
+        h('p', { className: 'gc-hand-body demo-ligne' }, TEXTES[i][0]),
+        h('p', { className: 'gc-hand-body demo-ligne' }, TEXTES[i][1]));
+    }
+    var spreads = [0, 1, 2, 3].map(function (s) {
+      return { id: 'demo-' + s, kind: 'video', folios: [2 * s + 1, 2 * s + 2], render: function () { return { left: page(2 * s + 1), right: page(2 * s + 2) }; } };
+    });
+    function Appareil(props) {
+      var st = React.useState(0);
+      var vp = props.vp;
+      return h('figure', { className: 'demo-appareil' },
+        h('div', { className: 'demo-cadre' + (props.tablette ? ' demo-cadre--tablette' : '') },
+          h('div', { className: 'demo-boite', style: { width: vp.w * props.k + 'px', height: vp.h * props.k + 'px' } },
+            h('div', { className: 'demo-echelle', style: { transform: 'scale(' + props.k + ')' } },
+              h(G.ViewportOverride.Provider, { value: vp },
+                h(G.CameraProvider, { fixed: { distance: 'proche', zoom: 1 } },
+                  h(G.Ecran, null,
+                    h(G.Livre, { spreads: spreads, index: st[0], onIndexChange: st[1] }))))))),
+        h('figcaption', { className: 'gc-hand-caption demo-legende' }, props.legende));
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      h('div', { className: 'demo-ecrans' },
+        h(Appareil, { vp: { w: 390, h: 844, dpr: 3, tactile: true, pleinEcran: false, insets: { top: 47, bottom: 34 } }, k: 1.05, legende: 'téléphone debout · une page' }),
+        h(Appareil, { vp: { w: 1180, h: 820, dpr: 2, tactile: true, pleinEcran: true, insets: { top: 24 } }, k: 0.78, tablette: true, legende: 'tablette couchée · la double page' })));
+  })();
+</script>

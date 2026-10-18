@@ -1,0 +1,102 @@
+/* L'invitation à ouvrir : l'étiquette cuite au crayon, posée par le Livre sur la couverture fermée. Elle
+   ne prend aucun geste (le toucher va à la couverture). */
+.gc-invitation {
+  position: relative;
+  display: block;
+  width: 100%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Opacité de repos (et du mouvement réduit) : un crayon léger, pas un bouton. La respiration l'anime
+   entre 0,64 et 0,94 (Invitation.tsx). */
+.gc-invitation__etiquette {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.82;
+  -webkit-user-drag: none;
+}
+
+/* L'invitation à tourner le téléphone (téléphone debout) : sous le livre fermé, sur le bas de la zone
+   sûre (--gc-tourner-part, la part que cadrerTourner laisse au-dessous du livre). Un dessin à la craie,
+   couleur de dentelle, et deux lignes de la main de Cécile. Elle ne prend aucun geste. */
+.gc-tourner {
+  position: absolute;
+  left: var(--gc-ecran-gauche, 0px);
+  right: var(--gc-ecran-droite, 0px);
+  bottom: var(--gc-ecran-bas, 0px);
+  height: calc((var(--gc-ecran-h, 100vh) - var(--gc-ecran-haut, 0px) - var(--gc-ecran-bas, 0px)) * var(--gc-tourner-part, 0.3));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0 var(--gc-space-4, 16px) var(--gc-space-3, 12px);
+  box-sizing: border-box;
+  color: var(--gc-paper-lace);
+  font-size: clamp(20px, 6.4vw, 30px);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.gc-tourner__dessin {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 2.6em;
+  height: 2.6em;
+}
+
+.gc-tourner__fleche,
+.gc-tourner__telephone,
+.gc-tourner__telephone svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.gc-tourner svg {
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gc-tourner__fleche {
+  opacity: 0.62;
+}
+
+.gc-tourner svg .gc-tourner__fin {
+  stroke-width: 2;
+  opacity: 0.7;
+}
+
+/* Mouvement réduit : pas de pivot, le téléphone est penché vers la flèche. */
+.gc-tourner[data-gc-reduit] .gc-tourner__telephone {
+  transform: rotate(24deg);
+}
+
+.gc-tourner__texte {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-hand);
+  font-weight: 700;
+  line-height: 1.12;
+  text-align: center;
+  text-shadow: 0 1px 3px color-mix(in srgb, var(--gc-wood-3, #2a1a10) 70%, transparent);
+  transform: rotate(-1.5deg);
+}
+
+.gc-tourner__texte span + span {
+  font-size: 0.82em;
+  opacity: 0.86;
+}
