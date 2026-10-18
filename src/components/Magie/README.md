@@ -40,7 +40,7 @@ Les photos, aquarelles, croquis et le feuillet volant viennent du manifeste des 
 - **Toile** : un seul calque.
   - Sa définition est bornée : au plus 2 px de toile par px d'écran, et au plus 2,4 Mpx (1,6 Mpx au doigt).
   - Elle tourne à 60 images/s quand quelque chose bouge et à 30 au calme. Elle dort (un coup d'œil tous les quarts de seconde) quand rien n'est à l'écran.
-  - Sur un petit écran (téléphone couché, scène réduite à ≈ 0,36), l'or est grossi (≈ ×2) pour rester visible ; il y a moins de grains au doigt.
+  - Sur un petit écran (téléphone couché, scène réduite à ≈ 0,36), l'or est grossi (≈ ×2) pour rester visible ; il y a moins de grains au doigt. Sur un grand écran, qu'on regarde de plus loin, il l'est un peu aussi (×1,25).
 - **Pas de temps** : il est calculé à un seul endroit (`image()` dans `moteur.ts`), multiplié par `vitesseAnimations()` : c'est là que se branche le réglage « vitesse des animations » (`facteurAnimations()`).
 - **Pauses** : la magie s'arrête quand l'onglet est caché. Elle est cachée sous la loupe (zoomée, ou pendant son geste).
 - **Mouvement réduit** :

@@ -54,7 +54,7 @@ export class Poussiere {
     this.vx[i] = 0;
     this.vy[i] = 0;
     this.flou[i] = Math.random() < 0.12 ? 1 : 0;
-    this.taille[i] = this.flou[i] ? 9 + Math.random() * 8 : 2.2 + Math.random() * 3.4;
+    this.taille[i] = this.flou[i] ? 10 + Math.random() * 9 : 4.6 + Math.random() * 5;
     this.phase[i] = Math.random() * 6.283;
     this.vie[i] = 14 + Math.random() * 22;
     this.age[i] = partout ? Math.random() * this.vie[i] : 0;
@@ -104,7 +104,8 @@ export class Poussiere {
 
   /** Écrit la poussière éclairée dans le tampon des points. */
   ecrire(buf: Float32Array, o: number, t: number, intensite: number, attenuation: number): number {
-    const feu = Math.max(0.5, intensite) * (1 + 0.9 * this.eclat) * attenuation;
+    // au calme déjà, la poussière se voit dans la lumière (sur la table comme sur la page) ; une flambée l'avive
+    const feu = Math.max(0.5, intensite) * (1.7 + 1.1 * this.eclat) * attenuation;
     for (let i = 0; i < this.n; i++) {
       const dx = this.x[i] - this.fx;
       const dy = this.y[i] - this.fy;
@@ -113,7 +114,7 @@ export class Poussiere {
       const vie = Math.min(1, u * 5, (1 - u) * 5);
       // un grain tourne sur lui-même : il accroche la lumière par éclairs
       const sc = 0.45 + 0.55 * Math.pow(0.5 + 0.5 * Math.sin(t * (1.3 + (i % 7) * 0.31) + this.phase[i]), 3);
-      let e = l * vie * sc * feu;
+      let e = Math.min(1.3, l * vie * sc * feu);
       if (this.flou[i]) e *= 0.22;
       if (e < 0.012) continue;
       o = point(buf, o, this.x[i], this.y[i], this.taille[i] * this.grossir, GENRE.halo, e, 0.8 * e, 0.5 * e, 0, 0);

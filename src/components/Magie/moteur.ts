@@ -113,7 +113,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   gl.bufferData(gl.ARRAY_BUFFER, quadBuf.byteLength, gl.DYNAMIC_DRAW);
 
   const grains = new Grains(tactile ? 520 : 1100);
-  const poussiere = new Poussiere(tactile ? 46 : 90);
+  const poussiere = new Poussiere(tactile ? 50 : 110);
   const photos = new Photos(gl);
 
   // ---- État -----------------------------------------------------------------------------------------
@@ -172,8 +172,9 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     const h = Math.max(1, Math.round(SCENE_H * k));
     if (Math.abs(toile.width - w) > 2 || Math.abs(toile.height - h) > 2) { toile.width = w; toile.height = h; }
     k = toile.width / SCENE_W;
-    // sur un petit écran la scène est très réduite (téléphone couché : q ≈ 0,36) : l'or l'est moins
-    grains.grossir = poussiere.grossir = clamp((0.95 / q) ** 0.7, 1, 2.1);
+    // sur un petit écran la scène est très réduite (téléphone couché : q ≈ 0,36) : l'or l'est moins ; une
+    // télévision se regarde de loin : l'or y est un peu grossi aussi
+    grains.grossir = poussiere.grossir = clamp((0.95 / q) ** 0.7, 1.25, 2.1);
     // la flamme : dans la scène (hors caméra), ramenée dans le repère de la toile
     const scene = toile.closest('.gc-stage') as HTMLElement | null;
     if (scene && scene.offsetWidth > 0) {
