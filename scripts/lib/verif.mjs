@@ -651,11 +651,31 @@ export async function attendreArrivee(page, timeout = 30000) {
   return avait;
 }
 
-/** Ouvre une page instrumentée dans un nouveau contexte de l'écran e. */
-export async function ouvrirPage(browser, cible, e, hash = '', { contexteExtra = {}, init = [], extra = {} } = {}) {
+/**
+ * Script d'init : les boutons ne s'effacent pas (réglage boutonsToujoursVisibles de gc:reglages:v4, fusionné avec ce
+ * qui est déjà écrit, une fois par onglet). Les vérifications qui mesurent ou touchent les contrôles à tout moment
+ * en ont besoin : sinon, 3 s sans activité suffisent à les faire disparaître (src/lib/controles.ts).
+ */
+export const initBoutonsVisibles = {
+  fn: () => {
+    try {
+      if (sessionStorage.getItem('__gcInitBoutons')) return;
+      const o = JSON.parse(localStorage.getItem('gc:reglages:v4') || '{}') || {};
+      localStorage.setItem('gc:reglages:v4', JSON.stringify({ v: 1, ...o, boutonsToujoursVisibles: true }));
+      sessionStorage.setItem('__gcInitBoutons', '1');
+    } catch { /* stockage indisponible */ }
+  },
+};
+
+/**
+ * Ouvre une page instrumentée dans un nouveau contexte de l'écran e. Les boutons y restent visibles
+ * (initBoutonsVisibles) ; `boutons: 'effaces'` garde le comportement du carnet : ils s'effacent après 3 s.
+ */
+export async function ouvrirPage(browser, cible, e, hash = '', { contexteExtra = {}, init = [], extra = {}, boutons = 'visibles' } = {}) {
   const ctx = await contexte(browser, e, contexteExtra);
   await instrumenterGeste(ctx);
   for (const s of init) await ctx.addInitScript(s.fn ?? s, s.arg);
+  if (boutons !== 'effaces') await ctx.addInitScript(initBoutonsVisibles.fn);
   const page = await ctx.newPage();
   const surv = surveiller(page);
   await page.goto(cible.url(e, hash, extra));
@@ -732,7 +752,7 @@ export function zoomBornes() {
   }
 }
 
-export const REGLAGES_DEFAUT = { v: 1, son: true, volume: 1, volumeBruitages: 0.5, lectureAuto: false, vitesse: 'normale', mouvementReduit: false, volumeMusique: 0.5 };
+export const REGLAGES_DEFAUT = { v: 1, son: true, volume: 1, volumeBruitages: 0.5, lectureAuto: false, vitesseEcriture: 1, vitesseAnimations: 1, mouvementReduit: false, volumeMusique: 0.5, boutonsToujoursVisibles: false };
 
 /** Script d'init : écrit des réglages (gc:reglages:v4) avant le chargement de l'application. */
 export const initReglages = (r) => ({

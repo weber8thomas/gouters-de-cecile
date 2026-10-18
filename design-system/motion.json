@@ -57,7 +57,7 @@
     "sommaire": 0.05
   },
   "vitesses": {
-    "note": "Vitesse des pages (menu de réglages) : ressort « paper » appliqué par regleRessort.",
+    "note": "Ancien choix « vive · normale · lente » du menu de réglages, remplacé par la vitesse des animations en % (src/lib/vitesse.ts) : le ressort « paper » dure sa durée ÷ le facteur. Gardé pour la conversion à la lecture : 0,9 s / 0,6 s = 150 %, 0,9 s / 1,3 s = 70 %.",
     "vive": {
       "visualDuration": 0.6,
       "bounce": 0.1

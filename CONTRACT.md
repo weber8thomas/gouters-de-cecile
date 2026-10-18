@@ -14,7 +14,7 @@ En cas de doute, demander au responsable (le « lead ») plutôt qu'inventer.
   - Illustrations au **crayon + aquarelle** : trait vivant et imparfait, lavis qui déborde, papier qui respire. Écrins compris.
   - Playfair Display seulement pour ce qui est **imprimé** : étiquette de couverture, onglets de chapitre, folios, coupure de journal. Caveat est la main de Cécile : légendes, sommaire, repères.
   - **Ce qu'il faut fuir** : la symétrie parfaite, les aplats propres, les dégradés lisses génériques, les mêmes décors répétés, l'alignement au pixel. Varier, déborder, pencher un peu.
-- **Mouvement** : doux, physique et fluide (60 i/s sur l'ordinateur relié à la TV, sur un téléphone récent aussi). Pas de survol : le clavier, le doigt (ou la souris) et deux flèches discrètes.
+- **Mouvement** : doux, physique et fluide (60 i/s sur l'ordinateur relié à la TV, sur un téléphone récent aussi). Pas de survol : le clavier, le doigt (ou la souris) et deux flèches discrètes. Les boutons à l'écran (flèches, points de page, barre du haut, engrenage) s'effacent d'eux-mêmes après 3 s sans activité et reviennent au moindre geste (§ 11) ; un réglage les garde toujours visibles.
 - **Tous les écrans** : le même carnet s'ouvre sur **téléphone, tablette, ordinateur et TV** (§ 11). Les invités le reçoivent par un lien ; le QR de la version papier ouvre directement leur page.
 - **Distance de caméra** : trois crans, proche / moyenne / loin, chacun avec une mise en page vérifiée, plus un zoom fin de ±5 %, réglés au clavier.
 
@@ -179,6 +179,11 @@ Personne ne modifie `src/index.ts`.
 - **Contrôles** (flèches, plein écran, points de page, repère de distance) : en **px d'écran**, hors de la scène mise à l'échelle.
   - Cibles d'au moins **44×44 px** sur écran tactile ; discrets sur la TV.
   - Respect des zones sûres : `viewport-fit=cover`, `env(safe-area-inset-*)`.
+  - **Ils s'effacent seuls** (`src/lib/controles.ts`) : la barre du haut (fermer le carnet, musique, haut-parleur, loupe, plein écran), l'engrenage ⚙, les flèches et les points de page passent à l'opacité 0 après **3 s** sans activité (0,4 s de fondu ; aucun fondu en mouvement réduit) et reviennent (0,2 s) dès que la souris bouge, qu'on touche l'écran, qu'on appuie sur une touche, qu'on tourne la molette ou qu'un contrôle prend le focus. Le script remplace le survol : **aucune règle `:hover`**, seule l'opacité change (aucun `filter`, aucun `mix-blend-mode`). Ils sont montrés 3 s au chargement. L'indice « cliquez pour ouvrir » de la couverture, la fiche Réglages ouverte et l'objet soulevé ne s'effacent pas.
+  - **Jamais effacés** tant que la fiche Réglages ou un objet soulevé tient le clavier, que la loupe est zoomée ou en geste, qu'un doigt est posé, ou que le focus est au clavier dans un contrôle (`:focus-visible` ; le focus laissé par un clic à la souris n'y compte pas).
+  - **Toujours accessibles** : ni `display:none`, ni `visibility:hidden`, ni `inert`, ni `aria-hidden` (Tab atteint les boutons effacés et les réaffiche ; les lecteurs d'écran les voient). Au CSS, `.gc-ecran[data-gc-controles="caches"]` sur l'écran, `data-gc-effacable` sur chaque contrôle qui s'efface.
+  - **Au doigt** : quand les boutons sont effacés, un toucher à la place d'un bouton ne fait que les réafficher (ni l'action du bouton, ni page tournée) ; un toucher ailleurs, sur le livre, fait son action normale **et** les réaffiche.
+  - **Réglage « Boutons : s'effacent / toujours visibles »** (menu ⚙, défaut : s'effacent, `reglages.boutonsToujoursVisibles`) : en « toujours visibles », rien ne s'efface.
 - **Clavier et télécommande** : inchangés (§ 1, README de `Livre`). Les crans de distance ne servent que sur un grand écran. Quand la page (cadrage `page`) ou le livre (petit écran couché) remplit déjà l'écran, la caméra est fixe et on prend la **mise en page du cran `loin`** : c'est celle dont l'écriture est la plus grande par rapport à la page. Sur une tablette couchée, le cran par défaut est `proche`.
 - **Liens profonds** : `#<invité>` (par exemple `#julie`) ouvre sa double page, en cadrage `page` sur sa page vidéo. Le QR de l'A5 pointe là. L'URL suit la page affichée (`history.replaceState`), sans empiler l'historique.
 - **Vidéos** :
@@ -229,12 +234,13 @@ Quand le menu ou un objet soulevé est ouvert, **lui seul** reçoit les touches 
 
 ### 12.2 Bibliothèques partagées (lead)
 - `src/lib/reglages.ts` : `useReglages()`, `getReglages()`, `setReglages()`, `resetReglages()`, `abonnerReglages()`.
-  - Champs : `son`, `volume`, `lectureAuto`, `vitesse` (`vive` | `normale` | `lente`), `mouvementReduit`.
+  - Champs : `son`, `volume`, `lectureAuto`, `vitesseEcriture` (0,25 à 4 : 25 à 400 %), `vitesseAnimations` (0,25 à 2 : 25 à 200 %), `mouvementReduit`, `boutonsToujoursVisibles`. L'ancien choix `vitesse` (`vive` | `normale` | `lente`) est lu comme 150 %, 100 % et 70 % de `vitesseAnimations`. `valider()` borne les valeurs.
   - Clé de stockage : `gc:reglages:v1`.
 - `src/lib/motion.ts` :
   - `useReducedMotion()` est vrai si le **système ou le réglage** le demande ;
-  - la vitesse choisie règle `SPRINGS.paper` ;
+  - la vitesse des animations règle `SPRINGS.paper` (durée ÷ facteur) ;
   - nouveau ressort `SPRINGS.lift` pour soulever.
+- `src/lib/vitesse.ts` : `facteurEcriture()` et `facteurAnimations()` (des nombres, 1 = normal, lus à chaque départ d'animation) et `abonnerVitesse(f)`. Branchés sur l'encre qui s'écrit (`encreVivante.ts`) et sur le tour de page ; les autres lots s'en servent pour leurs durées.
 - `src/lib/camera.tsx` : `zoomBornes(cran)`.
   - Le zoom fin va de 0,85 à 1,15, borné par cran : la hauteur d'x reste ≥ 14 px et le livre entier visible.
   - ↑ et ↓ ne zooment plus.

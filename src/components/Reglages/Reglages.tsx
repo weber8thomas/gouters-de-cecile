@@ -13,7 +13,10 @@ import { useEcran } from '../Ecran';
 import { partScene, useViewport, type Viewport } from '../../lib/viewport';
 import { CAMERA_DEFAULT, useCamera, zoomBornes, ZOOM_STEP } from '../../lib/camera';
 import type { Distance } from '../../lib/settings';
-import { resetReglages, useReglages, type Reglages as ReglagesValeurs, type Vitesse } from '../../lib/reglages';
+import {
+  VITESSE_ANIMATIONS_MAX, VITESSE_ANIMATIONS_MIN, VITESSE_ECRITURE_MAX, VITESSE_ECRITURE_MIN, VITESSE_PAS,
+  resetReglages, useReglages, type Reglages as ReglagesValeurs,
+} from '../../lib/reglages';
 import * as son from '../../lib/son';
 import { MORCEAUX } from '../../lib/musique';
 import { LOUPE_MAX, LOUPE_MIN, demanderLoupe, useLoupe } from '../../lib/loupe';
@@ -295,7 +298,10 @@ function Choix<T extends string | boolean>({ options, valeur, onChoisir, graine 
 const OUI_NON: Option<boolean>[] = [{ v: false, texte: 'non' }, { v: true, texte: 'oui' }];
 const SON: Option<boolean>[] = [{ v: false, texte: 'coupé' }, { v: true, texte: 'avec son' }];
 const TAILLES: Option<Distance>[] = [{ v: 'proche', texte: 'proche' }, { v: 'moyenne', texte: 'moyenne' }, { v: 'loin', texte: 'loin' }];
-const VITESSES_TEXTE: Option<Vitesse>[] = [{ v: 'vive', texte: 'vive' }, { v: 'normale', texte: 'normale' }, { v: 'lente', texte: 'lente' }];
+/** Boutons à l'écran : ils s'effacent seuls après quelques secondes, ou restent toujours là (src/lib/controles.ts). */
+const BOUTONS: Option<boolean>[] = [{ v: false, texte: 's’effacent' }, { v: true, texte: 'toujours visibles' }];
+/** Feuille du téléphone : « visibles », pour que les deux choix tiennent sur une ligne. */
+const BOUTONS_COURT: Option<boolean>[] = [{ v: false, texte: 's’effacent' }, { v: true, texte: 'visibles' }];
 type ChoixAuto = 'auto' | 'oui' | 'non';
 const AUTO_OUI_NON: Option<ChoixAuto>[] = [{ v: 'auto', texte: 'automatique' }, { v: 'oui', texte: 'oui' }, { v: 'non', texte: 'non' }];
 /** Feuille du téléphone : « auto », pour que les trois choix tiennent sur une ligne. */
@@ -495,6 +501,8 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
     volume: (dir) => setR((x) => ({ volume: auPas(x.volume + dir * VOLUME_PAS, 0, 1, VOLUME_PAS) })),
     volumeBruitages: (dir) => setR((x) => ({ volumeBruitages: auPas(x.volumeBruitages + dir * VOLUME_PAS, 0, 1, VOLUME_PAS) })),
     volumeMusique: (dir) => setR((x) => ({ volumeMusique: auPas(x.volumeMusique + dir * VOLUME_PAS, 0, 1, VOLUME_PAS) })),
+    vitesseEcriture: (dir) => setR((x) => ({ vitesseEcriture: auPas(x.vitesseEcriture + dir * VITESSE_PAS, VITESSE_ECRITURE_MIN, VITESSE_ECRITURE_MAX, VITESSE_PAS) })),
+    vitesseAnimations: (dir) => setR((x) => ({ vitesseAnimations: auPas(x.vitesseAnimations + dir * VITESSE_PAS, VITESSE_ANIMATIONS_MIN, VITESSE_ANIMATIONS_MAX, VITESSE_PAS) })),
   };
   const actionsRef = React.useRef(actions);
   actionsRef.current = actions;
@@ -529,6 +537,8 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
       if (id === 'volume') setR({ volume: k === 'Home' ? 0 : 1 });
       if (id === 'volumeBruitages') setR({ volumeBruitages: k === 'Home' ? 0 : 1 });
       if (id === 'volumeMusique') setR({ volumeMusique: k === 'Home' ? 0 : 1 });
+      if (id === 'vitesseEcriture') setR({ vitesseEcriture: k === 'Home' ? VITESSE_ECRITURE_MIN : VITESSE_ECRITURE_MAX });
+      if (id === 'vitesseAnimations') setR({ vitesseAnimations: k === 'Home' ? VITESSE_ANIMATIONS_MIN : VITESSE_ANIMATIONS_MAX });
       return true;
     }
     if ((k === 'Enter' || k === ' ') && !actif) {
@@ -569,6 +579,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
           className="gc-reglages__bouton"
           data-gc-reglages="bouton"
           data-gc-controle="reglages"
+          data-gc-effacable={enPlace ? undefined : ''}
           aria-haspopup="dialog"
           aria-expanded={etat === 'ouvert'}
           aria-label="Réglages"
@@ -675,11 +686,43 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                   <Ligne id="auto" libelle="Lancer la vidéo en arrivant sur la page" role="radiogroup">
                     <Choix options={OUI_NON} valeur={r.lectureAuto} onChoisir={(lectureAuto) => setR({ lectureAuto })} graine={g()} />
                   </Ligne>
-                  <Ligne id="vitesse" libelle="Vitesse des pages" role="radiogroup">
-                    <Choix options={VITESSES_TEXTE} valeur={r.vitesse} onChoisir={(vitesse) => setR({ vitesse })} graine={g()} />
+                  {/* En pourcentage (100 % = normal, repère au crayon) : l'encre qui s'écrit, puis le tour de page et les
+                      autres animations (src/lib/vitesse.ts). Atténuées en mouvement réduit, mais toujours réglables. */}
+                  <Ligne id="vitesseEcriture" libelle="Vitesse de l’écriture" attenuee={reduit}>
+                    <Reglette
+                      valeur={r.vitesseEcriture}
+                      min={VITESSE_ECRITURE_MIN}
+                      max={VITESSE_ECRITURE_MAX}
+                      pas={VITESSE_PAS}
+                      repere={1}
+                      principal
+                      attenuee={reduit}
+                      libelle="Vitesse de l’écriture"
+                      texte={pourcent(r.vitesseEcriture)}
+                      onChange={(vitesseEcriture) => setR({ vitesseEcriture })}
+                    />
+                    <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.vitesseEcriture)}</span>
+                  </Ligne>
+                  <Ligne id="vitesseAnimations" libelle={mise.feuille ? 'Vitesse animations' : 'Vitesse des animations'} attenuee={reduit}>
+                    <Reglette
+                      valeur={r.vitesseAnimations}
+                      min={VITESSE_ANIMATIONS_MIN}
+                      max={VITESSE_ANIMATIONS_MAX}
+                      pas={VITESSE_PAS}
+                      repere={1}
+                      principal
+                      attenuee={reduit}
+                      libelle="Vitesse des animations"
+                      texte={pourcent(r.vitesseAnimations)}
+                      onChange={(vitesseAnimations) => setR({ vitesseAnimations })}
+                    />
+                    <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.vitesseAnimations)}</span>
                   </Ligne>
                   <Ligne id="mouvement" libelle="Moins d’animations" role="radiogroup">
                     <Choix options={OUI_NON} valeur={r.mouvementReduit} onChoisir={(mouvementReduit) => setR({ mouvementReduit })} graine={g()} />
+                  </Ligne>
+                  <Ligne id="boutons" libelle="Boutons" role="radiogroup">
+                    <Choix options={mise.feuille ? BOUTONS_COURT : BOUTONS} valeur={r.boutonsToujoursVisibles} onChoisir={(boutonsToujoursVisibles) => setR({ boutonsToujoursVisibles })} graine={g()} />
                   </Ligne>
                   <h3 className="gc-reglages__section" data-gc-reglages-section="ambiance">
                     Ambiance

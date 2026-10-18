@@ -64,6 +64,7 @@ Posés par le livre dans le calque `.gc-ecran__controles` (portail) : flèches, 
 - Cible : `--gc-ecran-cible` = `--gc-nav-size` à l'échelle de l'écran (`--gc-ecran-u` = min(l/1920, h/1080)), jamais sous 44 px au doigt (`data-gc-tactile`), 32 px à la souris. Sur une TV 1080p : 56 px, comme dans la scène.
 - Zones sûres : `--gc-ecran-haut/droite/bas/gauche` (px) + bords à l'échelle (`--gc-ecran-bord`, `--gc-ecran-bord-bas`).
 - Aucun survol, `:focus-visible` miel, `touch-action: manipulation` sur les boutons.
+- **Ils s'effacent seuls** (`src/lib/controles.ts`, `useControlesCaches()`) : après 3 s sans activité, la racine porte `data-gc-controles="caches"` (sinon `visibles` ; absent sur un écran simulé) et le CSS passe la barre, l'engrenage, les flèches et les points (`data-gc-effacable`) à l'opacité 0, 0,4 s (0 en mouvement réduit : `data-gc-reduit`). Ils reviennent au mouvement de la souris, au toucher, à une touche, à la molette, au focus. Jamais effacés : fiche Réglages ou objet soulevé ouverts (clavier modal), loupe zoomée, doigt posé, focus au clavier dans un contrôle. Ni `display:none` ni `visibility:hidden` ni `inert` : Tab les atteint. Au doigt, le premier toucher sur un bouton effacé ne fait que les réafficher (le clic suivant est avalé). Réglage « Boutons » du menu : `boutonsToujoursVisibles`.
 - Couleur : papier sur le bois ; encre quand les flèches doivent se poser sur la page (`data-gc-sur="papier"`, posé par le livre).
 
 ## Ce que fait la coque

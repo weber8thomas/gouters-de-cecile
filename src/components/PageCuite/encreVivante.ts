@@ -9,11 +9,15 @@
 // page après l'autre ; un clic dans le livre finit d'écrire. Tant qu'une page n'est pas écrite, toutes ses copies
 // (feuillet qui tourne, loupe) cachent leur encre : on ne la voit jamais avant qu'elle s'écrive.
 //
+// La vitesse d'écriture se règle au menu (25 à 400 %, src/lib/vitesse.ts) : la durée est divisée par ce facteur,
+// et suit le réglage même en cours d'écriture.
+//
 // Une seule fois par page et par visite. Rien ne s'écrit en mouvement réduit (système ou réglage), hors du
 // livre vivant, pendant un geste, ni si WebGL manque : l'encre est alors simplement là.
 
 import { assetInfo, assetUrl } from '../../lib/assets';
 import { prefersReducedMotion } from '../../lib/motion';
+import { facteurEcriture } from '../../lib/vitesse';
 
 const ecrites = new Set<string>();
 // Les pages qui s'écrivent en ce moment : une seule plume à la fois (la page de droite attend la gauche).
@@ -79,8 +83,9 @@ function texture(gl: WebGLRenderingContext, im: HTMLImageElement, unite: number,
 }
 
 /**
- * Écrit l'encre de `page` dans `canvas` en `duree` ms, puis appelle `fin`. Renvoie une fonction d'arrêt
- * (arrêt = la page est écrite d'un coup). Échec (WebGL, image) : `fin` tout de suite.
+ * Écrit l'encre de `page` dans `canvas` en `duree` ms à vitesse normale (÷ facteurEcriture() au menu), puis appelle
+ * `fin`. Renvoie une fonction d'arrêt (arrêt = la page est écrite d'un coup). Échec (WebGL, image) : `fin` tout
+ * de suite.
  */
 export function ecrire(canvas: HTMLCanvasElement, page: string, encre: string, duree: number, fin: () => void): () => void {
   let arrete = false;
@@ -129,15 +134,21 @@ export function ecrire(canvas: HTMLCanvasElement, page: string, encre: string, d
       texture(gl, imT, 1, gl.NEAREST); // jamais d'interpolation entre octet fort et octet faible
       gl.uniform1i(gl.getUniformLocation(prog, 'encre'), 0);
       gl.uniform1i(gl.getUniformLocation(prog, 'temps'), 1);
-      gl.uniform1f(gl.getUniformLocation(prog, 's'), (duree * 0.85) / 1000);
+      const uS = gl.getUniformLocation(prog, 's');
       gl.uniform2f(gl.getUniformLocation(prog, 'px'), 1 / imT.naturalWidth, 1 / imT.naturalHeight);
       const uT = gl.getUniformLocation(prog, 't');
       gl.viewport(0, 0, canvas.width, canvas.height);
-      const t0 = performance.now();
+      // t avance de (durée écoulée × facteur) / duree : la vitesse réglée au menu joue tout de suite. s : secondes
+      // réelles par unité de t, pour que l'encre sèche en un temps réel (halo doré) quelle que soit la vitesse.
+      let t = 0;
+      let avant = performance.now();
       const image = (now: number) => {
         if (arrete || !gl) return;
+        const f = facteurEcriture();
         // la plume va à vitesse constante (la carte des temps suit la longueur écrite)
-        const t = Math.min(1, (now - t0) / duree);
+        t = Math.min(1, t + (Math.max(0, now - avant) * f) / duree);
+        avant = now;
+        gl.uniform1f(uS, (duree * 0.85) / f / 1000);
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.uniform1f(uT, t);

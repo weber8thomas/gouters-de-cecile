@@ -1,5 +1,5 @@
 // Réglages de la personne qui regarde le carnet (menu ⚙) : un petit magasin de module, sans provider,
-// lu par useSyncExternalStore. Mémorisé dans le navigateur (clé gc:reglages:v3), relu champ par champ :
+// lu par useSyncExternalStore. Mémorisé dans le navigateur (clé gc:reglages:v4), relu champ par champ :
 // une valeur abîmée ou inconnue retombe sur sa valeur par défaut. Le cran et le zoom restent dans la
 // caméra (src/lib/camera.tsx, clé gc:camera:v1).
 // Clé v3 : la musique est coupée par défaut (musiqueActive, absent de la clé v2 : coupée). Les réglages
@@ -8,11 +8,25 @@
 // Clé v4 : les curseurs de volume des bruitages et de la musique ont changé d'échelle (le mélange choisi
 // à l'écoute, bruitages à 15 % et musique à 100 % de l'ancienne échelle, tombe à 50 % / 50 %) ; les
 // volumes d'une clé plus ancienne sont donc oubliés et repartent de leur défaut, le reste est repris.
+// Les champs ajoutés depuis n'ont pas de clé à part : absents, ils prennent leur défaut. C'est le cas de
+// boutonsToujoursVisibles (les boutons s'effacent seuls par défaut, src/lib/controles.ts), de
+// vitesseEcriture et de vitesseAnimations (100 %). L'ancien choix « vive · normale · lente » (champ
+// `vitesse`) est converti à la lecture en vitesseAnimations (150 %, 100 %, 70 %) ; il n'est plus écrit.
 import React from 'react';
 import banqueMusique from '../../design-system/baked/musique/banque.json';
 
-export type Vitesse = 'vive' | 'normale' | 'lente';
-export const VITESSES: Vitesse[] = ['vive', 'normale', 'lente'];
+/** Vitesses réglables en pourcentage (1 = 100 %) : l'écriture de l'encre et les animations (src/lib/vitesse.ts). */
+export const VITESSE_ECRITURE_MIN = 0.25;
+export const VITESSE_ECRITURE_MAX = 4;
+export const VITESSE_ANIMATIONS_MIN = 0.25;
+export const VITESSE_ANIMATIONS_MAX = 2;
+/** Pas des réglettes du menu (5 %). */
+export const VITESSE_PAS = 0.05;
+/**
+ * L'ancien choix « vive · normale · lente » (champ `vitesse`, relu des clés v1 à v3) en vitesse des animations :
+ * le ressort « paper » durait 0,6 s, 0,9 s et 1,3 s (design-system/motion.json) : 150 %, 100 %, 70 %.
+ */
+const ANCIENNES_VITESSES: Record<string, number> = { vive: 1.5, normale: 1, lente: 0.7 };
 
 export interface Reglages {
   v: 1;
@@ -28,8 +42,17 @@ export interface Reglages {
   volumeBruitages: number;
   /** Lancer la vidéo en arrivant sur la double page d'un invité. */
   lectureAuto: boolean;
-  /** Vitesse des pages qui tournent (ressort « paper »). */
-  vitesse: Vitesse;
+  /**
+   * Vitesse de l'encre qui s'écrit sur les pages (src/components/PageCuite/encreVivante.ts), de 0,25 à 4
+   * (25 à 400 %). Défaut : 1.
+   */
+  vitesseEcriture: number;
+  /**
+   * Vitesse des animations, de 0,25 à 2 (25 à 200 %) : le tour de page (ressort « paper », src/lib/motion.ts), et
+   * ce que les autres lots voudront bien en lire (src/lib/vitesse.ts). Défaut : 1. Remplace l'ancien choix
+   * « vive · normale · lente » (champ `vitesse`), converti à la lecture.
+   */
+  vitesseAnimations: number;
   /** Moins d'animations (en plus de la préférence du système). */
   mouvementReduit: boolean;
   /**
@@ -67,6 +90,12 @@ export interface Reglages {
    * coupée : le niveau attend le prochain départ. Défaut : 0,5 (× NIVEAU_MUSIQUE, src/lib/musique.ts).
    */
   volumeMusique: number;
+  /**
+   * Les boutons à l'écran (barre du haut, engrenage, flèches, points de page) restent toujours visibles.
+   * Défaut : faux, ils s'effacent seuls après quelques secondes sans activité et reviennent au moindre
+   * geste (src/lib/controles.ts).
+   */
+  boutonsToujoursVisibles: boolean;
 }
 
 /** Niveau réel des bruitages à 100 % du curseur (sons du livre et ambiance) : 50 % ≈ 15 % de l'ancienne échelle. */
@@ -81,7 +110,8 @@ export const REGLAGES_DEFAUT: Reglages = {
   volume: 1,
   volumeBruitages: 0.5,
   lectureAuto: false,
-  vitesse: 'normale',
+  vitesseEcriture: 1,
+  vitesseAnimations: 1,
   mouvementReduit: false,
   sonsLivre: true,
   ambiance: true,
@@ -90,6 +120,7 @@ export const REGLAGES_DEFAUT: Reglages = {
   musique: MUSIQUES_IDS[0] ?? 'aucune',
   musiqueActive: false,
   volumeMusique: 0.5,
+  boutonsToujoursVisibles: false,
 };
 const CLE = 'gc:reglages:v4';
 const CLE_V3 = 'gc:reglages:v3';
@@ -104,7 +135,9 @@ function valider(x: unknown): Reglages {
   if (typeof o.volume === 'number' && Number.isFinite(o.volume)) r.volume = Math.min(1, Math.max(0, o.volume));
   if (typeof o.volumeBruitages === 'number' && Number.isFinite(o.volumeBruitages)) r.volumeBruitages = Math.min(1, Math.max(0, o.volumeBruitages));
   if (typeof o.lectureAuto === 'boolean') r.lectureAuto = o.lectureAuto;
-  if (typeof o.vitesse === 'string' && (VITESSES as string[]).includes(o.vitesse)) r.vitesse = o.vitesse as Vitesse;
+  if (typeof o.vitesseEcriture === 'number' && Number.isFinite(o.vitesseEcriture)) r.vitesseEcriture = Math.min(VITESSE_ECRITURE_MAX, Math.max(VITESSE_ECRITURE_MIN, o.vitesseEcriture));
+  if (typeof o.vitesseAnimations === 'number' && Number.isFinite(o.vitesseAnimations)) r.vitesseAnimations = Math.min(VITESSE_ANIMATIONS_MAX, Math.max(VITESSE_ANIMATIONS_MIN, o.vitesseAnimations));
+  else if (typeof o.vitesse === 'string' && Object.prototype.hasOwnProperty.call(ANCIENNES_VITESSES, o.vitesse)) r.vitesseAnimations = ANCIENNES_VITESSES[o.vitesse];
   if (typeof o.mouvementReduit === 'boolean') r.mouvementReduit = o.mouvementReduit;
   if (typeof o.sonsLivre === 'boolean' || o.sonsLivre === null) r.sonsLivre = o.sonsLivre;
   if (typeof o.ambiance === 'boolean' || o.ambiance === null) r.ambiance = o.ambiance;
@@ -113,6 +146,7 @@ function valider(x: unknown): Reglages {
   if (typeof o.musique === 'string' && (o.musique === 'aucune' || MUSIQUES_IDS.includes(o.musique))) r.musique = o.musique;
   if (typeof o.musiqueActive === 'boolean') r.musiqueActive = o.musiqueActive;
   if (typeof o.volumeMusique === 'number' && Number.isFinite(o.volumeMusique)) r.volumeMusique = Math.min(1, Math.max(0, o.volumeMusique));
+  if (typeof o.boutonsToujoursVisibles === 'boolean') r.boutonsToujoursVisibles = o.boutonsToujoursVisibles;
   // « aucune » ne joue pas : le bouton musique repart du premier morceau.
   if (r.musique === 'aucune') r.musiqueActive = false;
   return r;

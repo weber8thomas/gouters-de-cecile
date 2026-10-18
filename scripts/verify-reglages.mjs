@@ -7,15 +7,17 @@
 //   - ouvrir par le bouton, par M et par « , » ; role=dialog, aria-modal ; focus sur un contrôle du panneau ;
 //   - focus piégé (Tab et Maj+Tab ne sortent pas) ; ↓ ↑ changent de ligne ; ← → changent une valeur ;
 //   - Échap ferme et rend le focus au bouton ;
-//   - son, lecture auto, moins d'animations (gc:reglages:v4 et [data-gc-mouvement]) ; vitesse vive /
-//     normale / lente choisie au menu, puis mesurée sur un tourne-page (gc-livre-geste debut → fin, deux
-//     tours entrelacés, le plus court gardé : vive < normale < lente ; écrans « double ») ; zoom borné
+//   - son, lecture auto, moins d'animations (gc:reglages:v4 et [data-gc-mouvement]) ; vitesse des
+//     animations (réglette de 25 à 200 %) réglée au menu à 150 %, 100 % et 70 %, puis mesurée sur un
+//     tourne-page (gc-livre-geste debut → fin, deux tours entrelacés, le plus court gardé : 150 % < 100 %
+//     < 70 % ; écrans « double ») ; vitesse de l'écriture (réglette de 25 à 400 %) ; zoom borné
 //     par zoomBornes(cran) (src/lib/camera.tsx) ; « Aller à… » (double page, et l'URL #… si les liens
 //     profonds sont actifs) ; réglages par défaut ;
 //   - persistance après rechargement ; localStorage.setItem qui lève → aucun plantage ;
 //   - cibles ≥ 44 px au doigt, rien hors de la zone sûre.
-// Indépendamment du menu (valide dès maintenant) : la vitesse écrite dans gc:reglages:v4 règle bien la
-// durée d'un tourne-page (écrans « double »).
+// Indépendamment du menu (valide dès maintenant) : la vitesse des animations écrite dans gc:reglages:v4 règle
+// bien la durée d'un tourne-page (écrans « double »), et l'ancien choix « lente » (champ `vitesse`) est lu
+// comme 70 %.
 // Plan v4 (CONTRACT § 13, lot B) : ligne « Loupe » (100 à 300 %, pas de 25) sur TOUS les écrans, téléphone
 // compris ; ligne « Sons du livre » (automatique / oui / non → sonsLivre null / true / false, mémorisé ;
 // défaut « oui » depuis la clé v2) ; « remettre les réglages par défaut » remet aussi la loupe à 1×
@@ -24,7 +26,7 @@
 // non → ambiance null / true / false, défaut « oui ») et « Lumière du feu » (oui / non → feu, défaut oui) ;
 // ligne « Musique » (« aucune » ou un morceau de la banque, défaut : le premier) ; remis par défaut avec le reste.
 // Lignes cherchées par [data-gc-reglage="<champ>"] (banc factice) ou [data-gc-reglages-ligne="<id>"] (lot R :
-// taille, zoom, son, volume, auto, vitesse, mouvement, aller, invites, fin), puis par rôle et nom accessible.
+// taille, zoom, son, volume, auto, vitesseEcriture, vitesseAnimations, mouvement, aller, invites, fin), puis par rôle et nom accessible.
 // Un oui / non est un groupe radio (lot R) ou un interrupteur (banc). Ce qui manque encore est ATTENTE
 // (bouton ou panneau absents) ; un contrôle introuvable dans un panneau présent est KO (avec ce qui a été
 // cherché). Chaque bloc est isolé : un échec n'arrête pas les suivants.
@@ -165,7 +167,7 @@ async function premier(locs) {
 }
 const LIGNES = {
   distance: ['distance', 'taille'], zoom: ['zoom'], son: ['son'], volume: ['volume'], lectureAuto: ['lectureAuto', 'auto'],
-  vitesse: ['vitesse'], mouvementReduit: ['mouvementReduit', 'mouvement'], aller: ['aller', 'invites'], defaut: ['defaut', 'fin'],
+  vitesseAnimations: ['vitesseAnimations'], vitesseEcriture: ['vitesseEcriture'], mouvementReduit: ['mouvementReduit', 'mouvement'], aller: ['aller', 'invites'], defaut: ['defaut', 'fin'],
   loupe: ['loupe'], sonsLivre: ['sonsLivre'], ambiance: ['ambiance'], feu: ['feu'],
 };
 const ligne = (page, cle) => page.locator((LIGNES[cle] ?? [cle]).flatMap((id) => [`${PANNEAU} [data-gc-reglage="${id}"]`, `${PANNEAU} [data-gc-reglages-ligne="${id}"]`]).join(', '));
@@ -182,9 +184,6 @@ const NOMS = {
   son: /^(le )?son\b|\bson( et volume| des vidéos)?$/i,
   lectureAuto: /lecture auto|lancer la vidéo/i,
   mouvementReduit: /moins d.animation|mouvement r[ée]duit/i,
-  vive: /\bvive\b|rapide/i,
-  normale: /normale/i,
-  lente: /\blente\b/i,
   zoom: /zoom|ajuster/i,
   aller: /aller [àa]|choisir un invit/i,
   defaut: /par d[ée]faut|remettre|r[ée]initialiser|à z[ée]ro/i,
@@ -249,6 +248,16 @@ async function basculer(page, e, cle) {
 const existeLigne = async (page, cle) => (await ligne(page, cle).count()) > 0 || !!(await interrupteur(page, cle, NOMS[cle]));
 
 // ---- Vitesse : durée d'un tourne-page ---------------------------------------------------------------
+// « Vitesse des animations » : une réglette de 25 à 200 % (pas de 5 %), 100 % par défaut. L'ancien choix
+// « vive · normale · lente » est lu comme 150 %, 100 % et 70 % (le ressort « paper » durait 0,6 · 0,9 · 1,3 s).
+const FACTEURS = { vive: 1.5, normale: 1, lente: 0.7 };
+/** Règle la réglette « Vitesse des animations » (menu ouvert) : Début (25 %), puis → par pas de 5 %. */
+async function reglerVitesse(page, facteur) {
+  const sl = ligne(page, 'vitesseAnimations').getByRole('slider');
+  await sl.focus();
+  await page.keyboard.press('Home');
+  for (let i = 0; i < Math.round((facteur - 0.25) / 0.05); i++) await page.keyboard.press('ArrowRight');
+}
 // Durée du tourne-page à la montre (debut → fin). Motion n'avance que de 40 ms au plus par image : sur une
 // machine lente, la durée s'allonge mais l'ordre des vitesses reste. En information : « l'horloge du
 // ressort » Σ min(Δt, 40 ms) sur les images vues entre debut et fin (fausse si la page est affamée).
@@ -296,7 +305,7 @@ async function mesurerVitesses(regler, mesurer) {
 async function vitesseStockee(e) {
   let pageMode = false;
   const { m, detail } = await mesurerVitesses(async () => {}, async (v) => {
-    const { ctx, page } = await ouvrirPage(browser, cible, e, lien, { init: [initReglages({ vitesse: v }), FEU_FIGE] });
+    const { ctx, page } = await ouvrirPage(browser, cible, e, lien, { init: [initReglages({ vitesse: v, vitesseAnimations: FACTEURS[v] }), FEU_FIGE] });
     try {
       if ((await etatLivre(page)).cadrage === 'page') { pageMode = true; return null; }
       return await mesurerTour(page);
@@ -306,6 +315,20 @@ async function vitesseStockee(e) {
   });
   if (pageMode) R.info(e.nom, 'vitesse (réglage stocké)', 'cadrage « page » : mesure faite sur les écrans « double »');
   else R.ok(e.nom, 'vitesse (réglage stocké gc:reglages:v4) : tourne-page vive < normale < lente', ordonne(m), detail);
+  // Une clé v3 d'avant les pourcentages (champ `vitesse` seul, sans vitesseAnimations) : « lente » est relue comme 70 %.
+  // Avec les deux champs (ci-dessus), c'est vitesseAnimations qui l'emporte ; `vitesse` ne sert qu'au banc factice.
+  if (cible.type === 'banc') return;
+  const { ctx, page } = await ouvrirPage(browser, cible, e, lien, { init: [{ fn: () => { try { if (!sessionStorage.getItem('__gcAncienne')) { localStorage.setItem('gc:reglages:v3', JSON.stringify({ v: 1, vitesse: 'lente' })); sessionStorage.setItem('__gcAncienne', '1'); } } catch { /* stockage indisponible */ } } }, FEU_FIGE] });
+  try {
+    let affiche = null;
+    if (await ouvrirMenu(page, e)) {
+      const sl = ligne(page, 'vitesseAnimations').getByRole('slider');
+      if (await sl.count()) affiche = ((await sl.getAttribute('aria-valuetext')) ?? '').replace(/\s/g, ' ');
+    }
+    R.ok(e.nom, 'ancien réglage « lente » (champ vitesse) relu comme 70 % par le menu', affiche === '70 %', affiche ?? 'menu ou réglette introuvable');
+  } finally {
+    await ctx.close();
+  }
 }
 
 // ---- Suite du menu ----------------------------------------------------------------------------------
@@ -472,29 +495,57 @@ async function suiteMenu(e) {
       R.info(e.nom, 'volume', vol ? 'présent' : ios ? 'masqué (iOS : volume en lecture seule)' : 'introuvable');
     });
 
-    // 8. Vitesse au menu, puis mesurée
+    // 8. Vitesses au menu (réglettes en pourcentage), puis mesurée
     let vitesses = 0;
-    await bloc('vitesse', async () => {
+    await bloc('vitesse des animations', async () => {
+      const sl = ligne(page, 'vitesseAnimations').getByRole('slider');
+      if (!(await sl.count())) { R.ajouter(e.nom, 'vitesse des animations', 'KO', `introuvable (cherché : ${CHERCHE('vitesseAnimations')} › slider)`); return; }
+      const b = await sl.evaluate((x) => ({ min: x.getAttribute('aria-valuemin'), max: x.getAttribute('aria-valuemax'), now: x.getAttribute('aria-valuenow'), texte: (x.getAttribute('aria-valuetext') ?? '').replace(/\s/g, ' ') }));
+      T('vitesse des animations : 100 % par défaut, bornes 25 – 200 %', b.now === '1' && b.min === '0.25' && b.max === '2' && b.texte === '100 %', `${b.texte} (${b.min} – ${b.max})`);
       for (const v of ['vive', 'normale', 'lente']) {
         if (!(await panneauVisible(page))) await ouvrirMenu(page, e);
-        const loc = await choix(page, 'vitesse', NOMS[v]);
-        if (!loc) { R.ajouter(e.nom, `vitesse « ${v} »`, 'KO', `introuvable (cherché : ${CHERCHE('vitesse')} › ${NOMS[v]})`); continue; }
-        await cliquer(page, e, loc);
-        const ok = (await lireReglages(page)).vitesse === v;
+        await reglerVitesse(page, FACTEURS[v]);
+        const ok = (await lireReglages(page)).vitesseAnimations === FACTEURS[v];
         if (ok) vitesses++;
-        T(`vitesse « ${v} » choisie au menu (gc:reglages:v4)`, ok);
+        T(`vitesse des animations ${Math.round(FACTEURS[v] * 100)} % réglée au menu (gc:reglages:v4)`, ok, `${(await lireReglages(page)).vitesseAnimations}`);
       }
+      // Début et Fin : les bornes, et rien au-delà
+      await sl.focus();
+      await page.keyboard.press('End');
+      await page.keyboard.press('ArrowRight');
+      const haut = (await lireReglages(page)).vitesseAnimations;
+      await page.keyboard.press('Home');
+      await page.keyboard.press('ArrowLeft');
+      const bas = (await lireReglages(page)).vitesseAnimations;
+      T('vitesse des animations : Fin = 200 %, Début = 25 %, jamais au-delà', haut === 2 && bas === 0.25, `Fin ${haut} · Début ${bas}`);
+    });
+    await bloc('vitesse de l\'écriture', async () => {
+      const sl = ligne(page, 'vitesseEcriture').getByRole('slider');
+      if (!(await sl.count())) { R.ajouter(e.nom, 'vitesse de l\'écriture', 'KO', `introuvable (cherché : ${CHERCHE('vitesseEcriture')} › slider)`); return; }
+      if (!(await panneauVisible(page))) await ouvrirMenu(page, e);
+      const b = await sl.evaluate((x) => ({ min: x.getAttribute('aria-valuemin'), max: x.getAttribute('aria-valuemax'), now: x.getAttribute('aria-valuenow'), texte: (x.getAttribute('aria-valuetext') ?? '').replace(/\s/g, ' ') }));
+      T('vitesse de l\'écriture : 100 % par défaut, bornes 25 – 400 %', b.now === '1' && b.min === '0.25' && b.max === '4' && b.texte === '100 %', `${b.texte} (${b.min} – ${b.max})`);
+      await sl.focus();
+      await page.keyboard.press('Home');
+      await page.keyboard.press('ArrowRight');
+      await page.keyboard.press('ArrowRight');
+      const a = (await lireReglages(page)).vitesseEcriture;
+      await page.keyboard.press('End');
+      await page.keyboard.press('ArrowRight');
+      const z = (await lireReglages(page)).vitesseEcriture;
+      T('vitesse de l\'écriture : Début + 2 pas = 35 %, Fin = 400 % (pas de 5 %, bornée)', Math.abs(a - 0.35) < 1e-9 && z === 4, `Début + 2 pas ${a} · Fin ${z}`);
+      // Remise à 100 % pour la suite
+      for (let i = 0; i < 60 && (await lireReglages(page)).vitesseEcriture > 1.0001; i++) await page.keyboard.press('ArrowLeft');
+      T('vitesse de l\'écriture : ← revient à 100 %', (await lireReglages(page)).vitesseEcriture === 1, `${(await lireReglages(page)).vitesseEcriture}`);
     });
     if (vitesses === 3 && (await etatLivre(page)).cadrage !== 'page') {
       await bloc('vitesse mesurée', async () => {
         const { m, detail } = await mesurerVitesses(async (v) => {
           if (!(await ouvrirMenu(page, e)) && !(await ouvrirMenu(page, e))) throw new Error(`le menu ne se rouvre pas (vitesse ${v})`);
-          const loc = await choix(page, 'vitesse', NOMS[v]);
-          if (!loc) throw new Error(`« ${v} » introuvable après réouverture`);
-          await cliquer(page, e, loc);
+          await reglerVitesse(page, FACTEURS[v]);
           await fermerMenu(page);
         }, () => mesurerTour(page));
-        T('vitesse choisie au menu : tourne-page vive < normale < lente', ordonne(m), detail);
+        T('vitesse choisie au menu : tourne-page 150 % < 100 % < 70 %', ordonne(m), detail);
       }, { menu: false });
     } else if (vitesses === 3) R.info(e.nom, 'vitesse mesurée', 'cadrage « page » : mesure faite sur les écrans « double »');
 
@@ -532,8 +583,9 @@ async function suiteMenu(e) {
     await bloc('réglages par défaut', async () => {
       const def = await premier([ligne(page, 'defaut').getByRole('button', { name: NOMS.defaut }), ligne(page, 'defaut').locator('button'), pan(page).getByRole('button', { name: NOMS.defaut })]);
       if (!def) { R.ajouter(e.nom, 'réglages par défaut', 'KO', `introuvable (cherché : ${CHERCHE('defaut')})`); return; }
-      const lente = await choix(page, 'vitesse', NOMS.lente);
-      if (lente) await cliquer(page, e, lente);
+      await reglerVitesse(page, FACTEURS.lente);
+      const ecr = ligne(page, 'vitesseEcriture').getByRole('slider');
+      if (await ecr.count()) { await ecr.focus(); await page.keyboard.press('End'); }
       if (!(await lireReglages(page)).lectureAuto) { if (!(await panneauVisible(page))) await ouvrirMenu(page, e); await basculer(page, e, 'lectureAuto'); }
       if (!(await panneauVisible(page))) await ouvrirMenu(page, e);
       // Hors défaut avant la remise (sinon elle ne prouve rien pour ces réglages) : sons du livre, ambiance,
@@ -697,18 +749,21 @@ async function suiteMenu(e) {
     await bloc('persistance', async () => {
       await fermerMenu(page);
       await ouvrirMenu(page, e);
-      const lente = await choix(page, 'vitesse', NOMS.lente);
       const mr = await existeLigne(page, 'mouvementReduit');
-      if (lente) await cliquer(page, e, lente);
-      if (mr && !(await lireReglages(page)).mouvementReduit) { if (!(await panneauVisible(page))) await ouvrirMenu(page, e); await basculer(page, e, 'mouvementReduit'); }
+      await reglerVitesse(page, FACTEURS.lente);
+      const avant = (await lireReglages(page)).mouvementReduit;
+      let bascule = null;
+      if (mr && !avant) { if (!(await panneauVisible(page))) await ouvrirMenu(page, e); bascule = await basculer(page, e, 'mouvementReduit'); }
+      const avantRecharge = (await lireReglages(page)).mouvementReduit;
       await page.reload();
       await page.waitForTimeout(800);
       await cadence(page);
       const rr = await lireReglages(page);
-      T('persistance : réglages relus après rechargement', rr.vitesse === 'lente' && (!mr || rr.mouvementReduit === true), `vitesse ${rr.vitesse}, moins d'animations ${rr.mouvementReduit}`);
+      T('persistance : réglages relus après rechargement', rr.vitesseAnimations === FACTEURS.lente && (!mr || rr.mouvementReduit === true), `vitesse des animations ${rr.vitesseAnimations}, moins d'animations ${rr.mouvementReduit} (avant la bascule ${avant}, basculé ${bascule}, avant rechargement ${avantRecharge})`);
       if (await ouvrirMenu(page, e)) {
-        const l2 = await choix(page, 'vitesse', NOMS.lente);
-        T('persistance : le menu montre « lente » choisie', !!l2 && await estChoisi(l2), l2 ? '' : 'contrôle introuvable');
+        const l2 = ligne(page, 'vitesseAnimations').getByRole('slider');
+        const aff = (await l2.count()) ? (await l2.getAttribute('aria-valuetext')).replace(/\s/g, ' ') : null; // l'affichage met une espace insécable avant %
+        T('persistance : le menu montre 70 % pour la vitesse des animations', aff === '70 %', aff ?? 'contrôle introuvable');
         const d2 = await premier([ligne(page, 'defaut').getByRole('button', { name: NOMS.defaut }), pan(page).getByRole('button', { name: NOMS.defaut })]);
         if (d2) await cliquer(page, e, d2); // remise à zéro pour la suite
       }
@@ -730,8 +785,8 @@ async function suiteStockage(e) {
     const o = await ouvrirMenu(page, e);
     let detail = `setItem lève : ${leve}`;
     if (o) {
-      const vive = await choix(page, 'vitesse', NOMS.vive);
-      if (vive) { await cliquer(page, e, vive); detail += `, « vive » ${await estChoisi(vive) ? 'choisie en mémoire' : 'non montrée choisie'}`; }
+      const sl = ligne(page, 'vitesseAnimations').getByRole('slider');
+      if (await sl.count()) { await sl.focus(); await page.keyboard.press('End'); detail += `, vitesse des animations ${await sl.getAttribute('aria-valuetext')} en mémoire`; }
       if (!(await panneauVisible(page))) await ouvrirMenu(page, e);
       await basculer(page, e, 'son');
       await page.keyboard.press('Escape');

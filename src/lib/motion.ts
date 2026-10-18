@@ -3,7 +3,8 @@
 // prefers-reduced-motion ; aucun rendu React pendant un geste (MotionValue + useTransform).
 import { useReducedMotion as useReducedMotionSysteme } from 'motion/react';
 import motionSpec from '../../design-system/motion.json';
-import { abonnerReglages, getReglages, useReglages, type Vitesse } from './reglages';
+import { getReglages, useReglages } from './reglages';
+import { abonnerVitesse, facteurAnimations } from './vitesse';
 
 export {
   LazyMotion,
@@ -59,14 +60,16 @@ export function regleRessort(name: SpringName, r: { visualDuration: number; boun
   SPRINGS[name] = { type: 'spring', visualDuration: r.visualDuration, bounce: r.bounce };
 }
 
-/** Vitesses des pages du menu de réglages (design-system/motion.json, « vitesses »). */
-export const VITESSES_PAGE: Record<Vitesse, { visualDuration: number; bounce: number }> = {
-  vive: motionSpec.vitesses.vive,
-  normale: motionSpec.vitesses.normale,
-  lente: motionSpec.vitesses.lente,
-};
+/**
+ * Ressort « paper » (tour de page) à la vitesse des animations du menu de réglages (src/lib/vitesse.ts, 100 % =
+ * la durée de design-system/motion.json) : durée visuelle ÷ facteur, même rebond.
+ */
+export const ressortPaper = (facteur: number): { visualDuration: number; bounce: number } => ({
+  visualDuration: motionSpec.springs.paper.visualDuration / facteur,
+  bounce: motionSpec.springs.paper.bounce,
+});
 
 // La vitesse choisie dans le menu règle le ressort « paper », relu par le livre à chaque geste.
-const appliquerVitesse = () => regleRessort('paper', VITESSES_PAGE[getReglages().vitesse]);
+const appliquerVitesse = () => regleRessort('paper', ressortPaper(facteurAnimations()));
 appliquerVitesse();
-abonnerReglages(appliquerVitesse);
+abonnerVitesse(appliquerVitesse);
