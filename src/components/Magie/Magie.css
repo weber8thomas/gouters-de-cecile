@@ -1,0 +1,10 @@
+/* La toile de la magie : tout le cadre de la caméra (1920 × 1080 px de scène), au-dessus du livre, sous la
+   lumière de la scène et la bougie. Elle ne capte rien ; elle est cachée sous la loupe (moteur.ts). */
+.gc-magie {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
