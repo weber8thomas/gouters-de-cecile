@@ -21,12 +21,15 @@
 //   ambiance  le feu et la cuisine (src/lib/ambiance.ts, branchée comme dans le SoulevementProvider) :
 //             rien avant le premier geste, fondu d'entrée de 3 s après ; sourdine × 0,15 pendant une
 //             vidéo ; volume ; « muet » : gain maître à 0, le feu continue en silence ; un bruit de cuisine
-//             prévu dans 8 à 25 s, au gain de la banque × 2, un peu à gauche ou à droite ; pause quand
+//             prévu dans 5 à 15 s, au gain de la banque × 2, un peu à gauche ou à droite, jamais le même
+//             deux fois de suite (40 tirages), chacun un peu au-dessus du feu sans passer devant (sonie,
+//             0 à + 8 dB) ; pause quand
 //             l'onglet est caché ; coupée par le réglage ; la lumière du feu reçoit ses crépitements
 //             (window.__gcFeuSync, « gc-feu-sync ») ; iPhone (réglage par défaut) : jouée après le premier
 //             toucher ; coupée par le réglage : rien ;
-//   licences  chaque MP3 de la banque : source CC0 vérifiée (ou « synthese »), sha256, ≤ 30 Ko (sons du
-//             livre) ou ≈ 96 kb/s (ambiance), et chaque son de banque.json a ses fichiers.
+//   licences  chaque MP3 de la banque : source CC0 ou domaine public vérifiée (Freesound, OpenGameArt,
+//             Wikimedia Commons ; ou « synthese »), sha256, ≤ 30 Ko (sons du livre) ou ≈ 96 kb/s
+//             (ambiance), et chaque son de banque.json a ses fichiers.
 // Rapport : verification/out/v4-s/sons/sons.json + .md.
 //
 //   node scripts/verify-sons.mjs [--suites licences,banc,ambiance,iphone,soulever,livre] [--bundle dist/ds-v4s/components]
@@ -35,6 +38,7 @@ import { build } from 'esbuild';
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { createHash } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
 import { generate } from './gen-entry.mjs';
 import {
   ROOT, lireArgs, ecran, lancer, serve, Rapport, rel, bundleParDefaut, glisserSouris, toucher, initReglages, attendre,
@@ -346,7 +350,7 @@ async function suiteAmbiance() {
     R.ok(nom, 'muet : ambiance à 0 (le feu tourne en silence), aucun bruit de cuisine ; rétabli ensuite',
       muetAmb.niveau < 0.01 && muetAmb.marche && !cuisineMuet.length && Math.abs(retourAmb - 1) < 0.02,
       `niveau pendant le muet ${muetAmb.niveau?.toFixed(3)} (en marche ${muetAmb.marche}) · ${cuisineMuet.length} bruit(s) de cuisine · après : ${retourAmb?.toFixed(3)}`);
-    // Cuisine : prévue dans 8 à 25 s ; jouée au gain de la banque × 2, un peu à gauche ou à droite
+    // Cuisine : prévue dans 5 à 15 s ; jouée au gain de la banque × 2, un peu à gauche ou à droite
     const prevue = await page.evaluate(() => window.__banc.ambiance().prochaineCuisineS);
     const n0 = await nbStarts(page);
     await page.evaluate(() => window.__banc.cuisine('cuisine-tasse'));
@@ -356,10 +360,31 @@ async function suiteAmbiance() {
     const gTasse = Object.fromEntries((AMB?.cuisine['cuisine-tasse'] ?? []).map((v) => [`${v.f}.mp3`, v.g]));
     const gCuisine = await page.evaluate(() => window.__banc.gainCuisine);
     const [sMin, sMax] = await page.evaluate(() => window.__banc.cuisineBornes);
-    R.ok(nom, `ambiance : un bruit de cuisine prévu dans ${sMin} à ${sMax} s`, sMin === 8 && sMax === 25 && prevue != null && prevue > 0 && prevue <= sMax, `prochain dans ${prevue?.toFixed(1)} s`);
+    R.ok(nom, `ambiance : un bruit de cuisine prévu dans ${sMin} à ${sMax} s`, sMin === 5 && sMax === 15 && prevue != null && prevue > 0 && prevue <= sMax, `prochain dans ${prevue?.toFixed(1)} s`);
     R.ok(nom, `ambiance : bruit de cuisine relevé (banque × ${gCuisine}), un peu à gauche ou à droite (StereoPanner)`,
       gCuisine === 2 && tasse.length === 1 && Math.abs(tasse[0].gain - gTasse[tasse[0].f] * gCuisine) < 1e-3 && j && Math.abs(j.pan) >= 0.25 && Math.abs(j.pan) <= 0.7,
       tasse.length ? `${tasse[0].f} gain ${tasse[0].gain?.toFixed(3)} (banque ${gTasse[tasse[0].f]} × ${gCuisine}) · panoramique ${j?.pan?.toFixed(2)}` : 'aucun son');
+    // Au hasard, jamais le même bruit deux fois de suite (40 tirages d'affilée, le dernier est relu à chaque tirage)
+    const tirages = await page.evaluate(() => {
+      const t = [];
+      for (let i = 0; i < 40; i++) { window.__banc.cuisine(); t.push(window.__banc.ambiance().derniereCuisine); }
+      return t;
+    });
+    const repetes = tirages.filter((n, i) => i > 0 && n === tirages[i - 1]).length;
+    const nbBruits = Object.keys(AMB?.cuisine ?? {}).length;
+    R.ok(nom, 'ambiance : bruit de cuisine au hasard, jamais le même deux fois de suite', repetes === 0 && new Set(tirages).size >= Math.min(10, nbBruits),
+      `${new Set(tirages).size} bruits différents sur ${tirages.length} tirages (${nbBruits} dans la banque), ${repetes} répétition(s)`);
+    // Niveau : chaque bruit, au gain de la banque × GAIN_CUISINE, dépasse le feu (sa sonie au gain de son bus : −36 dB)
+    // sans passer devant : de 0 à + 8 dB (l'ambiance est un fond, jamais au premier plan)
+    const sFeu = AMB ? sonieMp3(AMB.feu.f) : null;
+    if (sFeu == null) R.attente(nom, 'ambiance : chaque bruit de cuisine un peu au-dessus du feu, pas au premier plan', 'ffmpeg absent : sonie non mesurée');
+    else {
+      const feuDb = sFeu + 20 * Math.log10(AMB.feu.g);
+      const marges = Object.values(AMB.cuisine).flat().map((v) => ({ f: v.f, m: sonieMp3(v.f) + 20 * Math.log10(v.g * gCuisine) - feuDb }));
+      const hors = marges.filter((x) => !(x.m >= -1 && x.m <= 8));
+      R.ok(nom, 'ambiance : chaque bruit de cuisine un peu au-dessus du feu (sonie), pas au premier plan (0 à + 8 dB)', marges.length > 0 && !hors.length,
+        `feu ${feuDb.toFixed(1)} dB · ${marges.map((x) => `${x.f.replace('cuisine-', '')} ${x.m >= 0 ? '+' : ''}${x.m.toFixed(1)}`).join(', ')}${hors.length ? ` · hors bornes : ${hors.map((x) => x.f).join(', ')}` : ''}`);
+    }
     // Onglet caché : le contexte est suspendu, puis repris
     const cache = await page.evaluate(async () => {
       const etat = () => window.__banc.etat().contexte;
@@ -562,6 +587,23 @@ async function suiteLivre() {
 }
 
 const AMB = banque.ambiance ?? null;
+
+/** Sonie (dB) d'un MP3 de la banque : RMS des trames de 10 ms à moins de 30 dB de la plus forte, comme scripts/bake-sons.mjs ; null sans ffmpeg. */
+function sonieMp3(nom) {
+  const r = spawnSync('ffmpeg', ['-v', 'error', '-i', join(BAKED, `${nom}.mp3`), '-ac', '1', '-ar', '44100', '-f', 'f32le', '-'], { maxBuffer: 1 << 28 });
+  if (r.error || r.status !== 0) return null;
+  const x = new Float32Array(r.stdout.buffer.slice(r.stdout.byteOffset, r.stdout.byteOffset + r.stdout.length - (r.stdout.length % 4)));
+  const n = 441;
+  const p = [];
+  for (let i = 0; i + n <= x.length; i += n) {
+    let t = 0;
+    for (let j = i; j < i + n; j++) t += x[j] * x[j];
+    p.push(t / n);
+  }
+  const max = p.reduce((a, b) => (b > a ? b : a), 0);
+  const actives = p.filter((v) => v >= max * 1e-3);
+  return 10 * Math.log10(actives.reduce((a, b) => a + b, 0) / actives.length + 1e-24);
+}
 const ambianceFichiers = new Map(AMB ? [AMB.feu, ...Object.values(AMB.cuisine).flat()].map((v) => [v.f, v]) : []);
 
 function suiteLicences() {
@@ -584,26 +626,34 @@ function suiteLicences() {
     const s = lic.sources?.[cle];
     if (!s) fautes.push(`${f} : source ${cle} inconnue`);
     else {
-      if (s.licence !== 'CC0 1.0' || !/publicdomain\/zero\/1\.0/.test(s.licenceUrl ?? '') || !/publicdomain\/zero\/1\.0/.test(s.licenceLue ?? '')) fautes.push(`${f} : licence ${s.licence}`);
-      if (!s.id || !s.auteur || !/^https:\/\/freesound\.org\//.test(s.url ?? '') || !s.date) fautes.push(`${f} : fiche incomplète (${x.source})`);
+      // CC0 1.0 (lue sur la page de la source), ou domaine public (fiche Wikimedia Commons : pd)
+      const cc0 = s.licence === 'CC0 1.0' && /publicdomain\/zero\/1\.0/.test(s.licenceUrl ?? '') && /publicdomain\/zero\/1\.0/.test(s.licenceLue ?? '');
+      const pd = s.licence === 'Domaine public' && /publicdomain\/(mark|zero)\//.test(s.licenceUrl ?? '') && /^https:\/\/commons\.wikimedia\.org\//.test(s.url ?? '');
+      if (!cc0 && !pd) fautes.push(`${f} : licence ${s.licence}`);
+      const freesound = /^https:\/\/freesound\.org\//.test(s.url ?? '');
+      if ((freesound && !s.id) || !s.auteur || !/^https:\/\/(freesound\.org|opengameart\.org|commons\.wikimedia\.org)\//.test(s.url ?? '') || !s.date) fautes.push(`${f} : fiche incomplète (${x.source})`);
       const src = join(ROOT, 'design-system/sources/sons', s.fichier?.nom ?? '');
       if (!existsSync(src) || createHash('sha256').update(readFileSync(src)).digest('hex') !== s.fichier.sha256) fautes.push(`${f} : source ${s.fichier?.nom} absente ou modifiée`);
     }
     }
   }
   const sources = new Set(Object.values(lic.fichiers ?? {}).map((x) => x.source));
-  R.ok(null, 'chaque MP3 de la banque a sa licence (CC0 1.0 vérifiée, ou « synthese »)', mp3.length > 0 && !manquants.length && !fautes.length,
+  R.ok(null, 'chaque MP3 de la banque a sa licence (CC0 1.0 ou domaine public vérifiés, ou « synthese »)', mp3.length > 0 && !manquants.length && !fautes.length,
     `${mp3.length} MP3 · sources : ${[...sources].join(', ')}${manquants.length ? ` · sans licence : ${manquants.join(', ')}` : ''}${fautes.length ? ` · ${fautes.join(' ; ')}` : ''}`);
   const absents = Object.values(banque.sons).flat().filter((v) => !existsSync(join(BAKED, `${v.f}.mp3`))).map((v) => v.f);
   const NOMS = ['page', 'riffle', 'couverture-ouvrir', 'couverture-poser', 'couverture-fermer', 'feuillet', 'photo-lever', 'photo-poser', 'coin'];
   const sansSon = NOMS.filter((n) => !banque.sons[n]?.length);
   R.ok(null, 'banque.json : les 9 sons, page ×5, chaque fichier présent', !absents.length && !sansSon.length && banque.sons.page.length === 5,
     `${NOMS.map((n) => `${n} ×${banque.sons[n]?.length ?? 0}`).join(', ')}${absents.length ? ` · absents : ${absents.join(', ')}` : ''}`);
-  const CUISINE = ['cuisine-cuillere', 'cuisine-tasse', 'cuisine-bouilloire', 'cuisine-the', 'cuisine-boite'];
+  const CUISINE = [
+    'cuisine-cuillere', 'cuisine-tasse', 'cuisine-bouilloire', 'cuisine-the', 'cuisine-boite',
+    'cuisine-couteau', 'cuisine-assiette', 'cuisine-sel', 'cuisine-minuteur', 'cuisine-chat',
+    'cuisine-horloge', 'cuisine-paquet', 'cuisine-chaise', 'cuisine-tiroir', 'cuisine-verre',
+  ];
   const ambAbsents = [...ambianceFichiers.keys()].filter((f) => !existsSync(join(BAKED, `${f}.mp3`)));
   const feu = AMB?.feu;
   const boucleOk = !!feu && feu.boucle >= 30 && feu.boucle <= 60 && feu.d >= feu.boucle + feu.fondu - 0.05 && feu.onsets.length > 10 && feu.onsets.every((t) => t >= 0 && t < feu.boucle) && feu.forces.length === feu.onsets.length;
-  R.ok(null, 'ambiance : boucle du feu de 30 à 60 s (+ fondu croisé), crépitements, les 5 bruits de cuisine', !!AMB && boucleOk && CUISINE.every((n) => AMB.cuisine[n]?.length) && !ambAbsents.length,
+  R.ok(null, 'ambiance : boucle du feu de 30 à 60 s (+ fondu croisé), crépitements, les 15 bruits de cuisine', !!AMB && boucleOk && CUISINE.every((n) => AMB.cuisine[n]?.length) && !ambAbsents.length,
     AMB ? `feu ${feu.boucle} s + ${feu.fondu} s de fondu (${feu.d} s, ${(statSync(join(BAKED, `${feu.f}.mp3`)).size / 1024).toFixed(0)} Ko, ${(8 * statSync(join(BAKED, `${feu.f}.mp3`)).size / feu.d / 1000).toFixed(0)} kb/s), ${feu.onsets.length} crépitements · ${CUISINE.map((n) => `${n.replace('cuisine-', '')} ×${AMB.cuisine[n]?.length ?? 0}`).join(', ')}${ambAbsents.length ? ` · absents : ${ambAbsents.join(', ')}` : ''}` : 'pas de clé « ambiance » dans banque.json');
 }
 

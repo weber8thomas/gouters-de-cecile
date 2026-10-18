@@ -1,6 +1,8 @@
 // Ambiance sonore (plan v4, lot S) : un feu de cheminée derrière le carnet, et de temps en temps un petit
 // bruit de cuisine — cuillère dans la tasse, tasse posée sur sa soucoupe, bouilloire qui frémit au loin,
-// thé qu'on verse, couvercle de la boîte à biscuits. Un fond, jamais au premier plan.
+// thé qu'on verse, couvercle de la boîte à biscuits, couteau sur la planche, fourchette sur l'assiette,
+// sel qui tombe, minuteur, chat, horloge au loin, paquet de biscuits, chaise, tiroir, verre qui tinte.
+// Un fond, jamais au premier plan.
 //
 //   - Réglage « ambiance » (reglages.ambiance, null = automatique : active sur TV et ordinateur, coupée
 //     sur téléphone) ; volume des bruitages (reglages.volumeBruitages × GAIN_BRUITAGES) ;
@@ -9,9 +11,10 @@
 //     l'onglet est caché (le contexte est suspendu) ;
 //   - le feu : une boucle de `boucle` s jouée en fondu croisé à puissance constante (`fondu` s : la fin
 //     d'un passage se mêle au début du suivant), deux sources à la fois au plus ;
-//   - la cuisine : un bruit au hasard toutes les 8 à 25 s, jamais le même deux fois de suite, un peu à
+//   - la cuisine : un bruit au hasard toutes les 5 à 15 s, jamais le même deux fois de suite, un peu à
 //     gauche ou à droite (StereoPanner), jamais pendant une vidéo ; relevé de GAIN_CUISINE (× 2, + 6 dB)
-//     pour passer par-dessus le feu, sans être au premier plan ;
+//     pour passer par-dessus le feu (dans sa bande la plus forte, chaque bruit le dépasse d'au moins 6 dB ;
+//     sonie de 0 à + 6 dB au-dessus du sien), sans être au premier plan ;
 //   - « muet » (bouton haut-parleur, reglages.muet) : le gain maître de l'ambiance va à 0 ; le feu continue
 //     en silence (la lumière suit toujours ses crépitements) ;
 //   - la lumière du feu (lot L, src/lib/feu.ts) suit les crépitements : voir publierFeu().
@@ -24,7 +27,10 @@ import {
 } from './son';
 import { abonnerReglages, GAIN_BRUITAGES, getReglages, type Reglages } from './reglages';
 
-export type NomCuisine = 'cuisine-cuillere' | 'cuisine-tasse' | 'cuisine-bouilloire' | 'cuisine-the' | 'cuisine-boite';
+export type NomCuisine =
+  | 'cuisine-cuillere' | 'cuisine-tasse' | 'cuisine-bouilloire' | 'cuisine-the' | 'cuisine-boite'
+  | 'cuisine-couteau' | 'cuisine-assiette' | 'cuisine-sel' | 'cuisine-minuteur' | 'cuisine-chat'
+  | 'cuisine-horloge' | 'cuisine-paquet' | 'cuisine-chaise' | 'cuisine-tiroir' | 'cuisine-verre';
 
 interface FeuBanque {
   f: string;
@@ -49,8 +55,8 @@ export function ambianceEffective(r: Pick<Reglages, 'ambiance'>): boolean {
 
 export const FONDU_ENTREE = 3;
 export const SOURDINE_VIDEO = 0.15;
-export const CUISINE_MIN_S = 8;
-export const CUISINE_MAX_S = 25;
+export const CUISINE_MIN_S = 5;
+export const CUISINE_MAX_S = 15;
 /** Relevé des bruits de cuisine (multiplie le gain de la banque) : le feu est à −36 dB RMS en sortie. */
 export const GAIN_CUISINE = 2;
 
@@ -191,13 +197,14 @@ function planifierCuisine(): void {
   }, s * 1000);
 }
 
-/** Un bruit de cuisine (au hasard, ou celui-ci), un peu à gauche ou à droite. Sans effet si l'ambiance dort. */
+/** Un bruit de cuisine (au hasard, jamais le même que le précédent, ou celui-ci), un peu à gauche ou à droite. Sans effet si l'ambiance dort. */
 export function jouerCuisine(nom?: NomCuisine): void {
   try {
     const c = contexteAudio();
     if (!c || c.state !== 'running' || !enMarche || !busCuisine || !AMBIANCE || getReglages().muet) return;
     const noms = Object.keys(AMBIANCE.cuisine).filter((n) => AMBIANCE.cuisine[n]?.length);
-    const choix = nom && noms.includes(nom) ? nom : noms.filter((n) => n !== derniereCuisine)[Math.floor(Math.random() * Math.max(1, noms.length - 1))];
+    const autres = noms.filter((n) => n !== derniereCuisine);
+    const choix = nom && noms.includes(nom) ? nom : (autres.length ? autres[Math.floor(Math.random() * autres.length)] : noms[0]);
     if (!choix) return;
     derniereCuisine = choix;
     const vs = AMBIANCE.cuisine[choix];
