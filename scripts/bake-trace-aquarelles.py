@@ -52,9 +52,17 @@ LEVE = 4.0  # px de temps : levé de plume entre deux tronçons
 N_ZONES = 24  # zones de couleur (SLIC)
 RECOUVREMENT = 2.2  # fenêtre de chaque zone, en pas de zone (recouvrement)
 CREME = np.array([0xF3, 0xEA, 0xD8], float)
+PAPIER = np.array([0.900, 0.857, 0.737])  # teinte du papier des aquarelles cuites (bake-aquarelles.py)
 GRAPHITE = np.array([0x5A, 0x54, 0x4D], np.uint8)
 VOISINS = np.ones((3, 3), int)
 VOISINS[1, 1] = 0
+
+
+def sans_papier(rgba: np.ndarray) -> np.ndarray:
+    """L'aquarelle cuite est teintée du papier (bake-aquarelles.py, PAPIER) : on retire la teinte, les traits
+    se cherchent dans les couleurs d'origine."""
+    rgb = np.clip(np.round(rgba[..., :3] / PAPIER), 0, 255).astype(np.uint8)
+    return np.dstack([rgb, rgba[..., 3]])
 
 
 def dessin(rgba: np.ndarray):
@@ -247,7 +255,7 @@ def couleur(rgba: np.ndarray, dedans: np.ndarray, temps_proche: np.ndarray) -> n
 
 def cuire(nom: str) -> tuple[np.ndarray, np.ndarray]:
     """Calcule (R, G, B) du trait et de la couleur pour une aquarelle. Retourne (t16, flood)."""
-    rgba = np.asarray(Image.open(SOURCE / f"{nom}.webp").convert("RGBA"))
+    rgba = sans_papier(np.asarray(Image.open(SOURCE / f"{nom}.webp").convert("RGBA")))
     dedans, noyau = dessin(rgba)
     sq, t_sq = temps_crayon(lignes(rgba, dedans, noyau), silhouette(rgba), rgba.shape[:2])
     t_trait = epaissir(t_sq, sq, dedans)

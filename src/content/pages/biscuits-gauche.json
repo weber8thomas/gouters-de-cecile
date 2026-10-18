@@ -6,6 +6,94 @@
  "double": "biscuits",
  "cote": "gauche",
  "graine": 1201,
- "_": "Intercalaire : le dos d'une page, quasi blanc (on devine la page au dos par transparence).",
- "blocs": []
+ "_": "Frontispice du chapitre (face au titre « Biscuits ») : le même cadre orné que celui des gâteaux, une guirlande de fanions et un goûter qui vit (aquarelles vivantes : la framboise du cupcake qui rebondit, les noix qui sautent l'une après l'autre, la pomme coupée qui saute, la vanille au vent, la tranche d'orange qui tourne comme une toupie). Aucun mot.",
+ "blocs": [
+  {
+   "id": "cadre",
+   "type": "ornement",
+   "forme": "cadre",
+   "rect": [
+    0.075,
+    0.055,
+    0.85,
+    0.87
+   ],
+   "encre": "terracotta",
+   "graine": 12011
+  }
+ ],
+ "vivants": [
+  {
+   "nom": "aq-guirlande",
+   "rect": [
+    0.12,
+    0.15,
+    0.76,
+    0.12
+   ],
+   "aquarelle": "guirlande",
+   "anime": "balance",
+   "angle": 0
+  },
+  {
+   "nom": "aq-orange",
+   "rect": [
+    0.1,
+    0.38,
+    0.2,
+    0.127
+   ],
+   "aquarelle": "orange",
+   "anime": "fleurit",
+   "angle": -8
+  },
+  {
+   "nom": "aq-vanille",
+   "rect": [
+    0.67,
+    0.34,
+    0.23,
+    0.187
+   ],
+   "aquarelle": "vanille",
+   "anime": "balance",
+   "angle": 6
+  },
+  {
+   "nom": "aq-cupcake",
+   "rect": [
+    0.31,
+    0.34,
+    0.38,
+    0.29
+   ],
+   "aquarelle": "cupcake",
+   "anime": "fleurit",
+   "angle": -2
+  },
+  {
+   "nom": "aq-pomme",
+   "rect": [
+    0.08,
+    0.62,
+    0.3,
+    0.188
+   ],
+   "aquarelle": "pomme-2",
+   "anime": "fleurit",
+   "angle": -5
+  },
+  {
+   "nom": "aq-noix",
+   "rect": [
+    0.47,
+    0.7,
+    0.4,
+    0.111
+   ],
+   "aquarelle": "noix",
+   "anime": "fleurit",
+   "angle": 3
+  }
+ ]
 }

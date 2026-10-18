@@ -287,3 +287,151 @@ def points_conduite(xa, ya, xb, yb, rng, xh, pas=0.62):
         out.append(geste(np.array([p, q]), rng, xh, appui=0.92, vif=0.8, tremble=0.0, depart=False))
         s += pas * xh * float(np.clip(rng.normal(1, 0.14), 0.7, 1.35))
     return out
+
+
+# ---- ornements : cadre orné des frontispices, nœud de ruban, frise (pages décorées) -----------------
+def _spirale(c, r0, r1, a0, tours, sens, n=40):
+    """Spirale de rayon r0 (départ, angle a0) à r1, sur `tours` tours ; sens +1 : sens des aiguilles
+    d'une montre (y vers le bas)."""
+    t = np.linspace(0, 1, n)
+    a = a0 + sens * 2 * math.pi * tours * t
+    r = r0 + (r1 - r0) * t ** 0.9
+    return np.column_stack([c[0] + r * np.cos(a), c[1] + r * np.sin(a)])
+
+
+def _feuille(p, direction, longueur, largeur, rng, n=22):
+    """Petite feuille en amande, d'un seul geste : de la tige à la pointe par un bord, retour par l'autre."""
+    d = np.array([math.cos(direction), math.sin(direction)])
+    nrm = np.array([-d[1], d[0]])
+    t = np.linspace(0, 1, n)
+    larg = largeur * rng.uniform(0.85, 1.15)
+    aller = p[None] + d[None] * (longueur * t)[:, None] + nrm[None] * (larg * np.sin(math.pi * t) ** 0.8)[:, None]
+    retour = p[None] + d[None] * (longueur * t[::-1])[:, None] - nrm[None] * (larg * 0.8 * np.sin(math.pi * t[::-1]) ** 0.8)[:, None]
+    return np.vstack([aller, retour[1:]])
+
+
+def _coin_orne(cx, cy, sx, sy, k, rng, xh):
+    """Ornement d'un angle du cadre (cx, cy : l'angle du cadre intérieur ; sx, sy : vers l'intérieur,
+    ±1 ; k : unité de taille, px) : deux volutes qui partent le long des côtés et s'enroulent vers la
+    diagonale, une feuille et un point dans l'angle."""
+    out = []
+    j = lambda s=0.06: rng.normal(0, s)  # noqa: E731
+    for cote in (0, 1):
+        # local (u : le long du côté, v : vers l'intérieur ; unité k) → page
+        def P(u, v):
+            return np.array([cx + sx * k * (u if cote == 0 else v), cy + sy * k * (v if cote == 0 else u)])
+        depart = P(5.0 + j(0.2), 0.4 + j(0.04))
+        milieu = P(3.0, 0.55 + j())
+        centre = P(2.2 + j(), 1.3 + j())
+        # le sens d'enroulement : vers la diagonale (miroir d'un côté à l'autre et selon l'angle)
+        sens = 1 if (sx * sy > 0) == (cote == 0) else -1
+        a0 = math.atan2(milieu[1] - centre[1], milieu[0] - centre[0])
+        spir = _spirale(centre, float(np.linalg.norm(milieu - centre)), 0.18 * k, a0, rng.uniform(1.05, 1.25), -sens)
+        chemin = np.vstack([trait_courbe(depart, milieu, rng, xh, 0.02, 10)[:-1], spir])
+        out.append(geste(chemin, rng, xh, appui=0.78, vif=1.2, tremble=0.012))
+    # la feuille sur la diagonale, et un point d'appui au-delà
+    base = np.array([cx + sx * 2.3 * k, cy + sy * 2.3 * k])
+    direction = math.atan2(sy, sx) + rng.normal(0, 0.08)
+    out.append(geste(_feuille(base, direction, 1.25 * k, 0.32 * k, rng), rng, xh, appui=0.75, vif=1.1, tremble=0.01))
+    pt = base + np.array([sx, sy]) * 1.6 * k
+    out.append(geste(np.array([pt, pt + [0.12 * k, 0.05 * k]]), rng, xh, appui=0.95, vif=0.7, tremble=0.0, depart=False))
+    return out
+
+
+def noeud(cx, cy, taille, rng, xh):
+    """Nœud de ruban (le cadeau d'anniversaire) : deux boucles de part et d'autre du nœud, deux pans qui
+    retombent, coupés en biseau. (cx, cy) : le nœud ; `taille` : largeur des deux boucles (px)."""
+    w = taille / 2
+    h = taille * 0.3
+    out = []
+    for s in (-1, 1):
+        # la boucle : du nœud vers le haut et le côté, retour par le bas
+        t = np.linspace(0, 1, 34)
+        a = math.pi * t
+        x = cx + s * (w * np.sin(a) ** 1.1 * (0.9 + 0.1 * t))
+        y = cy - h * np.sin(2 * a) * 0.95 - 0.12 * h * np.sin(a)
+        boucle = np.column_stack([x, y])
+        boucle[:, 0] += rng.normal(0, 0.02) * w
+        out.append(geste(boucle, rng, xh, appui=0.8, vif=1.2, tremble=0.012))
+        # un pli dans la boucle
+        pli = np.array([[cx + s * 0.25 * w, cy - 0.05 * h], [cx + s * 0.62 * w, cy - 0.32 * h]])
+        out.append(geste(trait_courbe(pli[0], pli[1], rng, xh, 0.08, 8), rng, xh, appui=0.6, vif=1.4, tremble=0.008))
+        # le pan : il retombe en s'écartant, ondule un peu, finit en biseau
+        L = taille * rng.uniform(0.62, 0.72)
+        t = np.linspace(0, 1, 26)
+        px = cx + s * (0.08 * w + 0.42 * w * t + 0.06 * w * np.sin(math.pi * t * 1.5))
+        py = cy + 0.15 * h + L * t
+        bord1 = np.column_stack([px - s * 0.09 * w, py])
+        bord2 = np.column_stack([px + s * 0.11 * w, py - 0.05 * h])
+        fin = np.array([bord1[-1], [px[-1] + s * 0.01 * w, py[-1] - 0.32 * h], bord2[-1]])
+        out.append(geste(bord1, rng, xh, appui=0.78, vif=1.3, tremble=0.012))
+        out.append(geste(np.vstack([bord2, fin[::-1][1:]]), rng, xh, appui=0.78, vif=1.3, tremble=0.012))
+    # le nœud
+    t = np.linspace(0, 2 * math.pi, 30)
+    k = np.column_stack([cx + 0.17 * w * np.cos(t), cy + 0.06 * h + 0.24 * h * np.sin(t)])
+    out.append(geste(np.vstack([k, k[1:4]]), rng, xh, appui=0.85, vif=1.0, tremble=0.01))
+    return out
+
+
+def cadre_orne(x0, y0, x1, y1, rng, xh, ruban=True, coeur_bas=True):
+    """Cadre orné d'un frontispice : double cadre à main levée, volutes et feuille à chaque angle, un nœud
+    de ruban au milieu du haut (`ruban`), un petit cœur entre deux volutes au milieu du bas (`coeur_bas`)."""
+    out = cadre(x0, y0, x1, y1, rng, xh, "double")
+    e = 0.36 * xh
+    k = max(0.9 * xh, min(x1 - x0, y1 - y0) * 0.028)
+    for (cx, cy, sx, sy) in ((x0 + e, y0 + e, 1, 1), (x1 - e, y0 + e, -1, 1), (x1 - e, y1 - e, -1, -1), (x0 + e, y1 - e, 1, -1)):
+        out += _coin_orne(cx, cy, sx, sy, k, rng, xh)
+    xm = (x0 + x1) / 2 + rng.normal(0, 0.1) * xh
+    if ruban:
+        out += noeud(xm, y0 + rng.normal(0, 0.05) * xh, 5.2 * k, rng, xh)
+    if coeur_bas:
+        yb = y1 - e - 1.15 * k
+        out += coeur(xm, yb, 1.5 * k, rng, xh)
+        for s in (-1, 1):
+            a = np.array([xm + s * 1.25 * k, yb + 0.15 * k])
+            b = np.array([xm + s * 3.2 * k, yb + 0.35 * k])
+            c = np.array([xm + s * 3.55 * k, yb - 0.25 * k])
+            spir = _spirale(c, float(np.linalg.norm(b - c)), 0.12 * k, math.atan2(b[1] - c[1], b[0] - c[0]), 0.9, -s)
+            out.append(geste(np.vstack([trait_courbe(a, b, rng, xh, 0.03, 10)[:-1], spir]), rng, xh, appui=0.75, vif=1.2,
+                             tremble=0.01))
+    return out
+
+
+def frise(x0, x1, y, rng, xh, amplitude=0.55, onde=4.2):
+    """Frise de rinceau : une tige qui ondule de x0 à x1 autour de y, une feuille à chaque crête (de
+    part et d'autre, en alternance), une petite vrille à chaque creux sur deux, une volute aux deux bouts.
+    Unités : amplitude et longueur d'onde en hauteurs d'x."""
+    L = x1 - x0
+    n = max(40, int(L / (0.1 * xh)))
+    t = np.linspace(0, 1, n)
+    k = L / (onde * xh)
+    phase = rng.uniform(-0.2, 0.2)
+    A = amplitude * xh
+    X = x0 + L * t
+    Y = y + A * np.sin(2 * math.pi * k * t + phase) + _bruit_lent(rng, n, max(8, n / 6), 0.04 * xh)
+    out = [geste(np.column_stack([X, Y]), rng, xh, appui=0.74, vif=1.3, tremble=0.01)]
+    # crêtes et creux : là où le sinus vaut ±1
+    m = 0
+    while True:
+        u = ((m + 0.25) / k) - phase / (2 * math.pi * k)
+        if u > 0.985:
+            break
+        if u > 0.02:
+            i = int(u * (n - 1))
+            p = np.array([X[i], Y[i]])
+            haut = (m % 2) == 1  # sinus à -1 : la tige est en haut (y vers le bas)
+            pente = math.atan2(Y[min(i + 1, n - 1)] - Y[max(i - 1, 0)], X[min(i + 1, n - 1)] - X[max(i - 1, 0)])
+            cote = -1 if haut else 1
+            direction = pente + cote * math.radians(rng.uniform(52, 68))
+            if m % 2 == 0 or (m // 2) % 2 == 0:
+                out.append(geste(_feuille(p, direction, 1.15 * xh, 0.3 * xh, rng), rng, xh, appui=0.74, vif=1.1, tremble=0.01))
+            else:
+                c = p + np.array([math.cos(direction), math.sin(direction)]) * 0.55 * xh
+                out.append(geste(_spirale(c, 0.55 * xh, 0.1 * xh, direction + math.pi, 1.1, cote), rng, xh, appui=0.7,
+                                 vif=1.2, tremble=0.008))
+        m += 1
+    for s, (xa, ya) in ((-1, (X[0], Y[0])), (1, (X[-1], Y[-1]))):
+        c = np.array([xa + s * 0.45 * xh, ya - 0.45 * xh])
+        out.append(geste(_spirale(c, 0.64 * xh, 0.1 * xh, math.atan2(ya - c[1], xa - c[0]), 1.15, s), rng, xh,
+                         appui=0.72, vif=1.15, tremble=0.008))
+    return out

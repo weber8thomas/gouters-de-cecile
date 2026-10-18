@@ -10,8 +10,21 @@
  "marges": {
   "haut": 0.2
  },
- "_": "Colophon (fin du carnet, dernière page de droite) : petite note dans la main du carnet et un croquis de bougie. Textes provisoires, à modifier librement. Le dernier papier est f23 (non prévu dans papiers.json : repli sur une autre découpe, journalisé à la cuisson).",
+ "_": "Colophon (fin du carnet, dernière page de droite) : petite note dans la main du carnet. Textes provisoires, à modifier librement. Le dernier papier est f23 (non prévu dans papiers.json : repli sur une autre découpe, journalisé à la cuisson). Page décorée : une guirlande de fanions en haut, la théière et une tranche d'orange qui vivent (aquarelles vivantes), une frise de rinceau au-dessus du colophon ; à la place de l'ancien croquis de bougie, le cupcake d'anniversaire dont on souffle la bougie (un filet de fumée, puis elle se rallume : effets.ts, SCENES_PAGE).",
  "blocs": [
+  {
+   "id": "frise",
+   "type": "ornement",
+   "forme": "frise",
+   "rect": [
+    0.24,
+    0.535,
+    0.52,
+    0.03
+   ],
+   "encre": "terracotta",
+   "graine": 12021
+  },
   {
    "id": "colophon",
    "type": "etiquette",
@@ -26,21 +39,56 @@
     0.3
    ],
    "pente": -0.8
+  }
+ ],
+ "vivants": [
+  {
+   "nom": "aq-guirlande",
+   "rect": [
+    0.1,
+    0.05,
+    0.8,
+    0.126
+   ],
+   "aquarelle": "guirlande",
+   "anime": "balance",
+   "angle": 0
   },
   {
-   "id": "croquis",
-   "type": "croquis",
-   "nom": [
-    "bougie"
+   "nom": "aq-theiere",
+   "rect": [
+    0.24,
+    0.22,
+    0.52,
+    0.23
    ],
-   "taille": [
-    0.13,
-    0.15
+   "aquarelle": "theiere",
+   "anime": "vapeur",
+   "angle": -2
+  },
+  {
+   "nom": "aq-cupcake",
+   "rect": [
+    0.075,
+    0.31,
+    0.16,
+    0.165
    ],
-   "pres": [
-    0.5,
-    0.5
-   ]
+   "aquarelle": "cupcake-bougie",
+   "anime": "fleurit",
+   "angle": -4
+  },
+  {
+   "nom": "aq-orange",
+   "rect": [
+    0.75,
+    0.36,
+    0.16,
+    0.101
+   ],
+   "aquarelle": "orange",
+   "anime": "fleurit",
+   "angle": 10
   }
  ]
 }

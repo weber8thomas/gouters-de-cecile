@@ -5,8 +5,10 @@
 
 Entrée : les aquarelles retenues (détourées, harmonisées vers le crème par scripts/aquarelles*.py), une par
 entrée des catalogue-*.json (licence, source, auteur). Sortie : WebP avec transparence, 800 px au plus de
-côté, que l'application pose par multiplication sur la page (src/components/Aquarelle). Déterministe.
-Les couleurs sont saturées (SATURATION) avant écriture ; l'alpha ne bouge pas.
+côté, que l'application pose simplement sur la page (src/components/Aquarelle). Déterministe.
+Les couleurs sont saturées (SATURATION), puis teintées du papier moyen (PAPIER) avant écriture ; l'alpha
+ne bouge pas. Posée sur le papier, l'aquarelle teintée donne la même couleur qu'une multiplication avec
+lui (a·c·P + (1 − a)·P) : pas de mode de fusion à l'écran, un calque de moins à composer.
 """
 import json
 from pathlib import Path
@@ -24,6 +26,16 @@ EFFACER = {"citron-2": [(0.0, 0.92, 0.3, 1.0)]}
 # Un pixel proche du bord de la gamme RGB est moins saturé plutôt qu'écrêté : pas de couleur plate ni de saut.
 SATURATION = 1.25
 LUMINANCE = np.array([0.299, 0.587, 0.114])  # luminance Rec. 601 (comme PIL « L »)
+# Couleur moyenne des papiers du carnet (design-system/baked/pages/papier, mesurée) : la teinte du pigment
+# posé sur la page. scripts/bake-trace-aquarelles.py la retire avant de chercher les traits.
+PAPIER = np.array([0.900, 0.857, 0.737])
+
+
+def teinter(im: Image.Image) -> Image.Image:
+    """Renvoie l'image RGBA dont la couleur est multipliée par PAPIER, alpha inchangé."""
+    rgba = np.asarray(im, dtype=float)
+    rgb = np.clip(np.round(rgba[..., :3] * PAPIER), 0, 255).astype(np.uint8)
+    return Image.fromarray(np.dstack([rgb, rgba[..., 3].astype(np.uint8)]), "RGBA")
 
 
 def saturer(im: Image.Image) -> Image.Image:
@@ -55,7 +67,7 @@ def main() -> None:
         for g, h, d, b in EFFACER.get(nom, []):
             im.paste((0, 0, 0, 0), (round(g * im.width), round(h * im.height), round(d * im.width), round(b * im.height)))
         im.thumbnail((COTE_MAX, COTE_MAX), Image.LANCZOS)
-        im = saturer(im)
+        im = teinter(saturer(im))
         out = SORTIE / f"{nom}.webp"
         im.save(out, "WEBP", quality=88, method=6, exact=True)
         print(f"{nom:22s} {im.size[0]}×{im.size[1]}  {out.stat().st_size // 1024} Ko")
