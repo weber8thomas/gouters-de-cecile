@@ -237,7 +237,7 @@ async function suiteBanc() {
     const gVideo = await gainDe({ vitesse: 1 });
     await page.evaluate(() => window.__banc.video(false));
     const proche = (a, b) => a != null && Math.abs(a - b) < 0.002;
-    R.ok(nom, 'gain = volume × (0,35 + 0,65 × vitesse) × gain × mixage (banque.json)', proche(g1, riffle.g) && proche(gLent, 0.35 * riffle.g) && proche(gOpt, 0.5 * riffle.g),
+    R.ok(nom, 'gain = volume × 0,3 × (0,35 + 0,65 × vitesse) × gain × mixage (banque.json)', proche(g1, GAIN_BRUITAGES * riffle.g) && proche(gLent, 0.35 * GAIN_BRUITAGES * riffle.g) && proche(gOpt, 0.5 * GAIN_BRUITAGES * riffle.g),
       `riffle (mixage ${riffle.g}) : v 1 → ${g1?.toFixed(4)} · v 0 → ${gLent?.toFixed(4)} · gain 0,5 → ${gOpt?.toFixed(4)}`);
     R.ok(nom, 'le volume des bruitages règle le gain', proche(gV, 0.5 * g1), `volume 1 → ${g1?.toFixed(4)} · volume 0,5 → ${gV?.toFixed(4)}`);
     R.ok(nom, 'pendant une vidéo : × 0,3', proche(gVideo, 0.3 * g1), `${gVideo?.toFixed(4)} (attendu ${(0.3 * g1).toFixed(4)})`);
@@ -288,8 +288,11 @@ async function suiteBanc() {
   }
 }
 
-/** Volume des bruitages par défaut (src/lib/reglages.ts, REGLAGES_DEFAUT) : le niveau plein de l'ambiance. */
-const VOLUME_BRUITAGES_DEFAUT = 0.8;
+/** Volume des bruitages par défaut (src/lib/reglages.ts, REGLAGES_DEFAUT) et niveau réel à 100 % du curseur
+ * (GAIN_BRUITAGES) : le niveau plein de l'ambiance est leur produit. */
+const VOLUME_BRUITAGES_DEFAUT = 0.5;
+const GAIN_BRUITAGES = 0.3;
+const NIVEAU_DEFAUT = VOLUME_BRUITAGES_DEFAUT * GAIN_BRUITAGES;
 
 async function suiteAmbiance() {
   const e = ecran('tv-1080');
@@ -310,7 +313,7 @@ async function suiteAmbiance() {
       echant.push(await page.evaluate(() => window.__banc.ambiance().niveau));
     }
     const feu = (await espion(page)).starts.filter((s) => s.f === 'ambiance-feu.mp3');
-    R.ok(nom, 'ambiance : le feu démarre après le geste, en fondu sur 3 s', marche && feu.length >= 1 && echant[0] > 0.02 && echant[0] < 0.6 && echant[1] > echant[0] && Math.abs(echant[2] - VOLUME_BRUITAGES_DEFAUT) < 0.02,
+    R.ok(nom, 'ambiance : le feu démarre après le geste, en fondu sur 3 s', marche && feu.length >= 1 && echant[0] > 0.025 * NIVEAU_DEFAUT && echant[0] < 0.75 * NIVEAU_DEFAUT && echant[1] > echant[0] && Math.abs(echant[2] - NIVEAU_DEFAUT) < 0.005,
       `niveau à 0,7 / 1,6 / 3,8 s : ${echant.map((v) => v?.toFixed(3)).join(' / ')} · ${feu.length} passage(s) du feu (gain du passage ${feu[0]?.gain ?? '—'})`);
     const sync = await page.evaluate(async () => {
       const s = window.__gcFeuSync;
@@ -328,13 +331,12 @@ async function suiteAmbiance() {
     await page.evaluate(() => window.__banc.video(false));
     await attendre(2600);
     const apres = await page.evaluate(() => window.__banc.ambiance().niveau);
-    R.ok(nom, 'ambiance : × 0,15 pendant une vidéo, puis retour', Math.abs(enVideo - 0.15 * VOLUME_BRUITAGES_DEFAUT) < 0.01 && Math.abs(apres - VOLUME_BRUITAGES_DEFAUT) < 0.02, `pendant ${enVideo?.toFixed(3)} · après ${apres?.toFixed(3)}`);
+    R.ok(nom, 'ambiance : × 0,15 pendant une vidéo, puis retour', Math.abs(enVideo - 0.15 * NIVEAU_DEFAUT) < 0.003 && Math.abs(apres - NIVEAU_DEFAUT) < 0.005, `pendant ${enVideo?.toFixed(3)} · après ${apres?.toFixed(3)}`);
     // Volume
-    await page.evaluate(() => window.__banc.reglages({ volumeBruitages: 0.5 }));
+    await page.evaluate(() => window.__banc.reglages({ volumeBruitages: 1 }));
     await attendre(1200);
     const vol = await page.evaluate(() => window.__banc.ambiance().niveau);
-    await page.evaluate(() => window.__banc.reglages({ volumeBruitages: 1 }));
-    R.ok(nom, 'ambiance : suit le volume des bruitages', Math.abs(vol - 0.5) < 0.02, `volume des bruitages 0,5 → niveau ${vol?.toFixed(3)}`);
+    R.ok(nom, 'ambiance : suit le volume des bruitages', Math.abs(vol - GAIN_BRUITAGES) < 0.005, `volume des bruitages 1 → niveau ${vol?.toFixed(3)} (attendu ${GAIN_BRUITAGES})`);
     // « Couper tous les sons » : le gain maître de l'ambiance tombe à 0 (le feu tourne en silence), aucun
     // bruit de cuisine ; rétabli ensuite
     await page.evaluate(() => window.__banc.reglages({ muet: true }));
@@ -345,10 +347,10 @@ async function suiteAmbiance() {
     await attendre(500);
     const cuisineMuet = (await joues(page, n0m)).filter((x) => /^cuisine-/.test(x.f || ''));
     await page.evaluate(() => window.__banc.reglages({ muet: false }));
-    await page.waitForFunction(() => window.__banc.ambiance().niveau > 0.98, null, { timeout: 8000 }).catch(() => undefined);
+    await page.waitForFunction((g) => window.__banc.ambiance().niveau > 0.98 * g, GAIN_BRUITAGES, { timeout: 8000 }).catch(() => undefined);
     const retourAmb = await page.evaluate(() => window.__banc.ambiance().niveau);
     R.ok(nom, 'muet : ambiance à 0 (le feu tourne en silence), aucun bruit de cuisine ; rétabli ensuite',
-      muetAmb.niveau < 0.01 && muetAmb.marche && !cuisineMuet.length && Math.abs(retourAmb - 1) < 0.02,
+      muetAmb.niveau < 0.003 && muetAmb.marche && !cuisineMuet.length && Math.abs(retourAmb - GAIN_BRUITAGES) < 0.005,
       `niveau pendant le muet ${muetAmb.niveau?.toFixed(3)} (en marche ${muetAmb.marche}) · ${cuisineMuet.length} bruit(s) de cuisine · après : ${retourAmb?.toFixed(3)}`);
     // Cuisine : prévue dans 5 à 15 s ; jouée au gain de la banque × 2, un peu à gauche ou à droite
     const prevue = await page.evaluate(() => window.__banc.ambiance().prochaineCuisineS);
@@ -422,7 +424,7 @@ async function suiteAmbiance() {
     const apres = await a.page.evaluate(() => window.__banc.ambiance().niveau);
     const E = await espion(a.page);
     const feu = E.starts.filter((s) => s.f === 'ambiance-feu.mp3' && s.duree > 0.01);
-    R.ok(ip.nom, 'iPhone (réglage par défaut) : l\'ambiance joue après le premier toucher (feu en fondu sur 3 s)', marche && feu.length >= 1 && Math.abs(apres - VOLUME_BRUITAGES_DEFAUT) < 0.02,
+    R.ok(ip.nom, 'iPhone (réglage par défaut) : l\'ambiance joue après le premier toucher (feu en fondu sur 3 s)', marche && feu.length >= 1 && Math.abs(apres - NIVEAU_DEFAUT) < 0.005,
       `${E.contextes.map((c) => c.etats.join('→')).join(', ')} · niveau 3,8 s après le geste ${apres?.toFixed(3)} · ${feu.length} passage(s) du feu`);
   } finally {
     await a.ctx.close();
