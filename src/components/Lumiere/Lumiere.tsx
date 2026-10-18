@@ -114,6 +114,24 @@ export const LUMIERE_TRACEE = !!assetInfo('lumiere/vide');
 
 const ETATS = ['vide', 'couverture', 'arriere', 'ouvert'] as const;
 
+/**
+ * Sur la table, au-delà de la marge des calques tracés (écran d'une autre forme que la scène : la table
+ * déborde, Stage `debord`) : la couleur de leur bord, la pénombre de la pièce. Un cadre peint avec la
+ * table : aucun calque de plus. (Une ombre d'étalement de 4000 px sur le fond tracé faisait la même chose,
+ * mais gonflait le calque de la lumière à 10 720 px de côté : des centaines de Mo sur un téléphone.)
+ */
+export function PenombreTable() {
+  const { distance } = useSettings();
+  if (!LUMIERE_TRACEE) return null;
+  const { marge, bords } = tracee as { marge: number; bords: Record<string, number[]> };
+  const [r, g, b, a] = bords[`${distance}-ouvert`] ?? bords.vide ?? [0, 0, 0, 0];
+  const style = {
+    '--gc-lumiere-marge': `${marge}px`,
+    borderColor: `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${a})`,
+  } as React.CSSProperties;
+  return <div className="gc-lumiere-penombre" aria-hidden="true" style={style} />;
+}
+
 function LumiereTracee() {
   const { distance } = useSettings();
   const { intensite } = useFeu();
@@ -121,7 +139,7 @@ function LumiereTracee() {
   const feuOp = useTransform(intensite, (i) => r4(borne((0.2 - 0.5 * (i - 1)) / 0.4, 0, 1)));
   // bougie : son éclat (flamme × étirement, ≈ 0,85 à 1,07) ; le voile noir vaut sa baisse à la moitié
   const bougieOp = useTransform(flammeBougie, (v) => r4(borne((1.06 - v) / 0.5, 0, 1)));
-  const { marge, w, h, bords } = tracee as { marge: number; w: number; h: number; bords: Record<string, number[]> };
+  const { marge, w, h } = tracee as { marge: number; w: number; h: number };
   const boite = { left: -marge, top: -marge, width: w, height: h };
   return (
     <LazyMotion features={domMax}>
@@ -129,12 +147,10 @@ function LumiereTracee() {
         {ETATS.map((e) => {
           const nom = e === 'vide' ? 'vide' : `${distance}-${e}`;
           if (!assetInfo(`lumiere/${nom}`)) return null;
-          const [r, g, b, a] = bords[nom] ?? [0, 0, 0, 0];
-          const bord = `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${a})`;
           return (
             <div key={e} className="gc-lumiere-tracee" data-gc-lumiere-etat={e}>
-              {/* au-delà des calques (téléphone, tablette) : la couleur de leur bord */}
-              <div className="gc-lumiere-tracee__fond" style={{ ...boite, backgroundImage: cssUrl(`lumiere/${nom}`), boxShadow: `0 0 0 4000px ${bord}` }} />
+              {/* au-delà des calques (téléphone, tablette) : PenombreTable, sur la table */}
+              <div className="gc-lumiere-tracee__fond" style={{ ...boite, backgroundImage: cssUrl(`lumiere/${nom}`) }} />
               <m.div className="gc-lumiere-tracee__voile" data-gc-lumiere="feu" style={{ ...boite, backgroundImage: cssUrl(`lumiere/${nom}-feu`), opacity: feuOp }} />
               <m.div className="gc-lumiere-tracee__voile" data-gc-lumiere="bougie" style={{ ...boite, backgroundImage: cssUrl(`lumiere/${nom}-bougie`), opacity: bougieOp }} />
             </div>

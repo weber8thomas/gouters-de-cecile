@@ -192,7 +192,7 @@
 /* ---- 5. Éclairage tracé (scripts/lumiere3d, Lumiere.tsx LumiereTracee) --------------------------------
    Un groupe de calques par état du livre ; seul celui de l'état courant se voit, avec un fondu quand le
    livre s'ouvre, se ferme, ou arrive sur la table vide. Les calques sont en px de scène et débordent de la
-   scène (marge du rendu) ; au-delà, l'ombre portée du fond prolonge la couleur de son bord. */
+   scène (marge du rendu, 400 px) ; au-delà, la table prend la couleur de leur bord (PenombreTable). */
 .gc-lumiere-tracee {
   position: absolute;
   inset: 0;
@@ -229,4 +229,15 @@
 .gc-stage--tracee .gc-livre:not([data-gc-arrivee="en-cours"]) .gc-livre__ombre--droite,
 .gc-stage--tracee .gc-livre:not([data-gc-arrivee="en-cours"]) .gc-livre__ombre--epaisseur {
   visibility: hidden;
+}
+
+/* Au-delà de la marge des calques tracés, quand la table déborde de la scène (--gc-stage-debord) : un cadre
+   de la couleur de leur bord, peint avec la table (aucun calque). Sa bordure va du bord de la table à la
+   marge des calques ; sans débord (TV), elle est nulle. */
+.gc-lumiere-penombre {
+  position: absolute;
+  inset: 0;
+  border-style: solid;
+  border-width: max(0px, calc(var(--gc-stage-debord, 0px) - var(--gc-lumiere-marge)));
+  pointer-events: none;
 }

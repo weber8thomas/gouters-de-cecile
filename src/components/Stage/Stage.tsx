@@ -1,6 +1,6 @@
 import React from 'react';
 import { SettingsContext, settingsAttrs, useSettings, type Distance, type IdleLook, type Settings } from '../../lib/settings';
-import { LumiereLivre, LumiereTable, LUMIERE_TRACEE } from '../Lumiere';
+import { LumiereLivre, LumiereTable, PenombreTable, LUMIERE_TRACEE } from '../Lumiere';
 import { Bougie } from '../Bougie';
 import './Stage.css';
 
@@ -65,6 +65,7 @@ export function Stage({ idle, distance, fit = false, children, overlay, classNam
         <div className="gc-stage__surface" />
         {/* éclairage tracé : la pénombre de la table est dans ses calques */}
         {!LUMIERE_TRACEE && <div className="gc-stage__falloff" />}
+        {debord > 0 && <PenombreTable />}
       </div>
       <LumiereTable />
       <div className="gc-stage__content">{children}</div>
