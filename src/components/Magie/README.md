@@ -40,7 +40,7 @@ Les photos, aquarelles, croquis et le feuillet volant viennent du manifeste des 
 - **Toile** : un seul calque.
   - Sa définition est bornée : au plus 2 px de toile par px d'écran, et au plus 2,4 Mpx (1,6 Mpx au doigt).
   - Elle tourne à 60 images/s quand quelque chose bouge et à 30 au calme. Elle dort (un coup d'œil tous les quarts de seconde) quand rien n'est à l'écran.
-- **Pas de temps** : il est calculé à un seul endroit (`image()` dans `moteur.ts`). C'est là que le réglage « vitesse des animations » le multipliera.
+- **Pas de temps** : il est calculé à un seul endroit (`image()` dans `moteur.ts`), multiplié par `vitesseAnimations()` : c'est là que se branche le réglage « vitesse des animations » (`facteurAnimations()`).
 - **Pauses** : la magie s'arrête quand l'onglet est caché. Elle est cachée sous la loupe (zoomée, ou pendant son geste).
 - **Mouvement réduit** :
   - pas de trajectoires rapides : des étoiles scintillent sur place au changement de page et à l'ouverture ;
@@ -61,4 +61,4 @@ Les photos, aquarelles, croquis et le feuillet volant viennent du manifeste des 
 
 ## Débogage
 
-`window.__gcMagie` (dernier livre monté) : `etat()`, `feuDArtifice()`, `pas()`, `reflet()`, `paraphe()`, `ornements()`, `mesurer()`.
+`window.__gcMagie` (dernier livre monté) : `etat()`, `feuDArtifice()`, `pas()`, `reflet()`, `paraphe()`, `titres()`, `ornements()`, `mesurer()`.

@@ -48,6 +48,10 @@ export interface LiensMagie {
   reduit: () => boolean;
 }
 
+/** Vitesse des animations (1 = normale). Point d'accroche du réglage « vitesse des animations » : à la
+ *  fusion, `facteurAnimations()` de lib/vitesse. Elle ne touche que le pas de temps (image()). */
+const vitesseAnimations = (): number => 1;
+
 /** Où brille la flamme de la bougie (px de scène de la scène, pas de la caméra). */
 const FLAMME = { x: bougieJson.flamme.meche[0], y: bougieJson.flamme.meche[1] - 28 };
 /** Les gestes qui font tourner une feuille (ou la remplacent) : la toile cache ce qui est posé sur la page. */
@@ -446,14 +450,15 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     im.src = assetUrl(nom);
   }
 
-  function lancerReflet(v: PageVue, e: EtatPage): void {
+  function lancerReflet(v: PageVue, e: EtatPage, auHasard = true): TitreCarte | null {
     // le plus grand titre, ou un autre de temps en temps
     const prets = (v.carte?.titres ?? []).filter((t) => { const r = e.reflets.get(t.bloc); return r && r !== 'charge' && r.tex; });
-    if (!prets.length) return;
+    if (!prets.length) return null;
     prets.sort((a, b) => (b.r[2] - b.r[0]) * (b.r[3] - b.r[1]) - (a.r[2] - a.r[0]) * (a.r[3] - a.r[1]));
-    const t = Math.random() < 0.65 ? prets[0] : prets[Math.floor(Math.random() * prets.length)];
+    const t = !auHasard || Math.random() < 0.65 ? prets[0] : prets[Math.floor(Math.random() * prets.length)];
     const r = e.reflets.get(t.bloc) as { tex: WebGLTexture; r: [number, number, number, number] };
     reflet = { page: v.id, tex: r.tex, r: r.r, t0: horloge, duree: 1.7, etoiles: 0 };
+    return t;
   }
 
   // ---- Le maraudeur --------------------------------------------------------------------------------
@@ -608,9 +613,9 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     const vif = mouvement || grains.n > 0 || !!plume || paraphes.length > 0 || !!reflet || !!promenadeEnCours || aFaire.length > 0 || ornementEnTrace();
     // 60 images/s quand ça bouge, 30 au calme (poussière, photos)
     if (!vif && brut < 1 / 31) { raf = requestAnimationFrame(image); return; }
-    // Le pas de temps de toute la magie, à un seul endroit (le réglage « vitesse des animations » le
-    // multipliera ici) : borné, pour qu'un retour d'onglet ou une image lente ne fasse rien sauter.
-    const dt = Math.min(endormi ? 0.3 : 0.05, Math.max(0, brut));
+    // Le pas de temps de toute la magie, à un seul endroit : borné, pour qu'un retour d'onglet ou une
+    // image lente ne fasse rien sauter, puis multiplié par la vitesse des animations.
+    const dt = Math.min(endormi ? 0.3 : 0.05, Math.max(0, brut)) * vitesseAnimations();
     endormi = false;
     avant = now;
     horloge += dt;
@@ -917,12 +922,19 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   }
 
   // ---- Débogage (captures de vérification) ----------------------------------------------------------
+  const ecranDe = (v: PageVue, t: TitreCarte) => {
+    const [a, b] = sceneDe(v, t.r[0], t.r[1]);
+    const [c, d] = sceneDe(v, t.r[2], t.r[3]);
+    return { page: v.id, bloc: t.bloc, x: cr.left + a * q, y: cr.top + b * q, w: (c - a) * q, h: (d - b) * q };
+  };
   const debug = {
     etat: () => ({ k, q, pages: pages.map((v) => ({ id: v.id, ecrite: v.ecrite, orn: etats.get(v.id)?.ornements?.length ?? 0, fini: etats.get(v.id)?.fini })), grains: grains.n, photos: photos.vivantes.length, calme, enGeste, horloge, flamme: [poussiere.fx, poussiere.fy], poussiereVue, toile: [toile.width, toile.height] }),
     feuDArtifice: () => { const g = L.geo(); if (g) feuDArtifice(g); reveiller(); },
     pas: () => { const ok = lancerPromenade(); reveiller(); return ok; },
-    reflet: () => { for (const v of pages) { const e = etatDe(v.id); if (v.carte?.titres.length) { lancerReflet(v, e); e.prochainReflet = horloge + 0.3; } } reveiller(); },
-    paraphe: () => { const v = pages.find((x) => x.carte?.titres.length); if (v) lancerParaphe(v, v.carte!.titres[v.carte!.titres.length - 1]); reveiller(); },
+    // reflet() et paraphe() : sur le plus grand titre de la première page qui en a un ; rendent son rectangle
+    reflet: () => { for (const v of pages) { const t = lancerReflet(v, etatDe(v.id), false); if (t) { reveiller(); return ecranDe(v, t); } } return null; },
+    paraphe: () => { const v = pages.find((x) => x.carte?.titres.length); if (!v) return null; const t = v.carte!.titres[v.carte!.titres.length - 1]; lancerParaphe(v, t); reveiller(); return ecranDe(v, t); },
+    titres: () => pages.flatMap((v) => (v.carte?.titres ?? []).map((t) => ecranDe(v, t))),
     ornements: () => { for (const v of pages) { const e = etatDe(v.id); e.fini = false; e.debut = horloge + 0.2; } reveiller(); },
     mesurer: () => { mesurer(); reveiller(); },
   };
