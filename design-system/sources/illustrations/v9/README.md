@@ -40,4 +40,16 @@ la part de gâteau porte une bougie éteinte et ne reçoit pas de flamme artific
 Le Jack Russell remplace les papillons et la coccinelle dans les pages actives. Il marche au bas des
 pages, dans une zone vérifiée libre d'encre, de photos et d'objets, s'arrête et dit « Tea time! » ou
 « Jolly good! ». Si aucune route sûre n'existe, il reste absent. Les bulles ne se retournent pas avec
-le chien. Le mouvement réduit conserve une pose immobile.
+le chien. Les promenades du chien sont suspendues en mouvement réduit ; les illustrations restent fixes.
+
+## Introduction déjà cuite
+
+Trois anciens croquis restaient intégrés à l'encre : le gâteau de la page de titre et deux guirlandes.
+Ils sont remplacés par les mêmes aquarelles vivantes. Les encres originales 1×, 2× et tuiles 4× sont
+archivées dans `encres-introduction-avant-v9.zip`, avec leurs descriptions et rectangles.
+
+La migration historique `scripts/migrate-introduction-v9.py` efface uniquement ces rectangles des
+calques transparents puis réserve leurs nouvelles zones. Elle vérifie pixel par pixel que le reste
+est identique ; la sauvegarde WebP sans perte évite de recompresser l'écriture. Les descriptions
+source produiront cette disposition lors d'une future cuisson normale. Ce script n'est pas requis
+au build ; il refuse de restaurer les anciennes encres si les blocs de texte ont changé depuis.

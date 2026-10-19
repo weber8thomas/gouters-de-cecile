@@ -29,6 +29,9 @@ Les anciens masques de parties et leurs fonds sont retirés et ne peuvent plus �
 nouvelle série. Les citrons restent entiers, sans saut, rotation, écrasement ni flexion. Les autres
 pâtisseries utilisent des gestes rigides discrets ; vapeur et flammes sont recalées sur les dessins.
 Le grand gâteau a cinq bougies. La part de gâteau a une bougie éteinte, sans fausse flamme.
+Le gâteau et les deux guirlandes de l'introduction, jusque-là incorporés à l'encre, ont aussi été
+remplacés. Migration des encres 1×/2×/4× avec conservation exacte de tous les pixels hors des dessins ;
+originaux archivés et descriptions source actualisées, sans régénérer le texte.
 
 Le Jack Russell remplace les papillons et la coccinelle actifs. Son trajet terrestre réserve une zone
 libre d'encre, d'objets et de photos pour le chien et sa bulle anglaise. Pas de route sûre : pas de
@@ -64,6 +67,10 @@ comparent les arbres Git, le préfixe modifié et le commit distant après push.
 - Lumière : 15 contrôles d'ouverture/fermeture, 4 contrôles papier/réduit/arrêt du feu, un contrôle de
   vacillement natif. Les deux anciens critères erronés (RGB d'une encre translucide et horloge du
   simulateur) ont été corrigés ; nouveaux rapports ciblés sans échec.
+- Introduction harmonisée vérifiée dans le build final : deux toiles prêtes, guirlandes et gâteau
+  à cinq bougies en scène réelle, aucune erreur ni ressource manquante. Capture :
+  `verification/out/harmonisation-v9/final-titre.png`. Captures réduites Sommaire/Biscuits également
+  inspectées ; le gâteau de « Joyeux anniversaire » est accordé à la théière et au cupcake.
 - `verify-site` exige désormais une photo seulement si cette page dispose d'un clip publié. Le
   calque Soulever est global et ne prouve pas qu'un frontispice doit avoir une photo.
 - Rapports actuels : `verification/out/harmonisation-v9/site-final/site.json`,

@@ -1212,10 +1212,10 @@
   },
   "pages/1x/garde": {
     "file": "baked/pages/1x/garde.webp",
-    "sha": "9189b0a0d426acc2b1d7ee5d2192d19561f5171e8aaac99407383d44abefdf5a",
+    "sha": "eb7629bc8919805a81570fbb736f773a59673737ea5d728b3cbfced9bb1d3f60",
     "w": 850,
     "h": 1200,
-    "bytes": 22500,
+    "bytes": 78964,
     "type": "image/webp"
   },
   "pages/1x/gateaux-droite": {
@@ -1484,10 +1484,10 @@
   },
   "pages/1x/titre": {
     "file": "baked/pages/1x/titre.webp",
-    "sha": "c4b7757ceba0fec08cc6545878e99195ee89d8e0c2a2c40272f3954a23fad7da",
+    "sha": "c490a8b1cc76f0ffbb96bfd1aef9daaad70adeb8f4c2a4af6b6dc26d8f75ec85",
     "w": 850,
     "h": 1200,
-    "bytes": 63574,
+    "bytes": 156196,
     "type": "image/webp"
   },
   "pages/4x/bernard-droite-00": {
@@ -1960,37 +1960,37 @@
   },
   "pages/4x/garde-00": {
     "file": "baked/pages/4x/garde-00.webp",
-    "sha": "f847ee9550ab6a4fe44291edb8cc9e830784f201b8f3d3f392ab0c159e801f38",
+    "sha": "417afe0ac72c3beeba3d0e007cb239ebbb5940a9aca763bcfe7060e48e60d7ea",
     "w": 1704,
     "h": 2404,
-    "bytes": 82848,
+    "bytes": 318068,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/garde-01": {
     "file": "baked/pages/4x/garde-01.webp",
-    "sha": "34bda51be5cd7f4f55c61c511dc7e1298e108377a48fbdb7d73f7645b841c937",
+    "sha": "45ee3535cd2690cf283308d062ee620f0395d86cad080851c24f555a820a6d23",
     "w": 1704,
     "h": 2404,
-    "bytes": 93906,
+    "bytes": 361032,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/garde-10": {
     "file": "baked/pages/4x/garde-10.webp",
-    "sha": "8a59bdc48cb22d5f53633e280e25d1107f9ac8c4f40aa9ae90f6be90a42d6208",
+    "sha": "57d6087e9d7c2d7b59c615a9c7cf06c6864cfdb06d5af0a60b11b0c99ae4e70e",
     "w": 1704,
     "h": 2404,
-    "bytes": 7630,
+    "bytes": 240,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/garde-11": {
     "file": "baked/pages/4x/garde-11.webp",
-    "sha": "8a59bdc48cb22d5f53633e280e25d1107f9ac8c4f40aa9ae90f6be90a42d6208",
+    "sha": "57d6087e9d7c2d7b59c615a9c7cf06c6864cfdb06d5af0a60b11b0c99ae4e70e",
     "w": 1704,
     "h": 2404,
-    "bytes": 7630,
+    "bytes": 240,
     "type": "image/webp",
     "site": true
   },
@@ -2608,37 +2608,37 @@
   },
   "pages/4x/titre-00": {
     "file": "baked/pages/4x/titre-00.webp",
-    "sha": "be38e02231e1b62e45067e4c9584595fdabd9486256159152bfcaca8a4f8b52c",
+    "sha": "07ee86d78206db0e981df3bf43b40905b65b11eefd0c48eb3bebb0b076a6d137",
     "w": 1704,
     "h": 2404,
-    "bytes": 113678,
+    "bytes": 362490,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/titre-01": {
     "file": "baked/pages/4x/titre-01.webp",
-    "sha": "550a222db905c1e2912762e20e25f0dfd84dab3ab4d24da96463611815396920",
+    "sha": "5eed2cb68d49a428a20ddc30f32673efc6ad6b2666324b12c49c1d21696bafbd",
     "w": 1704,
     "h": 2404,
-    "bytes": 119468,
+    "bytes": 368170,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/titre-10": {
     "file": "baked/pages/4x/titre-10.webp",
-    "sha": "d4567dfcc840ab3345000d434fb4990c44c5fe56c4c5c625a3b39788e91ddef7",
+    "sha": "d21433f639be153148fcd6f5b76da891d10959747fa1b54db5478e2d1cca8acb",
     "w": 1704,
     "h": 2404,
-    "bytes": 115646,
+    "bytes": 142034,
     "type": "image/webp",
     "site": true
   },
   "pages/4x/titre-11": {
     "file": "baked/pages/4x/titre-11.webp",
-    "sha": "89c1918c7052c0bb84b892d1820841fca2ab2b6bf0ae9062c7c34b1491cd068b",
+    "sha": "76b406597e2a400d4076d81030cd94bdb3c652f0db7daeeae4159240348fd033",
     "w": 1704,
     "h": 2404,
-    "bytes": 125174,
+    "bytes": 189440,
     "type": "image/webp",
     "site": true
   },
@@ -2764,10 +2764,10 @@
   },
   "pages/garde": {
     "file": "baked/pages/garde.webp",
-    "sha": "391e1f004896a99b52fba11f27e99ff37c8e6800dd3bd01597e34eb5a09e52ec",
+    "sha": "1bed7aa8da8cf4e47af80d3e733bdd5969d324e80f43ba6c66f1981f7779f0a2",
     "w": 1700,
     "h": 2400,
-    "bytes": 70766,
+    "bytes": 257032,
     "type": "image/webp"
   },
   "pages/gateaux-droite": {
@@ -3244,10 +3244,10 @@
   },
   "pages/titre": {
     "file": "baked/pages/titre.webp",
-    "sha": "36cca5bcea68e8edd46cc229cf7cd50bf7960609e210446867d7714d68c3ce26",
+    "sha": "1622aa3ddd3ad59ecff9556d70d6e260c07ba94c3f81df1a6f5e3f913d202795",
     "w": 1700,
     "h": 2400,
-    "bytes": 179260,
+    "bytes": 456462,
     "type": "image/webp"
   },
   "paper/base": {

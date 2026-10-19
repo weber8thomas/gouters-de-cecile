@@ -1239,23 +1239,23 @@
     ]
    },
    "texte": "Ex-libris\nCe carnet appartient à Cécile\noffert pour ses trente ans",
-   "vivants": {},
+   "vivants": {
+    "aq-fanions": [
+     0.2015,
+     0.1486,
+     0.6,
+     0.0779
+    ]
+   },
    "deborde": [],
    "lignes": 0,
-   "croquis": [
-    {
-     "nom": "fanions",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.2015,
-      0.1486,
-      0.6,
-      0.0779
-     ]
+   "croquis": [],
+   "relu": true,
+   "aquarelles": {
+    "aq-fanions": {
+     "aquarelle": "guirlande"
     }
-   ],
-   "relu": true
+   }
   },
   "gateaux-droite": {
    "double": "gateaux",
@@ -3177,40 +3177,38 @@
     ]
    },
    "texte": "carnet des trente ans\nrecettes de goûter partagées par celles et ceux qui l'aiment\nLes goûters\nde Cécile",
-   "vivants": {},
+   "vivants": {
+    "aq-fanions": [
+     0.0798,
+     0.031,
+     0.84,
+     0.1204
+    ],
+    "aq-gateau-bougies": [
+     0.2987,
+     0.6495,
+     0.4,
+     0.2833
+    ]
+   },
    "deborde": [],
    "lignes": 2,
-   "croquis": [
-    {
-     "nom": "fanions",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.0798,
-      0.031,
-      0.84,
-      0.1204
-     ]
-    },
-    {
-     "nom": "gateau-bougies",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.2987,
-      0.6495,
-      0.4,
-      0.2833
-     ]
-    }
-   ],
+   "croquis": [],
    "douteux": [
     "Cécile (encre rendue lue « Cecile »)"
    ],
    "douteux_importants": [
     "Cécile"
    ],
-   "relu": true
+   "relu": true,
+   "aquarelles": {
+    "aq-fanions": {
+     "aquarelle": "guirlande"
+    },
+    "aq-gateau-bougies": {
+     "aquarelle": "gateau-bougies"
+    }
+   }
   }
  }
 }

@@ -10,7 +10,7 @@
  "contre_plat": true,
  "papier": "garde-uni",
  "papier_miroir": true,
- "_": "Contre-plat (papier de garde collé sur le carton de la couverture) : pas de page au dos, pas de folio. Papier : lot Pa (papiers.json, gardes), crème chaud accordé aux pages. Ex-libris d'anniversaire : un cartouche tracé à la main à l'encre terracotta (bloc « cartouche », double trait), « Ex-libris » en petit en haut, « Ce carnet appartient à Cécile » en grand à l'encre chocolat, « offert pour ses trente ans » dessous, en terracotta ; une petite guirlande de fanions (croquis « fanions », un feston, à la même encre terracotta) tendue au-dessus du cartouche.",
+ "_": "Introduction : textes et cartouches conservés ; gâteau et guirlande de la série anglaise commune dans des zones vivantes.",
  "blocs": [
   {
    "id": "ex-libris-titre",
@@ -65,26 +65,6 @@
    "graine": 2023
   },
   {
-   "id": "fanions",
-   "type": "croquis",
-   "nom": [
-    "fanions"
-   ],
-   "taille": [
-    0.6,
-    0.11
-   ],
-   "places": [
-    {
-     "x": 0.2,
-     "y": 0.148
-    }
-   ],
-   "graine": 2063,
-   "encre": "terracotta",
-   "main": "soignee"
-  },
-  {
    "id": "cartouche",
    "type": "cartouche",
    "rect": [
@@ -97,6 +77,18 @@
    "encre": "terracotta",
    "graine": 2014,
    "echelle": 1.6
+  }
+ ],
+ "vivants": [
+  {
+   "nom": "aq-fanions",
+   "rect": [
+    0.2015,
+    0.1486,
+    0.6,
+    0.0779
+   ],
+   "aquarelle": "guirlande"
   }
  ]
 }
