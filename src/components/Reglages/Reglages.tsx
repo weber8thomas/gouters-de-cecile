@@ -63,7 +63,7 @@ const borne = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 const px = (v: number) => `${Math.round(v * 100) / 100}px`;
 
 /** Hauteur d'une fiche complète, en corps de texte (titre + 17 lignes réglées, section comprise, + marges). */
-const HAUTEUR_EM = 35;
+const HAUTEUR_EM = 29;
 /** Corps du texte de référence en 1080p sur ordinateur / écran (plus compact pour que la fiche reste légère). */
 const CORPS_TV = 24;
 /** Angle de la fiche posée sur la TV (degrés). */
@@ -358,6 +358,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   const etatRef = React.useRef(etat);
   etatRef.current = etat;
   const [liste, setListe] = React.useState(false);
+  const [listeMusique, setListeMusique] = React.useState(false);
   const [voirCredits, setVoirCredits] = React.useState(false);
   const [remis, setRemis] = React.useState(false);
   const boutonRef = React.useRef<HTMLButtonElement>(null);
@@ -365,6 +366,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   const focusAuDepart = React.useRef(false);
   const titreId = `${React.useId()}-titre`;
   const listeId = `${React.useId()}-liste`;
+  const musiqueId = `${React.useId()}-musique`;
   const creditsId = `${React.useId()}-credits`;
 
   // Comme le livre : quand la page (ou le livre) remplit déjà l'écran, les crans ne servent plus.
@@ -405,6 +407,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   const ouvrir = React.useCallback(() => {
     if (etatRef.current === 'ouvert') return;
     setListe(false);
+    setListeMusique(false);
     setVoirCredits(false);
     setRemis(false);
     focusAuDepart.current = true;
@@ -453,12 +456,13 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
     (premiere ? cibleDeLigne(premiere) : p)?.focus({ preventScroll: true });
   }, [etat]);
 
-  // Une liste qui se déplie (invités, crédits) vient se montrer si la fiche défile.
+  // Une liste qui se déplie (invités, morceaux, crédits) vient se montrer si la fiche défile.
   const montrer = (sel: string) => {
     const el = panneauRef.current?.querySelector<HTMLElement>(sel);
     el?.scrollIntoView?.({ block: 'nearest', behavior: reduitRef.current ? 'auto' : 'smooth' });
   };
-  React.useEffect(() => { if (liste) montrer('.gc-reglages__invites-boite'); }, [liste]);
+  React.useEffect(() => { if (liste) montrer(`#${CSS.escape(listeId)}`); }, [liste, listeId]);
+  React.useEffect(() => { if (listeMusique) montrer(`#${CSS.escape(musiqueId)}`); }, [listeMusique, musiqueId]);
   React.useEffect(() => { if (voirCredits) montrer('.gc-reglages__credits'); }, [voirCredits]);
 
   // « c'est fait » s'efface tout seul.
@@ -495,6 +499,12 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
     vitesseAnimations: (dir) => setR((x) => ({ vitesseAnimations: auPas(x.vitesseAnimations + dir * VITESSE_PAS, VITESSE_ANIMATIONS_MIN, VITESSE_ANIMATIONS_MAX, VITESSE_PAS) })),
     luminosite: (dir) => setR((x) => ({ luminosite: auPas(x.luminosite + dir * LUMINOSITE_PAS, LUMINOSITE_MIN, LUMINOSITE_MAX, LUMINOSITE_PAS) })),
     eclatBougie: (dir) => setR((x) => ({ eclatBougie: auPas(x.eclatBougie + dir * ECLAT_BOUGIE_PAS, ECLAT_BOUGIE_MIN, ECLAT_BOUGIE_MAX, ECLAT_BOUGIE_PAS) })),
+    musique: (dir) => setR((x) => {
+      const courant = x.musiqueActive ? x.musique : 'aucune';
+      const idx = Math.max(0, OPTIONS_MUSIQUE.findIndex((o) => o.v === courant));
+      const suiv = OPTIONS_MUSIQUE[(idx + dir + OPTIONS_MUSIQUE.length) % OPTIONS_MUSIQUE.length].v;
+      return suiv === 'aucune' ? { musique: 'aucune', musiqueActive: false } : { musique: suiv, musiqueActive: true };
+    }),
   };
   const actionsRef = React.useRef(actions);
   actionsRef.current = actions;
@@ -773,15 +783,34 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                     />
                     <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.volumeBruitages)}</span>
                   </Ligne>
-                  <Ligne id="musique" libelle="Morceau" role="radiogroup" large>
-                    {/* « aucune » coupe la musique ; un morceau la joue (le bouton musique la rallume). */}
-                    <Choix
-                      options={OPTIONS_MUSIQUE}
-                      valeur={r.musiqueActive ? r.musique : 'aucune'}
-                      onChoisir={(m) => setR(m === 'aucune' ? { musique: 'aucune', musiqueActive: false } : { musique: m, musiqueActive: true })}
-                      graine={g()}
-                    />
+                  <Ligne id="musique" libelle="Morceau">
+                    <button
+                      type="button"
+                      className="gc-reglages__deplier"
+                      aria-expanded={listeMusique}
+                      aria-controls={musiqueId}
+                      onClick={() => setListeMusique((x) => !x)}
+                    >
+                      {OPTIONS_MUSIQUE.find((o) => o.v === (r.musiqueActive ? r.musique : 'aucune'))?.texte ?? 'toutes (rotation)'}
+                      <Chevron />
+                    </button>
                   </Ligne>
+                  {listeMusique && (
+                    <div id={musiqueId} className="gc-reglages__invites-boite">
+                      <Ligne id="morceaux" role="radiogroup" large>
+                        {/* « aucune » coupe la musique ; un morceau la joue (le bouton musique la rallume). */}
+                        <Choix
+                          options={OPTIONS_MUSIQUE}
+                          valeur={r.musiqueActive ? r.musique : 'aucune'}
+                          onChoisir={(m) => {
+                            setR(m === 'aucune' ? { musique: 'aucune', musiqueActive: false } : { musique: m, musiqueActive: true });
+                            setListeMusique(false);
+                          }}
+                          graine={g()}
+                        />
+                      </Ligne>
+                    </div>
+                  )}
                   {/* Réglable musique coupée (atténuée) : le niveau attend le prochain départ. */}
                   <Ligne id="volumeMusique" libelle="Musique" attenuee={!musique}>
                     <Reglette
