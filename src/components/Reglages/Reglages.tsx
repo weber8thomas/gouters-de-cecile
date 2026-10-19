@@ -62,10 +62,10 @@ type Etat = 'ferme' | 'ouvert' | 'fermeture';
 const borne = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 const px = (v: number) => `${Math.round(v * 100) / 100}px`;
 
-/** Hauteur d'une fiche complète, en corps de texte (titre + 15 lignes réglées, section comprise, + marges). */
-const HAUTEUR_EM = 26;
-/** Corps du texte sur la TV 1080p (Caveat : hauteur d'x 0,37 → 14 px, le plancher de lecture à 3 m). */
-const CORPS_TV = 38;
+/** Hauteur d'une fiche complète, en corps de texte (titre + 17 lignes réglées, section comprise, + marges). */
+const HAUTEUR_EM = 35;
+/** Corps du texte de référence en 1080p sur ordinateur / écran (plus compact pour que la fiche reste légère). */
+const CORPS_TV = 24;
 /** Angle de la fiche posée sur la TV (degrés). */
 const ANGLE = -1.2;
 
@@ -81,24 +81,23 @@ interface Mise {
 
 function miseEnPlace(vp: Viewport, papier: string | null): Mise {
   const i = vp.insets;
-  const cible = vp.tactile ? 44 : 32;
+  const cible = vp.tactile ? 40 : 26;
   const feuille = (vp.cadrage === 'tourner' || vp.cadrage === 'page') && vp.w < 600;
   let fs: number;
   let place: { haut: number; bas: number; gauche: number; droite: number };
   if (feuille) {
-    fs = borne(vp.w * 0.056, 20, 28);
+    fs = borne(vp.w * 0.05, 18, 24);
     // On garde une bande du livre visible en haut : la toucher referme la feuille.
     place = { haut: i.top + Math.max(48, vp.h * 0.08), bas: 0, gauche: 0, droite: 0 };
   } else {
     const u = Math.min(vp.w / 1920, vp.h / 1080);
     const marge = Math.max(12, Math.round(32 * u));
     const dispo = vp.h - i.top - i.bottom - 2 * marge;
-    // Au doigt (tablette, téléphone couché), jamais sous 21 px ni sous 2,8 % du petit côté.
-    const plancher = vp.tactile ? Math.max(21, Math.min(vp.w, vp.h) * 0.028) : 17;
-    fs = borne(Math.min(CORPS_TV * u, dispo / HAUTEUR_EM), plancher, 80);
+    const plancher = vp.tactile ? Math.max(18, Math.min(vp.w, vp.h) * 0.024) : 14;
+    fs = borne(Math.min(CORPS_TV * u, dispo / HAUTEUR_EM), plancher, 42);
     place = { haut: i.top + marge, bas: i.bottom + marge, gauche: i.left + marge, droite: i.right + marge };
   }
-  const pas = Math.max(1.5 * fs, cible);
+  const pas = Math.max(1.42 * fs, cible);
   const style: Vars = {
     '--gc-reglages-fs': px(fs),
     '--gc-reglages-pas': px(pas),
