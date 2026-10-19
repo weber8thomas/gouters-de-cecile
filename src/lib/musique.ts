@@ -36,7 +36,7 @@ export interface Morceau {
 export const MORCEAUX: readonly Morceau[] = (banqueJson as { morceaux: Morceau[] }).morceaux;
 
 const FONDU_ENTREE = 4;
-const FONDU_CHANGEMENT = 2;
+const FONDU_CHANGEMENT = 3;
 /** Niveau de la musique à 100 % du curseur : à 50 % (défaut), 0,1, le niveau choisi à l'écoute au-dessus
  * des bruitages ; le curseur garde de la marge pour monter. */
 export const NIVEAU_MUSIQUE = 0.2;
@@ -54,16 +54,36 @@ function constructeur(): boolean {
 /** Le bouton haut-parleur a coupé les sons ? Lu de façon défensive. */
 const muet = (): boolean => (getReglages() as unknown as { muet?: unknown }).muet === true;
 
+/** Index courant dans MORCEAUX lorsque le mode « toutes » (rotation) est actif. */
+let indexRotation = 0;
+let minuterieRotation: ReturnType<typeof setTimeout> | null = null;
+
+function effacerMinuterieRotation(): void {
+  if (minuterieRotation !== null) {
+    clearTimeout(minuterieRotation);
+    minuterieRotation = null;
+  }
+}
+
+function enRotation(): boolean {
+  const r = getReglages() as unknown as { musique: string; musiqueActive?: unknown };
+  return r.musiqueActive === true && r.musique === 'toutes';
+}
+
 /** Le morceau demandé par les réglages ; null si la musique est coupée, « aucune » ou inconnu. */
 function demande(): Morceau | null {
   const r = getReglages() as unknown as { musique: string; musiqueActive?: unknown };
   if (r.musiqueActive !== true) return null;
+  if (r.musique === 'toutes') return MORCEAUX[indexRotation % MORCEAUX.length] ?? null;
   return MORCEAUX.find((m) => m.id === r.musique) ?? null;
 }
 
 /** Adresse de la boucle ; vide si l'inventaire ne la connaît pas (artifact : pas de musique). */
 function adresse(m: Morceau): string {
-  return assetInfo(m.f) ? assetUrl(m.f) : '';
+  if (assetInfo(m.f)) return assetUrl(m.f);
+  const temoin = MORCEAUX.find((x) => assetInfo(x.f));
+  if (!temoin) return '';
+  return assetUrl(temoin.f).replace(`${temoin.id}.mp3`, `${m.id}.mp3`);
 }
 
 /** La musique doit jouer : un morceau est demandé et sa boucle est joignable. */
@@ -151,6 +171,24 @@ function taire(v: Voix, c: AudioContext, duree: number): void {
   };
 }
 
+/** Programme l'enchaînement vers le morceau suivant lorsque le mode « toutes » est actif. */
+function programmerSuivant(m: Morceau, c: AudioContext, b: AudioBuffer): void {
+  effacerMinuterieRotation();
+  if (!enRotation() || MORCEAUX.length <= 1) return;
+  const idx = MORCEAUX.findIndex((x) => x.id === m.id);
+  if (idx >= 0) indexRotation = idx;
+  const suivant = MORCEAUX[(indexRotation + 1) % MORCEAUX.length];
+  if (suivant) void decoder(suivant, c);
+  const dureeBoucle = b.duration > 0 ? b.duration : m.d;
+  const delaiMs = Math.max(15, dureeBoucle - FONDU_CHANGEMENT) * 1000;
+  minuterieRotation = setTimeout(() => {
+    minuterieRotation = null;
+    if (!enRotation() || !voulue()) return;
+    indexRotation = (indexRotation + 1) % MORCEAUX.length;
+    suivre();
+  }, delaiMs);
+}
+
 /** Lance la boucle : fondu d'entrée, ou fondu croisé avec le morceau qui jouait. */
 function lancer(m: Morceau, c: AudioContext, b: AudioBuffer): void {
   if (!maitre || maitreDe !== c) {
@@ -172,9 +210,11 @@ function lancer(m: Morceau, c: AudioContext, b: AudioBuffer): void {
   gain.connect(maitre);
   src.start(t);
   voix = { id: m.id, src, gain };
+  programmerSuivant(m, c, b);
 }
 
 function arreter(duree = 1.2): void {
+  effacerMinuterieRotation();
   const c = contexteAudio();
   if (!voix || !c) {
     voix = null;
@@ -188,6 +228,17 @@ function arreter(duree = 1.2): void {
 function suivre(): void {
   // Le niveau suit le réglage, morceau joué ou non : un départ repart déjà au bon volume.
   regler(0.15);
+  if (enRotation() && voix) {
+    const idx = MORCEAUX.findIndex((x) => x.id === voix?.id);
+    if (idx >= 0 && minuterieRotation === null) {
+      indexRotation = idx;
+      const c = contexteAudio();
+      const b = tampons.get(voix.id);
+      if (c && b) programmerSuivant(MORCEAUX[idx], c, b);
+    }
+  } else if (!enRotation()) {
+    effacerMinuterieRotation();
+  }
   const m = demande();
   if (!m || !voulue()) {
     arreter();

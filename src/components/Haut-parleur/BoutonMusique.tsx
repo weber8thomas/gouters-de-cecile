@@ -1,10 +1,10 @@
 // Bouton musique : allume ou éteint la musique de fond (réglage « musiqueActive », src/lib/musique.ts). Il
 // ne touche pas aux autres sons, que le haut-parleur coupe d'un coup. Posé par l'Ecran dans sa barre du haut,
 // à côté du haut-parleur. Une note tracée à la main ; une barre la traverse quand la musique est éteinte.
-// aria-pressed : vrai quand la musique joue. Allumer rejoue le morceau choisi au menu, ou le premier
-// morceau de la banque si aucun n'a été choisi (« aucune »).
+// aria-pressed : vrai quand la musique joue. Allumer rejoue le choix du menu, ou toute la liste en
+// rotation (« toutes ») si aucun n'a été choisi (« aucune »).
 import React from 'react';
-import { MUSIQUES_IDS, useReglages } from '../../lib/reglages';
+import { useReglages } from '../../lib/reglages';
 import './BoutonMusique.css';
 
 // Une note double (deux têtes, deux hampes et un ruban), avec un second passage au crayon ; la barre
@@ -29,7 +29,7 @@ export function BoutonMusique() {
       aria-pressed={jouee}
       onClick={() => changer((x) => (x.musiqueActive
         ? { musiqueActive: false }
-        : { musiqueActive: true, musique: x.musique === 'aucune' ? (MUSIQUES_IDS[0] ?? 'aucune') : x.musique }))}
+        : { musiqueActive: true, musique: x.musique === 'aucune' ? 'toutes' : x.musique }))}
     >
       <svg className="gc-musique__trace" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
         <g className="gc-musique__ombre">

@@ -63,7 +63,7 @@ const BORNES = zoomBornes();
  * reglages.ts le lit par MUSIQUES_IDS[0]).
  */
 const PREMIER_MORCEAU = JSON.parse(readFileSync(join(ROOT, 'design-system/baked/musique/banque.json'), 'utf8')).morceaux[0];
-const DEFAUT = { ...REGLAGES_DEFAUT, sonsLivre: true, ambiance: true, feu: true, muet: false, musique: PREMIER_MORCEAU.id, musiqueActive: false };
+const DEFAUT = { ...REGLAGES_DEFAUT, vitesseEcriture: 2, luminosite: 1, eclatBougie: 1, sonsLivre: true, ambiance: true, feu: true, muet: false, musique: 'toutes', musiqueActive: true };
 /** Clés de stockage : réglages (v3, src/lib/reglages.ts) et caméra (v2, src/lib/camera.tsx). */
 const CLE_REGLAGES = 'gc:reglages:v4';
 const CLE_CAMERA = 'gc:camera:v3';
@@ -394,34 +394,34 @@ async function suiteMenu(e) {
     T('ouvert : le focus est sur un contrôle du panneau', a0.controle, a0.nom);
 
     // 1 bis. Défauts à l'ouverture, contexte neuf (rien n'a encore été changé) : sons du livre, ambiance et
-    // lumière du feu sur « oui », musique coupée (« aucune »). Jugés ici, avant toute remise à zéro.
+    // lumière du feu sur « oui », musique active en rotation (« toutes (rotation) »). Jugés ici, avant toute remise à zéro.
     await bloc('défauts à l\'ouverture', async () => {
       const coche = (cle, opts) => premier([ligne(page, cle).getByRole('radio', opts)]).then((l) => !!l && estChoisi(l));
       const sons = await coche('sonsLivre', { name: /^oui$/i });
       const amb = await coche('ambiance', { name: /^oui$/i });
       const feu = await coche('feu', { name: /^oui$/i });
       T('défauts : sons du livre, ambiance et lumière du feu sur « oui »', sons && amb && feu, `sons du livre ${sons}, ambiance ${amb}, lumière du feu ${feu}`);
-      const mus = await coche('musique', { name: /^aucune$/i });
-      T('défaut : musique coupée (« aucune » au menu, bouton musique éteint)', mus);
+      const mus = await coche('musique', { name: /^toutes/i });
+      T('défaut : musique active (« toutes (rotation) » au menu, bouton musique allumé)', mus);
     }, { menu: false });
 
-    // 1 ter. Bouton musique (barre du haut, hors du menu) : éteint au départ, allumé au premier appui sur le
-    // premier morceau (aucun n'est choisi), éteint au second ; le haut-parleur (muet) n'en bouge pas.
+    // 1 ter. Bouton musique (barre du haut, hors du menu) : allumé au départ, éteint au premier appui,
+    // rallumé au second ; le haut-parleur (muet) n'en bouge pas.
     await bloc('bouton musique', async () => {
       if (await panneauVisible(page)) await fermerMenu(page);
       const btn = page.locator('[data-gc-controle="musique"]').first();
       if (!(await btn.count())) { R.ajouter(e.nom, 'bouton musique', 'KO', 'introuvable ([data-gc-controle="musique"])'); return; }
       const pressed = () => btn.getAttribute('aria-pressed');
-      T('bouton musique : aria-pressed « false » au départ', (await pressed()) === 'false', `aria-pressed ${await pressed()}`);
+      T('bouton musique : aria-pressed « true » au départ', (await pressed()) === 'true', `aria-pressed ${await pressed()}`);
       await cliquer(page, e, btn);
-      const allume = await lireReglages(page);
-      T('bouton musique : appui → aria-pressed « true », musiqueActive, premier morceau', (await pressed()) === 'true' && allume.musiqueActive === true && allume.musique === PREMIER_MORCEAU.id && allume.muet === false,
-        `aria-pressed ${await pressed()}, musiqueActive ${allume.musiqueActive}, morceau ${allume.musique}, muet ${allume.muet}`);
+      const eteint = await lireReglages(page);
+      T('bouton musique : premier appui → éteint (aria-pressed « false », musiqueActive faux)', (await pressed()) === 'false' && eteint.musiqueActive === false && eteint.muet === false,
+        `aria-pressed ${await pressed()}, musiqueActive ${eteint.musiqueActive}, muet ${eteint.muet}`);
       await cliquer(page, e, btn);
       // Le focus revient au bouton ⚙ (le menu s'ouvre et se referme depuis lui : Échap le lui rend).
       await page.evaluate(() => document.querySelector('[data-gc-reglages="bouton"]')?.focus());
-      const eteint = await lireReglages(page);
-      T('bouton musique : second appui → éteint (aria-pressed « false », musiqueActive faux)', (await pressed()) === 'false' && eteint.musiqueActive === false, `aria-pressed ${await pressed()}, musiqueActive ${eteint.musiqueActive}`);
+      const allume = await lireReglages(page);
+      T('bouton musique : second appui → rallumé (aria-pressed « true », musiqueActive vrai, rotation)', (await pressed()) === 'true' && allume.musiqueActive === true && allume.musique === 'toutes', `aria-pressed ${await pressed()}, musiqueActive ${allume.musiqueActive}, morceau ${allume.musique}`);
     }, { menu: false });
 
     // 2. Échap ferme et rend le focus au bouton
@@ -548,7 +548,7 @@ async function suiteMenu(e) {
       if (!(await sl.count())) { R.ajouter(e.nom, 'vitesse de l\'écriture', 'KO', `introuvable (cherché : ${CHERCHE('vitesseEcriture')} › slider)`); return; }
       if (!(await panneauVisible(page))) await ouvrirMenu(page, e);
       const b = await sl.evaluate((x) => ({ min: x.getAttribute('aria-valuemin'), max: x.getAttribute('aria-valuemax'), now: x.getAttribute('aria-valuenow'), texte: (x.getAttribute('aria-valuetext') ?? '').replace(/\s/g, ' ') }));
-      T('vitesse de l\'écriture : 100 % par défaut, bornes 25 – 400 %', b.now === '1' && b.min === '0.25' && b.max === '4' && b.texte === '100 %', `${b.texte} (${b.min} – ${b.max})`);
+      T('vitesse de l\'écriture : 200 % par défaut, bornes 25 – 400 %', b.now === '2' && b.min === '0.25' && b.max === '4' && b.texte === '200 %', `${b.texte} (${b.min} – ${b.max})`);
       await sl.focus();
       await page.keyboard.press('Home');
       await page.keyboard.press('ArrowRight');
@@ -558,9 +558,9 @@ async function suiteMenu(e) {
       await page.keyboard.press('ArrowRight');
       const z = (await lireReglages(page)).vitesseEcriture;
       T('vitesse de l\'écriture : Début + 2 pas = 35 %, Fin = 400 % (pas de 5 %, bornée)', Math.abs(a - 0.35) < 1e-9 && z === 4, `Début + 2 pas ${a} · Fin ${z}`);
-      // Remise à 100 % pour la suite
-      for (let i = 0; i < 60 && (await lireReglages(page)).vitesseEcriture > 1.0001; i++) await page.keyboard.press('ArrowLeft');
-      T('vitesse de l\'écriture : ← revient à 100 %', (await lireReglages(page)).vitesseEcriture === 1, `${(await lireReglages(page)).vitesseEcriture}`);
+      // Remise à 200 % pour la suite
+      for (let i = 0; i < 60 && (await lireReglages(page)).vitesseEcriture > 2.0001; i++) await page.keyboard.press('ArrowLeft');
+      T('vitesse de l\'écriture : ← revient à 200 %', (await lireReglages(page)).vitesseEcriture === 2, `${(await lireReglages(page)).vitesseEcriture}`);
     });
     if (vitesses === 3 && (await etatLivre(page)).cadrage !== 'page') {
       await bloc('vitesse mesurée', async () => {

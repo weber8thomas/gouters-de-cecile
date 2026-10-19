@@ -2,26 +2,26 @@
   "v": 1,
   "morceaux": [
     {
-      "id": "path-of-the-goblin-king",
-      "titre": "The Path of the Goblin King",
+      "id": "casse-noisette-fee-dragee",
+      "titre": "Casse-Noisette (Fée Dragée)",
       "auteur": "Kevin MacLeod",
       "licence": "CC BY 4.0",
       "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
-      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100873",
-      "credit": "\"The Path of the Goblin King\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
-      "f": "musique/path-of-the-goblin-king",
-      "d": 188
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100625",
+      "credit": "\"Dance of the Sugar Plum Fairy\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/casse-noisette-fee-dragee",
+      "d": 114
     },
     {
-      "id": "frozen-star",
-      "titre": "Frozen Star",
+      "id": "gymnopedie-piano",
+      "titre": "Gymnopédie au piano",
       "auteur": "Kevin MacLeod",
       "licence": "CC BY 4.0",
       "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
-      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100356",
-      "credit": "\"Frozen Star\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
-      "f": "musique/frozen-star",
-      "d": 217
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100787",
+      "credit": "\"Gymnopedie No. 1\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/gymnopedie-piano",
+      "d": 181
     },
     {
       "id": "melodie-victoria",
@@ -33,6 +33,50 @@
       "credit": "\"Melodie Victoria\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
       "f": "musique/melodie-victoria",
       "d": 236
+    },
+    {
+      "id": "path-of-the-goblin-king",
+      "titre": "The Path of the Goblin King",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100873",
+      "credit": "\"The Path of the Goblin King\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/path-of-the-goblin-king",
+      "d": 188
+    },
+    {
+      "id": "touching-moments-piano",
+      "titre": "Touching Moments (Piano)",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100037",
+      "credit": "\"Touching Moments Two - Higher\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/touching-moments-piano",
+      "d": 168
+    },
+    {
+      "id": "fairytale-waltz",
+      "titre": "Fairytale Waltz",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100232",
+      "credit": "\"Fairytale Waltz\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/fairytale-waltz",
+      "d": 94
+    },
+    {
+      "id": "frozen-star",
+      "titre": "Frozen Star",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100356",
+      "credit": "\"Frozen Star\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/frozen-star",
+      "d": 217
     }
   ]
 }

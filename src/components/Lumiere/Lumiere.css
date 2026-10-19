@@ -234,33 +234,34 @@
 }
 
 .gc-lumiere-papier__penombre {
-  /* Ambiance immobile : un seul quad animé supplémentaire par surface, celui de la bougie. */
-  opacity: 0.42;
-  background: linear-gradient(110deg,
-    color-mix(in srgb, var(--gc-chocolate) 56%, var(--gc-ink-noire)),
-    color-mix(in srgb, var(--gc-chocolate) 30%, var(--gc-ink-noire)));
+  /* Ambiance du soir adoucie : garde la chaleur et le grain du papier sans le noyer ni le verdir. */
+  opacity: 0.22;
+  background: linear-gradient(112deg,
+    color-mix(in srgb, var(--gc-chocolate) 68%, var(--gc-ink-noire)),
+    color-mix(in srgb, var(--gc-chocolate) 42%, var(--gc-ink-noire)));
 }
 
 .gc-lumiere-papier--left .gc-lumiere-papier__bougie {
-  background: radial-gradient(ellipse 122% 105% at -12% 79%,
-    var(--gc-glow) 0%,
-    color-mix(in srgb, var(--gc-glow) 94%, transparent) 24%,
-    color-mix(in srgb, var(--gc-glow) 70%, transparent) 44%,
-    color-mix(in srgb, var(--gc-glow) 32%, transparent) 66%,
-    transparent 91%);
+  background: radial-gradient(ellipse 136% 116% at -8% 78%,
+    color-mix(in srgb, var(--gc-paper-lit) 72%, var(--gc-glow)) 0%,
+    color-mix(in srgb, var(--gc-paper-lit) 48%, var(--gc-glow)) 26%,
+    color-mix(in srgb, var(--gc-glow) 84%, transparent) 50%,
+    color-mix(in srgb, var(--gc-glow) 42%, transparent) 74%,
+    transparent 96%);
 }
 
 .gc-lumiere-papier--right .gc-lumiere-papier__bougie {
-  background: radial-gradient(ellipse 168% 125% at -94% 79%,
-    color-mix(in srgb, var(--gc-glow) 34%, transparent) 0%,
-    color-mix(in srgb, var(--gc-glow) 20%, transparent) 42%,
-    color-mix(in srgb, var(--gc-glow) 8%, transparent) 70%,
+  background: radial-gradient(ellipse 175% 132% at -88% 78%,
+    color-mix(in srgb, var(--gc-paper-lit) 32%, var(--gc-glow)) 0%,
+    color-mix(in srgb, var(--gc-glow) 34%, transparent) 44%,
+    color-mix(in srgb, var(--gc-glow) 14%, transparent) 74%,
     transparent 98%);
 }
 
 .gc-livre-face .gc-page-cuite__encre,
 .gc-livre-face .gc-page-cuite__tuile,
 .gc-livre-face .gc-page-cuite__plume,
+.gc-livre-face .gc-aquarelles-toile,
 .gc-livre-face .gc-page:not(:has(.gc-page-cuite)) {
   z-index: 2;
 }

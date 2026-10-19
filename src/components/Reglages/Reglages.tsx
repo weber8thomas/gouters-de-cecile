@@ -14,6 +14,8 @@ import { partScene, useViewport, type Viewport } from '../../lib/viewport';
 import { CAMERA_DEFAULT, useCamera, zoomBornes, ZOOM_STEP } from '../../lib/camera';
 import type { Distance } from '../../lib/settings';
 import {
+  ECLAT_BOUGIE_MAX, ECLAT_BOUGIE_MIN, ECLAT_BOUGIE_PAS,
+  LUMINOSITE_MAX, LUMINOSITE_MIN, LUMINOSITE_PAS,
   VITESSE_ANIMATIONS_MAX, VITESSE_ANIMATIONS_MIN, VITESSE_ECRITURE_MAX, VITESSE_ECRITURE_MIN, VITESSE_PAS,
   resetReglages, useReglages, type Animations, type Reglages as ReglagesValeurs,
 } from '../../lib/reglages';
@@ -306,8 +308,12 @@ const BOUTONS_COURT: Option<boolean>[] = [{ v: false, texte: 's’effacent' }, {
 const ANIMATIONS_TEXTE: Option<Animations>[] = [{ v: 'systeme', texte: 'comme l’appareil' }, { v: 'completes', texte: 'complètes' }, { v: 'reduites', texte: 'réduites' }];
 /** Feuille du téléphone : « auto », pour que les trois choix tiennent sur une ligne. */
 const ANIMATIONS_COURT: Option<Animations>[] = [{ v: 'systeme', texte: 'auto' }, { v: 'completes', texte: 'complètes' }, { v: 'reduites', texte: 'réduites' }];
-/** Musique de fond (src/lib/musique.ts) : « aucune », puis chaque morceau de la banque par son titre. */
-const OPTIONS_MUSIQUE: Option<string>[] = [{ v: 'aucune', texte: 'aucune' }, ...MORCEAUX.map((m) => ({ v: m.id, texte: m.titre }))];
+/** Musique de fond (src/lib/musique.ts) : « aucune », « toutes (rotation) », puis chaque morceau de la banque par son titre. */
+const OPTIONS_MUSIQUE: Option<string>[] = [
+  { v: 'aucune', texte: 'aucune' },
+  { v: 'toutes', texte: 'toutes (rotation)' },
+  ...MORCEAUX.map((m) => ({ v: m.id, texte: m.titre })),
+];
 
 // ---- Ambiance (lots L et S) : lue de façon défensive tant que reglages.ts n'a pas ses champs ----------
 /** Champs de l'ambiance : `ambiance` (feu de cheminée et cuisine) et `feu` (la lumière vacille). */
@@ -488,6 +494,8 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
     volumeMusique: (dir) => setR((x) => ({ volumeMusique: auPas(x.volumeMusique + dir * VOLUME_PAS, 0, 1, VOLUME_PAS) })),
     vitesseEcriture: (dir) => setR((x) => ({ vitesseEcriture: auPas(x.vitesseEcriture + dir * VITESSE_PAS, VITESSE_ECRITURE_MIN, VITESSE_ECRITURE_MAX, VITESSE_PAS) })),
     vitesseAnimations: (dir) => setR((x) => ({ vitesseAnimations: auPas(x.vitesseAnimations + dir * VITESSE_PAS, VITESSE_ANIMATIONS_MIN, VITESSE_ANIMATIONS_MAX, VITESSE_PAS) })),
+    luminosite: (dir) => setR((x) => ({ luminosite: auPas(x.luminosite + dir * LUMINOSITE_PAS, LUMINOSITE_MIN, LUMINOSITE_MAX, LUMINOSITE_PAS) })),
+    eclatBougie: (dir) => setR((x) => ({ eclatBougie: auPas(x.eclatBougie + dir * ECLAT_BOUGIE_PAS, ECLAT_BOUGIE_MIN, ECLAT_BOUGIE_MAX, ECLAT_BOUGIE_PAS) })),
   };
   const actionsRef = React.useRef(actions);
   actionsRef.current = actions;
@@ -524,6 +532,8 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
       if (id === 'volumeMusique') setR({ volumeMusique: k === 'Home' ? 0 : 1 });
       if (id === 'vitesseEcriture') setR({ vitesseEcriture: k === 'Home' ? VITESSE_ECRITURE_MIN : VITESSE_ECRITURE_MAX });
       if (id === 'vitesseAnimations') setR({ vitesseAnimations: k === 'Home' ? VITESSE_ANIMATIONS_MIN : VITESSE_ANIMATIONS_MAX });
+      if (id === 'luminosite') setR({ luminosite: k === 'Home' ? LUMINOSITE_MIN : LUMINOSITE_MAX });
+      if (id === 'eclatBougie') setR({ eclatBougie: k === 'Home' ? ECLAT_BOUGIE_MIN : ECLAT_BOUGIE_MAX });
       return true;
     }
     if ((k === 'Enter' || k === ' ') && !actif) {
@@ -671,15 +681,15 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                   <Ligne id="auto" libelle="Lancer la vidéo en arrivant sur la page" role="radiogroup">
                     <Choix options={OUI_NON} valeur={r.lectureAuto} onChoisir={(lectureAuto) => setR({ lectureAuto })} graine={g()} />
                   </Ligne>
-                  {/* En pourcentage (100 % = normal, repère au crayon) : l'encre qui s'écrit, puis le tour de page et les
-                      autres animations (src/lib/vitesse.ts). Atténuées en mouvement réduit, mais toujours réglables. */}
+                  {/* En pourcentage (200 % par défaut pour l'écriture, 100 % pour les animations, repère au crayon) :
+                      l'encre qui s'écrit, puis le tour de page et les autres animations (src/lib/vitesse.ts). */}
                   <Ligne id="vitesseEcriture" libelle="Vitesse de l’écriture" attenuee={reduit}>
                     <Reglette
                       valeur={r.vitesseEcriture}
                       min={VITESSE_ECRITURE_MIN}
                       max={VITESSE_ECRITURE_MAX}
                       pas={VITESSE_PAS}
-                      repere={1}
+                      repere={2}
                       principal
                       attenuee={reduit}
                       libelle="Vitesse de l’écriture"
@@ -713,6 +723,34 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                     Ambiance
                     <TraitCrayon className="gc-reglages__souligne gc-reglages__souligne--section" />
                   </h3>
+                  <Ligne id="luminosite" libelle="Luminosité">
+                    <Reglette
+                      valeur={r.luminosite}
+                      min={LUMINOSITE_MIN}
+                      max={LUMINOSITE_MAX}
+                      pas={LUMINOSITE_PAS}
+                      repere={1}
+                      principal
+                      libelle="Luminosité"
+                      texte={pourcent(r.luminosite)}
+                      onChange={(luminosite) => setR({ luminosite })}
+                    />
+                    <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.luminosite)}</span>
+                  </Ligne>
+                  <Ligne id="eclatBougie" libelle="Éclat de la bougie">
+                    <Reglette
+                      valeur={r.eclatBougie}
+                      min={ECLAT_BOUGIE_MIN}
+                      max={ECLAT_BOUGIE_MAX}
+                      pas={ECLAT_BOUGIE_PAS}
+                      repere={1}
+                      principal
+                      libelle="Éclat de la bougie"
+                      texte={pourcent(r.eclatBougie)}
+                      onChange={(eclatBougie) => setR({ eclatBougie })}
+                    />
+                    <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.eclatBougie)}</span>
+                  </Ligne>
                   <Ligne id="sonsLivre" libelle="Sons du livre" role="radiogroup">
                     <Choix options={OUI_NON} valeur={sonsLivre} onChoisir={(sonsLivre) => setR({ sonsLivre })} graine={g()} />
                   </Ligne>

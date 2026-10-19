@@ -6,9 +6,16 @@ from pathlib import Path
 import subprocess
 import tempfile
 
+import sys
+
 repo = Path(__file__).resolve().parents[1]
 site = repo / 'dist/site'
 prefix = 'essais/reprise-v8/'
+if '--prefix' in sys.argv:
+    idx = sys.argv.index('--prefix')
+    if idx + 1 < len(sys.argv):
+        prefix = sys.argv[idx + 1].strip('/') + '/'
+        assert prefix.startswith('essais/'), 'Le préfixe doit commencer par essais/'
 
 def git(*args, env=None, cwd=repo, data=None):
     result = subprocess.run(['git', *args], cwd=cwd, env=env, input=data,

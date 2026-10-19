@@ -64,9 +64,9 @@ function assurerSource(m) {
 function mesurer(src, debut, fin) {
   const r = spawnSync('ffmpeg', [
     '-hide_banner', '-nostdin', '-nostats', '-i', src, '-ss', String(debut), '-to', String(fin),
-    '-af', `loudnorm=I=${CIBLE_LUFS}:LRA=20:TP=${CRETE_DBTP}:print_format=json`, '-f', 'null', '-',
+    '-vn', '-af', `loudnorm=I=${CIBLE_LUFS}:LRA=20:TP=${CRETE_DBTP}:print_format=json`, '-f', 'null', '-',
   ], { encoding: 'utf8' });
-  const bloc = r.stderr.match(/\{[\s\S]*\}\s*$/);
+  const bloc = r.stderr.match(/\{[^{}]*"input_i"[\s\S]*?\}/);
   if (!bloc) throw new Error(`mesure impossible pour ${src}`);
   return JSON.parse(bloc[0]);
 }
@@ -91,7 +91,7 @@ function cuire(m, src) {
   ].join(':');
   const brut = execFileSync('ffmpeg', [
     '-hide_banner', '-nostdin', '-loglevel', 'error', '-i', src, '-ss', String(debut), '-to', String(fin),
-    '-af', norme, '-f', 'f32le', '-ac', '2', '-ar', String(SR), 'pipe:1',
+    '-vn', '-af', norme, '-f', 'f32le', '-ac', '2', '-ar', String(SR), 'pipe:1',
   ], { maxBuffer: 1 << 30 });
   const seg = new Float32Array(brut.buffer.slice(brut.byteOffset, brut.byteOffset + brut.byteLength));
   const N = seg.length / 2; // trames stéréo

@@ -143,28 +143,28 @@
     inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent);
 }
 
-/* Couverture cuite (lot C) : les cartons du livre ouvert montrent l'INTÉRIEUR des plats (remplis de
-   toile autour des gardes). Intérieur du plat avant : carton gauche, et verso de la couverture qui
-   tourne ; intérieur du plat arrière : carton droit, et recto du plat arrière qui se referme. Arêtes,
-   usure et lumière sont cuites (--gc-couv-biseau : none) ; replis : la toile et les arêtes ci-dessus. */
+/* Couverture cuite (lot C) : les cartons du livre ouvert montrent le repli de toile verte autour des
+   gardes (qui sont elles-mêmes posées par .gc-livre__emplacement et .gc-livre-couv__contreplat /
+   .gc-livre-couv__garde). On utilise la toile des plats avec un liseré d'ombre chaude interne pour
+   éviter que le grand rectangle crème de contreplat.webp ne déborde autour des pages ou au mors. */
 .gc-livre__carton--gauche,
 .gc-livre-couv__carton {
-  background-image: var(--gc-couv-contreplat, var(--gc-livre-toile));
+  background-image: var(--gc-couv-arriere, var(--gc-couv-plat, var(--gc-livre-toile)));
   background-size: var(--gc-couv-plat-taille, auto);
-  box-shadow: var(--gc-couv-biseau,
-    inset 0 -4px 0 color-mix(in srgb, var(--gc-chocolate) 34%, transparent),
-    inset 3px 2px 0 color-mix(in srgb, var(--gc-paper-lace) 45%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent));
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--gc-ink-noire) 55%, transparent),
+    inset 0 -4px 10px color-mix(in srgb, var(--gc-chocolate) 48%, transparent),
+    inset 3px 2px 6px color-mix(in srgb, var(--gc-chocolate) 32%, transparent);
 }
 
 .gc-livre__carton--droite,
 .gc-livre-couv__carton--arriere {
-  background-image: var(--gc-couv-contreplat-arriere, var(--gc-livre-toile));
+  background-image: var(--gc-couv-plat, var(--gc-livre-toile));
   background-size: var(--gc-couv-plat-taille, auto);
-  box-shadow: var(--gc-couv-biseau,
-    inset -4px -4px 0 color-mix(in srgb, var(--gc-chocolate) 34%, transparent),
-    inset 0 2px 0 color-mix(in srgb, var(--gc-paper-lace) 45%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent));
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--gc-ink-noire) 55%, transparent),
+    inset -4px -4px 10px color-mix(in srgb, var(--gc-chocolate) 48%, transparent),
+    inset 0 2px 6px color-mix(in srgb, var(--gc-chocolate) 32%, transparent);
 }
 
 /* Livre fermé ou couverture en mouvement : la moitié gauche n'existe pas encore. Plat arrière qui se
@@ -176,6 +176,28 @@
 .gc-livre[data-gc-etat="arriere"] .gc-livre__tranche--droite,
 .gc-livre[data-gc-etat="arriere"] .gc-livre__dos {
   visibility: hidden;
+}
+
+/* Livre fermé au repos : le plat avant (z = 14px) couvre le livre ; on masque le carton et la tranche
+   du plan z = 0 pour que la perspective ne les fasse pas dépasser, et on recule l'ombre du mors pour
+   qu'elle ne déborde pas sur la table vide à gauche. */
+.gc-livre[data-gc-etat="couverture"]:not([data-gc-geste]) .gc-livre__carton--droite,
+.gc-livre[data-gc-etat="couverture"]:not([data-gc-geste]) .gc-livre__tranche--droite,
+.gc-livre[data-gc-etat="couverture"]:not([data-gc-geste]) .gc-livre__ombre--gauche,
+.gc-livre[data-gc-etat="couverture"]:not([data-gc-geste]) .gc-livre__ombre--pouls,
+.gc-livre[data-gc-etat="arriere"]:not([data-gc-geste]) .gc-livre__carton--gauche,
+.gc-livre[data-gc-etat="arriere"]:not([data-gc-geste]) .gc-livre__tranche--gauche,
+.gc-livre[data-gc-etat="arriere"]:not([data-gc-geste]) .gc-livre__ombre--droite {
+  visibility: hidden;
+}
+
+.gc-livre[data-gc-etat="couverture"]:not([data-gc-geste]) .gc-livre__ombre--droite,
+.gc-livre[data-gc-etat="couverture"]:not([data-gc-geste]) .gc-livre__ombre--epaisseur {
+  left: calc(50% + 14px);
+}
+
+.gc-livre[data-gc-etat="arriere"]:not([data-gc-geste]) .gc-livre__ombre--epaisseur-gauche {
+  right: calc(50% + 14px);
 }
 
 /* ---- Tranche : feuillets de plus en plus jaunis sous la page ------------------------------ */
@@ -191,43 +213,48 @@
 
 .gc-livre__feuille {
   position: absolute;
-  background-color: var(--gc-paper);
+  background-color: color-mix(in srgb, var(--gc-paper-edge) 72%, var(--gc-sepia-2));
+  border-radius: 2px;
 }
 
 .gc-livre__feuille--absente { visibility: hidden; }
 
-/* Huit feuilles, de la plus claire (près de la page) à la plus jaunie (dehors) ; la teinte ne suit pas une
-   pente régulière : deux feuilles voisines ne se ressemblent jamais tout à fait. */
-.gc-livre__feuille--1 { background-color: color-mix(in srgb, var(--gc-paper) 78%, var(--gc-paper-edge)); }
-.gc-livre__feuille--2 { background-color: color-mix(in srgb, var(--gc-paper) 62%, var(--gc-paper-edge)); }
-.gc-livre__feuille--3 { background-color: color-mix(in srgb, var(--gc-paper) 70%, var(--gc-paper-edge)); }
-.gc-livre__feuille--4 { background-color: color-mix(in srgb, var(--gc-paper) 48%, var(--gc-paper-edge)); }
-.gc-livre__feuille--5 { background-color: color-mix(in srgb, var(--gc-paper) 56%, var(--gc-paper-edge)); }
-.gc-livre__feuille--6 { background-color: color-mix(in srgb, var(--gc-paper-edge) 82%, var(--gc-sepia-2)); }
-.gc-livre__feuille--7 { background-color: color-mix(in srgb, var(--gc-paper-edge) 94%, var(--gc-sepia-2)); }
-.gc-livre__feuille--8 { background-color: color-mix(in srgb, var(--gc-paper-edge) 86%, var(--gc-sepia-2)); }
+/* Huit feuilles, dans la pénombre chaude du soir (du parchemin ambré près de la page au sépia ombré
+   vers le carton) : aucune bande blanche crue ne dépasse sur la tranche. */
+.gc-livre__feuille--1 { background-color: color-mix(in srgb, var(--gc-paper-edge) 76%, var(--gc-sepia-2)); }
+.gc-livre__feuille--2 { background-color: color-mix(in srgb, var(--gc-paper-edge) 62%, var(--gc-sepia-2)); }
+.gc-livre__feuille--3 { background-color: color-mix(in srgb, var(--gc-paper-edge) 68%, var(--gc-sepia-2)); }
+.gc-livre__feuille--4 { background-color: color-mix(in srgb, var(--gc-paper-edge) 50%, var(--gc-sepia-2)); }
+.gc-livre__feuille--5 { background-color: color-mix(in srgb, var(--gc-paper-edge) 56%, var(--gc-sepia-2)); }
+.gc-livre__feuille--6 { background-color: color-mix(in srgb, var(--gc-sepia-2) 72%, var(--gc-sepia-3)); }
+.gc-livre__feuille--7 { background-color: color-mix(in srgb, var(--gc-sepia-2) 60%, var(--gc-sepia-3)); }
+.gc-livre__feuille--8 { background-color: color-mix(in srgb, var(--gc-sepia-2) 48%, var(--gc-chocolate)); }
 
-.gc-livre__tranche--gauche .gc-livre__feuille { box-shadow: inset 1px -1px 0 color-mix(in srgb, var(--gc-chocolate) 24%, transparent); }
-.gc-livre__tranche--droite .gc-livre__feuille { box-shadow: inset -1px -1px 0 color-mix(in srgb, var(--gc-chocolate) 24%, transparent); }
+.gc-livre__tranche--gauche .gc-livre__feuille {
+  box-shadow: inset 1px -1px 2px color-mix(in srgb, var(--gc-chocolate) 46%, transparent);
+}
+.gc-livre__tranche--droite .gc-livre__feuille {
+  box-shadow: inset -1px -1px 2px color-mix(in srgb, var(--gc-chocolate) 50%, transparent);
+}
 
-/* Feuilles un peu inégales (le carnet a été feuilleté, rogné à la main) : pas deux décalages pareils.
-   Épaisseur visible : ≈ 18 px de chaque côté pour la feuille la plus extérieure. */
-.gc-livre__tranche--gauche .gc-livre__feuille--1 { left: -2px; right: 0; top: 1.4px; bottom: -2.2px; }
-.gc-livre__tranche--gauche .gc-livre__feuille--2 { left: -4.3px; right: 0; top: 2.9px; bottom: -3.1px; }
-.gc-livre__tranche--gauche .gc-livre__feuille--3 { left: -6.1px; right: 0; top: 4.1px; bottom: -4.6px; }
-.gc-livre__tranche--gauche .gc-livre__feuille--4 { left: -8.6px; right: 0; top: 5.3px; bottom: -5.8px; }
-.gc-livre__tranche--gauche .gc-livre__feuille--5 { left: -10.5px; right: 0; top: 6.4px; bottom: -6.6px; }
-.gc-livre__tranche--gauche .gc-livre__feuille--6 { left: -13px; right: 0; top: 7.4px; bottom: -7.7px; }
-.gc-livre__tranche--gauche .gc-livre__feuille--7 { left: -15.2px; right: 0; top: 8.6px; bottom: -8.9px; }
-.gc-livre__tranche--gauche .gc-livre__feuille--8 { left: -17.6px; right: 0; top: 9.7px; bottom: -9.8px; }
-.gc-livre__tranche--droite .gc-livre__feuille--1 { left: 0; right: -2.4px; top: 2px; bottom: -1.7px; }
-.gc-livre__tranche--droite .gc-livre__feuille--2 { left: 0; right: -4.7px; top: 3.2px; bottom: -3.5px; }
-.gc-livre__tranche--droite .gc-livre__feuille--3 { left: 0; right: -6.6px; top: 4.5px; bottom: -4.4px; }
-.gc-livre__tranche--droite .gc-livre__feuille--4 { left: 0; right: -8.9px; top: 5.7px; bottom: -6.2px; }
-.gc-livre__tranche--droite .gc-livre__feuille--5 { left: 0; right: -11px; top: 6.8px; bottom: -6.9px; }
-.gc-livre__tranche--droite .gc-livre__feuille--6 { left: 0; right: -13.3px; top: 7.9px; bottom: -8px; }
-.gc-livre__tranche--droite .gc-livre__feuille--7 { left: 0; right: -15.5px; top: 9px; bottom: -8.9px; }
-.gc-livre__tranche--droite .gc-livre__feuille--8 { left: 0; right: -17.9px; top: 10.1px; bottom: -9.9px; }
+/* Feuilles un peu inégales (le carnet a été feuilleté, rogné à la main) : contenues bien à l'intérieur
+   du débord des cartons (≈ 13,5 px au plus). */
+.gc-livre__tranche--gauche .gc-livre__feuille--1 { left: -1.6px; right: 0; top: 1.2px; bottom: -1.8px; }
+.gc-livre__tranche--gauche .gc-livre__feuille--2 { left: -3.3px; right: 0; top: 2.3px; bottom: -2.6px; }
+.gc-livre__tranche--gauche .gc-livre__feuille--3 { left: -4.8px; right: 0; top: 3.3px; bottom: -3.6px; }
+.gc-livre__tranche--gauche .gc-livre__feuille--4 { left: -6.6px; right: 0; top: 4.2px; bottom: -4.6px; }
+.gc-livre__tranche--gauche .gc-livre__feuille--5 { left: -8.2px; right: 0; top: 5.1px; bottom: -5.3px; }
+.gc-livre__tranche--gauche .gc-livre__feuille--6 { left: -10.0px; right: 0; top: 6.0px; bottom: -6.2px; }
+.gc-livre__tranche--gauche .gc-livre__feuille--7 { left: -11.7px; right: 0; top: 6.9px; bottom: -7.1px; }
+.gc-livre__tranche--gauche .gc-livre__feuille--8 { left: -13.5px; right: 0; top: 7.8px; bottom: -7.9px; }
+.gc-livre__tranche--droite .gc-livre__feuille--1 { left: 0; right: -1.8px; top: 1.5px; bottom: -1.4px; }
+.gc-livre__tranche--droite .gc-livre__feuille--2 { left: 0; right: -3.6px; top: 2.5px; bottom: -2.8px; }
+.gc-livre__tranche--droite .gc-livre__feuille--3 { left: 0; right: -5.1px; top: 3.6px; bottom: -3.5px; }
+.gc-livre__tranche--droite .gc-livre__feuille--4 { left: 0; right: -6.9px; top: 4.5px; bottom: -4.9px; }
+.gc-livre__tranche--droite .gc-livre__feuille--5 { left: 0; right: -8.5px; top: 5.4px; bottom: -5.5px; }
+.gc-livre__tranche--droite .gc-livre__feuille--6 { left: 0; right: -10.3px; top: 6.3px; bottom: -6.4px; }
+.gc-livre__tranche--droite .gc-livre__feuille--7 { left: 0; right: -12.0px; top: 7.2px; bottom: -7.1px; }
+.gc-livre__tranche--droite .gc-livre__feuille--8 { left: 0; right: -13.8px; top: 8.1px; bottom: -7.9px; }
 
 /* ---- Emplacements fixes ------------------------------------------------------------------ */
 .gc-livre__emplacement {
@@ -249,18 +276,20 @@
 
 .gc-livre__page--visible { visibility: visible; }
 
-/* Filet de reliure. */
+/* Filet de reliure : ombre douce dans le creux du pli, sans couture dure en haut ni en bas. */
 .gc-livre__dos {
   position: absolute;
   left: calc(var(--gc-page-w) - 1px);
-  top: 6px;
-  bottom: 0;
+  top: 2px;
+  bottom: 2px;
   width: 2px;
   background-image: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--gc-chocolate) 55%, transparent),
-    color-mix(in srgb, var(--gc-chocolate) 40%, transparent) 50%,
-    color-mix(in srgb, var(--gc-chocolate) 50%, transparent)
+    color-mix(in srgb, var(--gc-chocolate) 25%, transparent),
+    color-mix(in srgb, var(--gc-chocolate) 48%, transparent) 12%,
+    color-mix(in srgb, var(--gc-chocolate) 38%, transparent) 50%,
+    color-mix(in srgb, var(--gc-chocolate) 48%, transparent) 88%,
+    color-mix(in srgb, var(--gc-chocolate) 25%, transparent)
   );
   pointer-events: none;
 }
@@ -271,10 +300,10 @@
   inset: 0;
   overflow: hidden;
   background-color: var(--gc-paper);
-  /* liseré jauni le long des bords */
+  /* liseré jauni et chaud le long des bords */
   box-shadow:
-    inset 0 0 16px color-mix(in srgb, var(--gc-paper-edge) 80%, transparent),
-    inset 0 0 2px color-mix(in srgb, var(--gc-sepia-2) 35%, transparent);
+    inset 0 0 18px color-mix(in srgb, var(--gc-paper-edge) 85%, transparent),
+    inset 0 0 3px color-mix(in srgb, var(--gc-sepia-3) 45%, transparent);
   color: var(--gc-ink);
 }
 
@@ -288,10 +317,10 @@
 .gc-livre-face--left .gc-livre-face__pli {
   background: linear-gradient(
     to left,
-    color-mix(in srgb, var(--gc-chocolate) 46%, transparent) 0,
-    color-mix(in srgb, var(--gc-chocolate) 22%, transparent) 9px,
-    color-mix(in srgb, var(--gc-chocolate) 9%, transparent) 30px,
-    color-mix(in srgb, var(--gc-chocolate) 3%, transparent) 55px,
+    color-mix(in srgb, var(--gc-chocolate) 44%, transparent) 0,
+    color-mix(in srgb, var(--gc-chocolate) 20%, transparent) 10px,
+    color-mix(in srgb, var(--gc-chocolate) 8%, transparent) 30px,
+    color-mix(in srgb, var(--gc-chocolate) 2.5%, transparent) 54px,
     transparent var(--gc-gutter-shadow)
   );
 }
@@ -300,10 +329,9 @@
   background: linear-gradient(
     to right,
     color-mix(in srgb, var(--gc-chocolate) 42%, transparent) 0,
-    color-mix(in srgb, var(--gc-chocolate) 14%, transparent) 7px,
-    transparent 20px,
-    color-mix(in srgb, var(--gc-paper-lace) 65%, transparent) calc(var(--gc-gutter-shadow) * 0.5),
-    color-mix(in srgb, var(--gc-paper-lace) 22%, transparent) calc(var(--gc-gutter-shadow) * 0.8),
+    color-mix(in srgb, var(--gc-chocolate) 18%, transparent) 9px,
+    color-mix(in srgb, var(--gc-chocolate) 6%, transparent) 24px,
+    color-mix(in srgb, var(--gc-glow) 10%, transparent) calc(var(--gc-gutter-shadow) * 0.55),
     transparent var(--gc-gutter-shadow)
   );
 }
@@ -449,9 +477,9 @@
   transform-origin: calc(50% - 0.5px) 50%;
 }
 
-/* Recto qui se tourne vers la fenêtre : il blanchit (porcelaine). Sur le recto, la reliure est à gauche. */
-.gc-livre-feuillet__voile--lumiere-a { background: linear-gradient(to right, var(--gc-porcelain), transparent); }
-.gc-livre-feuillet__voile--lumiere-b { background: linear-gradient(to left, var(--gc-porcelain), transparent); }
+/* Recto qui se tourne vers la bougie : lueur ambrée chaude (jamais blanc froid). Sur le recto, la reliure est à gauche. */
+.gc-livre-feuillet__voile--lumiere-a { background: linear-gradient(to right, color-mix(in srgb, var(--gc-glow) 55%, var(--gc-paper-lit)), transparent); }
+.gc-livre-feuillet__voile--lumiere-b { background: linear-gradient(to left, color-mix(in srgb, var(--gc-glow) 55%, var(--gc-paper-lit)), transparent); }
 
 /* Verso qui tourne le dos à la fenêtre : ombre chaude (sépia et chocolat). Sur le verso, la
    reliure est à droite. */
@@ -459,11 +487,11 @@
   background: linear-gradient(to left, color-mix(in srgb, var(--gc-sepia-3) 70%, var(--gc-chocolate)), transparent);
 }
 
-/* Liseré clair au pli de la charnière : le papier qui s'arrondit contre la reliure prend la lumière. */
+/* Liseré chaud au pli de la charnière : le papier qui s'arrondit contre la reliure prend la lueur. */
 .gc-livre-feuillet__voile--charniere {
   background:
-    linear-gradient(to left, var(--gc-porcelain) 0, color-mix(in srgb, var(--gc-porcelain) 0%, transparent) 4px),
-    linear-gradient(to left, color-mix(in srgb, var(--gc-sepia-3) 70%, var(--gc-chocolate)) 4px, transparent);
+    linear-gradient(to left, color-mix(in srgb, var(--gc-glow) 45%, var(--gc-paper-lit)) 0, transparent 3px),
+    linear-gradient(to left, color-mix(in srgb, var(--gc-sepia-3) 70%, var(--gc-chocolate)) 3px, transparent);
 }
 
 .gc-livre-feuillet__voile--ombre-b {
@@ -515,6 +543,7 @@
 .gc-livre-couv__verso {
   transform: rotateY(180deg);
   border-radius: 7px 2px 2px 7px;
+  overflow: hidden;
 }
 
 .gc-livre-couv__plat,
@@ -526,7 +555,7 @@
 .gc-livre-couv__plat {
   border-radius: 2px 7px 7px 2px;
   /* toile du plat : plus claire là où tombe la lumière, patinée aux coins et le long du mors
-     (couverture cuite du lot C : --gc-couv-plat, arêtes et usure cuites : --gc-couv-biseau) */
+     (couverture cuite du lot C : --gc-couv-plat, et léger liseré sombre qui absorbe le bord de découpe) */
   background-color: var(--gc-couv-fond, var(--gc-linen-shade));
   background-image: var(--gc-couv-plat,
     radial-gradient(ellipse 90% 70% at 18% 12%, color-mix(in srgb, var(--gc-paper-lace) 26%, transparent), transparent 70%),
@@ -537,11 +566,10 @@
     repeating-linear-gradient(0deg, color-mix(in srgb, var(--gc-paper-lace) 8%, transparent) 0 1px, transparent 1px 4px),
     linear-gradient(color-mix(in srgb, var(--gc-kraft) 32%, transparent), color-mix(in srgb, var(--gc-kraft) 32%, transparent)));
   background-size: var(--gc-couv-plat-taille, auto);
-  box-shadow: var(--gc-couv-biseau,
-    inset -4px -4px 0 color-mix(in srgb, var(--gc-chocolate) 30%, transparent),
-    inset 3px 3px 0 color-mix(in srgb, var(--gc-paper-lace) 45%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent),
-    inset 14px 0 18px -10px color-mix(in srgb, var(--gc-chocolate) 22%, transparent));
+  box-shadow:
+    inset 0 0 0 1.5px color-mix(in srgb, var(--gc-ink-noire) 46%, transparent),
+    inset -3px -3px 8px color-mix(in srgb, var(--gc-chocolate) 40%, transparent),
+    inset 14px 0 18px -10px color-mix(in srgb, var(--gc-chocolate) 26%, transparent);
 }
 
 .gc-livre-couv__carton {
@@ -574,11 +602,10 @@
     repeating-linear-gradient(0deg, color-mix(in srgb, var(--gc-paper-lace) 8%, transparent) 0 1px, transparent 1px 4px),
     linear-gradient(color-mix(in srgb, var(--gc-kraft) 32%, transparent), color-mix(in srgb, var(--gc-kraft) 32%, transparent))));
   background-size: var(--gc-couv-plat-taille, auto);
-  box-shadow: var(--gc-couv-biseau,
-    inset 0 -4px 0 color-mix(in srgb, var(--gc-chocolate) 30%, transparent),
-    inset 3px 3px 0 color-mix(in srgb, var(--gc-paper-lace) 45%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--gc-chocolate) 30%, transparent),
-    inset -14px 0 18px -10px color-mix(in srgb, var(--gc-chocolate) 22%, transparent));
+  box-shadow:
+    inset 0 0 0 1.5px color-mix(in srgb, var(--gc-ink-noire) 46%, transparent),
+    inset 0 -3px 8px color-mix(in srgb, var(--gc-chocolate) 40%, transparent),
+    inset -14px 0 18px -10px color-mix(in srgb, var(--gc-chocolate) 26%, transparent);
 }
 
 .gc-livre-couv__contreplat {
@@ -633,7 +660,7 @@
 }
 
 .gc-livre-couv__lumiere {
-  background-image: linear-gradient(160deg, var(--gc-porcelain), color-mix(in srgb, var(--gc-porcelain) 50%, transparent));
+  background-image: linear-gradient(160deg, color-mix(in srgb, var(--gc-glow) 60%, var(--gc-paper-lit)), color-mix(in srgb, var(--gc-glow) 25%, transparent));
 }
 
 .gc-livre-couv__ombre {
@@ -644,7 +671,7 @@
 /* Repère normalisé : la page qu'on plie, reliure à gauche. La page de gauche est vue en miroir (fixe). */
 .gc-livre-coin {
   --gc-coin-pli-ombre: color-mix(in srgb, var(--gc-sepia-3) 60%, var(--gc-chocolate));
-  --gc-coin-pli-lumiere: var(--gc-porcelain);
+  --gc-coin-pli-lumiere: color-mix(in srgb, var(--gc-glow) 50%, var(--gc-paper-lit));
   --gc-coin-ombre: var(--gc-chocolate);
   position: absolute;
   top: 0;

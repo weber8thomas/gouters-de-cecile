@@ -66,14 +66,16 @@ const LV = HT;
 type Onde = readonly [number, number, number];
 const TAU = Math.PI * 2;
 const somme = (o: readonly Onde[], t: number) => o.reduce((s, [f, a, p]) => s + a * Math.sin(TAU * f * t + p), 0);
-/** Respiration de la longueur (± 1, lente). */
-const RESPIRE: readonly Onde[] = [[0.23, 0.6, 0.4], [0.37, 0.4, 2.1]];
+/** Respiration de la longueur (± 1, lente et moyenne). */
+const RESPIRE: readonly Onde[] = [[0.27, 0.5, 0.4], [0.58, 0.35, 2.1], [1.18, 0.25, 1.2]];
+/** Ondulation naturelle de l'éclat de la flamme au repos (courants d'air doux de la pièce). */
+const LUEUR: readonly Onde[] = [[0.41, 0.45, 0.2], [0.93, 0.35, 1.7], [1.85, 0.25, 3.1], [3.4, 0.15, 0.8]];
 /** Frémissement de la pointe (± 1, 8 à 12 Hz). */
 const FREMIT: readonly Onde[] = [[8.7, 0.5, 0], [10.3, 0.3, 1.1], [11.9, 0.2, 2.3]];
 /** Balancement de l'axe, en x et en y (± 1, cm à la pointe : × BALANCE). */
 const BALANCE_X: readonly Onde[] = [[0.53, 0.55, 0.3], [0.86, 0.3, 1.9], [1.31, 0.15, 4.0]];
 const BALANCE_Y: readonly Onde[] = [[0.61, 0.5, 2.2], [0.97, 0.32, 0.7], [1.47, 0.18, 3.3]];
-const BALANCE = 0.1; // cm, déplacement de la pointe
+const BALANCE = 0.13; // cm, déplacement de la pointe
 const MONTEE = 10; // cm/s : l'onde du balancement monte de la base vers la pointe (0,2 s de retard en haut)
 /** Vacillement de la flamme dérangée (°, multiplié par trouble), en x et en y. */
 const VACILLE_X: readonly Onde[] = [[3.66, 5, 0], [5.89, 3, 1]];
@@ -140,9 +142,10 @@ export function etatFlamme(e: EtatFlamme, t: number, vent: [number, number], tro
   const dx = deg > 1e-4 ? vx / Math.hypot(vx, vy) : 0;
   const dy = deg > 1e-4 ? vy / Math.hypot(vx, vy) : 0;
   // sous le vent, la flamme se couche et s'allonge un peu ; dérangée, elle se raccourcit
-  e.long = 1 + 0.04 * somme(RESPIRE, t) + 0.015 * somme(FREMIT, t) - saut - 0.16 * trouble
+  e.long = 1 + 0.075 * somme(RESPIRE, t) + 0.025 * somme(FREMIT, t) - saut - 0.16 * trouble
     + 0.05 * trouble * Math.sin(29 * t) + 0.1 * Math.sin((deg * Math.PI) / 180);
-  e.eclat = 1 - 0.5 * saut - 0.28 * trouble * (0.6 + 0.4 * Math.sin(31 * t));
+  e.eclat = 1 + 0.085 * somme(LUEUR, t) + 0.02 * somme(FREMIT, t + 0.4)
+    - 0.6 * saut - 0.28 * trouble * (0.6 + 0.4 * Math.sin(31 * t));
   e.trouble = trouble;
   // l'axe aux hauteurs d'ajustement : couché par le vent (∝ h²), et l'onde du balancement (∝ h², en retard
   // avec la hauteur)

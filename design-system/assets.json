@@ -1095,30 +1095,66 @@
     "bytes": 162702,
     "type": "image/webp"
   },
-  "musique/frozen-star": {
-    "file": "baked/musique/frozen-star.mp3",
-    "sha": "4b646848a344e941bfa00c4341bf0bd11a2113727a8f5ee59303b6ec80a0fdbc",
+  "musique/casse-noisette-fee-dragee": {
+    "file": "baked/musique/casse-noisette-fee-dragee.mp3",
+    "sha": "d0497b124d4b5fb6286094816e4b5c679ef90cf926dd344054abc2b7b67465d8",
     "w": 0,
     "h": 0,
-    "bytes": 2605126,
+    "bytes": 1369161,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "musique/fairytale-waltz": {
+    "file": "baked/musique/fairytale-waltz.mp3",
+    "sha": "0e34945e4c68c396af3bd908aec3233d999607f141aa17ae22c60b888f652151",
+    "w": 0,
+    "h": 0,
+    "bytes": 1129002,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "musique/frozen-star": {
+    "file": "baked/musique/frozen-star.mp3",
+    "sha": "e69956be98eca8b72c4c7cbc9d573d02e2a5e4892ea2545a4a755e25762b4432",
+    "w": 0,
+    "h": 0,
+    "bytes": 2605125,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "musique/gymnopedie-piano": {
+    "file": "baked/musique/gymnopedie-piano.mp3",
+    "sha": "b6c7e068c8a1090b406528056af72f8553a030cbc37cb6155fb8cdaa3af963c2",
+    "w": 0,
+    "h": 0,
+    "bytes": 2172881,
     "type": "audio/mpeg",
     "site": true
   },
   "musique/melodie-victoria": {
     "file": "baked/musique/melodie-victoria.mp3",
-    "sha": "2e182a356e45617b3994483b4b6c3fbe7a3bc90260c252847b9a095bdf40f07a",
+    "sha": "1bff6143cff2ba2043e39bd8e7c6e6429828799265fd163a70553871b8f26e04",
     "w": 0,
     "h": 0,
-    "bytes": 2833023,
+    "bytes": 2833022,
     "type": "audio/mpeg",
     "site": true
   },
   "musique/path-of-the-goblin-king": {
     "file": "baked/musique/path-of-the-goblin-king.mp3",
-    "sha": "3334a2e4165a3f64e6320b05ec9bc77b3223ba2560db1343b8207e0806b4c49c",
+    "sha": "9339431214406bea93c98bd82c781f50cb68aba3b1d4a3458e66ac4a18aca452",
     "w": 0,
     "h": 0,
-    "bytes": 2256878,
+    "bytes": 2256877,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "musique/touching-moments-piano": {
+    "file": "baked/musique/touching-moments-piano.mp3",
+    "sha": "143ae6285a653bab0b2d68f3d79a7bb245c7a3af0d647e73077a4956b899bf1d",
+    "w": 0,
+    "h": 0,
+    "bytes": 2017070,
     "type": "audio/mpeg",
     "site": true
   },
