@@ -53,80 +53,143 @@ export const bougies = (centres: [number, number][], rayon: number): Effets => (
 export const fanions = (y: number, creux: number): Effets => ({ fanions: [y, creux], scenes: ['brise', 'fete'] });
 
 export const EFFETS: Record<string, Effets> = {
-  // Théière et deux tasses de la série harmonisée : vapeur légère aux trois ouvertures.
+  // Théière et deux tasses : la verseuse se soulève, penche son bec et verse un jet de thé ambré ; les tasses trinquent.
   theiere: {
-    vapeur: [[0.193, 0.225, 0.038], [0.31, 0.64, 0.115], [0.695, 0.64, 0.11]],
+    vapeur: [[0.193, 0.225, 0.045], [0.31, 0.64, 0.115], [0.695, 0.64, 0.11]],
+    repos: 'theiere',
     scenes: ['bouillir', 'tinte'],
   },
-  // La tasse : une vapeur légère au-dessus du liquide.
+  // La tasse sur sa soucoupe : elle se soulève nettement de la soucoupe, penche pour boire / trinquer et fume.
   'tasse-2': {
-    vapeur: [[0.49, 0.28, 0.17]],
+    vapeur: [[0.49, 0.28, 0.18]],
     ondes: [0.49, 0.28, 0.24],
-    scenes: ['tinte', 'bouillir'],
+    gerbe: [0.49, 0.27, 0.18, -0.36, 0.28, 0.49, 0.28],
+    repos: 'tasse',
+    scenes: ['tinte', 'deborde', 'bouillir'],
   },
-  // La tasse reste entière et le thé fume doucement.
+  // La grande tasse au cœur et ses sablés : la tasse se soulève et s'incline, le cœur bat fort, les biscuits sautillent.
   'tasse-coeur': {
-    vapeur: [[0.36, 0.14, 0.17]],
+    vapeur: [[0.36, 0.14, 0.18]],
     ondes: [0.36, 0.15, 0.24],
-    scenes: ['tinte', 'bouillir'],
+    repos: 'tasse-coeur',
+    scenes: ['bat', 'tinte', 'bouillir'],
   },
-  // La nouvelle part de gâteau a une mèche sans flamme peinte ; le dessin reste entier.
+  // La part de gâteau et sa bougie : la framboise rebondit, le gâteau gonfle et salue joyeusement.
   gateau: {
-    scenes: ['balance', 'salut'],
+    gerbe: [0.40, 0.30, 0.16, -0.30, 0.72, 0.40, 0.26],
+    confettis: [0.48, 0.28, 0.45],
+    repos: 'gateau',
+    scenes: ['souffle-rallume', 'rebond', 'salut', 'balance'],
   },
-  // la tarte sort du four
+  // La tarte sort du four en fumant et tourne gaiement.
   'tarte-pommes': {
     vapeur: [[0.38, 0.22, 0.24], [0.64, 0.26, 0.22]],
-    scenes: ['fume'],
+    repos: 'tarte',
+    scenes: ['fume', 'tournoie'],
   },
-  // Le cupcake reste entier, avec un balancement rigide léger.
-  cupcake: { scenes: ['salut', 'balance'] },
-  // La bougie vacille, puis se rallume après un souffle ; le gâteau ne se déforme pas.
+  // Le cupcake : la framboise saute haut sur la crème et tournoie en l'air.
+  cupcake: {
+    confettis: [0.5, 0.25, 0.45],
+    repos: 'cupcake',
+    scenes: ['rebond', 'salut', 'balance', 'veille'],
+  },
+  // Le cupcake d'anniversaire : sa bougie vacille, s'éteint dans un filet de fumée et se rallume sous les confettis.
   'cupcake-bougie': {
     flammes: [[0.4624, 0.0946, 0.03]],
-    scenes: ['bougies', 'souffle', 'salut', 'allume'],
+    confettis: [0.5, 0.3, 0.5],
+    repos: 'cupcake',
+    scenes: ['allume', 'rebond', 'bougies', 'souffle', 'salut'],
   },
-  // le gâteau d'anniversaire et ses cinq bougies (piste anniversaire : titre et dédicace ; l'aquarelle
-  // arrive à la fusion, design-system/aquarelles/gateau-bougies.png)
+  // Le gâteau d'anniversaire et ses cinq bougies.
   'gateau-bougies': {
     ...bougies([[0.2676, 0.2228], [0.3525, 0.185], [0.4926, 0.1472], [0.6328, 0.1904], [0.7287, 0.2228]], 0.023),
+    confettis: [0.5, 0.35, 0.65],
+    repos: 'gateau',
   },
-  // La nouvelle guirlande et ses nœuds restent intacts.
-  guirlande: { fanions: [0.15, 0.33, 0.315, 0.68], scenes: ['brise', 'fete'], confettis: [0.5, 0.32, 0.35] },
-  // les fanes frémissent, et se secouent
-  carotte: { scenes: ['secoue'], repos: 'fanes' },
-  // le blé ploie au vent ; les plantes à peine, une rafale de temps en temps
-  ble: { vent: 1, scenes: ['rafale'] },
-  vanille: { vent: 0.3, scenes: ['rafale'] },
-  cannelle: { vent: 0.25, scenes: ['rafale'] },
-  // Les biscuits restent entiers : aucun découpage de la nouvelle peinture.
+  // La guirlande de fanions ondule au vent et lâche ses confettis.
+  guirlande: { fanions: [0.15, 0.33, 0.315, 0.68], repos: 'guirlande', scenes: ['brise', 'fete', 'veille'], confettis: [0.5, 0.32, 0.35] },
+  // La carotte : un lapin anglais s'approche et la grignote en 5 bouchées jusqu'aux fanes, puis elle repousse !
+  carotte: {
+    gerbe: [0.50, 0.56, 0.16, -0.36, 0.85, 0.50, 0.52],
+    confettis: [0.50, 0.48, 0.32],
+    repos: 'fanes',
+    scenes: ['secoue', 'grignote'],
+  },
+  // Le blé ploie au vent ; la vanille et la cannelle se balancent et dansent.
+  ble: { vent: 1.25, repos: 'brise', scenes: ['rafale', 'balance'] },
+  vanille: { vent: 0.55, repos: 'brise', scenes: ['rafale', 'salut'] },
+  cannelle: { vent: 0.45, repos: 'brise', scenes: ['rafale', 'dandine'] },
+  // Le cookie de devant se casse en deux (miettes) et les pépites de chocolat sautillent.
   cookies: {
-    scenes: ['balance', 'salut'],
+    gerbe: [0.29, 0.58, 0.12, -0.32, 0.86, 0.25, 0.55],
+    repos: 'biscuits',
+    scenes: ['casse', 'pepites', 'veille', 'balance'],
   },
-  // Même geste doux pour les sablés.
-  'sables-etoiles': { scenes: ['salut', 'balance'] },
-  // Les fruits et leurs coupes gardent leur forme et leur orientation.
-  citron: { rigide: true, scenes: ['duo-citron'] },
-  'citron-2': { rigide: true, scenes: ['duo-citron'] },
-  pomme: { rigide: true, scenes: ['frisson'] },
-  'pomme-2': { rigide: true, scenes: ['frisson'] },
-  orange: { rigide: true, scenes: ['frisson'] },
-  'orange-2': { rigide: true, scenes: ['frisson'] },
-  // l'œuf se dandine
-  oeufs: { rigide: true, pied: [0.5, 0.78], scenes: ['frisson'] },
-  // les noix sautent l'une après l'autre
-  noix: { rigide: true, scenes: ['frisson'] },
+  // Les sablés étoiles bondissent et tournent sur eux-mêmes comme des toupies.
+  'sables-etoiles': {
+    gerbe: [0.52, 0.55, 0.20, -0.26, 0.82, 0.50, 0.50],
+    repos: 'etoiles',
+    scenes: ['tournoie', 'salut', 'balance'],
+  },
+  // Les citrons : un éclair de lame les tranche en deux dans une gerbe de gouttes dorées, puis les moitiés roulent.
+  citron: {
+    gerbe: [0.50, 0.53, 0.28, -0.42, 0.88, 0.50, 0.35],
+    repos: 'agrumes',
+    scenes: ['duo-citron', 'roule'],
+  },
+  'citron-2': {
+    gerbe: [0.48, 0.53, 0.28, -0.42, 0.90, 0.48, 0.32],
+    repos: 'agrumes',
+    scenes: ['duo-citron', 'rondelle', 'roule'],
+  },
+  // Les pommes bondissent, se tranchent et roulent.
+  pomme: {
+    gerbe: [0.50, 0.52, 0.26, -0.38, 0.88, 0.50, 0.32],
+    repos: 'fruits',
+    scenes: ['saut-pomme', 'duo-citron'],
+  },
+  'pomme-2': {
+    repos: 'fruits',
+    scenes: ['saut', 'frisson', 'roule'],
+  },
+  // L'orange et sa rondelle : la rondelle tourne comme une toupie pendant que l'orange bondit.
+  orange: {
+    gerbe: [0.65, 0.60, 0.24, -0.38, 0.92, 0.35, 0.50],
+    pied: [0.48, 0.72],
+    repos: 'agrumes',
+    scenes: ['toupie', 'saut', 'frisson'],
+  },
+  'orange-2': {
+    vent: 0.65,
+    repos: 'fruits',
+    scenes: ['saut', 'frisson', 'rafale'],
+  },
+  // Les œufs se dandinent et la coquille cassée sautille.
+  oeufs: { pied: [0.5, 0.78], repos: 'oeufs', scenes: ['dandine', 'frisson', 'saut'] },
+  // Les trois noix jonglent et sautent l'une après l'autre.
+  noix: { repos: 'noix', scenes: ['domino', 'frisson', 'saut'] },
 };
 
 /** Scènes propres à une page : elles remplacent celles de l'aquarelle sur cette page. */
 export const SCENES_PAGE: Record<string, Record<string, string[]>> = {
   // la dernière page : on souffle la bougie du cupcake (un filet de fumée), puis elle se rallume
-  'fin-droite': { 'cupcake-bougie': ['souffle', 'bougies'] },
+  'fin-droite': { 'cupcake-bougie': ['souffle', 'bougies', 'rebond'] },
 };
 
-/** Un Jack Russell par double page, uniquement dans les marges dont le passage est libre. */
+/** Les Jack Russells animent chaque double page du carnet avec leurs bulles calligraphiées à la plume. */
 export const CREATURES: Record<string, string[]> = {
-  gateaux: ['jack-russell'], lisa: ['jack-russell'], julie: ['jack-russell'],
-  biscuits: ['jack-russell'], rose: ['jack-russell'], mathis: ['jack-russell'],
-  bernard: ['jack-russell'], fin: ['jack-russell'],
+  garde: ['jack-russell'],
+  titre: ['jack-russell', 'jack-russell'],
+  dedicace: ['jack-russell'],
+  sommaire: ['jack-russell', 'jack-russell'],
+  gateaux: ['jack-russell', 'jack-russell'],
+  lisa: ['jack-russell', 'jack-russell'],
+  julie: ['jack-russell', 'jack-russell'],
+  biscuits: ['jack-russell', 'jack-russell'],
+  rose: ['jack-russell', 'jack-russell'],
+  mathis: ['jack-russell', 'jack-russell'],
+  bernard: ['jack-russell', 'jack-russell'],
+  'cecile-1': ['jack-russell', 'jack-russell'],
+  'cecile-2': ['jack-russell', 'jack-russell'],
+  fin: ['jack-russell', 'jack-russell'],
 };

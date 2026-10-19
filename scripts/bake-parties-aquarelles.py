@@ -39,66 +39,103 @@ JSON = RACINE / "src/components/Aquarelle/parties.json"
 PLANCHE = RACINE / "verification/out/dessins/parties.png"
 PAS_ID = 40  # R = numéro × 40 : lisible même après une conversion de couleur
 SEUIL = 0.04  # alpha : en dessous, le pixel n'appartient à aucune partie (papier)
-CITRONS_V9 = {"citron", "citron-2"}
+SEPARES_V9 = {
+    "citron": ("fruit", "tranche"),
+    "citron-2": ("fruit", "tranche"),
+    "pomme": ("pomme", "moitie"),
+}
 
 # Parties de chaque aquarelle, de l'arrière vers l'avant (le moteur les pose dans cet ordre).
 # `pivot` : point fixe des rotations (défaut : centre de la boîte de la partie) ; `sombre` : creux sombre
-# découvert sous la partie (ellipse cx, cy, rx, ry).
+# découvert sous la partie (ellipse cx, cy, rx, ry) ; `fond_boite` : zone où le fond découvert est diffusé
+# depuis les couleurs voisines (ailleurs, la partie qui bouge découvre simplement le papier).
 PARTIES: dict[str, list[dict]] = {
     "theiere": [
-        {"nom": "couvercle", "poly": [(0.33, 0.0), (0.62, 0.0), (0.62, 0.168), (0.595, 0.19), (0.355, 0.19), (0.33, 0.168)],
-         "pivot": (0.475, 0.19), "sombre": (0.475, 0.19, 0.115, 0.022)},
-        {"nom": "cuillere", "boite": (0.79, 0.24, 0.92, 0.405), "couleur": "gris", "pivot": (0.8, 0.42)},
+        {"nom": "verseuse", "boite": (0.0, 0.0, 1.0, 0.86),
+         "moins": [(0.12, 0.60, 0.415, 0.96), (0.12, 0.77, 0.46, 0.96), (0.58, 0.60, 0.88, 0.96), (0.54, 0.77, 0.88, 0.96)],
+         "pivot": (0.48, 0.46)},
+        {"nom": "tasse-g",
+         "poly": [(0.12, 0.60), (0.415, 0.60), (0.415, 0.76), (0.46, 0.81), (0.46, 0.96), (0.12, 0.96)],
+         "pivot": (0.30, 0.78)},
+        {"nom": "tasse-d",
+         "poly": [(0.58, 0.60), (0.88, 0.60), (0.88, 0.96), (0.54, 0.96), (0.54, 0.81), (0.58, 0.76)],
+         "pivot": (0.70, 0.78)},
     ],
-    "gateau": [
-        {"nom": "bougie", "boite": (0.585, 0.0, 0.71, 0.445), "couleur": "clair", "pivot": (0.645, 0.43)},
-    ],
-    "cupcake": [
-        {"nom": "framboise", "boite": (0.28, 0.0, 0.76, 0.21), "couleur": "rouge", "pivot": (0.52, 0.19)},
-    ],
-    # le même cupcake, une bougie plantée derrière la framboise (scripts/aquarelles_dessins.py) : la boîte
-    # s'arrête avant la bougie
-    "cupcake-bougie": [
-        {"nom": "framboise", "boite": (0.28, 0.25, 0.665, 0.415), "couleur": "rouge", "pivot": (0.52, 0.4)},
-    ],
-    "carotte": [
-        {"nom": "fanes", "boite": (0.0, 0.0, 1.0, 0.395), "pivot": (0.6, 0.4)},
-    ],
-    "cookies": [
-        {"nom": "moitie-g", "cercle": (0.455, 0.64, 0.255),
-         "poly": [(0.0, 0.3), (0.47, 0.3), (0.5, 0.42), (0.46, 0.5), (0.5, 0.6), (0.455, 0.7), (0.49, 0.8), (0.47, 1.0), (0.0, 1.0)],
-         "moins": [(0.0, 0.78, 0.2, 1.0)], "pivot": (0.32, 0.87)},
-        {"nom": "moitie-d", "cercle": (0.455, 0.64, 0.255), "poly": [(0.47, 0.3), (1.0, 0.3), (1.0, 1.0), (0.47, 1.0), (0.49, 0.8), (0.455, 0.7), (0.5, 0.6), (0.46, 0.5), (0.5, 0.42)],
-         "pivot": (0.6, 0.87)},
-        {"nom": "pepite-1", "boite": (0.0, 0.8, 0.12, 0.95), "point": (0.07, 0.89)},
-        {"nom": "pepite-2", "boite": (0.1, 0.76, 0.21, 0.88), "point": (0.16, 0.82)},
-        {"nom": "pepite-3", "boite": (0.16, 0.83, 0.28, 0.95), "point": (0.22, 0.89)},
-    ],
-    "sables-etoiles": [
-        {"nom": "etoile-1", "boite": (0.0, 0.0, 0.75, 0.5), "point": (0.3, 0.3), "pivot": (0.355, 0.24)},
-        {"nom": "etoile-2", "boite": (0.4, 0.5, 1.0, 1.0), "point": (0.62, 0.8), "pivot": (0.7, 0.765)},
+    "tasse-2": [
+        {"nom": "tasse",
+         "poly": [(0.20, 0.16), (0.78, 0.16), (0.91, 0.25), (0.91, 0.53), (0.71, 0.55), (0.63, 0.65), (0.48, 0.67), (0.37, 0.60), (0.25, 0.53), (0.20, 0.45)],
+         "pivot": (0.50, 0.46),
+         "fond_boite": (0.27, 0.55, 0.70, 0.68),
+         "sombre": (0.50, 0.625, 0.18, 0.042)},
     ],
     "tasse-coeur": [
-        {"nom": "biscuits", "boite": (0.69, 0.66, 1.0, 0.98), "pivot": (0.83, 0.95)},
-        {"nom": "coeur", "poly": [(0.34, 0.62), (0.47, 0.58), (0.52, 0.62), (0.6, 0.58), (0.7, 0.62), (0.7, 0.75), (0.62, 0.9), (0.52, 0.97), (0.36, 0.92), (0.34, 0.8)],
-         "pivot": (0.52, 0.77)},
+        {"nom": "tasse", "boite": (0.0, 0.0, 0.92, 0.92),
+         "moins": [(0.45, 0.66, 1.0, 1.0), (0.23, 0.48, 0.38, 0.64)],
+         "pivot": (0.38, 0.52)},
+        {"nom": "coeur", "boite": (0.225, 0.475, 0.385, 0.645),
+         "pivot": (0.305, 0.555), "fond_boite": (0.22, 0.47, 0.39, 0.65)},
+        {"nom": "biscuits",
+         "poly": [(0.45, 0.78), (0.55, 0.67), (0.64, 0.68), (0.69, 0.73), (0.73, 0.61), (0.83, 0.60), (0.96, 0.66), (0.96, 0.97), (0.45, 0.97)],
+         "pivot": (0.70, 0.80)},
     ],
-    "citron": [
-        {"nom": "citron", "boite": (0.1, 0.0, 0.95, 0.53), "point": (0.5, 0.25), "pivot": (0.5, 0.27)},
-        {"nom": "moitie", "boite": (0.1, 0.53, 0.95, 1.0), "point": (0.5, 0.8), "pivot": (0.5, 0.97)},
+    "gateau": [
+        {"nom": "bougie", "boite": (0.695, 0.18, 0.775, 0.55), "pivot": (0.735, 0.53),
+         "fond_boite": (0.69, 0.46, 0.78, 0.56)},
+        {"nom": "framboise", "boite": (0.30, 0.19, 0.50, 0.32), "couleur": "rouge", "pivot": (0.40, 0.27),
+         "fond_boite": (0.30, 0.26, 0.50, 0.33)},
     ],
-    "citron-2": [
-        {"nom": "citron", "boite": (0.0, 0.0, 0.8, 0.57), "point": (0.4, 0.25), "pivot": (0.42, 0.26)},
-        {"nom": "rondelle", "boite": (0.25, 0.58, 1.0, 1.0), "point": (0.6, 0.8), "pivot": (0.6, 0.81)},
+    "cupcake": [
+        {"nom": "framboise", "boite": (0.42, 0.03, 0.77, 0.28), "couleur": "rouge", "pivot": (0.59, 0.18),
+         "fond_boite": (0.42, 0.16, 0.77, 0.29)},
     ],
-    "pomme": [
-        {"nom": "pomme", "boite": (0.0, 0.0, 1.0, 0.52), "point": (0.5, 0.25), "pivot": (0.5, 0.5)},
-        {"nom": "moitie", "boite": (0.0, 0.55, 1.0, 1.0), "point": (0.5, 0.8), "pivot": (0.5, 0.99)},
+    "cupcake-bougie": [
+        {"nom": "framboise", "boite": (0.43, 0.20, 0.77, 0.42), "couleur": "rouge", "pivot": (0.60, 0.33),
+         "fond_boite": (0.43, 0.31, 0.77, 0.43)},
+    ],
+    "carotte": [
+        {"nom": "fanes", "boite": (0.0, 0.0, 1.0, 0.375), "pivot": (0.50, 0.37)},
+    ],
+    "cookies": [
+        {"nom": "moitie-g",
+         "poly": [(0.03, 0.27), (0.29, 0.27), (0.31, 0.40), (0.27, 0.52), (0.30, 0.64), (0.27, 0.75), (0.29, 0.86), (0.03, 0.86)],
+         "pivot": (0.22, 0.74)},
+        {"nom": "moitie-d",
+         "poly": [(0.29, 0.27), (0.46, 0.33), (0.525, 0.48), (0.51, 0.64), (0.42, 0.78), (0.29, 0.86), (0.27, 0.75), (0.30, 0.64), (0.27, 0.52), (0.31, 0.40)],
+         "pivot": (0.37, 0.74), "fond_boite": (0.34, 0.32, 0.53, 0.80)},
+        {"nom": "pepite-1", "cercle": (0.73, 0.28, 0.045), "pivot": (0.73, 0.28), "fond_boite": (0.67, 0.22, 0.79, 0.34)},
+        {"nom": "pepite-2", "cercle": (0.74, 0.55, 0.042), "pivot": (0.74, 0.55), "fond_boite": (0.68, 0.49, 0.80, 0.61)},
+        {"nom": "pepite-3", "cercle": (0.68, 0.74, 0.042), "pivot": (0.68, 0.74), "fond_boite": (0.62, 0.68, 0.74, 0.80)},
+    ],
+    "sables-etoiles": [
+        {"nom": "etoile-1",
+         "poly": [(0.32, 0.26), (0.44, 0.36), (0.61, 0.36), (0.52, 0.49), (0.46, 0.67), (0.33, 0.61), (0.14, 0.66), (0.18, 0.51), (0.04, 0.41), (0.22, 0.38)],
+         "moins": [(0.45, 0.48, 1.0, 0.82)],
+         "pivot": (0.33, 0.46)},
+        {"nom": "etoile-2",
+         "poly": [(0.66, 0.40), (0.76, 0.50), (0.96, 0.53), (0.83, 0.64), (0.85, 0.80), (0.66, 0.72), (0.45, 0.75), (0.51, 0.60), (0.41, 0.49), (0.57, 0.49)],
+         "pivot": (0.68, 0.60)},
+    ],
+    "citron": [],
+    "citron-2": [],
+    "pomme": [],
+    "orange": [
+        {"nom": "rondelle", "cercle": (0.695, 0.665, 0.265), "pivot": (0.695, 0.665)},
     ],
     "noix": [
-        {"nom": "noix-1", "boite": (0.0, 0.0, 0.37, 1.0), "point": (0.18, 0.5), "pivot": (0.18, 0.95)},
-        {"nom": "noix-2", "boite": (0.37, 0.0, 0.68, 1.0), "point": (0.53, 0.55), "pivot": (0.53, 0.97)},
-        {"nom": "noix-3", "boite": (0.68, 0.0, 1.0, 1.0), "point": (0.85, 0.5), "pivot": (0.85, 0.92)},
+        {"nom": "noix-1",
+         "poly": [(0.24, 0.14), (0.46, 0.14), (0.48, 0.38), (0.39, 0.58), (0.40, 0.86), (0.24, 0.86)],
+         "pivot": (0.35, 0.52)},
+        {"nom": "noix-3",
+         "poly": [(0.46, 0.03), (0.76, 0.03), (0.76, 0.72), (0.61, 0.72), (0.63, 0.52), (0.56, 0.35), (0.46, 0.35)],
+         "pivot": (0.62, 0.38)},
+        {"nom": "noix-2",
+         "poly": [(0.45, 0.35), (0.58, 0.35), (0.64, 0.55), (0.62, 0.86), (0.51, 0.96), (0.40, 0.86), (0.38, 0.55)],
+         "pivot": (0.51, 0.66)},
+    ],
+    "oeufs": [
+        {"nom": "coquille",
+         "poly": [(0.30, 0.58), (0.37, 0.51), (0.46, 0.53), (0.53, 0.60), (0.65, 0.64), (0.66, 0.82), (0.56, 0.94), (0.36, 0.94), (0.29, 0.80)],
+         "pivot": (0.48, 0.78), "fond_boite": (0.29, 0.50, 0.66, 0.85)},
     ],
 }
 
@@ -160,8 +197,10 @@ def selection(rgba: np.ndarray, spec: dict) -> np.ndarray:
             _, (ii, jj) = ndi.distance_transform_edt(etiq == 0, return_indices=True)
             i, j = ii[i, j], jj[i, j]
         m &= etiq == etiq[i, j]
-    # trous bouchés (un reflet blanc au milieu d'une partie en fait partie), bord doux compris
-    m = ndi.binary_fill_holes(m)
+    # trous bouchés (un reflet blanc au milieu d'une partie en fait partie), sans boucher le papier transparent
+    m = ndi.binary_fill_holes(m) & (rgba[..., 3] > SEUIL)
+    for x0, y0, x1, y1 in spec.get("moins", []):
+        m &= ~((u >= x0) & (u <= x1) & (v >= y0) & (v <= y1))
     return m
 
 
@@ -208,20 +247,31 @@ def cuire(nom: str, specs: list[dict]):
         rayon = (boite[3] - boite[1]) / 2
         infos.append({"nom": spec["nom"], "pivot": [round(pivot[0], 4), round(pivot[1], 4)],
                       "boite": [round(b, 4) for b in boite], "rayon": round(rayon, 4)})
-    # le fond : sous les parties (un peu élargies, leur bord doux compris), les couleurs voisines
+    # Rattraper la frange semi-transparente (2 px) autour des parties pour ne laisser aucun liseré au départ
+    dist, pos = ndi.distance_transform_edt(ids == 0, return_indices=True)
+    frange = (ids == 0) & (rgba[..., 3] > 0) & (dist <= 2.5)
+    ids[frange] = ids[tuple(pos)][frange]
+    # Le fond découvert : uniquement dans les zones où la partie recouvre un autre objet (`fond_boite` / `sombre`),
+    # transparent (le papier) partout où la partie est devant le fond de page.
     trou = ndi.binary_dilation(ids > 0, iterations=3)
     pre = rgba.copy()
     pre[..., :3] *= pre[..., 3:]
-    fond = diffuser(pre, trou)
+    fond_plein = diffuser(pre, trou)
     u, v = grille(h, w)
+    garder = np.zeros((h, w), dtype=bool)
     for i, spec in enumerate(specs, 1):
+        if "fond_boite" in spec:
+            x0, y0, x1, y1 = spec["fond_boite"]
+            garder |= (u >= x0) & (u <= x1) & (v >= y0) & (v <= y1) & (ids == i)
         if "sombre" in spec:
             cx, cy, rx, ry = spec["sombre"]
             d = ((u - cx) / rx) ** 2 + ((v - cy) / ry) ** 2
             k = np.clip((1.15 - d) / 0.3, 0, 1)[..., None] * 0.92
             creux = np.array([0.24, 0.19, 0.16, 1.0])
-            fond = fond * (1 - k) + creux * k
-    fond[~trou] = 0
+            fond_plein = fond_plein * (1 - k) + creux * k
+            garder |= d <= 1.25
+    garder = ndi.binary_dilation(garder, iterations=2) & trou
+    fond = np.where(garder[..., None], fond_plein, 0.0)
     return rgba, ids, fond, infos
 
 
@@ -263,10 +313,10 @@ def vignette(rgba: np.ndarray, ids: np.ndarray, fond: np.ndarray, infos: list, c
     return im
 
 
-def cuire_citron_v9(nom):
-    """Les deux sujets ENTiers de la nouvelle image : aucun trait de découpe arbitraire.
+def cuire_citron_v9(nom: str, roles: tuple[str, str] = ("fruit", "tranche")):
+    """Les deux sujets entiers de l'image : aucun trait de découpe arbitraire.
 
-    Les deux grosses composantes alpha correspondent au fruit avec sa feuille et à sa tranche.
+    Les deux grosses composantes alpha correspondent au fruit avec sa feuille et à sa tranche/moitié.
     Affecter ensuite chaque frange au sujet le plus proche évite de rogner les contours semi-transparents.
     Le fond découvert est vide puisque les deux peintures sont séparées dans l'original.
     """
@@ -279,7 +329,7 @@ def cuire_citron_v9(nom):
     largest = sorted(largest, key=lambda k: np.nonzero(labels == k)[0].mean())
     primary = np.zeros(alpha.shape, np.uint8)
     infos = []
-    for i, (label, role) in enumerate(zip(largest, ["fruit", "tranche"]), 1):
+    for i, (label, role) in enumerate(zip(largest, roles), 1):
         primary[labels == label] = i
         yy, xx = np.nonzero(labels == label)
         h, w = alpha.shape
@@ -294,7 +344,7 @@ def cuire_citron_v9(nom):
     SORTIE_PARTIES.mkdir(exist_ok=True); SORTIE_FOND.mkdir(exist_ok=True)
     Image.fromarray(mask, "RGBA").save(SORTIE_PARTIES / f"{nom}.webp", "WEBP", lossless=True, exact=True)
     Image.new("RGBA", image.size).save(SORTIE_FOND / f"{nom}.webp", "WEBP", lossless=True, exact=True)
-    print(f"{nom:16s} série anglaise : fruit et tranche entiers, fond transparent")
+    print(f"{nom:16s} série anglaise : {roles[0]} et {roles[1]} entiers, fond transparent")
     return {"serie": "anglaise-v9", "parties": infos}
 
 
@@ -304,30 +354,17 @@ def main(argv=None) -> int:
     argv = [a for a in argv if a != "--planche"]
     noms = argv[0].split(",") if argv else sorted(PARTIES)
     tout = json.loads(JSON.read_text()) if JSON.exists() else {}
-    # Ces coordonnées appartiennent aux anciennes images. La série anglaise est animée entière :
-    # ne jamais réappliquer ces sélections sur ses nouveaux fruits, gâteaux ou tasses.
-    catalogue_v9 = RACINE / "design-system/aquarelles/catalogue-v9.json"
-    indivisibles = set(json.loads(catalogue_v9.read_text())) if catalogue_v9.exists() else set()
-    for nom in indivisibles:
-        if nom in CITRONS_V9:
-            continue
-        tout.pop(nom, None)
-        for dossier in (SORTIE_PARTIES, SORTIE_FOND):
-            (dossier / f"{nom}.webp").unlink(missing_ok=True)
     vues = []
     for nom in noms:
-        if nom in indivisibles:
-            if nom in CITRONS_V9:
-                tout[nom] = cuire_citron_v9(nom)
-                continue
-            print(f"{nom:16s} série anglaise : image entière, aucun découpage")
+        if nom in SEPARES_V9:
+            tout[nom] = cuire_citron_v9(nom, SEPARES_V9[nom])
             continue
         if nom not in PARTIES or not (SOURCE / f"{nom}.webp").exists():
             print(f"✗ aquarelle sans parties ou inconnue : {nom}")
             continue
         rgba, ids, fond, infos = cuire(nom, PARTIES[nom])
         n1, n2 = ecrire(nom, ids, fond)
-        tout[nom] = {"parties": infos}
+        tout[nom] = {"serie": "anglaise-v9", "parties": infos}
         print(f"{nom:16s} {len(infos)} parties  carte {n1 // 1024} Ko  fond {n2 // 1024} Ko")
         if planche:
             vues.append(vignette(rgba, ids, fond, infos))

@@ -127,7 +127,7 @@ export class Grains {
       let e = d & 2 ? Math.sin(Math.PI * u) : Math.min(1, u * 12) * Math.pow(1 - u, 1.4);
       e *= (0.78 + 0.22 * Math.sin(this.phase[i] + t * 17)) * attenuation;
       const etoile = d & 1;
-      const s = this.taille[i] * this.grossir * (etoile ? 0.55 + 0.45 * e : 1);
+      const s = this.taille[i] * this.grossir * (etoile ? 0.65 + 0.48 * e : 1.06);
       o = point(buf, o, this.x[i], this.y[i], s, etoile ? GENRE.etoile : GENRE.halo, this.r[i] * e, this.g[i] * e, this.b[i] * e, 0, 0);
       if (d & 4 && o < cap - 2) {
         const vx = this.vx[i];

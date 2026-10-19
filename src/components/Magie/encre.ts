@@ -1,8 +1,9 @@
 // L'encre magique : ornements qui s'écrivent seuls autour des titres de chapitre et dans les coins libres
-// des pages, paraphe d'or sous un titre qu'on touche ou survole, pas du maraudeur qui se promènent dans
-// les marges. Tout se construit en px de page (850 × 1200, comme la mise en page) depuis la carte cuite
-// (scripts/bake-magie.py → carte.json) et le manifeste des pages (zones vivantes, croquis) ; la toile
-// les pose sur la page à l'écran (u_page).
+// des pages, paraphe d'or sous un titre qu'on touche ou survole, pas du maraudeur et petites pattes de
+// Jack Russell qui se promènent dans les marges, et cachettes secrètes (lunettes et éclair, tasse magique,
+// couronne 30 ans, baguette étoilée, mots doux cursifs). Tout se construit en px de page (850 × 1200,
+// comme la mise en page) depuis la carte cuite (scripts/bake-magie.py → carte.json) et le manifeste des
+// pages (zones vivantes, croquis, liens) ; la toile les pose sur la page à l'écran (u_page).
 
 import carteJson from './carte.json';
 import { TRAIT } from './gl';
@@ -17,6 +18,18 @@ export const CARTE = carteJson as unknown as Carte;
 export const PAGE_W = CARTE.W;
 export const PAGE_H = CARTE.H;
 
+// Réalignement du chemin de plume du sommaire (les lignes de table des matières vont jusqu'à y ≈ 876 px).
+(() => {
+  const som = CARTE.pages.sommaire;
+  if (!som?.plume?.length) return;
+  for (let i = 0; i < som.plume.length; i += 3) {
+    const y = som.plume[i + 1];
+    if (y >= 170 && y <= 560) {
+      som.plume[i + 1] = Math.round(176 + ((y - 176) * (876 - 176)) / (543 - 176));
+    }
+  }
+})();
+
 /** Un point de trait : position (px de page), instant d'écriture (0 à 1 de l'ornement), pression (0 à 1). */
 export interface PointTrait { x: number; y: number; t: number; p: number }
 export type Chemin = PointTrait[];
@@ -25,7 +38,7 @@ export type Chemin = PointTrait[];
 
 export interface Grille { nx: number; ny: number; c: number; occ: Uint8Array }
 
-/** Grille des cases occupées : l'encre (cuite) + les photos, aquarelles, croquis et feuillet (manifeste). */
+/** Grille des cases occupées : l'encre (cuite) + les photos, aquarelles, croquis, liens et titres. */
 export function grille(cp: CartePage, info: PageCuiteInfo | undefined): Grille {
   const c = CARTE.case;
   const nx = Math.ceil(PAGE_W / c);
@@ -35,8 +48,7 @@ export function grille(cp: CartePage, info: PageCuiteInfo | undefined): Grille {
     const bits = parseInt(hex, 16);
     for (let i = 0; i < nx; i++) if (Math.floor(bits / 2 ** i) % 2) occ[j * nx + i] = 1;
   });
-  const marquer = ([x, y, w, h]: number[]) => {
-    const M = 15;
+  const marquer = ([x, y, w, h]: number[], M = 16) => {
     const i0 = Math.max(0, Math.floor((x * PAGE_W - M) / c));
     const i1 = Math.min(nx - 1, Math.floor(((x + w) * PAGE_W + M) / c));
     const j0 = Math.max(0, Math.floor((y * PAGE_H - M) / c));
@@ -45,7 +57,30 @@ export function grille(cp: CartePage, info: PageCuiteInfo | undefined): Grille {
   };
   Object.values(info?.vivants ?? {}).forEach((r) => r && marquer(r));
   info?.croquis?.forEach((k) => marquer(k.boite));
+  info?.liens?.forEach((l) => marquer(l.rect, 22));
+  if (info?.liens?.length) {
+    // Sur le sommaire, tout le bloc des lignes de table des matières (jusqu'à « Le mot de la fin ....... 24 »)
+    // ainsi que la frise végétale cuite au bas de la page sont strictement réservés.
+    marquer([0.09, 0.135, 0.85, 0.62], 16);
+    marquer([0.14, 0.825, 0.72, 0.045], 14);
+  }
+  for (const t of cp.titres) {
+    marquer([t.r[0] / PAGE_W, t.r[1] / PAGE_H, (t.r[2] - t.r[0]) / PAGE_W, (t.r[3] - t.r[1]) / PAGE_H], 10);
+  }
   return { nx, ny, c, occ };
+}
+
+/** Copie d'une grille pour réserver localement des zones déjà prises (ornements de coin, cachettes). */
+export function clonerGrille(g: Grille): Grille {
+  return { nx: g.nx, ny: g.ny, c: g.c, occ: new Uint8Array(g.occ) };
+}
+
+export function occuperRect(g: Grille, [x0, y0, x1, y1]: Rect, M = 8): void {
+  const i0 = Math.max(0, Math.floor((x0 - M) / g.c));
+  const i1 = Math.min(g.nx - 1, Math.floor((x1 + M) / g.c));
+  const j0 = Math.max(0, Math.floor((y0 - M) / g.c));
+  const j1 = Math.min(g.ny - 1, Math.floor((y1 + M) / g.c));
+  for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) g.occ[j * g.nx + i] = 1;
 }
 
 /** Le rectangle (px de page) ne touche aucune case occupée, et reste dans la page. */
@@ -53,6 +88,39 @@ export function libre(g: Grille, [x0, y0, x1, y1]: Rect): boolean {
   if (x0 < 8 || y0 < 8 || x1 > PAGE_W - 8 || y1 > PAGE_H - 8) return false;
   for (let j = Math.floor(y0 / g.c); j <= Math.floor(y1 / g.c); j++) {
     for (let i = Math.floor(x0 / g.c); i <= Math.floor(x1 / g.c); i++) if (g.occ[j * g.nx + i]) return false;
+  }
+  return true;
+}
+
+/** Boîte englobante exacte d'un ensemble de chemins (px de page). */
+export function boiteChemins(chemins: Chemin[]): Rect {
+  let x0 = Infinity;
+  let y0 = Infinity;
+  let x1 = -Infinity;
+  let y1 = -Infinity;
+  for (const c of chemins) {
+    for (const p of c) {
+      if (p.x < x0) x0 = p.x;
+      if (p.y < y0) y0 = p.y;
+      if (p.x > x1) x1 = p.x;
+      if (p.y > y1) y1 = p.y;
+    }
+  }
+  if (!Number.isFinite(x0)) return [0, 0, 0, 0];
+  return [x0, y0, x1, y1];
+}
+
+/** Vérifie strictement que tous les points et la boîte englobante des chemins tombent dans des cases libres. */
+export function cheminsLibres(g: Grille, chemins: Chemin[], marge = 8): boolean {
+  const [x0, y0, x1, y1] = boiteChemins(chemins);
+  if (!Number.isFinite(x0)) return false;
+  if (!libre(g, [x0 - marge, y0 - marge, x1 + marge, y1 + marge])) return false;
+  for (const c of chemins) {
+    for (const p of c) {
+      const i = Math.floor(p.x / g.c);
+      const j = Math.floor(p.y / g.c);
+      if (i < 0 || j < 0 || i >= g.nx || j >= g.ny || g.occ[j * g.nx + i]) return false;
+    }
   }
   return true;
 }
@@ -108,15 +176,58 @@ class Plume {
 
   /** Le chemin, l'encre posée de t0 à t1 (à vitesse de plume constante), la pression qui s'effile aux bouts. */
   chemin(t0: number, t1: number, appui = 1): Chemin {
-    const L: number[] = [0];
-    for (let i = 1; i < this.pts.length; i++) L.push(L[i - 1] + Math.hypot(this.pts[i].x - this.pts[i - 1].x, this.pts[i].y - this.pts[i - 1].y));
-    const tot = L[L.length - 1] || 1;
-    return this.pts.map((q, i) => {
-      const u = L[i] / tot;
-      const p = (0.3 + 0.7 * Math.min(1, u / 0.12)) * (1 - 0.6 * Math.max(0, (u - 0.7) / 0.3)) * appui;
-      return { x: q.x, y: q.y, t: t0 + (t1 - t0) * u, p };
-    });
+    return lisserTemps(this.pts, t0, t1, appui);
   }
+}
+
+function lisserTemps(pts: { x: number; y: number }[], t0: number, t1: number, appui = 1): Chemin {
+  const L: number[] = [0];
+  for (let i = 1; i < pts.length; i++) L.push(L[i - 1] + Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y));
+  const tot = L[L.length - 1] || 1;
+  return pts.map((q, i) => {
+    const u = L[i] / tot;
+    const p = (0.32 + 0.68 * Math.min(1, u / 0.12)) * (1 - 0.55 * Math.max(0, (u - 0.72) / 0.28)) * appui;
+    return { x: q.x, y: q.y, t: t0 + (t1 - t0) * u, p };
+  });
+}
+
+/** Courbe de Catmull-Rom lissée à partir de points de contrôle, tracée de t0 à t1. */
+function courbe(ctrl: readonly (readonly [number, number])[], t0: number, t1: number, appui = 1, subdiv = 7): Chemin {
+  if (ctrl.length < 2) return [];
+  const pts: { x: number; y: number }[] = [];
+  for (let i = 0; i < ctrl.length - 1; i++) {
+    const p0 = ctrl[Math.max(0, i - 1)];
+    const p1 = ctrl[i];
+    const p2 = ctrl[i + 1];
+    const p3 = ctrl[Math.min(ctrl.length - 1, i + 2)];
+    const n = i === ctrl.length - 2 ? subdiv : subdiv - 1;
+    for (let s = 0; s <= n; s++) {
+      const u = s / subdiv;
+      const u2 = u * u;
+      const u3 = u2 * u;
+      const x = 0.5 * ((2 * p1[0]) + (-p0[0] + p2[0]) * u + (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * u2 + (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * u3);
+      const y = 0.5 * ((2 * p1[1]) + (-p0[1] + p2[1]) * u + (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * u2 + (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * u3);
+      pts.push({ x, y });
+    }
+  }
+  return lisserTemps(pts, t0, t1, appui);
+}
+
+/** Polyligne franche (angles vifs, ex. éclair ou couronne) redécoupée finement pour la plume. */
+function brisee(ctrl: readonly (readonly [number, number])[], t0: number, t1: number, appui = 1.15): Chemin {
+  if (ctrl.length < 2) return [];
+  const pts: { x: number; y: number }[] = [];
+  for (let i = 0; i < ctrl.length - 1; i++) {
+    const a = ctrl[i];
+    const b = ctrl[i + 1];
+    const d = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    const n = Math.max(3, Math.ceil(d / 2));
+    for (let s = 0; s < n || (i === ctrl.length - 2 && s <= n); s++) {
+      const u = s / n;
+      pts.push({ x: a[0] + (b[0] - a[0]) * u, y: a[1] + (b[1] - a[1]) * u });
+    }
+  }
+  return lisserTemps(pts, t0, t1, appui);
 }
 
 const miroirX = (c: Chemin, cx: number): Chemin => c.map((q) => ({ ...q, x: 2 * cx - q.x }));
@@ -124,6 +235,14 @@ const miroirX = (c: Chemin, cx: number): Chemin => c.map((q) => ({ ...q, x: 2 * 
 /** Un petit point d'encre (goutte posée par la plume) : un trait minuscule. */
 function goutte(x: number, y: number, t: number, r = 2.2): Chemin {
   return new Plume(x - r * 0.4, y, 0).arc(r * 2.6, Math.PI * 2, 0.6).chemin(t, t + 0.02, 1.1);
+}
+
+/** Une petite étoile à 4 branches tracée à la plume autour de (cx, cy). */
+function etoilePlume(cx: number, cy: number, r: number, t0: number, t1: number): Chemin[] {
+  const tm = (t0 + t1) / 2;
+  const v = brisee([[cx, cy - r], [cx, cy + r]], t0, tm, 1.05);
+  const h = brisee([[cx - r * 0.85, cy], [cx + r * 0.85, cy]], tm, t1, 1.05);
+  return [v, h];
 }
 
 // ---- Les ornements ---------------------------------------------------------------------------------
@@ -175,6 +294,437 @@ export function paraphe([x0, , x1, y1]: Rect, graine: number): Chemin[] {
     .arc(14, -1.1)
     .volute(7 + 3 * h(7), 0.9, -1);
   return [p.chemin(0, 1, 1.15)];
+}
+
+// ---- Les cachettes et clins d'œil magiques (Harry Potter & 30 ans) --------------------------------
+
+export type GenreSecret =
+  | 'lunettes-eclair'
+  | 'tasse-magique'
+  | 'couronne-30'
+  | 'baguette'
+  | 'mischief'
+  | 'lumos'
+  | 'teatime'
+  | 'trente-ans'
+  | 'miam';
+
+export const GENRES_SECRETS: readonly GenreSecret[] = [
+  'lunettes-eclair',
+  'tasse-magique',
+  'couronne-30',
+  'baguette',
+  'mischief',
+  'lumos',
+  'teatime',
+  'trente-ans',
+  'miam',
+];
+
+export interface SecretMarge {
+  genre: GenreSecret;
+  x: number;
+  y: number;
+  r: Rect;
+  chemins: Chemin[];
+  duree: number;
+  couleur: [number, number, number];
+  largeur: number;
+}
+
+export interface Cachette {
+  id: string;
+  x: number;
+  y: number;
+  r: Rect;
+  echelle: number;
+  genre: GenreSecret;
+}
+
+/** 1. Lunettes rondes de sorcier et cicatrice en éclair (« lunettes-eclair »). */
+function dessinLunettesEclair(cx: number, cy: number, k: number): Chemin[] {
+  const cercle = (ox: number, oy: number, r: number, t0: number, t1: number): Chemin => {
+    const pts: [number, number][] = [];
+    const N = 14;
+    for (let i = 0; i <= N; i++) {
+      const a = -Math.PI * 0.25 + (i / N) * Math.PI * 2.05;
+      pts.push([ox + Math.cos(a) * r, oy + Math.sin(a) * r]);
+    }
+    return courbe(pts, t0, t1, 1.05, 5);
+  };
+  const g = cercle(cx - 19 * k, cy + 6 * k, 12.5 * k, 0, 0.27);
+  const d = cercle(cx + 19 * k, cy + 6 * k, 12.5 * k, 0.28, 0.55);
+  const pont = courbe([
+    [cx - 6.5 * k, cy + 4 * k],
+    [cx, cy - 1 * k],
+    [cx + 6.5 * k, cy + 4 * k],
+  ], 0.56, 0.64, 1);
+  const brG = courbe([
+    [cx - 31.5 * k, cy + 4 * k],
+    [cx - 38 * k, cy - 1 * k],
+    [cx - 40 * k, cy + 2 * k],
+  ], 0.65, 0.71, 0.9);
+  const brD = courbe([
+    [cx + 31.5 * k, cy + 4 * k],
+    [cx + 38 * k, cy - 1 * k],
+    [cx + 40 * k, cy + 2 * k],
+  ], 0.71, 0.77, 0.9);
+  const eclair = brisee([
+    [cx + 4.5 * k, cy - 23 * k],
+    [cx - 4.5 * k, cy - 12.5 * k],
+    [cx + 3 * k, cy - 12.5 * k],
+    [cx - 5.5 * k, cy - 1.5 * k],
+  ], 0.78, 0.94, 1.3);
+  return [g, d, pont, brG, brD, eclair, ...etoilePlume(cx + 15 * k, cy - 16 * k, 4.2 * k, 0.94, 1.0)];
+}
+
+/** 2. Tasse de thé enchantée qui flotte avec une volute de vapeur en cœur (« tasse-magique »). */
+function dessinTasseMagique(cx: number, cy: number, k: number): Chemin[] {
+  const soucoupe = courbe([
+    [cx - 24 * k, cy + 19 * k],
+    [cx - 10 * k, cy + 24 * k],
+    [cx + 10 * k, cy + 24 * k],
+    [cx + 24 * k, cy + 19 * k],
+  ], 0, 0.16, 1.05);
+  const bol = courbe([
+    [cx - 18 * k, cy + 3 * k],
+    [cx - 15 * k, cy + 16 * k],
+    [cx, cy + 21 * k],
+    [cx + 15 * k, cy + 16 * k],
+    [cx + 18 * k, cy + 3 * k],
+  ], 0.17, 0.38, 1.1);
+  const bord = courbe([
+    [cx - 18 * k, cy + 3 * k],
+    [cx, cy - 1 * k],
+    [cx + 18 * k, cy + 3 * k],
+    [cx, cy + 6.5 * k],
+    [cx - 18 * k, cy + 3 * k],
+  ], 0.39, 0.54, 0.95);
+  const anse = courbe([
+    [cx + 18 * k, cy + 5 * k],
+    [cx + 27 * k, cy + 6 * k],
+    [cx + 26 * k, cy + 14 * k],
+    [cx + 15 * k, cy + 15 * k],
+  ], 0.55, 0.66, 1.0);
+  const vapeurCoeur = courbe([
+    [cx - 1 * k, cy - 3 * k],
+    [cx + 3 * k, cy - 8 * k],
+    [cx, cy - 12 * k],
+    [cx - 9.5 * k, cy - 18 * k],
+    [cx - 5 * k, cy - 24 * k],
+    [cx, cy - 19 * k],
+    [cx + 5 * k, cy - 24 * k],
+    [cx + 9.5 * k, cy - 18 * k],
+    [cx, cy - 12 * k],
+    [cx - 2 * k, cy - 26 * k],
+  ], 0.67, 1.0, 0.95);
+  return [soucoupe, bol, bord, anse, vapeurCoeur];
+}
+
+/** 3. Couronne d'anniversaire et chiffre « 30 » (« couronne-30 »). */
+function dessinCouronne30(cx: number, cy: number, k: number): Chemin[] {
+  const couronne = brisee([
+    [cx - 22 * k, cy - 4 * k],
+    [cx - 26 * k, cy - 20 * k],
+    [cx - 11 * k, cy - 10 * k],
+    [cx, cy - 24 * k],
+    [cx + 11 * k, cy - 10 * k],
+    [cx + 26 * k, cy - 20 * k],
+    [cx + 22 * k, cy - 4 * k],
+    [cx - 22 * k, cy - 4 * k],
+  ], 0, 0.44, 1.1);
+  const p1 = goutte(cx - 26 * k, cy - 22 * k, 0.45, 2 * k);
+  const p2 = goutte(cx, cy - 26 * k, 0.47, 2.3 * k);
+  const p3 = goutte(cx + 26 * k, cy - 22 * k, 0.49, 2 * k);
+  const trois = courbe([
+    [cx - 17 * k, cy + 2 * k],
+    [cx - 9 * k, cy - 1 * k],
+    [cx - 5 * k, cy + 4 * k],
+    [cx - 12 * k, cy + 9 * k],
+    [cx - 4 * k, cy + 15 * k],
+    [cx - 10 * k, cy + 20 * k],
+    [cx - 18 * k, cy + 17 * k],
+  ], 0.52, 0.74, 1.2);
+  const zero = courbe([
+    [cx + 10 * k, cy + 0 * k],
+    [cx + 4 * k, cy + 5 * k],
+    [cx + 4 * k, cy + 15 * k],
+    [cx + 10 * k, cy + 20 * k],
+    [cx + 16 * k, cy + 15 * k],
+    [cx + 16 * k, cy + 5 * k],
+    [cx + 10 * k, cy + 0 * k],
+  ], 0.75, 0.92, 1.2);
+  const onde = courbe([
+    [cx - 22 * k, cy + 24 * k],
+    [cx, cy + 21.5 * k],
+    [cx + 22 * k, cy + 24 * k],
+  ], 0.93, 1.0, 0.9);
+  return [couronne, p1, p2, p3, trois, zero, onde];
+}
+
+/** 4. Baguette magique lançant une spirale d'étoiles (« baguette »). */
+function dessinBaguette(cx: number, cy: number, k: number): Chemin[] {
+  const bois = brisee([
+    [cx - 34 * k, cy + 21 * k],
+    [cx + 3 * k, cy - 4 * k],
+  ], 0, 0.24, 1.3);
+  const garde = courbe([
+    [cx - 26 * k, cy + 12 * k],
+    [cx - 22 * k, cy + 18 * k],
+  ], 0.25, 0.31, 1.15);
+  const spirale = new Plume(cx + 3 * k, cy - 4 * k, -0.55)
+    .arc(22 * k, -1.2)
+    .volute(16 * k, 1.35, -1)
+    .chemin(0.32, 0.74, 0.95);
+  return [
+    bois,
+    garde,
+    spirale,
+    ...etoilePlume(cx + 20 * k, cy - 17 * k, 5 * k, 0.75, 0.83),
+    ...etoilePlume(cx - 6 * k, cy - 18 * k, 4.4 * k, 0.83, 0.91),
+    ...etoilePlume(cx + 29 * k, cy + 6 * k, 4.8 * k, 0.91, 1.0),
+  ];
+}
+
+// Glyphes cursifs normalisés (x ∈ [0, w], y ∈ [-0.85, 1.65], ligne de base y = 1, hauteur d'x y = 0).
+interface GlypheCursif {
+  w: number;
+  continu?: boolean;
+  pts: readonly (readonly [number, number])[];
+  extra?: readonly (readonly (readonly [number, number])[])[];
+  point?: readonly [number, number];
+}
+
+const GLYPHES: Record<string, GlypheCursif> = {
+  M: { w: 1.35, pts: [[0.04, 0.95], [0.22, -0.78], [0.64, 0.58], [1.04, -0.78], [1.18, 0.95], [1.35, 0.65]] },
+  L: { w: 0.96, pts: [[0.16, -0.58], [0.46, -0.82], [0.24, 0.95], [0.06, 0.78], [0.36, 0.74], [0.76, 0.98], [0.96, 0.65]] },
+  T: { w: 0.92, pts: [[0.46, -0.74], [0.36, 0.95], [0.16, 0.82]], extra: [[[0.04, -0.68], [0.46, -0.82], [0.9, -0.7]]] },
+  '3': { w: 0.88, pts: [[0.12, -0.52], [0.5, -0.78], [0.76, -0.38], [0.34, 0.06], [0.8, 0.46], [0.48, 0.98], [0.1, 0.76]] },
+  '0': { w: 0.88, pts: [[0.46, -0.76], [0.12, -0.2], [0.14, 0.78], [0.48, 0.98], [0.78, 0.74], [0.78, -0.24], [0.46, -0.76]] },
+  '!': { w: 0.42, pts: [[0.26, -0.78], [0.18, 0.54]], point: [0.16, 0.95] },
+  a: { w: 0.84, continu: true, pts: [[0, 0.65], [0.52, 0.06], [0.14, 0.16], [0.1, 0.86], [0.46, 0.98], [0.66, 0.18], [0.68, 0.94], [0.84, 0.65]] },
+  c: { w: 0.68, continu: true, pts: [[0, 0.65], [0.48, 0.06], [0.14, 0.2], [0.12, 0.86], [0.44, 0.98], [0.68, 0.65]] },
+  d: { w: 0.88, continu: true, pts: [[0, 0.65], [0.52, 0.06], [0.14, 0.2], [0.12, 0.86], [0.48, 0.98], [0.68, 0.18], [0.72, -0.82], [0.68, 0.94], [0.88, 0.65]] },
+  e: { w: 0.7, continu: true, pts: [[0, 0.65], [0.56, 0.34], [0.44, 0.04], [0.14, 0.26], [0.14, 0.88], [0.46, 0.98], [0.7, 0.65]] },
+  f: { w: 0.72, continu: true, pts: [[0, 0.65], [0.46, -0.18], [0.54, -0.82], [0.3, -0.72], [0.34, 1.52], [0.5, 1.38], [0.34, 0.68], [0.72, 0.65]] },
+  g: { w: 0.84, continu: true, pts: [[0, 0.65], [0.52, 0.06], [0.14, 0.2], [0.12, 0.86], [0.46, 0.98], [0.66, 0.16], [0.64, 1.56], [0.28, 1.64], [0.24, 1.2], [0.84, 0.65]] },
+  h: { w: 0.86, continu: true, pts: [[0, 0.65], [0.34, -0.18], [0.42, -0.82], [0.22, -0.68], [0.22, 0.98], [0.34, 0.16], [0.64, 0.1], [0.68, 0.94], [0.86, 0.65]] },
+  i: { w: 0.5, continu: true, pts: [[0, 0.65], [0.25, 0.06], [0.25, 0.94], [0.5, 0.65]], point: [0.28, -0.32] },
+  m: { w: 1.22, continu: true, pts: [[0, 0.65], [0.18, 0.08], [0.22, 0.96], [0.32, 0.12], [0.54, 0.1], [0.58, 0.96], [0.7, 0.12], [0.94, 0.1], [0.98, 0.94], [1.22, 0.65]] },
+  n: { w: 0.88, continu: true, pts: [[0, 0.65], [0.2, 0.08], [0.24, 0.96], [0.38, 0.12], [0.64, 0.1], [0.68, 0.94], [0.88, 0.65]] },
+  o: { w: 0.76, continu: true, pts: [[0, 0.65], [0.38, 0.06], [0.12, 0.36], [0.18, 0.92], [0.54, 0.94], [0.6, 0.24], [0.38, 0.08], [0.76, 0.36]] },
+  s: { w: 0.7, continu: true, pts: [[0, 0.65], [0.36, 0.06], [0.6, 0.46], [0.54, 0.94], [0.18, 0.94], [0.44, 0.78], [0.7, 0.65]] },
+  t: { w: 0.58, continu: true, pts: [[0, 0.65], [0.28, -0.72], [0.28, 0.94], [0.58, 0.65]], extra: [[[0.06, -0.24], [0.52, -0.28]]] },
+  u: { w: 0.84, continu: true, pts: [[0, 0.65], [0.2, 0.08], [0.22, 0.92], [0.48, 0.96], [0.64, 0.08], [0.68, 0.94], [0.84, 0.65]] },
+};
+
+/** Trace une ligne de texte cursif centrée en (cx, cy) avec hauteur d'x `h`, entre les instants `t0` et `t1`. */
+function tracerLigneCursive(texte: string, cx: number, cy: number, h: number, t0: number, t1: number): Chemin[] {
+  let larg = 0;
+  for (const ch of texte) larg += ch === ' ' ? 0.46 : (GLYPHES[ch]?.w ?? 0.6);
+  const xStart = cx - (larg * h) / 2;
+  const yBase = cy - h * 0.35;
+  const ital = -0.16;
+  const tr = (lx: number, ly: number): [number, number] => [xStart + (lx + (1 - ly) * ital) * h, yBase + ly * h];
+
+  const blocs: { pts: [number, number][]; poids: number }[] = [];
+  const Decors: { type: 'barre' | 'point'; pts: [number, number][] }[] = [];
+  let xCur = 0;
+  let courant: [number, number][] = [];
+
+  const vider = () => {
+    if (courant.length >= 2) blocs.push({ pts: courant, poids: Math.max(1, courant.length) });
+    courant = [];
+  };
+
+  for (const ch of texte) {
+    if (ch === ' ') {
+      vider();
+      xCur += 0.46;
+      continue;
+    }
+    const g = GLYPHES[ch];
+    if (!g) {
+      xCur += 0.5;
+      continue;
+    }
+    if (!g.continu) vider();
+    for (let i = 0; i < g.pts.length; i++) {
+      if (i === 0 && courant.length > 0 && g.continu) continue;
+      courant.push(tr(xCur + g.pts[i][0], g.pts[i][1]));
+    }
+    if (g.extra) {
+      for (const ex of g.extra) Decors.push({ type: 'barre', pts: ex.map(([px, py]) => tr(xCur + px, py)) });
+    }
+    if (g.point) {
+      Decors.push({ type: 'point', pts: [tr(xCur + g.point[0], g.point[1])] });
+    }
+    xCur += g.w;
+  }
+  vider();
+
+  const poidsTot = blocs.reduce((s, b) => s + b.poids, 0) + Decors.length * 1.5 || 1;
+  const chemins: Chemin[] = [];
+  let t = t0;
+  for (const b of blocs) {
+    const dt = ((t1 - t0) * b.poids) / poidsTot;
+    chemins.push(courbe(b.pts, t, t + dt, 1.05, 5));
+    t += dt;
+  }
+  for (const d of Decors) {
+    const dt = ((t1 - t0) * 1.5) / poidsTot;
+    if (d.type === 'point') chemins.push(goutte(d.pts[0][0], d.pts[0][1], t, Math.max(1.4, h * 0.14)));
+    else chemins.push(courbe(d.pts, t, t + dt, 0.95, 4));
+    t += dt;
+  }
+  return chemins;
+}
+
+/** 5. Mots doux et clins d'œil cursifs tracés trait par trait dans la marge. */
+function dessinMotCursif(genre: GenreSecret, cx: number, cy: number, k: number): Chemin[] {
+  if (genre === 'mischief') {
+    const l1 = tracerLigneCursive('Mischief', cx, cy - 10 * k, 11 * k, 0, 0.44);
+    const l2 = tracerLigneCursive('Managed', cx, cy + 8 * k, 11 * k, 0.45, 0.88);
+    const para = courbe([
+      [cx - 32 * k, cy + 20 * k],
+      [cx, cy + 17 * k],
+      [cx + 32 * k, cy + 20 * k],
+      [cx + 22 * k, cy + 24 * k],
+    ], 0.89, 1.0, 0.9);
+    return [...l1, ...l2, para];
+  }
+  const texte =
+    genre === 'lumos' ? 'Lumos !' :
+    genre === 'teatime' ? 'Tea time!' :
+    genre === 'trente-ans' ? '30 ans !' :
+    'Miam !';
+  const h = genre === 'teatime' ? 12.5 * k : 14 * k;
+  const l = tracerLigneCursive(texte, cx, cy - 2 * k, h, 0, 0.84);
+  const para = courbe([
+    [cx - 28 * k, cy + 14 * k],
+    [cx, cy + 11.5 * k],
+    [cx + 28 * k, cy + 14 * k],
+    [cx + 18 * k, cy + 18 * k],
+  ], 0.85, 0.96, 0.9);
+  const et = genre === 'lumos' ? etoilePlume(cx + 34 * k, cy - 12 * k, 4.8 * k, 0.94, 1.0) : [goutte(cx, cy + 17 * k, 0.97, 1.8 * k)];
+  return [...l, para, ...et];
+}
+
+/** Construit un dessin ou message secret centré en (cx, cy) à l'échelle `echelle`. */
+export function secretDe(genre: GenreSecret, cx: number, cy: number, echelle: number, cp: CartePage): SecretMarge {
+  const k = echelle;
+  const chemins =
+    genre === 'lunettes-eclair' ? dessinLunettesEclair(cx, cy, k) :
+    genre === 'tasse-magique' ? dessinTasseMagique(cx, cy, k) :
+    genre === 'couronne-30' ? dessinCouronne30(cx, cy, k) :
+    genre === 'baguette' ? dessinBaguette(cx, cy, k) :
+    dessinMotCursif(genre, cx, cy, k);
+  const r = boiteChemins(chemins);
+  return {
+    genre,
+    x: cx,
+    y: cy,
+    r,
+    chemins,
+    duree: genre === 'mischief' ? 2.5 : 2.1,
+    couleur: encreDe(cp),
+    largeur: Math.max(2.1, 2.75 * Math.pow(k, 0.45)),
+  };
+}
+
+function hachagePage(id: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < id.length; i++) h = Math.imul(h ^ id.charCodeAt(i), 16777619);
+  return Math.abs(h);
+}
+
+/**
+ * Place 2 à 3 cachettes secrètes par page ouverte dans les marges et coins libres de `carte.json`,
+ * en vérifiant strictement qu'aucun trait ne déborde sur une case occupée ni sur un ornement existant.
+ */
+export function cachettesDe(id: string, cp: CartePage, g: Grille, cote: 'gauche' | 'droite', ornements: Ornement[]): Cachette[] {
+  const gLibre = clonerGrille(g);
+  for (const o of ornements) occuperRect(gLibre, boiteChemins(o.chemins), 12);
+
+  const extX = cote === 'gauche' ? 68 : PAGE_W - 68;
+  const intX = cote === 'gauche' ? PAGE_W - 72 : 72;
+  const candidats: [number, number][] = [
+    [extX, 30],
+    [PAGE_W * 0.5, 28],
+    [intX, 30],
+    [extX, PAGE_H - 32],
+    [PAGE_W * 0.46, PAGE_H - 30],
+    [intX, PAGE_H - 32],
+    [extX, PAGE_H * 0.28],
+    [extX, PAGE_H * 0.52],
+    [extX, PAGE_H * 0.74],
+    [intX, PAGE_H * 0.35],
+    [intX, PAGE_H * 0.68],
+    [PAGE_W * 0.28, 30],
+    [PAGE_W * 0.72, 30],
+    [PAGE_W * 0.28, PAGE_H - 30],
+    [PAGE_W * 0.68, PAGE_H - 30],
+  ];
+  // Ajoute aussi les centres des blocs de 2×2 cases libres dans la grille
+  for (let j = 0; j < gLibre.ny - 1; j += 2) {
+    for (let i = 0; i < gLibre.nx - 1; i += 2) {
+      const cx = (i + 1) * gLibre.c;
+      const cy = (j + 1) * gLibre.c;
+      if (libre(gLibre, [cx - 48, cy - 32, cx + 48, cy + 32])) candidats.push([cx, cy]);
+    }
+  }
+
+  const graine = hachagePage(id);
+  const out: Cachette[] = [];
+  const echelles = [0.95, 0.78, 0.56];
+
+  for (let cIdx = 0; cIdx < candidats.length && out.length < 3; cIdx++) {
+    const [cx, cy] = candidats[(cIdx + (graine % 5)) % candidats.length];
+    if (out.some(( exist ) => Math.hypot(exist.x - cx, exist.y - cy) < 175)) continue;
+    const genre = GENRES_SECRETS[(graine + out.length * 2) % GENRES_SECRETS.length];
+    for (const ec of echelles) {
+      const sec = secretDe(genre, cx, cy, ec, cp);
+      if (cheminsLibres(gLibre, sec.chemins, 5)) {
+        out.push({ id: `${id}-cachette-${out.length}`, x: cx, y: cy, r: sec.r, echelle: ec, genre });
+        occuperRect(gLibre, sec.r, 14);
+        break;
+      }
+    }
+  }
+  return out;
+}
+
+/**
+ * Trouve l'emplacement libre le plus proche d'un clic/toucher `(px, py)` (marge, coin, folio, en-tête)
+ * et construit le dessin ou mot cursif secret sans jamais mordre sur le texte.
+ */
+export function secretSousPoint(
+  cp: CartePage,
+  g: Grille,
+  px: number,
+  py: number,
+  genre: GenreSecret,
+  ornements: Ornement[] = [],
+): SecretMarge | null {
+  const gLibre = clonerGrille(g);
+  for (const o of ornements) occuperRect(gLibre, boiteChemins(o.chemins), 8);
+
+  const rayons = [0, 18, 36, 56, 80, 110, 150, 200];
+  const angles = [0, Math.PI / 2, Math.PI, -Math.PI / 2, Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4];
+  const echelles = [0.92, 0.74, 0.55];
+
+  for (const ec of echelles) {
+    for (const r of rayons) {
+      for (const a of angles) {
+        const cx = Math.max(38, Math.min(PAGE_W - 38, px + Math.cos(a) * r));
+        const cy = Math.max(24, Math.min(PAGE_H - 24, py + Math.sin(a) * r));
+        const sec = secretDe(genre, cx, cy, ec, cp);
+        if (cheminsLibres(gLibre, sec.chemins, 4)) return sec;
+        if (r === 0) break;
+      }
+    }
+  }
+  return null;
 }
 
 /** Triangule des chemins en sommets de trait (gl.ts : TRAIT), plume large inclinée. */
@@ -246,33 +796,36 @@ export const ENCRE_REPLI: [number, number, number] = [0.1, 0.08, 0.2];
 
 /**
  * Les ornements d'une page : la frise sous (ou sur) le titre d'un chapitre ou d'une page de titre, si la
- * place est libre ; et un ou deux coins libres (de préférence les coins extérieurs, en haut d'abord).
+ * place est strictement libre ; et un ou deux coins libres (de préférence les coins extérieurs, en haut d'abord).
+ * Sur `#sommaire`, le soulignement et la frise du bas sont déjà cuits dans l'encre de la page : on ne rajoute
+ * jamais de frise horizontale qui risquerait de croiser la table des matières.
  */
 export function ornementsDe(id: string, cp: CartePage, g: Grille, cote: 'gauche' | 'droite'): Ornement[] {
   const out: Ornement[] = [];
   const encre = enRvb(cp.encre, ENCRE_REPLI);
-  // frise : sous le dernier titre d'un chapitre ; sous le titre du sommaire, du titre, de l'album
+  // frise : sous le dernier titre d'un chapitre ; sous le titre de la page de titre, de l'album ou de la fin
   const chap = cp.titres.filter((t) => t.type === 'chapitre');
   const cible = chap.length ? chap : cp.titres.filter((t) => t.type === 'titre' && !/-/.test(t.bloc) && (t.r[2] - t.r[0]) > 150);
-  if (cible.length && (chap.length || ['sommaire', 'titre', 'cecile-1-gauche', 'fin-gauche'].includes(id))) {
+  if (id !== 'sommaire' && cible.length && (chap.length || ['titre', 'cecile-1-gauche', 'fin-gauche'].includes(id))) {
     const x0 = Math.min(...cible.map((t) => t.r[0]));
     const x1 = Math.max(...cible.map((t) => t.r[2]));
     const y0 = Math.min(...cible.map((t) => t.r[1]));
     const y1 = Math.max(...cible.map((t) => t.r[3]));
     const cx = (x0 + x1) / 2;
     const d = Math.min(175, Math.max(110, (x1 - x0) * 0.62));
-    const essais: [number, number][] = [[y1 + 34, 1], [y1 + 52, 1], [y0 - 30, 1]];
+    const essais: [number, number][] = [[y1 + 36, 1], [y1 + 54, 1], [y0 - 32, 1]];
     for (const [cy] of essais) {
-      if (libre(g, [cx - d - 12, cy - 22, cx + d + 12, cy + 22])) {
+      const ch = frise(cx, cy, d);
+      if (libre(g, [cx - d - 14, cy - 24, cx + d + 14, cy + 24]) && cheminsLibres(g, ch, 6)) {
         const coul = enRvb(cible[cible.length - 1].c, encre);
-        out.push({ chemins: frise(cx, cy, d), duree: 2.6, couleur: coul, largeur: 3 });
+        out.push({ chemins: ch, duree: 2.4, couleur: coul, largeur: 3.2 });
         break;
       }
     }
   }
   // coins : extérieurs d'abord (gauche : x = 0 ; droite : x = W), le haut avant le bas
-  const M = 34;
-  const T = 120;
+  const M = 28;
+  const tailles = [120, 92, 68];
   const ext = cote === 'gauche' ? 1 : -1;
   const coins: [number, number, number, number][] = [
     [cote === 'gauche' ? M : PAGE_W - M, M, ext, 1],
@@ -283,11 +836,13 @@ export function ornementsDe(id: string, cp: CartePage, g: Grille, cote: 'gauche'
   let n = 0;
   for (const [cx, cy, ex, ey] of coins) {
     if (n >= 2) break;
-    const r: Rect = [Math.min(cx, cx + ex * T), Math.min(cy, cy + ey * T), Math.max(cx, cx + ex * T), Math.max(cy, cy + ey * T)];
-    r[0] = Math.max(9, r[0]); r[1] = Math.max(9, r[1]); r[2] = Math.min(PAGE_W - 9, r[2]); r[3] = Math.min(PAGE_H - 9, r[3]);
-    if (!libre(g, r)) continue;
-    out.push({ chemins: coin(cx, cy, ex, ey, T), duree: 2.2, couleur: encre, largeur: 2.6 });
-    n++;
+    for (const T of tailles) {
+      const ch = coin(cx, cy, ex, ey, T);
+      if (!cheminsLibres(g, ch, 4)) continue;
+      out.push({ chemins: ch, duree: 2.0, couleur: encre, largeur: 2.9 });
+      n++;
+      break;
+    }
   }
   return out;
 }
@@ -295,28 +850,49 @@ export function ornementsDe(id: string, cp: CartePage, g: Grille, cote: 'gauche'
 /** Couleur d'encre d'un titre (repli : celle de la page). */
 export const encreDe = (cp: CartePage, t?: TitreCarte): [number, number, number] => enRvb(t?.c ?? cp.encre, ENCRE_REPLI);
 
-// ---- Le maraudeur ----------------------------------------------------------------------------------
+// ---- Le maraudeur & les petites pattes de Jack Russell ---------------------------------------------
 
-export interface Pas { x: number; y: number; cap: number; gauche: boolean }
+export interface Pas {
+  x: number;
+  y: number;
+  cap: number;
+  gauche: boolean;
+  /** Vrai : empreinte de patte de petit chien (coussinet + 4 doigts) ; faux : pas de chaussure. */
+  patte?: boolean;
+  /** Décalage temporel (s) depuis le début de la promenade. */
+  dt?: number;
+}
 
 /**
- * Une promenade dans le papier libre : une marche au hasard de case libre en case libre (elle préfère
- * aller droit), lissée, puis des pas alternés tous les 24 px de page. null si la page n'a pas la place.
+ * Une promenade dans le papier libre : marche de case libre en case libre (en partant éventuellement
+ * près de `(xDepart, yDepart)` quand une cachette s'ouvre), lissée, avec des pas humains et/ou les
+ * petites pattes d'un Jack Russell qui trottine derrière ou à côté dans les marges.
  */
-export function promenade(g: Grille, alea: () => number = Math.random): Pas[] | null {
+export function promenade(
+  g: Grille,
+  alea: () => number = Math.random,
+  depart?: { x: number; y: number; pattesSeules?: boolean },
+): Pas[] | null {
   const ok = (i: number, j: number) => i >= 0 && j >= 0 && i < g.nx && j < g.ny && !g.occ[j * g.nx + i];
   const libres: [number, number][] = [];
   for (let j = 0; j < g.ny; j++) for (let i = 0; i < g.nx; i++) if (ok(i, j)) libres.push([i, j]);
-  if (libres.length < 6) return null;
+  if (libres.length < 3) return null;
+  if (depart) {
+    libres.sort((a, b) =>
+      Math.hypot((a[0] + 0.5) * g.c - depart.x, (a[1] + 0.5) * g.c - depart.y) -
+      Math.hypot((b[0] + 0.5) * g.c - depart.x, (b[1] + 0.5) * g.c - depart.y),
+    );
+  }
   const DIRS = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]];
   let meilleur: [number, number][] = [];
-  for (let essai = 0; essai < 24 && meilleur.length < 7; essai++) {
-    const [i0, j0] = libres[Math.floor(alea() * libres.length)];
+  for (let essai = 0; essai < 28 && meilleur.length < 8; essai++) {
+    const idx = depart ? Math.min(libres.length - 1, Math.floor(alea() * Math.min(5, libres.length))) : Math.floor(alea() * libres.length);
+    const [i0, j0] = libres[idx];
     let d = Math.floor(alea() * 8);
     const vu = new Set<number>([j0 * g.nx + i0]);
     const ch: [number, number][] = [[i0, j0]];
     let [i, j] = [i0, j0];
-    for (let k = 0; k < 10; k++) {
+    for (let k = 0; k < 11; k++) {
       const choix = [0, 0, 0, 1, -1, 1, -1, 2, -2].map((t) => (d + t + 8) % 8);
       let suivi = false;
       for (let c = 0; c < choix.length; c++) {
@@ -333,9 +909,9 @@ export function promenade(g: Grille, alea: () => number = Math.random): Pas[] | 
     }
     if (ch.length > meilleur.length) meilleur = ch;
   }
-  if (meilleur.length < 4) return null;
+  if (meilleur.length < 3) return null;
   // centres des cases, lissés deux fois (Chaikin)
-  let pts = meilleur.map(([i, j]) => ({ x: (i + 0.5) * g.c + (alea() - 0.5) * 14, y: (j + 0.5) * g.c + (alea() - 0.5) * 14 }));
+  let pts = meilleur.map(([i, j]) => ({ x: (i + 0.5) * g.c + (alea() - 0.5) * 12, y: (j + 0.5) * g.c + (alea() - 0.5) * 12 }));
   for (let k = 0; k < 2; k++) {
     const n: { x: number; y: number }[] = [pts[0]];
     for (let q = 0; q < pts.length - 1; q++) {
@@ -346,26 +922,82 @@ export function promenade(g: Grille, alea: () => number = Math.random): Pas[] | 
     n.push(pts[pts.length - 1]);
     pts = n;
   }
+
+  const modePattesSeules = depart?.pattesSeules ?? (meilleur.length < 5 || alea() < 0.36);
+  const avecCompagnon = !modePattesSeules && alea() < 0.78;
   const out: Pas[] = [];
-  const FOULEE = 31;
-  let reste = 0;
-  let gauche = alea() < 0.5;
-  for (let q = 0; q < pts.length - 1; q++) {
-    const a = pts[q];
-    const b = pts[q + 1];
-    const l = Math.hypot(b.x - a.x, b.y - a.y);
-    const cap = Math.atan2(b.y - a.y, b.x - a.x);
-    let s = reste;
-    while (s < l) {
-      const u = s / l;
-      const nx = -Math.sin(cap);
-      const ny = Math.cos(cap);
-      const e = gauche ? -7 : 7;
-      out.push({ x: a.x + (b.x - a.x) * u + nx * e, y: a.y + (b.y - a.y) * u + ny * e, cap: cap + (gauche ? -0.1 : 0.1), gauche });
-      gauche = !gauche;
-      s += FOULEE;
+
+  if (!modePattesSeules) {
+    // 1. Les pas du maraudeur (chaussures)
+    const FOULEE = 30;
+    let reste = 0;
+    let gauche = alea() < 0.5;
+    let idxPas = 0;
+    for (let q = 0; q < pts.length - 1; q++) {
+      const a = pts[q];
+      const b = pts[q + 1];
+      const l = Math.hypot(b.x - a.x, b.y - a.y);
+      const cap = Math.atan2(b.y - a.y, b.x - a.x);
+      let s = reste;
+      while (s < l) {
+        const u = s / l;
+        const nx = -Math.sin(cap);
+        const ny = Math.cos(cap);
+        const e = gauche ? -7.5 : 7.5;
+        const px = a.x + (b.x - a.x) * u + nx * e;
+        const py = a.y + (b.y - a.y) * u + ny * e;
+        if (libre(g, [px - 6, py - 6, px + 6, py + 6])) {
+          out.push({ x: px, y: py, cap: cap + (gauche ? -0.1 : 0.1), gauche, patte: false, dt: idxPas * 0.34 });
+          idxPas++;
+        }
+        gauche = !gauche;
+        s += FOULEE;
+      }
+      reste = s - l;
     }
-    reste = s - l;
   }
-  return out.length >= 5 ? out : null;
+
+  if (modePattesSeules || avecCompagnon) {
+    // 2. Les petites pattes de Jack Russell qui trottinent (seules ou juste derrière les pas humains)
+    const FOULEE_CHIEN = 18.5;
+    let reste = 0;
+    let gauche = alea() < 0.5;
+    let idxPatte = 0;
+    const retard = modePattesSeules ? 0 : 0.48;
+    const cadence = modePattesSeules ? 0.19 : 0.21;
+    for (let q = 0; q < pts.length - 1; q++) {
+      const a = pts[q];
+      const b = pts[q + 1];
+      const l = Math.hypot(b.x - a.x, b.y - a.y);
+      const cap = Math.atan2(b.y - a.y, b.x - a.x);
+      let s = reste;
+      while (s < l) {
+        const u = s / l;
+        const nx = -Math.sin(cap);
+        const ny = Math.cos(cap);
+        // Le petit chien zigzague légèrement d'un bord à l'autre du sentier
+        const zig = avecCompagnon ? Math.sin(idxPatte * 0.7) * 6 : 0;
+        const e = (gauche ? -4.8 : 4.8) + zig;
+        const px = a.x + (b.x - a.x) * u + nx * e;
+        const py = a.y + (b.y - a.y) * u + ny * e;
+        if (libre(g, [px - 5, py - 5, px + 5, py + 5])) {
+          out.push({
+            x: px,
+            y: py,
+            cap: cap + (gauche ? -0.08 : 0.08),
+            gauche,
+            patte: true,
+            dt: retard + idxPatte * cadence,
+          });
+          idxPatte++;
+        }
+        gauche = !gauche;
+        s += FOULEE_CHIEN;
+      }
+      reste = s - l;
+    }
+  }
+
+  out.sort((a, b) => (a.dt ?? 0) - (b.dt ?? 0));
+  return out.length >= 4 ? out : null;
 }
