@@ -14,6 +14,8 @@ import { partScene, useViewport, type Viewport } from '../../lib/viewport';
 import { CAMERA_DEFAULT, useCamera, zoomBornes, ZOOM_STEP } from '../../lib/camera';
 import type { Distance } from '../../lib/settings';
 import {
+  ECLAT_BOUGIE_MAX, ECLAT_BOUGIE_MIN, ECLAT_BOUGIE_PAS,
+  LUMINOSITE_MAX, LUMINOSITE_MIN, LUMINOSITE_PAS,
   VITESSE_ANIMATIONS_MAX, VITESSE_ANIMATIONS_MIN, VITESSE_ECRITURE_MAX, VITESSE_ECRITURE_MIN, VITESSE_PAS,
   resetReglages, useReglages, type Animations, type Reglages as ReglagesValeurs,
 } from '../../lib/reglages';
@@ -60,10 +62,10 @@ type Etat = 'ferme' | 'ouvert' | 'fermeture';
 const borne = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 const px = (v: number) => `${Math.round(v * 100) / 100}px`;
 
-/** Hauteur d'une fiche complète, en corps de texte (titre + 15 lignes réglées, section comprise, + marges). */
-const HAUTEUR_EM = 26;
-/** Corps du texte sur la TV 1080p (Caveat : hauteur d'x 0,37 → 14 px, le plancher de lecture à 3 m). */
-const CORPS_TV = 38;
+/** Hauteur d'une fiche complète, en corps de texte (titre + 17 lignes réglées, section comprise, + marges). */
+const HAUTEUR_EM = 29;
+/** Corps du texte de référence en 1080p sur ordinateur / écran (plus compact pour que la fiche reste légère). */
+const CORPS_TV = 24;
 /** Angle de la fiche posée sur la TV (degrés). */
 const ANGLE = -1.2;
 
@@ -79,24 +81,23 @@ interface Mise {
 
 function miseEnPlace(vp: Viewport, papier: string | null): Mise {
   const i = vp.insets;
-  const cible = vp.tactile ? 44 : 32;
+  const cible = vp.tactile ? 40 : 26;
   const feuille = (vp.cadrage === 'tourner' || vp.cadrage === 'page') && vp.w < 600;
   let fs: number;
   let place: { haut: number; bas: number; gauche: number; droite: number };
   if (feuille) {
-    fs = borne(vp.w * 0.056, 20, 28);
+    fs = borne(vp.w * 0.05, 18, 24);
     // On garde une bande du livre visible en haut : la toucher referme la feuille.
     place = { haut: i.top + Math.max(48, vp.h * 0.08), bas: 0, gauche: 0, droite: 0 };
   } else {
     const u = Math.min(vp.w / 1920, vp.h / 1080);
     const marge = Math.max(12, Math.round(32 * u));
     const dispo = vp.h - i.top - i.bottom - 2 * marge;
-    // Au doigt (tablette, téléphone couché), jamais sous 21 px ni sous 2,8 % du petit côté.
-    const plancher = vp.tactile ? Math.max(21, Math.min(vp.w, vp.h) * 0.028) : 17;
-    fs = borne(Math.min(CORPS_TV * u, dispo / HAUTEUR_EM), plancher, 80);
+    const plancher = vp.tactile ? Math.max(18, Math.min(vp.w, vp.h) * 0.024) : 14;
+    fs = borne(Math.min(CORPS_TV * u, dispo / HAUTEUR_EM), plancher, 42);
     place = { haut: i.top + marge, bas: i.bottom + marge, gauche: i.left + marge, droite: i.right + marge };
   }
-  const pas = Math.max(1.5 * fs, cible);
+  const pas = Math.max(1.42 * fs, cible);
   const style: Vars = {
     '--gc-reglages-fs': px(fs),
     '--gc-reglages-pas': px(pas),
@@ -306,8 +307,12 @@ const BOUTONS_COURT: Option<boolean>[] = [{ v: false, texte: 's’effacent' }, {
 const ANIMATIONS_TEXTE: Option<Animations>[] = [{ v: 'systeme', texte: 'comme l’appareil' }, { v: 'completes', texte: 'complètes' }, { v: 'reduites', texte: 'réduites' }];
 /** Feuille du téléphone : « auto », pour que les trois choix tiennent sur une ligne. */
 const ANIMATIONS_COURT: Option<Animations>[] = [{ v: 'systeme', texte: 'auto' }, { v: 'completes', texte: 'complètes' }, { v: 'reduites', texte: 'réduites' }];
-/** Musique de fond (src/lib/musique.ts) : « aucune », puis chaque morceau de la banque par son titre. */
-const OPTIONS_MUSIQUE: Option<string>[] = [{ v: 'aucune', texte: 'aucune' }, ...MORCEAUX.map((m) => ({ v: m.id, texte: m.titre }))];
+/** Musique de fond (src/lib/musique.ts) : « aucune », « toutes (rotation) », puis chaque morceau de la banque par son titre. */
+const OPTIONS_MUSIQUE: Option<string>[] = [
+  { v: 'aucune', texte: 'aucune' },
+  { v: 'toutes', texte: 'toutes (rotation)' },
+  ...MORCEAUX.map((m) => ({ v: m.id, texte: m.titre })),
+];
 
 // ---- Ambiance (lots L et S) : lue de façon défensive tant que reglages.ts n'a pas ses champs ----------
 /** Champs de l'ambiance : `ambiance` (feu de cheminée et cuisine) et `feu` (la lumière vacille). */
@@ -353,6 +358,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   const etatRef = React.useRef(etat);
   etatRef.current = etat;
   const [liste, setListe] = React.useState(false);
+  const [listeMusique, setListeMusique] = React.useState(false);
   const [voirCredits, setVoirCredits] = React.useState(false);
   const [remis, setRemis] = React.useState(false);
   const boutonRef = React.useRef<HTMLButtonElement>(null);
@@ -360,6 +366,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   const focusAuDepart = React.useRef(false);
   const titreId = `${React.useId()}-titre`;
   const listeId = `${React.useId()}-liste`;
+  const musiqueId = `${React.useId()}-musique`;
   const creditsId = `${React.useId()}-credits`;
 
   // Comme le livre : quand la page (ou le livre) remplit déjà l'écran, les crans ne servent plus.
@@ -401,6 +408,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   const ouvrir = React.useCallback(() => {
     if (etatRef.current === 'ouvert') return;
     setListe(false);
+    setListeMusique(false);
     setVoirCredits(false);
     setRemis(false);
     focusAuDepart.current = true;
@@ -449,12 +457,13 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
     (premiere ? cibleDeLigne(premiere) : p)?.focus({ preventScroll: true });
   }, [etat]);
 
-  // Une liste qui se déplie (invités, crédits) vient se montrer si la fiche défile.
+  // Une liste qui se déplie (invités, morceaux, crédits) vient se montrer si la fiche défile.
   const montrer = (sel: string) => {
     const el = panneauRef.current?.querySelector<HTMLElement>(sel);
     el?.scrollIntoView?.({ block: 'nearest', behavior: reduitRef.current ? 'auto' : 'smooth' });
   };
-  React.useEffect(() => { if (liste) montrer('.gc-reglages__invites-boite'); }, [liste]);
+  React.useEffect(() => { if (liste) montrer(`#${CSS.escape(listeId)}`); }, [liste, listeId]);
+  React.useEffect(() => { if (listeMusique) montrer(`#${CSS.escape(musiqueId)}`); }, [listeMusique, musiqueId]);
   React.useEffect(() => { if (voirCredits) montrer('.gc-reglages__credits'); }, [voirCredits]);
 
   // « c'est fait » s'efface tout seul.
@@ -482,7 +491,6 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   // ---- Actions des lignes (← →) ----
   const [zMin, zMax] = zoomBornes(camera.distance);
   const actions: Record<string, (dir: 1 | -1) => void> = {
-    luminosite: (dir) => setR(x => ({ luminosite: auPas(x.luminosite + dir * .05, .75, 1.6, .05) })),
     zoom: (dir) => camera.stepZoom(dir),
     loupe: (dir) => reglerLoupe(loupeRef.current + dir * LOUPE_PAS),
     volume: (dir) => setR((x) => ({ volume: auPas(x.volume + dir * VOLUME_PAS, 0, 1, VOLUME_PAS) })),
@@ -490,6 +498,14 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
     volumeMusique: (dir) => setR((x) => ({ volumeMusique: auPas(x.volumeMusique + dir * VOLUME_PAS, 0, 1, VOLUME_PAS) })),
     vitesseEcriture: (dir) => setR((x) => ({ vitesseEcriture: auPas(x.vitesseEcriture + dir * VITESSE_PAS, VITESSE_ECRITURE_MIN, VITESSE_ECRITURE_MAX, VITESSE_PAS) })),
     vitesseAnimations: (dir) => setR((x) => ({ vitesseAnimations: auPas(x.vitesseAnimations + dir * VITESSE_PAS, VITESSE_ANIMATIONS_MIN, VITESSE_ANIMATIONS_MAX, VITESSE_PAS) })),
+    luminosite: (dir) => setR((x) => ({ luminosite: auPas(x.luminosite + dir * LUMINOSITE_PAS, LUMINOSITE_MIN, LUMINOSITE_MAX, LUMINOSITE_PAS) })),
+    eclatBougie: (dir) => setR((x) => ({ eclatBougie: auPas(x.eclatBougie + dir * ECLAT_BOUGIE_PAS, ECLAT_BOUGIE_MIN, ECLAT_BOUGIE_MAX, ECLAT_BOUGIE_PAS) })),
+    musique: (dir) => setR((x) => {
+      const courant = x.musiqueActive ? x.musique : 'aucune';
+      const idx = Math.max(0, OPTIONS_MUSIQUE.findIndex((o) => o.v === courant));
+      const suiv = OPTIONS_MUSIQUE[(idx + dir + OPTIONS_MUSIQUE.length) % OPTIONS_MUSIQUE.length].v;
+      return suiv === 'aucune' ? { musique: 'aucune', musiqueActive: false } : { musique: suiv, musiqueActive: true };
+    }),
   };
   const actionsRef = React.useRef(actions);
   actionsRef.current = actions;
@@ -519,7 +535,6 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
     }
     if ((k === 'Home' || k === 'End') && actif?.matches('[data-gc-reglette]')) {
       const id = actif.closest<HTMLElement>(SEL_LIGNE)?.dataset.gcReglagesLigne;
-      if (id === 'luminosite') setR({ luminosite: k === 'Home' ? .75 : 1.6 });
       if (id === 'zoom') camera.setZoom(k === 'Home' ? zMin : zMax);
       if (id === 'loupe') reglerLoupe(k === 'Home' ? LOUPE_MIN : LOUPE_MAX);
       if (id === 'volume') setR({ volume: k === 'Home' ? 0 : 1 });
@@ -527,6 +542,8 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
       if (id === 'volumeMusique') setR({ volumeMusique: k === 'Home' ? 0 : 1 });
       if (id === 'vitesseEcriture') setR({ vitesseEcriture: k === 'Home' ? VITESSE_ECRITURE_MIN : VITESSE_ECRITURE_MAX });
       if (id === 'vitesseAnimations') setR({ vitesseAnimations: k === 'Home' ? VITESSE_ANIMATIONS_MIN : VITESSE_ANIMATIONS_MAX });
+      if (id === 'luminosite') setR({ luminosite: k === 'Home' ? LUMINOSITE_MIN : LUMINOSITE_MAX });
+      if (id === 'eclatBougie') setR({ eclatBougie: k === 'Home' ? ECLAT_BOUGIE_MIN : ECLAT_BOUGIE_MAX });
       return true;
     }
     if ((k === 'Enter' || k === ' ') && !actif) {
@@ -652,10 +669,6 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                       <Choix options={OUI_NON} valeur={plein} onChoisir={setPlein} graine={g()} />
                     </Ligne>
                   )}
-                  <Ligne id="luminosite" libelle="Luminosité">
-                    <Reglette valeur={r.luminosite} min={.75} max={1.6} pas={.05} repere={1.2} principal libelle="Luminosité" texte={pourcent(r.luminosite)} onChange={luminosite => setR({ luminosite })} />
-                    <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.luminosite)}</span>
-                  </Ligne>
                   <Ligne id="son" libelle="Son des vidéos" role="radiogroup">
                     <Choix options={SON} valeur={r.son} onChoisir={(son) => setR({ son })} graine={g()} />
                   </Ligne>
@@ -678,15 +691,15 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                   <Ligne id="auto" libelle="Lancer la vidéo en arrivant sur la page" role="radiogroup">
                     <Choix options={OUI_NON} valeur={r.lectureAuto} onChoisir={(lectureAuto) => setR({ lectureAuto })} graine={g()} />
                   </Ligne>
-                  {/* En pourcentage (100 % = normal, repère au crayon) : l'encre qui s'écrit, puis le tour de page et les
-                      autres animations (src/lib/vitesse.ts). Atténuées en mouvement réduit, mais toujours réglables. */}
+                  {/* En pourcentage (200 % par défaut pour l'écriture, 100 % pour les animations, repère au crayon) :
+                      l'encre qui s'écrit, puis le tour de page et les autres animations (src/lib/vitesse.ts). */}
                   <Ligne id="vitesseEcriture" libelle="Vitesse de l’écriture" attenuee={reduit}>
                     <Reglette
                       valeur={r.vitesseEcriture}
                       min={VITESSE_ECRITURE_MIN}
                       max={VITESSE_ECRITURE_MAX}
                       pas={VITESSE_PAS}
-                      repere={1}
+                      repere={2}
                       principal
                       attenuee={reduit}
                       libelle="Vitesse de l’écriture"
@@ -720,6 +733,34 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                     Ambiance
                     <TraitCrayon className="gc-reglages__souligne gc-reglages__souligne--section" />
                   </h3>
+                  <Ligne id="luminosite" libelle="Luminosité">
+                    <Reglette
+                      valeur={r.luminosite}
+                      min={LUMINOSITE_MIN}
+                      max={LUMINOSITE_MAX}
+                      pas={LUMINOSITE_PAS}
+                      repere={1.5}
+                      principal
+                      libelle="Luminosité"
+                      texte={pourcent(r.luminosite)}
+                      onChange={(luminosite) => setR({ luminosite })}
+                    />
+                    <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.luminosite)}</span>
+                  </Ligne>
+                  <Ligne id="eclatBougie" libelle="Éclat de la bougie">
+                    <Reglette
+                      valeur={r.eclatBougie}
+                      min={ECLAT_BOUGIE_MIN}
+                      max={ECLAT_BOUGIE_MAX}
+                      pas={ECLAT_BOUGIE_PAS}
+                      repere={2}
+                      principal
+                      libelle="Éclat de la bougie"
+                      texte={pourcent(r.eclatBougie)}
+                      onChange={(eclatBougie) => setR({ eclatBougie })}
+                    />
+                    <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.eclatBougie)}</span>
+                  </Ligne>
                   <Ligne id="sonsLivre" libelle="Sons du livre" role="radiogroup">
                     <Choix options={OUI_NON} valeur={sonsLivre} onChoisir={(sonsLivre) => setR({ sonsLivre })} graine={g()} />
                   </Ligne>
@@ -743,15 +784,34 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                     />
                     <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.volumeBruitages)}</span>
                   </Ligne>
-                  <Ligne id="musique" libelle="Morceau" role="radiogroup" large>
-                    {/* « aucune » coupe la musique ; un morceau la joue (le bouton musique la rallume). */}
-                    <Choix
-                      options={OPTIONS_MUSIQUE}
-                      valeur={r.musiqueActive ? r.musique : 'aucune'}
-                      onChoisir={(m) => setR(m === 'aucune' ? { musique: 'aucune', musiqueActive: false } : { musique: m, musiqueActive: true })}
-                      graine={g()}
-                    />
+                  <Ligne id="musique" libelle="Morceau">
+                    <button
+                      type="button"
+                      className="gc-reglages__deplier"
+                      aria-expanded={listeMusique}
+                      aria-controls={musiqueId}
+                      onClick={() => setListeMusique((x) => !x)}
+                    >
+                      {OPTIONS_MUSIQUE.find((o) => o.v === (r.musiqueActive ? r.musique : 'aucune'))?.texte ?? 'toutes (rotation)'}
+                      <Chevron />
+                    </button>
                   </Ligne>
+                  {listeMusique && (
+                    <div id={musiqueId} className="gc-reglages__invites-boite">
+                      <Ligne id="morceaux" role="radiogroup" large>
+                        {/* « aucune » coupe la musique ; un morceau la joue (le bouton musique la rallume). */}
+                        <Choix
+                          options={OPTIONS_MUSIQUE}
+                          valeur={r.musiqueActive ? r.musique : 'aucune'}
+                          onChoisir={(m) => {
+                            setR(m === 'aucune' ? { musique: 'aucune', musiqueActive: false } : { musique: m, musiqueActive: true });
+                            setListeMusique(false);
+                          }}
+                          graine={g()}
+                        />
+                      </Ligne>
+                    </div>
+                  )}
                   <Ligne id="playlist" libelle="Liste musicale" large>
                     <div className="gc-reglages__playlist">
                       <button type="button" className="gc-reglages__deplier" aria-label="Morceau précédent" onClick={() => changerMorceau(-1)}>← précédent</button>

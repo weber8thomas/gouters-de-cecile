@@ -17,7 +17,7 @@ import tempfile
 import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 SRC=ROOT/'design-system/sources/musique/interpretations'
-OUT=ROOT/'design-system/baked/musique'
+OUT=ROOT/'design-system/sources/musique/interpretations/rendus'
 SR=44100
 F=C.CDLL(ctypes.util.find_library('fluidsynth'))
 def bind(name, restype, args):

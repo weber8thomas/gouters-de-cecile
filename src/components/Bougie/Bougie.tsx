@@ -84,9 +84,11 @@ declare global {
  * La flamme vivante : la physique du souffle de la main, l'état de la flamme (flamme.ts), et son rendu dans
  * la toile WebGL, ou, à défaut, l'ancienne image fixe (balancement, étirement et opacité par transform).
  */
-function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
+function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>, eclatBougie: number) {
   const toile = React.useRef<HTMLCanvasElement>(null);
   const cadre = React.useRef<HTMLDivElement>(null);
+  const eclatRef = React.useRef(eclatBougie);
+  eclatRef.current = eclatBougie;
   const [rendu, setRendu] = React.useState<RenduVu>(() => (typeof window !== 'undefined' && 'WebGLRenderingContext' in window ? 'toile' : 'image'));
   const penche = useMotionValue(0);
   const etire = useMotionValue(1);
@@ -104,7 +106,7 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
     const om = [0, 0]; // sa vitesse (°/s)
     let trouble = 0; // 0..1 : la flamme dérangée vacille vite et baisse
     let saut = 0; // petit saut de flamme au hasard
-    let prochainSaut = performance.now() + 1500 + Math.random() * 3000;
+    let prochainSaut = performance.now() + 1200 + Math.random() * 2400;
     let boite: DOMRect | null = null;
     let lue = 0;
     let vu = 0;
@@ -152,6 +154,7 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
       }
       if (fixe) {
         Object.assign(etat, etatRepos());
+        etat.eclat = 0.6 + 0.4 * eclatRef.current;
         montrer(0);
         return;
       }
@@ -174,10 +177,10 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
         th[1] *= PENCHE_MAX / n;
       }
       trouble *= Math.exp(-2.5 * dt);
-      saut *= Math.exp(-14 * dt);
+      saut *= Math.exp(-12 * dt);
       if (now > prochainSaut) {
-        saut = 0.03 + Math.random() * 0.03;
-        prochainSaut = now + 1800 + Math.random() * 4500;
+        saut = 0.045 + Math.random() * 0.045;
+        prochainSaut = now + 1300 + Math.random() * 3200;
       }
       etat.tn = avancerBruit(etat.tn, dt, trouble);
       // cadence : 60 i/s au plus (écrans à 120 Hz compris) ; 30 i/s quand l'appareil peine
@@ -185,8 +188,9 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
       dessinee = now;
       const t = now / 1000;
       // un léger courant d'air de la pièce, qui suit la source du feu
-      const air = borne(0.09 * dxFeu.get(), -2, 2);
+      const air = borne(0.12 * dxFeu.get(), -2.5, 2.5);
       etatFlamme(etat, t, [th[0] + air, th[1]], trouble, saut);
+      etat.eclat *= 0.6 + 0.4 * eclatRef.current;
       montrer(t);
     };
     const majBoucle = () => {
@@ -272,7 +276,7 @@ function useFlammeVivante(fixe: boolean, dxFeu: MotionValue<number>) {
       cire?.detruire();
       gl?.detruire();
     };
-  }, [fixe, rendu, dxFeu, penche, etire, eclat, hauteur]);
+  }, [fixe, rendu, dxFeu, penche, etire, eclat, hauteur, eclatBougie]);
   return { rendu, toile, cadre, penche, etire, eclat, hauteur };
 }
 
@@ -289,7 +293,7 @@ export function Bougie({ className }: BougieProps) {
   const fixeRef = React.useRef(false);
   fixeRef.current = fixe;
   const dxFeu = useTransform(feu.dx, (v) => (fixeRef.current ? 0 : v));
-  const vive = useFlammeVivante(fixe, dxFeu);
+  const vive = useFlammeVivante(fixe, dxFeu, reglages.eclatBougie ?? 1);
 
   const intensite = useTransform(feu.intensite, (i) => (fixeRef.current ? 1 : i));
   const dx = dxFeu;

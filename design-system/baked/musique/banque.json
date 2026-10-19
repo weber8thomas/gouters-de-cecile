@@ -2,28 +2,6 @@
   "v": 1,
   "morceaux": [
     {
-      "id": "path-of-the-goblin-king",
-      "titre": "The Path of the Goblin King",
-      "auteur": "Kevin MacLeod",
-      "licence": "CC BY 4.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
-      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100873",
-      "credit": "\"The Path of the Goblin King\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
-      "f": "musique/path-of-the-goblin-king",
-      "d": 188
-    },
-    {
-      "id": "gymnopedie-piano",
-      "titre": "Gymnopédie n° 1 — piano",
-      "auteur": "Erik Satie · interprétation numérique pour le carnet",
-      "licence": "GPL-2.0 · partition domaine public",
-      "licenceUrl": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
-      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=37",
-      "credit": "Gymnopédie n° 1 (1888), Erik Satie. Partition Mutopia, Evin Robertson, domaine public. Interprétation numérique : scripts/bake-musique-classique.py ; banque TimGM6mb, Tim Brechbill et David Bolton (GPL-2.0). Source complète : https://github.com/weber8thomas/gouters-de-cecile/tree/codex/reprise-v8/design-system/sources/musique/interpretations",
-      "f": "musique/gymnopedie-piano",
-      "d": 124.43
-    },
-    {
       "id": "melodie-victoria",
       "titre": "Melodie Victoria",
       "auteur": "Kevin MacLeod",
@@ -35,15 +13,59 @@
       "d": 236
     },
     {
-      "id": "casse-noisette-celesta",
-      "titre": "Casse-Noisette — fantaisie au célesta",
-      "auteur": "Piotr Ilitch Tchaïkovski · arrangement et interprétation numériques pour le carnet",
-      "licence": "GPL-2.0 · composition domaine public",
-      "licenceUrl": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
-      "url": "https://github.com/weber8thomas/gouters-de-cecile/tree/codex/reprise-v8/design-system/sources/musique/interpretations",
-      "credit": "Fantaisie pour célesta et piano sur le thème de la fée Dragée, Casse-Noisette op. 71a (1892), Piotr Ilitch Tchaïkovski (composition domaine public). Arrangement court et interprétation numériques : scripts/bake-musique-classique.py ; banque TimGM6mb, Tim Brechbill et David Bolton (GPL-2.0). Cet arrangement ne reproduit pas un enregistrement orchestral. Source complète : https://github.com/weber8thomas/gouters-de-cecile/tree/codex/reprise-v8/design-system/sources/musique/interpretations",
-      "f": "musique/casse-noisette-celesta",
-      "d": 116.51
+      "id": "gymnopedie-piano",
+      "titre": "Gymnopédie au piano",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100787",
+      "credit": "\"Gymnopedie No. 1\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/gymnopedie-piano",
+      "d": 181
+    },
+    {
+      "id": "casse-noisette-fee-dragee",
+      "titre": "Casse-Noisette (Fée Dragée)",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100625",
+      "credit": "\"Dance of the Sugar Plum Fairy\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/casse-noisette-fee-dragee",
+      "d": 114
+    },
+    {
+      "id": "touching-moments-piano",
+      "titre": "Touching Moments (Piano)",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100037",
+      "credit": "\"Touching Moments Two - Higher\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/touching-moments-piano",
+      "d": 168
+    },
+    {
+      "id": "fairytale-waltz",
+      "titre": "Fairytale Waltz",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100232",
+      "credit": "\"Fairytale Waltz\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/fairytale-waltz",
+      "d": 94
+    },
+    {
+      "id": "path-of-the-goblin-king",
+      "titre": "The Path of the Goblin King",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100873",
+      "credit": "\"The Path of the Goblin King\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/path-of-the-goblin-king",
+      "d": 188
     },
     {
       "id": "frozen-star",

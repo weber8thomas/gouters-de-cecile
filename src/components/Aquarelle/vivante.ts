@@ -16,6 +16,7 @@
 // livre en mouvement ou l'onglet masqué. Contexte WebGL perdu : les images fixes reviennent.
 
 import { facteurAnimations } from '../../lib/vitesse';
+import { attentePlume } from '../PageCuite/encreVivante';
 import { EFFETS, SCENES_PAGE, type Effets } from './effets';
 import { REPOS, SCENES, poseNeutre, type Ctx, type Fx } from './scenes';
 import { essaimDe, PAROLES, type Essaim } from './creatures';
@@ -31,7 +32,7 @@ interface PartieInfo {
   rayon: number;
 }
 const PARTIES = partiesJson as unknown as Record<string, { serie: string; parties: PartieInfo[] }>;
-/** Seuls les deux nouveaux masques validés de la série anglaise peuvent séparer fruit et tranche. */
+/** Seules les deux séparations alpha validées restent articulées ; aucune framboise/tasse découpée. */
 export const partiesDe = (nom: string): PartieInfo[] => ['citron', 'citron-2'].includes(nom) && PARTIES[nom]?.serie === 'anglaise-v9' ? PARTIES[nom].parties : [];
 
 /** Débord de la boîte de chaque aquarelle autour de sa zone (fractions de la zone) : gauche, haut, droite, bas. */
@@ -97,6 +98,7 @@ uniform vec4 on;                // ondes : x, y, rayon, âge
 uniform vec4 cf;                // confettis : x, y, largeur, âge
 uniform float cft;              // confettis : taille (mise à l'échelle de la page, pas de l'image)
 uniform vec3 pap;               // teinte du papier
+uniform vec4 crq;               // x: croque, y: morsure, z: repousse, w: jet
 float h(vec2 q){return fract(sin(dot(q,vec2(127.1,311.7)))*43758.5453);}
 float n(vec2 q){vec2 i=floor(q),f=fract(q);f=f*f*(3.-2.*f);
   return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
@@ -182,10 +184,11 @@ void main(){
   vec2 ub0=vec2(q.x/ai,q.y);
   // Le grain reste ancré au papier : seuls le corps et ses parties se déplacent.
   vec2 ub=ub0;
-  // vent : le haut ploie, le pied reste fixe
+  // vent : le haut ploie, le pied reste fixe (les tiges de blé ploient indépendamment)
   if(ef.x>0.){
     float haut=1.-clamp(ub.y,0.,1.);
-    ub.x+=ef.x*.03*haut*haut*(sin(t*.9+ub.y*2.)*.7+sin(t*2.3+ub.x*6.)*.3);
+    float phaseTige=sin(ub.x*24.);
+    ub.x+=ef.x*.03*haut*haut*(sin(t*.9+ub.y*2.+phaseTige*1.8)*.7+sin(t*2.3+ub.x*6.+phaseTige*2.5)*.3);
   }
   // ronds dans le liquide (ellipse vue en perspective)
   if(on.w>=0.&&on.z>0.){
@@ -307,6 +310,24 @@ void main(){
       c=sur(vec4(col*pap*a,a),c);
     }
   }
+  // Filet de thé ambré versé par la théière dans la tasse
+  if(crq.w>0.){
+    if(ub0.y>=.45&&ub0.y<=.69){
+      float st=(ub0.y-.45)/.24;
+      float sx=mix(.66,.74,st)+.015*sin(st*3.14159);
+      float dist=abs(ub0.x-sx);
+      float sw=mix(.007,.011,st);
+      if(dist<sw*1.8){
+        float aStream=(1.-smoothstep(sw*.4,sw,dist))*crq.w;
+        vec3 teaCol=mix(vec3(.78,.48,.16),vec3(.92,.72,.28),smoothstep(0.,sw,dist));
+        c=sur(vec4(teaCol*pap*aStream,aStream*.88),c);
+      }
+    }
+    if(ub0.y>=.67&&ub0.y<=.70){
+      float splash=exp(-pow((ub0.y-.68)/.012,2.))*exp(-pow((ub0.x-.74)/.02,2.))*max(0.,sin(t*28.));
+      c=sur(vec4(vec3(.85,.55,.2)*pap*splash*crq.w*.6,splash*crq.w*.6),c);
+    }
+  }
   // la vapeur passe devant le motif
   for(int k=0;k<${MAX_VAPEUR};k++)s+=volute(vap[k],ub0,ai);
   s=min(s,vec4(.6));
@@ -335,13 +356,73 @@ void main(){
 
 // Deux petites bulles peintes, créées une fois. La typographie reste droite quand le chien se retourne.
 function bullePeinte(texte: string): HTMLCanvasElement {
-  const cv = document.createElement('canvas'); cv.width = 320; cv.height = 104;
+  const cv = document.createElement('canvas');
+  cv.width = 440;
+  cv.height = 120;
   const c = cv.getContext('2d')!;
-  c.fillStyle = '#fff6e4'; c.strokeStyle = '#78634b'; c.lineWidth = 2;
-  c.beginPath(); c.roundRect(5, 4, 310, 82, 25); c.fill(); c.stroke();
-  c.beginPath(); c.moveTo(140, 85); c.lineTo(150, 100); c.lineTo(161, 85); c.fill();
-  c.fillStyle = '#58432f'; c.font = '42px "Caveat", Georgia, serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
-  c.fillText(texte, 160, 47, 282);
+  c.clearRect(0, 0, cv.width, cv.height);
+
+  const x = 12, y = 10, w = 416, h = 80, r = 22;
+  // Tracé organique de la bulle à la plume
+  c.save();
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.lineTo(x + w - r, y);
+  c.quadraticCurveTo(x + w, y, x + w, y + r);
+  c.lineTo(x + w, y + h - r);
+  c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  // Pointe de bulle élégante vers le bas (dirigée vers le museau du chien)
+  c.lineTo(x + w / 2 + 16, y + h);
+  c.quadraticCurveTo(x + w / 2 + 8, y + h + 18, x + w / 2 - 2, y + h + 24);
+  c.quadraticCurveTo(x + w / 2 - 8, y + h + 12, x + w / 2 - 14, y + h);
+  c.lineTo(x + r, y + h);
+  c.quadraticCurveTo(x, y + h, x, y + h - r);
+  c.lineTo(x, y + r);
+  c.quadraticCurveTo(x, y, x + r, y);
+  c.closePath();
+
+  // Fond lavis aquarelle parchemin chaud
+  c.fillStyle = '#fdf8ee';
+  c.shadowColor = 'rgba(74, 52, 32, 0.16)';
+  c.shadowBlur = 6;
+  c.shadowOffsetY = 3;
+  c.fill();
+  c.restore();
+
+  // Trait d'encre noyer (#4c3523) fait à la plume
+  c.strokeStyle = '#523a26';
+  c.lineWidth = 2.2;
+  c.lineCap = 'round';
+  c.lineJoin = 'round';
+  c.beginPath();
+  c.moveTo(x + r, y + 0.5);
+  c.lineTo(x + w - r, y - 0.5);
+  c.quadraticCurveTo(x + w + 0.5, y, x + w, y + r);
+  c.lineTo(x + w - 0.5, y + h - r);
+  c.quadraticCurveTo(x + w, y + h + 0.5, x + w - r, y + h);
+  c.lineTo(x + w / 2 + 16, y + h);
+  c.quadraticCurveTo(x + w / 2 + 8, y + h + 18, x + w / 2 - 2, y + h + 24);
+  c.quadraticCurveTo(x + w / 2 - 8, y + h + 12, x + w / 2 - 14, y + h);
+  c.lineTo(x + r, y + h - 0.5);
+  c.quadraticCurveTo(x - 0.5, y + h, x, y + h - r);
+  c.lineTo(x + 0.5, y + r);
+  c.quadraticCurveTo(x, y - 0.5, x + r, y);
+  c.stroke();
+
+  // Filet intérieur fin esprit gravure anglaise
+  c.strokeStyle = 'rgba(120, 92, 65, 0.32)';
+  c.lineWidth = 1;
+  c.beginPath();
+  c.roundRect(x + 5, y + 4, w - 10, h - 8, r - 4);
+  c.stroke();
+
+  // Typographie manuscrite anglaise authentique à l'encre
+  c.fillStyle = '#3a2414';
+  c.font = 'bold 34px "Caveat", "Playwrite FR Moderne", cursive';
+  c.textAlign = 'center';
+  c.textBaseline = 'middle';
+  c.fillText(texte, x + w / 2, y + h / 2 - 2, w - 34);
+
   return cv;
 }
 
@@ -478,7 +559,7 @@ interface Sprite {
   debut: number;
   duree: number;
   delai: number;
-  scene: { nom: string; debut: number; h: number } | null;
+  scene: { nom: string; debut: number; h: number; tocFait?: boolean } | null;
   prochaine: number;
   rang: number;
 }
@@ -529,8 +610,8 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       cos: Math.cos(an),
       sin: Math.sin(an),
       debut: d.peindre && !opts.douce ? -1 : Infinity,
-      duree: 3000,
-      delai: 350 + d.ordre * 350,
+      duree: d.nom === 'carotte' ? 3800 : 3000,
+      delai: (opts.page.includes('droite') ? 700 : 350) + d.ordre * 350 + Math.round(y * 1100),
       scene: null,
       prochaine: Infinity,
       rang: 0,
@@ -574,8 +655,8 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     const liste = (s.e.scenes ?? []).filter(disponible);
     if (!liste.length && !nom) return false;
     if (nom && estTableau(nom) && !disponible(nom)) return false;
-    const grandsTableaux = liste.filter(estTableau);
-    const rotation = grandsTableaux.length ? grandsTableaux : liste;
+    // Les tableaux et les nouvelles actions distantes se relaient ; aucun scénario n'est affamé.
+    const rotation = liste;
     let n = nom && disponible(nom) ? nom : rotation[s.rang++ % rotation.length];
     if (!n) return false;
     if (estTableau(n)) {
@@ -607,6 +688,12 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     vent: 1,
     fanions: 1,
     penche: 0,
+    jet: 0,
+    coupe: -1,
+    croque: 0,
+    morsure: -1,
+    repousse: 0,
+    lapin: 0,
   });
 
   const poser = (s: Sprite, t: number) => {
@@ -617,8 +704,15 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       s: t,
       corps,
       partie: (nom) => {
-        const k = s.parties.findIndex((p) => p.nom === nom);
-        return k >= 0 ? poses[k] : poseNeutre();
+        const k = s.parties.findIndex((p) => p.nom === nom || nom === 'rondelle' && p.nom === 'tranche');
+        if (k >= 0) return poses[k];
+        // Les nouvelles actions gardent les peintures entières : ni tasse arrachée à sa soucoupe,
+        // ni framboise découpée. Les gestes principaux portent sur le sprite complet.
+        const entier = (s.d.nom === 'theiere' && nom === 'verseuse') ||
+          (['tasse-2', 'tasse-coeur'].includes(s.d.nom) && nom === 'tasse') ||
+          (['cupcake', 'cupcake-bougie'].includes(s.d.nom) && nom === 'framboise') ||
+          (s.d.nom === 'oeufs' && nom === 'coquille');
+        return entier ? corps : poseNeutre();
       },
       rayon: (nom) => s.parties.find((p) => p.nom === nom)?.rayon ?? 0.2,
       appui: (nom, angle) => {
@@ -643,6 +737,13 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       }
     }
     if (s.e.rigide) { corps.a = 0; corps.sx = corps.sy = 1; corps.flex = 0; corps.ty = 0; corps.tx = s.parties.length ? 0 : Math.max(-0.012, Math.min(0.012, corps.tx)); }
+    // Les scénarios distants peuvent proposer un étirement : la peinture conserve sa forme.
+    corps.sx = corps.sy = 1; corps.flex = 0;
+    if (s.d.nom === 'oeufs') corps.a = .14 * Math.tanh(corps.a / .14);
+    for (const p of poses) { p.sx = p.sy = 1; p.flex = 0; }
+    if (s.scene?.nom === 'rondelle') for (let k = 0; k < poses.length; k++) {
+      const p = poses[k]; p.tx *= .2; p.a *= .2; p.ty = ctx.appui(s.parties[k].nom, p.a);
+    }
     return { corps, poses, fx };
   };
 
@@ -653,6 +754,12 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     // Les scènes et leur cadence avancent avec l'horloge, indépendamment du rendu.
     if (s.scene) {
       const sc = estTableau(s.scene.nom) ? TABLEAUX[s.scene.nom] : SCENES[s.scene.nom];
+      // Le contact est un événement de l'horloge, jamais un effet de bord du rendu ou de etat().
+      if (s.d.nom === 'oeufs' && s.scene.nom === 'toc-casse' && !s.scene.tocFait && horloge - s.scene.debut >= 1050) {
+        s.scene.tocFait = true;
+        const tasse = sprites.find((a) => a.d.nom === 'tasse-coeur');
+        if (tasse && !tasse.scene) lancerScene(tasse, 'tinte');
+      }
       if (!sc || horloge - s.scene.debut > sc.duree * 1000) {
         theatre?.cacher(s.d.nom);
         s.scene = null;
@@ -734,6 +841,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     g.uniform4f(ud.cf, cf?.[0] ?? 0, cf?.[1] ?? 0, cf?.[2] ?? 0, cf ? fx.confettis : -1);
     // la taille des confettis suit la page, pas l'image (un centième de la hauteur de page)
     g.uniform1f(ud.cft, Math.min(8, 0.85 / Math.max(0.05, s.rect[3] * s.boite[3])));
+    g.uniform4f(ud.crq, 0, -1, 0, s.d.nom === 'theiere' ? fx.jet : 0);
     const lier = (unite: number, tx: WebGLTexture | null | undefined) => {
       g.activeTexture(g.TEXTURE0 + unite);
       g.bindTexture(g.TEXTURE_2D, tx ?? vide);
@@ -744,6 +852,8 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     lier(3, s.parts);
     lier(4, s.fond);
     g.drawArrays(g.TRIANGLE_STRIP, 0, 4);
+
+
   };
 
   const dessinerCreatures = () => {
@@ -764,7 +874,9 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       if (bulle) {
         g.bindTexture(g.TEXTURE_2D, bulle);
         const al = Math.min(1, c.bulle * 2, c.opacite);
-        g.uniform4f(uc.cr, px, c.y - c.taille - 0.038, 0.1, 0.0325);
+        const demiH = 0.034;
+        const demiW = demiH * (440 / 120);
+        g.uniform4f(uc.cr, px, c.y - c.taille - demiH - 0.008, demiW, demiH);
         g.uniform4f(uc.cp, 1, 0, 0, al);
         g.drawArrays(g.TRIANGLE_STRIP, 0, 4);
       }
@@ -791,6 +903,9 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     if (now - dernier >= 30) {
       const dt = pas(now - dernier);
       horloge += dt;
+      if (attentePlume(opts.page)) {
+        for (const s of sprites) if (s.debut === -1) s.delai += dt;
+      }
       sprites.forEach(avancerSprite);
       dernier = now;
       if (essaim?.maitre === opts.cote) essaim.avancer(dt / 1000, opts.douce);
@@ -835,7 +950,6 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       return u ? { e, im: await chargerImage(u).catch(() => null) } : { e, im: null };
     }),
   );
-
   Promise.all([charge, chargeCreatures])
     .then(([images, creatures]) => {
       if (arrete) return;
@@ -845,7 +959,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       progD = programme(g, VS_DESSIN, FS_DESSIN);
       progC = programme(g, VS_CREATURE, FS_CREATURE);
       if (!progD || !progC) return opts.perdu();
-      for (const n of ['boite', 'rot', 'aspP', 'img', 'carteN', 'carteL', 'parts', 'fond', 'rect', 'asp', 'presence', 'tp', 'tpx', 'gA', 'gB', 'pA', 'pB', 'pC', 'vap', 'fl', 'flv', 'ef', 'fa', 'faE', 'ge', 'geB', 'on', 'cf', 'cft', 'pap'])
+      for (const n of ['boite', 'rot', 'aspP', 'img', 'carteN', 'carteL', 'parts', 'fond', 'rect', 'asp', 'presence', 'tp', 'tpx', 'gA', 'gB', 'pA', 'pB', 'pC', 'vap', 'fl', 'flv', 'ef', 'fa', 'faE', 'ge', 'geB', 'on', 'cf', 'cft', 'pap', 'crq'])
         ud[n] = g.getUniformLocation(progD, n);
       for (const n of ['cr', 'aspP', 'tex', 'cp']) uc[n] = g.getUniformLocation(progC, n);
       const buf = g.createBuffer();
@@ -877,6 +991,18 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         essaim.activer(opts.cote, joue);
         attache = true;
         for (const texte of PAROLES) texBulles.set(texte, texture(g, bullePeinte(texte), false, g.LINEAR));
+        if (typeof document !== 'undefined' && document.fonts) {
+          document.fonts.load('bold 34px "Caveat"').then(() => {
+            if (arrete || !gl) return;
+            for (const texte of PAROLES) {
+              const tx = texBulles.get(texte);
+              if (tx) {
+                gl.bindTexture(gl.TEXTURE_2D, tx);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, bullePeinte(texte));
+              }
+            }
+          }).catch(() => undefined);
+        }
       }
       g.useProgram(progD);
       ['img', 'carteN', 'carteL', 'parts', 'fond'].forEach((n, k) => g.uniform1i(ud[n], k));

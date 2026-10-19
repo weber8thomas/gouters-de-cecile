@@ -22,6 +22,14 @@ export const VITESSE_ANIMATIONS_MIN = 0.25;
 export const VITESSE_ANIMATIONS_MAX = 2;
 /** Pas des réglettes du menu (5 %). */
 export const VITESSE_PAS = 0.05;
+/** Luminosité générale de la scène et des pages (50 % à 300 %, défaut 150 %). */
+export const LUMINOSITE_MIN = 0.5;
+export const LUMINOSITE_MAX = 3;
+export const LUMINOSITE_PAS = 0.05;
+/** Intensité et vacillement de l'éclat de la bougie (25 % à 400 %, défaut 200 %). */
+export const ECLAT_BOUGIE_MIN = 0.25;
+export const ECLAT_BOUGIE_MAX = 4;
+export const ECLAT_BOUGIE_PAS = 0.05;
 /**
  * L'ancien choix « vive · normale · lente » (champ `vitesse`, relu des clés v1 à v3) en vitesse des animations :
  * le ressort « paper » durait 0,6 s, 0,9 s et 1,3 s (design-system/motion.json) : 150 %, 100 %, 70 %.
@@ -82,22 +90,24 @@ export interface Reglages {
   ambiance: boolean | null;
   /** La lumière du feu vacille (lot L, src/lib/feu.ts) ; false : lumière chaude mais immobile. */
   feu: boolean;
-  /** Luminosité générale : 0,75 à 1,6 ; défaut 1,2. */
+  /** Luminosité générale des pages et de la table, de 0,5 à 3 (50 à 300 %). Défaut : 1,5 (150 %). */
   luminosite: number;
+  /** Éclat et vacillement de la bougie sur les pages, de 0,25 à 4 (25 à 400 %). Défaut : 2 (200 %). */
+  eclatBougie: number;
   /**
    * Tous les sons coupés d'un coup (bouton haut-parleur, src/components/Haut-parleur) : sons du livre
    * et ambiance à 0 (src/lib/son.ts, src/lib/ambiance.ts). La lumière du feu, elle, continue.
    */
   muet: boolean;
   /**
-   * Morceau de musique de fond (src/lib/musique.ts) : l'identifiant d'un morceau de la banque
-   * (design-system/baked/musique/banque.json), ou « aucune » (le bouton musique joue alors le premier).
-   * Défaut : le premier morceau, qui attend le premier geste du lecteur.
+   * Morceau de musique de fond (src/lib/musique.ts) : « toutes » (rotation de toute la banque),
+   * l'identifiant d'un morceau de la banque (design-system/baked/musique/banque.json), ou « aucune ».
+   * Défaut : « toutes ».
    */
   musique: string;
   /**
-   * La musique joue (bouton musique, src/components/Haut-parleur/BoutonMusique.tsx). Défaut : active au premier geste (aucun son avant).
-   * Éteindre le bouton garde le morceau choisi ; le rallumer le reprend.
+   * La musique joue (bouton musique, src/components/Haut-parleur/BoutonMusique.tsx). Défaut : active.
+   * Éteindre le bouton garde le choix ; le rallumer le reprend.
    */
   musiqueActive: boolean;
   /** Enchaîner tous les morceaux, puis reprendre la liste. */
@@ -134,9 +144,10 @@ export const REGLAGES_DEFAUT: Reglages = {
   sonsLivre: true,
   ambiance: true,
   feu: true,
-  luminosite: 1.2,
+  luminosite: 1.5,
+  eclatBougie: 2,
   muet: false,
-  musique: MUSIQUES_IDS[0] ?? 'aucune',
+  musique: 'toutes',
   musiqueActive: true,
   musiqueEnchaine: true,
   volumeMusique: 0.5,
@@ -164,14 +175,15 @@ function valider(x: unknown): Reglages {
   if (typeof o.sonsLivre === 'boolean' || o.sonsLivre === null) r.sonsLivre = o.sonsLivre;
   if (typeof o.ambiance === 'boolean' || o.ambiance === null) r.ambiance = o.ambiance;
   if (typeof o.feu === 'boolean') r.feu = o.feu;
-  if (typeof o.luminosite === 'number' && Number.isFinite(o.luminosite)) r.luminosite = Math.min(1.6, Math.max(.75, o.luminosite));
+  if (typeof o.luminosite === 'number' && Number.isFinite(o.luminosite)) r.luminosite = Math.min(LUMINOSITE_MAX, Math.max(LUMINOSITE_MIN, o.luminosite));
+  if (typeof o.eclatBougie === 'number' && Number.isFinite(o.eclatBougie)) r.eclatBougie = Math.min(ECLAT_BOUGIE_MAX, Math.max(ECLAT_BOUGIE_MIN, o.eclatBougie));
   if (typeof o.muet === 'boolean') r.muet = o.muet;
-  if (typeof o.musique === 'string' && (o.musique === 'aucune' || MUSIQUES_IDS.includes(o.musique))) r.musique = o.musique;
+  if (typeof o.musique === 'string' && (o.musique === 'aucune' || o.musique === 'toutes' || MUSIQUES_IDS.includes(o.musique))) r.musique = o.musique;
   if (typeof o.musiqueEnchaine === 'boolean') r.musiqueEnchaine = o.musiqueEnchaine;
   if (typeof o.musiqueActive === 'boolean') r.musiqueActive = o.musiqueActive;
   if (typeof o.volumeMusique === 'number' && Number.isFinite(o.volumeMusique)) r.volumeMusique = Math.min(1, Math.max(0, o.volumeMusique));
   if (typeof o.boutonsToujoursVisibles === 'boolean') r.boutonsToujoursVisibles = o.boutonsToujoursVisibles;
-  // « aucune » ne joue pas : le bouton musique repart du premier morceau.
+  // « aucune » ne joue pas : le bouton musique repart de la rotation complète.
   if (r.musique === 'aucune') r.musiqueActive = false;
   return r;
 }

@@ -97,7 +97,9 @@
   display: flex;
   align-items: center;
   gap: var(--gc-ecran-bord-bas);
-  pointer-events: none;
+  padding: 14px;
+  margin: -14px;
+  pointer-events: auto;
 }
 
 /* Téléphone couché (data-gc-bord) : la barre se range en colonne sur le bord droit, dans la bande de
@@ -190,15 +192,13 @@
 }
 
 /* ---- Boutons qui s'effacent (src/lib/controles.ts) : barre du haut, engrenage, flèches, points de page.
-   Le script pose data-gc-controles="caches" après 3 s sans activité et le retire au moindre geste. Seule
-   l'opacité change (ni :hover, ni filtre) ; jamais display, visibility, inert ni aria-hidden : Tab atteint
-   toujours les boutons (et les rappelle), et un lecteur d'écran les trouve. Un contrôle qui a le focus au
-   clavier reste visible. Zoomé, le magasin ne les efface pas non plus. ---- */
+   Chaque zone ne s'affiche que lorsqu'on survole sa zone dédiée (:hover), qu'elle a le focus clavier,
+   ou que le réglage « toujours visibles » est activé. ---- */
 .gc-ecran [data-gc-effacable] {
   transition: opacity var(--gc-effacer-retour) ease-out;
 }
 
-.gc-ecran[data-gc-controles="caches"] [data-gc-effacable]:not(:focus-visible, :has(:focus-visible)) {
+.gc-ecran[data-gc-controles="caches"] [data-gc-effacable]:not(:hover, :focus-visible, :has(:hover, :focus-visible)) {
   opacity: 0;
   transition-duration: var(--gc-effacer-depart);
 }

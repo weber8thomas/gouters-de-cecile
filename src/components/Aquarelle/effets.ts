@@ -53,77 +53,67 @@ export const bougies = (centres: [number, number][], rayon: number): Effets => (
 export const fanions = (y: number, creux: number): Effets => ({ fanions: [y, creux], scenes: ['brise', 'fete'] });
 
 export const EFFETS: Record<string, Effets> = {
-  // Théière et deux tasses de la série harmonisée : vapeur légère aux trois ouvertures.
   theiere: {
-    vapeur: [[0.193, 0.225, 0.038], [0.31, 0.64, 0.115], [0.695, 0.64, 0.11]],
-    scenes: ['service-the', 'bouillir', 'service-the', 'tinte'],
+    vapeur: [[.193, .225, .045], [.31, .64, .115], [.695, .64, .11]],
+    repos: 'theiere', scenes: ['service-the', 'bouillir', 'tinte'],
   },
-  // La tasse : une vapeur légère au-dessus du liquide.
+  // La tasse et sa soucoupe se déplacent ensemble, sans découpe des pigments.
   'tasse-2': {
-    vapeur: [[0.49, 0.28, 0.17]],
-    ondes: [0.49, 0.28, 0.24],
-    scenes: ['levitation', 'tinte', 'levitation', 'bouillir'],
+    vapeur: [[.49, .28, .18]], ondes: [.49, .28, .24],
+    gerbe: [.49, .27, .18, -.36, .28, .49, .28],
+    repos: 'tasse', scenes: ['levitation', 'tinte', 'deborde', 'bouillir'],
   },
-  // La tasse reste entière et le thé fume doucement.
   'tasse-coeur': {
-    vapeur: [[0.36, 0.14, 0.17]],
-    ondes: [0.36, 0.15, 0.24],
-    scenes: ['levitation', 'tinte', 'levitation', 'bouillir'],
+    vapeur: [[.36, .14, .18]], ondes: [.36, .15, .24],
+    repos: 'tasse-coeur', scenes: ['levitation', 'bat', 'tinte', 'bouillir'],
   },
-  // La nouvelle part de gâteau a une mèche sans flamme peinte ; le dessin reste entier.
   gateau: {
-    scenes: ['gateau-enchante', 'balance', 'salut'],
+    gerbe: [.40, .30, .16, -.30, .72, .40, .26], confettis: [.48, .28, .45],
+    repos: 'gateau', scenes: ['gateau-enchante', 'souffle-rallume', 'rebond', 'salut', 'balance'],
   },
-  // la tarte sort du four
   'tarte-pommes': {
-    vapeur: [[0.38, 0.22, 0.24], [0.64, 0.26, 0.22]],
-    scenes: ['fume'],
+    vapeur: [[.38, .22, .24], [.64, .26, .22]], repos: 'tarte', scenes: ['fume', 'tournoie'],
   },
-  // Le cupcake reste entier, avec un balancement rigide léger.
-  cupcake: { scenes: ['gateau-enchante', 'salut', 'balance'] },
-  // La bougie vacille, puis se rallume après un souffle ; le gâteau ne se déforme pas.
+  // La framboise reste peinte sur la crème : c'est tout le cupcake qui joue.
+  cupcake: { confettis: [.5, .25, .45], repos: 'cupcake', scenes: ['gateau-enchante', 'rebond', 'salut', 'balance', 'veille'] },
   'cupcake-bougie': {
-    flammes: [[0.4624, 0.0946, 0.03]],
-    scenes: ['gateau-enchante', 'bougies', 'souffle', 'salut', 'allume'],
+    flammes: [[.4624, .0946, .03]], confettis: [.5, .3, .5],
+    repos: 'cupcake', scenes: ['gateau-enchante', 'allume', 'rebond', 'bougies', 'souffle', 'salut'],
   },
-  // le gâteau d'anniversaire et ses cinq bougies (piste anniversaire : titre et dédicace ; l'aquarelle
-  // arrive à la fusion, design-system/aquarelles/gateau-bougies.png)
   'gateau-bougies': {
-    ...bougies([[0.2676, 0.2228], [0.3525, 0.185], [0.4926, 0.1472], [0.6328, 0.1904], [0.7287, 0.2228]], 0.023),
-    scenes: ['gateau-enchante', 'bougies', 'souffle'],
+    ...bougies([[.2676, .2228], [.3525, .185], [.4926, .1472], [.6328, .1904], [.7287, .2228]], .023),
+    confettis: [.5, .35, .65], repos: 'gateau', scenes: ['gateau-enchante', 'bougies', 'souffle', 'allume'],
   },
-  // La nouvelle guirlande et ses nœuds restent intacts.
-  guirlande: { fanions: [0.15, 0.33, 0.315, 0.68], scenes: ['brise', 'fete'], confettis: [0.5, 0.32, 0.35] },
-  // les fanes frémissent, et se secouent
-  carotte: { scenes: ['lapin-carotte', 'secoue', 'lapin-carotte'], repos: 'fanes' },
-  // le blé ploie au vent ; les plantes à peine, une rafale de temps en temps
-  ble: { vent: 1, scenes: ['rafale'] },
-  vanille: { vent: 0.3, scenes: ['rafale'] },
-  cannelle: { vent: 0.25, scenes: ['rafale'] },
-  // Les biscuits restent entiers : aucun découpage de la nouvelle peinture.
-  cookies: {
-    scenes: ['balance', 'salut'],
-  },
-  // Même geste doux pour les sablés.
-  'sables-etoiles': { scenes: ['salut', 'balance'] },
-  // Les fruits et leurs coupes gardent leur forme et leur orientation.
-  citron: { rigide: true, scenes: ['coupe-citron', 'duo-citron', 'coupe-citron'] },
-  'citron-2': { rigide: true, scenes: ['coupe-citron', 'duo-citron', 'coupe-citron'] },
-  pomme: { rigide: true, scenes: ['frisson'] },
-  'pomme-2': { rigide: true, scenes: ['frisson'] },
-  orange: { rigide: true, scenes: ['frisson'] },
-  'orange-2': { rigide: true, scenes: ['frisson'] },
-  // l'œuf se dandine
-  oeufs: { rigide: true, pied: [0.5, 0.78], scenes: ['frisson'] },
-  // les noix sautent l'une après l'autre
-  noix: { rigide: true, scenes: ['frisson'] },
+  guirlande: { fanions: [.15, .33, .315, .68], repos: 'guirlande', scenes: ['brise', 'fete', 'veille'], confettis: [.5, .32, .35] },
+  // Quatre sprites entiers alignés, des miettes discrètes et une repousse, sans lapin.
+  carotte: { repos: 'fanes', scenes: ['carotte-grignote'] },
+  ble: { vent: 1.25, repos: 'brise', scenes: ['rafale', 'balance'] },
+  vanille: { vent: .55, repos: 'brise', scenes: ['rafale', 'salut'] },
+  cannelle: { vent: .45, repos: 'brise', scenes: ['rafale', 'dandine'] },
+  cookies: { gerbe: [.29, .58, .12, -.32, .86, .25, .55], repos: 'biscuits', scenes: ['casse', 'pepites', 'veille', 'balance'] },
+  'sables-etoiles': { gerbe: [.52, .55, .20, -.26, .82, .50, .50], repos: 'etoiles', scenes: ['tournoie', 'salut', 'balance'] },
+  citron: { rigide: true, gerbe: [.5, .53, .28, -.42, .88, .5, .35], scenes: ['coupe-citron', 'duo-citron', 'roule'] },
+  'citron-2': { rigide: true, gerbe: [.48, .53, .28, -.42, .90, .48, .32], scenes: ['coupe-citron', 'rondelle', 'roule'] },
+  pomme: { repos: 'fruits', gerbe: [.5, .52, .26, -.38, .88, .5, .32], scenes: ['saut-pomme', 'duo-citron'] },
+  'pomme-2': { repos: 'fruits', scenes: ['saut', 'frisson', 'roule'] },
+  orange: { gerbe: [.65, .60, .24, -.38, .92, .35, .5], pied: [.48, .72], repos: 'agrumes', scenes: ['toupie', 'saut', 'frisson'] },
+  'orange-2': { vent: .65, repos: 'fruits', scenes: ['saut', 'frisson', 'rafale'] },
+  oeufs: { pied: [.5, .78], repos: 'oeufs', scenes: ['dandine', 'frisson', 'saut'] },
+  noix: { repos: 'noix', scenes: ['domino', 'frisson', 'saut'] },
+  // Les quatre illustrations des vraies recettes restent des aquarelles entières.
+  'fondant-chocolat': { repos: 'gateau', scenes: ['salut', 'balance', 'frisson'] },
+  'framboises-speculoos': { repos: 'biscuits', scenes: ['balance', 'frisson'] },
+  'tarte-myrtilles': { repos: 'tarte', scenes: ['salut', 'balance'] },
+  'crepes-banane': { scenes: ['balance', 'salut', 'frisson'] },
 };
 
-/** Scènes propres à une page : elles remplacent celles de l'aquarelle sur cette page. */
+/** Les actions de la page et les tableaux utilisent la même horloge. */
 export const SCENES_PAGE: Record<string, Record<string, string[]>> = {
-  // la dernière page : on souffle la bougie du cupcake (un filet de fumée), puis elle se rallume
-  'fin-droite': { 'cupcake-bougie': ['gateau-enchante', 'souffle', 'bougies'] },
+  'fin-droite': { 'cupcake-bougie': ['gateau-enchante', 'souffle', 'bougies', 'rebond'] },
+  'gateaux-gauche': { oeufs: ['toc-casse', 'dandine'], 'tasse-coeur': ['levitation', 'bat', 'tinte'] },
+  'julie-droite': { citron: ['coupe-citron', 'duo-citron'], 'citron-2': ['coupe-citron', 'rondelle'] },
+  'pierrette-droite': { citron: ['coupe-citron', 'duo-citron'], 'citron-2': ['coupe-citron', 'rondelle'] },
 };
 
-/** Les compagnons sont désormais joués par SecretsDuCarnet et CompagnonDuCarnet. */
+/** Les compagnons et leurs bulles françaises Caveat sont gérés par SecretsDuCarnet. */
 export const CREATURES: Record<string, string[]> = {};

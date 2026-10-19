@@ -1,4 +1,4 @@
-// Musique de fond du carnet (lot M, src/lib/musique.ts) : trois morceaux libres de droits, en boucle sur le
+// Musique de fond du carnet (lot M, src/lib/musique.ts) : sept morceaux libres de droits, en boucle sur le
 // même AudioContext que les sons du livre et l'ambiance.
 //
 //   node scripts/bake-musique.mjs [--sans-ecoute]
@@ -44,6 +44,9 @@ const DEBIT = '96k';
 
 const sha256 = (f) => createHash('sha256').update(readFileSync(f)).digest('hex');
 const lic = JSON.parse(readFileSync(LICENCES, 'utf8'));
+// Ordre de la liste publiée : Victoria reste le premier morceau de la rotation.
+const ORDRE = ['melodie-victoria', 'gymnopedie-piano', 'casse-noisette-fee-dragee',
+  'touching-moments-piano', 'fairytale-waltz', 'path-of-the-goblin-king', 'frozen-star'];
 
 /** La source du morceau : présente et conforme, sinon téléchargée et vérifiée. */
 function assurerSource(m) {
@@ -64,9 +67,9 @@ function assurerSource(m) {
 function mesurer(src, debut, fin) {
   const r = spawnSync('ffmpeg', [
     '-hide_banner', '-nostdin', '-nostats', '-i', src, '-ss', String(debut), '-to', String(fin),
-    '-af', `loudnorm=I=${CIBLE_LUFS}:LRA=20:TP=${CRETE_DBTP}:print_format=json`, '-f', 'null', '-',
+    '-vn', '-af', `loudnorm=I=${CIBLE_LUFS}:LRA=20:TP=${CRETE_DBTP}:print_format=json`, '-f', 'null', '-',
   ], { encoding: 'utf8' });
-  const bloc = r.stderr.match(/\{[\s\S]*\}\s*$/);
+  const bloc = r.stderr.match(/\{[^{}]*"input_i"[\s\S]*?\}/);
   if (!bloc) throw new Error(`mesure impossible pour ${src}`);
   return JSON.parse(bloc[0]);
 }
@@ -91,7 +94,7 @@ function cuire(m, src) {
   ].join(':');
   const brut = execFileSync('ffmpeg', [
     '-hide_banner', '-nostdin', '-loglevel', 'error', '-i', src, '-ss', String(debut), '-to', String(fin),
-    '-af', norme, '-f', 'f32le', '-ac', '2', '-ar', String(SR), 'pipe:1',
+    '-vn', '-af', norme, '-f', 'f32le', '-ac', '2', '-ar', String(SR), 'pipe:1',
   ], { maxBuffer: 1 << 30 });
   const seg = new Float32Array(brut.buffer.slice(brut.byteOffset, brut.byteOffset + brut.byteLength));
   const N = seg.length / 2; // trames stéréo
@@ -159,9 +162,13 @@ for (const m of lic.morceaux) {
   fichiersCuits.push(join(BAKED, `${m.id}.mp3`));
   console.log(`${m.id} : boucle de ${d.toFixed(2)} s, ${(readFileSync(join(BAKED, `${m.id}.mp3`)).length / 1024).toFixed(0)} Ko, durée fichier ${duree(join(BAKED, `${m.id}.mp3`)).toFixed(2)} s`);
 }
+banque.morceaux.sort((a, b) => {
+  const ia = ORDRE.indexOf(a.id), ib = ORDRE.indexOf(b.id);
+  return (ia < 0 ? ORDRE.length : ia) - (ib < 0 ? ORDRE.length : ib);
+});
 writeFileSync(join(BAKED, 'banque.json'), JSON.stringify(banque, null, 2) + '\n');
 console.log(`banque.json : ${banque.morceaux.length} morceaux`);
 if (!sansEcoute) console.log(`écoute : ${ecouter(fichiersCuits)}`);
 
-// Les deux interprétations numériques sont reproductibles depuis leurs partitions et la banque fournie.
-execFileSync('python3', [join(ROOT, 'scripts/bake-musique-classique.py')], { cwd: ROOT, stdio: 'inherit', env: { ...process.env, OMP_NUM_THREADS: '1' } });
+// La banque active suit exclusivement licences.json. Les interprétations numériques historiques
+// ont leur script séparé ; les recuire ici remplacerait la Gymnopédie sélectionnée par une autre prise.

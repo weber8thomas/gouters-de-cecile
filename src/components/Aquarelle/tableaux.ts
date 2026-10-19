@@ -4,12 +4,12 @@ import { assetInfo } from '../../lib/assets';
 import { cloche, lisse, trajet } from './scenes';
 import type { DessinPage } from './vivante';
 
-export type TableauNom = 'levitation' | 'service-the' | 'coupe-citron' | 'lapin-carotte' | 'gateau-enchante';
+export type TableauNom = 'levitation' | 'service-the' | 'coupe-citron' | 'carotte-grignote' | 'gateau-enchante';
 export const TABLEAUX: Record<TableauNom, { duree: number; libelle: string; assets: string[] }> = {
   levitation: { duree: 10, libelle: 'Les tasses se mettent à léviter', assets: ['tasse-vide'] },
   'service-the': { duree: 11, libelle: 'La théière sert le thé toute seule', assets: ['theiere-seule', 'tasse-vide'] },
   'coupe-citron': { duree: 11, libelle: 'Le citron se coupe en deux', assets: ['citron-entier', 'citron-gauche', 'citron-droite', 'couteau'] },
-  'lapin-carotte': { duree: 11, libelle: 'Le lapin vient grignoter la carotte', assets: ['lapin', 'carotte-0', 'carotte-1', 'carotte-2', 'carotte-3'] },
+  'carotte-grignote': { duree: 11, libelle: 'La carotte se grignote puis repousse', assets: [ 'carotte-0', 'carotte-1', 'carotte-2', 'carotte-3'] },
   'gateau-enchante': { duree: 10, libelle: 'Les gâteaux prennent leur envol', assets: ['aquarelles/gateau-bougies', 'aquarelles/gateau', 'aquarelles/cupcake', 'aquarelles/cupcake-bougie'] },
 };
 export const estTableau = (n: string): n is TableauNom => n in TABLEAUX;
@@ -17,7 +17,7 @@ export function tableauDe(nom: string): TableauNom | undefined {
   if (nom === 'theiere') return 'service-the';
   if (nom === 'tasse-2' || nom === 'tasse-coeur') return 'levitation';
   if (nom === 'citron' || nom === 'citron-2') return 'coupe-citron';
-  if (nom === 'carotte') return 'lapin-carotte';
+  if (nom === 'carotte') return 'carotte-grignote';
   if (['gateau-bougies', 'gateau', 'cupcake', 'cupcake-bougie'].includes(nom)) return 'gateau-enchante';
   return undefined;
 }
@@ -25,7 +25,6 @@ export function tableauDe(nom: string): TableauNom | undefined {
 export interface Acteur { asset: string; x: number; y: number; w: number; angle: number; alpha: number }
 // Repères des nouveaux sprites v10, mesurés dans leur canevas commun. La deuxième morsure était
 // décalée à gauche : on aligne les attaches des fanes avant de composer les étapes.
-export const BOUCHE_LAPIN: [number, number] = [.1, .48];
 export const ANCRES_CAROTTE: { attache: [number, number]; bout: [number, number] }[] = [
   { attache: [.52, .415], bout: [.535, .94] },
   { attache: [.525, .415], bout: [.54, .875] },
@@ -38,6 +37,7 @@ export interface EtatTableau {
   liquide: [number, number];
   jet: number;
   tasseVisee: 0 | 1;
+  miettes?: { x: number; y: number; rayon: number; alpha: number }[];
   flammes?: { x: number; y: number; rayon: number; angle: number; force: number }[];
 }
 const acteur = (asset: string, x: number, y: number, w: number, angle = 0, alpha = 1): Acteur => ({ asset, x, y, w, angle, alpha });
@@ -53,7 +53,7 @@ export const presenceTableau = (type: TableauNom, temps: number) => transition(t
 
 /** Cadres réservés aux dessins : aucune extension générale sur les textes ou les photos. */
 export function cadreTableau(page: string, nom: string, zone: [number, number, number, number]): [number, number, number, number] {
-  if (page === 'julie-droite' && ['citron', 'citron-2'].includes(nom)) return [.2, .5, .58, .383];
+  if (['julie-droite', 'pierrette-droite'].includes(page) && ['citron', 'citron-2'].includes(nom)) return [.2, .5, .58, .383];
   if (page === 'titre' && nom === 'gateau-bougies') return [.2, .62, .6, .31];
   if (page === 'gateaux-gauche' && nom === 'tasse-coeur') return [.05, .64, .48, .24];
   if (page.startsWith('gateaux-') && ['gateau', 'cupcake-bougie'].includes(nom)) return [.23, zone[1], .54, zone[3]];
@@ -86,27 +86,29 @@ export function etatTableau(nom: TableauNom, s: number, aspects: Record<string, 
     const lameX = trajet(s, [[0, 710], [1.8, 555], [4.4, 555], [6.2, 820], [11, 820]]);
     e.phase = s < 2.5 ? 'couteau-arrive' : s < 3.5 ? 'coupe' : s < 8 ? 'deux-moities' : 'reunion-magique';
     e.acteurs = [acteur('citron-entier', 500, 405, 385, 0, 1 - ouvert), acteur('citron-gauche', 500 - ecart, 422, 230, -ouvert * 5, ouvert), acteur('citron-droite', 500 + ecart, 422, 230, ouvert * 5, ouvert), acteur('couteau', lameX, lameY, 340, -24)];
-  } else if (nom === 'lapin-carotte') {
-    const approche = transition(s, 0.7, 2.8), retraite = transition(s, 8.4, 10.3), proche = approche * (1 - retraite);
-    const manger = cloche(s, 3, 8.3), machouille = manger * Math.sin(s * 12);
-
-    const b1 = transition(s, 3.8, 4.1), b2 = transition(s, 5.2, 5.5), b3 = transition(s, 6.6, 6.9);
-    const retour = transition(s, 9.8, 10.7);
-    const alphas = [1 - b1, b1 - b2, b2 - b3, b3];
-    e.phase = s < 2.8 ? 'lapin-arrive' : s < 8.3 ? 'grignote' : 'lapin-repart';
-    const carotte = acteur('carotte-0', 370, 335, 210, -60 + machouille * 1.5);
+  } else if (nom === 'carotte-grignote') {
+    const bouchées = [3.8, 5.2, 6.6];
+    const repousse = transition(s, 9, 10.5);
+    const mange = bouchées.reduce((n, t) => n + transition(s, t, t + .3), 0) * (1 - repousse);
+    // Chaque passage entre deux dessins ralentit aux deux bouts, y compris à la repousse.
+    const passages = [0, 1, 2].map((k) => Math.max(0, Math.min(1, lisse(mange - k))));
+    const alphas = [1 - passages[0], passages[0] - passages[1], passages[1] - passages[2], passages[2]];
+    const fremit = bouchées.reduce((v, t) => v + .7 * cloche(s, t, t + .4) * Math.sin((s - t) * 24), 0);
+    e.phase = s < 3.8 ? 'entiere' : s < 6.9 ? 'grignotage' : s < 9 ? 'trognon' : 'repousse';
+    const carotte = acteur('carotte-0', 500, 320, 440, fremit);
     const attache = pointActeur(carotte, ANCRES_CAROTTE[0].attache, aspects);
-    const carottes = alphas.map((alpha, k) => {
-      const c = { ...carotte, asset: `carotte-${k}`, alpha: k === 0 ? alpha + retour * (1 - alpha) : alpha * (1 - retour) };
-      const p = pointActeur(c, ANCRES_CAROTTE[k].attache, aspects); c.x += attache[0] - p[0]; c.y += attache[1] - p[1]; return c;
+    e.acteurs = alphas.map((alpha, k) => {
+      const c = { ...carotte, asset: `carotte-${k}`, alpha };
+      const p = pointActeur(c, ANCRES_CAROTTE[k].attache, aspects);
+      c.x += attache[0] - p[0]; c.y += attache[1] - p[1]; return c;
     });
-    const tip = carottes.reduce<[number, number]>((somme, c, k) => { const p = pointActeur(c, ANCRES_CAROTTE[k].bout, aspects); return [somme[0] + p[0] * alphas[k], somme[1] + p[1] * alphas[k]]; }, [0, 0]);
-    const lapin = acteur('lapin', 0, 0, 310, machouille * 1.8);
-    const bouche = pointActeur(lapin, BOUCHE_LAPIN, aspects);
-    const x = 1160 + (tip[0] - bouche[0] - 1160) * proche;
-    const y = 445 + (tip[1] - bouche[1] - 445) * proche;
-    e.acteurs.push(...carottes);
-    e.acteurs.push({ ...lapin, x, y });
+    e.miettes = bouchées.flatMap((t, k) => {
+      const p = pointActeur(e.acteurs[k], ANCRES_CAROTTE[k].bout, aspects), age = s - t;
+      return Array.from({ length: 5 }, (_, j) => {
+        const d = transition(age, 0, .7);
+        return { x: p[0] + (j - 2) * 15 * d, y: p[1] - (22 + j * 2) * Math.sin(Math.PI * d) + 40 * d * d, rayon: 2 + (j % 2), alpha: .72 * cloche(age, 0, .7) };
+      });
+    });
   } else {
     const envol = transition(s, .7, 2.7) * (1 - transition(s, 7.6, 9.3));
     const vol = cloche(s, 1.5, 8.8), phase = s * 1.25;
@@ -123,7 +125,7 @@ export function etatTableau(nom: TableauNom, s: number, aspects: Record<string, 
   return e;
 }
 
-type SceneDOM = { d: Omit<DessinPage, 'peindre'>; type: TableauNom; bouton: HTMLButtonElement; svg: SVGSVGElement; acteurs: SVGImageElement[]; liquides: SVGEllipseElement[]; fronts: SVGImageElement[]; jet: SVGPathElement; flammes: SVGPathElement[]; pret: boolean; etat?: EtatTableau };
+type SceneDOM = { d: Omit<DessinPage, 'peindre'>; type: TableauNom; bouton: HTMLButtonElement; svg: SVGSVGElement; acteurs: SVGImageElement[]; liquides: SVGEllipseElement[]; fronts: SVGImageElement[]; jet: SVGPathElement; miettes: SVGCircleElement[]; flammes: SVGPathElement[]; pret: boolean; etat?: EtatTableau };
 const NS = 'http://www.w3.org/2000/svg';
 const svgEl = <K extends keyof SVGElementTagNameMap>(nom: K): SVGElementTagNameMap[K] => document.createElementNS(NS, nom);
 const attributs = (el: Element, a: Record<string, string | number>) => { for (const [k, v] of Object.entries(a)) el.setAttribute(k, String(v)); };
@@ -143,7 +145,7 @@ export class Theatre {
       bouton.setAttribute('aria-label', def.libelle); bouton.title = def.libelle;
       Object.assign(bouton.style, { left: `${d.zone[0] * 100}%`, top: `${d.zone[1] * 100}%`, width: `${d.zone[2] * 100}%`, height: `${d.zone[3] * 100}%` });
       bouton.addEventListener('pointerdown', (e) => e.stopPropagation()); bouton.addEventListener('click', (e) => { e.stopPropagation(); declencher(d.nom, type); });
-      const svg = svgEl('svg'); svg.classList.add('gc-tableau'); svg.setAttribute('aria-hidden', 'true'); attributs(svg, { viewBox: '0 0 1000 650', preserveAspectRatio: 'xMidYMid meet' });
+      const svg = svgEl('svg'); svg.classList.add('gc-tableau'); svg.setAttribute('aria-hidden', 'true'); attributs(svg, { viewBox: type === 'carotte-grignote' ? '230 0 540 650' : '0 0 1000 650', preserveAspectRatio: 'xMidYMid meet' });
       const [x, y, largeur, hauteur] = cadreTableau(page, d.nom, d.zone);
       Object.assign(svg.style, { left: `${x * 100}%`, top: `${y * 100}%`, width: `${largeur * 100}%`, height: `${hauteur * 100}%`, opacity: '0' });
       const acteurs: SVGImageElement[] = [];
@@ -157,11 +159,14 @@ export class Theatre {
         fronts[k].setAttribute('clip-path', `url(#${id})`); fronts[k].setAttribute('preserveAspectRatio', 'xMidYMid meet'); svg.append(fronts[k]);
       }
       const jet = svgEl('path'); attributs(jet, { fill: 'none', stroke: '#b78348', 'stroke-width': 7, 'stroke-linecap': 'round', opacity: 0 }); svg.append(jet);
+      const miettes = Array.from({ length: 15 }, () => {
+        const c = svgEl('circle'); attributs(c, { fill: '#c88b4d', opacity: 0 }); svg.append(c); return c;
+      });
       const flammes = Array.from({ length: 5 }, () => {
         const f = svgEl('path'); attributs(f, { d: 'M0,1 C-1.1,.2 -.7,-.9 0,-1.8 C.2,-.6 1.1,-.1 0,1Z', fill: '#d58c42', opacity: 0 }); svg.append(f); return f;
       });
       this.couche.append(svg, bouton);
-      const scene: SceneDOM = { d, type, bouton, svg, acteurs, liquides, fronts, jet, flammes, pret: false }; this.scenes.set(d.nom, scene);
+      const scene: SceneDOM = { d, type, bouton, svg, acteurs, liquides, fronts, jet, miettes, flammes, pret: false }; this.scenes.set(d.nom, scene);
       Promise.all(def.assets.map(async (a) => { const im = new Image(); im.src = url(logique(a))!; await im.decode(); })).then(() => { scene.pret = true; bouton.disabled = false; }).catch(() => { bouton.remove(); svg.remove(); this.scenes.delete(d.nom); });
     }
   }
@@ -182,6 +187,10 @@ export class Theatre {
     s.acteurs.forEach((im, k) => { const a = e.acteurs[k]; if (a) this.poserImage(im, a); else im.setAttribute('opacity', '0'); });
     s.liquides.forEach((el) => el.setAttribute('opacity', '0')); s.fronts.forEach((el) => el.setAttribute('opacity', '0'));
     s.jet.setAttribute('opacity', '0');
+    s.miettes.forEach((c, k) => {
+      const m = e.miettes?.[k];
+      if (m) attributs(c, { cx: m.x, cy: m.y, r: m.rayon, opacity: m.alpha }); else c.setAttribute('opacity', '0');
+    });
     s.flammes.forEach((f, k) => {
       const a = e.flammes?.[k];
       if (a) attributs(f, { transform: `translate(${a.x} ${a.y}) rotate(${a.angle}) scale(${a.rayon})`, opacity: a.force });

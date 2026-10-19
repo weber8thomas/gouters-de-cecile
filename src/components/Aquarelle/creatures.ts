@@ -7,7 +7,20 @@ type Cote = 'gauche' | 'droite';
 type Zone = [number, number, number, number];
 export interface Espece { genre: 'chien'; taille: number }
 export const ESPECES: Record<string, Espece> = { 'jack-russell': { genre: 'chien', taille: 0.09 } };
-export const PAROLES = ['Tea time!', 'Jolly good!'] as const;
+export const PAROLES = [
+  'Tea time, chaps!',
+  'Jolly good biscuit!',
+  'Splendid crumb, Watson!',
+  'Mind the crumbs, sir!',
+  'Rather scrumptious!',
+  'Quite delectable, what?',
+  'Pip pip! Cheerio!',
+  'A spot of tea, my dear?',
+  'Top notch butter, eh?',
+  'I say, is that cake?',
+  'Positively spiffing!',
+  'One nibble for the dog?',
+] as const;
 
 export interface PisteLibre { x0: number; x1: number; sol: number }
 interface Piste extends PisteLibre { cote: Cote }
@@ -82,7 +95,7 @@ export class Promenade {
     this.especes = especes.filter((e) => ESPECES[e]).slice(0, 1);
     this.creatures = this.especes.map((e) => ({
       espece: e, genre: 'chien', taille: ESPECES[e].taille, x: -1, y: 0.955,
-      etat: 'attente', direction: 1, phase: 0, minuteur: 5, parole: null, bulle: 0, opacite: 0, piste: null,
+      etat: 'attente', direction: 1, phase: 0, minuteur: 1.0, parole: null, bulle: 0, opacite: 0, piste: null,
     }));
   }
 
@@ -107,7 +120,7 @@ export class Promenade {
   detacher(cote: Cote) { delete this.pages[cote]; this.activer(cote, false); }
 
   private parler(c: Creature) {
-    c.etat = 'pose'; c.minuteur = 3.8; c.parole = PAROLES[this.phrase++ % PAROLES.length]; c.bulle = 2.8;
+    c.etat = 'pose'; c.minuteur = 4.2; c.parole = PAROLES[this.phrase++ % PAROLES.length]; c.bulle = 3.8;
   }
 
   toucher(cote: Cote, px: number, py: number): boolean {

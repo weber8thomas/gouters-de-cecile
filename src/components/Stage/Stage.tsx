@@ -29,7 +29,7 @@ export interface StageProps {
 // (src/lib/feu.ts : opacité et transformation de calques précalculés). Fournit les réglages.
 export function Stage({ idle, distance, fit = false, children, overlay, className, debord = 0 }: StageProps) {
   const parent = useSettings();
-  const luminosite = React.useSyncExternalStore(abonnerReglages, () => getReglages().luminosite, () => 1.2);
+  const luminosite = React.useSyncExternalStore(abonnerReglages, () => getReglages().luminosite, () => 1.5);
   const settings: Settings = React.useMemo(
     () => ({ idle: idle ?? parent.idle, distance: distance ?? parent.distance }),
     [idle, distance, parent.idle, parent.distance],
@@ -56,7 +56,6 @@ export function Stage({ idle, distance, fit = false, children, overlay, classNam
   const style: React.CSSProperties & Record<string, string> = {};
   // Régler la lumière ambiante des calques existants, sans filtre plein écran ni aplatissement 3D.
   // La flamme garde ses propres variations, indépendantes de ce niveau de fond.
-  style['--gc-penombre-papier'] = String(Math.max(0, Math.min(.7, .42 + (1 - luminosite) * .85)));
   style['--gc-penombre-table'] = String(Math.max(.4, Math.min(1, 1 + (1 - luminosite) * .9)));
   style['--gc-assombrir-table'] = String(Math.max(0, (1 - luminosite) * .7));
   if (fit) Object.assign(style, { transform: `scale(${scale})`, transformOrigin: '0 0' });

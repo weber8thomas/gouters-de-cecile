@@ -37,23 +37,27 @@ const resultats = {};
 if (suites.includes('tableaux-courbes') || suites.includes('tableaux')) {
   const { build } = await import('esbuild');
   const b = await build({ entryPoints: [join(ROOT, 'src/components/Aquarelle/tableaux.ts')], bundle: true, platform: 'node', format: 'esm', write: false });
-  const { etatTableau, pointActeur, TABLEAUX, BOUCHE_LAPIN, ANCRES_CAROTTE } = await import(`data:text/javascript;base64,${Buffer.from(b.outputFiles[0].text).toString('base64')}`);
-  const aspects = { 'carotte-0': .62, 'carotte-1': .62, 'carotte-2': .62, 'carotte-3': .62, lapin: 1.12 };
+  const { etatTableau, pointActeur, TABLEAUX, ANCRES_CAROTTE, cadreTableau } = await import(`data:text/javascript;base64,${Buffer.from(b.outputFiles[0].text).toString('base64')}`);
+  const aspects = { 'carotte-0': 512 / 600, 'carotte-1': 512 / 600, 'carotte-2': 512 / 600, 'carotte-3': 512 / 600 };
   const e = (n, t) => etatTableau(n, t, aspects);
   const actions = {
     levitation: e('levitation', 4.5).acteurs.every((a) => a.y < 340) && e('levitation', 9.3).acteurs.every((a) => a.y === 505),
     service: [[2.8, 0], [6.7, 1]].every(([t, k]) => { const q = e('service-the', t); return q.jet > .45 && q.tasseVisee === k && q.liquide[k] > .3; }) && e('service-the', 8).liquide.every((f) => f === 1),
     coupe: (() => { const a = e('coupe-citron', 5).acteurs; return a[0].alpha === 0 && a[1].alpha === 1 && a[2].alpha === 1 && a[2].x - a[1].x >= 280; })(),
-    grignotage: [[3.5, 0], [4.5, 1], [5.8, 2], [7.3, 3]].every(([t, k]) => e('lapin-carotte', t).acteurs[k].alpha === 1),
+    grignotage: [[3.5, 0], [4.5, 1], [5.8, 2], [7.3, 3]].every(([t, k]) => e('carotte-grignote', t).acteurs[k].alpha === 1),
     gateaux: e('gateau-enchante', 4.5).acteurs[0].y < 280 && e('gateau-enchante', 9.4).acteurs[0].y === 440 && e('gateau-enchante', 4.5).flammes.length === 5,
   };
-  let erreurContact = 0;
-  for (let t = 3; t <= 8; t += .05) {
-    const q = e('lapin-carotte', t), bouche = pointActeur(q.acteurs[4], BOUCHE_LAPIN, aspects);
-    const bout = q.acteurs.slice(0, 4).reduce((sum, a, k) => { const p = pointActeur(a, ANCRES_CAROTTE[k].bout, aspects); return [sum[0] + p[0] * a.alpha, sum[1] + p[1] * a.alpha]; }, [0, 0]);
-    erreurContact = Math.max(erreurContact, Math.hypot(bouche[0] - bout[0], bouche[1] - bout[1]));
+  let erreurAttache = 0, etatsValides = true;
+  for (let t = 0; t <= 11; t += .05) {
+    const q = e('carotte-grignote', t), attache = pointActeur(q.acteurs[0], ANCRES_CAROTTE[0].attache, aspects);
+    etatsValides &&= q.acteurs.length === 4 && q.acteurs.every((a) => a.asset.startsWith('carotte-') && a.w >= 400 && a.alpha >= 0 && a.alpha <= 1) && Math.abs(q.acteurs.reduce((n, a) => n + a.alpha, 0) - 1) < 1e-9;
+    etatsValides &&= (q.miettes ?? []).filter((m) => m.alpha > 0).length <= 5 && (q.miettes ?? []).every((m) => m.rayon <= 3);
+    for (let k = 1; k < 4; k++) { const p = pointActeur(q.acteurs[k], ANCRES_CAROTTE[k].attache, aspects); erreurAttache = Math.max(erreurAttache, Math.hypot(attache[0] - p[0], attache[1] - p[1])); }
   }
-  const bornes = [.7, .8, 1.7, 1.8, 1.9, 2.2, 2.5, 2.8, 3, 3.3, 3.5, 3.7, 3.8, 3.9, 4, 4.1, 4.4, 4.6, 4.7, 4.8, 5.2, 5.5, 5.6, 5.7, 6.2, 6.6, 6.9, 7, 7.5, 7.8, 7.95, 8, 8.3, 8.4, 9.2, 9.8, 10.2, 10.3, 10.7];
+  etatsValides &&= e('carotte-grignote', 10.8).acteurs[0].alpha === 1;
+  const cadrePierrette = cadreTableau('pierrette-droite', 'citron', [.5, .5, .28, .383]);
+  etatsValides &&= cadrePierrette[0] >= 0 && cadrePierrette[0] + cadrePierrette[2] < .83;
+  const bornes = [.7, .8, 1.7, 1.8, 1.9, 2.2, 2.5, 2.8, 3, 3.3, 3.5, 3.7, 3.8, 3.9, 4, 4.1, 4.4, 4.6, 4.7, 4.8, 5.2, 5.5, 5.6, 5.7, 6.2, 6.6, 6.9, 7, 7.5, 7.8, 7.95, 8, 8.3, 8.4, 9, 9.2, 9.8, 10.2, 10.3, 10.5, 10.7];
   const nombres = (q) => q.acteurs.flatMap((a) => [a.x, a.y, a.w, a.angle, a.alpha]).concat(q.liquide, q.jet);
   let saut = 0, raccord = ''; const h = 1e-5;
   for (const n of Object.keys(TABLEAUX)) for (const t of bornes) {
@@ -65,7 +69,7 @@ if (suites.includes('tableaux-courbes') || suites.includes('tableaux')) {
     }
   }
   rapport.ajouter(null, '[tableaux] actions amples : tasses et gâteaux volent, deux services, coupe, quatre états mangés', Object.values(actions).every(Boolean) ? 'OK' : 'KO', actions);
-  rapport.ajouter(null, '[tableaux] bouche au contact du bout grignoté', erreurContact < 1e-8 ? 'OK' : 'KO', `erreur maximale ${erreurContact} unité`);
+  rapport.ajouter(null, '[tableaux] carotte agrandie sans lapin : attaches fixes, miettes discrètes, repousse ; cadre Pierrette sûr', erreurAttache < 1e-8 && etatsValides ? 'OK' : 'KO', `erreur d'attache maximale ${erreurAttache} unité ; états valides ${etatsValides}`);
   rapport.ajouter(null, '[tableaux] continuité C1 aux raccords', saut < .2 ? 'OK' : 'KO', `écart vitesse maximal ${saut.toFixed(5)} unité/s : ${raccord}`);
 }
 
@@ -349,11 +353,11 @@ if (suites.includes('films')) {
 // ---- tableaux : captures pendant les actions et raccourcis natifs -----------------------------------
 if (suites.includes('tableaux')) {
   const cas = [
-    ['titre', 'carotte', 'lapin-carotte', [3000, 4000]],
+    ['lisa', 'carotte', 'carotte-grignote', [4500, 2800, 3500]],
     ['titre', 'gateau-bougies', 'gateau-enchante', [4500]],
     ['fin', 'theiere', 'service-the', [2800, 3900]],
     ['gateaux', 'tasse-coeur', 'levitation', [4500]],
-    ['julie', 'citron', 'coupe-citron', [3200, 1800]],
+    ['pierrette', 'citron', 'coupe-citron', [3200, 1800]],
   ];
   for (const [spread, nom, type, pas] of cas) {
     const { ctx, page, surv } = await ouvrirPage(browser, cible, TV, `#${spread}`);
@@ -393,7 +397,7 @@ if (suites.includes('tableaux')) {
 
 // ---- citrons : deux composants rigides sur leur appui -------------------------------------------------------------------------------
 if (suites.includes('citron')) {
-  const { ctx, page } = await ouvrirPage(browser, cible, TV, '#julie');
+  const { ctx, page } = await ouvrirPage(browser, cible, TV, '#pierrette');
   await toilesPretes(page, 1);
   const specs = JSON.parse(readFileSync(join(ROOT, 'src/components/Aquarelle/parties.json'), 'utf8'));
   const assets = JSON.parse(readFileSync(join(ROOT, 'design-system/assets.json'), 'utf8'));

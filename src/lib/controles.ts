@@ -27,8 +27,8 @@ const APPUI_MAX_MS = 20000;
 /** Le clic qui suit un toucher « de rappel » doit venir dans ce délai pour être avalé. */
 const AVALE_MS = 1500;
 
-/** État brut : vrai après un temps sans activité (le réglage « toujours visibles » le masque à la lecture). */
-let efface = false;
+/** État brut : vrai par défaut (seul le survol de la zone dédiée ou le réglage « toujours visibles » affiche les boutons). */
+let efface = true;
 let derniere = 0;
 let minuterie: ReturnType<typeof setTimeout> | null = null;
 let installe = false;
@@ -83,7 +83,6 @@ function echeance(): void {
   const reste = CONTROLES_DELAI_MS - (performance.now() - derniere);
   if (reste > 30) return planifier();
   if (bloque()) {
-    // Un blocage compte comme une activité : on regarde de nouveau dans 3 s.
     derniere = performance.now();
     return planifier();
   }
@@ -105,33 +104,23 @@ export function reveillerControles(): void {
 function installer(): void {
   if (installe || typeof window === 'undefined') return;
   installe = true;
-  // Au chargement, les boutons se montrent 3 s.
-  derniere = performance.now();
-  planifier();
   const opt = { capture: true, passive: true } as const;
-  let px = NaN;
-  let py = NaN;
-  // Souris et stylet survolant : un vrai déplacement (le navigateur rejoue parfois un pointermove sur place).
-  window.addEventListener('pointermove', (e) => {
-    if (e.pointerType === 'touch' || (e.clientX === px && e.clientY === py)) return;
-    px = e.clientX;
-    py = e.clientY;
-    reveillerControles();
-  }, opt);
+  // Sur écran tactile uniquement, toucher la zone d'un contrôle effacé le révèle.
+  // À la souris ou au clavier (flèches), seul le survol (:hover) de la zone dédiée révèle ce contrôle.
   window.addEventListener('pointerdown', (e) => {
-    pointeurs.set(e.pointerId, performance.now());
-    if (e.pointerType !== 'mouse' && surEfface(e.target)) avaleDepuis = performance.now();
-    reveillerControles();
+    if (e.pointerType === 'mouse') return;
+    if (surEffacable(e.target)) {
+      pointeurs.set(e.pointerId, performance.now());
+      if (surEfface(e.target)) avaleDepuis = performance.now();
+      reveillerControles();
+    }
   }, opt);
   const relache = (e: PointerEvent) => {
-    pointeurs.delete(e.pointerId);
-    reveillerControles();
+    if (e.pointerType === 'mouse') return;
+    if (pointeurs.delete(e.pointerId)) reveillerControles();
   };
   window.addEventListener('pointerup', relache, opt);
   window.addEventListener('pointercancel', relache, opt);
-  window.addEventListener('keydown', reveillerControles, opt);
-  window.addEventListener('wheel', reveillerControles, opt);
-  window.addEventListener('focusin', reveillerControles, opt);
   // Le clic qui suit le toucher de rappel n'appartient pas au bouton : il ne l'active pas.
   window.addEventListener('click', (e) => {
     if (performance.now() - avaleDepuis > AVALE_MS) return;
@@ -140,14 +129,14 @@ function installer(): void {
     e.preventDefault();
     e.stopImmediatePropagation();
   }, true);
-  // Passer de « s'effacent » à « toujours visibles » et retour relance le compte à rebours ; les autres
-  // réglages ne rappellent rien.
+  // Passer de « s'effacent » à « toujours visibles » met à jour l'affichage.
   let avant = toujours();
   abonnerReglages(() => {
     const t = toujours();
     if (t !== avant) {
       avant = t;
-      reveillerControles();
+      if (t) reveillerControles();
+      else changer(true);
     }
     abonnes.forEach((f) => f());
   });

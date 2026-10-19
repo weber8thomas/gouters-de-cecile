@@ -46,9 +46,9 @@ export const eclairementRecto = (a: number): number => (LX * Math.sin(a * RAD) +
 /** Éclairement relatif du verso (normale opposée). */
 export const eclairementVerso = (a: number): number => -eclairementRecto(a);
 
-/** Voiles d’ombrage : au plus 30 % de blanc porcelaine sur un recto, 38 % d’ombre chaude sur un verso
+/** Voiles d’ombrage : au plus 15 % de lueur chaude sur un recto, 38 % d’ombre chaude sur un verso
  *  (la perspective douce aplatit la courbure : l’ombrage porte le relief). */
-export const LUMIERE_MAX = 0.3;
+export const LUMIERE_MAX = 0.15;
 export const OMBRE_MAX = 0.38;
 
 /**

@@ -1,5 +1,5 @@
 {
-  "description": "Musique de fond du carnet (lot M) : trois morceaux de Kevin MacLeod (incompetech.com), libres de droits sous Creative Commons Attribution 4.0. Licence de chaque morceau : champ du catalogue pieces.json (schema.org, licence https://creativecommons.org/licenses/by/4.0/) et gabarit de la page du morceau (index.html?isrc=…, « Licensed under Creative Commons: By Attribution 4.0 License »). La page est rendue côté navigateur : le texte affiché pour chaque morceau n'a pas été relu un par un. scripts/bake-musique.mjs coupe l'extrait, le normalise, le boucle et l'encode en MP3 96 kb/s stéréo.",
+  "description": "Musique de fond du carnet (lot M) : sept morceaux de Kevin MacLeod (incompetech.com), libres de droits sous Creative Commons Attribution 4.0. Licence de chaque morceau : champ du catalogue pieces.json (schema.org, licence https://creativecommons.org/licenses/by/4.0/) et gabarit de la page du morceau (index.html?isrc=…, « Licensed under Creative Commons: By Attribution 4.0 License »). scripts/bake-musique.mjs coupe l'extrait, le normalise, le boucle et l'encode en MP3 96 kb/s stéréo.",
   "licence": {
     "nom": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
     "url": "https://creativecommons.org/licenses/by/4.0/",
@@ -9,64 +9,58 @@
   "catalogue": "https://incompetech.com/music/royalty-free/pieces.json",
   "morceaux": [
     {
-      "id": "path-of-the-goblin-king",
-      "titre": "The Path of the Goblin King",
+      "id": "casse-noisette-fee-dragee",
+      "titre": "Casse-Noisette (Fée Dragée)",
       "auteur": "Kevin MacLeod",
       "auteurPage": "https://incompetech.com/",
-      "isrc": "USUAN1100873",
-      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100873",
+      "isrc": "USUAN1100625",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100625",
       "licence": "CC BY 4.0",
       "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
       "licenceLue": "Licensed under Creative Commons: By Attribution 4.0 License",
-      "verifiee": "2026-10-17",
-      "date": "2026-10-17",
-      "duree": "00:03:26",
-      "bpm": 89,
-      "instruments": "Strings, Flute, Clarinet, Oboe, Celesta, Timpani",
-      "ambiance": "Mysterious, Relaxed",
-      "description_catalogue": "Sort of « Spooky Light ». Dark yet playful. Good for fairy tales or light tension building.",
-      "role": "morceau par défaut : cordes, célesta et bois, esprit conte",
-      "credit": "\"The Path of the Goblin King\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "verifiee": "2026-10-19",
+      "date": "2009-11-06",
+      "duree": "00:02:00",
+      "bpm": 53,
+      "instruments": "Orchestra, Celesta",
+      "ambiance": "Bright, Humorous",
+      "description_catalogue": "Tchaikovsky's piece, amped up a little bit and slightly arranged for more punch and bass.",
+      "role": "célesta féerique et cordes (Tchaïkovski, Casse-Noisette)",
+      "credit": "\"Dance of the Sugar Plum Fairy\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
       "fichier": {
-        "nom": "path-of-the-goblin-king.mp3",
-        "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/The%20Path%20of%20the%20Goblin%20King.mp3",
-        "octets": 8258790,
-        "sha256": "f8a30fac2528bb0a630cd2d7500daf10b64860ec7e91823390cc6e1cb545175a"
+        "nom": "casse-noisette-fee-dragee.mp3",
+        "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Dance%20of%20the%20Sugar%20Plum%20Fairy.mp3",
+        "octets": 4800178,
+        "sha256": "e8e7797dcb7ac80431a4615c2598cf4532f76c4cc054b88a0ec3707ec857c5b1"
       },
-      "extrait": {
-        "debut": 0,
-        "fin": 192
-      }
+      "extrait": { "debut": 0, "fin": 118 }
     },
     {
-      "id": "frozen-star",
-      "titre": "Frozen Star",
+      "id": "gymnopedie-piano",
+      "titre": "Gymnopédie au piano",
       "auteur": "Kevin MacLeod",
       "auteurPage": "https://incompetech.com/",
-      "isrc": "USUAN1100356",
-      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100356",
+      "isrc": "USUAN1100787",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100787",
       "licence": "CC BY 4.0",
       "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
       "licenceLue": "Licensed under Creative Commons: By Attribution 4.0 License",
-      "verifiee": "2026-10-17",
-      "date": "2026-10-17",
-      "duree": "00:03:41",
-      "bpm": 88,
-      "instruments": "Harp, Choir, Helicons, Flutes",
-      "ambiance": "Calming, Mystical, Relaxed, Uplifting",
-      "description_catalogue": "Lilting gentle feel with odd chord progressions.",
-      "role": "harpe douce et chœur, très stable : fond calme",
-      "credit": "\"Frozen Star\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "verifiee": "2026-10-19",
+      "date": "2011-01-10",
+      "duree": "00:03:07",
+      "bpm": 77,
+      "instruments": "Piano",
+      "ambiance": "Calming, Relaxed, Uplifting",
+      "description_catalogue": "Elegant and slightly dark, the simplicity of the piano melody is light and touching, with a feeling of pensive restraint. Composed by Erik Satie.",
+      "role": "piano solo doux et rêveur (Erik Satie, Gymnopédie n° 1)",
+      "credit": "\"Gymnopedie No. 1\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
       "fichier": {
-        "nom": "frozen-star.mp3",
-        "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Frozen%20Star.mp3",
-        "octets": 8977291,
-        "sha256": "28c7532b808086046f02164807cbcad659db614686f2a49a78d87516fa4d3236"
+        "nom": "gymnopedie-piano.mp3",
+        "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Gymnopedie%20No%201.mp3",
+        "octets": 7487656,
+        "sha256": "8cba6bb3da51066ad39520ec218a327bb6222d8fb32bc52f28a1e90b67756f70"
       },
-      "extrait": {
-        "debut": 0,
-        "fin": 221
-      }
+      "extrait": { "debut": 0, "fin": 185 }
     },
     {
       "id": "melodie-victoria",
@@ -93,25 +87,120 @@
         "octets": 9642235,
         "sha256": "b498c08bcb79f000226ee9d71f3018593cf14aa64c49e9449384a5d9ad75aecb"
       },
-      "extrait": {
-        "debut": 0,
-        "fin": 240
-      }
+      "extrait": { "debut": 0, "fin": 240 }
+    },
+    {
+      "id": "path-of-the-goblin-king",
+      "titre": "The Path of the Goblin King",
+      "auteur": "Kevin MacLeod",
+      "auteurPage": "https://incompetech.com/",
+      "isrc": "USUAN1100873",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100873",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "licenceLue": "Licensed under Creative Commons: By Attribution 4.0 License",
+      "verifiee": "2026-10-17",
+      "date": "2026-10-17",
+      "duree": "00:03:26",
+      "bpm": 89,
+      "instruments": "Strings, Flute, Clarinet, Oboe, Celesta, Timpani",
+      "ambiance": "Mysterious, Relaxed",
+      "description_catalogue": "Sort of « Spooky Light ». Dark yet playful. Good for fairy tales or light tension building.",
+      "role": "cordes, célesta et bois, esprit conte",
+      "credit": "\"The Path of the Goblin King\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "fichier": {
+        "nom": "path-of-the-goblin-king.mp3",
+        "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/The%20Path%20of%20the%20Goblin%20King.mp3",
+        "octets": 8258790,
+        "sha256": "f8a30fac2528bb0a630cd2d7500daf10b64860ec7e91823390cc6e1cb545175a"
+      },
+      "extrait": { "debut": 0, "fin": 192 }
+    },
+    {
+      "id": "touching-moments-piano",
+      "titre": "Touching Moments (Piano)",
+      "auteur": "Kevin MacLeod",
+      "auteurPage": "https://incompetech.com/",
+      "isrc": "USUAN1100037",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100037",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "licenceLue": "Licensed under Creative Commons: By Attribution 4.0 License",
+      "verifiee": "2026-10-19",
+      "date": "2006-01-01",
+      "duree": "00:02:54",
+      "bpm": 72,
+      "instruments": "Piano",
+      "ambiance": "Relaxed, Somber",
+      "description_catalogue": "Only notes from the very highest registers of the piano are used in this. It can cut through ambient noise and still provide a presence.",
+      "role": "notes cristallines dans le registre aigu du piano",
+      "credit": "\"Touching Moments Two - Higher\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "fichier": {
+        "nom": "touching-moments-piano.mp3",
+        "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Touching%20Moments%20Two%20-%20Higher.mp3",
+        "octets": 5773245,
+        "sha256": "b9aa876a1c7919e90758e6144474ff834df14b905e698d2950b0a65b3c1ce51a"
+      },
+      "extrait": { "debut": 0, "fin": 172 }
+    },
+    {
+      "id": "fairytale-waltz",
+      "titre": "Fairytale Waltz",
+      "auteur": "Kevin MacLeod",
+      "auteurPage": "https://incompetech.com/",
+      "isrc": "USUAN1100232",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100232",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "licenceLue": "Licensed under Creative Commons: By Attribution 4.0 License",
+      "verifiee": "2026-10-19",
+      "date": "2005-01-01",
+      "duree": "00:01:39",
+      "bpm": 96,
+      "instruments": "Celesta, Oboe, Cello",
+      "ambiance": "Relaxed, Calming, Mysterious",
+      "description_catalogue": "Written as an overture to a fairy tale musical - this piece stands well on its own.",
+      "role": "valse de conte au célesta, hautbois et violoncelle",
+      "credit": "\"Fairytale Waltz\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "fichier": {
+        "nom": "fairytale-waltz.mp3",
+        "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Fairytale%20Waltz.mp3",
+        "octets": 3279372,
+        "sha256": "d92096ef844e9e25d1d3d796f2f4c6b21d2e684af15c9d959699b17d3c96e834"
+      },
+      "extrait": { "debut": 0, "fin": 98 }
+    },
+    {
+      "id": "frozen-star",
+      "titre": "Frozen Star",
+      "auteur": "Kevin MacLeod",
+      "auteurPage": "https://incompetech.com/",
+      "isrc": "USUAN1100356",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100356",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "licenceLue": "Licensed under Creative Commons: By Attribution 4.0 License",
+      "verifiee": "2026-10-17",
+      "date": "2026-10-17",
+      "duree": "00:03:41",
+      "bpm": 88,
+      "instruments": "Harp, Choir, Helicons, Flutes",
+      "ambiance": "Calming, Mystical, Relaxed, Uplifting",
+      "description_catalogue": "Lilting gentle feel with odd chord progressions.",
+      "role": "harpe douce et chœur, très stable : fond calme",
+      "credit": "\"Frozen Star\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "fichier": {
+        "nom": "frozen-star.mp3",
+        "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Frozen%20Star.mp3",
+        "octets": 8977291,
+        "sha256": "28c7532b808086046f02164807cbcad659db614686f2a49a78d87516fa4d3236"
+      },
+      "extrait": { "debut": 0, "fin": 221 }
     }
   ],
   "ecartes": [
-    {
-      "titre": "Frost Waltz",
-      "raison": "crescendo de 12 dB au milieu (mesuré au loudness) : fond instable"
-    },
-    {
-      "titre": "The Snow Queen",
-      "raison": "montée marquée à 1 min 50 : fond instable"
-    },
-    {
-      "titre": "Adventures in Adventureland, Moonlight Hall, Gone Beyond",
-      "raison": "trop sombres ou trop vifs pour un fond calme"
-    }
-  ],
-  "interpretationsNumeriques": "interpretations/banque.json : deux interprétations numériques de compositions du domaine public (Satie, Tchaïkovski), banque TimGM6mb GPL-2.0, sources complètes fournies."
+    { "titre": "Frost Waltz", "raison": "crescendo de 12 dB au milieu (mesuré au loudness) : fond instable" },
+    { "titre": "The Snow Queen", "raison": "montée marquée à 1 min 50 : fond instable" },
+    { "titre": "Adventures in Adventureland, Moonlight Hall, Gone Beyond", "raison": "trop sombres ou trop vifs pour un fond calme" }
+  ]
 }

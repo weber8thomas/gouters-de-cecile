@@ -26,7 +26,7 @@ try {
   });
   const stocke = () => p.evaluate(() => JSON.parse(localStorage.getItem('gc:reglages:v4')));
   const luminosite = () => p.locator('.gc-stage').getAttribute('data-gc-luminosite').then(Number);
-  ok('nouveau profil : luminosité 120 %', await luminosite() === 120);
+  ok('nouveau profil : luminosité 150 %', await luminosite() === 150);
   await p.keyboard.press('m');
   const slider = p.locator('[data-gc-reglages-ligne="luminosite"] [role="slider"]');
   await slider.waitFor({ state:'visible' });
@@ -39,7 +39,7 @@ try {
   const prises = {};
   async function regler(niveau) {
     await slider.focus(); await p.keyboard.press('Home');
-    for (let i=75; i<niveau; i+=5) await p.keyboard.press('ArrowRight');
+    for (let i=50; i<niveau; i+=5) await p.keyboard.press('ArrowRight');
     ok(`curseur au clavier ${niveau} %`, await luminosite() === niveau);
     await p.keyboard.press('Escape');
     await p.waitForSelector('[data-gc-reglages="panneau"]', { state:'hidden' });
@@ -47,7 +47,7 @@ try {
     await p.screenshot({ path:resolve(out, `luminosite-${niveau}.png`) });
     await p.keyboard.press('m'); await slider.waitFor({ state:'visible' });
   }
-  for (const n of [75,100,120,160]) await regler(n);
+  for (const n of [50,100,150,300]) await regler(n);
   const ecart = (a,b) => {
     const xs=[];
     for(let y=Math.round(a.height*.4);y<a.height*.85;y++) for(let x=35;x<a.width*.65;x++) {
@@ -56,13 +56,16 @@ try {
     }
     return xs.sort((x,y)=>x-y)[Math.floor(xs.length/2)];
   };
-  ok('le défaut 120 % éclaire réellement le papier', ecart(prises[100],prises[120])>10, ecart(prises[100],prises[120]));
-  ok('la plage 75–160 % produit une différence visible', ecart(prises[75],prises[160])>40, ecart(prises[75],prises[160]));
+  ok('le défaut 150 % éclaire réellement le papier', ecart(prises[100],prises[150])>10, ecart(prises[100],prises[150]));
+  ok('la plage 50–300 % produit une différence visible', ecart(prises[50],prises[300])>40, ecart(prises[50],prises[300]));
   await slider.focus(); await p.keyboard.press('End');
-  ok('Fin atteint 160 %, valeur mémorisée', (await stocke()).luminosite === 1.6);
+  ok('Fin atteint 300 %, valeur mémorisée', (await stocke()).luminosite === 3);
+  const eclat=p.locator('[data-gc-reglages-ligne="eclatBougie"] [role="slider"]');
+  await eclat.focus(); await p.keyboard.press('End');
+  ok('éclat de bougie au clavier : 400 % mémorisé', (await stocke()).eclatBougie===4);
   await p.reload();
-  await p.waitForSelector('.gc-stage[data-gc-luminosite="160"]');
-  ok('luminosité restaurée après rechargement', await luminosite() === 160);
+  await p.waitForSelector('.gc-stage[data-gc-luminosite="300"]');
+  ok('luminosité restaurée après rechargement', await luminosite() === 300);
   await p.keyboard.press('Escape');
   await p.waitForFunction(() => document.querySelector('[data-gc-lumiere="papier-bougie"]'));
   const valeurs = await p.evaluate(() => new Promise(resolve => {
@@ -73,10 +76,10 @@ try {
     }; requestAnimationFrame(tick);
   }));
   const amplitude = Math.max(...valeurs)-Math.min(...valeurs);
-  ok('la bougie vacille encore à luminosité 160 %', amplitude>.035, amplitude);
+  ok('la bougie vacille encore à luminosité 300 %', amplitude>.035, amplitude);
   await p.keyboard.press('m'); await slider.waitFor({ state:'visible' });
   await p.getByRole('button', {name:'remettre les réglages par défaut', exact:true}).click();
-  ok('remise à zéro : luminosité 120 %, écriture 200 %', await luminosite()===120&&(await stocke()).vitesseEcriture===2);
+  ok('remise à zéro : luminosité 150 %, écriture 200 %', await luminosite()===150&&(await stocke()).vitesseEcriture===2&&(await stocke()).eclatBougie===2);
   ok('aucune erreur ni ressource manquante', !surv.erreurs.length&&!surv.reponses.length, {erreurs:surv.erreurs,reponses:surv.reponses});
   await ctx.close();
 } finally {

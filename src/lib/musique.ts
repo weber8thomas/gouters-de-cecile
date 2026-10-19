@@ -1,4 +1,5 @@
-// Playlist du carnet : déverrouillée par le premier geste, fondus croisés, pause pendant les vidéos.
+// Playlist du carnet : rotation « toutes » de 25 s, ou lecture/enchaînement des morceaux choisis.
+// Déverrouillée par le premier geste, fondus croisés, pause pendant les vidéos et reprise à la même place.
 // Deux tampons au maximum (morceau courant et suivant), réseau et décodage bornés ; crédits au menu.
 import React from 'react';
 import banqueJson from '../../design-system/baked/musique/banque.json';
@@ -13,14 +14,21 @@ export interface Morceau {
 export const MORCEAUX: readonly Morceau[] = (banqueJson as { morceaux: Morceau[] }).morceaux;
 export const NIVEAU_MUSIQUE = 0.2;
 export const SOURDINE_VIDEO_MUSIQUE = 0;
-const FONDU = 2;
+const FONDU_ENTREE = 4;
+const FONDU_CHANGEMENT = 3;
+const DUREE_EXTRAIT_ROTATION = 25;
 const tampons = new Map<string, AudioBuffer>();
 const chargements = new Map<string, Promise<AudioBuffer | null>>();
 const echecs = new Set<string>();
 const abonnes = new Set<() => void>();
-interface Voix { id: string; src: AudioBufferSourceNode; gain: GainNode; debut: number; offset: number; duree: number }
+interface Voix {
+  id: string; src: AudioBufferSourceNode; gain: GainNode; debut: number; offset: number; duree: number;
+  rotationEcoulee: number; rotationDepuis: number;
+}
 let voix: Voix | null = null;
-let reprise: { id: string; offset: number } | null = null;
+let reprise: { id: string; offset: number; rotation: number } | null = null;
+let indexRotation = 0;
+let rotationDemandee = false;
 let maitre: GainNode | null = null;
 let maitreDe: AudioContext | null = null;
 let chargeId: string | null = null;
@@ -31,8 +39,19 @@ export interface EtatMusique {
   enchaine: boolean; decodes: number;
 }
 let snapshot: EtatMusique = { morceau: null, titre: '', joue: false, niveau: 0, cible: 0, muet: false, statut: 'arretee', enchaine: true, decodes: 0 };
-const demande = () => { const r = getReglages(); return r.musiqueActive ? MORCEAUX.find(m => m.id === r.musique) ?? null : null; };
-const adresse = (m: Morceau) => assetInfo(m.f) ? assetUrl(m.f) : '';
+const enRotation = () => { const r = getReglages(); return r.musiqueActive && r.musique === 'toutes' && r.musiqueEnchaine; };
+function demande(): Morceau | null {
+  const r = getReglages();
+  if (!r.musiqueActive) return null;
+  return r.musique === 'toutes' ? MORCEAUX[indexRotation % MORCEAUX.length] ?? null : MORCEAUX.find(m => m.id === r.musique) ?? null;
+}
+function adresse(m: Morceau): string {
+  if (assetInfo(m.f)) return assetUrl(m.f);
+  const temoin = MORCEAUX.find(x => assetInfo(x.f));
+  if (!temoin) return '';
+  const url = assetUrl(temoin.f);
+  return url.includes(`${temoin.id}.mp3`) ? url.replace(`${temoin.id}.mp3`, `${m.id}.mp3`) : '';
+}
 const voulue = () => !!demande() && !!adresse(demande()!);
 export function niveauMusique(): number {
   const r = getReglages();
@@ -43,7 +62,7 @@ function prevenir(): void {
   const statut: EtatMusique['statut'] = !m ? 'arretee' : erreur === m.id ? 'indisponible'
     : videoEnLecture() ? 'pause-video' : !c ? 'attend-geste' : document.hidden ? 'pause-onglet'
     : chargeId === m.id ? 'chargement' : voix ? 'lecture' : 'attend-geste';
-  const x: EtatMusique = { morceau: voix?.id ?? m?.id ?? null, titre: m?.titre ?? '', joue: !!voix && c?.state === 'running' && !videoEnLecture(),
+  const x: EtatMusique = { morceau: voix?.id ?? m?.id ?? null, titre: m?.titre ?? '', joue: !!voix && c?.state === 'running' && !document.hidden && !videoEnLecture(),
     niveau: maitre?.gain.value ?? 0, cible: niveauMusique(), muet: r.muet, statut, enchaine: r.musiqueEnchaine, decodes: tampons.size };
   if (JSON.stringify(snapshot) === JSON.stringify(x)) return;
   snapshot = x; abonnes.forEach(f => f());
@@ -54,15 +73,22 @@ export function useEtatMusique(): EtatMusique {
 }
 function voisin(id: string, direction = 1): Morceau | null {
   if (!MORCEAUX.length) return null;
-  const i = Math.max(0, MORCEAUX.findIndex(m => m.id === id));
+  const i = MORCEAUX.findIndex(m => m.id === id);
+  if (i < 0) return MORCEAUX[direction < 0 ? MORCEAUX.length - 1 : 0] ?? null;
   return MORCEAUX[(i + direction + MORCEAUX.length) % MORCEAUX.length] ?? null;
 }
 /** Les boutons suivant/précédent démarrent la musique, même si elle était en pause. */
 export function changerMorceau(direction: -1 | 1): void {
-  const m = voisin(getReglages().musique, direction);
+  const r = getReglages();
+  const courant = r.musique === 'toutes' ? MORCEAUX[indexRotation]?.id : r.musique;
+  const m = voisin(courant ?? '', direction);
   if (!m) return;
   echecs.delete(m.id); erreur = null; reprise = null;
-  setReglages({ musique: m.id, musiqueActive: true });
+  if (r.musique === 'toutes') {
+    indexRotation = MORCEAUX.findIndex(x => x.id === m.id);
+    setReglages({ musiqueActive: true });
+    suivre();
+  } else setReglages({ musique: m.id, musiqueActive: true });
 }
 function elaguer(): void {
   const actuel = demande();
@@ -108,36 +134,56 @@ function taire(v: Voix, c: AudioContext, duree: number): void {
 }
 function arreter(garder = true): void {
   const c = contexteAudio(); if (!voix || !c) return;
-  if (garder) reprise = { id: voix.id, offset: Math.min(voix.duree, voix.offset + Math.max(0, c.currentTime - voix.debut)) };
+  if (garder) reprise = {
+    id: voix.id, offset: Math.min(voix.duree, voix.offset + Math.max(0, c.currentTime - voix.debut)),
+    rotation: voix.rotationEcoulee + Math.max(0, c.currentTime - voix.rotationDepuis),
+  };
+  else reprise = null;
   taire(voix, c, 0.25); voix = null;
 }
 function avancerAutomatiquement(): void {
   const r = getReglages();
-  const m = r.musiqueEnchaine ? voisin(r.musique) : MORCEAUX.find(x => x.id === r.musique);
+  const actuel = demande();
+  if (!actuel) return;
+  const m = r.musiqueEnchaine ? voisin(actuel.id) : actuel;
   if (!m) return;
   reprise = null;
-  if (m.id === r.musique) {
+  if (r.musique === 'toutes') indexRotation = MORCEAUX.findIndex(x => x.id === m.id);
+  if (m.id === actuel.id) {
     const c = contexteAudio(), b = tampons.get(m.id);
     if (c && b && c.state === 'running') lancer(m, c, b); else { voix = null; suivre(); }
   }
+  else if (r.musique === 'toutes') suivre();
   else setReglages({ musique: m.id });
 }
 function lancer(m: Morceau, c: AudioContext, b: AudioBuffer): void {
   if (!maitre || maitreDe !== c) { maitre = c.createGain(); maitre.gain.value = niveauMusique(); maitre.connect(c.destination); maitreDe = c; }
   const precedente = voix, t = c.currentTime + 0.03;
   let offset = reprise?.id === m.id ? reprise.offset : 0;
-  if (offset >= b.duration - 0.1) offset = 0;
+  let rotationEcoulee = reprise?.id === m.id ? reprise.rotation : 0;
+  if (offset >= b.duration - 0.1) { offset = 0; rotationEcoulee = 0; }
   reprise = null;
-  if (precedente) taire(precedente, c, FONDU);
+  if (precedente) taire(precedente, c, FONDU_CHANGEMENT);
   const src = c.createBufferSource(), gain = c.createGain(); src.buffer = b; src.loop = false;
-  gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(1, t + (precedente ? FONDU : 1.4));
+  gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(1, t + (precedente ? FONDU_CHANGEMENT : FONDU_ENTREE));
   src.connect(gain); gain.connect(maitre); src.start(t, offset);
-  const v: Voix = { id: m.id, src, gain, debut: t, offset, duree: b.duration }; voix = v;
+  const v: Voix = { id: m.id, src, gain, debut: t, offset, duree: b.duration, rotationEcoulee, rotationDepuis: t }; voix = v;
   src.onended = () => { src.disconnect(); gain.disconnect(); if (voix !== v) return; voix = null; if (demande()?.id !== v.id) suivre(); else avancerAutomatiquement(); };
   erreur = null; elaguer(); prevenir();
 }
 function suivre(): void {
   regler();
+  const rotation = enRotation();
+  if (rotation !== rotationDemandee) {
+    rotationDemandee = rotation;
+    if (rotation && voix) {
+      const index = MORCEAUX.findIndex(m => m.id === voix?.id);
+      if (index >= 0) indexRotation = index;
+    }
+    // Commencer l'extrait au changement de mode ; une pause vidéo ne change pas ce mode.
+    if (voix) { voix.rotationEcoulee = 0; voix.rotationDepuis = contexteAudio()?.currentTime ?? voix.debut; }
+    if (reprise) reprise.rotation = 0;
+  }
   const m = demande(), c = contexteAudio();
   if (!m || videoEnLecture()) { arreter(); chargeId = null; prevenir(); return; }
   if (!c || c.state !== 'running' || document.hidden) { prevenir(); return; }
@@ -148,7 +194,13 @@ function suivre(): void {
     if (getReglages().musiqueEnchaine) {
       let prochain = voisin(m.id);
       for (let i = 0; prochain && i < MORCEAUX.length; i++, prochain = voisin(prochain.id)) {
-        if (!echecs.has(prochain.id)) { setReglages({ musique: prochain.id }); return; }
+        if (!echecs.has(prochain.id)) {
+          if (getReglages().musique === 'toutes') {
+            indexRotation = MORCEAUX.findIndex(x => x.id === prochain!.id);
+            suivre();
+          } else setReglages({ musique: prochain.id });
+          return;
+        }
       }
     }
     arreter(false); prevenir(); return;
@@ -164,10 +216,12 @@ function verifierFin(): void {
   const c = contexteAudio(), v = voix, r = getReglages();
   if (!c || c.state !== 'running' || !v || document.hidden || videoEnLecture()) return;
   const reste = v.duree - v.offset - (c.currentTime - v.debut);
+  const ecouteRotation = v.rotationEcoulee + Math.max(0, c.currentTime - v.rotationDepuis);
   const m = r.musiqueEnchaine ? voisin(v.id) : MORCEAUX.find(x => x.id === v.id);
   if (!m || echecs.has(m.id)) return;
-  if (reste < 20) void decoder(m, c);
-  if (reste <= FONDU && tampons.has(m.id)) avancerAutomatiquement();
+  const delai = enRotation() ? Math.min(reste - FONDU_CHANGEMENT, DUREE_EXTRAIT_ROTATION - ecouteRotation) : reste - FONDU_CHANGEMENT;
+  if (delai < 20) void decoder(m, c);
+  if (delai <= 0 && tampons.has(m.id)) avancerAutomatiquement();
 }
 if (typeof window !== 'undefined') {
   besoinAudio(voulue); abonnerAudio(suivre); abonnerReglages(suivre);

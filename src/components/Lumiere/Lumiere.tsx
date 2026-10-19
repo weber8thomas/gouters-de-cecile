@@ -1,6 +1,7 @@
 import React from 'react';
 import { LazyMotion, domMax, m, useTransform } from '../../lib/motion';
 import { flammeBougie, useFeu } from '../../lib/feu';
+import { useReglages } from '../../lib/reglages';
 import { assetInfo, cssUrl } from '../../lib/assets';
 import tracee from './tracee.json';
 import './Lumiere.css';
@@ -22,6 +23,14 @@ const r4 = (v: number) => Math.round(v * 1e4) / 1e4;
 // (1), qui varie de `pente` par unité d'intensité, bornée à [min, max].
 const reglage = (i: number, base: number, pente: number, min: number, max: number) => r4(borne(base + pente * (i - 1), min, max));
 
+const calculOpacitePapier = (fb: number, f: number, lum: number, eclat: number) => {
+  const v = 0.8 * fb + 0.2 * f;
+  // À 200 % (eclat = 2), base ≈ 0,76 avec une forte amplitude de vacillement sans écrêter à 1.
+  const base = Math.min(0.86, 0.46 * Math.pow(eclat, 0.72) * (0.88 + 0.08 * lum));
+  const pente = 1.45 * Math.pow(eclat, 0.85);
+  return reglage(v, base, pente, 0.08, 1);
+};
+
 /**
  * Sous le contenu (sur la table) : la lueur indirecte, orangée, côté feu, et l'ombre portée générique du
  * livre au repos, côté opposé : un calque, opacité + translation, qui suit la flamme.
@@ -32,7 +41,9 @@ export function LumiereTable() {
 
 function LumiereTableCss() {
   const { intensite, dx, dy } = useFeu();
-  const bainOp = useTransform(intensite, (i) => reglage(i, 0.55, 1.2, 0.2, 1));
+  const [reglages] = useReglages();
+  const lum = reglages.luminosite ?? 1.5;
+  const bainOp = useTransform(intensite, (i) => reglage(i, 0.55 * lum, 1.2 * lum, 0.2, 1));
   // Un seul calque vivant sous le livre (budget de calques) : l'ombre portée générique y est peinte et
   // vacille avec lui (plus marquée quand le feu flambe).
   return (
@@ -63,12 +74,25 @@ export function LumiereLivre() {
  * La chaleur vient d'une lumière ambrée sur le papier, jamais d'un voile clair sur les glyphes.
  */
 export function LumierePapier({ side }: { side: 'left' | 'right' }) {
-  // Une flamme basse laisse la pénombre revenir ; une flamme haute éclaire franchement le coin.
-  // flammeBougie est la même valeur que la toile WebGL, figée à 1 en modes réduit / feu désactivé.
-  const opacite = useTransform(flammeBougie, v => reglage(v, 0.7, 1.7, 0.16, 0.96));
+  const [reglages] = useReglages();
+  const { intensite } = useFeu();
+  const luminosite = reglages.luminosite ?? 1.5;
+  const eclatBougie = reglages.eclatBougie ?? 2;
+  const paramsRef = React.useRef({ luminosite, eclatBougie });
+  paramsRef.current = { luminosite, eclatBougie };
+  // Une pénombre douce modulée par la luminosité générale ; au-delà de 150 %, un voile crème éclaircit encore le papier.
+  const penombreOp = r4(borne(0.22 - 0.4 * (luminosite - 1), 0, 0.55));
+  const clarteOp = r4(borne((luminosite - 1.5) * 0.28, 0, 0.45));
+  const opacite = useTransform([flammeBougie, intensite], ([fb, f]: number[]) =>
+    calculOpacitePapier(fb, f, paramsRef.current.luminosite, paramsRef.current.eclatBougie)
+  );
+  React.useEffect(() => {
+    opacite.set(calculOpacitePapier(flammeBougie.get(), intensite.get(), luminosite, eclatBougie));
+  }, [luminosite, eclatBougie, opacite, intensite]);
   return (
     <div className={`gc-lumiere-papier gc-lumiere-papier--${side}`} data-gc-lumiere-surface="papier" aria-hidden="true">
-      <div className="gc-lumiere-papier__penombre" />
+      <div className="gc-lumiere-papier__penombre" style={{ opacity: penombreOp }} />
+      {clarteOp > 0 && <div className="gc-lumiere-papier__clarte" style={{ opacity: clarteOp }} />}
       <m.div className="gc-lumiere-papier__bougie" data-gc-lumiere="papier-bougie" style={{ opacity: opacite }} />
     </div>
   );
@@ -145,10 +169,25 @@ export function PenombreTable() {
 
 function LumiereTracee() {
   const { intensite } = useFeu();
+  const [reglages] = useReglages();
+  const luminosite = reglages.luminosite ?? 1.5;
+  const eclatBougie = reglages.eclatBougie ?? 2;
+  const paramsRef = React.useRef({ luminosite, eclatBougie });
+  paramsRef.current = { luminosite, eclatBougie };
+  const facteurOmbre = (lum: number) => borne(1 - 0.55 * (lum - 1), 0.05, 1.45);
   // feu : part de la cheminée 0,8 + 0,5 (i − 1), entre 0,6 et 1 ; le voile noir vaut sa baisse à 0,6
-  const feuOp = useTransform(intensite, (i) => r4(borne((0.2 - 0.5 * (i - 1)) / 0.4, 0, 1)));
+  const feuOp = useTransform(intensite, (i) =>
+    r4(borne(((0.2 - 0.5 * (i - 1)) / 0.4) * facteurOmbre(paramsRef.current.luminosite), 0, 1))
+  );
   // bougie : son éclat (éclat × longueur de la flamme rendue, ≈ 0,7 à 1,1) ; le voile noir vaut sa baisse à la moitié
-  const bougieOp = useTransform(flammeBougie, (v) => r4(borne((1.06 - v) / 0.5, 0, 1)));
+  const bougieOp = useTransform(flammeBougie, (v) =>
+    r4(borne(((1.08 - v * (0.75 + 0.22 * paramsRef.current.eclatBougie)) / 0.48) * facteurOmbre(paramsRef.current.luminosite), 0, 1))
+  );
+  React.useEffect(() => {
+    const k = facteurOmbre(luminosite);
+    feuOp.set(r4(borne(((0.2 - 0.5 * (intensite.get() - 1)) / 0.4) * k, 0, 1)));
+    bougieOp.set(r4(borne(((1.08 - flammeBougie.get() * (0.75 + 0.22 * eclatBougie)) / 0.48) * k, 0, 1)));
+  }, [luminosite, eclatBougie, feuOp, bougieOp, intensite]);
   const { marge, w, h } = tracee as { marge: number; w: number; h: number };
   const boite = { left: -marge, top: -marge, width: w, height: h };
   return (
