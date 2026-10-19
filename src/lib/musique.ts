@@ -171,6 +171,9 @@ function taire(v: Voix, c: AudioContext, duree: number): void {
   };
 }
 
+/** Durée d'écoute de chaque extrait en mode rotation « toutes » avant fondu croisé vers le suivant (s). */
+const DUREE_EXTRAIT_ROTATION = 25;
+
 /** Programme l'enchaînement vers le morceau suivant lorsque le mode « toutes » est actif. */
 function programmerSuivant(m: Morceau, c: AudioContext, b: AudioBuffer): void {
   effacerMinuterieRotation();
@@ -180,7 +183,7 @@ function programmerSuivant(m: Morceau, c: AudioContext, b: AudioBuffer): void {
   const suivant = MORCEAUX[(indexRotation + 1) % MORCEAUX.length];
   if (suivant) void decoder(suivant, c);
   const dureeBoucle = b.duration > 0 ? b.duration : m.d;
-  const delaiMs = Math.max(15, dureeBoucle - FONDU_CHANGEMENT) * 1000;
+  const delaiMs = Math.max(12, Math.min(DUREE_EXTRAIT_ROTATION, dureeBoucle - FONDU_CHANGEMENT)) * 1000;
   minuterieRotation = setTimeout(() => {
     minuterieRotation = null;
     if (!enRotation() || !voulue()) return;

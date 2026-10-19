@@ -73,15 +73,18 @@ const LUEUR: readonly Onde[] = [[0.41, 0.45, 0.2], [0.93, 0.35, 1.7], [1.85, 0.2
 /** Frémissement de la pointe (± 1, 8 à 12 Hz). */
 const FREMIT: readonly Onde[] = [[8.7, 0.5, 0], [10.3, 0.3, 1.1], [11.9, 0.2, 2.3]];
 /** Balancement de l'axe, en x et en y (± 1, cm à la pointe : × BALANCE). */
-const BALANCE_X: readonly Onde[] = [[0.53, 0.55, 0.3], [0.86, 0.3, 1.9], [1.31, 0.15, 4.0]];
-const BALANCE_Y: readonly Onde[] = [[0.61, 0.5, 2.2], [0.97, 0.32, 0.7], [1.47, 0.18, 3.3]];
-const BALANCE = 0.13; // cm, déplacement de la pointe
-const MONTEE = 10; // cm/s : l'onde du balancement monte de la base vers la pointe (0,2 s de retard en haut)
+const BALANCE_X: readonly Onde[] = [[0.53, 0.55, 0.3], [0.86, 0.35, 1.9], [1.41, 0.25, 4.0], [2.35, 0.18, 0.9]];
+const BALANCE_Y: readonly Onde[] = [[0.61, 0.5, 2.2], [0.97, 0.35, 0.7], [1.53, 0.24, 3.3], [2.62, 0.16, 1.8]];
+const BALANCE = 0.34; // cm, déplacement autonome de la pointe au repos
+const MONTEE = 11; // cm/s : l'onde du balancement monte de la base vers la pointe
+/** Courants d'air naturels de la pièce au repos (°, sans intervention de la souris). */
+const COURANT_X: readonly Onde[] = [[0.34, 8.5, 0.4], [0.79, 6.0, 2.1], [1.68, 4.2, 4.7], [3.1, 2.5, 1.3]];
+const COURANT_Y: readonly Onde[] = [[0.42, 7.0, 1.5], [0.91, 5.2, 3.8], [1.84, 3.6, 0.6], [3.3, 2.2, 2.9]];
 /** Vacillement de la flamme dérangée (°, multiplié par trouble), en x et en y. */
 const VACILLE_X: readonly Onde[] = [[3.66, 5, 0], [5.89, 3, 1]];
 const VACILLE_Y: readonly Onde[] = [[3.02, 4, 2], [4.93, 3, 0.5]];
 /** Le bruit monte avec les gaz : vitesse de sa coordonnée de temps (≈ 5 cm/s pour une fréquence de 2,2 /cm). */
-const BRUIT_VITESSE = 11;
+const BRUIT_VITESSE = 14;
 
 // L'axe de la flamme est un polynôme sans terme constant, A(h) = c1 h + c2 h² + c3 h³ + c4 h⁴ (h ≥ 0),
 // ajusté à chaque image (moindres carrés) sur NB_AJUSTE hauteurs : le shader l'évalue en quelques
@@ -134,19 +137,20 @@ export const etatRepos = (): EtatFlamme => ({ long: 1, eclat: 1, trouble: 0, axe
  * et pour la lumière (flammeBougie = eclat × long). Écrit dans `e` (aucune allocation).
  */
 export function etatFlamme(e: EtatFlamme, t: number, vent: [number, number], trouble: number, saut: number): EtatFlamme {
-  // vacillement de la flamme dérangée, ajouté à l'inclinaison
-  const vx = vent[0] + trouble * somme(VACILLE_X, t);
-  const vy = vent[1] + trouble * somme(VACILLE_Y, t);
+  // courants d'air naturels au repos + souffle de la main + vacillement dérangé
+  const vx = vent[0] + somme(COURANT_X, t) + trouble * somme(VACILLE_X, t);
+  const vy = vent[1] + somme(COURANT_Y, t) + trouble * somme(VACILLE_Y, t);
   const deg = Math.min(40, Math.hypot(vx, vy));
   const pente = Math.tan((deg * Math.PI) / 180);
   const dx = deg > 1e-4 ? vx / Math.hypot(vx, vy) : 0;
   const dy = deg > 1e-4 ? vy / Math.hypot(vx, vy) : 0;
+  const trRepos = Math.min(0.35, deg / 55);
   // sous le vent, la flamme se couche et s'allonge un peu ; dérangée, elle se raccourcit
-  e.long = 1 + 0.075 * somme(RESPIRE, t) + 0.025 * somme(FREMIT, t) - saut - 0.16 * trouble
+  e.long = 1 + 0.13 * somme(RESPIRE, t) + 0.045 * somme(FREMIT, t) - saut - 0.16 * trouble
     + 0.05 * trouble * Math.sin(29 * t) + 0.1 * Math.sin((deg * Math.PI) / 180);
-  e.eclat = 1 + 0.085 * somme(LUEUR, t) + 0.02 * somme(FREMIT, t + 0.4)
+  e.eclat = 1 + 0.14 * somme(LUEUR, t) + 0.035 * somme(FREMIT, t + 0.4)
     - 0.6 * saut - 0.28 * trouble * (0.6 + 0.4 * Math.sin(31 * t));
-  e.trouble = trouble;
+  e.trouble = Math.max(trouble, trRepos);
   // l'axe aux hauteurs d'ajustement : couché par le vent (∝ h²), et l'onde du balancement (∝ h², en retard
   // avec la hauteur)
   const L = (HT - HB) * e.long;

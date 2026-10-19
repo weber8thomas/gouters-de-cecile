@@ -34,6 +34,11 @@ export function aEcrire(page: string): boolean {
   return !ecrites.has(page) && !!tempsDe(page) && !prefersReducedMotion();
 }
 
+/** La page attend-elle encore que la plume commence à l'écrire (ex. page de droite pendant que la gauche écrit) ? */
+export function attentePlume(page: string): boolean {
+  return aEcrire(page) && !enCours.has(page);
+}
+
 export function marquerEcrite(page: string): void {
   if (ecrites.has(page)) return;
   ecrites.add(page);

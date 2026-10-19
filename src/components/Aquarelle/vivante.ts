@@ -16,6 +16,7 @@
 // livre en mouvement ou l'onglet masqué. Contexte WebGL perdu : les images fixes reviennent.
 
 import { facteurAnimations } from '../../lib/vitesse';
+import { attentePlume } from '../PageCuite/encreVivante';
 import { EFFETS, SCENES_PAGE, type Effets } from './effets';
 import { REPOS, SCENES, poseNeutre, type Ctx, type Fx } from './scenes';
 import { essaimDe, PAROLES, type Essaim } from './creatures';
@@ -521,7 +522,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       sin: Math.sin(an),
       debut: d.peindre && !opts.douce ? -1 : Infinity,
       duree: 3000,
-      delai: 350 + d.ordre * 350,
+      delai: 350 + d.ordre * 350 + Math.round(y * 750),
       scene: null,
       prochaine: Infinity,
       rang: 0,
@@ -756,6 +757,9 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     if (now - dernier >= 30) {
       const dt = pas(now - dernier);
       horloge += dt;
+      if (attentePlume(opts.page)) {
+        for (const s of sprites) if (s.debut === -1) s.delai += dt;
+      }
       sprites.forEach(avancerSprite);
       dernier = now;
       if (essaim?.maitre === opts.cote) essaim.avancer(dt / 1000, opts.douce);

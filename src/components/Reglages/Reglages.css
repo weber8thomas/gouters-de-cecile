@@ -41,6 +41,12 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.gc-reglages__bouton::before {
+  content: '';
+  position: absolute;
+  inset: -16px;
+}
+
 .gc-reglages__bouton:focus {
   outline: none;
 }

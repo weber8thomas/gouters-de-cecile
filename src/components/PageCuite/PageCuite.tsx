@@ -386,8 +386,8 @@ export function PageCuite({ page, slots, cadre = 'parent', className, dessus }: 
     const feuille = el?.closest('.gc-livre__page');
     const livre = el?.closest('.gc-livre');
     if (!el || !feuille || !livre || !info || mode !== 'live') return;
-    // à vitesse de plume (environ 22 signes par seconde), de 4 à 14 s
-    const duree = Math.min(14000, Math.max(4000, 900 + info.texte.length * 45));
+    // Écriture vive et fluide (de 2,2 à 6,5 s à 1×, soit ~1,1 à 3,2 s à 200 %)
+    const duree = Math.min(6500, Math.max(2200, 450 + info.texte.length * 18));
     const dpr = typeof devicePixelRatio === 'number' ? devicePixelRatio : 1;
     const encre = dpr > 1.25 || !info.encre1x ? info.encre : info.encre1x;
     let arreter: (() => void) | null = null;
@@ -406,12 +406,12 @@ export function PageCuite({ page, slots, cadre = 'parent', className, dessus }: 
           minuteur = 0;
           // une plume à la fois : la page de droite attend que la gauche ait fini
           if (plumeOccupee()) {
-            minuteur = window.setTimeout(lancer, 250);
+            minuteur = window.setTimeout(lancer, 120);
             return;
           }
           if (plume.current) arreter = ecrire(plume.current, page, encre, duree, () => marquerEcrite(page));
         };
-        minuteur = window.setTimeout(lancer, info.cote === 'droite' ? 400 : 280);
+        minuteur = window.setTimeout(lancer, info.cote === 'droite' ? 220 : 140);
       } else if (!pose && minuteur) {
         window.clearTimeout(minuteur);
         minuteur = 0;

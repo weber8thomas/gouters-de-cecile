@@ -1014,6 +1014,8 @@ html[data-gc-livre-vt="distance"]::view-transition-new(root) {
   right: calc(var(--gc-ecran-droite) + var(--gc-ecran-bord));
   bottom: calc(var(--gc-ecran-bas) + var(--gc-ecran-bord-bas));
   gap: calc(var(--gc-space-1) * var(--gc-ecran-u));
+  padding: 14px;
+  margin: -14px;
   pointer-events: auto;
 }
 
