@@ -58,7 +58,18 @@ comparent les arbres Git, le préfixe modifié et le commit distant après push.
   Vacillement natif confirmé : variation d'opacité papier 0,1717 en 2,2 s. Modes réduit/feu désactivé OK.
 - Rapports lumière : `verification/out/lumiere-v9/` ; illustrations :
   `verification/out/harmonisation-v9/serie.png` et `verification/out/dessins-v9/`.
-- Contrôle final du site et tests ciblés citrons/chien : résultats à compléter après exécution.
+- Site TV sur Julie, Biscuits et Sommaire : **36 OK, 0 KO**, aucune ressource en erreur.
+- Citrons et chien : **6 OK, 0 KO**. Chien agrandi ensuite de 7 à 9 % de hauteur de page ; réserve
+  portée à 17 % (chien+bulle 16,05 %), deux pistes sûres conservées sur l'encre réelle de Biscuits.
+- Lumière : 15 contrôles d'ouverture/fermeture, 4 contrôles papier/réduit/arrêt du feu, un contrôle de
+  vacillement natif. Les deux anciens critères erronés (RGB d'une encre translucide et horloge du
+  simulateur) ont été corrigés ; nouveaux rapports ciblés sans échec.
+- `verify-site` exige désormais une photo seulement si cette page dispose d'un clip publié. Le
+  calque Soulever est global et ne prouve pas qu'un frontispice doit avoir une photo.
+- Rapports actuels : `verification/out/harmonisation-v9/site-final/site.json`,
+  `verification/out/harmonisation-v9/lumiere/lumiere-surfaces-suite.json`,
+  `verification/out/lumiere-v9/lumiere-surfaces-suite.json` (vacillement),
+  `verification/out/dessins-v9/dessins.json`.
 
 Contrôles précédents : site TV 34 OK, dessins autonomie/iPhone 10 OK, publication 4 tests OK.
 Deux cas de la longue suite réglages restent à isoler, sans lien démontré avec les défauts visuels :
