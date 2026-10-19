@@ -268,8 +268,19 @@ def main(argv=None) -> int:
     argv = [a for a in argv if a != "--planche"]
     noms = argv[0].split(",") if argv else sorted(PARTIES)
     tout = json.loads(JSON.read_text()) if JSON.exists() else {}
+    # Ces coordonnées appartiennent aux anciennes images. La série anglaise est animée entière :
+    # ne jamais réappliquer ces sélections sur ses nouveaux fruits, gâteaux ou tasses.
+    catalogue_v9 = RACINE / "design-system/aquarelles/catalogue-v9.json"
+    indivisibles = set(json.loads(catalogue_v9.read_text())) if catalogue_v9.exists() else set()
+    for nom in indivisibles:
+        tout.pop(nom, None)
+        for dossier in (SORTIE_PARTIES, SORTIE_FOND):
+            (dossier / f"{nom}.webp").unlink(missing_ok=True)
     vues = []
     for nom in noms:
+        if nom in indivisibles:
+            print(f"{nom:16s} série anglaise : image entière, aucun découpage")
+            continue
         if nom not in PARTIES or not (SOURCE / f"{nom}.webp").exists():
             print(f"✗ aquarelle sans parties ou inconnue : {nom}")
             continue

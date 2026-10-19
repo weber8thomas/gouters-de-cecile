@@ -1,39 +1,32 @@
 # Lumiere
 
-## Éclairage Cycles (actif)
+## Surfaces réelles
 
-Quand `lumiere/vide` est présent dans l'inventaire, les anciens dégradés CSS ci-dessous sont remplacés
-par trois images par état : fond, variation du feu, variation de la bougie. La flamme de la bougie
-pilote l'opacité de son voile ; aucune animation de filtre ou de peinture supplémentaire.
+L'éclairage Cycles de la **table vide** reste fixe sous le livre, avec les variations du feu et de la
+bougie. Les silhouettes Cycles figées du livre ne sont plus affichées : elles ne pouvaient suivre ni
+la couverture qui bascule, ni le recul de caméra, et laissaient des zones d'ombre et de lumière fantômes.
+Les ombres du livre sont ses propres éléments et suivent ses mouvements.
 
-La cuisson `scripts/lumiere3d/composer.py` prolonge l'illumination du papier sur le repli des cartons.
-Le modèle 3D simplifié possédait son propre biseau spéculaire, qui dessinait une deuxième bande claire
-ou sombre par-dessus les chants déjà présents dans les images du livre. La correction conserve les
-ombres portées sur la table. La bougie contribue davantage sur le papier à partir de sa variation
-tracée, avec un plafond à l'albédo du papier : la flamme et la taille de la bougie ne changent pas.
-Cette retouche est une correction de composition des rendus existants, pas un nouveau lancer de rayons.
+`LumierePapier` est montée dans chaque `Livre/Face`, y compris les copies découpées d'une feuille en
+rotation. La pénombre et la lueur ambrée éclairent le papier **avant l'encre**, les tuiles haute définition,
+la plume WebGL et les objets collés. Le contraste de l'écriture n'est pas délavé par un voile blanc.
+La lueur est plus forte près de la bougie et décroît vers le pli et la page droite. Sa variation
+utilise `flammeBougie`, la valeur même de la flamme WebGL ; les modes réduit et feu désactivé la figent.
+Aucun filtre, mélange de pixels, changement de géométrie ou rendu React n'est ajouté pendant un geste.
 
-Reproduire sans les lourdes passes EXR :
-
-```sh
-python3 scripts/lumiere3d/composer.py --retoucher-cuisson
-npm run assets
-```
-
-`scripts/lumiere3d/calques-cycles-v1.zip` conserve les trente calques originaux et leurs SHA256,
-vérifiés avant lecture. La commande relit toujours ces originaux ; la sortie n'est jamais son entrée.
-`--seulement moyenne-ouvert` permet une vérification ciblée. Les prochains rendus bruts passent par
-la même correction dans le compositeur. Dépendances : Python 3, NumPy, Pillow.
-
-Vérification adaptée aux calques Cycles :
+Vérification :
 
 ```sh
 GC_CHROME=/usr/bin/chromium node scripts/verify-lumiere-v8.mjs --site dist/site
 ```
 
-Le script couvre les trois crans, livre fermé et ouvert, deux orientations de tablette, le zoom fin,
-les modes réduit et feu désactivé, et le contraste sur les mêmes pixels d'encre en remplaçant uniquement
-les images de lumière par les originaux Cycles. Il ne mesure pas la cadence GPU de la TV physique.
+Le script ouvre et referme réellement le carnet au clavier aux trois crans, avec WebGL. Le Clock
+Playwright avance les vrais rAF de Motion pour examiner la levée, la bascule, la descente et l'état
+ouvert. Il compare ensuite l'effet avec/sans bougie sur le même papier et la même encre, vérifie le
+vacillement synchronisé à la flamme et les modes figés. Il ne mesure pas les FPS de la TV physique.
+
+Les anciennes images Cycles et leur compositeur restent disponibles pour une future cuisson physique
+des surfaces ; la lumière du papier actuelle est une composition locale, sans nouvelle cuisson.
 
 ## Dégradés CSS (repli sans images Cycles)
 

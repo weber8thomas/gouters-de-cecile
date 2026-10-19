@@ -1,5 +1,6 @@
 import React from 'react';
 import { Page } from '../Page';
+import { LumierePapier } from '../Lumiere';
 import { RenderModeContext, type RenderMode, type SpreadSpec } from '../../lib/spread';
 
 export type Cote = 'left' | 'right';
@@ -21,6 +22,7 @@ export const Face = React.memo(function Face({ spread, side, mode }: FaceProps) 
     <RenderModeContext.Provider value={mode}>
       <div className={`gc-livre-face gc-livre-face--${side}`} data-gc-spread={spread.id}>
         <Page side={side}>{content}</Page>
+        <LumierePapier side={side} />
         <div className="gc-livre-face__pli" aria-hidden="true" />
       </div>
     </RenderModeContext.Provider>

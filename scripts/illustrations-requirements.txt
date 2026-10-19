@@ -1,0 +1,5 @@
+# Cuisson/export des illustrations et de leur carte de révélation.
+numpy==2.5.4
+pillow==12.3.0
+scipy==1.18.1
+scikit-image==0.26.0

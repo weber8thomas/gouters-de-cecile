@@ -189,16 +189,13 @@
       transparent 100%);
 }
 
-/* ---- 5. Éclairage tracé (scripts/lumiere3d, Lumiere.tsx LumiereTracee) --------------------------------
-   Un groupe de calques par état du livre ; seul celui de l'état courant se voit, avec un fondu quand le
-   livre s'ouvre, se ferme, ou arrive sur la table vide. Les calques sont en px de scène et débordent de la
-   scène (marge du rendu, 400 px) ; au-delà, la table prend la couleur de leur bord (PenombreTable). */
+/* ---- 5. Table tracée (scripts/lumiere3d, Lumiere.tsx LumiereTracee) ---------------------------------
+   La table vide seulement, sous le livre. Les calques sont en px de scène et débordent de 400 px ;
+   au-delà, la table prend la couleur de leur bord (PenombreTable). */
 .gc-lumiere-tracee {
   position: absolute;
   inset: 0;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.9s ease, visibility 0s linear 0.9s;
+  /* Table seule : reste fixe, même pendant l'arrivée, l'ouverture et le zoom du livre. */
 }
 
 .gc-lumiere-tracee__fond,
@@ -214,21 +211,67 @@
   backface-visibility: hidden;
 }
 
-.gc-stage:not(:has(.gc-livre)) .gc-lumiere-tracee[data-gc-lumiere-etat="vide"],
-.gc-stage:has(.gc-livre[data-gc-arrivee="en-cours"]) .gc-lumiere-tracee[data-gc-lumiere-etat="vide"],
-.gc-stage:has(.gc-livre[data-gc-etat="couverture"]:not([data-gc-arrivee="en-cours"])) .gc-lumiere-tracee[data-gc-lumiere-etat="couverture"],
-.gc-stage:has(.gc-livre[data-gc-etat="arriere"]:not([data-gc-arrivee="en-cours"])) .gc-lumiere-tracee[data-gc-lumiere-etat="arriere"],
-.gc-stage:has(.gc-livre[data-gc-etat="ouvert"]:not([data-gc-arrivee="en-cours"])) .gc-lumiere-tracee[data-gc-lumiere-etat="ouvert"] {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.9s ease, visibility 0s;
+/* Les ombres du livre restent ses propres éléments : elles suivent sa géométrie pendant le geste. */
+
+/* Papier éclairé AVANT l'encre. Le contexte local empêche l'encre d'une page voisine de passer devant
+   cette face. Les copies du feuillet héritent naturellement de la découpe et de la rotation 3D. */
+.gc-livre-face {
+  isolation: isolate;
 }
 
-/* Les ombres génériques du livre posé sont dans les calques tracés (elles restent pendant l'arrivée). */
-.gc-stage--tracee .gc-livre:not([data-gc-arrivee="en-cours"]) .gc-livre__ombre--gauche,
-.gc-stage--tracee .gc-livre:not([data-gc-arrivee="en-cours"]) .gc-livre__ombre--droite,
-.gc-stage--tracee .gc-livre:not([data-gc-arrivee="en-cours"]) .gc-livre__ombre--epaisseur {
-  visibility: hidden;
+.gc-lumiere-papier {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.gc-lumiere-papier__penombre,
+.gc-lumiere-papier__bougie {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.gc-lumiere-papier__penombre {
+  /* Ambiance immobile : un seul quad animé supplémentaire par surface, celui de la bougie. */
+  opacity: 0.42;
+  background: linear-gradient(110deg,
+    color-mix(in srgb, var(--gc-chocolate) 56%, var(--gc-ink-noire)),
+    color-mix(in srgb, var(--gc-chocolate) 30%, var(--gc-ink-noire)));
+}
+
+.gc-lumiere-papier--left .gc-lumiere-papier__bougie {
+  background: radial-gradient(ellipse 122% 105% at -12% 79%,
+    var(--gc-glow) 0%,
+    color-mix(in srgb, var(--gc-glow) 94%, transparent) 24%,
+    color-mix(in srgb, var(--gc-glow) 70%, transparent) 44%,
+    color-mix(in srgb, var(--gc-glow) 32%, transparent) 66%,
+    transparent 91%);
+}
+
+.gc-lumiere-papier--right .gc-lumiere-papier__bougie {
+  background: radial-gradient(ellipse 168% 125% at -94% 79%,
+    color-mix(in srgb, var(--gc-glow) 34%, transparent) 0%,
+    color-mix(in srgb, var(--gc-glow) 20%, transparent) 42%,
+    color-mix(in srgb, var(--gc-glow) 8%, transparent) 70%,
+    transparent 98%);
+}
+
+.gc-livre-face .gc-page-cuite__encre,
+.gc-livre-face .gc-page-cuite__tuile,
+.gc-livre-face .gc-page-cuite__plume,
+.gc-livre-face .gc-page:not(:has(.gc-page-cuite)) {
+  z-index: 2;
+}
+
+.gc-livre-face .gc-page-cuite__vivant,
+.gc-livre-face .gc-page-cuite__lien {
+  z-index: 4;
+}
+
+.gc-livre-face__pli {
+  z-index: 3;
 }
 
 /* Au-delà de la marge des calques tracés, quand la table déborde de la scène (--gc-stage-debord) : un cadre

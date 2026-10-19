@@ -1,5 +1,9 @@
 # Plan v8 — un carnet vivant, lisible sur la télé
 
+Mise à jour du 19 octobre : l’utilisateur donne la priorité à l’harmonisation complète des dessins,
+au Jack Russell, à l’ouverture et à la lumière des pages. Série anglaise et moteurs corrigés ;
+voir [l’état actuel et les vérifications](etat-reprise.md). La surprise lapin reste ultérieure.
+
 Reprise du 18 octobre 2026. Livraison vendredi 23 octobre. Ce plan poursuit le
 bilan fourni : préserver le carnet existant, consolider les essais, puis améliorer
 les effets qui se voient réellement à 3 mètres. La démo TV prime sur les ajouts. Décisions confirmées : ordinateur HDMI au clavier, couverture f au cachet « 30 », médias de démonstration conservés.

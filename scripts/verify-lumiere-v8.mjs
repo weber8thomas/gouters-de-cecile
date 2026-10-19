@@ -1,135 +1,118 @@
-// Éclairage Cycles : état/cran/zoom, non-interception, modes figés et lecture sur la même encre.
-// GC_CHROME=/usr/bin/chromium node scripts/verify-lumiere-v8.mjs --url http://127.0.0.1:5187/
-// --site dist/site vérifie le site construit ; --captures-seules omet les comparaisons aux sources.
-import { mkdirSync, readFileSync } from 'node:fs';
-import { resolve, join } from 'node:path';
-import { spawnSync } from 'node:child_process';
+// Éclairage attaché au papier : vraie ouverture au clavier, WebGL, captures à temps contrôlé.
+// GC_CHROME=/usr/bin/chromium node scripts/verify-lumiere-v8.mjs --site /tmp/gc-lumiere-after
+import { mkdirSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { PNG } from 'pngjs';
-import {
-  ROOT, lireArgs, lancer, ouvrirCible, ouvrirPage, ecran, capture, planche, Rapport,
-} from './lib/verif.mjs';
-
-const { opt, drapeau } = lireArgs();
-const out = resolve(ROOT, opt('out', 'verification/out/lumiere-v8'));
+import { ROOT, lireArgs, lancer, ouvrirCible, ouvrirPage, ecran, capture, planche, Rapport } from './lib/verif.mjs';
+const { opt } = lireArgs();
+const only = opt('only', 'ouverture,papier,vivant,off').split(',');
+const out = resolve(ROOT, opt('out', 'verification/out/lumiere-v9'));
 mkdirSync(out, { recursive: true });
-const originaux = join(out, 'cycles-v1');
-const archive = join(ROOT, 'scripts/lumiere3d/calques-cycles-v1.zip');
-const extraction = spawnSync('python3', ['-c', 'import zipfile,sys; zipfile.ZipFile(sys.argv[1]).extractall(sys.argv[2])', archive, originaux]);
-if (extraction.status !== 0) throw new Error(String(extraction.stderr));
-const cible = await ouvrirCible({ site: opt('site'), url: opt('url') });
-const R = new Rapport('lumiere-v8', { dir: out, meta: { depart: cible.depart } });
-const browser = await lancer({ args: ['--disable-gpu'] });
-const tuiles = [];
-
-const init = (distance, zoom = 1, extra = {}) => ({ fn: ({ distance, zoom, extra }) => {
-  localStorage.setItem('gc:camera:v3', JSON.stringify({ distance, zoom }));
-  localStorage.setItem('gc:reglages:v4', JSON.stringify({ v: 1, animations: 'reduites', mouvementReduit: true, boutonsToujoursVisibles: true, vitesseEcriture: 4, son: false, ambiance: false, musiqueActive: false, ...extra }));
-}, arg: { distance, zoom, extra } });
-const deuxImages = (p) => p.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
-const luminosite = (d, i) => {
-  const l = v => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
-  return .2126 * l(d[i]) + .7152 * l(d[i + 1]) + .0722 * l(d[i + 2]);
-};
-const mediane = xs => xs.sort((a, b) => a - b)[Math.floor(xs.length / 2)];
-
-// Même ensemble de pixels d'encre dans les deux captures, papier médian local (grille 3 × 4).
-function contrastes(reference, resultat) {
-  const a = PNG.sync.read(reference), b = PNG.sync.read(resultat), ratios = [];
-  for (let ty = 0; ty < 4; ty++) for (let tx = 0; tx < 3; tx++) {
-    const p = [];
-    for (let y = Math.floor(ty * a.height / 4); y < Math.floor((ty + 1) * a.height / 4); y++) {
-      for (let x = Math.floor(tx * a.width / 3); x < Math.floor((tx + 1) * a.width / 3); x++) {
-        const i = (y * a.width + x) * 4;
-        p.push([luminosite(a.data, i), luminosite(b.data, i)]);
-      }
-    }
-    const seuil = Math.min(.25, [...p].sort((u, v) => u[0] - v[0])[Math.floor(p.length * .04)][0]);
-    const encre = p.filter(x => x[0] <= seuil && x[0] < .25);
-    if (encre.length < 100) continue;
-    const c = [0, 1].map(k => (mediane(p.map(x => x[k])) + .05) / (encre.reduce((s, x) => s + x[k], 0) / encre.length + .05));
-    ratios.push({ tx, ty, avant: c[0], apres: c[1], rapport: c[1] / c[0] });
-  }
-  return ratios;
-}
-
-async function ouvrir(nom, distance, hash = 'julie', zoom = 1, extra = {}) {
-  const o = await ouvrirPage(browser, cible, ecran(nom), hash, { init: [init(distance, zoom, extra)] });
-  // Les effets de fête ne font pas partie de l'éclairage de la scène.
-  await o.page.addStyleTag({ content: '.gc-fete { visibility: hidden !important; }' });
-  await o.page.waitForFunction(() => !document.querySelector('[data-gc-ecrit="a-ecrire"]'), null, { timeout: 20000 }).catch(() => {});
-  await o.page.waitForTimeout(1100);
-  return o;
-}
-
+const cible = await ouvrirCible({ site: opt('site', 'dist/site'), url: opt('url') });
+const R = new Rapport(opt('only') ? 'lumiere-surfaces-suite' : 'lumiere-surfaces', { dir: out, meta: { depart: cible.depart, webgl: true, only } });
+const b = await lancer();
+const captures = [];
+const init = (distance, animations = 'completes', feu = true) => ({ fn: ({ distance, animations, feu }) => {
+  localStorage.setItem('gc:camera:v3', JSON.stringify({ distance, zoom: 1 }));
+  localStorage.setItem('gc:reglages:v4', JSON.stringify({ v: 1, animations, feu, muet: true, vitesseEcriture: 4, boutonsToujoursVisibles: true }));
+}, arg: { distance, animations, feu } });
+const photo = async (p, nom) => { const f = await capture(p, nom, out); captures.push([f, nom]); R.capturer(f); return f; };
+const surface = p => p.evaluate(() => {
+  const e = document.querySelector('.gc-livre');
+  return {
+    etat: e?.dataset.gcEtat, tour: e?.dataset.gcGeste ?? null,
+    couverture: document.querySelector('.gc-livre-couv')?.style.transform ?? null,
+    projectionLivre: !!document.querySelector('.gc-stage__light .gc-lumiere'),
+    table: [...document.querySelectorAll('[data-gc-lumiere-etat]')].map(x => x.dataset.gcLumiereEtat),
+    lumieresHorsFace: [...document.querySelectorAll('[data-gc-lumiere-surface]')].filter(x => !x.closest('.gc-livre-face')).length,
+    flamme: window.__gcFlamme?.etat(),
+  };
+});
 try {
-  for (const distance of ['proche', 'moyenne', 'loin']) {
-    for (const ouvert of [false, true]) {
-      const nom = `tv-${distance}-${ouvert ? 'ouvert' : 'ferme'}`;
-      const { ctx, page, surv } = await ouvrir('tv-1080', distance, ouvert ? 'julie' : '');
-      const etat = await page.evaluate(() => {
-        const actifs = [...document.querySelectorAll('[data-gc-lumiere-etat]')].filter(e => getComputedStyle(e).visibility === 'visible');
-        const mauvais = [...document.querySelectorAll('.gc-lumiere, .gc-lumiere-tracee__fond, .gc-lumiere-tracee__voile')].filter(e => getComputedStyle(e).pointerEvents !== 'none');
-        return { actifs: actifs.map(e => e.dataset.gcLumiereEtat), mauvais: mauvais.length, distance: document.querySelector('.gc-stage')?.dataset.gcDistance, feu: window.__gcFeu?.etat?.() };
-      });
-      R.ok(nom, 'un état tracé actif, au cran demandé', etat.actifs.length === 1 && etat.actifs[0] === (ouvert ? 'ouvert' : 'couverture') && etat.distance === distance, etat);
-      R.ok(nom, 'la lumière ne capte aucun pointeur', etat.mauvais === 0);
-      R.ok(nom, 'aucune erreur application ni ressource', !surv.erreurs.length && !surv.reponses.length && !surv.echecs.length,
-        { erreurs: surv.erreurs.slice(0, 3), reponses: surv.reponses.slice(0, 3), echecs: surv.echecs.slice(0, 3), totalEchecs: surv.echecs.length });
-      const f = await capture(page, nom, out); tuiles.push([f, nom]); R.capturer(f);
-      if (ouvert && distance === 'moyenne' && !drapeau('captures-seules')) {
-        // Conserver la page ET son encre : on remplace uniquement les URLs des 3 calques actifs.
-        await page.addStyleTag({ content: '[data-gc-objet], .gc-livre__invitation { visibility: hidden !important; }' });
-        const pageDroite = page.locator('.gc-livre__emplacement--droite');
-        for (const intensite of [.6, 1, 1.6]) {
-          await page.evaluate(i => window.__gcFeu.figer({ intensite: i }), intensite);
-          await deuxImages(page);
-          const apres = await pageDroite.screenshot();
-          const urls = await page.evaluate(() => {
-            const actif = [...document.querySelectorAll('[data-gc-lumiere-etat]')].find(e => getComputedStyle(e).visibility === 'visible');
-            return [...actif.children].map(e => ({ url: getComputedStyle(e).backgroundImage.match(/url\(["']?(.*?)["']?\)/)?.[1], ancien: e.style.backgroundImage }));
-          });
-          const donnees = urls.map((u, i) => ({ ...u, data: readFileSync(join(originaux, `moyenne-ouvert${i === 0 ? '' : i === 1 ? '-feu' : '-bougie'}.webp`)).toString('base64') }));
-          await page.evaluate(ds => {
-            const actif = [...document.querySelectorAll('[data-gc-lumiere-etat]')].find(e => getComputedStyle(e).visibility === 'visible');
-            [...actif.children].forEach((e, i) => { e.style.backgroundImage = `url(data:image/webp;base64,${ds[i].data})`; });
-          }, donnees);
-          await deuxImages(page);
-          const avant = await pageDroite.screenshot();
-          await page.evaluate(ds => {
-            const actif = [...document.querySelectorAll('[data-gc-lumiere-etat]')].find(e => getComputedStyle(e).visibility === 'visible');
-            [...actif.children].forEach((e, i) => { e.style.backgroundImage = ds[i].ancien; });
-          }, donnees);
-          const ratios = contrastes(avant, apres);
-          R.ok(nom, `encre identique, contraste conservé face à Cycles v1 (feu ${intensite})`, ratios.length > 0 && ratios.every(x => x.rapport >= .98), ratios);
-        }
-        await page.evaluate(() => window.__gcFeu.figer(null));
-        const f0 = await page.evaluate(() => window.__gcFeu.etat());
-        await page.waitForTimeout(450);
-        const f1 = await page.evaluate(() => window.__gcFeu.etat());
-        R.ok(nom, 'animations réduites : horloge du feu arrêtée', f0.mode === 'statique' && f1.images === f0.images, { f0, f1 });
-      }
-      await ctx.close();
+  for (const d of (only.includes('ouverture') ? ['proche', 'moyenne', 'loin'] : [])) {
+    const { ctx, page: p, surv } = await ouvrirPage(b, cible, ecran('tv-1080'), '', { init: [init(d)] });
+    // Le Clock contrôle les vrais rAF de Motion : les poses viennent du geste normal, sans attributs
+    // ni transformations injectés dans le livre. Le compositing reste réel, avec la flamme WebGL.
+    await p.clock.install(); await p.clock.pauseAt(new Date());
+    await photo(p, `${d}-0-ferme`);
+    await p.keyboard.press('ArrowRight');
+    const frames = [];
+    for (const [ms, nom] of [[240, '1-levee'], [400, '2-bascule'], [750, '3-descente'], [2400, '4-ouvert']]) {
+      await p.clock.runFor(ms);
+      const s = await surface(p); frames.push(s);
+      await photo(p, `${d}-${nom}`);
     }
-  }
-  for (const [nom, distance, zoom] of [['ipad-portrait', 'moyenne', 1], ['ipad-paysage', 'loin', 1], ['tv-1080', 'proche', .95], ['tv-1080', 'loin', 1.05]]) {
-    const { ctx, page, surv } = await ouvrir(nom, distance, 'julie', zoom);
-    const c = `${nom}-${distance}-zoom-${zoom}`;
-    const f = await capture(page, c, out); tuiles.push([f, c]); R.capturer(f);
-    const alignement = await page.evaluate(() => {
-      const livre = document.querySelector('.gc-livre-camera');
-      const lumiere = [...document.querySelectorAll('[data-gc-lumiere-etat]')].find(e => getComputedStyle(e).visibility === 'visible');
-      return { livre: getComputedStyle(livre).transform, lumiere: getComputedStyle(lumiere).transform };
-    });
-    R.ok(c, 'zoom de la lumière identique au livre', alignement.livre === alignement.lumiere, alignement);
-    R.ok(c, 'aucune erreur application', !surv.erreurs.length, surv.erreurs);
+    R.ok(d, 'ouverture clavier réelle, progression géométrique puis état ouvert', frames.some(s => s.couverture?.includes('rotateY(-')) && frames.at(-1).etat === 'ouvert', frames.map(s => ({ etat: s.etat, couverture: s.couverture })));
+    R.ok(d, 'aucune silhouette projetée, éclairage toujours dans les faces réelles', frames.every(s => !s.projectionLivre && !s.lumieresHorsFace && s.table.join() === 'vide'));
+    R.ok(d, 'flamme rendue en WebGL pendant le geste', frames.every(s => s.flamme?.rendu === 'toile'));
+    R.ok(d, 'aucune erreur application ni ressource', !surv.erreurs.length && !surv.reponses.length, { erreurs: surv.erreurs.slice(0, 3), reponses: surv.reponses.slice(0, 3) });
+    // La fermeture exerce le chemin inverse, y compris le changement de face et son ombre.
+    await p.keyboard.press('ArrowLeft'); await p.clock.runFor(4500);
+    R.ok(d, 'fermeture : retour couverture sans projection fantôme', (await surface(p)).etat === 'couverture');
     await ctx.close();
   }
-  const { ctx, page } = await ouvrir('tv-1080', 'moyenne', 'julie', 1, { animations: 'completes', mouvementReduit: false, feu: false });
-  const f0 = await page.evaluate(() => window.__gcFeu.etat()); await page.waitForTimeout(500);
-  const f1 = await page.evaluate(() => window.__gcFeu.etat());
-  R.ok('tv-feu-off', 'feu désactivé : lumière chaude immobile', f0.mode === 'statique' && f1.images === f0.images, { f0, f1 });
-  await ctx.close();
-  planche(tuiles, join(out, 'planche.png'), { titre: 'Lumière v8 — TV, trois crans, tablette et zoom', colonnes: 2, tuile: 720, hauteur: 405 });
-  R.ecrire();
-  process.exitCode = R.code();
-} finally { await browser.close(); await cible.close(); }
+  if (only.includes('papier')) {
+    const { ctx, page: p } = await ouvrirPage(b, cible, ecran('tv-1080'), 'julie', { init: [init('moyenne', 'reduites')] });
+    await p.waitForTimeout(600);
+    const zone = p.locator('.gc-livre__emplacement--gauche');
+    const avec = PNG.sync.read(await zone.screenshot()); await photo(p, 'julie-avec-bougie');
+    const sansStyle = await p.addStyleTag({ content: '.gc-lumiere-papier__bougie { visibility: hidden !important; }' });
+    const sans = PNG.sync.read(await zone.screenshot()); await photo(p, 'julie-sans-bougie');
+    const deltas = []; const encres = []; const lumPapier = [[], []]; const lumEncre = [[], []];
+    const lum = (d, i) => {
+      const lin = c => { c /= 255; return c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4; };
+      return .2126 * lin(d[i]) + .7152 * lin(d[i + 1]) + .0722 * lin(d[i + 2]);
+    };
+    for (let y = Math.round(avec.height * .4); y < avec.height * .9; y++) for (let x = 35; x < avec.width * .65; x++) {
+      const i = (y * avec.width + x) * 4;
+      const delta = ((avec.data[i] - sans.data[i]) + (avec.data[i + 1] - sans.data[i + 1]) + (avec.data[i + 2] - sans.data[i + 2])) / 3;
+      if (sans.data[i] > 100 && sans.data[i + 1] > 90) {
+        deltas.push(delta); lumPapier[0].push(lum(sans.data, i)); lumPapier[1].push(lum(avec.data, i));
+      }
+      if (sans.data[i] < 65 && sans.data[i + 1] < 65 && sans.data[i + 2] < 65) {
+        encres.push(Math.abs(delta)); lumEncre[0].push(lum(sans.data, i)); lumEncre[1].push(lum(avec.data, i));
+      }
+    }
+    deltas.sort((a, b) => a - b); encres.sort((a, b) => a - b);
+    const papier = deltas[Math.floor(deltas.length / 2)];
+    const encre = encres[Math.floor(encres.length / 2)];
+    R.ok('julie', 'contribution bougie visible : éclaircissement médian du papier > 12 niveaux RGB', papier > 12, { papier, pixels: deltas.length });
+    const med = xs => xs.sort((a, b) => a - b)[Math.floor(xs.length / 2)];
+    const contrastes = [0, 1].map(k => (med(lumPapier[k]) + .05) / (med(lumEncre[k]) + .05));
+    // L'encre cuite est partiellement translucide : sa couleur varie avec le papier sous elle.
+    // La lisibilité se mesure donc au contraste sur les mêmes pixels, pas à leur identité RGB.
+    R.ok('julie', 'contraste de la même encre conservé avec la bougie', encres.length > 100 && contrastes[1] >= contrastes[0] * .98, { sans: contrastes[0], avec: contrastes[1], variationRGB: encre });
+    await sansStyle.evaluate(e => e.remove());
+    const fixe0 = await p.evaluate(() => ({ feu: window.__gcFeu.etat(), op: document.querySelector('[data-gc-lumiere="papier-bougie"]').style.opacity }));
+    await p.waitForTimeout(250);
+    const fixe1 = await p.evaluate(() => ({ feu: window.__gcFeu.etat(), op: document.querySelector('[data-gc-lumiere="papier-bougie"]').style.opacity }));
+    R.ok('reduit', 'flamme et éclairage papier immobiles', fixe0.feu.mode === 'statique' && fixe0.op === fixe1.op);
+    await ctx.close();
+  }
+  if (only.includes('vivant')) {
+    const { ctx, page: p } = await ouvrirPage(b, cible, ecran('tv-1080'), '', { init: [init('moyenne', 'completes')] });
+    // Horloge réelle ici : la flamme a commencé avant l'installation du Clock et garde son dernier
+    // timestamp. Réinitialiser performance.now à zéro la ferait attendre artificiellement.
+    const valeurs = await p.evaluate(() => new Promise(resolve => {
+      const xs = []; const depart = performance.now();
+      const image = () => {
+        xs.push({ flamme: window.__gcFlamme.etat().lumiere, papier: Number(document.querySelector('[data-gc-lumiere="papier-bougie"]').style.opacity) });
+        if (performance.now() - depart < 2200) requestAnimationFrame(image); else resolve(xs);
+      }; requestAnimationFrame(image);
+    }));
+    const amplitude = Math.max(...valeurs.map(v => v.papier)) - Math.min(...valeurs.map(v => v.papier));
+    const source = Math.max(...valeurs.map(v => v.flamme)) - Math.min(...valeurs.map(v => v.flamme));
+    R.ok('vivant', 'flamme et éclairage papier varient réellement (horloge native)', amplitude > .035 && source > .015,
+      { amplitudePapier: amplitude, amplitudeFlamme: source, echantillons: valeurs.length });
+    await ctx.close();
+  }
+  if (only.includes('off')) {
+    const { ctx, page: p } = await ouvrirPage(b, cible, ecran('tv-1080'), 'julie', { init: [init('moyenne', 'completes', false)] });
+    const f0 = await p.evaluate(() => window.__gcFeu.etat()); await p.waitForTimeout(300);
+    const f1 = await p.evaluate(() => window.__gcFeu.etat());
+    R.ok('feu-off', 'lumière immobile quand le feu est désactivé', f0.mode === 'statique' && f0.images === f1.images);
+    await ctx.close();
+  }
+  planche(captures, join(out, 'ouverture-et-lumiere.png'), { titre: 'Ouverture réelle : trois crans ; contribution bougie sur le papier', colonnes: 3, tuile: 640, hauteur: 360 });
+  R.ecrire(); process.exitCode = R.code();
+} finally { await b.close(); await cible.close(); }

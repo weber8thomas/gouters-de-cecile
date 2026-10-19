@@ -7,7 +7,8 @@
 //             qui joue) ;
 //   films     planches de films en temps réel (une image toutes les ~0,3 s) de scènes de marionnettes :
 //             la scène est lancée (window.__gcDessins.scene), les images sont prises pendant qu'elle joue ;
-//   creature  une créature arrive, se pose ; on la touche, elle s'envole (planche de la double page) ;
+//   creature  le Jack Russell trottine dans une marge sûre, puis répond à une tape sans quitter le sol ;
+//   citron    les deux citrons restent entiers : aucun masque, rotation, changement d'échelle ni flexion ;
 //   iphone    iPhone 13 couché (844 × 390, dpr 3, tactile) : les toiles jouent, le temps avance ;
 //             une tape lance sa scène ; captures.
 //   autonomie aucune entrée : scènes spontanées, horloge proportionnelle à la vitesse,
@@ -272,12 +273,12 @@ const FILMS = [
   ['gateaux', 'cupcake-bougie', 'allume', 0.5],
   ['gateaux', 'cupcake-bougie', 'bougies', 0.5],
   ['gateaux', 'tasse-coeur', 'bat', 0.1],
-  ['biscuits', 'noix', 'domino', 0.1],
-  ['biscuits', 'cupcake', 'rebond', 0.1],
+  ['biscuits', 'noix', 'frisson', 0.1],
+  ['biscuits', 'cupcake', 'veille', 0.1],
   ['fin', 'theiere', 'bouillir', 0.1],
-  ['fin', 'guirlande', 'fete', 0.5],
+  ['fin', 'guirlande', 'veille', 0.5],
   ['fin', 'cupcake-bougie', 'souffle', 0.5],
-  ['mathis', 'cookies', 'casse', 0.1],
+  ['mathis', 'cookies', 'veille', 0.1],
 ];
 if (suites.includes('films')) {
   const seuls = liste('films', ''); // --films cupcake-bougie,… : ces aquarelles seulement
@@ -307,41 +308,59 @@ if (suites.includes('films')) {
   }
 }
 
-// ---- une créature ------------------------------------------------------------------------------------
+// ---- citrons rigides -------------------------------------------------------------------------------
+if (suites.includes('citron')) {
+  const { ctx, page } = await ouvrirPage(browser, cible, TV, '#julie');
+  await toilesPretes(page, 1);
+  for (const nom of ['citron', 'citron-2']) {
+    await page.evaluate((n) => { window.__gcDessins?.finir(); window.__gcDessins?.figer(true); window.__gcDessins?.scene(n, 'frisson'); }, nom);
+    const poses = [];
+    for (let k = 0; k < 5; k++) {
+      await page.evaluate(() => window.__gcDessins?.avancer(650));
+      poses.push((await etat(page)).flatMap((t) => t.dessins).find((d) => d.nom === nom));
+    }
+    const rigide = poses.every((d) => d && d.parties === 0 && d.pose.a === 0 && d.pose.sx === 1 && d.pose.sy === 1 && d.pose.flex === 0 && d.pose.ty === 0 && Math.abs(d.pose.tx) <= 0.0025);
+    rapport.ajouter(null, `[citron] ${nom} : contours et orientation conservés`, rigide ? 'OK' : 'KO', poses);
+    await page.screenshot({ path: join(out, `rigide-${nom}.png`), timeout: 60000 });
+  }
+  await ctx.close();
+}
+
+// ---- compagnon terrestre --------------------------------------------------------------------------
 if (suites.includes('creature')) {
   const { ctx, page } = await ouvrirPage(browser, cible, TV, '#biscuits');
   await toilesPretes(page, 1);
-  await page.evaluate(() => window.__gcDessins?.finir());
-  // elle arrive quand la page a fini de se peindre (6,5 à 10 s), vole, se pose
-  await page.waitForFunction(() => (window.__gcDessins?.etat() ?? []).some((t) => t.creatures.some((c) => c.etat === 'pose' || c.etat === 'marche')), null, { timeout: 40000, polling: 250 }).catch(() => {});
-  const clip = await zoneLivre(page);
-  const avant = await film(page, clip, TMP, 'creature-a', { pas: 400, duree: 2400 });
-  // on la touche : elle s'envole
-  const pos = await page.evaluate(() => {
-    const t = (window.__gcDessins?.etat() ?? []).find((x) => x.creatures.some((c) => c.etat === 'pose' || c.etat === 'marche'));
-    if (!t) return null;
-    const c = t.creatures.find((x) => x.etat === 'pose' || x.etat === 'marche');
-    const pages = [...document.querySelectorAll('.gc-livre__page--visible')].map((e) => e.getBoundingClientRect()).sort((a, b) => a.left - b.left);
-    const A = pages[0].width / pages[0].height;
-    const droite = c.x > A;
-    const r = droite ? pages[pages.length - 1] : pages[0];
-    return { x: r.left + ((droite ? c.x / A - 1 : c.x / A)) * r.width, y: r.top + c.y * r.height, espece: c.espece, cx: c.x, cy: c.y };
+  await page.evaluate(() => { window.__gcDessins?.finir(); window.__gcDessins?.figer(true); });
+  await attendre(400); // lecture de la carte d'encre pour les passages libres
+  await page.evaluate(() => window.__gcDessins?.avancer(8000));
+  const avant = await etat(page);
+  const chiens = avant.flatMap((t) => t.creatures).filter((c) => c.visible);
+  const chien = chiens[0];
+  const terrestre = chiens.length > 0 && chiens.every((c) => c.espece === 'jack-russell' && c.piste && Math.abs(c.y - c.piste.sol) < 0.0001 && c.x >= c.piste.x0 && c.x <= c.piste.x1 && ['pose', 'marche'].includes(c.etat));
+  rapport.ajouter(null, '[creature] Jack Russell au sol dans une marge réservée', terrestre ? 'OK' : 'KO', chien ?? 'aucun chien visible (sprite ou passage sûr manquant)');
+  await page.screenshot({ path: join(out, 'chien-trottine.png'), timeout: 60000 });
+  await page.evaluate(() => window.__gcDessins?.avancer(1200));
+  const apres = (await etat(page)).flatMap((t) => t.creatures).find((c) => c.visible);
+  rapport.ajouter(null, '[creature] déplacement autonome horizontal', !!chien && !!apres && Math.abs(chien.x - apres.x) > 0.01 && chien.y === apres.y ? 'OK' : 'KO');
+  await page.evaluate(() => window.__gcDessins?.avancer(5000));
+  const autonome = (await etat(page)).flatMap((t) => t.creatures).find((c) => c.visible);
+  rapport.ajouter(null, '[creature] arrêt et bulle spontanés', autonome?.etat === 'pose' && ['Tea time!', 'Jolly good!'].includes(autonome?.parole) ? 'OK' : 'KO', autonome ?? 'absent');
+  const reponse = await page.evaluate(() => {
+    const etats = window.__gcDessins?.etat() ?? [];
+    for (const t of etats) for (const c of t.creatures) {
+      if (!c.visible || !c.piste || !t.page.endsWith(c.piste.cote)) continue;
+      const el = [...document.querySelectorAll('.gc-livre__page--visible')].find((p) => p.querySelector('canvas'));
+      const r = el?.getBoundingClientRect(); if (!r) continue;
+      const A = r.width / r.height, x = c.x / A - (c.piste.cote === 'droite' ? 1 : 0);
+      return window.__gcDessins?.toucher(t.page, x, c.y - 0.035);
+    }
+    return false;
   });
-  let apres = [];
-  if (pos) {
-    await page.mouse.move(pos.x - 60, pos.y + 40);
-    await page.mouse.move(pos.x, pos.y, { steps: 6 });
-    await page.mouse.click(pos.x, pos.y);
-    apres = await film(page, clip, TMP, 'creature-b', { pas: 400, duree: 4000 });
-  }
-  const e = await etat(page);
-  resultats.creature = e.map((t) => t.creatures);
-  // elle a bougé : envolée, ou posée ailleurs
-  const apresC = e.flatMap((t) => t.creatures).filter((c) => c.espece === pos?.espece);
-  const bouge = !!pos && apresC.some((c) => c.etat === 'vol' || Math.hypot(c.x - pos.cx, c.y - pos.cy) > 0.04);
-  const f = bande([...avant, ...apres.map(([i, l, c]) => [i, `touchée +${l}`, c])], join(out, 'film-creature.png'),
-    `Biscuits : ${pos?.espece ?? 'créature'} posée, puis touchée (elle s'envole)`, { hauteur: 260, colonnes: 4 });
-  rapport.ajouter(null, '[creature] posée puis envolée', bouge ? 'OK' : 'KO', `${rel(f)} · touchée en ${pos ? `${pos.cx.toFixed(3)}, ${pos.cy.toFixed(3)}` : '—'} · après : ${JSON.stringify(apresC)}`);
+  await page.evaluate(() => window.__gcDessins?.avancer(100));
+  const dit = (await etat(page)).flatMap((t) => t.creatures).find((c) => c.visible);
+  rapport.ajouter(null, '[creature] une tape reçoit une bulle anglaise, sans envol', !!reponse && dit?.etat === 'pose' && ['Tea time!', 'Jolly good!'].includes(dit?.parole) ? 'OK' : 'KO', dit ?? 'absent');
+  await page.screenshot({ path: join(out, 'chien-bulle.png'), timeout: 60000 });
+  resultats.creature = await etat(page);
   await ctx.close();
 }
 

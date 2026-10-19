@@ -175,7 +175,7 @@ export function ToileAquarelles({ page }: { page: string }) {
     obs.observe(feuille, { attributes: true, attributeFilter: ['class'] });
     obs.observe(livre, { attributes: true, attributeFilter: ['data-gc-geste', 'data-gc-etat'] });
     document.addEventListener('visibilitychange', verifier);
-    // un toucher sur la page : une aquarelle joue sa scène, une créature s'envole (et la page ne tourne pas)
+    // un toucher sur la page : une aquarelle joue sa scène, le chien s'arrête pour parler (et la page ne tourne pas)
     const toucher = (e: Event) => {
       const d = (e as CustomEvent<ToucherPage>).detail;
       if (e.defaultPrevented || !d) return;

@@ -6,7 +6,7 @@
 Entrée : les aquarelles retenues (détourées, harmonisées vers le crème par scripts/aquarelles*.py), une par
 entrée des catalogue-*.json (licence, source, auteur). Sortie : WebP avec transparence, 800 px au plus de
 côté, que l'application pose simplement sur la page (src/components/Aquarelle). Déterministe.
-Les couleurs sont saturées (SATURATION), puis teintées du papier moyen (PAPIER) avant écriture ; l'alpha
+Les pigments gardent leur saturation d'origine, puis sont légèrement teintés du papier (PAPIER) ; l'alpha
 ne bouge pas. Posée sur le papier, l'aquarelle teintée donne la même couleur qu'une multiplication avec
 lui (a·c·P + (1 − a)·P) : pas de mode de fusion à l'écran, un calque de moins à composer.
 """
@@ -20,15 +20,13 @@ RACINE = Path(__file__).resolve().parents[1]
 SOURCE = RACINE / "design-system/aquarelles"
 SORTIE = RACINE / "design-system/baked/aquarelles"
 COTE_MAX = 800
-# Zones effacées (gauche, haut, droite, bas, en fractions) : signature de planche restée sous le citron.
-EFFACER = {"citron-2": [(0.0, 0.92, 0.3, 1.0)]}
-# Saturation des couleurs ×1,25 : chaque couleur s'écarte de sa luminance (la teinte et la luminance restent).
+# Les originaux de la série anglaise portent déjà leur palette commune : ne pas la saturer au build.
 # Un pixel proche du bord de la gamme RGB est moins saturé plutôt qu'écrêté : pas de couleur plate ni de saut.
-SATURATION = 1.25
+SATURATION = 1.0
 LUMINANCE = np.array([0.299, 0.587, 0.114])  # luminance Rec. 601 (comme PIL « L »)
 # Couleur moyenne des papiers du carnet (design-system/baked/pages/papier, mesurée) : la teinte du pigment
 # posé sur la page. scripts/bake-trace-aquarelles.py la retire avant de chercher les traits.
-PAPIER = np.array([0.900, 0.857, 0.737])
+PAPIER = np.array([0.960, 0.940, 0.880])
 
 
 def teinter(im: Image.Image) -> Image.Image:
@@ -64,8 +62,6 @@ def main() -> None:
                 noms[nom] = f
     for nom, f in sorted(noms.items()):
         im = Image.open(f).convert("RGBA")
-        for g, h, d, b in EFFACER.get(nom, []):
-            im.paste((0, 0, 0, 0), (round(g * im.width), round(h * im.height), round(d * im.width), round(b * im.height)))
         im.thumbnail((COTE_MAX, COTE_MAX), Image.LANCZOS)
         im = teinter(saturer(im))
         out = SORTIE / f"{nom}.webp"

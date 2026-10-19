@@ -148,8 +148,10 @@ for (const e of ecrans(liste('only', 'iphone13-paysage,ordi-1440,tv-1080'))) {
       if (trouve) {
         const ph = await rectDe(page, '.gc-livre__page--visible [data-gc-objet="photo"]');
         if (ph?.visible) R.ok(e.nom, `#${l} : photo collée sur la page vidéo`, true, `${Math.round(ph.w)}×${Math.round(ph.h)}`);
-        else if (await existe(page, '[data-gc-soulever]')) R.ajouter(e.nom, `#${l} : photo collée sur la page vidéo`, 'KO', 'calque soulever présent, photo absente');
-        else R.attente(e.nom, `#${l} : photo collée sur la page vidéo`);
+        // Soulever est monté globalement, même sur les frontispices sans photo ni clip.
+        // Exiger une photo sur les pages qui ont réellement une vidéo publiée.
+        else if (inventory({ cible: 'site' })[`videos/${l}`]) R.ajouter(e.nom, `#${l} : photo collée sur la page vidéo`, 'KO', 'clip publié pour cette page, photo absente');
+        else R.info(e.nom, `#${l} : page sans photo vidéo`, 'aucun clip attendu pour cette page');
       }
       const lireVideo = () => page.evaluate(() => { const x = document.querySelector('[data-gc-video]'); return x ? { src: x.currentSrc || x.src || x.querySelector('source')?.src || '', preload: x.preload } : null; });
       let v = await lireVideo();

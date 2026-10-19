@@ -6,12 +6,10 @@
 // À la première arrivée sur la page, chaque aquarelle se dessine toute seule : le crayon trace les traits
 // l'un après l'autre (carte du tracé cuite par scripts/bake-trace-aquarelles.py), puis la couleur s'étend
 // zone par zone depuis leur cœur, en conservant exactement les pigments du dessin cuit.
-// Puis elle vit : elle respire et se balance, et ses parties mobiles (parties.json, cuites par
-// scripts/bake-parties-aquarelles.py) jouent de petites scènes de marionnette (scenes.ts) toutes les 6 à 15 s
-// et au toucher : le couvercle de la théière se soulève et claque, la framboise rebondit, le cookie se
-// casse… Ses effets (effets.ts) : vapeur en volutes, bougies qui vacillent, vent, miettes et
-// gouttes, ronds dans le café, confettis, fanions qui ondulent. Ces gestes vivent seuls ;
-// une tape peut les relancer, sans déformer les dessins au passage du pointeur.
+// Puis elle vit doucement : vapeur, bougies et gestes rigides discrets (scenes.ts). La série harmonisée
+// utilise des illustrations entières : les anciens masques de parties/fond sont volontairement ignorés.
+// Un Jack Russell trottine dans une marge basse vérifiée libre, puis s'arrête avec une petite bulle.
+// Une tape relance un geste ou salue le chien ; aucun effet de passage du pointeur.
 //
 // Les aquarelles cuites sont teintées du papier (bake-aquarelles.py) : la toile se pose simplement sur la
 // page (alpha prémultiplié), sans mode de fusion. 30 images/s au plus, rien quand la page est cachée, le
@@ -20,8 +18,7 @@
 import { facteurAnimations } from '../../lib/vitesse';
 import { EFFETS, SCENES_PAGE, type Effets } from './effets';
 import { REPOS, SCENES, poseNeutre, type Ctx, type Fx } from './scenes';
-import { essaimDe, ESPECES, type Essaim } from './creatures';
-import partiesJson from './parties.json';
+import { essaimDe, PAROLES, type Essaim } from './creatures';
 
 export type { Effets } from './effets';
 
@@ -31,10 +28,8 @@ interface PartieInfo {
   boite: [number, number, number, number];
   rayon: number;
 }
-const PARTIES = partiesJson as unknown as Record<string, { parties: PartieInfo[] }>;
-
-/** Parties mobiles d'une aquarelle (parties.json). */
-export const partiesDe = (nom: string): PartieInfo[] => PARTIES[nom]?.parties ?? [];
+/** Les masques de l'ancienne série ne correspondent plus aux illustrations : aucune découpe. */
+export const partiesDe = (_nom: string): PartieInfo[] => [];
 
 /** Débord de la boîte de chaque aquarelle autour de sa zone (fractions de la zone) : gauche, haut, droite, bas. */
 export const DEBORD = [0.15, 0.5, 0.15, 0.08] as const;
@@ -314,77 +309,36 @@ void main(){
   gl_FragColor=c;
 }`;
 
-// Une créature : son quad dans la page, centré, tourné selon son cap.
+// Compagnon terrestre : profil entier, miroir horizontal selon sa direction. Aucune rotation/altitude.
 const VS_CREATURE = `attribute vec2 p;
-uniform vec4 cr;    // centre (fractions de la page), demi-taille (unités de la hauteur de la page)
-uniform vec2 cap;   // cos, sin du cap
+uniform vec4 cr; // centre page, demi-largeur et demi-hauteur (hauteurs de page)
 uniform float aspP;
 varying vec2 v;
-void main(){
-  v=p;
-  vec2 d=(p-.5)*2.*cr.zw;
-  d=vec2(d.x*cap.x-d.y*cap.y,d.x*cap.y+d.y*cap.x);
-  vec2 P=cr.xy+vec2(d.x/aspP,d.y);
-  gl_Position=vec4(P.x*2.-1.,1.-P.y*2.,0.,1.);
-}`;
-
+void main(){v=p;vec2 d=(p-.5)*2.*cr.zw;vec2 P=cr.xy+vec2(d.x/aspP,d.y);
+  gl_Position=vec4(P.x*2.-1.,1.-P.y*2.,0.,1.);}`;
 const FS_CREATURE = `${TETE}
 varying vec2 v;
 uniform sampler2D tex;
-uniform vec4 cp;   // genre (0 papillon, 1 coccinelle), ouverture (0 à 1), phase des ailes, épaules (y)
-uniform vec4 om;   // ombre (0/1), flou, opacité, demi-largeur du corps
-uniform vec3 pap;
-vec4 sur(vec4 a,vec4 b){return a+b*(1.-a.a);}
-vec4 lire(vec2 u){return (u.x<0.||u.y<0.||u.x>1.||u.y>1.)?vec4(0.):texture2D(tex,u);}
-vec2 tourne(vec2 d,float a){float c=cos(a),s=sin(a);return vec2(d.x*c-d.y*s,d.x*s+d.y*c);}
-// papillon : les ailes battent, vues d'en haut elles se raccourcissent vers le corps
-vec4 papillon(vec2 u){
-  float dx=u.x-.5,ad=abs(dx),b=om.w;
-  float k=max(cp.y,.05);
-  if(ad>b)ad=b+(ad-b)/k;
-  vec4 c=lire(vec2(.5+sign(dx)*ad,u.y));
-  if(abs(dx)>b)c.rgb*=.7+.3*k;
-  return c;
-}
-// coccinelle : les élytres s'ouvrent, les ailes fines battent dessous
-vec4 coccinelle(vec2 u){
-  float o=cp.y,ye=cp.w;
-  vec4 c=vec4(0.);
-  if(o>0.){
-    for(int k=0;k<2;k++){
-      float cote=k==0?-1.:1.;
-      vec2 d=u-vec2(.5+cote*.06,ye+.04);
-      d=tourne(d,cote*(1.1+.45*sin(cp.z)));
-      float e=length(vec2(d.x/.14,(d.y-.3)/.32));
-      float a=(1.-smoothstep(.75,1.,e))*.38*o;
-      c=sur(vec4(vec3(.62,.6,.6)*pap*a,a),c);
-    }
-    float e=length((u-vec2(.5,.62))/vec2(.27,.3));
-    float a=(1.-smoothstep(.85,1.,e))*smoothstep(0.,.4,o);
-    c=sur(vec4(vec3(.13,.1,.09)*pap*a,a),c);
-  }
-  if(u.y<ye)return sur(lire(u),c);
-  float cote=u.x<.5?-1.:1.;
-  vec2 piv=vec2(.5,ye);
-  vec2 d=tourne(u-piv,cote*o*.6);
-  d.y/=1.-.4*o;
-  vec2 s=piv+d;
-  if((s.x-.5)*cote>=0.&&s.y>=ye)c=sur(lire(s),c);
-  return c;
-}
-vec4 creature(vec2 u){return cp.x<.5?papillon(u):coccinelle(u);}
+uniform vec4 cp; // direction, phase des pas, marche (0/1), opacité
 void main(){
-  if(om.x>.5){
-    // l'ombre portée : la silhouette floue, plus floue et plus pâle quand elle vole haut
-    float a=0.;
-    vec2 e=vec2(om.y,0.);
-    a+=creature(v).a*.4+creature(v+e).a*.15+creature(v-e).a*.15+creature(v+e.yx).a*.15+creature(v-e.yx).a*.15;
-    a*=om.z;
-    gl_FragColor=vec4(vec3(.24,.19,.14)*a,a);
-    return;
-  }
-  gl_FragColor=creature(v)*om.z;
+  vec2 u=v;if(cp.x<0.)u.x=1.-u.x;
+  // Deux groupes de pattes avancent alternativement ; le corps, la tête et le pelage restent intacts.
+  float pattes=smoothstep(.62,.93,u.y)*cp.z;
+  u.x+=.016*pattes*sin(cp.y+(u.x<.48?0.:3.14159));
+  gl_FragColor=(u.x<0.||u.x>1.||u.y<0.||u.y>1.?vec4(0.):texture2D(tex,u))*cp.w;
 }`;
+
+// Deux petites bulles peintes, créées une fois. La typographie reste droite quand le chien se retourne.
+function bullePeinte(texte: string): HTMLCanvasElement {
+  const cv = document.createElement('canvas'); cv.width = 320; cv.height = 104;
+  const c = cv.getContext('2d')!;
+  c.fillStyle = '#fff6e4'; c.strokeStyle = '#78634b'; c.lineWidth = 2;
+  c.beginPath(); c.roundRect(5, 4, 310, 82, 25); c.fill(); c.stroke();
+  c.beginPath(); c.moveTo(140, 85); c.lineTo(150, 100); c.lineTo(161, 85); c.fill();
+  c.fillStyle = '#58432f'; c.font = '42px "Caveat", Georgia, serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.fillText(texte, 160, 47, 282);
+  return cv;
+}
 
 // ---- Petits outils WebGL -------------------------------------------------------------------------
 type GL = WebGLRenderingContext;
@@ -483,7 +437,7 @@ export interface Toile {
   /** Avance l'animation (true) ou la fige à sa dernière image (false). */
   jouer(oui: boolean): void;
   arreter(): void;
-  /** Un toucher sur la page (fractions de la page) : une aquarelle joue sa scène, une créature s'envole. */
+  /** Un toucher sur la page (fractions de la page) : une aquarelle joue sa scène, le chien s'arrête pour parler. */
   toucher(x: number, y: number): boolean;
   /** Joue une scène (vérification) : sur l'aquarelle `nom` (toutes sinon), la scène `scene` (la suivante sinon). */
   scene(nom?: string, scene?: string): void;
@@ -600,6 +554,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
   const uc: Record<string, WebGLUniformLocation | null> = {};
   let vide: WebGLTexture | null = null;
   const texCreatures = new Map<string, { tx: WebGLTexture; ai: number }>();
+  const texBulles = new Map<string, WebGLTexture>();
 
   const lancerScene = (s: Sprite, nom?: string) => {
     if (opts.douce) return false;
@@ -608,8 +563,6 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     const n = nom && SCENES[nom] ? nom : liste[s.rang++ % liste.length];
     s.scene = { nom: n, debut: horloge, h: Math.random() };
     derniereScene = horloge;
-    // une créature posée dessus s'envole
-    essaim?.effrayer(opts.cote, s.cx, s.cy, Math.max(s.d.zone[2] * A, s.d.zone[3]) * 0.6);
     return true;
   };
 
@@ -640,11 +593,8 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       fx,
       h: 0.5,
     };
-    // repos : toute l'image se balance un peu autour de son pied, et respire
-    corps.a += micro * (0.011 * Math.sin(t * 0.55 + s.d.ordre) + 0.005 * Math.sin(t * 1.37 + 1));
-    const r0 = 1 + 0.007 * micro * Math.sin(t * 0.83 + s.d.ordre);
-    corps.sx *= r0;
-    corps.sy *= r0;
+    // Rigidité des nouvelles aquarelles : aucun changement d'échelle. Les fruits restent sans rotation.
+    if (!s.e.rigide) corps.a += micro * 0.003 * Math.sin(t * 0.45 + s.d.ordre);
     if (!opts.douce && s.e.repos && REPOS[s.e.repos]) REPOS[s.e.repos](ctx);
     // la scène en cours
     if (s.scene) {
@@ -656,6 +606,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         sc.jouer(ctx);
       }
     }
+    if (s.e.rigide) { corps.a = 0; corps.sx = corps.sy = 1; corps.flex = 0; corps.ty = 0; corps.tx = Math.max(-0.0025, Math.min(0.0025, corps.tx)); }
     return { corps, poses, fx };
   };
 
@@ -754,36 +705,26 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
 
   const dessinerCreatures = () => {
     if (!gl || !progC || !essaim) return;
-    const g = gl;
-    const dx = opts.cote === 'droite' ? 1 : 0;
-    let actif = false;
+    const g = gl, dx = opts.cote === 'droite' ? 1 : 0;
+    g.useProgram(progC); g.uniform1f(uc.aspP, A);
     for (const c of essaim.creatures) {
-      const t = texCreatures.get(c.espece);
-      if (!t) continue;
-      // fractions de la page : x (largeur de page), y ; taille en unités de la hauteur de page
+      const tex = texCreatures.get(c.espece);
+      if (!tex || c.etat === 'attente' || c.piste?.cote !== opts.cote) continue;
+      const marche = c.etat === 'marche', demi = c.taille / 2;
       const px = c.x / A - dx;
-      const py = c.y;
-      const demi = c.taille / 2;
-      if (px < -0.3 || px > 1.3) continue;
-      if (!actif) {
-        g.useProgram(progC);
-        g.uniform1f(uc.aspP, A);
-        g.uniform3f(uc.pap, ...PAPIER);
-        actif = true;
+      const bob = marche ? 0.0008 * Math.sin(c.phase * 2) : 0;
+      g.activeTexture(g.TEXTURE0); g.bindTexture(g.TEXTURE_2D, tex.tx);
+      g.uniform4f(uc.cr, px, c.y - demi - bob, demi * tex.ai, demi);
+      g.uniform4f(uc.cp, c.direction, c.phase, marche ? 1 : 0, c.opacite);
+      g.drawArrays(g.TRIANGLE_STRIP, 0, 4);
+      const bulle = c.parole && texBulles.get(c.parole);
+      if (bulle) {
+        g.bindTexture(g.TEXTURE_2D, bulle);
+        const al = Math.min(1, c.bulle * 2, c.opacite);
+        g.uniform4f(uc.cr, px, c.y - c.taille - 0.038, 0.1, 0.0325);
+        g.uniform4f(uc.cp, 1, 0, 0, al);
+        g.drawArrays(g.TRIANGLE_STRIP, 0, 4);
       }
-      g.activeTexture(g.TEXTURE0);
-      g.bindTexture(g.TEXTURE_2D, t.tx);
-      const esp = ESPECES[c.espece];
-      g.uniform4f(uc.cp, esp.genre === 'coccinelle' ? 1 : 0, c.ouv, c.phase, esp.epaules ?? 0.35);
-      g.uniform2f(uc.cap, Math.cos(c.cap), Math.sin(c.cap));
-      // l'ombre, décalée vers le bas à droite (la lampe est en haut à gauche), plus loin quand elle vole
-      const h = c.alt;
-      g.uniform4f(uc.cr, px + (0.004 + 0.03 * h) / A, py + 0.006 + 0.045 * h, demi * t.ai * (1 - 0.15 * h), demi * (1 - 0.15 * h));
-      g.uniform4f(uc.om, 1, 0.012 + 0.03 * h, 0.32 - 0.16 * h, esp.corps ?? 0.05);
-      g.drawArrays(g.TRIANGLE_STRIP, 0, 4);
-      g.uniform4f(uc.cr, px, py, demi * t.ai, demi);
-      g.uniform4f(uc.om, 0, 0, 1, esp.corps ?? 0.05);
-      g.drawArrays(g.TRIANGLE_STRIP, 0, 4);
     }
   };
 
@@ -862,7 +803,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       if (!progD || !progC) return opts.perdu();
       for (const n of ['boite', 'rot', 'aspP', 'img', 'carteN', 'carteL', 'parts', 'fond', 'rect', 'asp', 'tp', 'tpx', 'gA', 'gB', 'pA', 'pB', 'pC', 'vap', 'fl', 'flv', 'ef', 'fa', 'ge', 'geB', 'on', 'cf', 'cft', 'pap'])
         ud[n] = g.getUniformLocation(progD, n);
-      for (const n of ['cr', 'cap', 'aspP', 'tex', 'cp', 'om', 'pap']) uc[n] = g.getUniformLocation(progC, n);
+      for (const n of ['cr', 'aspP', 'tex', 'cp']) uc[n] = g.getUniformLocation(progC, n);
       const buf = g.createBuffer();
       g.bindBuffer(g.ARRAY_BUFFER, buf);
       g.bufferData(g.ARRAY_BUFFER, new Float32Array([0, 0, 1, 0, 0, 1, 1, 1]), g.STATIC_DRAW);
@@ -886,21 +827,12 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         if (s.debut === Infinity) s.prochaine = AMORCE + s.d.ordre * 1800 + Math.random() * 2500;
       }
       for (const { e, im } of creatures) if (im) texCreatures.set(e, { tx: texture(g, im, false, g.LINEAR), ai: im.naturalWidth / im.naturalHeight });
-      // les créatures : la page s'inscrit auprès de l'essaim de sa double page (perchoirs sur ses aquarelles)
+      // Le compagnon lit le contenu réel pour trouver un passage dans la marge.
       if (essaim) {
-        const perchoirs: [number, number][] = [];
-        for (const s of sprites) {
-          for (const [ix, iy] of s.e.perchoirs ?? []) {
-            // de l'image à la boîte, de la boîte à la page, puis l'inclinaison autour du centre de la zone
-            const x = s.boite[0] + (s.rect[0] + ix * s.rect[2]) * s.boite[2];
-            const y = s.boite[1] + (s.rect[1] + iy * s.rect[3]) * s.boite[3];
-            const dx = (x - s.cx) * A;
-            const dy = y - s.cy;
-            perchoirs.push([s.cx + (dx * s.cos - dy * s.sin) / A, s.cy + dx * s.sin + dy * s.cos]);
-          }
-        }
-        essaim.attacher(opts.cote, perchoirs, opts.encre, opts.zones, A);
+        essaim.attacher(opts.cote, opts.encre, opts.zones, A);
+        essaim.activer(opts.cote, joue);
         attache = true;
+        for (const texte of PAROLES) texBulles.set(texte, texture(g, bullePeinte(texte), false, g.LINEAR));
       }
       g.useProgram(progD);
       ['img', 'carteN', 'carteL', 'parts', 'fond'].forEach((n, k) => g.uniform1i(ud[n], k));
@@ -919,6 +851,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
 
   return {
     jouer(oui: boolean) {
+      essaim?.activer(opts.cote, oui && !arrete);
       if (arrete || oui === joue) return;
       joue = oui;
       cancelAnimationFrame(raf);
@@ -983,8 +916,8 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         pret: !!gl,
         joue,
         horloge: Math.round(horloge),
-        dessins: sprites.map((s) => ({ nom: s.d.nom, peinte: s.debut === Infinity, scene: s.scene?.nom ?? null, parties: s.parties.length })),
-        creatures: essaim?.creatures.map((c) => ({ espece: c.espece, etat: c.etat, x: +c.x.toFixed(3), y: +c.y.toFixed(3) })) ?? [],
+        dessins: sprites.map((s) => { const p = poser(s, horloge / 1000).corps; return { nom: s.d.nom, peinte: s.debut === Infinity, scene: s.scene?.nom ?? null, parties: s.parties.length, pose: { a: p.a, sx: p.sx, sy: p.sy, tx: p.tx, ty: p.ty, flex: p.flex } }; }),
+        creatures: essaim?.creatures.map((c) => ({ espece: c.espece, etat: c.etat, x: +c.x.toFixed(3), y: +c.y.toFixed(3), direction: c.direction, parole: c.parole, piste: c.piste, visible: texCreatures.has(c.espece) && c.etat !== 'attente' })) ?? [],
       };
     },
   };

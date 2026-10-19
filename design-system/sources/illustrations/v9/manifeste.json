@@ -1,0 +1,365 @@
+{
+  "serie": "anglaise-v9",
+  "direction": "Crayon fin gris chaud et aquarelle anglaise mate, même main, pigments doux, aucun photoréalisme ni aplat vectoriel. Originaux générés avec transparence, export sans redessiner.",
+  "planches": [
+    {
+      "fichier": "planche-1.png",
+      "sujets": [
+        {
+          "nom": "theiere",
+          "sujet": "theiere",
+          "cellule": [
+            0,
+            0,
+            560,
+            490
+          ],
+          "taille": [
+            900,
+            561
+          ]
+        },
+        {
+          "nom": "cookies",
+          "sujet": "cookies",
+          "cellule": [
+            560,
+            0,
+            1024,
+            490
+          ],
+          "taille": [
+            900,
+            900
+          ]
+        },
+        {
+          "nom": "gateau-bougies",
+          "sujet": "gateau bougies",
+          "cellule": [
+            0,
+            490,
+            590,
+            990
+          ],
+          "taille": [
+            822,
+            842
+          ]
+        },
+        {
+          "nom": "citron",
+          "sujet": "citron",
+          "cellule": [
+            590,
+            490,
+            1024,
+            990
+          ],
+          "taille": [
+            466,
+            900
+          ]
+        },
+        {
+          "nom": "jack-russell",
+          "sujet": "jack russell",
+          "cellule": [
+            0,
+            990,
+            635,
+            1536
+          ],
+          "taille": [
+            900,
+            560
+          ]
+        },
+        {
+          "nom": "cupcake",
+          "sujet": "cupcake",
+          "cellule": [
+            635,
+            990,
+            1024,
+            1536
+          ],
+          "taille": [
+            397,
+            430
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "planche-2.png",
+      "sujets": [
+        {
+          "nom": "tasse-2",
+          "sujet": "tasse 2",
+          "cellule": [
+            0,
+            0,
+            550,
+            480
+          ],
+          "taille": [
+            900,
+            877
+          ]
+        },
+        {
+          "nom": "tasse-coeur",
+          "sujet": "tasse coeur",
+          "cellule": [
+            550,
+            0,
+            1024,
+            480
+          ],
+          "taille": [
+            900,
+            840
+          ]
+        },
+        {
+          "nom": "gateau",
+          "sujet": "gateau",
+          "cellule": [
+            0,
+            480,
+            590,
+            980
+          ],
+          "taille": [
+            769,
+            900
+          ]
+        },
+        {
+          "nom": "cupcake-bougie",
+          "sujet": "cupcake bougie",
+          "cellule": [
+            590,
+            480,
+            1024,
+            1018
+          ],
+          "taille": [
+            397,
+            577
+          ]
+        },
+        {
+          "nom": "citron-2",
+          "sujet": "citron 2",
+          "cellule": [
+            0,
+            980,
+            450,
+            1536
+          ],
+          "taille": [
+            486,
+            751
+          ]
+        },
+        {
+          "nom": "tarte-pommes",
+          "sujet": "tarte pommes",
+          "cellule": [
+            450,
+            1018,
+            1024,
+            1536
+          ],
+          "taille": [
+            900,
+            571
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "planche-3.png",
+      "sujets": [
+        {
+          "nom": "pomme",
+          "sujet": "pomme",
+          "cellule": [
+            0,
+            0,
+            512,
+            515
+          ],
+          "taille": [
+            521,
+            900
+          ]
+        },
+        {
+          "nom": "pomme-2",
+          "sujet": "pomme 2",
+          "cellule": [
+            512,
+            0,
+            1024,
+            500
+          ],
+          "taille": [
+            704,
+            622
+          ]
+        },
+        {
+          "nom": "orange",
+          "sujet": "orange",
+          "cellule": [
+            0,
+            515,
+            560,
+            945
+          ],
+          "taille": [
+            665,
+            595
+          ],
+          "composante_principale": true
+        },
+        {
+          "nom": "orange-2",
+          "sujet": "orange 2",
+          "cellule": [
+            560,
+            500,
+            1024,
+            1000
+          ],
+          "taille": [
+            452,
+            900
+          ]
+        },
+        {
+          "nom": "carotte",
+          "sujet": "carotte",
+          "cellule": [
+            0,
+            920,
+            520,
+            1536
+          ],
+          "taille": [
+            290,
+            900
+          ],
+          "composante_principale": true
+        },
+        {
+          "nom": "noix",
+          "sujet": "noix",
+          "cellule": [
+            520,
+            1000,
+            1024,
+            1536
+          ],
+          "taille": [
+            832,
+            327
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "planche-4.png",
+      "sujets": [
+        {
+          "nom": "ble",
+          "sujet": "ble",
+          "cellule": [
+            0,
+            0,
+            510,
+            630
+          ],
+          "taille": [
+            215,
+            400
+          ]
+        },
+        {
+          "nom": "cannelle",
+          "sujet": "cannelle",
+          "cellule": [
+            510,
+            0,
+            1024,
+            630
+          ],
+          "taille": [
+            702,
+            900
+          ]
+        },
+        {
+          "nom": "vanille",
+          "sujet": "vanille",
+          "cellule": [
+            0,
+            630,
+            555,
+            1050
+          ],
+          "taille": [
+            484,
+            556
+          ]
+        },
+        {
+          "nom": "oeufs",
+          "sujet": "oeufs",
+          "cellule": [
+            555,
+            630,
+            1024,
+            1050
+          ],
+          "taille": [
+            490,
+            435
+          ]
+        },
+        {
+          "nom": "sables-etoiles",
+          "sujet": "sables etoiles",
+          "cellule": [
+            0,
+            1050,
+            490,
+            1536
+          ],
+          "taille": [
+            582,
+            782
+          ]
+        },
+        {
+          "nom": "guirlande",
+          "sujet": "guirlande",
+          "cellule": [
+            490,
+            1050,
+            1024,
+            1536
+          ],
+          "taille": [
+            1800,
+            400
+          ]
+        }
+      ]
+    }
+  ],
+  "provenance": "Images originales générées pour ce projet le 19 octobre 2026 ; planches 2–4 guidées par la planche 1 pour conserver le même style. Aucun dessin tiers utilisé comme source visuelle."
+}

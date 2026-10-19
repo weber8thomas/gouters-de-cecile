@@ -1,71 +1,93 @@
-# Reprise du 18 octobre 2026
+# Reprise — état au 19 octobre 2026
 
-## Décisions confirmées
+## Décisions et sauvegarde
 
-- Livraison vendredi 23 octobre : ordinateur en HDMI sur TV 1920×1080, navigation clavier.
-- Couverture **f**, cachet de cire « 30 », retenue et cuite.
-- Continuer avec les médias de démonstration ; aucun nouveau média réel ni animation IA autorisée à publier pour le moment.
-- Priorité : consolider, corriger bordure/lumière puis aquarelle, avant chiens et surprises.
-- L’utilisateur autorise sous-agents, modifications du code, Git et publication ; cela supplante les interdits historiques correspondants de CONTRACT.md.
-- Le quota descend rapidement : ne pas multiplier les agents, finir les contrôles pertinents puis sauvegarder. Une reprise nécessite un nouveau message de l’utilisateur ; aucune relance automatique n’est programmée.
+- Démo vendredi 23 octobre : ordinateur en HDMI sur TV 1920×1080, navigation clavier.
+- Couverture f avec cachet de cire « 30 » ; médias de démonstration uniquement.
+- Dernière priorité donnée : harmoniser tous les dessins, remplacer les papillons par des chiens avec
+  un Jack Russell en vedette, corriger couverture/ouverture et éclairage du papier, gâteau et citrons.
+- Modifications, sous-agents, Git et publication autorisés. Limiter les agents et les contrôles longs
+  pour économiser le quota. Cette reprise a utilisé deux agents spécialisés existants.
+- Branche de sauvegarde : `codex/reprise-v8`. `main` reste au commit initial ; ne pas y chercher le site.
+- Aperçu : https://weber8thomas.github.io/gouters-de-cecile/essais/reprise-v8/
+- Aucun redémarrage automatique après épuisement du quota n'est programmé ; la reprise nécessite un
+  nouveau message de l'utilisateur. Ces documents et GitHub permettent de reprendre sans réaudit.
 
-Sauvegarde GitHub : branche `codex/reprise-v8`. Le bilan fourni est archivé dans [bilan-claude-2026-10-18.md](bilan-claude-2026-10-18.md).
+## Travail intégré
 
-## Sources et intégration
+Base : `feat/epic-wright-58442e` 2a47969, puis dessins et anniversaire fusionnés. Historique initial
+et bilan fourni : [bilan de Claude](bilan-claude-2026-10-18.md). Stratégie : [plan v8](plan-v8.md).
 
-Le cloud ne récupérait que main, restée au commit initial aa52e4f. Les sources étaient bien sur GitHub.
-Base récupérée : feat/epic-wright-58442e, commit 2a47969 (finitions, mobile2, magie, lumière et sons déjà fusionnés).
+### Série graphique anglaise
 
-- essai/dessins d4b93b2 intégré par 952b2f1 ; vitesse commune conservée au lieu du facteur constant.
-- essai/anniversaire f69703f intégré par c1784c1 ; blocs ornement et cartouche conservés ensemble.
-- Inventaire des actifs régénéré ; couverture f et correction des lumières précalculées incluses.
-- API vitesse commune : src/lib/vitesse.ts ; Magie et Aquarelle la lisent.
+Les 23 illustrations employées dans le livre ont été remplacées ensemble, plus un Jack Russell :
+crayon fin et aquarelle mate, porcelaine florale crème, couleurs douces. Cookies, fruits, gâteaux et
+vaisselle partagent maintenant la même direction. Originaux et cadrages sont versionnés ; aucun
+appel de génération requis au build. Voir [sources et reconstruction](../design-system/sources/illustrations/v9/README.md).
 
-## Défauts identifiés et travail effectué
+Les anciens masques de parties et leurs fonds sont retirés et ne peuvent plus être recréés sur la
+nouvelle série. Les citrons restent entiers, sans saut, rotation, écrasement ni flexion. Les autres
+pâtisseries utilisent des gestes rigides discrets ; vapeur et flammes sont recalées sur les dessins.
+Le grand gâteau a cinq bougies. La part de gâteau a une bougie éteinte, sans fausse flamme.
 
-- Les images Cycles dessinaient un biseau virtuel décalé du livre réel. Le compositeur corrige l’anneau des cartons en conservant l’ombre de table, et étend la contribution de la bougie sur le papier.
-- Les calques sources de cette correction sont sauvegardés dans scripts/lumiere3d/calques-cycles-v1.zip ; retouche reproductible et idempotente avec composer.py --retoucher-cuisson, sans les anciens rendus de 332 Mo.
-- Aquarelle : retrait de la déformation au pointeur et de la brillance artificielle, révélation du pigment d’origine plus progressive, scènes autonomes et vitesse commune conservées. Vérifier le rapport final avant de déclarer ce lot validé.
-- Folio 8 = dedicace, gauche du sommaire : la fleur bleue a disparu avec anniversaire. Folio 10 = gateaux-gauche : frontispice décoré avec dessins. Captures inspectées ; aucun chevauchement du titre.
-- Le grand gâteau rose de la dédicace reste trop plat et saturé : prochaine retouche graphique utile.
-- Le workflow initial écrasait gh-pages et supprimait les essais. Nouveau publish-pages.mjs : parent/historique et essais conservés, push sans force, refus des courses concurrentes. Quatre tests d’intégration passent.
-- Faux échec verify-site : Vite déduplique les tuiles sans encre identiques. Le contrôle vérifie désormais SHA-256 plutôt que le nom de chaque copie.
+Le Jack Russell remplace les papillons et la coccinelle actifs. Son trajet terrestre réserve une zone
+libre d'encre, d'objets et de photos pour le chien et sa bulle anglaise. Pas de route sûre : pas de
+chien. Une seule pose source pour l'instant, pas encore une collection de poses variées ni le lapin.
 
-## Vérification et reprise
+### Ouverture et lumière
 
-npm ci et dépendances Python épinglées installés. Le build:site fusionné puis corrigé passe (TypeScript inclus).
-Avant les corrections visuelles, verify-site a validé 57 contrôles et signalé le faux échec de déduplication décrit ci-dessus ; aucun échec réseau ou JavaScript sur iPhone couché, ordinateur et TV.
-Contrôles finaux terminés : site TV 34 OK / 0 KO ; lumière 31 OK / 0 KO ; aquarelle (autonomie et iPhone) 10 OK / 0 KO ; publication 4 tests OK. Serveur de développement : HTTP 200, un livre rendu, aucune exception ni ressource en erreur.
-Réglages TV : 55 OK, 2 KO, 2 INFO (code 1), exécutés en repli --sans-webgl ; effets WebGL vérifiés séparément. Deux cas restent à isoler, sans conclure encore à un défaut de l’application plutôt que du scénario :
-1. Après la longue séquence du menu, aucun geste page ne démarre dans la mesure de vitesse ; état constaté double=0, hash=#titre. Le feuilletage après une simple ouverture/fermeture du menu fonctionne (Julie → Biscuits).
-2. Le scénario de migration v3 « lente » attend 70 % mais le menu affiche 100 %. Examiner l’injection par ouvrirPage/initReglages : un v4 de test peut primer sur l’ancienne clé avant migration.
-La vitesse stockée est vérifiée : 150 % = 960 ms ; 100 % = 1313 ms ; 70 % = 1698 ms. Les curseurs, focus, zoom, son, persistance et résistance à localStorage indisponible passent.
-Le run initial avec WebGL logiciel a été interrompu pour lenteur. Le runner --sans-webgl n’exige pas 30 i/s pour démarrer sa mesure fonctionnelle et échoue immédiatement si un geste n’a pas démarré/terminé, au lieu d’enchaîner des délais inutiles.
-La version publique et main ne sont pas remplacées : résoudre ces deux échecs puis relancer la validation avant publication.
-Rapports : verification/out/v8/site-final/site.json, verification/out/lumiere-v8/lumiere-v8.json, verification/out/dessins-v8-final/dessins.json. Les captures ne prouvent ni la lisibilité à 3 m ni la fluidité de la TV réelle.
+L'ancien rendu Cycles projetait une silhouette fixe du livre, décalée durant l'ouverture. Il ne sert
+plus qu'à éclairer la table vide. La lumière du papier est montée dans les faces réelles, sous
+l'encre ; elle suit leurs rotations et leurs zooms. Les ombres physiques du livre sont rétablies.
+La bougie éclaire davantage le bas gauche et son vacillement pilote cette contribution. Le mode
+réduit et l'arrêt du feu restent fixes. Aucun nouveau rendu Blender coûteux n'a été lancé.
 
-Commandes : npm run dev ; npm run build:site ; GC_CHROME=/usr/bin/chromium node scripts/verify-site.mjs --site dist/site --only tv-1080 ; node --test scripts/tests/publish-pages.test.mjs.
-Ne pas lancer de mesures de fluidité en parallèle. Le cloud a quatre cœurs CPU effectifs et utilise Chromium logiciel.
+### Publication
 
-## Reprendre maintenant
+Le workflow officiel Pages et `scripts/publish-pages.mjs` conservent l'historique et les essais, sans
+push forcé. Ce script publie la racine du site : ne pas l'utiliser pour une simple mise à jour de
+l'aperçu. Celui-ci est publié sous `essais/reprise-v8/` seulement, en conservant les autres chemins.
+Commande d'aperçu : `python3 scripts/publish-preview.py` après validation ; les vérifications
+comparent les arbres Git, le préfixe modifié et le commit distant après push.
 
-1. Partir de codex/reprise-v8 et lire le présent document ainsi que le bilan archivé.
-2. Isoler les deux cas de verify-reglages, en enregistrant page, focus et état du menu avant/après Home/End et avant ArrowRight ; distinguer erreur du test et défaut réel.
-3. Relancer avec un dossier de résultat et un journal uniques : GC_CHROME=/usr/bin/chromium node scripts/verify-reglages.mjs --site dist/site --only tv-1080 --sans-webgl --out verification/out/v8/reglages-reprise.
-4. Une fois validé, pousser la consolidation vers main puis publier selon les instructions ci-dessous. Ne pas recréer les fonctionnalités déjà intégrées ni relancer tous les agents.
+## Vérifications
 
-## Publication et limites
+- Dépendances installées avec versions verrouillées ; build Vite et TypeScript passent.
+- Lumière : vraie ouverture et fermeture au clavier aux trois distances, aucune silhouette figée ;
+  contribution sur papier +31,3 niveaux RGB médians, contraste de la même encre 4,59 → 6,01:1.
+  Vacillement natif confirmé : variation d'opacité papier 0,1717 en 2,2 s. Modes réduit/feu désactivé OK.
+- Rapports lumière : `verification/out/lumiere-v9/` ; illustrations :
+  `verification/out/harmonisation-v9/serie.png` et `verification/out/dessins-v9/`.
+- Contrôle final du site et tests ciblés citrons/chien : résultats à compléter après exécution.
 
-Publication locale : node scripts/publish-pages.mjs, après build et validation. La commande conserve les essais existants.
-Automatisation officielle : Settings → Pages → Source → GitHub Actions ; autoriser main si l’environnement github-pages limite les branches. L’API Pages n’est pas accessible avec l’authentification injectée actuelle ; aucun nouveau jeton n’a été demandé.
+Contrôles précédents : site TV 34 OK, dessins autonomie/iPhone 10 OK, publication 4 tests OK.
+Deux cas de la longue suite réglages restent à isoler, sans lien démontré avec les défauts visuels :
+1. Mesure de vitesse après une longue navigation du menu : aucun tour ne démarre. Le tour après une
+   simple ouverture/fermeture du menu fonctionne (Julie → Biscuits).
+2. Migration v3 « lente » attend 70 %, mais le scénario affiche 100 % ; l'injection v4 du test peut primer.
+Ne pas prétendre que cette suite est entièrement verte. Vitesse stockée mesurée : 150 %=960 ms,
+100 %=1313 ms, 70 %=1698 ms. Autres curseurs, focus, zoom, son et persistance passent.
 
-Le proxy cloud bloque actuellement l’URL GitHub Pages et Hugging Face. Les contrôles du site sont locaux ; ne pas prétendre avoir vérifié le déploiement public. Le brouillon réseau prévoit les domaines requis, à enregistrer dans les réglages de l’environnement pour les appliquer.
-Les modèles d’écriture ne sont pas tous téléchargés à cause de ce blocage. Cela ne bloque pas l’application ni la couverture aux tracés figés, mais la génération de nouveaux textes doit être réessayée après ouverture réseau : bash tools/ecriture/telecharger.sh.
+## Reprendre
 
-Restent au plan v8 : dessins anglais/Jack Russell, surprise lapin-carotte, vrais clips après collecte et accords, gâteau de dédicace, écoute audio, essai physique TV et Safari/iPhone. Le budget de 44 calques n’est pas encore revalidé. Papier : format écran 17×24 et export A5 existent séparément ; confirmer le choix avant impression.
+Partir de `codex/reprise-v8`, lire ce document, puis regarder l'aperçu avant de relancer du travail.
+Ne pas régénérer les illustrations ni relancer un audit complet sans nouvelle raison.
 
-## Aperçu visuel publié séparément
+```sh
+npm ci
+npm run build:site
+GC_CHROME=/usr/bin/chromium node scripts/verify-site.mjs --site dist/site --only tv-1080
+GC_CHROME=/usr/bin/chromium node scripts/verify-dessins.mjs --site dist/site --suites citron,creature --out verification/out/dessins-v9
+GC_CHROME=/usr/bin/chromium node scripts/verify-lumiere-v8.mjs --site dist/site
+```
 
-À la demande de voir l’état actuel, un aperçu a été poussé uniquement sous `essais/reprise-v8/` de gh-pages (commit 514459a). Les fichiers de la version principale et les anciens essais sont inchangés, vérifiés par comparaison des arbres Git. URL : https://weber8thomas.github.io/gouters-de-cecile/essais/reprise-v8/ ; version 20261018T173648, source 97eb352.
+Éviter les mesures de fluidité en parallèle : Chromium utilise le rendu logiciel sur quatre cœurs.
+Les captures ne prouvent ni la fluidité de la TV réelle ni la lisibilité à trois mètres. Essai physique
+HDMI et Safari/iPhone toujours utiles. Budget de 44 calques à revalider si d'autres effets sont ajoutés.
+Le proxy cloud refuse actuellement GitHub Pages (CONNECT 403) : le build et le sous-chemin sont
+contrôlés localement, la publication vérifiée dans Git, sans prétendre avoir vu le site public.
 
-Le sous-chemin a été vérifié localement : HTTP 200, #julie ouvre Julie, aucune erreur JavaScript ou ressource manquante. Le proxy du cloud refuse toujours la connexion au domaine GitHub Pages (CONNECT 403) : le déploiement public n’a pas été vérifié. Le lien d’essai ne vaut pas validation des deux scénarios de réglages restants.
+Le brouillon réseau prévoit Pages et Hugging Face, mais n'est appliqué qu'après enregistrement et
+publication de l'environnement. Les modèles d'écriture manquants ne bloquent pas le carnet déjà cuit.
+À suivre : variations de poses du chien, surprise lapin-carotte, écoute audio, vrais clips après collecte
+et accords. Pour impression, préciser le choix entre le carnet écran 17×24 et l'export A5 séparé.

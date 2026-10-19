@@ -2,8 +2,6 @@ import React from 'react';
 import { LazyMotion, domMax, m, useTransform } from '../../lib/motion';
 import { flammeBougie, useFeu } from '../../lib/feu';
 import { assetInfo, cssUrl } from '../../lib/assets';
-import { useSettings } from '../../lib/settings';
-import { zoomLivre } from '../../lib/camera';
 import tracee from './tracee.json';
 import './Lumiere.css';
 
@@ -29,7 +27,7 @@ const reglage = (i: number, base: number, pente: number, min: number, max: numbe
  * livre au repos, côté opposé : un calque, opacité + translation, qui suit la flamme.
  */
 export function LumiereTable() {
-  return LUMIERE_TRACEE ? null : <LumiereTableCss />;
+  return LUMIERE_TRACEE ? <LumiereTracee /> : <LumiereTableCss />;
 }
 
 function LumiereTableCss() {
@@ -55,7 +53,25 @@ function LumiereTableCss() {
  * son contraste : scripts/verify-lumiere.mjs).
  */
 export function LumiereLivre() {
-  return LUMIERE_TRACEE ? <LumiereTracee /> : <LumiereLivreCss />;
+  // Le transport du livre ne peut pas être projeté sur un rectangle d'écran : la couverture et les
+  // feuilles se déplacent. Leur lumière est maintenant dans leurs surfaces (LumierePapier).
+  return LUMIERE_TRACEE ? null : <LumiereLivreCss />;
+}
+
+/** Lumière reçue par le papier, SOUS l'encre et les objets collés. Chaque copie de la face tournée
+ * emporte le même éclairage : aucun rectangle de lumière ne peut rester sur la table découverte.
+ * La chaleur vient d'une lumière ambrée sur le papier, jamais d'un voile clair sur les glyphes.
+ */
+export function LumierePapier({ side }: { side: 'left' | 'right' }) {
+  // Une flamme basse laisse la pénombre revenir ; une flamme haute éclaire franchement le coin.
+  // flammeBougie est la même valeur que la toile WebGL, figée à 1 en modes réduit / feu désactivé.
+  const opacite = useTransform(flammeBougie, v => reglage(v, 0.7, 1.7, 0.16, 0.96));
+  return (
+    <div className={`gc-lumiere-papier gc-lumiere-papier--${side}`} data-gc-lumiere-surface="papier" aria-hidden="true">
+      <div className="gc-lumiere-papier__penombre" />
+      <m.div className="gc-lumiere-papier__bougie" data-gc-lumiere="papier-bougie" style={{ opacity: opacite }} />
+    </div>
+  );
 }
 
 function LumiereLivreCss() {
@@ -102,18 +118,13 @@ function OmbreFeuCss({ className }: OmbreFeuProps) {
   );
 }
 
-// ---- Éclairage tracé (scripts/lumiere3d : Cycles) ------------------------------------------------
-// La table, le livre et les trois lumières (bougie, cheminée, pénombre de la pièce) rendus par lancer de
-// rayons, pour chaque cran de distance et chaque état du livre ; les calques remplacent alors le bain, le
-// voile, l'ambiance, la pénombre de la table et les ombres génériques du livre. Par état : un calque
-// statique (la lumière au plus fort : il assombrit, teinte, éclaircit le bois près de la bougie) et deux
-// voiles noirs dont l'opacité suit la flamme de la bougie et le feu. Le CSS montre l'état courant du
-// livre (fondu à l'ouverture, à la fermeture, à l'arrivée sur la table vide).
+// ---- Table tracée (scripts/lumiere3d : Cycles) ---------------------------------------------------
+// Seule la table vide est une surface immobile : son fond + ses deux variations restent sous le livre.
+// Les anciennes silhouettes Cycles du livre sont conservées dans les sources mais ne sont plus
+// projetées à l'écran. Le papier reçoit sa lumière dans Face, et le livre porte ses propres ombres.
 
 /** Vrai quand les calques tracés sont cuits (design-system/baked/lumiere/). */
 export const LUMIERE_TRACEE = !!assetInfo('lumiere/vide');
-
-const ETATS = ['vide', 'couverture', 'arriere', 'ouvert'] as const;
 
 /**
  * Sur la table, au-delà de la marge des calques tracés (écran d'une autre forme que la scène : la table
@@ -122,10 +133,9 @@ const ETATS = ['vide', 'couverture', 'arriere', 'ouvert'] as const;
  * mais gonflait le calque de la lumière à 10 720 px de côté : des centaines de Mo sur un téléphone.)
  */
 export function PenombreTable() {
-  const { distance } = useSettings();
   if (!LUMIERE_TRACEE) return null;
   const { marge, bords } = tracee as { marge: number; bords: Record<string, number[]> };
-  const [r, g, b, a] = bords[`${distance}-ouvert`] ?? bords.vide ?? [0, 0, 0, 0];
+  const [r, g, b, a] = bords.vide ?? [0, 0, 0, 0];
   const style = {
     '--gc-lumiere-marge': `${marge}px`,
     borderColor: `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${a})`,
@@ -134,7 +144,6 @@ export function PenombreTable() {
 }
 
 function LumiereTracee() {
-  const { distance } = useSettings();
   const { intensite } = useFeu();
   // feu : part de la cheminée 0,8 + 0,5 (i − 1), entre 0,6 et 1 ; le voile noir vaut sa baisse à 0,6
   const feuOp = useTransform(intensite, (i) => r4(borne((0.2 - 0.5 * (i - 1)) / 0.4, 0, 1)));
@@ -145,19 +154,12 @@ function LumiereTracee() {
   return (
     <LazyMotion features={domMax}>
       <div className="gc-lumiere gc-lumiere--tracee" aria-hidden="true">
-        {ETATS.map((e) => {
-          const nom = e === 'vide' ? 'vide' : `${distance}-${e}`;
-          if (!assetInfo(`lumiere/${nom}`)) return null;
-          // le livre rendu à l'échelle 1 : ses calques suivent le zoom fin de la caméra (même centre)
-          return (
-            <m.div key={e} className="gc-lumiere-tracee" data-gc-lumiere-etat={e} style={e === 'vide' ? undefined : { scale: zoomLivre }}>
-              {/* au-delà des calques (téléphone, tablette) : PenombreTable, sur la table */}
-              <div className="gc-lumiere-tracee__fond" style={{ ...boite, backgroundImage: cssUrl(`lumiere/${nom}`) }} />
-              <m.div className="gc-lumiere-tracee__voile" data-gc-lumiere="feu" style={{ ...boite, backgroundImage: cssUrl(`lumiere/${nom}-feu`), opacity: feuOp }} />
-              <m.div className="gc-lumiere-tracee__voile" data-gc-lumiere="bougie" style={{ ...boite, backgroundImage: cssUrl(`lumiere/${nom}-bougie`), opacity: bougieOp }} />
-            </m.div>
-          );
-        })}
+        {/* La table seule reste ancrée au monde ; aucun changement d'état ni zoom du livre. */}
+        <div className="gc-lumiere-tracee" data-gc-lumiere-etat="vide">
+          <div className="gc-lumiere-tracee__fond" style={{ ...boite, backgroundImage: cssUrl('lumiere/vide') }} />
+          <m.div className="gc-lumiere-tracee__voile" data-gc-lumiere="feu" style={{ ...boite, backgroundImage: cssUrl('lumiere/vide-feu'), opacity: feuOp }} />
+          <m.div className="gc-lumiere-tracee__voile" data-gc-lumiere="bougie" style={{ ...boite, backgroundImage: cssUrl('lumiere/vide-bougie'), opacity: bougieOp }} />
+        </div>
       </div>
     </LazyMotion>
   );
