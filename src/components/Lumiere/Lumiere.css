@@ -227,6 +227,7 @@
 }
 
 .gc-lumiere-papier__penombre,
+.gc-lumiere-papier__clarte,
 .gc-lumiere-papier__bougie {
   position: absolute;
   inset: 0;
@@ -235,10 +236,17 @@
 
 .gc-lumiere-papier__penombre {
   /* Ambiance du soir adoucie : garde la chaleur et le grain du papier sans le noyer ni le verdir. */
-  opacity: 0.22;
+  opacity: 0.02;
   background: linear-gradient(112deg,
     color-mix(in srgb, var(--gc-chocolate) 68%, var(--gc-ink-noire)),
     color-mix(in srgb, var(--gc-chocolate) 42%, var(--gc-ink-noire)));
+}
+
+.gc-lumiere-papier__clarte {
+  background: radial-gradient(ellipse 140% 130% at 38% 52%,
+    var(--gc-paper-lit) 0%,
+    color-mix(in srgb, var(--gc-paper-lit) 75%, transparent) 65%,
+    transparent 100%);
 }
 
 .gc-lumiere-papier--left .gc-lumiere-papier__bougie {

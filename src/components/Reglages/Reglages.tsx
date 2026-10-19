@@ -729,7 +729,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                       min={LUMINOSITE_MIN}
                       max={LUMINOSITE_MAX}
                       pas={LUMINOSITE_PAS}
-                      repere={1}
+                      repere={1.5}
                       principal
                       libelle="Luminosité"
                       texte={pourcent(r.luminosite)}
@@ -743,7 +743,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                       min={ECLAT_BOUGIE_MIN}
                       max={ECLAT_BOUGIE_MAX}
                       pas={ECLAT_BOUGIE_PAS}
-                      repere={1}
+                      repere={2}
                       principal
                       libelle="Éclat de la bougie"
                       texte={pourcent(r.eclatBougie)}

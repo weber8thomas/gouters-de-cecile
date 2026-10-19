@@ -22,13 +22,13 @@ export const VITESSE_ANIMATIONS_MIN = 0.25;
 export const VITESSE_ANIMATIONS_MAX = 2;
 /** Pas des réglettes du menu (5 %). */
 export const VITESSE_PAS = 0.05;
-/** Luminosité générale de la scène et des pages (50 % à 150 %, défaut 100 %). */
+/** Luminosité générale de la scène et des pages (50 % à 300 %, défaut 150 %). */
 export const LUMINOSITE_MIN = 0.5;
-export const LUMINOSITE_MAX = 1.5;
+export const LUMINOSITE_MAX = 3;
 export const LUMINOSITE_PAS = 0.05;
-/** Intensité et vacillement de l'éclat de la bougie (25 % à 200 %, défaut 100 %). */
+/** Intensité et vacillement de l'éclat de la bougie (25 % à 400 %, défaut 200 %). */
 export const ECLAT_BOUGIE_MIN = 0.25;
-export const ECLAT_BOUGIE_MAX = 2;
+export const ECLAT_BOUGIE_MAX = 4;
 export const ECLAT_BOUGIE_PAS = 0.05;
 /**
  * L'ancien choix « vive · normale · lente » (champ `vitesse`, relu des clés v1 à v3) en vitesse des animations :
@@ -90,9 +90,9 @@ export interface Reglages {
   ambiance: boolean | null;
   /** La lumière du feu vacille (lot L, src/lib/feu.ts) ; false : lumière chaude mais immobile. */
   feu: boolean;
-  /** Luminosité générale des pages et de la table, de 0,5 à 1,5 (50 à 150 %). Défaut : 1 (100 %). */
+  /** Luminosité générale des pages et de la table, de 0,5 à 3 (50 à 300 %). Défaut : 1,5 (150 %). */
   luminosite: number;
-  /** Éclat et vacillement de la bougie sur les pages, de 0,25 à 2 (25 à 200 %). Défaut : 1 (100 %). */
+  /** Éclat et vacillement de la bougie sur les pages, de 0,25 à 4 (25 à 400 %). Défaut : 2 (200 %). */
   eclatBougie: number;
   /**
    * Tous les sons coupés d'un coup (bouton haut-parleur, src/components/Haut-parleur) : sons du livre
@@ -142,8 +142,8 @@ export const REGLAGES_DEFAUT: Reglages = {
   sonsLivre: true,
   ambiance: true,
   feu: true,
-  luminosite: 1,
-  eclatBougie: 1,
+  luminosite: 1.5,
+  eclatBougie: 2,
   muet: false,
   musique: 'toutes',
   musiqueActive: true,
@@ -196,6 +196,10 @@ function charger(): Reglages {
           delete o.musiqueActive;
           delete o.musique;
         }
+      }
+      if (o.luminosite === 1 && o.eclatBougie === 1) {
+        delete o.luminosite;
+        delete o.eclatBougie;
       }
       return valider(o);
     }
