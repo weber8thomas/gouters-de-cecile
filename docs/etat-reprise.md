@@ -6,6 +6,8 @@
 - Couverture f avec cachet de cire « 30 » ; médias de démonstration uniquement.
 - Dernière priorité donnée : harmoniser tous les dessins, remplacer les papillons par des chiens avec
   un Jack Russell en vedette, corriger couverture/ouverture et éclairage du papier, gâteau et citrons.
+- Direction confirmée par l'utilisateur : style anglais ancien et doux, **avec beaucoup d'animations**.
+  Les citrons doivent bouger de manière naturelle et fluide ; un frémissement à peine visible ne suffit pas.
 - Modifications, sous-agents, Git et publication autorisés. Limiter les agents et les contrôles longs
   pour économiser le quota. Cette reprise a utilisé deux agents spécialisés existants.
 - Branche de sauvegarde : `codex/reprise-v8`. `main` reste au commit initial ; ne pas y chercher le site.
@@ -26,8 +28,11 @@ vaisselle partagent maintenant la même direction. Originaux et cadrages sont ve
 appel de génération requis au build. Voir [sources et reconstruction](../design-system/sources/illustrations/v9/README.md).
 
 Les anciens masques de parties et leurs fonds sont retirés et ne peuvent plus être recréés sur la
-nouvelle série. Les citrons restent entiers, sans saut, rotation, écrasement ni flexion. Les autres
-pâtisseries utilisent des gestes rigides discrets ; vapeur et flammes sont recalées sur les dessins.
+nouvelle série. Deux nouveaux masques sont construits sur les composantes alpha réelles de chaque
+citron : fruit avec sa feuille, et tranche, avec toutes leurs franges. Leur fond est transparent et
+leur recomposition évite les doubles contours. Les autres dessins restent entiers. Après le retour
+utilisateur, la cadence et la variété des scènes sont renforcées : accélération et arrêt progressifs,
+roulement borné des citrons sur leur appui, vapeur et flammes plus présentes, gestes des pâtisseries.
 Le grand gâteau a cinq bougies. La part de gâteau a une bougie éteinte, sans fausse flamme.
 Le gâteau et les deux guirlandes de l'introduction, jusque-là incorporés à l'encre, ont aussi été
 remplacés. Migration des encres 1×/2×/4× avec conservation exacte de tous les pixels hors des dessins ;
@@ -62,8 +67,14 @@ comparent les arbres Git, le préfixe modifié et le commit distant après push.
 - Rapports lumière : `verification/out/lumiere-v9/` ; illustrations :
   `verification/out/harmonisation-v9/serie.png` et `verification/out/dessins-v9/`.
 - Site TV sur Julie, Biscuits et Sommaire : **36 OK, 0 KO**, aucune ressource en erreur.
-- Citrons et chien : **6 OK, 0 KO**. Chien agrandi ensuite de 7 à 9 % de hauteur de page ; réserve
-  portée à 17 % (chien+bulle 16,05 %), deux pistes sûres conservées sur l'encre réelle de Biscuits.
+- Chien : trajet terrestre, déplacement, arrêt/bulle spontanés et réponse au toucher vérifiés.
+  Taille portée à 9 % de hauteur de page ; réserve de 17 % (chien+bulle 16,05 %), deux pistes sûres
+  conservées sur l'encre réelle de Biscuits.
+- Nouveau mouvement des citrons : masques chargés en vrai ; 86 poses WebGL rendues sur un cycle de
+  6,02 s. Séquence et planche inspectées, aucun double contour ni morceau coupé. Angle maximal 5,90°,
+  déplacement ≤2 % de hauteur d'image, ligne de sol conservée. Continuité des scènes et raccords
+  vérifiée ; écart numérique de dérivée maximal 1,25e-5. Le premier test « zéro parties » était devenu
+  obsolète avec la demande d'animation naturelle et a été remplacé par des contrôles d'appui et de rigidité.
 - Lumière : 15 contrôles d'ouverture/fermeture, 4 contrôles papier/réduit/arrêt du feu, un contrôle de
   vacillement natif. Les deux anciens critères erronés (RGB d'une encre translucide et horloge du
   simulateur) ont été corrigés ; nouveaux rapports ciblés sans échec.
@@ -76,7 +87,9 @@ comparent les arbres Git, le préfixe modifié et le commit distant après push.
 - Rapports actuels : `verification/out/harmonisation-v9/site-final/site.json`,
   `verification/out/harmonisation-v9/lumiere/lumiere-surfaces-suite.json`,
   `verification/out/lumiere-v9/lumiere-surfaces-suite.json` (vacillement),
-  `verification/out/dessins-v9/dessins.json`.
+  `verification/out/dessins-v9/dessins.json` (chien), `verification/out/citron-final/dessins.json`.
+  Film déterministe : `verification/out/citron-vivant/citron-continu.webp` ; il montre les poses du
+  moteur, pas une mesure de FPS sur le matériel de présentation.
 
 Contrôles précédents : site TV 34 OK, dessins autonomie/iPhone 10 OK, publication 4 tests OK.
 Deux cas de la longue suite réglages restent à isoler, sans lien démontré avec les défauts visuels :

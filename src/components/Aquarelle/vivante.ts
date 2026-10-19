@@ -19,6 +19,7 @@ import { facteurAnimations } from '../../lib/vitesse';
 import { EFFETS, SCENES_PAGE, type Effets } from './effets';
 import { REPOS, SCENES, poseNeutre, type Ctx, type Fx } from './scenes';
 import { essaimDe, PAROLES, type Essaim } from './creatures';
+import partiesJson from './parties.json';
 
 export type { Effets } from './effets';
 
@@ -28,14 +29,15 @@ interface PartieInfo {
   boite: [number, number, number, number];
   rayon: number;
 }
-/** Les masques de l'ancienne série ne correspondent plus aux illustrations : aucune découpe. */
-export const partiesDe = (_nom: string): PartieInfo[] => [];
+const PARTIES = partiesJson as unknown as Record<string, { serie: string; parties: PartieInfo[] }>;
+/** Seuls les deux nouveaux masques validés de la série anglaise peuvent séparer fruit et tranche. */
+export const partiesDe = (nom: string): PartieInfo[] => ['citron', 'citron-2'].includes(nom) && PARTIES[nom]?.serie === 'anglaise-v9' ? PARTIES[nom].parties : [];
 
 /** Débord de la boîte de chaque aquarelle autour de sa zone (fractions de la zone) : gauche, haut, droite, bas. */
 export const DEBORD = [0.15, 0.5, 0.15, 0.08] as const;
 
 /** Teinte du papier (bake-aquarelles.py, PAPIER) : le pigment que le moteur ajoute est posé dessus. */
-const PAPIER = [0.9, 0.857, 0.737] as const;
+const PAPIER = [0.960, 0.940, 0.880] as const;
 
 /**
  * Le pas de temps des animations (ms) : le SEUL endroit où leur temps avance, borné (un onglet qui se
@@ -87,6 +89,7 @@ uniform vec4 fl[${MAX_FLAMMES}];   // flammes : x, y, rayon, intensité
 uniform vec4 flv[${MAX_FLAMMES}];  // flammes : penche, fumée
 uniform vec4 ef;                // vent, 0, nombre de flammes, 0
 uniform vec4 fa;                // fanions : y de la ficelle, creux, force
+uniform vec2 faE;               // extrémités de la ficelle dans la nouvelle image
 uniform vec4 ge,geB;            // gerbe : x, y, largeur, âge ; élan, sol, x, y de la couleur
 uniform vec4 on;                // ondes : x, y, rayon, âge
 uniform vec4 cf;                // confettis : x, y, largeur, âge
@@ -164,13 +167,13 @@ void main(){
   vec3 lu=vec3(.3,.59,.11);
   // fanions : la ficelle ondule (fixe aux deux bouts), chaque fanion se balance sous elle
   if(fa.z>0.){
-    float x=clamp(uv.x,0.,1.);
+    float x=clamp((uv.x-faE.x)/max(.001,faE.y-faE.x),0.,1.);
     float env=sin(3.14159*x);
     float yc=fa.x+4.*fa.y*x*(1.-x);
     float sous=max(uv.y-yc,0.);
     float ph=t*1.6-x*6.5;
     uv.y-=fa.z*.022*env*sin(ph);
-    uv.x-=fa.z*sous*.2*sin(ph-1.2)*(.4+.6*env)/ai;
+    uv.x-=fa.z*sous*.14*sin(ph-1.2)*env/ai;
   }
   // pose du corps (saut, balancement, écrasement)
   vec2 q=inv(vec2(uv.x*ai,uv.y),gA,gB);
@@ -476,7 +479,7 @@ interface Sprite {
   rang: number;
 }
 
-const AMORCE = 1500; // ms : la première scène après la peinture
+const AMORCE = 450; // ms : la première scène après la peinture
 
 export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
   let arrete = false;
@@ -590,6 +593,11 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         return k >= 0 ? poses[k] : poseNeutre();
       },
       rayon: (nom) => s.parties.find((p) => p.nom === nom)?.rayon ?? 0.2,
+      appui: (nom, angle) => {
+        const pt = s.parties.find((p) => p.nom === nom); if (!pt) return 0;
+        const rx = (pt.boite[2] - pt.boite[0]) * s.ai / 2, ry = (pt.boite[3] - pt.boite[1]) / 2;
+        return ry - Math.hypot(rx * Math.sin(angle), ry * Math.cos(angle));
+      },
       fx,
       h: 0.5,
     };
@@ -606,7 +614,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         sc.jouer(ctx);
       }
     }
-    if (s.e.rigide) { corps.a = 0; corps.sx = corps.sy = 1; corps.flex = 0; corps.ty = 0; corps.tx = Math.max(-0.0025, Math.min(0.0025, corps.tx)); }
+    if (s.e.rigide) { corps.a = 0; corps.sx = corps.sy = 1; corps.flex = 0; corps.ty = 0; corps.tx = s.parties.length ? 0 : Math.max(-0.012, Math.min(0.012, corps.tx)); }
     return { corps, poses, fx };
   };
 
@@ -619,7 +627,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       const sc = SCENES[s.scene.nom];
       if (!sc || horloge - s.scene.debut > sc.duree * 1000) {
         s.scene = null;
-        s.prochaine = horloge + 6000 + Math.random() * 9000;
+        s.prochaine = horloge + 1400 + Math.random() * 1200;
       }
     }
     if (s.debut === -1 && horloge >= s.delai) s.debut = horloge;
@@ -628,12 +636,12 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     if (peint >= 1 && s.debut !== Infinity) {
       s.debut = Infinity;
       opts.peinte(s.d.nom);
-      s.prochaine = horloge + AMORCE + s.d.ordre * 1500 + Math.random() * 2500;
+      s.prochaine = horloge + AMORCE + s.d.ordre * 380 + Math.random() * 500;
     }
     if (peint >= 1 && !s.scene && !opts.douce && horloge >= s.prochaine) {
-      // une scène à la fois sur la page, à 2,5 s d'écart au moins
-      if (horloge - derniereScene > 2500) lancerScene(s);
-      else s.prochaine = derniereScene + 2500 + Math.random() * 1500;
+      // Plusieurs objets vivent ensemble ; les départs restent légèrement décalés.
+      if (horloge - derniereScene > 350) lancerScene(s);
+      else s.prochaine = derniereScene + 350 + Math.random() * 300;
     }
   };
 
@@ -660,10 +668,9 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       const p = poses[k];
       pA.set([pt.pivot[0] * s.ai, pt.pivot[1], p.tx, p.ty], k * 4);
       pB.set([p.a, p.sx, p.sy, p.flex], k * 4);
-      // a-t-elle bougé ? (au repos, la partie reste dans l'image du corps : aucun double bord)
-      const r = Math.max(pt.rayon, 0.05);
-      const bouge = Math.hypot(p.tx, p.ty) + Math.abs(p.a) * r + (Math.abs(p.sx - 1) + Math.abs(p.sy - 1)) * r + Math.abs(p.flex) * r * r;
-      pC[k * 4] = Math.min(1, bouge * 400);
+      // Ces deux masques couvrent tout l'alpha : recomposition permanente, même au repos.
+      // Aucun fondu original/copie déplacée ne crée de double contour à l'accélération.
+      pC[k * 4] = 1;
     });
     g.uniform4fv(ud.pA, pA);
     g.uniform4fv(ud.pB, pB);
@@ -682,6 +689,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     g.uniform4fv(ud.flv, flv);
     g.uniform4f(ud.ef, (s.e.vent ?? 0) * fx.vent * micro, 0, flammes.length, 0);
     g.uniform4f(ud.fa, s.e.fanions?.[0] ?? 0, s.e.fanions?.[1] ?? 0, s.e.fanions ? fx.fanions * micro : 0, 0);
+    g.uniform2f(ud.faE, s.e.fanions?.[2] ?? 0, s.e.fanions?.[3] ?? 1);
     const ge = s.e.gerbe;
     g.uniform4f(ud.ge, ge?.[0] ?? 0, ge?.[1] ?? 0, ge?.[2] ?? 0, ge ? fx.gerbe : -1);
     g.uniform4f(ud.geB, ge?.[3] ?? 0, ge?.[4] ?? 0, ge?.[5] ?? 0, ge?.[6] ?? 0);
@@ -801,7 +809,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       progD = programme(g, VS_DESSIN, FS_DESSIN);
       progC = programme(g, VS_CREATURE, FS_CREATURE);
       if (!progD || !progC) return opts.perdu();
-      for (const n of ['boite', 'rot', 'aspP', 'img', 'carteN', 'carteL', 'parts', 'fond', 'rect', 'asp', 'tp', 'tpx', 'gA', 'gB', 'pA', 'pB', 'pC', 'vap', 'fl', 'flv', 'ef', 'fa', 'ge', 'geB', 'on', 'cf', 'cft', 'pap'])
+      for (const n of ['boite', 'rot', 'aspP', 'img', 'carteN', 'carteL', 'parts', 'fond', 'rect', 'asp', 'tp', 'tpx', 'gA', 'gB', 'pA', 'pB', 'pC', 'vap', 'fl', 'flv', 'ef', 'fa', 'faE', 'ge', 'geB', 'on', 'cf', 'cft', 'pap'])
         ud[n] = g.getUniformLocation(progD, n);
       for (const n of ['cr', 'aspP', 'tex', 'cp']) uc[n] = g.getUniformLocation(progC, n);
       const buf = g.createBuffer();
@@ -824,7 +832,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
           s.parts = texture(g, parts, true, g.NEAREST);
           s.fond = texture(g, fond, false, g.LINEAR);
         }
-        if (s.debut === Infinity) s.prochaine = AMORCE + s.d.ordre * 1800 + Math.random() * 2500;
+        if (s.debut === Infinity) s.prochaine = AMORCE + s.d.ordre * 380 + Math.random() * 500;
       }
       for (const { e, im } of creatures) if (im) texCreatures.set(e, { tx: texture(g, im, false, g.LINEAR), ai: im.naturalWidth / im.naturalHeight });
       // Le compagnon lit le contenu réel pour trouver un passage dans la marge.
@@ -916,7 +924,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         pret: !!gl,
         joue,
         horloge: Math.round(horloge),
-        dessins: sprites.map((s) => { const p = poser(s, horloge / 1000).corps; return { nom: s.d.nom, peinte: s.debut === Infinity, scene: s.scene?.nom ?? null, parties: s.parties.length, pose: { a: p.a, sx: p.sx, sy: p.sy, tx: p.tx, ty: p.ty, flex: p.flex } }; }),
+        dessins: sprites.map((s) => { const courant = poser(s, horloge / 1000), p = courant.corps; return { nom: s.d.nom, peinte: s.debut === Infinity, scene: s.scene?.nom ?? null, parties: s.parties.length, masqueCharge: !!s.parts && !!s.fond, pose: { a: p.a, sx: p.sx, sy: p.sy, tx: p.tx, ty: p.ty, flex: p.flex }, posesParties: courant.poses.map((pose, k) => ({ nom: s.parties[k].nom, ...pose })) }; }),
         creatures: essaim?.creatures.map((c) => ({ espece: c.espece, etat: c.etat, x: +c.x.toFixed(3), y: +c.y.toFixed(3), direction: c.direction, parole: c.parole, piste: c.piste, visible: texCreatures.has(c.espece) && c.etat !== 'attente' })) ?? [],
       };
     },

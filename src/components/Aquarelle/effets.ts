@@ -14,7 +14,7 @@ export interface Effets {
   /** Fanions qui ondulent : [y de la ficelle aux deux bouts, creux de la ficelle au milieu] (fractions de
    *  l'image ; la ficelle va d'un bord à l'autre). Ils ondulent toujours un peu. Scènes : « brise »,
    *  « fete » (avec des confettis). */
-  fanions?: [number, number];
+  fanions?: [number, number, number?, number?];
   /** Vent : amplitude (1 = un brin de blé), le pied reste fixe. Scène « rafale ». */
   vent?: number;
   /** Gerbe (miettes, gouttes) : [x, y, largeur, élan vertical (négatif : vers le haut), sol (y où elles
@@ -56,21 +56,23 @@ export const EFFETS: Record<string, Effets> = {
   // Théière et deux tasses de la série harmonisée : vapeur légère aux trois ouvertures.
   theiere: {
     vapeur: [[0.193, 0.225, 0.038], [0.31, 0.64, 0.115], [0.695, 0.64, 0.11]],
-    scenes: ['bouillir'],
+    scenes: ['bouillir', 'tinte'],
   },
   // La tasse : une vapeur légère au-dessus du liquide.
   'tasse-2': {
     vapeur: [[0.49, 0.28, 0.17]],
-    scenes: ['deborde'],
+    ondes: [0.49, 0.28, 0.24],
+    scenes: ['tinte', 'bouillir'],
   },
   // La tasse reste entière et le thé fume doucement.
   'tasse-coeur': {
     vapeur: [[0.36, 0.14, 0.17]],
-    scenes: ['bat'],
+    ondes: [0.36, 0.15, 0.24],
+    scenes: ['tinte', 'bouillir'],
   },
   // La nouvelle part de gâteau a une mèche sans flamme peinte ; le dessin reste entier.
   gateau: {
-    scenes: ['veille'],
+    scenes: ['balance', 'salut'],
   },
   // la tarte sort du four
   'tarte-pommes': {
@@ -78,11 +80,11 @@ export const EFFETS: Record<string, Effets> = {
     scenes: ['fume'],
   },
   // Le cupcake reste entier, avec un balancement rigide léger.
-  cupcake: { scenes: ['veille'] },
+  cupcake: { scenes: ['salut', 'balance'] },
   // La bougie vacille, puis se rallume après un souffle ; le gâteau ne se déforme pas.
   'cupcake-bougie': {
     flammes: [[0.4624, 0.0946, 0.03]],
-    scenes: ['bougies', 'souffle'],
+    scenes: ['bougies', 'souffle', 'salut', 'allume'],
   },
   // le gâteau d'anniversaire et ses cinq bougies (piste anniversaire : titre et dédicace ; l'aquarelle
   // arrive à la fusion, design-system/aquarelles/gateau-bougies.png)
@@ -90,7 +92,7 @@ export const EFFETS: Record<string, Effets> = {
     ...bougies([[0.2676, 0.2228], [0.3525, 0.185], [0.4926, 0.1472], [0.6328, 0.1904], [0.7287, 0.2228]], 0.023),
   },
   // La nouvelle guirlande et ses nœuds restent intacts.
-  guirlande: { scenes: ['veille'] },
+  guirlande: { fanions: [0.15, 0.33, 0.315, 0.68], scenes: ['brise', 'fete'], confettis: [0.5, 0.32, 0.35] },
   // les fanes frémissent, et se secouent
   carotte: { scenes: ['secoue'], repos: 'fanes' },
   // le blé ploie au vent ; les plantes à peine, une rafale de temps en temps
@@ -99,13 +101,13 @@ export const EFFETS: Record<string, Effets> = {
   cannelle: { vent: 0.25, scenes: ['rafale'] },
   // Les biscuits restent entiers : aucun découpage de la nouvelle peinture.
   cookies: {
-    scenes: ['veille'],
+    scenes: ['balance', 'salut'],
   },
   // Même geste doux pour les sablés.
-  'sables-etoiles': { scenes: ['veille'] },
+  'sables-etoiles': { scenes: ['salut', 'balance'] },
   // Les fruits et leurs coupes gardent leur forme et leur orientation.
-  citron: { rigide: true, scenes: ['frisson'] },
-  'citron-2': { rigide: true, scenes: ['frisson'] },
+  citron: { rigide: true, scenes: ['duo-citron'] },
+  'citron-2': { rigide: true, scenes: ['duo-citron'] },
   pomme: { rigide: true, scenes: ['frisson'] },
   'pomme-2': { rigide: true, scenes: ['frisson'] },
   orange: { rigide: true, scenes: ['frisson'] },

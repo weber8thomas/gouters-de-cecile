@@ -39,6 +39,7 @@ JSON = RACINE / "src/components/Aquarelle/parties.json"
 PLANCHE = RACINE / "verification/out/dessins/parties.png"
 PAS_ID = 40  # R = numéro × 40 : lisible même après une conversion de couleur
 SEUIL = 0.04  # alpha : en dessous, le pixel n'appartient à aucune partie (papier)
+CITRONS_V9 = {"citron", "citron-2"}
 
 # Parties de chaque aquarelle, de l'arrière vers l'avant (le moteur les pose dans cet ordre).
 # `pivot` : point fixe des rotations (défaut : centre de la boîte de la partie) ; `sombre` : creux sombre
@@ -262,6 +263,41 @@ def vignette(rgba: np.ndarray, ids: np.ndarray, fond: np.ndarray, infos: list, c
     return im
 
 
+def cuire_citron_v9(nom):
+    """Les deux sujets ENTiers de la nouvelle image : aucun trait de découpe arbitraire.
+
+    Les deux grosses composantes alpha correspondent au fruit avec sa feuille et à sa tranche.
+    Affecter ensuite chaque frange au sujet le plus proche évite de rogner les contours semi-transparents.
+    Le fond découvert est vide puisque les deux peintures sont séparées dans l'original.
+    """
+    image = Image.open(SOURCE / f"{nom}.webp").convert("RGBA")
+    alpha = np.asarray(image)[..., 3]
+    labels, _ = ndi.label(alpha > 8, structure=np.ones((3, 3)))
+    areas = np.bincount(labels.ravel()); areas[0] = 0
+    largest = np.argsort(areas)[-2:]
+    assert min(areas[largest]) > alpha.size * .08, f"Deux sujets attendus : {nom}"
+    largest = sorted(largest, key=lambda k: np.nonzero(labels == k)[0].mean())
+    primary = np.zeros(alpha.shape, np.uint8)
+    infos = []
+    for i, (label, role) in enumerate(zip(largest, ["fruit", "tranche"]), 1):
+        primary[labels == label] = i
+        yy, xx = np.nonzero(labels == label)
+        h, w = alpha.shape
+        box = [xx.min() / w, yy.min() / h, (xx.max() + 1) / w, (yy.max() + 1) / h]
+        infos.append({"nom": role, "pivot": [round((box[0] + box[2]) / 2, 5), round((box[1] + box[3]) / 2, 5)],
+                      "boite": [round(float(v), 5) for v in box], "rayon": round(float((box[3] - box[1]) / 2), 5)})
+    _, positions = ndi.distance_transform_edt(primary == 0, return_indices=True)
+    ids = primary[tuple(positions)]
+    assert np.all(ids[alpha > 0] > 0), f"Frange perdue : {nom}"
+    mask = np.zeros((*alpha.shape, 4), np.uint8)
+    mask[..., 0] = ids * PAS_ID; mask[..., 3] = 255
+    SORTIE_PARTIES.mkdir(exist_ok=True); SORTIE_FOND.mkdir(exist_ok=True)
+    Image.fromarray(mask, "RGBA").save(SORTIE_PARTIES / f"{nom}.webp", "WEBP", lossless=True, exact=True)
+    Image.new("RGBA", image.size).save(SORTIE_FOND / f"{nom}.webp", "WEBP", lossless=True, exact=True)
+    print(f"{nom:16s} série anglaise : fruit et tranche entiers, fond transparent")
+    return {"serie": "anglaise-v9", "parties": infos}
+
+
 def main(argv=None) -> int:
     argv = sys.argv[1:] if argv is None else argv
     planche = "--planche" in argv
@@ -273,12 +309,17 @@ def main(argv=None) -> int:
     catalogue_v9 = RACINE / "design-system/aquarelles/catalogue-v9.json"
     indivisibles = set(json.loads(catalogue_v9.read_text())) if catalogue_v9.exists() else set()
     for nom in indivisibles:
+        if nom in CITRONS_V9:
+            continue
         tout.pop(nom, None)
         for dossier in (SORTIE_PARTIES, SORTIE_FOND):
             (dossier / f"{nom}.webp").unlink(missing_ok=True)
     vues = []
     for nom in noms:
         if nom in indivisibles:
+            if nom in CITRONS_V9:
+                tout[nom] = cuire_citron_v9(nom)
+                continue
             print(f"{nom:16s} série anglaise : image entière, aucun découpage")
             continue
         if nom not in PARTIES or not (SOURCE / f"{nom}.webp").exists():

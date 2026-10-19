@@ -8,7 +8,7 @@
 //   films     planches de films en temps réel (une image toutes les ~0,3 s) de scènes de marionnettes :
 //             la scène est lancée (window.__gcDessins.scene), les images sont prises pendant qu'elle joue ;
 //   creature  le Jack Russell trottine dans une marge sûre, puis répond à une tape sans quitter le sol ;
-//   citron    les deux citrons restent entiers : aucun masque, rotation, changement d'échelle ni flexion ;
+//   citron    les citrons roulent par composants entiers, sur leur appui, sans étirement ni double contour ;
 //   iphone    iPhone 13 couché (844 × 390, dpr 3, tactile) : les toiles jouent, le temps avance ;
 //             une tape lance sa scène ; captures.
 //   autonomie aucune entrée : scènes spontanées, horloge proportionnelle à la vitesse,
@@ -17,7 +17,7 @@
 //
 //   node scripts/verify-dessins.mjs [--site dist/site | --carnet [--bundle dist/ds/components]]
 //        [--url http://127.0.0.1:5173] [--suites pages,films,creature,iphone,autonomie] [--films cupcake-bougie,…] [--out verification/out/dessins]
-import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { ROOT, lireArgs, ecran, lancer, ouvrirCible, ouvrirPage as ouvrir, Rapport, rel, toucher, attendre, initReglages, ARGS_GPU } from './lib/verif.mjs';
@@ -308,19 +308,31 @@ if (suites.includes('films')) {
   }
 }
 
-// ---- citrons rigides -------------------------------------------------------------------------------
+// ---- citrons : deux composants rigides sur leur appui -------------------------------------------------------------------------------
 if (suites.includes('citron')) {
   const { ctx, page } = await ouvrirPage(browser, cible, TV, '#julie');
   await toilesPretes(page, 1);
+  const specs = JSON.parse(readFileSync(join(ROOT, 'src/components/Aquarelle/parties.json'), 'utf8'));
+  const assets = JSON.parse(readFileSync(join(ROOT, 'design-system/assets.json'), 'utf8'));
   for (const nom of ['citron', 'citron-2']) {
-    await page.evaluate((n) => { window.__gcDessins?.finir(); window.__gcDessins?.figer(true); window.__gcDessins?.scene(n, 'frisson'); }, nom);
+    await page.evaluate((n) => { window.__gcDessins?.finir(); window.__gcDessins?.figer(true); window.__gcDessins?.scene(n, 'duo-citron'); }, nom);
     const poses = [];
-    for (let k = 0; k < 5; k++) {
-      await page.evaluate(() => window.__gcDessins?.avancer(650));
+    for (let k = 0; k < 6; k++) {
+      await page.evaluate(() => window.__gcDessins?.avancer(900));
       poses.push((await etat(page)).flatMap((t) => t.dessins).find((d) => d.nom === nom));
     }
-    const rigide = poses.every((d) => d && d.parties === 0 && d.pose.a === 0 && d.pose.sx === 1 && d.pose.sy === 1 && d.pose.flex === 0 && d.pose.ty === 0 && Math.abs(d.pose.tx) <= 0.0025);
-    rapport.ajouter(null, `[citron] ${nom} : contours et orientation conservés`, rigide ? 'OK' : 'KO', poses);
+    const ai = assets[`aquarelles/${nom}`].w / assets[`aquarelles/${nom}`].h;
+    const rigide = poses.every(d => d && d.parties === 2 && d.masqueCharge && d.pose.a === 0 && d.pose.tx === 0 && d.pose.ty === 0 &&
+      d.posesParties?.length === 2 && d.posesParties.every(p => p.sx === 1 && p.sy === 1 && p.flex === 0 && Math.abs(p.tx) <= .020001 && Math.abs(p.a) <= .11));
+    const appui = poses.every(d => d?.posesParties?.every(p => {
+      const spec = specs[nom].parties.find(s => s.nom === p.nom);
+      const rx = (spec.boite[2] - spec.boite[0]) * ai / 2, ry = (spec.boite[3] - spec.boite[1]) / 2;
+      return Math.abs(p.ty + Math.hypot(rx * Math.sin(p.a), ry * Math.cos(p.a)) - ry) < .00001;
+    }));
+    const independants = poses.some(d => d?.posesParties?.length === 2 && Math.abs(d.posesParties[0].tx - d.posesParties[1].tx) > .005);
+    rapport.ajouter(null, `[citron] ${nom} : composants chargés, contours intacts, déplacements bornés`, rigide ? 'OK' : 'KO', poses);
+    rapport.ajouter(null, `[citron] ${nom} : appui conservé pendant le roulement`, appui ? 'OK' : 'KO');
+    rapport.ajouter(null, `[citron] ${nom} : fruit et tranche animés séparément`, independants ? 'OK' : 'KO');
     await page.screenshot({ path: join(out, `rigide-${nom}.png`), timeout: 60000 });
   }
   await ctx.close();

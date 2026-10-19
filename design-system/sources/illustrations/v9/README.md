@@ -28,14 +28,21 @@ npm run build:site
 Les images prêtes pour le navigateur et leurs cartes de révélation sont versionnées : le build normal
 ne lance ni génération d'images ni traitement Python. `catalogue-v9.json` précise leur provenance et
 prime sur les catalogues historiques pour ces noms. Les anciens masques de parties ne doivent jamais
-être appliqués à cette série ; le script correspondant les supprime au lieu de les recalculer.
+être appliqués à cette série. Le script correspondant les supprime et crée uniquement deux nouveaux
+masques de citrons à partir de leurs composantes alpha actuelles, avec un fond transparent.
 
 ## Mouvement
 
-Les fruits gardent leur silhouette entière, sans rotation ni changement d'échelle ; leur léger geste
-est une translation bornée. Les pâtisseries ont le même balancement discret. La vapeur et les flammes
-suivent les ouvertures et les mèches des nouveaux dessins. Le gâteau d'anniversaire a cinq bougies ;
-la part de gâteau porte une bougie éteinte et ne reçoit pas de flamme artificielle.
+Les citrons sont animés en deux sujets intacts : le fruit avec sa feuille et la tranche. Les masques
+viennent des deux grandes composantes alpha de chaque image, et les franges sont affectées au sujet
+le plus proche. Le fond découvert est transparent. Le roulement est limité, avec accélération et arrêt
+progressifs, rotation liée au déplacement et correction de l'appui. Aucune rotation de tout le groupe,
+aucun étirement ni découpage de la peinture. Les autres fruits restent entiers.
+
+Les scènes des pâtisseries, du thé, des plantes et des bougies sont variées et plus fréquentes, selon
+le choix confirmé : une aquarelle douce, avec beaucoup de vie. La vapeur et les flammes suivent les
+ouvertures et les mèches des dessins. Le gâteau d'anniversaire a cinq bougies ; la part de gâteau
+porte une bougie éteinte et ne reçoit pas de flamme artificielle.
 
 Le Jack Russell remplace les papillons et la coccinelle dans les pages actives. Il marche au bas des
 pages, dans une zone vérifiée libre d'encre, de photos et d'objets, s'arrête et dit « Tea time! » ou

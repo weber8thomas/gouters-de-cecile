@@ -71,6 +71,22 @@
     "bytes": 58472,
     "type": "image/webp"
   },
+  "aquarelles/fond/citron-2": {
+    "file": "baked/aquarelles/fond/citron-2.webp",
+    "sha": "fdf9c24d08aa4db5c2c5c8b8ec45436d7209b36399a702dda3dd13046ffb6773",
+    "w": 486,
+    "h": 751,
+    "bytes": 58,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/citron": {
+    "file": "baked/aquarelles/fond/citron.webp",
+    "sha": "e26c8e7281066fb0052d425f3880c3422400361073036449d5d5bd1046aba1fc",
+    "w": 414,
+    "h": 800,
+    "bytes": 58,
+    "type": "image/webp"
+  },
   "aquarelles/gateau-bougies": {
     "file": "baked/aquarelles/gateau-bougies.webp",
     "sha": "02eb41ea997c8331fefdde4ab9041190514db29caab9526d305cfcbce15f9873",
@@ -157,6 +173,22 @@
     "w": 360,
     "h": 222,
     "bytes": 44258,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/citron-2": {
+    "file": "baked/aquarelles/parties/citron-2.webp",
+    "sha": "88a7d1a26c12ac4ba99ed3053c948273405881b6f013a20f2b040c62ef5802de",
+    "w": 486,
+    "h": 751,
+    "bytes": 184,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/citron": {
+    "file": "baked/aquarelles/parties/citron.webp",
+    "sha": "a414a237e6f10ab4d07e581086eb1b97c2e884dc012b84df9293ef235acfcb58",
+    "w": 414,
+    "h": 800,
+    "bytes": 136,
     "type": "image/webp"
   },
   "aquarelles/pomme-2": {
