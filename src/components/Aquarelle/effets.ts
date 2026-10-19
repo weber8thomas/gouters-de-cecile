@@ -174,6 +174,16 @@ export const EFFETS: Record<string, Effets> = {
 export const SCENES_PAGE: Record<string, Record<string, string[]>> = {
   // la dernière page : on souffle la bougie du cupcake (un filet de fumée), puis elle se rallume
   'fin-droite': { 'cupcake-bougie': ['souffle', 'bougies', 'rebond'] },
+  // gateaux-gauche : dialogue entre l'oeuf qui roule et tape, et la tasse au coeur qui tinte
+  'gateaux-gauche': {
+    oeufs: ['toc-casse', 'dandine'],
+    'tasse-coeur': ['bat', 'tinte'],
+  },
+  // julie-droite : découpe nette et rotation des deux citrons sans agitation superflue
+  'julie-droite': {
+    citron: ['duo-citron'],
+    'citron-2': ['rondelle'],
+  },
 };
 
 /** Les Jack Russells animent chaque double page du carnet avec leurs bulles calligraphiées à la plume. */

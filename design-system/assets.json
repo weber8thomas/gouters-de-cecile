@@ -71,6 +71,14 @@
     "bytes": 58472,
     "type": "image/webp"
   },
+  "aquarelles/fond/carotte": {
+    "file": "baked/aquarelles/fond/carotte.webp",
+    "sha": "3028e9cc7907443b435e9d290f9d997483bac7d6cf7a92acac5659cbd5ccfeee",
+    "w": 129,
+    "h": 400,
+    "bytes": 200,
+    "type": "image/webp"
+  },
   "aquarelles/fond/citron-2": {
     "file": "baked/aquarelles/fond/citron-2.webp",
     "sha": "fdf9c24d08aa4db5c2c5c8b8ec45436d7209b36399a702dda3dd13046ffb6773",
@@ -85,6 +93,102 @@
     "w": 414,
     "h": 800,
     "bytes": 58,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/cookies": {
+    "file": "baked/aquarelles/fond/cookies.webp",
+    "sha": "dc6d550d3d96f7fa30ba1d1f32548345f361b9d06f4c193f2366caca9c94f73d",
+    "w": 400,
+    "h": 400,
+    "bytes": 9270,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/cupcake-bougie": {
+    "file": "baked/aquarelles/fond/cupcake-bougie.webp",
+    "sha": "70bbf59b0358d0e2df56fe1dc9d2d901db95af5c18d23c8fd5d3fd398841f70b",
+    "w": 198,
+    "h": 288,
+    "bytes": 1666,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/cupcake": {
+    "file": "baked/aquarelles/fond/cupcake.webp",
+    "sha": "97dd4fcf2075ed1eba3b6655c1eb3106f8c6f953f4e8709dcaadbfc74c087ec2",
+    "w": 198,
+    "h": 215,
+    "bytes": 1914,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/gateau": {
+    "file": "baked/aquarelles/fond/gateau.webp",
+    "sha": "67e2466d6cd819f9da19f708a530d9e22c1675c4e8a456af9dbddaf2b858f33c",
+    "w": 342,
+    "h": 400,
+    "bytes": 3126,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/noix": {
+    "file": "baked/aquarelles/fond/noix.webp",
+    "sha": "eb2d7b0ba55d4d36ca28f7bcd56b365b5e1cc8d8a1b06a1776e2737f5278e12b",
+    "w": 400,
+    "h": 157,
+    "bytes": 212,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/oeufs": {
+    "file": "baked/aquarelles/fond/oeufs.webp",
+    "sha": "95bd4d245c357a8d5099766679426711f35ce31fe89394b06aa40f104b439e9e",
+    "w": 245,
+    "h": 217,
+    "bytes": 3374,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/orange": {
+    "file": "baked/aquarelles/fond/orange.webp",
+    "sha": "11c14901976ae5bc19c9ade88d9f2b41afc1c178cbdcb2e135dc19e7df901680",
+    "w": 332,
+    "h": 297,
+    "bytes": 280,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/pomme": {
+    "file": "baked/aquarelles/fond/pomme.webp",
+    "sha": "b371aee908df2b00e06aa8e6961212e0a1cc7c652b6deb49d74d1cea164b0cb3",
+    "w": 463,
+    "h": 800,
+    "bytes": 56,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/sables-etoiles": {
+    "file": "baked/aquarelles/fond/sables-etoiles.webp",
+    "sha": "8ce0803211b2ceb4658a6340319e0a57602809363e5435c7787ff5352d523835",
+    "w": 291,
+    "h": 391,
+    "bytes": 314,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/tasse-2": {
+    "file": "baked/aquarelles/fond/tasse-2.webp",
+    "sha": "1b3da1a46cfb4a98a3ef4e1c6cc13691729700a91880920baf5248162a2e3761",
+    "w": 400,
+    "h": 390,
+    "bytes": 3358,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/tasse-coeur": {
+    "file": "baked/aquarelles/fond/tasse-coeur.webp",
+    "sha": "448e13d2151ede2805cc1ca5410b2afbcb950a555dbb146e4398c27ca12e5dd0",
+    "w": 400,
+    "h": 373,
+    "bytes": 1946,
+    "type": "image/webp"
+  },
+  "aquarelles/fond/theiere": {
+    "file": "baked/aquarelles/fond/theiere.webp",
+    "sha": "f97665177e8dfab008d2b13490cbdd9893ae596e1fb7722a5e6a05064601cee4",
+    "w": 400,
+    "h": 249,
+    "bytes": 280,
     "type": "image/webp"
   },
   "aquarelles/gateau-bougies": {
@@ -117,6 +221,14 @@
     "w": 800,
     "h": 498,
     "bytes": 94908,
+    "type": "image/webp"
+  },
+  "aquarelles/lapin": {
+    "file": "baked/aquarelles/lapin.webp",
+    "sha": "773f245447675047cc206df74cd961a688b8cb1b17459cb46dda6ea2005453d8",
+    "w": 448,
+    "h": 520,
+    "bytes": 132972,
     "type": "image/webp"
   },
   "aquarelles/noix": {
@@ -175,6 +287,14 @@
     "bytes": 44258,
     "type": "image/webp"
   },
+  "aquarelles/parties/carotte": {
+    "file": "baked/aquarelles/parties/carotte.webp",
+    "sha": "506ceb13393c800d5513ac452c2348d26c426e91ca754ebd51692e76ba91e951",
+    "w": 258,
+    "h": 800,
+    "bytes": 1236,
+    "type": "image/webp"
+  },
   "aquarelles/parties/citron-2": {
     "file": "baked/aquarelles/parties/citron-2.webp",
     "sha": "88a7d1a26c12ac4ba99ed3053c948273405881b6f013a20f2b040c62ef5802de",
@@ -189,6 +309,102 @@
     "w": 414,
     "h": 800,
     "bytes": 136,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/cookies": {
+    "file": "baked/aquarelles/parties/cookies.webp",
+    "sha": "a3628f619d95bbd147ccb40c354271512fe00db0d14c6d00862dbee7afe64dd8",
+    "w": 800,
+    "h": 800,
+    "bytes": 2026,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/cupcake-bougie": {
+    "file": "baked/aquarelles/parties/cupcake-bougie.webp",
+    "sha": "a96ddedc92fecaf26bf3f514880bc1fc0522082f50a275e42fd3cbb18ae97e55",
+    "w": 397,
+    "h": 577,
+    "bytes": 268,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/cupcake": {
+    "file": "baked/aquarelles/parties/cupcake.webp",
+    "sha": "764bd2357dffd77e7a495e9c55ca44ae595057df90e7b3bdf033bc7857ad9b67",
+    "w": 397,
+    "h": 430,
+    "bytes": 318,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/gateau": {
+    "file": "baked/aquarelles/parties/gateau.webp",
+    "sha": "e34fb07bee73a47f800cfe382c103c2a0c81d9d3dfd6975e583d2dbcd0e08559",
+    "w": 684,
+    "h": 800,
+    "bytes": 516,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/noix": {
+    "file": "baked/aquarelles/parties/noix.webp",
+    "sha": "7ec5a71aa0834dc37438e73d8f91c012cba17244a7cbd1b3b110304a91d03b82",
+    "w": 800,
+    "h": 314,
+    "bytes": 1432,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/oeufs": {
+    "file": "baked/aquarelles/parties/oeufs.webp",
+    "sha": "fc8adf3282b71c8287584f9b45459dd342bb4d2f9ab89c029e4b52425b59ad39",
+    "w": 490,
+    "h": 435,
+    "bytes": 528,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/orange": {
+    "file": "baked/aquarelles/parties/orange.webp",
+    "sha": "13b2b07fe99adf65ac6e3a8907c47c239cd41f8e98bb1bafc1de62ab22ca8ee4",
+    "w": 665,
+    "h": 595,
+    "bytes": 1058,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/pomme": {
+    "file": "baked/aquarelles/parties/pomme.webp",
+    "sha": "b9b506ba185bcc59637941223ace25bb929659d4bd651fa3b1ff80404ea77d20",
+    "w": 463,
+    "h": 800,
+    "bytes": 222,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/sables-etoiles": {
+    "file": "baked/aquarelles/parties/sables-etoiles.webp",
+    "sha": "5ad924db671d00142dd38755b795d5dc74b8f25c23428a8b5beca687e2ed307c",
+    "w": 582,
+    "h": 782,
+    "bytes": 1384,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/tasse-2": {
+    "file": "baked/aquarelles/parties/tasse-2.webp",
+    "sha": "219f8625c1354336d7b71fbaee084fcffe0ac9a741cd2052954b61d83900798f",
+    "w": 800,
+    "h": 780,
+    "bytes": 1580,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/tasse-coeur": {
+    "file": "baked/aquarelles/parties/tasse-coeur.webp",
+    "sha": "5ef308f3f0cb53d10f0ecc8b6511b12749b9b2dca4f63c5755037714cc4011bf",
+    "w": 800,
+    "h": 747,
+    "bytes": 3284,
+    "type": "image/webp"
+  },
+  "aquarelles/parties/theiere": {
+    "file": "baked/aquarelles/parties/theiere.webp",
+    "sha": "3c14effa03acbbbda6cb6f6ca253934d493b2575f51c7f29a9cc5e70f7eaac2d",
+    "w": 800,
+    "h": 499,
+    "bytes": 3112,
     "type": "image/webp"
   },
   "aquarelles/pomme-2": {

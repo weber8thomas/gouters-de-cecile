@@ -107,33 +107,16 @@ const amorti = (s: number, a: number, b: number, force: number) => {
 const duoCitron: Scene = {
   duree: 6,
   jouer({ s, corps, partie, rayon, appui, fx }) {
-    const f = partie('fruit');
-    const r = partie('tranche');
-    // Un éclair de lame tranche le fruit au départ, suivi d'une gerbe de gouttes acidulées
+    const f = partie('fruit'), r = partie('tranche');
     if (s >= 0.06 && s <= 0.44) fx.coupe = (s - 0.06) / 0.38;
     if (s >= 0.28) fx.gerbe = s - 0.28;
-    corps.tx += 0.008 * Math.sin(s * 34) * cloche(s, 0, 0.38);
-    f.tx = trajet(s, [
-      [0, 0],
-      [0.32, 0.004],
-      [1.75, 0.072],
-      [2.55, 0.068],
-      [4.35, -0.022],
-      [6, 0],
-    ]);
-    r.tx = trajet(s, [
-      [0, 0],
-      [0.35, -0.005],
-      [1.95, -0.068],
-      [2.85, -0.064],
-      [4.55, 0.02],
-      [6, 0],
-    ]);
-    f.a = f.tx / Math.max(0.13, rayon('fruit')) + amorti(s, 1.75, 3.6, 0.055);
-    r.a = r.tx / Math.max(0.11, rayon('tranche')) + amorti(s, 1.95, 3.9, -0.065);
-    const sautCoupe = 0.022 * cloche(s, 0.22, 0.95);
-    f.ty = appui('fruit', f.a) - sautCoupe * 0.7;
-    r.ty = appui('tranche', r.a) - sautCoupe;
+    corps.tx += 0.003 * Math.sin(s * 32) * cloche(s, 0, 0.35);
+    f.tx = trajet(s, [[0, 0], [1.8, 0.02], [2.4, 0.02], [4.5, -0.012], [6, 0]]);
+    r.tx = trajet(s, [[0, 0], [0.65, 0], [2.5, -0.014], [3.1, -0.014], [4.8, 0.009], [6, 0]]);
+    f.a = f.tx / Math.max(0.12, rayon('fruit')) + amorti(s, 1.8, 3.4, 0.012);
+    r.a = r.tx / Math.max(0.12, rayon('tranche')) + amorti(s, 2.5, 4, -0.012);
+    f.ty = appui('fruit', f.a);
+    r.ty = appui('tranche', r.a);
   },
 };
 
@@ -747,6 +730,43 @@ const saut: Scene = {
   },
 };
 
+const tocCasse: Scene = {
+  duree: 6.0,
+  jouer({ s, corps, partie, appui, fx }) {
+    const c = partie('coquille');
+    // L'œuf roule vers la gauche, toque contre le bord/tasse (« toc-toc ! »), puis se fissure
+    c.tx = trajet(s, [
+      [0, 0],
+      [0.35, -0.015],
+      [0.9, -0.075],
+      [1.05, -0.068],
+      [1.22, -0.082],
+      [1.4, -0.065],
+      [2.5, -0.055],
+      [4.2, -0.012],
+      [6.0, 0],
+    ]);
+    c.a =
+      trajet(s, [
+        [0, 0],
+        [0.35, -0.1],
+        [0.9, -0.42],
+        [1.05, -0.32],
+        [1.22, -0.48],
+        [1.4, 0.36],
+        [2.0, -0.2],
+        [2.8, 0.16],
+        [3.6, -0.08],
+        [4.8, 0.03],
+        [6.0, 0],
+      ]) + amorti(s, 3.8, 5.8, 0.05);
+    if (s >= 1.25) fx.gerbe = s - 1.25;
+    c.ty = appui('coquille', c.a) - 0.028 * cloche(s, 1.2, 2.2);
+    corps.a += 0.04 * cloche(s, 0.9, 1.6) * Math.sin(s * 18);
+    corps.tx += 0.008 * cloche(s, 0.9, 1.6) * Math.sin(s * 18);
+  },
+};
+
 const dandine: Scene = {
   duree: 5.2,
   jouer({ s, corps, partie, appui, fx }) {
@@ -918,6 +938,7 @@ export const SCENES: Record<string, Scene> = {
   'saut-pomme': sautPomme,
   saut,
   dandine,
+  'toc-casse': tocCasse,
   domino,
   brise,
   rafale,
