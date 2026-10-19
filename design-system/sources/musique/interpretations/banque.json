@@ -1,0 +1,39 @@
+{
+  "description": "Deux interprétations numériques. Gymnopédie : 39 premières mesures du fichier source Mutopia, transcription des trois voix dans le script. Casse-Noisette : fantaisie courte au célesta/piano sur le thème de la fée Dragée, arrangement dans le script ; ce n’est pas un enregistrement orchestral. Rendu libfluidsynth et TimGM6mb, niveaux normalisés -26LUFS, MP3 stéréo96kb/s. Les sources, banque et licence sont fournies pour reproduire et redistribuer sous GPL-2.0.",
+  "mutopia": {
+    "depot": "https://github.com/MutopiaProject/MutopiaProject",
+    "commit": "2144afd6f52d56c5b6995b8b589ef1268b3139f0",
+    "chemin": "ftp/SatieE/gymnopedie_1/gymnopedie_1.ly",
+    "licence": "Public Domain, déclarée dans l’en-tête de la source"
+  },
+  "soundfont": {
+    "fichier": "TimGM6mb.sf2",
+    "sha256": "c5378b62028c920cb11e4803327983fee2f2cdff5dc89c708e39da417e51c854",
+    "licence": "GPL-2.0",
+    "source": "https://github.com/musescore/musescore-old/commit/90c33ef9d87b3f5ff92efd3b07d89eb455fb1fef"
+  },
+  "morceaux": [
+    {
+      "id": "gymnopedie-piano",
+      "titre": "Gymnopédie n° 1 — piano",
+      "auteur": "Erik Satie · interprétation numérique pour le carnet",
+      "licence": "GPL-2.0 · partition domaine public",
+      "licenceUrl": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=37",
+      "credit": "Gymnopédie n° 1 (1888), Erik Satie. Partition Mutopia, Evin Robertson, domaine public. Interprétation numérique : scripts/bake-musique-classique.py ; banque TimGM6mb, Tim Brechbill et David Bolton (GPL-2.0). Source complète : https://github.com/weber8thomas/gouters-de-cecile/tree/codex/reprise-v8/design-system/sources/musique/interpretations",
+      "f": "musique/gymnopedie-piano",
+      "d": 124.43
+    },
+    {
+      "id": "casse-noisette-celesta",
+      "titre": "Casse-Noisette — fantaisie au célesta",
+      "auteur": "Piotr Ilitch Tchaïkovski · arrangement et interprétation numériques pour le carnet",
+      "licence": "GPL-2.0 · composition domaine public",
+      "licenceUrl": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
+      "url": "https://github.com/weber8thomas/gouters-de-cecile/tree/codex/reprise-v8/design-system/sources/musique/interpretations",
+      "credit": "Fantaisie pour célesta et piano sur le thème de la fée Dragée, Casse-Noisette op. 71a (1892), Piotr Ilitch Tchaïkovski (composition domaine public). Arrangement court et interprétation numériques : scripts/bake-musique-classique.py ; banque TimGM6mb, Tim Brechbill et David Bolton (GPL-2.0). Cet arrangement ne reproduit pas un enregistrement orchestral. Source complète : https://github.com/weber8thomas/gouters-de-cecile/tree/codex/reprise-v8/design-system/sources/musique/interpretations",
+      "f": "musique/casse-noisette-celesta",
+      "d": 116.51
+    }
+  ]
+}

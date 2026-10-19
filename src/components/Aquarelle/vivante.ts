@@ -20,6 +20,7 @@ import { EFFETS, SCENES_PAGE, type Effets } from './effets';
 import { REPOS, SCENES, poseNeutre, type Ctx, type Fx } from './scenes';
 import { essaimDe, PAROLES, type Essaim } from './creatures';
 import partiesJson from './parties.json';
+import { Theatre, TABLEAUX, estTableau, tableauDe, presenceTableau } from './tableaux';
 
 export type { Effets } from './effets';
 
@@ -80,6 +81,7 @@ uniform sampler2D parts;        // numéro de la partie de chaque pixel (× 40)
 uniform sampler2D fond;         // ce que découvre une partie qui bouge
 uniform vec4 rect;              // l'image dans la boîte : x, y, l, h
 uniform vec2 asp;               // proportions de la boîte (l/h), de l'image (l/h)
+uniform float presence;         // original remplacé par un tableau pendant son action
 uniform vec4 tp;                // temps (s), peinture (0 à 1), carte du tracé (0/1), nombre de parties
 uniform vec2 tpx;               // un texel de la carte du tracé
 uniform vec4 gA,gB;             // pose du corps : pivot (x, y), translation ; angle, sx, sy, ploiement
@@ -309,7 +311,7 @@ void main(){
   for(int k=0;k<${MAX_VAPEUR};k++)s+=volute(vap[k],ub0,ai);
   s=min(s,vec4(.6));
   c=sur(s*pk,c);
-  gl_FragColor=c;
+  gl_FragColor=c*presence;
 }`;
 
 // Compagnon terrestre : profil entier, miroir horizontal selon sa direction. Aucune rotation/altitude.
@@ -422,6 +424,8 @@ export interface OptionsToile {
   cote: 'gauche' | 'droite';
   /** Proportions de la page (largeur / hauteur). */
   aspect: number;
+  /** Couche des tableaux DOM/SVG, animée exclusivement par cette toile. */
+  coucheTableaux?: HTMLElement;
   dessins: DessinPage[];
   /** Version douce (moins d'animations) : pas de peinture, pas de scène d'elle-même, à peine de mouvement. */
   douce: boolean;
@@ -490,11 +494,16 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
   let horloge = 0; // ms d'animation écoulées (figée en pause)
   let dernier = 0;
   let derniereScene = -1e9;
+  let dernierTableau = '';
   const sprites: Sprite[] = [];
   const A = opts.aspect;
   const essaim: Essaim | null = essaimDe(opts.double);
   let attache = false;
   const micro = opts.douce ? 0 : 1;
+  const theatre = opts.coucheTableaux && !opts.douce ? new Theatre(opts.coucheTableaux, opts.dessins, opts.url, (nom, type) => {
+    const s = sprites.find((s) => s.d.nom === nom); if (!s || !joue || arrete) return;
+    lancerScene(s, type, true);
+  }, A, opts.page) : null;
 
   // ---- placement : la boîte de chaque aquarelle, son image « contain » dans la zone ----
   for (const d of [...opts.dessins].sort((a, b) => a.ordre - b.ordre)) {
@@ -559,11 +568,30 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
   const texCreatures = new Map<string, { tx: WebGLTexture; ai: number }>();
   const texBulles = new Map<string, WebGLTexture>();
 
-  const lancerScene = (s: Sprite, nom?: string) => {
+  const lancerScene = (s: Sprite, nom?: string, explicite = false) => {
     if (opts.douce) return false;
-    const liste = (s.e.scenes ?? []).filter((n) => SCENES[n]);
-    if (!liste.length) return false;
-    const n = nom && SCENES[nom] ? nom : liste[s.rang++ % liste.length];
+    const disponible = (n: string) => estTableau(n) ? !!theatre?.disponible(s.d.nom, n) : !!SCENES[n];
+    const liste = (s.e.scenes ?? []).filter(disponible);
+    if (!liste.length && !nom) return false;
+    if (nom && estTableau(nom) && !disponible(nom)) return false;
+    const grandsTableaux = liste.filter(estTableau);
+    const rotation = grandsTableaux.length ? grandsTableaux : liste;
+    let n = nom && disponible(nom) ? nom : rotation[s.rang++ % rotation.length];
+    if (!n) return false;
+    if (estTableau(n)) {
+      const autre = sprites.find((a) => a !== s && a.scene && estTableau(a.scene.nom));
+      if (autre) {
+        if (explicite) { autre.scene = null; theatre?.cacher(autre.d.nom); autre.prochaine = horloge + 500; }
+        else { s.prochaine = horloge + 200; return false; }
+      }
+      // Les grands dessins se passent le relais : le premier ne monopolise pas la page.
+      if (!explicite && dernierTableau === s.d.nom && sprites.some((a) => a !== s && a.debut === Infinity && (a.e.scenes ?? []).some((n) => estTableau(n) && theatre?.disponible(a.d.nom, n)))) {
+        s.prochaine = horloge + 200; return false;
+      }
+      if (estTableau(n) && s.debut !== Infinity) { s.debut = Infinity; opts.peinte(s.d.nom); }
+      dernierTableau = s.d.nom;
+    }
+    theatre?.cacher(s.d.nom);
     s.scene = { nom: n, debut: horloge, h: Math.random() };
     derniereScene = horloge;
     return true;
@@ -624,10 +652,11 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     if (!s.img) return;
     // Les scènes et leur cadence avancent avec l'horloge, indépendamment du rendu.
     if (s.scene) {
-      const sc = SCENES[s.scene.nom];
+      const sc = estTableau(s.scene.nom) ? TABLEAUX[s.scene.nom] : SCENES[s.scene.nom];
       if (!sc || horloge - s.scene.debut > sc.duree * 1000) {
+        theatre?.cacher(s.d.nom);
         s.scene = null;
-        s.prochaine = horloge + 1400 + Math.random() * 1200;
+        s.prochaine = horloge + 250 + Math.random() * 350;
       }
     }
     if (s.debut === -1 && horloge >= s.delai) s.debut = horloge;
@@ -650,11 +679,17 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     const g = gl;
     const peint = avancement(s);
     const { corps, poses, fx } = poser(s, peint >= 1 ? t : 0);
+    const tableau = s.scene && estTableau(s.scene.nom) ? theatre?.rendre(s.d.nom, s.scene.nom, (horloge - s.scene.debut) / 1000) ?? 0 : 0;
+    if (!tableau) theatre?.cacher(s.d.nom);
+    // Le théâtre du citron utilise l'espace réservé aux deux dessins : aucun fruit en triple.
+    const coupe = ['citron', 'citron-2'].includes(s.d.nom) ? sprites.find((a) => a.scene?.nom === 'coupe-citron')?.scene : null;
+    const presence = coupe ? presenceTableau('coupe-citron', (horloge - coupe.debut) / 1000) : tableau;
 
     g.uniform4f(ud.boite, ...s.boite);
     g.uniform4f(ud.rot, s.cx, s.cy, s.cos, s.sin);
     g.uniform4f(ud.rect, ...s.rect);
     g.uniform2f(ud.asp, s.aspB, s.ai);
+    g.uniform1f(ud.presence, 1 - presence);
     g.uniform4f(ud.tp, t, peint, s.carte ? 1 : 0, s.parts ? s.parties.length : 0);
     g.uniform2f(ud.tpx, ...s.carteTpx);
     // pose du corps : pivot au pied (défaut : milieu du bas), en unités de l'image (hauteur 1)
@@ -769,6 +804,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     e.preventDefault();
     if (arrete) return;
     arrete = true;
+    theatre?.detruire();
     cancelAnimationFrame(raf);
     if (attache) essaim?.detacher(opts.cote);
     attache = false;
@@ -809,7 +845,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       progD = programme(g, VS_DESSIN, FS_DESSIN);
       progC = programme(g, VS_CREATURE, FS_CREATURE);
       if (!progD || !progC) return opts.perdu();
-      for (const n of ['boite', 'rot', 'aspP', 'img', 'carteN', 'carteL', 'parts', 'fond', 'rect', 'asp', 'tp', 'tpx', 'gA', 'gB', 'pA', 'pB', 'pC', 'vap', 'fl', 'flv', 'ef', 'fa', 'faE', 'ge', 'geB', 'on', 'cf', 'cft', 'pap'])
+      for (const n of ['boite', 'rot', 'aspP', 'img', 'carteN', 'carteL', 'parts', 'fond', 'rect', 'asp', 'presence', 'tp', 'tpx', 'gA', 'gB', 'pA', 'pB', 'pC', 'vap', 'fl', 'flv', 'ef', 'fa', 'faE', 'ge', 'geB', 'on', 'cf', 'cft', 'pap'])
         ud[n] = g.getUniformLocation(progD, n);
       for (const n of ['cr', 'aspP', 'tex', 'cp']) uc[n] = g.getUniformLocation(progC, n);
       const buf = g.createBuffer();
@@ -869,6 +905,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       }
     },
     arreter() {
+      theatre?.detruire();
       if (attache) essaim?.detacher(opts.cote);
       attache = false;
       if (arrete) return;
@@ -887,13 +924,18 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         const ix = (bx - s.rect[0]) / s.rect[2];
         const iy = (by - s.rect[1]) / s.rect[3];
         if (ix < 0 || ix > 1 || iy < 0 || iy > 1 || s.debut !== Infinity) continue;
+        const type = tableauDe(s.d.nom);
+        if (type && theatre?.disponible(s.d.nom, type)) {
+          if (s.scene?.nom === type) return true;
+          return lancerScene(s, type, true);
+        }
         if (s.scene) return true;
         return lancerScene(s);
       }
       return false;
     },
     scene(nom?: string, scene?: string) {
-      for (const s of sprites) if (!nom || s.d.nom === nom) lancerScene(s, scene);
+      for (const s of sprites) if (!nom || s.d.nom === nom) lancerScene(s, scene, true);
     },
     finir() {
       for (const s of sprites) if (s.debut !== Infinity) s.debut = -1e9;
@@ -924,7 +966,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         pret: !!gl,
         joue,
         horloge: Math.round(horloge),
-        dessins: sprites.map((s) => { const courant = poser(s, horloge / 1000), p = courant.corps; return { nom: s.d.nom, peinte: s.debut === Infinity, scene: s.scene?.nom ?? null, parties: s.parties.length, masqueCharge: !!s.parts && !!s.fond, pose: { a: p.a, sx: p.sx, sy: p.sy, tx: p.tx, ty: p.ty, flex: p.flex }, posesParties: courant.poses.map((pose, k) => ({ nom: s.parties[k].nom, ...pose })) }; }),
+        dessins: sprites.map((s) => { const courant = poser(s, horloge / 1000), p = courant.corps; return { nom: s.d.nom, peinte: s.debut === Infinity, scene: s.scene?.nom ?? null, parties: s.parties.length, masqueCharge: !!s.parts && !!s.fond, tableau: theatre?.etat(s.d.nom) ?? null, pose: { a: p.a, sx: p.sx, sy: p.sy, tx: p.tx, ty: p.ty, flex: p.flex }, posesParties: courant.poses.map((pose, k) => ({ nom: s.parties[k].nom, ...pose })) }; }),
         creatures: essaim?.creatures.map((c) => ({ espece: c.espece, etat: c.etat, x: +c.x.toFixed(3), y: +c.y.toFixed(3), direction: c.direction, parole: c.parole, piste: c.piste, visible: texCreatures.has(c.espece) && c.etat !== 'attente' })) ?? [],
       };
     },

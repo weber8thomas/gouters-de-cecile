@@ -206,6 +206,10 @@
   pointer-events: none;
 }
 
+.gc-lumiere-tracee__fond {
+  opacity: var(--gc-penombre-table, 1);
+}
+
 .gc-lumiere-tracee__voile {
   will-change: opacity;
   backface-visibility: hidden;
@@ -235,7 +239,7 @@
 
 .gc-lumiere-papier__penombre {
   /* Ambiance immobile : un seul quad animé supplémentaire par surface, celui de la bougie. */
-  opacity: 0.42;
+  opacity: var(--gc-penombre-papier, 0.42);
   background: linear-gradient(110deg,
     color-mix(in srgb, var(--gc-chocolate) 56%, var(--gc-ink-noire)),
     color-mix(in srgb, var(--gc-chocolate) 30%, var(--gc-ink-noire)));
@@ -280,6 +284,7 @@
 .gc-lumiere-penombre {
   position: absolute;
   inset: 0;
+  opacity: var(--gc-penombre-table, 1);
   border-style: solid;
   border-width: max(0px, calc(var(--gc-stage-debord, 0px) - var(--gc-lumiere-marge)));
   pointer-events: none;

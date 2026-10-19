@@ -2,15 +2,15 @@
 // lu par useSyncExternalStore. Mémorisé dans le navigateur (clé gc:reglages:v4), relu champ par champ :
 // une valeur abîmée ou inconnue retombe sur sa valeur par défaut. Le cran et le zoom restent dans la
 // caméra (src/lib/camera.tsx, clé gc:camera:v1).
-// Clé v3 : la musique est coupée par défaut (musiqueActive, absent de la clé v2 : coupée). Les réglages
-// v2 sont repris tels quels, sauf la musique ; la clé v2 sert de repli, puis la v1 (son « automatique »
-// ramené au défaut, comme avant).
+// Clé v3 historique : ajout de musiqueActive. Les choix enregistrés sont conservés ; si ce champ
+// est absent, le défaut actuel (musique au premier geste) s’applique. La clé v2 sert de repli, puis
+// la v1 (son « automatique » ramené au défaut, comme avant).
 // Clé v4 : les curseurs de volume des bruitages et de la musique ont changé d'échelle (le mélange choisi
 // à l'écoute, bruitages à 15 % et musique à 100 % de l'ancienne échelle, tombe à 50 % / 50 %) ; les
 // volumes d'une clé plus ancienne sont donc oubliés et repartent de leur défaut, le reste est repris.
 // Les champs ajoutés depuis n'ont pas de clé à part : absents, ils prennent leur défaut. C'est le cas de
 // boutonsToujoursVisibles (les boutons s'effacent seuls par défaut, src/lib/controles.ts), de
-// vitesseEcriture et de vitesseAnimations (100 %). L'ancien choix « vive · normale · lente » (champ
+// vitesseEcriture (200 %) et de vitesseAnimations (100 %). L'ancien choix « vive · normale · lente » (champ
 // `vitesse`) est converti à la lecture en vitesseAnimations (150 %, 100 %, 70 %) ; il n'est plus écrit.
 import React from 'react';
 import banqueMusique from '../../design-system/baked/musique/banque.json';
@@ -48,7 +48,7 @@ export interface Reglages {
   lectureAuto: boolean;
   /**
    * Vitesse de l'encre qui s'écrit sur les pages (src/components/PageCuite/encreVivante.ts), de 0,25 à 4
-   * (25 à 400 %). Défaut : 1.
+   * (25 à 400 %). Défaut : 2 (200 %).
    */
   vitesseEcriture: number;
   /**
@@ -82,6 +82,8 @@ export interface Reglages {
   ambiance: boolean | null;
   /** La lumière du feu vacille (lot L, src/lib/feu.ts) ; false : lumière chaude mais immobile. */
   feu: boolean;
+  /** Luminosité générale : 0,75 à 1,6 ; défaut 1,2. */
+  luminosite: number;
   /**
    * Tous les sons coupés d'un coup (bouton haut-parleur, src/components/Haut-parleur) : sons du livre
    * et ambiance à 0 (src/lib/son.ts, src/lib/ambiance.ts). La lumière du feu, elle, continue.
@@ -90,14 +92,16 @@ export interface Reglages {
   /**
    * Morceau de musique de fond (src/lib/musique.ts) : l'identifiant d'un morceau de la banque
    * (design-system/baked/musique/banque.json), ou « aucune » (le bouton musique joue alors le premier).
-   * Défaut : le premier morceau, qui ne joue pas tant que musiqueActive est faux.
+   * Défaut : le premier morceau, qui attend le premier geste du lecteur.
    */
   musique: string;
   /**
-   * La musique joue (bouton musique, src/components/Haut-parleur/BoutonMusique.tsx). Défaut : coupée.
+   * La musique joue (bouton musique, src/components/Haut-parleur/BoutonMusique.tsx). Défaut : active au premier geste (aucun son avant).
    * Éteindre le bouton garde le morceau choisi ; le rallumer le reprend.
    */
   musiqueActive: boolean;
+  /** Enchaîner tous les morceaux, puis reprendre la liste. */
+  musiqueEnchaine: boolean;
   /**
    * Volume de la musique de fond, 0 à 1 (src/lib/musique.ts). Réglable musique
    * coupée : le niveau attend le prochain départ. Défaut : 0,5 (× NIVEAU_MUSIQUE, src/lib/musique.ts).
@@ -123,16 +127,18 @@ export const REGLAGES_DEFAUT: Reglages = {
   volume: 1,
   volumeBruitages: 0.5,
   lectureAuto: false,
-  vitesseEcriture: 1,
+  vitesseEcriture: 2,
   vitesseAnimations: 1,
   animations: 'systeme',
   mouvementReduit: false,
   sonsLivre: true,
   ambiance: true,
   feu: true,
+  luminosite: 1.2,
   muet: false,
   musique: MUSIQUES_IDS[0] ?? 'aucune',
-  musiqueActive: false,
+  musiqueActive: true,
+  musiqueEnchaine: true,
   volumeMusique: 0.5,
   boutonsToujoursVisibles: false,
 };
@@ -158,8 +164,10 @@ function valider(x: unknown): Reglages {
   if (typeof o.sonsLivre === 'boolean' || o.sonsLivre === null) r.sonsLivre = o.sonsLivre;
   if (typeof o.ambiance === 'boolean' || o.ambiance === null) r.ambiance = o.ambiance;
   if (typeof o.feu === 'boolean') r.feu = o.feu;
+  if (typeof o.luminosite === 'number' && Number.isFinite(o.luminosite)) r.luminosite = Math.min(1.6, Math.max(.75, o.luminosite));
   if (typeof o.muet === 'boolean') r.muet = o.muet;
   if (typeof o.musique === 'string' && (o.musique === 'aucune' || MUSIQUES_IDS.includes(o.musique))) r.musique = o.musique;
+  if (typeof o.musiqueEnchaine === 'boolean') r.musiqueEnchaine = o.musiqueEnchaine;
   if (typeof o.musiqueActive === 'boolean') r.musiqueActive = o.musiqueActive;
   if (typeof o.volumeMusique === 'number' && Number.isFinite(o.volumeMusique)) r.volumeMusique = Math.min(1, Math.max(0, o.volumeMusique));
   if (typeof o.boutonsToujoursVisibles === 'boolean') r.boutonsToujoursVisibles = o.boutonsToujoursVisibles;
@@ -173,8 +181,8 @@ function charger(): Reglages {
     const lire = (cle: string): string | null => (typeof localStorage !== 'undefined' ? localStorage.getItem(cle) : null);
     const brut = lire(CLE);
     if (brut) return valider(JSON.parse(brut));
-    // Première visite de cette version : la clé v3 sans ses volumes (ancienne échelle), puis la clé v2 (sans musiqueActive : la musique reste
-    // coupée), puis la v1, sauf les « automatique » (null) de sonsLivre et d'ambiance, qui retombent
+    // Première visite de cette version : la clé v3 sans ses volumes (ancienne échelle), puis la clé v2,
+    // puis la v1, sauf les « automatique » (null) de sonsLivre et d'ambiance, qui retombent
     // sur le défaut (actif).
     const v3 = lire(CLE_V3);
     if (v3) {

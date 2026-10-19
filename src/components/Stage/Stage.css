@@ -53,6 +53,7 @@
    (Lumiere, sous le contenu) le rallume côté gauche et le fait vivre. Ancré sur la scène en px : le débord
    prolonge le même dessin sans couture (le vignettage est centré sur la scène, et le débord est symétrique). */
 .gc-stage__falloff {
+  opacity: var(--gc-penombre-table, 1);
   background:
     radial-gradient(calc(var(--gc-stage-w) * 0.7) calc(var(--gc-stage-h) * 0.55) at 50% 50%,
       transparent 52%,
@@ -68,6 +69,14 @@
       color-mix(in srgb, var(--gc-feu-nuit) 40%, transparent) 110%,
       color-mix(in srgb, var(--gc-feu-nuit) 50%, transparent) 150%),
     linear-gradient(color-mix(in srgb, var(--gc-feu-nuit) 4%, transparent), color-mix(in srgb, var(--gc-feu-nuit) 4%, transparent));
+}
+
+.gc-stage__table::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gc-ink-noire);
+  opacity: var(--gc-assombrir-table, 0);
 }
 
 /* ---- Contenu et lumière --------------------------------------------------------------------------- */

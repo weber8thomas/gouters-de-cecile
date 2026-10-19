@@ -130,6 +130,7 @@ export function ToileAquarelles({ page }: { page: string }) {
   const actif =
     mode === 'live' && !reduit && !!info && (dessins.length > 0 || creatures.length > 0) && !echouees.has(page) && typeof document !== 'undefined' && webglOk();
   const ref = React.useRef<HTMLCanvasElement>(null);
+  const refTableaux = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     const cv = ref.current;
@@ -140,7 +141,7 @@ export function ToileAquarelles({ page }: { page: string }) {
     if (!feuille || !livre || !racine) return; // hors du livre : les images fixes
     // la toile à la taille où la page est vue (livre zoomé, écran dense), sans excès
     const r = cv.getBoundingClientRect();
-    const k = Math.max(1, r.width / Math.max(1, cv.offsetWidth)) * Math.min(2, window.devicePixelRatio || 1);
+    const k = r.width / Math.max(1, cv.offsetWidth) * Math.min(2, window.devicePixelRatio || 1);
     const s = Math.min(1, 1600 / Math.max(cv.offsetWidth * k, cv.offsetHeight * k));
     cv.width = Math.max(1, Math.round(cv.offsetWidth * k * s));
     cv.height = Math.max(1, Math.round(cv.offsetHeight * k * s));
@@ -151,6 +152,7 @@ export function ToileAquarelles({ page }: { page: string }) {
       double: info.double,
       cote: info.cote,
       aspect: w / h,
+      coucheTableaux: refTableaux.current ?? undefined,
       dessins: dessins.map((d) => ({ ...d, peindre: !reduit && !peintes.has(`${page}/${d.nom}`) })),
       douce: reduit,
       url,
@@ -201,7 +203,10 @@ export function ToileAquarelles({ page }: { page: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actif, page, reduit]);
 
-  return actif ? <canvas ref={ref} className="gc-aquarelles-toile" aria-hidden="true" /> : null;
+  return actif ? <>
+    <canvas ref={ref} className="gc-aquarelles-toile" aria-hidden="true" />
+    <div ref={refTableaux} className="gc-tableaux" />
+  </> : null;
 }
 
 export default Aquarelle;

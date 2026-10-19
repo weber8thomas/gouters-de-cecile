@@ -7,6 +7,30 @@
     "bytes": 40410,
     "type": "image/webp"
   },
+  "aquarelles/bulle-jolly-good": {
+    "file": "baked/aquarelles/bulle-jolly-good.webp",
+    "sha": "3dfac4c8678b81c29d3357e889cbeea8635a0220eece4559d39c40e1aa90bc30",
+    "w": 800,
+    "h": 320,
+    "bytes": 67068,
+    "type": "image/webp"
+  },
+  "aquarelles/bulle-tea-time": {
+    "file": "baked/aquarelles/bulle-tea-time.webp",
+    "sha": "d4bba8610fc5bff98f4f1fe784a11491abe6d9065f8b33f1df996203ec6f2c8f",
+    "w": 800,
+    "h": 320,
+    "bytes": 57876,
+    "type": "image/webp"
+  },
+  "aquarelles/bulle-vierge": {
+    "file": "baked/aquarelles/bulle-vierge.webp",
+    "sha": "9784e0a63576c7dd8425fea73519ed09be21b597f28464e5cccd167e5efa1b5c",
+    "w": 800,
+    "h": 320,
+    "bytes": 36592,
+    "type": "image/webp"
+  },
   "aquarelles/cannelle": {
     "file": "baked/aquarelles/cannelle.webp",
     "sha": "0d1dc029354867f62fd569fde516394fff894f262c0d19d5e74cf2cba558b1d8",
@@ -21,6 +45,14 @@
     "w": 258,
     "h": 800,
     "bytes": 51524,
+    "type": "image/webp"
+  },
+  "aquarelles/carte-etoiles": {
+    "file": "baked/aquarelles/carte-etoiles.webp",
+    "sha": "837ffaf49c1f99fa39a39921a840ea03fbce05c9cde3a7a4678b90a794b16357",
+    "w": 700,
+    "h": 600,
+    "bytes": 103878,
     "type": "image/webp"
   },
   "aquarelles/citron-2": {
@@ -39,12 +71,28 @@
     "bytes": 85606,
     "type": "image/webp"
   },
+  "aquarelles/cle-ancienne": {
+    "file": "baked/aquarelles/cle-ancienne.webp",
+    "sha": "9f02001727804e7b8802af454c3a9d7bb53eb472dc13129bacd367b07140f218",
+    "w": 500,
+    "h": 600,
+    "bytes": 51850,
+    "type": "image/webp"
+  },
   "aquarelles/coccinelle": {
     "file": "baked/aquarelles/coccinelle.webp",
     "sha": "cbadae80b5b0aefbf64ab6d808af6e0c6964e7be787cf380f8b8d6a118592b83",
     "w": 342,
     "h": 306,
     "bytes": 56848,
+    "type": "image/webp"
+  },
+  "aquarelles/cookie-grignote": {
+    "file": "baked/aquarelles/cookie-grignote.webp",
+    "sha": "d92304b1c7f01d7cb1d8eea756ff26585d5a54a246e22b81118061f1f2fa1936",
+    "w": 650,
+    "h": 650,
+    "bytes": 105816,
     "type": "image/webp"
   },
   "aquarelles/cookies": {
@@ -69,6 +117,22 @@
     "w": 397,
     "h": 430,
     "bytes": 58472,
+    "type": "image/webp"
+  },
+  "aquarelles/enveloppe": {
+    "file": "baked/aquarelles/enveloppe.webp",
+    "sha": "666f14859ae4de1d821f4000a24803b1f47720f871de8a985310955fe674536e",
+    "w": 650,
+    "h": 650,
+    "bytes": 96136,
+    "type": "image/webp"
+  },
+  "aquarelles/fiole-magique": {
+    "file": "baked/aquarelles/fiole-magique.webp",
+    "sha": "e3cc545f0c7514bc81c577c2c59da199d39fb408a5385744a44cbffdff713a91",
+    "w": 500,
+    "h": 650,
+    "bytes": 87064,
     "type": "image/webp"
   },
   "aquarelles/fond/citron-2": {
@@ -109,6 +173,30 @@
     "w": 800,
     "h": 178,
     "bytes": 23936,
+    "type": "image/webp"
+  },
+  "aquarelles/jack-russell-assis": {
+    "file": "baked/aquarelles/jack-russell-assis.webp",
+    "sha": "c6db9736a4b0c1504e981f11003affbef93fc69340045def0dd76e79867401ba",
+    "w": 600,
+    "h": 750,
+    "bytes": 86454,
+    "type": "image/webp"
+  },
+  "aquarelles/jack-russell-dort": {
+    "file": "baked/aquarelles/jack-russell-dort.webp",
+    "sha": "2bd31be794a6197ae8de72900b8b43c3f37a3a7fe45aba74f7791a5253f20230",
+    "w": 800,
+    "h": 500,
+    "bytes": 106700,
+    "type": "image/webp"
+  },
+  "aquarelles/jack-russell-joue": {
+    "file": "baked/aquarelles/jack-russell-joue.webp",
+    "sha": "574aec15590c8d85f50f2b594fdd2e41ce03c9860937650be8518eba37043310",
+    "w": 800,
+    "h": 650,
+    "bytes": 108986,
     "type": "image/webp"
   },
   "aquarelles/jack-russell": {
@@ -191,6 +279,14 @@
     "bytes": 136,
     "type": "image/webp"
   },
+  "aquarelles/plume": {
+    "file": "baked/aquarelles/plume.webp",
+    "sha": "03c9e93c7757c502cbc95a3aabbda823c2547f9e706e5db215f7bbdbf819a159",
+    "w": 500,
+    "h": 700,
+    "bytes": 69808,
+    "type": "image/webp"
+  },
   "aquarelles/pomme-2": {
     "file": "baked/aquarelles/pomme-2.webp",
     "sha": "66a9aa5ecf5aa7c59826d034b77fa75a0fbdeda5c8f4e1fc0eab7478cbe9197a",
@@ -213,6 +309,94 @@
     "w": 582,
     "h": 782,
     "bytes": 90958,
+    "type": "image/webp"
+  },
+  "aquarelles/scenes/carotte-0": {
+    "file": "baked/aquarelles/scenes/carotte-0.webp",
+    "sha": "f7073868c7a3c97ef44429ccbefbc388d6216bcf3a0a14948fcaefd461149166",
+    "w": 512,
+    "h": 600,
+    "bytes": 77236,
+    "type": "image/webp"
+  },
+  "aquarelles/scenes/carotte-1": {
+    "file": "baked/aquarelles/scenes/carotte-1.webp",
+    "sha": "ff69993859dc0f81c56ae9e6217a4cf1622a2217771ac319dc86a52d18744d8c",
+    "w": 512,
+    "h": 600,
+    "bytes": 88264,
+    "type": "image/webp"
+  },
+  "aquarelles/scenes/carotte-2": {
+    "file": "baked/aquarelles/scenes/carotte-2.webp",
+    "sha": "036e86cd1644f75ee4647065dd35df43a2136d492fd1ba15b8e4a69aa0115d64",
+    "w": 512,
+    "h": 600,
+    "bytes": 83906,
+    "type": "image/webp"
+  },
+  "aquarelles/scenes/carotte-3": {
+    "file": "baked/aquarelles/scenes/carotte-3.webp",
+    "sha": "4852c906988c495eadf9033d5ceee4b4c68a309c2206cae373bd1b77345b99c8",
+    "w": 512,
+    "h": 600,
+    "bytes": 88394,
+    "type": "image/webp"
+  },
+  "aquarelles/scenes/citron-droite": {
+    "file": "baked/aquarelles/scenes/citron-droite.webp",
+    "sha": "0dc6337846bc6b8e717ec67a76d1b05abc6c844843194b572f6f08c75fb694ab",
+    "w": 650,
+    "h": 650,
+    "bytes": 98362,
+    "type": "image/webp"
+  },
+  "aquarelles/scenes/citron-entier": {
+    "file": "baked/aquarelles/scenes/citron-entier.webp",
+    "sha": "71ae3043f31c0b0bca1c1a58fea90a2f7a038eb41e45b5d46b29b576d15ee225",
+    "w": 650,
+    "h": 650,
+    "bytes": 60304,
+    "type": "image/webp"
+  },
+  "aquarelles/scenes/citron-gauche": {
+    "file": "baked/aquarelles/scenes/citron-gauche.webp",
+    "sha": "44df0345badab02768b0a76c87440f015f323d89b73fae88fa9fe1863faeed75",
+    "w": 650,
+    "h": 650,
+    "bytes": 97072,
+    "type": "image/webp"
+  },
+  "aquarelles/scenes/couteau": {
+    "file": "baked/aquarelles/scenes/couteau.webp",
+    "sha": "73331303e17328278681a99d6fc5281ffde27df89aae7fa3503e6de15152afb4",
+    "w": 800,
+    "h": 250,
+    "bytes": 45022,
+    "type": "image/webp"
+  },
+  "aquarelles/scenes/lapin": {
+    "file": "baked/aquarelles/scenes/lapin.webp",
+    "sha": "9921fb489855d6040e6f0811b89150fafe1b2e476c6ede61ba184e5de0d500cf",
+    "w": 550,
+    "h": 650,
+    "bytes": 89648,
+    "type": "image/webp"
+  },
+  "aquarelles/scenes/tasse-vide": {
+    "file": "baked/aquarelles/scenes/tasse-vide.webp",
+    "sha": "b0221c2c56779aa0aef8c511b54f4892d90d84252dd7892926e92f57a118eedc",
+    "w": 700,
+    "h": 500,
+    "bytes": 106102,
+    "type": "image/webp"
+  },
+  "aquarelles/scenes/theiere-seule": {
+    "file": "baked/aquarelles/scenes/theiere-seule.webp",
+    "sha": "5e0dcb48d9069c3bcd6fa0dd52bb14a5e73fb424211cae7d251085d1a0d701ad",
+    "w": 700,
+    "h": 650,
+    "bytes": 106598,
     "type": "image/webp"
   },
   "aquarelles/tarte-pommes": {
@@ -1095,12 +1279,30 @@
     "bytes": 162702,
     "type": "image/webp"
   },
+  "musique/casse-noisette-celesta": {
+    "file": "baked/musique/casse-noisette-celesta.mp3",
+    "sha": "86dcbf4744e9b1e634a5e28a88cb5a4320e300e459f3986d401946f88d1eb409",
+    "w": 0,
+    "h": 0,
+    "bytes": 1399057,
+    "type": "audio/mpeg",
+    "site": true
+  },
   "musique/frozen-star": {
     "file": "baked/musique/frozen-star.mp3",
     "sha": "4b646848a344e941bfa00c4341bf0bd11a2113727a8f5ee59303b6ec80a0fdbc",
     "w": 0,
     "h": 0,
     "bytes": 2605126,
+    "type": "audio/mpeg",
+    "site": true
+  },
+  "musique/gymnopedie-piano": {
+    "file": "baked/musique/gymnopedie-piano.mp3",
+    "sha": "2967e2209c52e9b5dac9651ef747630a245cbb58101a7f6505889143ca33cdcd",
+    "w": 0,
+    "h": 0,
+    "bytes": 1494039,
     "type": "audio/mpeg",
     "site": true
   },

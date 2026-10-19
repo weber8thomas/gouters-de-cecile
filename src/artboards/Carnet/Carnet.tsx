@@ -12,6 +12,7 @@ import { Ecran } from '../../components/Ecran';
 import { InvitationOuvrir } from '../../components/Invitation';
 import { Livre, type LivreApi, type LivreProps } from '../../components/Livre';
 import { Reglages, CREDITS_REGLAGES } from '../../components/Reglages';
+import { CompagnonDuCarnet } from '../../components/SecretsDuCarnet';
 import { SoulevementProvider, souleverObjet, useSoulevement } from '../../components/Soulever';
 import { CAMERA_DEFAULT, CameraProvider } from '../../lib/camera';
 import { MotionConfig, useNiveauMouvement, type MotionValue } from '../../lib/motion';
@@ -184,6 +185,7 @@ function CarnetLivre({ index, setIndex, coteInitial, arrivee, apiRef }: CarnetLi
         // Invitation à ouvrir (lot S) : l'étiquette cuite « … pour ouvrir », selon la modalité.
         invitation={invitation}
       />
+      <CompagnonDuCarnet />
       <Reglages invites={invites} onAller={aller} credits={CREDITS} />
     </>
   );

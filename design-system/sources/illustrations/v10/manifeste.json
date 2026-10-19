@@ -1,0 +1,372 @@
+{
+  "serie": "anglaise-v10",
+  "direction": "Même crayon fin et aquarelle anglaise que v9 ; sprites séparés pour actions et bulles manuscrites dessinées.",
+  "planches": [
+    {
+      "fichier": "actions.png",
+      "sujets": [
+        {
+          "nom": "scenes/theiere-seule",
+          "sujet": "theiere seule",
+          "cellule": [
+            0,
+            0,
+            540,
+            550
+          ],
+          "taille": [
+            700,
+            650
+          ]
+        },
+        {
+          "nom": "scenes/tasse-vide",
+          "sujet": "tasse vide",
+          "cellule": [
+            540,
+            0,
+            1024,
+            550
+          ],
+          "taille": [
+            700,
+            500
+          ]
+        },
+        {
+          "nom": "scenes/citron-gauche",
+          "sujet": "citron gauche",
+          "cellule": [
+            0,
+            550,
+            512,
+            1000
+          ],
+          "taille": [
+            650,
+            650
+          ]
+        },
+        {
+          "nom": "scenes/citron-droite",
+          "sujet": "citron droite",
+          "cellule": [
+            512,
+            550,
+            1024,
+            1000
+          ],
+          "taille": [
+            650,
+            650
+          ]
+        },
+        {
+          "nom": "scenes/couteau",
+          "sujet": "couteau",
+          "cellule": [
+            0,
+            1000,
+            550,
+            1536
+          ],
+          "taille": [
+            800,
+            250
+          ]
+        },
+        {
+          "nom": "scenes/lapin",
+          "sujet": "lapin",
+          "cellule": [
+            550,
+            1000,
+            1024,
+            1536
+          ],
+          "taille": [
+            550,
+            650
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "chiens.png",
+      "sujets": [
+        {
+          "nom": "jack-russell-assis",
+          "sujet": "jack russell assis",
+          "cellule": [
+            0,
+            0,
+            512,
+            545
+          ],
+          "taille": [
+            600,
+            750
+          ]
+        },
+        {
+          "nom": "jack-russell-joue",
+          "sujet": "jack russell joue",
+          "cellule": [
+            512,
+            0,
+            1024,
+            545
+          ],
+          "taille": [
+            800,
+            650
+          ]
+        },
+        {
+          "nom": "jack-russell-dort",
+          "sujet": "jack russell dort",
+          "cellule": [
+            0,
+            545,
+            540,
+            980
+          ],
+          "taille": [
+            800,
+            500
+          ]
+        },
+        {
+          "nom": "cle-ancienne",
+          "sujet": "cle ancienne",
+          "cellule": [
+            540,
+            545,
+            1024,
+            980
+          ],
+          "taille": [
+            500,
+            600
+          ]
+        },
+        {
+          "nom": "enveloppe",
+          "sujet": "enveloppe",
+          "cellule": [
+            0,
+            980,
+            540,
+            1536
+          ],
+          "taille": [
+            650,
+            650
+          ]
+        },
+        {
+          "nom": "plume",
+          "sujet": "plume",
+          "cellule": [
+            540,
+            980,
+            1024,
+            1536
+          ],
+          "taille": [
+            500,
+            700
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "details.png",
+      "sujets": [
+        {
+          "nom": "scenes/carotte-1",
+          "sujet": "carotte 1",
+          "cellule": [
+            0,
+            0,
+            512,
+            600
+          ],
+          "taille": [
+            512,
+            600
+          ],
+          "cadrage_fixe": true,
+          "effacer_bas": 0.91
+        },
+        {
+          "nom": "scenes/carotte-2",
+          "sujet": "carotte 2",
+          "cellule": [
+            512,
+            0,
+            1024,
+            600
+          ],
+          "taille": [
+            512,
+            600
+          ],
+          "cadrage_fixe": true,
+          "effacer_bas": 0.91
+        },
+        {
+          "nom": "scenes/carotte-3",
+          "sujet": "carotte 3",
+          "cellule": [
+            0,
+            550,
+            512,
+            1150
+          ],
+          "taille": [
+            512,
+            600
+          ],
+          "cadrage_fixe": true,
+          "effacer_bas": 0.72
+        },
+        {
+          "nom": "cookie-grignote",
+          "sujet": "cookie grignote",
+          "cellule": [
+            512,
+            550,
+            1024,
+            1000
+          ],
+          "taille": [
+            650,
+            650
+          ]
+        },
+        {
+          "nom": "fiole-magique",
+          "sujet": "fiole magique",
+          "cellule": [
+            0,
+            1000,
+            512,
+            1536
+          ],
+          "taille": [
+            500,
+            650
+          ]
+        },
+        {
+          "nom": "carte-etoiles",
+          "sujet": "carte etoiles",
+          "cellule": [
+            512,
+            1000,
+            1024,
+            1536
+          ],
+          "taille": [
+            700,
+            600
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "bulles.png",
+      "sujets": [
+        {
+          "nom": "bulle-tea-time",
+          "sujet": "bulle tea time",
+          "cellule": [
+            0,
+            0,
+            1536,
+            555
+          ],
+          "taille": [
+            1200,
+            480
+          ]
+        },
+        {
+          "nom": "bulle-jolly-good",
+          "sujet": "bulle jolly good",
+          "cellule": [
+            0,
+            555,
+            1536,
+            1024
+          ],
+          "taille": [
+            1200,
+            480
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "citron-entier.png",
+      "sujets": [
+        {
+          "nom": "scenes/citron-entier",
+          "sujet": "citron entier",
+          "cellule": [
+            0,
+            0,
+            650,
+            650
+          ],
+          "taille": [
+            650,
+            650
+          ],
+          "cadrage_fixe": true
+        }
+      ]
+    },
+    {
+      "fichier": "details-intact.png",
+      "sujets": [
+        {
+          "nom": "scenes/carotte-0",
+          "sujet": "carotte entière avant grignotage",
+          "cellule": [
+            0,
+            0,
+            512,
+            600
+          ],
+          "taille": [
+            512,
+            600
+          ],
+          "cadrage_fixe": true,
+          "composante_principale": true
+        }
+      ]
+    },
+    {
+      "fichier": "bulles-vierges.png",
+      "sujets": [
+        {
+          "nom": "bulle-vierge",
+          "sujet": "bulle dessinée sans texte, pour français Caveat",
+          "cellule": [
+            0,
+            0,
+            1536,
+            540
+          ],
+          "taille": [
+            1200,
+            480
+          ]
+        }
+      ]
+    }
+  ]
+}

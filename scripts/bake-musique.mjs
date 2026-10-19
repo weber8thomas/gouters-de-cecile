@@ -162,3 +162,6 @@ for (const m of lic.morceaux) {
 writeFileSync(join(BAKED, 'banque.json'), JSON.stringify(banque, null, 2) + '\n');
 console.log(`banque.json : ${banque.morceaux.length} morceaux`);
 if (!sansEcoute) console.log(`écoute : ${ecouter(fichiersCuits)}`);
+
+// Les deux interprétations numériques sont reproductibles depuis leurs partitions et la banque fournie.
+execFileSync('python3', [join(ROOT, 'scripts/bake-musique-classique.py')], { cwd: ROOT, stdio: 'inherit', env: { ...process.env, OMP_NUM_THREADS: '1' } });

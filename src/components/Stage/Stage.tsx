@@ -2,6 +2,7 @@ import React from 'react';
 import { SettingsContext, settingsAttrs, useSettings, type Distance, type IdleLook, type Settings } from '../../lib/settings';
 import { LumiereLivre, LumiereTable, PenombreTable, LUMIERE_TRACEE } from '../Lumiere';
 import { Bougie } from '../Bougie';
+import { abonnerReglages, getReglages } from '../../lib/reglages';
 import './Stage.css';
 
 export interface StageProps {
@@ -28,6 +29,7 @@ export interface StageProps {
 // (src/lib/feu.ts : opacité et transformation de calques précalculés). Fournit les réglages.
 export function Stage({ idle, distance, fit = false, children, overlay, className, debord = 0 }: StageProps) {
   const parent = useSettings();
+  const luminosite = React.useSyncExternalStore(abonnerReglages, () => getReglages().luminosite, () => 1.2);
   const settings: Settings = React.useMemo(
     () => ({ idle: idle ?? parent.idle, distance: distance ?? parent.distance }),
     [idle, distance, parent.idle, parent.distance],
@@ -52,6 +54,11 @@ export function Stage({ idle, distance, fit = false, children, overlay, classNam
 
   const cls = ['gc-stage', debord > 0 && 'gc-stage--debord', LUMIERE_TRACEE && 'gc-stage--tracee', className].filter(Boolean).join(' ');
   const style: React.CSSProperties & Record<string, string> = {};
+  // Régler la lumière ambiante des calques existants, sans filtre plein écran ni aplatissement 3D.
+  // La flamme garde ses propres variations, indépendantes de ce niveau de fond.
+  style['--gc-penombre-papier'] = String(Math.max(0, Math.min(.7, .42 + (1 - luminosite) * .85)));
+  style['--gc-penombre-table'] = String(Math.max(.4, Math.min(1, 1 + (1 - luminosite) * .9)));
+  style['--gc-assombrir-table'] = String(Math.max(0, (1 - luminosite) * .7));
   if (fit) Object.assign(style, { transform: `scale(${scale})`, transformOrigin: '0 0' });
   if (debord > 0) style['--gc-stage-debord'] = `${debord}px`;
   const stage = (
@@ -59,7 +66,8 @@ export function Stage({ idle, distance, fit = false, children, overlay, classNam
       ref={stageRef}
       className={cls}
       {...settingsAttrs(settings)}
-      style={fit || debord > 0 ? style : undefined}
+      data-gc-luminosite={Math.round(luminosite * 100)}
+      style={style}
     >
       <div className="gc-stage__table" aria-hidden="true">
         <div className="gc-stage__surface" />

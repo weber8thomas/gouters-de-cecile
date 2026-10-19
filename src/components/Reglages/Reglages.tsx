@@ -18,7 +18,7 @@ import {
   resetReglages, useReglages, type Animations, type Reglages as ReglagesValeurs,
 } from '../../lib/reglages';
 import * as son from '../../lib/son';
-import { MORCEAUX } from '../../lib/musique';
+import { MORCEAUX, changerMorceau, useEtatMusique } from '../../lib/musique';
 import { LOUPE_MAX, LOUPE_MIN, demanderLoupe, useLoupe } from '../../lib/loupe';
 import { useClavierModal } from '../../lib/clavier';
 import { LazyMotion, SPRINGS, animate, domMax, m, useMotionValue, useNiveauMouvement, useTransform } from '../../lib/motion';
@@ -171,7 +171,7 @@ export function volumeReglable(): boolean {
 // ---- Clavier : lignes, valeurs, focus piégé ------------------------------------------------------
 
 const SEL_LIGNE = '[data-gc-reglages-ligne]';
-const SEL_ITEM = 'button, [role="slider"]';
+const SEL_ITEM = 'button, input, [role="slider"]';
 
 const visible = (el: HTMLElement) => el.getClientRects().length > 0;
 /** Éléments atteints par Tab, dans l'ordre du document. */
@@ -371,6 +371,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   const sonsLivre = son.sonsLivreEffectif(r);
   const ambiance = ambianceActive(r);
   const musique = r.musiqueActive;
+  const etatMusique = useEtatMusique();
   const bruitages = sonsLivre || ambiance;
   const avecVolume = volumeReglable();
   const volumeActif = r.son;
@@ -481,6 +482,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
   // ---- Actions des lignes (← →) ----
   const [zMin, zMax] = zoomBornes(camera.distance);
   const actions: Record<string, (dir: 1 | -1) => void> = {
+    luminosite: (dir) => setR(x => ({ luminosite: auPas(x.luminosite + dir * .05, .75, 1.6, .05) })),
     zoom: (dir) => camera.stepZoom(dir),
     loupe: (dir) => reglerLoupe(loupeRef.current + dir * LOUPE_PAS),
     volume: (dir) => setR((x) => ({ volume: auPas(x.volume + dir * VOLUME_PAS, 0, 1, VOLUME_PAS) })),
@@ -517,6 +519,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
     }
     if ((k === 'Home' || k === 'End') && actif?.matches('[data-gc-reglette]')) {
       const id = actif.closest<HTMLElement>(SEL_LIGNE)?.dataset.gcReglagesLigne;
+      if (id === 'luminosite') setR({ luminosite: k === 'Home' ? .75 : 1.6 });
       if (id === 'zoom') camera.setZoom(k === 'Home' ? zMin : zMax);
       if (id === 'loupe') reglerLoupe(k === 'Home' ? LOUPE_MIN : LOUPE_MAX);
       if (id === 'volume') setR({ volume: k === 'Home' ? 0 : 1 });
@@ -649,6 +652,10 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                       <Choix options={OUI_NON} valeur={plein} onChoisir={setPlein} graine={g()} />
                     </Ligne>
                   )}
+                  <Ligne id="luminosite" libelle="Luminosité">
+                    <Reglette valeur={r.luminosite} min={.75} max={1.6} pas={.05} repere={1.2} principal libelle="Luminosité" texte={pourcent(r.luminosite)} onChange={luminosite => setR({ luminosite })} />
+                    <span className="gc-reglages__nombre" aria-hidden="true">{pourcent(r.luminosite)}</span>
+                  </Ligne>
                   <Ligne id="son" libelle="Son des vidéos" role="radiogroup">
                     <Choix options={SON} valeur={r.son} onChoisir={(son) => setR({ son })} graine={g()} />
                   </Ligne>
@@ -745,6 +752,15 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                       graine={g()}
                     />
                   </Ligne>
+                  <Ligne id="playlist" libelle="Liste musicale" large>
+                    <div className="gc-reglages__playlist">
+                      <button type="button" className="gc-reglages__deplier" aria-label="Morceau précédent" onClick={() => changerMorceau(-1)}>← précédent</button>
+                      <button type="button" className="gc-reglages__deplier" aria-label={musique ? 'Mettre la musique en pause' : 'Écouter la musique'} onClick={() => setR({ musiqueActive: !musique, musique: r.musique === 'aucune' ? (MORCEAUX[0]?.id ?? 'aucune') : r.musique })}>{musique ? 'pause' : 'écouter'}</button>
+                      <button type="button" className="gc-reglages__deplier" aria-label="Morceau suivant" onClick={() => changerMorceau(1)}>suivant →</button>
+                      <label className="gc-reglages__enchainement"><input type="checkbox" checked={r.musiqueEnchaine} onChange={e => setR({ musiqueEnchaine: e.target.checked })} /> enchaîner les morceaux</label>
+                      <span className="gc-reglages__lecture" role="status">{etatMusique.statut === 'chargement' ? 'Chargement…' : etatMusique.statut === 'pause-video' ? 'En pause pendant la vidéo' : etatMusique.statut === 'indisponible' ? 'Ce morceau est indisponible' : !musique ? 'Musique en pause' : etatMusique.statut === 'attend-geste' ? 'La musique commence au prochain geste' : etatMusique.titre}</span>
+                    </div>
+                  </Ligne>
                   {/* Réglable musique coupée (atténuée) : le niveau attend le prochain départ. */}
                   <Ligne id="volumeMusique" libelle="Musique" attenuee={!musique}>
                     <Reglette
@@ -800,11 +816,12 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                   {voirCredits && (
                     <div id={creditsId} className="gc-reglages__credits">
                       {credits ?? <p>{CREDITS_REGLAGES}</p>}
-                      <p>Musique de fond (Kevin MacLeod, incompetech.com), sous licence Creative Commons Attribution 4.0 :</p>
+                      <p>Musique de fond : enregistrements de Kevin MacLeod et interprétations numériques de partitions du domaine public. Sources et licences :</p>
                       <ul>
                         {MORCEAUX.map((m) => (
                           <li key={m.id}>
                             « <a href={m.url} target="_blank" rel="noopener noreferrer">{m.titre}</a> » : {m.auteur}, <a href={m.licenceUrl} target="_blank" rel="noopener noreferrer">{m.licence}</a>
+                            <span className="gc-reglages__credit-musique">{m.credit}</span>
                           </li>
                         ))}
                       </ul>

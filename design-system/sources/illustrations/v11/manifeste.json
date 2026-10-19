@@ -1,0 +1,67 @@
+{
+  "serie": "anglaise-v11",
+  "direction": "Même crayon fin et aquarelle mate anglaise ; quatre vrais desserts du plan, porcelaine florale crème.",
+  "planches": [
+    {
+      "fichier": "recettes.png",
+      "sujets": [
+        {
+          "nom": "fondant-chocolat",
+          "sujet": "fondant chocolat",
+          "cellule": [
+            0,
+            0,
+            768,
+            512
+          ],
+          "taille": [
+            800,
+            650
+          ]
+        },
+        {
+          "nom": "framboises-speculoos",
+          "sujet": "framboises speculoos",
+          "cellule": [
+            768,
+            0,
+            1536,
+            512
+          ],
+          "taille": [
+            800,
+            650
+          ]
+        },
+        {
+          "nom": "tarte-myrtilles",
+          "sujet": "tarte myrtilles",
+          "cellule": [
+            0,
+            512,
+            768,
+            1024
+          ],
+          "taille": [
+            800,
+            650
+          ]
+        },
+        {
+          "nom": "crepes-banane",
+          "sujet": "crepes banane",
+          "cellule": [
+            768,
+            512,
+            1536,
+            1024
+          ],
+          "taille": [
+            800,
+            650
+          ]
+        }
+      ]
+    }
+  ]
+}

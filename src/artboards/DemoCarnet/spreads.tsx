@@ -18,6 +18,7 @@ import { proportionImage } from '../../components/Soulever/media';
 import { PhotoCollee } from '../../components/PhotoCollee';
 import { FeuilletVolant } from '../../components/FeuilletVolant';
 import { Aquarelle, ToileAquarelles } from '../../components/Aquarelle';
+import { SecretsDuCarnet } from '../../components/SecretsDuCarnet';
 import { TOUCHER_EVENT } from '../../components/Livre/evenements';
 import { useRenderMode, type SpreadSpec } from '../../lib/spread';
 import videosJson from '../../content/videos.json';
@@ -124,7 +125,7 @@ function Page({ id, graine }: { id: string; graine: number }) {
     slots.volant = <FeuilletVolant recto={info.volant.recto} verso={info.volant.verso ?? null} angle={info.volant.angle} graine={graine} />;
   }
   // une seule toile vivante pour toutes les aquarelles de la page (et les créatures de la double page)
-  return <PageCuite page={id} slots={slots} dessus={<ToileAquarelles page={id} />} />;
+  return <PageCuite page={id} slots={slots} dessus={<><ToileAquarelles page={id} /><SecretsDuCarnet page={id} /></>} />;
 }
 
 const CARNET = carnetJson as unknown as Carnet;

@@ -1,0 +1,34 @@
+{
+  "fondant-chocolat": {
+    "sujet": "fondant chocolat",
+    "fichier": "fondant-chocolat.png",
+    "source": "design-system/sources/illustrations/v11/recettes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v11"
+  },
+  "framboises-speculoos": {
+    "sujet": "framboises speculoos",
+    "fichier": "framboises-speculoos.png",
+    "source": "design-system/sources/illustrations/v11/recettes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v11"
+  },
+  "tarte-myrtilles": {
+    "sujet": "tarte myrtilles",
+    "fichier": "tarte-myrtilles.png",
+    "source": "design-system/sources/illustrations/v11/recettes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v11"
+  },
+  "crepes-banane": {
+    "sujet": "crepes banane",
+    "fichier": "crepes-banane.png",
+    "source": "design-system/sources/illustrations/v11/recettes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v11"
+  }
+}

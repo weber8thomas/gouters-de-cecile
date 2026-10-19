@@ -1,0 +1,186 @@
+{
+  "scenes/theiere-seule": {
+    "sujet": "theiere seule",
+    "fichier": "scenes/theiere-seule.png",
+    "source": "design-system/sources/illustrations/v10/actions.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "scenes/tasse-vide": {
+    "sujet": "tasse vide",
+    "fichier": "scenes/tasse-vide.png",
+    "source": "design-system/sources/illustrations/v10/actions.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "scenes/citron-gauche": {
+    "sujet": "citron gauche",
+    "fichier": "scenes/citron-gauche.png",
+    "source": "design-system/sources/illustrations/v10/actions.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "scenes/citron-droite": {
+    "sujet": "citron droite",
+    "fichier": "scenes/citron-droite.png",
+    "source": "design-system/sources/illustrations/v10/actions.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "scenes/couteau": {
+    "sujet": "couteau",
+    "fichier": "scenes/couteau.png",
+    "source": "design-system/sources/illustrations/v10/actions.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "scenes/lapin": {
+    "sujet": "lapin",
+    "fichier": "scenes/lapin.png",
+    "source": "design-system/sources/illustrations/v10/actions.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "jack-russell-assis": {
+    "sujet": "jack russell assis",
+    "fichier": "jack-russell-assis.png",
+    "source": "design-system/sources/illustrations/v10/chiens.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "jack-russell-joue": {
+    "sujet": "jack russell joue",
+    "fichier": "jack-russell-joue.png",
+    "source": "design-system/sources/illustrations/v10/chiens.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "jack-russell-dort": {
+    "sujet": "jack russell dort",
+    "fichier": "jack-russell-dort.png",
+    "source": "design-system/sources/illustrations/v10/chiens.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "cle-ancienne": {
+    "sujet": "cle ancienne",
+    "fichier": "cle-ancienne.png",
+    "source": "design-system/sources/illustrations/v10/chiens.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "enveloppe": {
+    "sujet": "enveloppe",
+    "fichier": "enveloppe.png",
+    "source": "design-system/sources/illustrations/v10/chiens.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "plume": {
+    "sujet": "plume",
+    "fichier": "plume.png",
+    "source": "design-system/sources/illustrations/v10/chiens.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "scenes/carotte-1": {
+    "sujet": "carotte 1",
+    "fichier": "scenes/carotte-1.png",
+    "source": "design-system/sources/illustrations/v10/details.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "scenes/carotte-2": {
+    "sujet": "carotte 2",
+    "fichier": "scenes/carotte-2.png",
+    "source": "design-system/sources/illustrations/v10/details.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "scenes/carotte-3": {
+    "sujet": "carotte 3",
+    "fichier": "scenes/carotte-3.png",
+    "source": "design-system/sources/illustrations/v10/details.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "cookie-grignote": {
+    "sujet": "cookie grignote",
+    "fichier": "cookie-grignote.png",
+    "source": "design-system/sources/illustrations/v10/details.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "fiole-magique": {
+    "sujet": "fiole magique",
+    "fichier": "fiole-magique.png",
+    "source": "design-system/sources/illustrations/v10/details.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "carte-etoiles": {
+    "sujet": "carte etoiles",
+    "fichier": "carte-etoiles.png",
+    "source": "design-system/sources/illustrations/v10/details.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "bulle-tea-time": {
+    "sujet": "bulle tea time",
+    "fichier": "bulle-tea-time.png",
+    "source": "design-system/sources/illustrations/v10/bulles.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "bulle-jolly-good": {
+    "sujet": "bulle jolly good",
+    "fichier": "bulle-jolly-good.png",
+    "source": "design-system/sources/illustrations/v10/bulles.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "scenes/citron-entier": {
+    "sujet": "citron entier",
+    "fichier": "scenes/citron-entier.png",
+    "source": "design-system/sources/illustrations/v10/citron-entier.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "scenes/carotte-0": {
+    "sujet": "carotte entière avant grignotage",
+    "fichier": "scenes/carotte-0.png",
+    "source": "design-system/sources/illustrations/v10/details-intact.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  },
+  "bulle-vierge": {
+    "sujet": "bulle dessinée sans texte, pour français Caveat",
+    "fichier": "bulle-vierge.png",
+    "source": "design-system/sources/illustrations/v10/bulles-vierges.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v10"
+  }
+}

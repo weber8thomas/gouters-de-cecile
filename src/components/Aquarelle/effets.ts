@@ -56,23 +56,23 @@ export const EFFETS: Record<string, Effets> = {
   // Théière et deux tasses de la série harmonisée : vapeur légère aux trois ouvertures.
   theiere: {
     vapeur: [[0.193, 0.225, 0.038], [0.31, 0.64, 0.115], [0.695, 0.64, 0.11]],
-    scenes: ['bouillir', 'tinte'],
+    scenes: ['service-the', 'bouillir', 'service-the', 'tinte'],
   },
   // La tasse : une vapeur légère au-dessus du liquide.
   'tasse-2': {
     vapeur: [[0.49, 0.28, 0.17]],
     ondes: [0.49, 0.28, 0.24],
-    scenes: ['tinte', 'bouillir'],
+    scenes: ['levitation', 'tinte', 'levitation', 'bouillir'],
   },
   // La tasse reste entière et le thé fume doucement.
   'tasse-coeur': {
     vapeur: [[0.36, 0.14, 0.17]],
     ondes: [0.36, 0.15, 0.24],
-    scenes: ['tinte', 'bouillir'],
+    scenes: ['levitation', 'tinte', 'levitation', 'bouillir'],
   },
   // La nouvelle part de gâteau a une mèche sans flamme peinte ; le dessin reste entier.
   gateau: {
-    scenes: ['balance', 'salut'],
+    scenes: ['gateau-enchante', 'balance', 'salut'],
   },
   // la tarte sort du four
   'tarte-pommes': {
@@ -80,21 +80,22 @@ export const EFFETS: Record<string, Effets> = {
     scenes: ['fume'],
   },
   // Le cupcake reste entier, avec un balancement rigide léger.
-  cupcake: { scenes: ['salut', 'balance'] },
+  cupcake: { scenes: ['gateau-enchante', 'salut', 'balance'] },
   // La bougie vacille, puis se rallume après un souffle ; le gâteau ne se déforme pas.
   'cupcake-bougie': {
     flammes: [[0.4624, 0.0946, 0.03]],
-    scenes: ['bougies', 'souffle', 'salut', 'allume'],
+    scenes: ['gateau-enchante', 'bougies', 'souffle', 'salut', 'allume'],
   },
   // le gâteau d'anniversaire et ses cinq bougies (piste anniversaire : titre et dédicace ; l'aquarelle
   // arrive à la fusion, design-system/aquarelles/gateau-bougies.png)
   'gateau-bougies': {
     ...bougies([[0.2676, 0.2228], [0.3525, 0.185], [0.4926, 0.1472], [0.6328, 0.1904], [0.7287, 0.2228]], 0.023),
+    scenes: ['gateau-enchante', 'bougies', 'souffle'],
   },
   // La nouvelle guirlande et ses nœuds restent intacts.
   guirlande: { fanions: [0.15, 0.33, 0.315, 0.68], scenes: ['brise', 'fete'], confettis: [0.5, 0.32, 0.35] },
   // les fanes frémissent, et se secouent
-  carotte: { scenes: ['secoue'], repos: 'fanes' },
+  carotte: { scenes: ['lapin-carotte', 'secoue', 'lapin-carotte'], repos: 'fanes' },
   // le blé ploie au vent ; les plantes à peine, une rafale de temps en temps
   ble: { vent: 1, scenes: ['rafale'] },
   vanille: { vent: 0.3, scenes: ['rafale'] },
@@ -106,8 +107,8 @@ export const EFFETS: Record<string, Effets> = {
   // Même geste doux pour les sablés.
   'sables-etoiles': { scenes: ['salut', 'balance'] },
   // Les fruits et leurs coupes gardent leur forme et leur orientation.
-  citron: { rigide: true, scenes: ['duo-citron'] },
-  'citron-2': { rigide: true, scenes: ['duo-citron'] },
+  citron: { rigide: true, scenes: ['coupe-citron', 'duo-citron', 'coupe-citron'] },
+  'citron-2': { rigide: true, scenes: ['coupe-citron', 'duo-citron', 'coupe-citron'] },
   pomme: { rigide: true, scenes: ['frisson'] },
   'pomme-2': { rigide: true, scenes: ['frisson'] },
   orange: { rigide: true, scenes: ['frisson'] },
@@ -121,12 +122,8 @@ export const EFFETS: Record<string, Effets> = {
 /** Scènes propres à une page : elles remplacent celles de l'aquarelle sur cette page. */
 export const SCENES_PAGE: Record<string, Record<string, string[]>> = {
   // la dernière page : on souffle la bougie du cupcake (un filet de fumée), puis elle se rallume
-  'fin-droite': { 'cupcake-bougie': ['souffle', 'bougies'] },
+  'fin-droite': { 'cupcake-bougie': ['gateau-enchante', 'souffle', 'bougies'] },
 };
 
-/** Un Jack Russell par double page, uniquement dans les marges dont le passage est libre. */
-export const CREATURES: Record<string, string[]> = {
-  gateaux: ['jack-russell'], lisa: ['jack-russell'], julie: ['jack-russell'],
-  biscuits: ['jack-russell'], rose: ['jack-russell'], mathis: ['jack-russell'],
-  bernard: ['jack-russell'], fin: ['jack-russell'],
-};
+/** Les compagnons sont désormais joués par SecretsDuCarnet et CompagnonDuCarnet. */
+export const CREATURES: Record<string, string[]> = {};

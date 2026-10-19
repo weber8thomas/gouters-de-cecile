@@ -8,8 +8,14 @@
   un Jack Russell en vedette, corriger couverture/ouverture et éclairage du papier, gâteau et citrons.
 - Direction confirmée par l'utilisateur : style anglais ancien et doux, **avec beaucoup d'animations**.
   Les citrons doivent bouger de manière naturelle et fluide ; un frémissement à peine visible ne suffit pas.
+- Précision v10 : **spectacle permanent**, véritables actions (service du thé, lévitation, coupe du
+  citron, carotte grignotée), davantage de Jack Russell et de cachettes. « Victoria » désigne
+  **Melodie Victoria**, déjà présente dans les paramètres. Les bulles doivent être dessinées et
+  manuscrites. Les artefacts signalés concernent les illustrations terminées sur mobile.
+- Luminosité générale augmentée et réglable, en gardant les mouvements de lumière de la bougie.
+  Écriture à 200 % par défaut ; conserver les choix explicitement enregistrés.
 - Modifications, sous-agents, Git et publication autorisés. Limiter les agents et les contrôles longs
-  pour économiser le quota. Cette reprise a utilisé deux agents spécialisés existants.
+  pour économiser le quota. Réutiliser seulement les spécialistes nécessaires, sans audits redondants.
 - Branche de sauvegarde : `codex/reprise-v8`. `main` reste au commit initial ; ne pas y chercher le site.
 - Aperçu : https://weber8thomas.github.io/gouters-de-cecile/essais/reprise-v8/
 - Aucun redémarrage automatique après épuisement du quota n'est programmé ; la reprise nécessite un
@@ -19,6 +25,39 @@
 
 Base : `feat/epic-wright-58442e` 2a47969, puis dessins et anniversaire fusionnés. Historique initial
 et bilan fourni : [bilan de Claude](bilan-claude-2026-10-18.md). Stratégie : [plan v8](plan-v8.md).
+
+### Suite v10 — scènes, secrets, musique et luminosité
+
+Les cinq tableaux de `Aquarelle/tableaux.ts` remplacent temporairement les dessins concernés :
+trois tasses se soulèvent, la théière remplit deux tasses, un couteau coupe le citron en deux,
+un lapin grignote une carotte en quatre états, les gâteaux s'envolent. Les actions durent 10–11 s,
+avec un relais entre illustrations et seulement une courte pause. Le moteur des aquarelles garde
+l'horloge, la gestion des gestes et du mouvement réduit. Clic ou Entrée/Espace rejoue l'action.
+Les anciens masques ne sont pas employés pour ces nouveaux tableaux. Les sources et cadrages
+sont dans [la série v10](../design-system/sources/illustrations/v10/README.md).
+
+`SecretsDuCarnet` apporte douze histoires, dont quatre avec le Jack Russell, et un grand compagnon
+sur la table lorsque le livre laisse assez de place. Plusieurs poses et accessoires partagent le
+style des aquarelles. Les bulles « Tea time! » et « Jolly good! » sont des images manuscrites.
+Les secrets se renouvellent après quatorze secondes actives ; **S** alterne les surprises visibles,
+avec aussi clic/Entrée/Espace. Le placement teste l'encre, les photos, les objets et les liens.
+
+La playlist enchaîne Goblin King, Gymnopédie au piano, Melodie Victoria, fantaisie Casse-Noisette
+au célesta et Frozen Star. Précédent/pause/suivant et l'option d'enchaînement sont dans Réglages.
+Les deux nouvelles interprétations sont rendues depuis des sources musicales et un SoundFont
+versionnés, avec leurs licences ; aucune copie d'un enregistrement commercial ni requête distante.
+La musique attend un geste, se suspend pendant une vidéo, puis reprend au même instant.
+
+La luminosité se règle de **75 à 160 %**, défaut **120 %**, avec mémoire et remise à zéro.
+`Stage` ajuste l'opacité des pénombres du papier et de la table, y compris les débords, sans filtre
+plein écran ni modification de la géométrie 3D. La flamme et sa contribution mobile restent
+indépendantes. Le défaut de vitesse d'écriture est **200 %** ; les choix stockés sont conservés.
+
+Cause des artefacts mobiles : la toile aquarelle était sous la lumière du papier tandis que les
+images fixes étaient au-dessus. La toile est maintenant au même niveau 4, le théâtre au niveau 5.
+Le buffer suit aussi la réduction réelle de la scène sur téléphone, au lieu d'imposer la résolution
+de la page de bureau. L'audit initial a mesuré un écart GL/image fixe passant de 10,75 à 1,27 RGB
+avec la correction d'ordre des calques ; le contrôle final v10 est décrit ci-dessous.
 
 ### Série graphique anglaise
 
@@ -120,5 +159,6 @@ contrôlés localement, la publication vérifiée dans Git, sans prétendre avoi
 
 Le brouillon réseau prévoit Pages et Hugging Face, mais n'est appliqué qu'après enregistrement et
 publication de l'environnement. Les modèles d'écriture manquants ne bloquent pas le carnet déjà cuit.
-À suivre : variations de poses du chien, surprise lapin-carotte, écoute audio, vrais clips après collecte
-et accords. Pour impression, préciser le choix entre le carnet écran 17×24 et l'export A5 séparé.
+À suivre : essai physique HDMI et Safari/iPhone, écoute sur la TV, vrais clips après collecte et
+accords. Les poses de chien et le lapin-carotte sont intégrés dans v10. Pour impression, préciser
+le choix entre le carnet écran 17×24 et l'export A5 séparé.

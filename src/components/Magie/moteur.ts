@@ -14,12 +14,12 @@
 //   plume           — des paillettes suivent la pointe qui écrit la page, une bouffée quand elle a fini ;
 //   photos vivantes — photos.ts.
 //
-// Rien ne se mesure pendant un geste (le DOM est lu au repos). En pause : onglet caché, loupe. Mouvement
+// Rien ne se mesure pendant un geste (le DOM est lu au repos). En pause : onglet caché, geste de loupe. Mouvement
 // réduit : pas de trajectoires rapides (scintillements sur place, poussière lente, ornements en fondu,
 // ni pas, ni reflets, ni photos qui bougent). Contexte WebGL perdu : la toile s'efface (Magie.tsx).
 
 import type { MotionValue } from '../../lib/motion';
-import { getLoupe, loupeOccupee, abonnerLoupe, LOUPE_EVENT } from '../../lib/loupe';
+import { loupeOccupee, abonnerLoupe, LOUPE_EVENT } from '../../lib/loupe';
 import { ecouterPointeur, lirePointeur } from '../../lib/pointeur';
 import { abonnerFlambee, feu } from '../../lib/feu';
 import { assetUrl } from '../../lib/assets';
@@ -140,7 +140,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   let feuParti = false; // le feu d'artifice de cette ouverture est parti
   let opPose = 0; // opacité de ce qui est posé sur les pages (ornements, pas, paraphes)
   let poussiereVue = true;
-  let cachee = false; // loupe
+  let cachee = false; // moteur en pause pendant le geste de loupe ; la toile reste visible
   let plume: (EvenementPlume & { derniere?: { x: number; y: number } }) | null = null;
   let paraphes: Paraphe[] = [];
   let promenadeEnCours: Promenade | null = null;
@@ -158,6 +158,13 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   const versScene = (x: number, y: number): [number, number] => [(x - cr.left) / q, (y - cr.top) / q];
   const reduit = () => L.reduit();
   const plusTard = (dans: number, f: () => void) => aFaire.push({ t: horloge + dans, f });
+  // getBoundingClientRect et les pointeurs utilisent les px CSS du viewport de mise en page.
+  // Un pincement natif n'en change pas la projection : il recadre cette surface via visualViewport.
+  const cadreVisible = () => {
+    const v = window.visualViewport;
+    return v ? { x: v.offsetLeft, y: v.offsetTop, w: v.width, h: v.height }
+      : { x: 0, y: 0, w: innerWidth, h: innerHeight };
+  };
 
   // ---- Mesures (au repos seulement) ------------------------------------------------------------------
   function mesurer(): void {
@@ -165,7 +172,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     if (!(r.width > 0 && r.height > 0)) return;
     q = r.width / SCENE_W;
     cr = { left: r.left, top: r.top };
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const dpr = Math.min(2, (window.devicePixelRatio || 1) * (window.visualViewport?.scale || 1));
     const budget = tactile ? 1.6e6 : 2.4e6;
     k = Math.min(q * dpr, Math.sqrt(budget / (SCENE_W * SCENE_H)));
     const w = Math.max(1, Math.round(SCENE_W * k));
@@ -186,7 +193,8 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       const ex = sr.left + (FLAMME.x * sr.width) / scene.offsetWidth;
       const ey = sr.top + (FLAMME.y * sr.height) / scene.offsetHeight;
       const R = 430 * q;
-      poussiereVue = ex + R > 0 && ex - R < innerWidth && ey + R > 0 && ey - R < innerHeight;
+      const cadre = cadreVisible();
+      poussiereVue = ex + R > cadre.x && ex - R < cadre.x + cadre.w && ey + R > cadre.y && ey - R < cadre.y + cadre.h;
     }
     const livre = L.livre.current;
     if (!livre) return;
@@ -520,7 +528,9 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     const x1 = x0 + v.w * q;
     const y0 = cr.top + v.y * q;
     const y1 = y0 + v.h * q;
-    return Math.min(x1, innerWidth) - Math.max(x0, 0) > 0.4 * (x1 - x0) && Math.min(y1, innerHeight) - Math.max(y0, 0) > 0.4 * (y1 - y0);
+    const cadre = cadreVisible();
+    return Math.min(x1, cadre.x + cadre.w) - Math.max(x0, cadre.x) > 0.4 * Math.min(x1 - x0, cadre.w)
+      && Math.min(y1, cadre.y + cadre.h) - Math.max(y0, cadre.y) > 0.4 * Math.min(y1 - y0, cadre.h);
   }
 
   // ---- Écouteurs -----------------------------------------------------------------------------------
@@ -618,11 +628,14 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   }));
   ecoutes.push(abonnerEcriture(() => { mesureDue = Math.min(mesureDue, 0.12); reveiller(); }));
   const surLoupe = () => {
-    const c = getLoupe().zoome || loupeOccupee();
+    // La toile suit déjà la transformation CSS du livre. La cacher tant que z > 1 faisait
+    // disparaître durablement l'encre et les pas après un zoom trackpad. Garder sa dernière image
+    // pendant le geste, puis reprendre le moteur dans le repère remesuré.
+    const c = loupeOccupee();
     if (c === cachee) return;
     cachee = c;
-    toile.style.visibility = c ? 'hidden' : '';
-    if (c) { photos.eteindre(); grains.n = 0; } else mesureDue = 0.1;
+    if (c) { photos.eteindre(); grains.n = 0; }
+    else { mesureDue = 0; avant = performance.now(); }
     reveiller();
   };
   ecoutes.push(abonnerLoupe(surLoupe));
@@ -636,6 +649,20 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   const surTaille = () => { mesureDue = Math.min(mesureDue, 0.2); reveiller(); };
   window.addEventListener('resize', surTaille);
   ecoutes.push(() => window.removeEventListener('resize', surTaille));
+  const viewport = window.visualViewport;
+  viewport?.addEventListener('resize', surTaille);
+  viewport?.addEventListener('scroll', surTaille);
+  ecoutes.push(() => { viewport?.removeEventListener('resize', surTaille); viewport?.removeEventListener('scroll', surTaille); });
+  // Zoom navigateur et passage d'un écran Retina à un autre : le DPR peut changer sans resize.
+  let mediaDpr: MediaQueryList | null = null;
+  const surDpr = () => { surveillerDpr(); surTaille(); };
+  function surveillerDpr(): void {
+    mediaDpr?.removeEventListener('change', surDpr);
+    mediaDpr = window.matchMedia(`(resolution: ${window.devicePixelRatio || 1}dppx)`);
+    mediaDpr.addEventListener('change', surDpr);
+  }
+  surveillerDpr();
+  ecoutes.push(() => mediaDpr?.removeEventListener('change', surDpr));
 
   // ---- La boucle -----------------------------------------------------------------------------------
   function reveiller(): void {
@@ -973,7 +1000,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     return { page: v.id, bloc: t.bloc, x: cr.left + a * q, y: cr.top + b * q, w: (c - a) * q, h: (d - b) * q };
   };
   const debug = {
-    etat: () => ({ k, q, pages: pages.map((v) => ({ id: v.id, ecrite: v.ecrite, orn: etats.get(v.id)?.ornements?.length ?? 0, fini: etats.get(v.id)?.fini })), grains: grains.n, photos: photos.vivantes.length, compte, bord: bordAvant, calme, enGeste, horloge, flamme: [poussiere.fx, poussiere.fy], poussiereVue, toile: [toile.width, toile.height] }),
+    etat: () => ({ k, q, pauseLoupe: cachee, dpr: window.devicePixelRatio, viewport: cadreVisible(), pages: pages.map((v) => ({ id: v.id, ecrite: v.ecrite, orn: etats.get(v.id)?.ornements?.length ?? 0, fini: etats.get(v.id)?.fini })), grains: grains.n, photos: photos.vivantes.length, compte, bord: bordAvant, calme, enGeste, horloge, flamme: [poussiere.fx, poussiere.fy], poussiereVue, toile: [toile.width, toile.height] }),
     feuDArtifice: () => { const g = L.geo(); if (g) feuDArtifice(g); reveiller(); },
     pas: () => { const ok = lancerPromenade(); reveiller(); return ok; },
     // reflet() et paraphe() : sur le plus grand titre de la première page qui en a un ; rendent son rectangle

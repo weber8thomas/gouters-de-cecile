@@ -13,6 +13,8 @@
 //             une tape lance sa scène ; captures.
 //   autonomie aucune entrée : scènes spontanées, horloge proportionnelle à la vitesse,
 //             pause hors vue / onglet masqué, images fixes avec mouvement réduit.
+//   tableaux  vrais tableaux : actions visibles, interactions clavier, pause et captures des scènes.
+//   tableaux-courbes vérification sans navigateur des actions, contacts et raccords C1 des tableaux.
 // Sorties : verification/out/dessins (planches film-*.png, page-*.png, iphone-*.png, dessins.json).
 //
 //   node scripts/verify-dessins.mjs [--site dist/site | --carnet [--bundle dist/ds/components]]
@@ -26,10 +28,46 @@ const { opt, liste, drapeau } = lireArgs();
 const suites = liste('suites', 'pages,films,creature,iphone,autonomie');
 const out = resolve(ROOT, opt('out', 'verification/out/dessins'));
 mkdirSync(out, { recursive: true });
-const cible = await ouvrirCible(opt('url') ? { url: opt('url') } : drapeau('carnet') ? { bundle: opt('bundle') } : { site: opt('site', 'dist/site') });
-const browser = await lancer({ args: ['--use-gl=angle', ...ARGS_GPU, '--ignore-gpu-blocklist', '--mute-audio'], media: false });
+const seulementCourbes = suites.every((s) => s === 'tableaux-courbes');
+const cible = seulementCourbes ? null : await ouvrirCible(opt('url') ? { url: opt('url') } : drapeau('carnet') ? { bundle: opt('bundle') } : { site: opt('site', 'dist/site') });
+const browser = seulementCourbes ? null : await lancer({ args: ['--use-gl=angle', ...ARGS_GPU, '--ignore-gpu-blocklist', '--mute-audio'], media: false });
 const rapport = new Rapport('dessins', { dir: out });
 const resultats = {};
+
+if (suites.includes('tableaux-courbes') || suites.includes('tableaux')) {
+  const { build } = await import('esbuild');
+  const b = await build({ entryPoints: [join(ROOT, 'src/components/Aquarelle/tableaux.ts')], bundle: true, platform: 'node', format: 'esm', write: false });
+  const { etatTableau, pointActeur, TABLEAUX, BOUCHE_LAPIN, ANCRES_CAROTTE } = await import(`data:text/javascript;base64,${Buffer.from(b.outputFiles[0].text).toString('base64')}`);
+  const aspects = { 'carotte-0': .62, 'carotte-1': .62, 'carotte-2': .62, 'carotte-3': .62, lapin: 1.12 };
+  const e = (n, t) => etatTableau(n, t, aspects);
+  const actions = {
+    levitation: e('levitation', 4.5).acteurs.every((a) => a.y < 340) && e('levitation', 9.3).acteurs.every((a) => a.y === 505),
+    service: [[2.8, 0], [6.7, 1]].every(([t, k]) => { const q = e('service-the', t); return q.jet > .45 && q.tasseVisee === k && q.liquide[k] > .3; }) && e('service-the', 8).liquide.every((f) => f === 1),
+    coupe: (() => { const a = e('coupe-citron', 5).acteurs; return a[0].alpha === 0 && a[1].alpha === 1 && a[2].alpha === 1 && a[2].x - a[1].x >= 280; })(),
+    grignotage: [[3.5, 0], [4.5, 1], [5.8, 2], [7.3, 3]].every(([t, k]) => e('lapin-carotte', t).acteurs[k].alpha === 1),
+    gateaux: e('gateau-enchante', 4.5).acteurs[0].y < 280 && e('gateau-enchante', 9.4).acteurs[0].y === 440 && e('gateau-enchante', 4.5).flammes.length === 5,
+  };
+  let erreurContact = 0;
+  for (let t = 3; t <= 8; t += .05) {
+    const q = e('lapin-carotte', t), bouche = pointActeur(q.acteurs[4], BOUCHE_LAPIN, aspects);
+    const bout = q.acteurs.slice(0, 4).reduce((sum, a, k) => { const p = pointActeur(a, ANCRES_CAROTTE[k].bout, aspects); return [sum[0] + p[0] * a.alpha, sum[1] + p[1] * a.alpha]; }, [0, 0]);
+    erreurContact = Math.max(erreurContact, Math.hypot(bouche[0] - bout[0], bouche[1] - bout[1]));
+  }
+  const bornes = [.7, .8, 1.7, 1.8, 1.9, 2.2, 2.5, 2.8, 3, 3.3, 3.5, 3.7, 3.8, 3.9, 4, 4.1, 4.4, 4.6, 4.7, 4.8, 5.2, 5.5, 5.6, 5.7, 6.2, 6.6, 6.9, 7, 7.5, 7.8, 7.95, 8, 8.3, 8.4, 9.2, 9.8, 10.2, 10.3, 10.7];
+  const nombres = (q) => q.acteurs.flatMap((a) => [a.x, a.y, a.w, a.angle, a.alpha]).concat(q.liquide, q.jet);
+  let saut = 0, raccord = ''; const h = 1e-5;
+  for (const n of Object.keys(TABLEAUX)) for (const t of bornes) {
+    if (t > TABLEAUX[n].duree) continue;
+    const a = nombres(e(n, t - h)), b = nombres(e(n, t)), c = nombres(e(n, t + h));
+    for (let k = 0; k < a.length; k++) {
+      const v = Math.abs((c[k] - b[k]) / h - (b[k] - a[k]) / h);
+      if (v > saut) { saut = v; raccord = `${n}@${t} #${k}`; }
+    }
+  }
+  rapport.ajouter(null, '[tableaux] actions amples : tasses et gâteaux volent, deux services, coupe, quatre états mangés', Object.values(actions).every(Boolean) ? 'OK' : 'KO', actions);
+  rapport.ajouter(null, '[tableaux] bouche au contact du bout grignoté', erreurContact < 1e-8 ? 'OK' : 'KO', `erreur maximale ${erreurContact} unité`);
+  rapport.ajouter(null, '[tableaux] continuité C1 aux raccords', saut < .2 ? 'OK' : 'KO', `écart vitesse maximal ${saut.toFixed(5)} unité/s : ${raccord}`);
+}
 
 /** Ouvre le carnet sur une double page (lien profond) et attend le livre ouvert, posé. */
 async function ouvrirPage(b, c, e, hash, options = {}) {
@@ -308,6 +346,51 @@ if (suites.includes('films')) {
   }
 }
 
+// ---- tableaux : captures pendant les actions et raccourcis natifs -----------------------------------
+if (suites.includes('tableaux')) {
+  const cas = [
+    ['titre', 'carotte', 'lapin-carotte', [3000, 4000]],
+    ['titre', 'gateau-bougies', 'gateau-enchante', [4500]],
+    ['fin', 'theiere', 'service-the', [2800, 3900]],
+    ['gateaux', 'tasse-coeur', 'levitation', [4500]],
+    ['julie', 'citron', 'coupe-citron', [3200, 1800]],
+  ];
+  for (const [spread, nom, type, pas] of cas) {
+    const { ctx, page, surv } = await ouvrirPage(browser, cible, TV, `#${spread}`);
+    await toilesPretes(page, 1);
+    await encreEcrite(page);
+    await page.evaluate(() => { window.__gcDessins?.finir(); window.__gcDessins?.figer(true); window.__gcDessins?.avancer(33); });
+    const bouton = page.locator(`.gc-livre__page--visible [data-gc-tableau-cible="${nom}"]:enabled`).first();
+    const pret = await bouton.waitFor({ state: 'visible', timeout: 15000 }).then(() => true, () => false);
+    if (!pret) {
+      rapport.ajouter(null, `[tableaux] ${type} : sprites et cible prêts`, 'KO', `${nom} absent ou sprites non décodés sur #${spread}`);
+      await ctx.close(); continue;
+    }
+    await page.evaluate(() => window.__gcDessins?.avancer(2500));
+    let spontane = (await etat(page)).flatMap((t) => t.dessins).some((d) => d.tableau?.nom === type);
+    for (let k = 0; !spontane && k < 14; k++) {
+      await page.evaluate(() => window.__gcDessins?.avancer(1000));
+      spontane = (await etat(page)).flatMap((t) => t.dessins).some((d) => d.tableau?.nom === type);
+    }
+    rapport.ajouter(null, `[tableaux] ${type} : départ automatique sans geste`, spontane ? 'OK' : 'KO');
+    await bouton.focus(); await page.keyboard.press('Enter');
+    const poses = [];
+    for (let k = 0; k < pas.length; k++) {
+      await page.evaluate((ms) => window.__gcDessins?.avancer(ms), pas[k]);
+      poses.push((await etat(page)).flatMap((t) => t.dessins).find((d) => d.nom === nom)?.tableau ?? null);
+      await page.screenshot({ path: join(out, `tableau-${type}-${k}.png`), timeout: 60000 });
+    }
+    const actif = poses.every((p) => p?.nom === type && p.acteurs.some((a) => a.alpha > .9));
+    const livreOuvert = await page.locator('.gc-livre').getAttribute('data-gc-etat') === 'ouvert';
+    rapport.ajouter(null, `[tableaux] ${type} : Entrée lance l'action sans tourner le livre`, actif && livreOuvert ? 'OK' : 'KO', poses);
+    const h0 = await etat(page); await attendre(250); const h1 = await etat(page);
+    rapport.ajouter(null, `[tableaux] ${type} : horloge figée, scène immobile`, h0.every((t, k) => t.horloge === h1[k]?.horloge) ? 'OK' : 'KO');
+    if (surv.erreurs.length) rapport.ajouter(null, `[tableaux] ${type} : erreurs`, 'KO', surv.erreurs.slice(0, 3).join(' | '));
+    resultats[type] = poses;
+    await ctx.close();
+  }
+}
+
 // ---- citrons : deux composants rigides sur leur appui -------------------------------------------------------------------------------
 if (suites.includes('citron')) {
   const { ctx, page } = await ouvrirPage(browser, cible, TV, '#julie');
@@ -417,7 +500,7 @@ if (suites.includes('iphone')) {
 
 rmSync(TMP, { recursive: true, force: true });
 writeFileSync(join(out, 'dessins.json'), JSON.stringify(resultats, null, 1));
-await browser.close();
-cible.close();
+await browser?.close();
+cible?.close();
 rapport.ecrire();
 process.exit(rapport.code());

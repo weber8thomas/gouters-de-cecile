@@ -42,13 +42,14 @@ Le composant exporte aussi `ReglagesInvite` (type) et `CREDITS_REGLAGES` (texte 
 | 2 | Ajuster | − réglette + et la valeur en % (pas 0,01, bornes `zoomBornes(cran)`, repère à 100 %) | `useCamera().setZoom` | la caméra est fixe |
 | 3 | Loupe | − réglette + et la valeur en % (100 à 300 %, pas de 25 %, repère à 100 %) | `demanderLoupe(z)`, état `useLoupe()` (plan v4) | — : **sur tous les écrans**, téléphone compris |
 | 4 | Plein écran | non · oui | Fullscreen API (appelée dans le geste) | l'API manque (iPhone, écran simulé) |
+| 4 bis | Luminosité | 75 à 160 %, pas de 5 %, défaut 120 % | `reglages.luminosite` : lumière ambiante du papier et de la table ; vacillement indépendant | — |
 | 5 | Son des vidéos | coupé · avec son | `reglages.son` | — |
 | 6 | Sons du livre | oui · non | `reglages.sonsLivre` : `true` · `false` (actifs partout, téléphone compris ; `null`, l'ancien « automatique », vaut « oui ») | — |
 | 7 | Volume | réglette 0 à 100 % (pas 5 %), atténuée quand le son des vidéos est coupé | `reglages.volume` (vidéos seules) | le volume des vidéos est en lecture seule (iOS : on écrit `volume` sur un `<audio>` jetable, puis on le relit) |
 | 7 bis | Bruitages | réglette 0 à 100 % (pas 5 %, défaut 50 %, soit 15 % de l'ancienne échelle), atténuée quand ni les sons du livre ni le feu et la cuisine ne sont actifs | `reglages.volumeBruitages` : pages, couverture, feuillets, photo, feu, cuisine (gain Web Audio, sans reconstruire le graphe) | — |
 | 7 ter | Musique | réglette 0 à 100 % (pas 5 %, défaut 50 %), atténuée quand la musique est coupée, mais toujours réglable (le niveau attend le prochain départ) | `reglages.volumeMusique` (la musique de fond, au-dessus du feu et des bruitages) | — |
 | 8 | Lancer la vidéo en arrivant sur la page | non · oui | `reglages.lectureAuto` | — |
-| 9 | Vitesse de l'écriture | réglette 25 à 400 % (pas 5 %, défaut 100 %, repère à 100 %), atténuée en mouvement réduit | `reglages.vitesseEcriture` (facteur 0,25 à 4, `facteurEcriture()` de `src/lib/vitesse.ts` : l'encre qui s'écrit, `encreVivante.ts`, durée ÷ facteur, même en cours d'écriture) | — |
+| 9 | Vitesse de l'écriture | réglette 25 à 400 % (pas 5 %, défaut 200 %, repère à 100 %), atténuée en mouvement réduit | `reglages.vitesseEcriture` (facteur 0,25 à 4, `facteurEcriture()` de `src/lib/vitesse.ts` : l'encre qui s'écrit, `encreVivante.ts`, durée ÷ facteur, même en cours d'écriture) | — |
 | 9 bis | Vitesse des animations | réglette 25 à 200 % (pas 5 %, défaut 100 %, repère à 100 %), atténuée en mouvement réduit | `reglages.vitesseAnimations` (facteur 0,25 à 2, `facteurAnimations()` : règle `SPRINGS.paper`, durée du tour de page ÷ facteur ; les autres lots peuvent s'y abonner par `abonnerVitesse`). Remplace l'ancien choix vive · normale · lente, relu comme 150 % · 100 % · 70 % | — |
 | 10 | Animations | comme l'appareil · complètes · réduites (« auto » sur la feuille du téléphone) | `reglages.animations` : `systeme` · `completes` · `reduites` (`mouvementReduit` en est le miroir) ; niveau lu par `useNiveauMouvement` : la préférence du système garde les effets en version douce, « réduites » les arrête | — |
 | 10 bis | Boutons | s'effacent · toujours visibles (« visibles » sur la feuille du téléphone) | `reglages.boutonsToujoursVisibles` (défaut : s'effacent ; lu par `src/lib/controles.ts`) | — |
@@ -57,7 +58,7 @@ Le composant exporte aussi `ReglagesInvite` (type) et `CREDITS_REGLAGES` (texte 
 
 La loupe n'est pas mémorisée (elle revient à 1× au rechargement). Au clavier, + / − règlent la loupe (paliers 1 · 1,5 · 2 · 3) ; les crans de distance (« Taille du livre ») ne se règlent plus que dans ce menu.
 
-Les réglages sont mémorisés par `src/lib/reglages.ts` (clé `gc:reglages:v4`, repli sur v3 sans les volumes, puis v2 et v1 ; la musique est coupée par défaut, le bouton musique de la barre la rallume) et la caméra par `src/lib/camera.tsx` (clé `gc:camera:v3`). Si le stockage est indisponible, les réglages restent en mémoire.
+Les réglages sont mémorisés par `src/lib/reglages.ts` (clé `gc:reglages:v4`, repli sur v3 sans les volumes, puis v2 et v1 ; la musique est active par défaut et attend le premier geste ; les choix déjà mémorisés sont conservés) et la caméra par `src/lib/camera.tsx` (clé `gc:camera:v3`). Si le stockage est indisponible, les réglages restent en mémoire.
 
 ## Clavier
 
@@ -110,3 +111,13 @@ node scripts/build-bundle.mjs --only Reglages,Ecran,Livre,Stage,DoublePage,Page,
 node scripts/shot.mjs src/components/Reglages/preview.html --bundle dist/ds-r/components --out verification/out/r
 node verification/out/r/verifier-reglages.mjs     # iPhone 13 debout et TV 1080p, puis d'autres écrans en captures
 ```
+
+## Playlist et luminosité (v10)
+
+La musique enchaîne cinq morceaux dans cet ordre : Goblin King, Gymnopédie au piano, Melodie Victoria, fantaisie Casse-Noisette au célesta, Frozen Star. Les commandes précédent/pause/suivant, l’option d’enchaînement et le titre courant sont dans la fiche. L’enchaînement activé revient au début de la liste ; désactivé, le morceau choisi reprend. La musique se met en pause pendant une vidéo et reprend au même instant. Le contexte partagé suspend le son lorsque l’onglet est caché. Le bouton musique annonce le titre et son action dans son nom accessible. Les deux nouveaux rendus numériques disposent de leurs sources et licences dans `design-system/sources/musique/interpretations/`.
+
+La ligne **Luminosité** règle `reglages.luminosite` de 75 à 160 % par pas de 5 %, défaut 120 %.
+Elle accepte les flèches et Début/Fin, persiste au rechargement et revient à 120 % lors de la remise
+à zéro. Elle atténue les calques de pénombre déjà présents, sans filtre sur le livre ni changement
+de la flamme. La nouvelle valeur par défaut de la vitesse d’écriture est 200 % ; les valeurs
+explicitement mémorisées, y compris 100 %, restent conservées.

@@ -658,3 +658,11 @@
 .gc-reglages__credits p {
   margin: 0;
 }
+
+/* Lecture de la playlist : mêmes boutons manuscrits, accessibles au clavier. */
+.gc-reglages__playlist { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4em 0.8em; width: 100%; }
+.gc-reglages__enchainement { display: flex; align-items: center; gap: 0.4em; cursor: pointer; }
+.gc-reglages__enchainement input { accent-color: var(--gc-honey-500); min-width: 22px; min-height: 22px; }
+.gc-reglages__lecture { flex-basis: 100%; opacity: 0.8; }
+
+.gc-reglages__credit-musique { display: block; white-space: pre-line; overflow-wrap: anywhere; opacity: 0.8; margin-top: 0.3em; }

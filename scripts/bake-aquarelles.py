@@ -11,6 +11,7 @@ ne bouge pas. Posée sur le papier, l'aquarelle teintée donne la même couleur 
 lui (a·c·P + (1 − a)·P) : pas de mode de fusion à l'écran, un calque de moins à composer.
 """
 import json
+import argparse
 from pathlib import Path
 
 import numpy as np
@@ -53,6 +54,10 @@ def saturer(im: Image.Image) -> Image.Image:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--only', help='Noms logiques séparés par des virgules ; défaut : tout cuire')
+    args = parser.parse_args()
+    selection = set(args.only.split(',')) if args.only else None
     SORTIE.mkdir(parents=True, exist_ok=True)
     noms = {}
     for cat in sorted(SOURCE.glob("catalogue-*.json")):
@@ -61,13 +66,16 @@ def main() -> None:
             if f.exists():
                 noms[nom] = f
     for nom, f in sorted(noms.items()):
+        if selection is not None and nom not in selection:
+            continue
         im = Image.open(f).convert("RGBA")
         im.thumbnail((COTE_MAX, COTE_MAX), Image.LANCZOS)
         im = teinter(saturer(im))
         out = SORTIE / f"{nom}.webp"
+        out.parent.mkdir(parents=True, exist_ok=True)
         im.save(out, "WEBP", quality=88, method=6, exact=True)
         print(f"{nom:22s} {im.size[0]}×{im.size[1]}  {out.stat().st_size // 1024} Ko")
-    for vieux in SORTIE.glob("*.webp"):
+    for vieux in ([] if selection is not None else SORTIE.glob("*.webp")):
         if vieux.stem not in noms:
             vieux.unlink()
             print(f"retirée : {vieux.name}")

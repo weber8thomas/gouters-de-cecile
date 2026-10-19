@@ -5,6 +5,7 @@
 // morceau de la banque si aucun n'a été choisi (« aucune »).
 import React from 'react';
 import { MUSIQUES_IDS, useReglages } from '../../lib/reglages';
+import { useEtatMusique } from '../../lib/musique';
 import './BoutonMusique.css';
 
 // Une note double (deux têtes, deux hampes et un ruban), avec un second passage au crayon ; la barre
@@ -19,13 +20,17 @@ const NOTE = {
 
 export function BoutonMusique() {
   const [r, changer] = useReglages();
+  const etat = useEtatMusique();
   const jouee = r.musiqueActive;
+  const libelle = `${jouee ? 'Mettre la musique en pause' : 'Écouter la musique'}${etat.titre ? ` — ${etat.titre}` : ''}`;
   return (
     <button
       type="button"
       className="gc-musique"
       data-gc-controle="musique"
-      aria-label="Musique"
+      aria-label={libelle}
+      title={libelle}
+      data-gc-musique-statut={etat.statut}
       aria-pressed={jouee}
       onClick={() => changer((x) => (x.musiqueActive
         ? { musiqueActive: false }

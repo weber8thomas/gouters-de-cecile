@@ -13,15 +13,15 @@
       "d": 188
     },
     {
-      "id": "frozen-star",
-      "titre": "Frozen Star",
-      "auteur": "Kevin MacLeod",
-      "licence": "CC BY 4.0",
-      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
-      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100356",
-      "credit": "\"Frozen Star\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
-      "f": "musique/frozen-star",
-      "d": 217
+      "id": "gymnopedie-piano",
+      "titre": "Gymnopédie n° 1 — piano",
+      "auteur": "Erik Satie · interprétation numérique pour le carnet",
+      "licence": "GPL-2.0 · partition domaine public",
+      "licenceUrl": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=37",
+      "credit": "Gymnopédie n° 1 (1888), Erik Satie. Partition Mutopia, Evin Robertson, domaine public. Interprétation numérique : scripts/bake-musique-classique.py ; banque TimGM6mb, Tim Brechbill et David Bolton (GPL-2.0). Source complète : https://github.com/weber8thomas/gouters-de-cecile/tree/codex/reprise-v8/design-system/sources/musique/interpretations",
+      "f": "musique/gymnopedie-piano",
+      "d": 124.43
     },
     {
       "id": "melodie-victoria",
@@ -33,6 +33,28 @@
       "credit": "\"Melodie Victoria\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
       "f": "musique/melodie-victoria",
       "d": 236
+    },
+    {
+      "id": "casse-noisette-celesta",
+      "titre": "Casse-Noisette — fantaisie au célesta",
+      "auteur": "Piotr Ilitch Tchaïkovski · arrangement et interprétation numériques pour le carnet",
+      "licence": "GPL-2.0 · composition domaine public",
+      "licenceUrl": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
+      "url": "https://github.com/weber8thomas/gouters-de-cecile/tree/codex/reprise-v8/design-system/sources/musique/interpretations",
+      "credit": "Fantaisie pour célesta et piano sur le thème de la fée Dragée, Casse-Noisette op. 71a (1892), Piotr Ilitch Tchaïkovski (composition domaine public). Arrangement court et interprétation numériques : scripts/bake-musique-classique.py ; banque TimGM6mb, Tim Brechbill et David Bolton (GPL-2.0). Cet arrangement ne reproduit pas un enregistrement orchestral. Source complète : https://github.com/weber8thomas/gouters-de-cecile/tree/codex/reprise-v8/design-system/sources/musique/interpretations",
+      "f": "musique/casse-noisette-celesta",
+      "d": 116.51
+    },
+    {
+      "id": "frozen-star",
+      "titre": "Frozen Star",
+      "auteur": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100356",
+      "credit": "\"Frozen Star\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttp://creativecommons.org/licenses/by/4.0/",
+      "f": "musique/frozen-star",
+      "d": 217
     }
   ]
 }

@@ -33,7 +33,10 @@
         "octets": 8258790,
         "sha256": "f8a30fac2528bb0a630cd2d7500daf10b64860ec7e91823390cc6e1cb545175a"
       },
-      "extrait": { "debut": 0, "fin": 192 }
+      "extrait": {
+        "debut": 0,
+        "fin": 192
+      }
     },
     {
       "id": "frozen-star",
@@ -60,7 +63,10 @@
         "octets": 8977291,
         "sha256": "28c7532b808086046f02164807cbcad659db614686f2a49a78d87516fa4d3236"
       },
-      "extrait": { "debut": 0, "fin": 221 }
+      "extrait": {
+        "debut": 0,
+        "fin": 221
+      }
     },
     {
       "id": "melodie-victoria",
@@ -87,12 +93,25 @@
         "octets": 9642235,
         "sha256": "b498c08bcb79f000226ee9d71f3018593cf14aa64c49e9449384a5d9ad75aecb"
       },
-      "extrait": { "debut": 0, "fin": 240 }
+      "extrait": {
+        "debut": 0,
+        "fin": 240
+      }
     }
   ],
   "ecartes": [
-    { "titre": "Frost Waltz", "raison": "crescendo de 12 dB au milieu (mesuré au loudness) : fond instable" },
-    { "titre": "The Snow Queen", "raison": "montée marquée à 1 min 50 : fond instable" },
-    { "titre": "Adventures in Adventureland, Moonlight Hall, Gone Beyond", "raison": "trop sombres ou trop vifs pour un fond calme" }
-  ]
+    {
+      "titre": "Frost Waltz",
+      "raison": "crescendo de 12 dB au milieu (mesuré au loudness) : fond instable"
+    },
+    {
+      "titre": "The Snow Queen",
+      "raison": "montée marquée à 1 min 50 : fond instable"
+    },
+    {
+      "titre": "Adventures in Adventureland, Moonlight Hall, Gone Beyond",
+      "raison": "trop sombres ou trop vifs pour un fond calme"
+    }
+  ],
+  "interpretationsNumeriques": "interpretations/banque.json : deux interprétations numériques de compositions du domaine public (Satie, Tchaïkovski), banque TimGM6mb GPL-2.0, sources complètes fournies."
 }
