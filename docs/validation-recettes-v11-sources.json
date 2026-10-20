@@ -80,7 +80,8 @@
   ],
   "total": 8,
   "a_valider_apres_integration": [
-    "Contrôles navigateur du build final ; médias réels encore absents."
+    "Essai physique HDMI/TV et Safari/Mac ; aucune mesure matérielle garantie par Chromium Linux.",
+    "Vrais portraits et vidéos des proches encore absents ; aucun contrôle OCR exhaustif des pixels."
   ],
   "schema_typescript": "tsc --noEmit OK",
   "coherence_statique": "8 recettes = 8 entrées roster = 8 plans ; 4 chapitres ; 17 doubles ; titre/albums/sommaire/fin conservés ; aucune vidéo ; seuls actifs illustrés existants référencés.",
@@ -88,5 +89,7 @@
   "emoji": "Les sources conservent 😎 et 😋 ; rendu par les croquis sourire-lunettes et sourire du carnet.",
   "concordance_transcriptions": "8/8 : tous les mots sources, quantités comprises, présents dans les transcriptions des pages avec multiplicité. Ceci ne constitue pas une lecture OCR des pixels.",
   "cartes_animation": "Cartes temps d’encre et carte Maraudeur recalculées pour le carnet complet.",
-  "build": "npm run build:site réussi, TypeScript compris ; version 20261020T055553."
+  "build": "npm run build:site réussi, TypeScript compris ; version 20261020T084649.",
+  "mobile_aquarelles": "Chromium iPhone paysage DPR 3 : canevas 508 × 717, z-index 4 effectif, alpha prémultiplié valide, écart moyen GL/image fixe 1,402 RGB ; contrôle terminé sans échec.",
+  "controles_navigateur": "Secrets 20 OK ; cinq tableaux 18 contrôles distincts OK après reprise ciblée ; mobile terminé sans échec. Rapport des huit liens : verification/out/recettes-v11/site/site.json."
 }

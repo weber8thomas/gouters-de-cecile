@@ -359,7 +359,9 @@ if (suites.includes('tableaux')) {
     ['gateaux', 'tasse-coeur', 'levitation', [4500]],
     ['pierrette', 'citron', 'coupe-citron', [3200, 1800]],
   ];
+  const tableauxChoisis = liste('tableaux', '');
   for (const [spread, nom, type, pas] of cas) {
+    if (tableauxChoisis.length && !tableauxChoisis.includes(type)) continue;
     const { ctx, page, surv } = await ouvrirPage(browser, cible, TV, `#${spread}`);
     await toilesPretes(page, 1);
     await encreEcrite(page);
@@ -372,11 +374,14 @@ if (suites.includes('tableaux')) {
     }
     await page.evaluate(() => window.__gcDessins?.avancer(2500));
     let spontane = (await etat(page)).flatMap((t) => t.dessins).some((d) => d.tableau?.nom === type);
-    for (let k = 0; !spontane && k < 14; k++) {
+    // Plusieurs tableaux alternent dans un chapitre : observer leur cycle, en temps simulé.
+    let attenteAutomatique = 0;
+    for (let k = 0; !spontane && k < 90; k++) {
       await page.evaluate(() => window.__gcDessins?.avancer(1000));
+      attenteAutomatique += 1000;
       spontane = (await etat(page)).flatMap((t) => t.dessins).some((d) => d.tableau?.nom === type);
     }
-    rapport.ajouter(null, `[tableaux] ${type} : départ automatique sans geste`, spontane ? 'OK' : 'KO');
+    rapport.ajouter(null, `[tableaux] ${type} : départ automatique sans geste`, spontane ? 'OK' : 'KO', `observation ${attenteAutomatique / 1000} s simulées`);
     await bouton.focus(); await page.keyboard.press('Enter');
     const poses = [];
     for (let k = 0; k < pas.length; k++) {

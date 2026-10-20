@@ -273,12 +273,12 @@
 .gc-livre-face .gc-page-cuite__encre,
 .gc-livre-face .gc-page-cuite__tuile,
 .gc-livre-face .gc-page-cuite__plume,
-.gc-livre-face .gc-aquarelles-toile,
 .gc-livre-face .gc-page:not(:has(.gc-page-cuite)) {
   z-index: 2;
 }
 
 .gc-livre-face .gc-page-cuite__vivant,
+.gc-livre-face .gc-aquarelles-toile,
 .gc-livre-face .gc-page-cuite__lien {
   z-index: 4;
 }

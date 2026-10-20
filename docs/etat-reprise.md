@@ -96,7 +96,17 @@ La construction de production du carnet complet et le typage TypeScript réussis
 
 Rapports de cette passe : `verification/out/recettes-v11/`, `verification/out/luminosite-fusion-corrigee/`,
 `verification/out/magie-zoom-fusion/` et `verification/out/magie-zoom-natif-fusion/`.
-Les validations navigateur du nouveau carnet sont consignées séparément avant publication.
+Secrets : 20 contrôles réussis (bulles françaises, compagnon extérieur, Entrée/clic/S/flèches,
+cachette des étoiles et mouvement réduit). Mobile : aquarelles terminées comparées à leurs images
+fixes en émulation iPhone paysage DPR 3, écart moyen 1,402 RGB et alpha prémultiplié valide.
+Une règle plus spécifique de Lumiere.css remettait la toile au niveau 2 : elle est maintenant
+au niveau 4 avec les images fixes, au-dessus du pli. Les légendes des cachettes gardent davantage
+d’espace sous leur dessin pour ne pas chevaucher la porte miniature.
+
+Les cinq tableaux ont été vérifiés sur le carnet des huit proches : 18 contrôles distincts réussis
+après reprise ciblée du lancement automatique de la lévitation. Le contrôle initial trop court
+(14 secondes) et son échec restent dans les rapports ; le contrôle observe maintenant le cycle
+partagé des scènes, en temps simulé. Cela ne mesure pas les FPS du matériel HDMI.
 
 ## Publication
 
@@ -109,4 +119,6 @@ python3 scripts/publish-preview.py --prefix essais/recettes-v11/
 Ce script garde la racine et les autres essais de `gh-pages`, vérifie les arbres puis le commit
 poussé, sans force. `publish-pages.mjs` remplace la racine : ne pas l’utiliser pour cet aperçu.
 Distinguer la preuve Git du déploiement public : le proxy peut refuser Pages (CONNECT403).
+Aperçu dédié : https://weber8thomas.github.io/gouters-de-cecile/essais/recettes-v11/
+Rapport des huit liens TV : `verification/out/recettes-v11/site/site.json`.
 Rapport de publication : `verification/out/previews/recettes-v11/preview-publication.json`.
