@@ -91,14 +91,16 @@
    "aquarelle": "guirlande"
   },
   {
-   "nom": "aq-carotte",
+   "nom": "aq-plume",
    "rect": [
-    0.14,
-    0.55,
-    0.72,
-    0.34
+    0.31,
+    0.57,
+    0.38,
+    0.25
    ],
-   "aquarelle": "carotte"
+   "aquarelle": "plume",
+   "angle": -8
   }
- ]
+ ],
+ "police": "caveat-appuye"
 }

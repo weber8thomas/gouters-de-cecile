@@ -28,6 +28,16 @@
   les audits redondants et les navigateurs concurrents pour économiser le quota.
 - Aucun redémarrage automatique après expiration du quota. La reprise nécessite un message utilisateur.
 
+## Revue v14
+
+Voir [la livraison v14](reprise-v14.md). Mains distinctes rétablies avec fontes locales exactes, plume sur
+la garde, sous-titre lisible. Les 39 étapes des huit recettes ont leur scène simplifiée : Auto jusqu’au résultat,
+Pas à pas/Suivant et Rejouer. Les soulignements cuits s’effacent et se retracent réellement. Notes en marge
+latérales et indices à la demande ; clé sous la farine à balayer, clic/toucher/Entrée également possibles.
+La flamme de la part de gâteau est réparée, les infobulles des illustrations retirées.
+Aperçu courant : `essais/coherence-v14/`. Tests nouveaux : `verify-recettes-v14.mjs`,
+`verify-recette-horloge-v14.mjs`, `verify-redessins-v14.mjs`, `verify-notes-v14.mjs`.
+
 ## Revue v13
 
 Voir [la livraison v13](reprise-v13.md). Dessins agrandis, pages 15/29 rééquilibrées, conseils cités,
@@ -52,7 +62,7 @@ et `pages/recettes.json` fixent l’ordre, les mains et les réserves. Les notes
 voisinage du titre peuvent se poser intégralement en marge basse ; le paginateur reporte le texte suivant.
 
 Les illustrations originales et leurs manifestes reproductibles sont dans
-`design-system/sources/illustrations/v9`, `v10`, `v11`, `v12`, `v13`. V11 ajoute les desserts ; v12 des acteurs séparés et un chien frontal ; v13 le pichet, la farine et une texture de pâte.
+`design-system/sources/illustrations/v9`, `v10`, `v11`, `v12`, `v13`, `v14`. V11 ajoute les desserts ; v12 des acteurs séparés et un chien frontal ; v13 le pichet, la farine et une texture de pâte.
 Le site emploie uniquement les images cuites ; aucune génération ni modèle distant au runtime.
 Les scènes partagent une horloge. Même distribution au repos, pendant l’action et dans les feuilles
 qui tournent : pas de tasse qui devient trois, pas de changement de taille de carotte. Nouveaux tableaux :
@@ -60,7 +70,7 @@ qui tournent : pas de tasse qui devient trois, pas de changement de taille de ca
 sans acteurs séparés conservent leurs mouvements d’ensemble ; ne pas les annoncer tous articulés.
 Toile vivante au niveau 4, théâtre SVG au niveau 5, lumière du papier au niveau 1.
 
-Les huit recettes emploient désormais les glyphes déterministes de Kalam, avec des encres différentes.
+Les huit recettes emploient désormais les glyphes déterministes de leurs mains distinctes (voir v14), avec leurs encres propres.
 Le paginateur reste le même, les textes restent entiers. Ingrédients à puces, sections distinctes,
 numéros d’étapes en début de ligne et citation de Lise entre guillemets. La carte d’écriture et la
 carte magique suivent les masques réels des mots. Les sommaires ont huit vignettes associées aux recettes.
@@ -134,12 +144,12 @@ partagé des scènes, en temps simulé. Cela ne mesure pas les FPS du matériel 
 Après validation et commit propre, pousser normalement vers `codex/reprise-v8`, puis :
 
 ```sh
-python3 scripts/publish-preview.py --prefix essais/coherence-v13/
+python3 scripts/publish-preview.py --prefix essais/coherence-v14/
 ```
 
 Ce script garde la racine et les autres essais de `gh-pages`, vérifie les arbres puis le commit
 poussé, sans force. `publish-pages.mjs` remplace la racine : ne pas l’utiliser pour cet aperçu.
 Distinguer la preuve Git du déploiement public : le proxy peut refuser Pages (CONNECT403).
-Aperçu dédié : https://weber8thomas.github.io/gouters-de-cecile/essais/coherence-v13/
+Aperçu dédié : https://weber8thomas.github.io/gouters-de-cecile/essais/coherence-v14/
 Rapport des huit liens TV : `verification/out/recettes-v11/site/site.json`.
-Rapport de publication : `verification/out/previews/coherence-v13/preview-publication.json`.
+Rapport de publication : `verification/out/previews/coherence-v14/preview-publication.json`.

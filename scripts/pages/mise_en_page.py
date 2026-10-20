@@ -312,6 +312,7 @@ class Trace:
     encre: dict  # id, outil, charge, clair
     sans_saut: bool = False  # glyphe d'un mot important (drapeau du lot E) : jamais de blanc de bille
     glyphe: dict | None = None  # mot en fonte manuscrite, posé avec les mêmes coordonnées que ses métriques
+    decor: str | None = None  # identifiant du titre, uniquement sur ses traits de soulignement
 
 
 @dataclass
@@ -983,8 +984,8 @@ class Mise:
     def _segments(self, b: dict, graine: int) -> list:
         segs = b.get("segments")
         if segs:
-            return segs
-        return [{"texte": b["texte"], "graine": graine}]
+            return [dict(s, police=s.get("police", b.get("police"))) for s in segs]
+        return [{"texte": b["texte"], "graine": graine, "police": b.get("police")}]
 
     def bloc_texte(self, b: dict, role: str, idx: int, **kw):
         """Bloc de texte balisé (paragraphe, note, mot…) : écrit, coule, marque."""
@@ -1104,6 +1105,7 @@ class Mise:
         self._marquer(b, brut, marques, poses, spans, xh, dict(bloc.encre), bloc, main, graine)
         sl = b.get("souligne", "aucun")
         ok = [p for p in poses if p is not None]
+        debut_souligne = len(self.traces)
         if sl != "aucun" and ok:
             enc = ECR.nuances(b["souligne_encre"]) if b.get("souligne_encre") else dict(bloc.encre)
             if sl == "mot-a-mot":
@@ -1119,6 +1121,8 @@ class Mise:
                     a, z = part[0].base, part[-1].base
                     self.tracer(TR.souligne(a[0], a[1], z[2], z[3], r, xh, double=(sl == "double"), dy=0.55),
                                 xh, enc, ep * 0.9, graine + 10, main)
+        for t in self.traces[debut_souligne:]:
+            t.decor = b.get("id", "titre")
         self.texte.append(self._texte_lisible(brut, marques))
         return lignes
 
@@ -1924,7 +1928,7 @@ class Mise:
             if not texte.strip():
                 lignes.append(None)
                 continue
-            brut, marques, mots, bloc = self.ecrire_segments([{"texte": texte, "graine": graine + 13 * k}], main, enc_id,
+            brut, marques, mots, bloc = self.ecrire_segments([{"texte": texte, "graine": graine + 13 * k, "police": b.get("police")}], main, enc_id,
                                                              b.get("outil"))
             lisibles.append(self._texte_lisible(brut, marques))
             cur, larg = [], 0.0

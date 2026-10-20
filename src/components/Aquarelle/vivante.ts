@@ -564,6 +564,7 @@ interface Sprite {
   scene: { nom: string; debut: number; h: number; tocFait?: boolean } | null;
   pilotage?: { temps: number; cible: number; horloge: number };
   prochaine: number;
+  tempsRepos?:number;
   rang: number;
 }
 
@@ -594,7 +595,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     const [x, y, w, h] = d.zone;
     // les scènes propres à cette page, s'il y en a, remplacent celles de l'aquarelle
     const sp = SCENES_PAGE[opts.page]?.[d.nom];
-    const type = tableauDe(d.nom);
+    const type = tableauDe(d.nom,opts.page);
     const e: Effets = { ...(EFFETS[d.nom] ?? {}), ...(sp ? { scenes: sp } : {}), ...(type ? { scenes: [type] } : {}) };
     const [dg, dh, dd] = DEBORD;
     // des confettis retombent sous l'aquarelle : la boîte descend plus bas
@@ -677,13 +678,13 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       dernierTableau = s.d.nom;
     }
     theatre?.cacher(s.d.nom);
-    delete s.pilotage;
+    delete s.pilotage;delete s.tempsRepos;
     s.scene = { nom: n, debut: horloge, h: Math.random() };
     derniereScene = horloge;
     return true;
   };
 
-  const commander = (s: Sprite, commande: CommandeTableau, type = tableauDe(s.d.nom)) => {
+  const commander = (s: Sprite, commande: CommandeTableau, type = tableauDe(s.d.nom,opts.page)) => {
     if (!type || !joue || arrete) return;
     const etapes = ETAPES_TABLEAUX[type];
     if (commande === 'auto' || commande === 'rejouer' || !etapes?.length) {
@@ -790,9 +791,10 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       }
       if (!sc || (!s.pilotage && horloge - s.scene.debut > sc.duree * 1000)) {
         theatre?.cacher(s.d.nom);
+        const uneFois=sc&&'uneFois' in sc&&sc.uneFois;s.tempsRepos=uneFois?sc.duree:undefined;
         s.scene = null;
         delete s.pilotage;
-        s.prochaine = horloge + 250 + Math.random() * 350;
+        s.prochaine = uneFois?Infinity:horloge + 250 + Math.random() * 350;
       }
     }
     if (s.debut === -1 && horloge >= s.delai) s.debut = horloge;
@@ -812,7 +814,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
 
   const dessinerSprite = (s: Sprite, t: number) => {
     if (!gl || !s.img) return;
-    const type = tableauDe(s.d.nom);
+    const type = tableauDe(s.d.nom,opts.page);
     // Attendre les acteurs ensemble évite de montrer brièvement l'ancienne image composite.
     if (type && theatre?.prepare(s.d.nom) && !theatre.disponible(s.d.nom, type)) return;
     const g = gl;
@@ -820,7 +822,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     const { corps, poses, fx } = poser(s, peint >= 1 ? t : 0);
     // Une seule distribution au repos et en action. Aucun fondu vers une autre illustration.
     const tableau = type && theatre?.disponible(s.d.nom, type)
-      ? theatre.rendre(s.d.nom, type, s.scene?.nom === type ? s.pilotage?.temps ?? (horloge - s.scene.debut) / 1000 : 0, peint, s.pilotage ? { temps: s.pilotage.temps, cible: s.pilotage.cible } : undefined)
+      ? theatre.rendre(s.d.nom, type, s.scene?.nom === type ? s.pilotage?.temps ?? (horloge - s.scene.debut) / 1000 : s.tempsRepos??0, peint, s.pilotage ? { temps: s.pilotage.temps, cible: s.pilotage.cible } : undefined)
       : 0;
     const presence = tableau;
 
@@ -1082,7 +1084,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         const ix = (bx - s.rect[0]) / s.rect[2];
         const iy = (by - s.rect[1]) / s.rect[3];
         if (ix < 0 || ix > 1 || iy < 0 || iy > 1 || s.debut !== Infinity) continue;
-        const type = tableauDe(s.d.nom);
+        const type = tableauDe(s.d.nom,opts.page);
         if (type && theatre?.disponible(s.d.nom, type)) {
           if (s.scene?.nom === type) return true;
           return lancerScene(s, type, true);

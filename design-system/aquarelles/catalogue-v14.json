@@ -1,0 +1,194 @@
+{
+  "acteurs/chocolat": {
+    "sujet": "chocolat",
+    "fichier": "acteurs/chocolat.png",
+    "source": "design-system/sources/illustrations/v14/patisserie.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/beurre": {
+    "sujet": "beurre",
+    "fichier": "acteurs/beurre.png",
+    "source": "design-system/sources/illustrations/v14/patisserie.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/sucre": {
+    "sujet": "sucre",
+    "fichier": "acteurs/sucre.png",
+    "source": "design-system/sources/illustrations/v14/patisserie.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/casserole": {
+    "sujet": "casserole",
+    "fichier": "acteurs/casserole.png",
+    "source": "design-system/sources/illustrations/v14/patisserie.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/moule": {
+    "sujet": "moule",
+    "fichier": "acteurs/moule.png",
+    "source": "design-system/sources/illustrations/v14/patisserie.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/four": {
+    "sujet": "four",
+    "fichier": "acteurs/four.png",
+    "source": "design-system/sources/illustrations/v14/patisserie.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/chantilly": {
+    "sujet": "chantilly",
+    "fichier": "acteurs/chantilly.png",
+    "source": "design-system/sources/illustrations/v14/patisserie.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/tamis": {
+    "sujet": "tamis",
+    "fichier": "acteurs/tamis.png",
+    "source": "design-system/sources/illustrations/v14/patisserie.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/chocolat-fondu": {
+    "sujet": "chocolat-fondu",
+    "fichier": "acteurs/chocolat-fondu.png",
+    "source": "design-system/sources/illustrations/v14/patisserie.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/carottes-rapees": {
+    "sujet": "carottes-rapees",
+    "fichier": "acteurs/carottes-rapees.png",
+    "source": "design-system/sources/illustrations/v14/fruits-gestes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/noix": {
+    "sujet": "noix",
+    "fichier": "acteurs/noix.png",
+    "source": "design-system/sources/illustrations/v14/fruits-gestes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/myrtilles": {
+    "sujet": "myrtilles",
+    "fichier": "acteurs/myrtilles.png",
+    "source": "design-system/sources/illustrations/v14/fruits-gestes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/pomme-coupee": {
+    "sujet": "pomme-coupee",
+    "fichier": "acteurs/pomme-coupee.png",
+    "source": "design-system/sources/illustrations/v14/fruits-gestes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/banane": {
+    "sujet": "banane",
+    "fichier": "acteurs/banane.png",
+    "source": "design-system/sources/illustrations/v14/fruits-gestes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/banane-rondelles": {
+    "sujet": "banane-rondelles",
+    "fichier": "acteurs/banane-rondelles.png",
+    "source": "design-system/sources/illustrations/v14/fruits-gestes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/rouleau": {
+    "sujet": "rouleau",
+    "fichier": "acteurs/rouleau.png",
+    "source": "design-system/sources/illustrations/v14/fruits-gestes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/poele": {
+    "sujet": "poele",
+    "fichier": "acteurs/poele.png",
+    "source": "design-system/sources/illustrations/v14/fruits-gestes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/louche": {
+    "sujet": "louche",
+    "fichier": "acteurs/louche.png",
+    "source": "design-system/sources/illustrations/v14/fruits-gestes.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/carrot-cake": {
+    "sujet": "carrot-cake",
+    "fichier": "acteurs/carrot-cake.png",
+    "source": "design-system/sources/illustrations/v14/finition.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/cake-citron": {
+    "sujet": "cake-citron",
+    "fichier": "acteurs/cake-citron.png",
+    "source": "design-system/sources/illustrations/v14/finition.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/pate-sablee": {
+    "sujet": "pate-sablee",
+    "fichier": "acteurs/pate-sablee.png",
+    "source": "design-system/sources/illustrations/v14/finition.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/crepe": {
+    "sujet": "crepe",
+    "fichier": "acteurs/crepe.png",
+    "source": "design-system/sources/illustrations/v14/finition.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/boules-cookies": {
+    "sujet": "boules-cookies",
+    "fichier": "acteurs/boules-cookies.png",
+    "source": "design-system/sources/illustrations/v14/finition.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  },
+  "acteurs/beurre-fondu": {
+    "sujet": "beurre-fondu",
+    "fichier": "acteurs/beurre-fondu.png",
+    "source": "design-system/sources/illustrations/v14/finition.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v14"
+  }
+}

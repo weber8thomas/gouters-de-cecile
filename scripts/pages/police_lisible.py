@@ -1,6 +1,6 @@
-"""Glyphes manuscrits déterministes pour les recettes, dans le paginateur et l'encre existants.
+"""Mains manuscrites déterministes pour les recettes, dans le paginateur et l'encre existants.
 
-La fonte Kalam du projet fournit les lettres exactes, accents et chiffres compris. Les mots gardent
+Les fontes du projet fournissent les lettres exactes, accents et chiffres compris. Les mots gardent
 leurs métriques et leur pose dans Mise ; seul leur masque remplace le tracé neuronal. Aucun service
 ou paquet supplémentaire n'est requis : Pillow lit la fonte WOFF2 déjà présente dans le dépôt.
 """
@@ -14,16 +14,30 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 RACINE = Path(__file__).resolve().parents[2]
-POLICES = {"kalam": "kalam-latin-400-normal.woff2"}
+POLICES = {
+    "kalam": "kalam-latin-400-normal.woff2",
+    "caveat": "caveat-latin-400-normal.woff2",
+    "caveat-appuye": "caveat-latin-600-normal.woff2",
+    "playwrite-moderne": "playwrite-fr-moderne-latin-400-normal.woff2",
+    "playwrite-tradition": "playwrite-fr-trad-latin-400-normal.woff2",
+    "belle-aurore": "la-belle-aurore-latin-400-normal.woff2",
+    "patrick": "patrick-hand-sc-latin-400-normal.woff2",
+    "shantell": "shantell-sans-latin-full-normal.woff2",
+}
+# Les capitales de Playwrite culminent à 2,2/2,8 hauteurs d'x, contre 1,4 pour Kalam.
+# Une unité optique propre à chaque fonte conserve les boucles, sans grossir tout le corps.
+# Ce réglage porte sur les vraies métriques des glyphes ; aucun bruit ne déforme les lettres.
+HAUTEURS_OPTIQUES = {"caveat": 1.08, "caveat-appuye": 1.08, "playwrite-moderne": 1.2,
+                     "playwrite-tradition": 1.42, "shantell": 1.08}
 TAILLE = 384  # masque source net, y compris pour les tuiles de loupe ×4
 
 
-@lru_cache(maxsize=4)
+@lru_cache(maxsize=16)
 def fonte(nom: str):
     return ImageFont.truetype(str(RACINE / "design-system/fonts" / POLICES[nom]), TAILLE)
 
 
-@lru_cache(maxsize=1024)
+@lru_cache(maxsize=4096)
 def masque(texte: str, nom: str):
     f = fonte(nom)
     boite = f.getbbox(texte, anchor="ls")
@@ -36,7 +50,7 @@ def masque(texte: str, nom: str):
 def ecrire_bloc(texte: str, main: str, nom: str, encre: str | None, outil: str | None):
     import ecriture as ECR
     f = fonte(nom)
-    hx = float(-f.getbbox("x", anchor="ls")[1])
+    hx = float(-f.getbbox("x", anchor="ls")[1]) * HAUTEURS_OPTIQUES.get(nom, 1.)
     info = ECR.main_info(main)
     lignes = []
     for ligne in texte.split("\n"):

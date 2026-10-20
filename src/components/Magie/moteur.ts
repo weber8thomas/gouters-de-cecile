@@ -61,6 +61,7 @@ import {
   type TitreCarte,
 } from './encre';
 import { Photos, mesurerPhoto, type Vivante } from './photos';
+import { Redessins } from './redessins';
 
 export interface TourMagie { sens: 1 | -1; couverture: boolean; arriere?: boolean; but: 0 | 1 }
 export interface RabatMagie { fx: MotionValue<number>; fy: MotionValue<number> }
@@ -168,6 +169,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   const grains = new Grains(tactile ? 620 : 1300);
   const poussiere = new Poussiere(tactile ? 55 : 120);
   const photos = new Photos(gl);
+  const redessins = new Redessins(CARTE.pages, PAGE_W, PAGE_H);
 
   // ---- État -----------------------------------------------------------------------------------------
   let arrete = false;
@@ -732,6 +734,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     reveiller();
     const g = L.geo();
     if (d.phase === 'debut' || d.phase === 'prepa') {
+      redessins.suspendre();
       if (TOURNE.has(d.type)) types.set(d.type, horloge);
       else bouge.set(d.type, horloge);
       if (d.phase === 'debut' && d.type === 'couverture') {
@@ -831,7 +834,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     const c = loupeOccupee();
     if (c === cachee) return;
     cachee = c;
-    if (c) { photos.eteindre(); grains.n = 0; }
+    if (c) { photos.eteindre(); grains.n = 0; redessins.suspendre(); }
     else { mesureDue = 0; avant = performance.now(); }
     reveiller();
   };
@@ -885,6 +888,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       !!reflet ||
       promenades.length > 0 ||
       aFaire.length > 0 ||
+      redessins.actif() ||
       ornementEnTrace();
     // 60 images/s quand ça bouge, 30 au calme (poussière, photos)
     if (!vif && brut < 1 / 31) { raf = requestAnimationFrame(image); return; }
@@ -914,6 +918,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
 
     const g = L.geo();
     const lent = reduit();
+    redessins.avancer(dt, pages.filter(pageALEcran), { repos: !mouvement && !plume && !plumeOccupee(), reduit: lent });
     if (g && !lent) {
       if (T) {
         dernierTour = { sens: T.sens, couverture: T.couverture, arriere: T.arriere, but: T.but };
@@ -1339,6 +1344,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       })),
       grains: grains.n,
       photos: photos.vivantes.length,
+      redessins: redessins.etat(),
       secrets: secrets.map((s) => ({ page: s.page, genre: s.genre, x: s.x, y: s.y })),
       promenades: promenades.length,
       compte,
@@ -1363,6 +1369,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     paraphe: () => { const v = pages.find((x) => x.carte?.titres.length); if (!v) return null; const t = v.carte!.titres[v.carte!.titres.length - 1]; lancerParaphe(v, t); reveiller(); return ecranDe(v, t); },
     titres: () => pages.flatMap((v) => (v.carte?.titres ?? []).map((t) => ecranDe(v, t))),
     ornements: () => { for (const v of pages) { const e = etatDe(v.id); e.fini = false; e.debut = horloge + 0.2; } reveiller(); },
+    redessiner: () => { if (!reduit()) redessins.relancer(pages.filter(pageALEcran)); reveiller(); },
     mesurer: () => { mesurer(); reveiller(); },
   };
   (window as unknown as { __gcMagie?: typeof debug }).__gcMagie = debug;
@@ -1378,6 +1385,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       clearTimeout(veille);
       ecoutes.forEach((f) => f());
       photos.detruire();
+      redessins.detruire();
       const w = window as unknown as { __gcMagie?: typeof debug };
       if (w.__gcMagie === debug) delete w.__gcMagie;
     },

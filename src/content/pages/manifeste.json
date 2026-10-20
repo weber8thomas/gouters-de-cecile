@@ -1417,11 +1417,11 @@
      0.6,
      0.0779
     ],
-    "aq-carotte": [
-     0.14,
-     0.55,
-     0.72,
-     0.34
+    "aq-plume": [
+     0.31,
+     0.57,
+     0.38,
+     0.25
     ]
    },
    "deborde": [],
@@ -1430,8 +1430,9 @@
     "aq-fanions": {
      "aquarelle": "guirlande"
     },
-    "aq-carotte": {
-     "aquarelle": "carotte"
+    "aq-plume": {
+     "aquarelle": "plume",
+     "angle": -8
     }
    },
    "relu": true
@@ -1813,7 +1814,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 9,
+   "lignes": 8,
    "aquarelles": {
     "aq-laura-1": {
      "aquarelle": "crepes-banane",
@@ -1827,10 +1828,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.3886,
-      0.3305,
-      0.0205,
-      0.0145
+      0.1646,
+      0.2991,
+      0.0207,
+      0.0147
      ]
     }
    ],
@@ -1954,7 +1955,7 @@
      ]
     ]
    },
-   "texte": "Lisa\n2. Incorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours au fouet électrique.\n3. Commencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer en augmentant la puissance jusqu'à obtention d'une pâte lisse.\n4. Ajouter les carottes râpées et les noix concassées. Mélanger doucement à la spatule jusqu'à pâte homogène.\n5. Huiler et fariner légèrement le moule et verser la préparation.\n6. Enfourner 40 à 45 minutes à 175 °C (th. 5/6). Laisser refroidir dans le moule.\nOption glaçage :\n3 c. à soupe de sucre glace + jus de citron ou fleur d'oranger (consistance crémeuse, durcit au séchage).",
+   "texte": "Lisa\nPréparation\n1. Mélanger au fouet électrique les 4 œufs et le sucre.\n2. Incorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours au fouet électrique.\n3. Commencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer en augmentant la puissance jusqu'à obtention d'une pâte lisse.\n4. Ajouter les carottes râpées et les noix concassées. Mélanger doucement à la spatule jusqu'à pâte homogène.\n5. Huiler et fariner légèrement le moule et verser la préparation.\n6. Enfourner 40 à 45 minutes à 175 °C (th. 5/6). Laisser refroidir dans le moule.\nOption glaçage :\n3 c. à soupe de sucre glace + jus de citron ou fleur d'oranger (consistance crémeuse, durcit au séchage).",
    "vivants": {
     "aq-lisa-1": [
      0.36,
@@ -1964,7 +1965,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 13,
+   "lignes": 15,
    "aquarelles": {
     "aq-lisa-1": {
      "aquarelle": "carotte",
@@ -2027,7 +2028,7 @@
      ]
     ]
    },
-   "texte": "Lisa\nPour Cécile : Joyeux anniversaire Cécile ! YUMMY après c'est la régalade 😎 — Lisa\nCarrot cake\nIngrédients\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\nPréparation\n1. Mélanger au fouet électrique les 4 œufs et le sucre.\n« Tiptop pour la saison ! »",
+   "texte": "Lisa\nPour Cécile : Joyeux anniversaire Cécile ! YUMMY après c'est la régalade 😎 — Lisa\nCarrot cake\nIngrédients\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\n« Tiptop pour la saison ! »",
    "vivants": {
     "photo": [
      0.06,
@@ -2037,7 +2038,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 15,
+   "lignes": 14,
    "recette": "lisa",
    "croquis": [
     {
@@ -2045,10 +2046,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.8891,
-      0.3911,
-      0.023,
-      0.0163
+      0.2266,
+      0.4317,
+      0.0221,
+      0.0156
      ]
     }
    ],
@@ -2106,7 +2107,7 @@
      ]
     ]
    },
-   "texte": "Lise\n4. Et hop au four à 180 degrés et régale-toi !!",
+   "texte": "Lise\n3. Mélange crème + œufs + cannelle + sucre pour l'appareil.\n4. Et hop au four à 180 degrés et régale-toi !!",
    "vivants": {
     "aq-lise-1": [
      0.35,
@@ -2122,7 +2123,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 1,
+   "lignes": 2,
    "aquarelles": {
     "aq-lise-1": {
      "aquarelle": "tarte-pommes",
@@ -2190,7 +2191,7 @@
      ]
     ]
    },
-   "texte": "Lise\nPour Cécile : Joyeux anniversaire ma Cécile ! Une valeur sûre partagée avec le cœur. Gros bisous ! — Lise\nTarte aux pommes de ma maman\n« J'suis pas la reine de la cuisine de goûter mais une valeur sûre : Tarte aux pommes de ma maman »\nIngrédients\n1 pâte sablée\n3 à 4 pommes\n1 brique de crème fraîche liquide\nCannelle en poudre\n2 œufs\n3 cuillères à soupe de sucre\nPréparation\n1. Fais ta pâte (t'es la reine des pâtes à tarte je peux rien t'apprendre) et étale-la.\n2. Dispose tes pommes découpées en quartiers fins ou rondelles.\n3. Mélange crème + œufs + cannelle + sucre pour l'appareil.",
+   "texte": "Lise\nPour Cécile : Joyeux anniversaire ma Cécile ! Une valeur sûre partagée avec le cœur. Gros bisous ! — Lise\nTarte aux pommes de ma maman\n« J'suis pas la reine de la cuisine de goûter mais une valeur sûre : Tarte aux pommes de ma maman »\nIngrédients\n1 pâte sablée\n3 à 4 pommes\n1 brique de crème fraîche liquide\nCannelle en poudre\n2 œufs\n3 cuillères à soupe de sucre\nPréparation\n1. Fais ta pâte (t'es la reine des pâtes à tarte je peux rien t'apprendre) et étale-la.\n2. Dispose tes pommes découpées en quartiers fins ou rondelles.",
    "vivants": {
     "photo": [
      0.06,
@@ -2200,7 +2201,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 17,
+   "lignes": 16,
    "recette": "lise",
    "relu": true
   },

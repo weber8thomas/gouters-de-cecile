@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {build} from 'esbuild';
+import {readFileSync,mkdirSync,writeFileSync} from 'node:fs';
+import {lancer} from './lib/verif.mjs';
+const out='verification/out/redessins-v14';mkdirSync(out,{recursive:true});
+const carte=JSON.parse(readFileSync('src/components/Magie/carte.json')),page='lisa-gauche';
+assert(carte.pages[page].redessins?.length,'Carrot cake doit exporter ses vrais soulignements');
+const b=await build({entryPoints:['src/components/Magie/redessins.ts'],bundle:true,platform:'node',format:'esm',write:false});const m=await import(`data:text/javascript;base64,${Buffer.from(b.outputFiles[0].text).toString('base64')}`);
+assert.equal(m.cycleRedessin(.4).phase,'efface');assert.equal(m.cycleRedessin(.9).phase,'pause');assert.equal(m.cycleRedessin(2.3).phase,'trace');assert.equal(m.cycleRedessin(9).phase,'repos');assert.equal(m.cycleRedessin(1,true).phase,'repos');assert.deepEqual(m.portionTrait(.25,.75,0,100,200),[.5,1]);
+const base=process.env.GC_TEST_URL??'http://127.0.0.1:5173';
+const code=await build({stdin:{contents:`import {Redessins} from './src/components/Magie/redessins';import {assetUrl} from './src/lib/assets';import carte from './src/components/Magie/carte.json';
+window.creer=async()=>{document.body.replaceChildren();const el=document.createElement('div');Object.assign(el.style,{position:'relative',width:'850px',height:'1200px'});document.body.append(el);const im=new Image();im.className='gc-page-cuite__encre';Object.assign(im.style,{width:'100%',height:'100%'});im.src=new URL(assetUrl('pages/1x/lisa-gauche'),'${base}/').href;el.append(im);await im.decode();window.vues=[{id:'lisa-gauche',el,ecrite:true}];window.r=new Redessins(carte.pages,850,1200);};`,resolveDir:process.cwd()},bundle:true,platform:'browser',format:'iife',write:false});
+const browser=await lancer({media:false});const p=await browser.newPage({viewport:{width:850,height:1200}});
+try{await p.routeWebSocket('**/*',ws=>ws.close());await p.goto(base);await p.setContent('<html><body style="margin:0;background:#f4ecd9"></body></html>');await p.addScriptTag({content:code.outputFiles[0].text});await p.evaluate(()=>window.creer());await p.screenshot({path:out+'/avant.png'});
+ await p.evaluate(()=>{window.r.relancer(window.vues);window.r.avancer(.9,window.vues,{repos:true,reduit:false});});assert.equal(await p.locator('[data-gc-redessin]').count(),1);await p.screenshot({path:out+'/efface.png'});
+ await p.evaluate(()=>window.r.avancer(1.4,window.vues,{repos:true,reduit:false}));await p.screenshot({path:out+'/moitie.png'});
+ await p.evaluate(()=>window.r.avancer(2,window.vues,{repos:true,reduit:false}));assert.equal(await p.locator('[data-gc-redessin]').count(),0);await p.screenshot({path:out+'/apres.png'});
+ await p.evaluate(()=>{window.r.relancer(window.vues);window.r.avancer(.5,window.vues,{repos:true,reduit:false});window.r.avancer(0,window.vues,{repos:true,reduit:true});});assert.equal(await p.locator('[data-gc-redessin]').count(),0);assert.equal(await p.locator('.gc-page-cuite__encre').evaluate(el=>el.style.maskImage),'');
+ writeFileSync(out+'/geometrie.json',JSON.stringify(carte.pages[page].redessins[0]));console.log('Redessin : cycle, découpe, vrais tracés de Lisa, masque retiré et mouvement réduit OK');
+}finally{await browser.close();}

@@ -5,7 +5,7 @@ import { cadreTableau, etatTableau, tableauDe, TABLEAUX, vueTableau } from './ta
 /** Même distribution que le théâtre vivant, pour les feuillets tournants et le mode doux.
  * Le livre n'échange plus une image composite contre une autre au démarrage d'une action. */
 export function TableauFixe({ nom, page, zone }: { nom: string; page: string; zone: [number, number, number, number] }) {
-  const type = tableauDe(nom);
+  const type = tableauDe(nom,page);
   if (!type) return null;
   const logique = (a: string) => a.startsWith('aquarelles/') ? a : `aquarelles/scenes/${a}`;
   const aspects = Object.fromEntries(TABLEAUX[type].assets.map(a => { const i=assetInfo(logique(a)); return [a, i ? i.w/i.h : 1]; }));

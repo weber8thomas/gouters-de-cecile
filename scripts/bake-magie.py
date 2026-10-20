@@ -14,6 +14,8 @@ Sortie : src/components/Magie/carte.json, par page :
     même horloge que la carte des temps (scripts/bake-temps-encre.py) : les paillettes suivent la plume ;
   - encre : la couleur moyenne de l'encre de la page (et `c`, celle de chaque titre), lue dans l'encre
     cuite (pages/1x/<page>) : les ornements s'écrivent de la même encre que le titre qu'ils entourent.
+  - redessins : les seuls soulignements de titre étiquetés Trace.decor par la mise en page. Les lettres
+    restent exclues ; une garde géométrique rejette aussi un trait dont le masque toucherait un mot.
 
 Hors de scripts/pages/ : ne change pas l'empreinte du moteur, ne recuit rien.
 """
@@ -151,6 +153,28 @@ def plume(mise) -> list:
     return out
 
 
+def redessins(mise) -> list:
+    """Vrais tracés de soulignement, sans inférer de traits à partir des boîtes ou des pixels d'encre."""
+    groupes = {}
+    for t in mise.traces:
+        bloc = getattr(t, "decor", None)
+        if not bloc or getattr(t, "glyphe", None):
+            continue
+        p = np.asarray(t.pts, float)
+        if len(p) < 2 or not np.isfinite(p[:, :2]).all():
+            continue
+        # Même demi-largeur que le masque runtime (redessins.ts), pour ne masquer aucune lettre.
+        marge = float(t.diam) * 1.1 + 2
+        x0, y0 = p[:, :2].min(axis=0) - marge
+        x1, y1 = p[:, :2].max(axis=0) + marge
+        if any(x0 < w.boite[2] and x1 > w.boite[0] and y0 < w.boite[3] and y1 > w.boite[1]
+               for w in mise.mots):
+            continue
+        pts = [[round(float(q[0]), 3), round(float(q[1]), 3)] for q in p]
+        groupes.setdefault(bloc, []).append(dict(pts=pts, diam=round(float(t.diam), 3)))
+    return [dict(bloc=bloc, traits=traits) for bloc, traits in groupes.items()]
+
+
 def lire_encre(pid: str) -> np.ndarray | None:
     f = RACINE / f"design-system/baked/pages/1x/{pid}.webp"
     return np.asarray(Image.open(f).convert("RGBA"), float) if f.exists() else None
@@ -167,7 +191,7 @@ def main(argv=None) -> int:
         tt = titres(mise)
         for t in tt:
             t["c"] = couleur(encre, t["r"]) or couleur(encre)
-        carte["pages"][pid] = dict(titres=tt, libre=libre(mise, W, H), plume=plume(mise), encre=couleur(encre))
+        carte["pages"][pid] = dict(titres=tt, libre=libre(mise, W, H), plume=plume(mise), encre=couleur(encre), redessins=redessins(mise))
         tt = ", ".join(f"{t['type']}:{t['bloc']}" for t in carte["pages"][pid]["titres"])
         print(f"{pid:24s} {len(mise.traces):5d} traits  {tt}")
     SORTIE.parent.mkdir(parents=True, exist_ok=True)

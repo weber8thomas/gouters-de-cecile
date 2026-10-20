@@ -8,10 +8,11 @@
 import carteJson from './carte.json';
 import { TRAIT } from './gl';
 import type { PageCuiteInfo } from '../PageCuite';
+import type { RedessinCarte } from './redessins';
 
 export type Rect = [number, number, number, number];
 export interface TitreCarte { type: 'titre' | 'bandeau' | 'chapitre'; bloc: string; r: Rect; a: number; c?: [number, number, number] | null }
-export interface CartePage { titres: TitreCarte[]; libre: string[]; plume: number[]; encre: [number, number, number] | null }
+export interface CartePage { titres: TitreCarte[]; libre: string[]; plume: number[]; encre: [number, number, number] | null; redessins?: RedessinCarte[] }
 interface Carte { version: number; W: number; H: number; case: number; pages: Record<string, CartePage> }
 
 export const CARTE = carteJson as unknown as Carte;

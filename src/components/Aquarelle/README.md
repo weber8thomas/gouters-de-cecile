@@ -48,3 +48,9 @@ isolées servent à examiner les actions, les captures dans le livre à vérifie
 `window.__gcDessins` expose `etat`, `finir`, `scene`, `figer`, `avancer`. `tableau` décrit aussi la pose de
 repos : pour constater un départ autonome, lire `scene`, pas seulement la présence de `tableau`.
 Chromium logiciel ne prouve pas la cadence du GPU d’un téléphone ou de l’ordinateur HDMI.
+
+Depuis v14, `recettesAnimees.ts` associe les illustrations de droite à une séquence par étape réelle
+(39 pour les huit recettes). `tableauDe(nom,page)` distingue la recette de l’illustration du chapitre.
+Les séquences Auto conservent le résultat ; `commande(nom,'etapes'|'suivant'|'auto'|'rejouer')` pilote
+la même horloge. Les légendes restent visibles pendant la scène, aucune infobulle au survol.
+`verify-recettes-v14.mjs` vérifie chaque opération, `verify-recette-horloge-v14.mjs` ses vrais contrôles.

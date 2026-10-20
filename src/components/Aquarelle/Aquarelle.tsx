@@ -96,7 +96,7 @@ export function Aquarelle({ nom, anime = 'fleurit', angle = 0, ordre = 0, page }
   const info = page ? PAGES_CUITES.pages[page] : undefined;
   const z = info && Object.entries(info.aquarelles ?? {}).find(([,a]) => a.aquarelle === nom)?.[0];
   const zone = z ? info?.vivants[z] : undefined;
-  const tableau = !!tableauDe(nom) && !!zone && zone[2] >= .24 && zone[3] >= .15;
+  const tableau = !!tableauDe(nom,page) && !!zone && zone[2] >= .24 && zone[3] >= .15;
   const gl = typeof document !== 'undefined' && webglOk();
   const aPeindre = gl && !reduit && !!page && !echouees.has(page) && !peintes.has(`${page}/${nom}`);
   const parToile = mode === 'live' && !!page && pretes.has(page);

@@ -53,7 +53,7 @@
    "type": "etiquette",
    "texte": "recettes de goûter partagées\npar celles et ceux qui l'aiment",
    "role": "titre",
-   "echelle": 1.2,
+   "echelle": 1.35,
    "encre": "chocolat",
    "main": "cecile",
    "rect": [
@@ -63,7 +63,8 @@
     0.13
    ],
    "pente": -0.8,
-   "graine": 3013
+   "graine": 3013,
+   "police": "caveat-appuye"
   }
  ],
  "vivants": [

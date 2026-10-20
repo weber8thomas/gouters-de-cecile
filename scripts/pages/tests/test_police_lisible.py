@@ -11,6 +11,7 @@ sys.path.insert(0, str(PAGES))
 import mise_en_page as MEP
 import rendu_encre as R
 import recette as RC
+import police_lisible as POL
 
 
 class PoliceLisible(unittest.TestCase):
@@ -48,6 +49,24 @@ class PoliceLisible(unittest.TestCase):
         debut = R.rasteriser(self.traces[:1], 850, 180, 1., np.zeros((180, 850)))
         premier_mot = next(iter(debut.values()))[0] > .1
         self.assertGreater(np.ptp(temps[premier_mot]), 1000, "un mot ne doit pas apparaître d'un seul bloc")
+
+    def test_mains_distinctes_conservent_accents_et_quantites(self):
+        texte = "Clémence, Pierrette : 70 % minimum, 150 °C, 2 œufs."
+        empreintes = []
+        for nom in POL.POLICES:
+            with self.subTest(police=nom):
+                f = POL.fonte(nom)
+                for c in set(texte) - {" "}:
+                    self.assertNotEqual(bytes(f.getmask(c)), bytes(f.getmask("\uffff")),
+                                        f"glyphe absent : {c}")
+                m = MEP.mettre_en_page({
+                    "id": "mains", "graine": 23, "police": nom, "main": "soignee",
+                    "blocs": [{"type": "paragraphe", "texte": texte}],
+                }, dessins=False)
+                self.assertFalse(m.deborde)
+                self.assertEqual([mot.texte for mot in m.mots], texte.split())
+                empreintes.append(bytes(POL.masque("Cécile", nom)[0].tobytes()))
+        self.assertEqual(len(set(empreintes)), len(POL.POLICES), "les mains doivent réellement différer")
 
     def test_huit_recettes_integrales_restent_dans_le_paginateur(self):
         plan, papiers = RC.charger_plan()

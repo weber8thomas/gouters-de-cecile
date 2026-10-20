@@ -11,6 +11,7 @@ import { abonnerQuete, agirQuete, CACHETTES, etatQuete, QUETE_INITIALE, QUETE_OU
 import { useEcran } from '../Ecran/contexte';
 import { GESTE_EVENT } from '../Livre/evenements';
 import { pageCuite, PAGES_CUITES } from '../PageCuite/PageCuite';
+import { FarineCachette } from './FarineCachette';
 import './SecretsDuCarnet.css';
 
 export interface SecretsDuCarnetProps { page: string }
@@ -98,14 +99,15 @@ export function SecretsDuCarnet({ page }: SecretsDuCarnetProps) {
   if (!zone || !cachette || !accessible || mode !== 'live') return null;
   const trouve = index < quete.trouves;
   const style = { left: `${zone[0] * 100}%`, top: `${zone[1] * 100}%`, width: `${zone[2] * 100}%`, height: `${zone[3] * 100}%`, ...handStyle('cecile', 'meta', 'crayon') } as React.CSSProperties;
+  const decouvrir = () => { agirQuete({ type: 'reveler', index }); window.dispatchEvent(new CustomEvent(QUETE_OUVRIR_EVENT, { detail: index })); };
+  const poudre = index === 0 && !trouve && !quete.revele;
   return <div ref={racine} className="gc-secrets" style={style} data-gc-secrets={page} data-gc-secret={cachette.id} data-gc-secret-actif={actif ? 'oui' : 'non'} data-gc-secret-reduit={reduit ? 'oui' : 'non'} data-gc-secret-trouve={trouve ? 'oui' : 'non'} data-gc-secret-revele={index === quete.trouves && quete.revele ? 'oui' : 'non'} aria-hidden={!actif || undefined}>
-    <button type="button" className="gc-secrets__bouton" data-gc-controle="" tabIndex={actif ? 0 : -1} aria-label={`${trouve ? 'Relire' : 'Découvrir'} : ${cachette.titre}`} aria-keyshortcuts="S" onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); }} onPointerDown={(e) => e.stopPropagation()} onClick={(e) => {
+    <button type="button" className="gc-secrets__bouton" data-gc-controle="" tabIndex={actif ? 0 : -1} aria-label={poudre ? 'Écarter la farine : balayer, cliquer ou appuyer sur Entrée' : `${trouve ? 'Relire' : 'Découvrir'} une note cachée`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); }} onPointerDown={(e) => e.stopPropagation()} onClick={(e) => {
       e.stopPropagation();
-      agirQuete({ type: 'reveler', index });
-      window.dispatchEvent(new CustomEvent(QUETE_OUVRIR_EVENT, { detail: index }));
+      decouvrir();
     }}>
       <img className={`gc-secrets__dessin gc-secrets__dessin--${cachette.id}`} src={assetUrl(`aquarelles/${cachette.dessin}`)} alt="" draggable={false}/>
-      <span className="gc-secrets__indice">{trouve ? 'retrouvé !' : 'secret…'}</span>
+      {poudre && <FarineCachette actif={actif} decouvrir={decouvrir}/>}
     </button>
   </div>;
 }
@@ -145,13 +147,13 @@ export function CompagnonDuCarnet() {
   const [ouvert, setOuvert] = React.useState(false);
   const [selection, setSelection] = React.useState<number | null>(null);
   const [reaction, setReaction] = React.useState(0);
+  const [aide, setAide] = React.useState(0);
   const pages = placement?.pages ?? PAGES_VIDES;
   const fini = quete.trouves === CACHETTES.length;
   const index = selection != null && selection < quete.trouves ? selection : Math.min(quete.trouves, CACHETTES.length - 1);
   const cachette = CACHETTES[index];
   const ici = pages.includes(cachette.page);
   const revele = index < quete.trouves || (index === quete.trouves && quete.revele);
-  const decouverts = quete.trouves + (quete.revele ? 1 : 0);
   const infoPage = pageCuite(cachette.page);
   const reperePage = `Page ${infoPage?.folio ?? 'du carnet'} · ${infoPage?.cote ?? 'gauche'}`;
   const doubleIci = pages.some((p) => pageCuite(p)?.double === cachette.double);
@@ -169,13 +171,12 @@ export function CompagnonDuCarnet() {
       const x1 = Math.max(...rs.map((r) => r.right)), y1 = Math.max(...rs.map((r) => r.bottom));
       const br = root.querySelector('.gc-bougie__cire')?.getBoundingClientRect();
       const z = placerCompagnon([er.left, er.top, er.width, er.height], [x0, y0, x1 - x0, y1 - y0], br ? [br.left, br.top, br.width, br.height] : undefined);
-      const droite = er.right - x1 - 36, gauche = x0 - er.left - 36;
-      const lateral = Math.max(droite, gauche) >= 320;
-      const width = Math.min(lateral ? Math.max(droite, gauche) : 600, lateral ? 310 : er.width - 36);
-      const left = lateral ? (droite >= gauche ? x1 - er.left + 18 : 18) : (er.width - width) / 2;
+      const marge = er.right - x1;
+      const width = Math.min(280, Math.max(190, marge - 24), er.width * .42);
+      const left = marge >= width + 24 ? x1 - er.left + 12 : er.width - width - 54;
       const suivant: Placement = {
         chien: z ? [z[0] - er.left, z[1] - er.top, z[2], z[3]] : null,
-        guide: { left, top: er.height < 600 ? 48 : 84, width, maxHeight: Math.max(160, er.height - (er.height < 600 ? 96 : 168)) },
+        guide: { left, top: er.height < 600 ? 58 : 92, width, maxHeight: Math.max(140, er.height - (er.height < 600 ? 116 : 280)) },
         pages: [...visibles].map((p) => p.dataset.gcPageCuite ?? ''),
       };
       setPlacement((ancien) => JSON.stringify(ancien) === JSON.stringify(suivant) ? ancien : suivant);
@@ -186,6 +187,7 @@ export function CompagnonDuCarnet() {
   const montrer = React.useCallback((n?: number) => {
     const voulu = n ?? Math.min(quete.trouves, CACHETTES.length - 1);
     setSelection(n == null && quete.trouves === CACHETTES.length ? null : voulu);
+    setAide(0);
     setOuvert(true);
   }, [quete.trouves]);
   React.useEffect(() => {
@@ -211,7 +213,7 @@ export function CompagnonDuCarnet() {
     if (!ouvert || !actif) return;
     const image = requestAnimationFrame(() => (panneau.current?.querySelector<HTMLElement>('[data-gc-quete-principal]') ?? panneau.current?.querySelector<HTMLButtonElement>('.gc-quete__fermer'))?.focus({ preventScroll: true }));
     return () => cancelAnimationFrame(image);
-  }, [ouvert, actif, index, revele, fini]);
+  }, [ouvert, actif, index, revele, fini, aide]);
 
   if (!ecran?.controles) return null;
   const zone = placement?.chien;
@@ -219,51 +221,44 @@ export function CompagnonDuCarnet() {
   const texte = (s: string) => handText(s, 'cecile');
   return createPortal(<>
     <div ref={racine} className={`gc-quete__compagnon${zone ? '' : ' gc-quete__compagnon--discret'}`} style={style} data-gc-secret-actif={actif ? 'oui' : 'non'} data-gc-quete-progres={quete.trouves} data-gc-quete-reduit={reduit ? 'oui' : 'non'} aria-hidden={!actif || undefined}>
-      <button className="gc-quete__appel" type="button" data-gc-controle="" aria-label={`Les secrets du carnet : ${decouverts} sur ${CACHETTES.length} retrouvés. ${ouvert ? 'Fermer' : 'Ouvrir'} le guide.`} aria-expanded={ouvert} aria-controls="gc-guide-quete" aria-keyshortcuts="S" tabIndex={actif ? 0 : -1} onPointerDown={(e) => e.stopPropagation()} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); }} onClick={(e) => { e.stopPropagation(); setReaction((n) => n + 1); if (ouvert) setOuvert(false); else montrer(); }}>
+      <button className="gc-quete__appel" type="button" data-gc-controle="" aria-label={`${ouvert ? 'Replier' : 'Ouvrir'} les notes en marge`} aria-expanded={ouvert} aria-controls="gc-guide-quete" aria-keyshortcuts="S" tabIndex={actif ? 0 : -1} onPointerDown={(e) => e.stopPropagation()} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); }} onClick={(e) => { e.stopPropagation(); setReaction((n) => n + 1); if (ouvert) setOuvert(false); else montrer(); }}>
         {zone && <ChienGuide reaction={reaction} reduit={reduit}/>}
-        <span className="gc-quete__legende">{texte(fini ? '5/5 secrets !' : `Secrets · ${decouverts}/${CACHETTES.length}`)}</span>
+        <span className="gc-quete__legende">{texte('Psst…')}</span>
       </button>
     </div>
-    {ouvert && actif && placement && <section ref={panneau} id="gc-guide-quete" className="gc-quete__guide" style={{ ...placement.guide, '--gc-quete-papier': `url("${assetUrl(pageCuite(cachette.page)?.papier1x ?? pageCuite(cachette.page)!.papier)}")`, ...handStyle('cecile', 'meta', 'brune') } as React.CSSProperties} data-gc-quete-etape={cachette.id} data-gc-quete-revele={revele ? 'oui' : 'non'} data-gc-quete-reduit={reduit ? 'oui' : 'non'} role="region" aria-label="Les secrets du carnet" onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); }}>
-      <button type="button" className="gc-quete__fermer" aria-label="Fermer le guide des secrets" onClick={() => setOuvert(false)}>×</button>
-      <p className="gc-quete__progression">{texte(`${decouverts}/${CACHETTES.length} secrets découverts`)}</p>
-      <h2>{texte(fini && selection == null ? 'Tous les secrets sont retrouvés !' : cachette.titre)}</h2>
+    {ouvert && actif && placement && <section ref={panneau} id="gc-guide-quete" className="gc-quete__guide" style={{ ...placement.guide, '--gc-quete-papier': `url("${assetUrl(pageCuite(cachette.page)?.papier1x ?? pageCuite(cachette.page)!.papier)}")`, ...handStyle('cecile', 'meta', 'brune') } as React.CSSProperties} data-gc-quete-etape={cachette.id} data-gc-quete-revele={revele ? 'oui' : 'non'} data-gc-quete-reduit={reduit ? 'oui' : 'non'} role="region" aria-label="Notes en marge" data-gc-quete-lateral="oui" onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); }}>
+      <button type="button" className="gc-quete__fermer" aria-label="Replier les notes en marge" onClick={() => setOuvert(false)}>×</button>
+      <h2>{texte('Notes en marge')}</h2>
       {fini && selection == null ? <>
+        <p>{texte('Le carnet a confié toutes ses petites notes.')}</p>
         <p>{texte(CACHETTES[CACHETTES.length - 1].suite)}</p>
-        <p>{texte('Les cinq coches permettent de relire tes découvertes.')}</p>
-      </> : <>
-        <p className="gc-quete__destination"><strong>{texte(reperePage)}</strong><br/>{texte(`« ${cachette.pageTitre} »`)}</p>
-        {!revele && <>
-          <p className="gc-quete__consigne">{texte(`Cherche ${cachette.chercher}.`)}</p>
-          {(ici || doubleIci) && <p className="gc-quete__aide">{texte(ici ? 'Touche ce dessin, ou découvre le secret ci-dessous.' : `La cachette est sur la page de ${infoPage?.cote}. Ferme le guide et utilise les flèches du carnet pour l’afficher.`)}</p>}
-          {!ici && !doubleIci && <a className="gc-quete__action" data-gc-quete-principal="" href={`#${encodeURIComponent(cachette.double)}`} onClick={() => setOuvert(false)}>{texte(`${quete.trouves === 0 ? 'Commencer' : 'Aller'} · page ${infoPage?.folio ?? ''}`)}</a>}
-          {!ici && doubleIci && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => setOuvert(false)}>{texte('Fermer le guide pour tourner la page')}</button>}
-          {ici && <>
-            <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => { agirQuete({ type: 'reveler', index }); setReaction((n) => n + 1); }}>{texte(`Découvrir le secret ${index + 1}`)}</button>
-            <p className="gc-quete__aide">{texte('Tu ne vois pas le dessin ? Ce bouton découvre le même secret.')}</p>
-          </>}
-        </>}
-        {revele && <div className={`gc-quete__revelation gc-quete__revelation--${cachette.id}`}>
+      </> : revele ? <>
+        <div className={`gc-quete__revelation gc-quete__revelation--${cachette.id}`}>
           <p className="gc-quete__amorce">{texte(cachette.amorce)}</p>
           <blockquote>{texte(cachette.revelation)}</blockquote>
           {'question' in cachette && <p>{texte(cachette.question)}</p>}
-          <p className="gc-quete__suite">{texte(cachette.suite)}</p>
-        </div>}
-        {index === quete.trouves && revele && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => { agirQuete({ type: 'valider', index }); setSelection(null); }}>{texte(index === CACHETTES.length - 1 ? 'Terminer la quête' : `Continuer · secret ${index + 2} sur 5`)}</button>}
-        {index < quete.trouves && !fini && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => setSelection(null)}>{texte('Reprendre la piste en cours')}</button>}
-        {index < quete.trouves && fini && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => setSelection(null)}>{texte('Revenir aux cinq découvertes')}</button>}
+        </div>
+        {index === quete.trouves && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => { agirQuete({ type: 'valider', index }); setSelection(null); setAide(0); setOuvert(false); }}>{texte('Garder cette note')}</button>}
+        {index < quete.trouves && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => { setSelection(null); setAide(0); }}>{texte('Revenir au fil du carnet')}</button>}
+      </> : <>
+        {aide === 0 && <p>{texte('Il reste peut-être quelque chose entre ces pages. Rien ne presse…')}</p>}
+        {aide >= 1 && <p className="gc-quete__indice-doux">{texte(cachette.indice)}</p>}
+        {aide < 2 && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => setAide((n) => n + 1)}>{texte(aide === 0 ? 'Souffle-moi une piste' : 'Un peu plus d’aide')}</button>}
+        {aide === 2 && <>
+          <p className="gc-quete__destination">{texte(`${reperePage} · « ${cachette.pageTitre} »`)}</p>
+          <p>{texte(`Cherche ${cachette.chercher}.${index === 0 ? ' Un peu de farine la recouvre : écarte-la du doigt, ou d’un clic.' : ''}`)}</p>
+          {!ici && !doubleIci && <a className="gc-quete__action" data-gc-quete-principal="" href={`#${encodeURIComponent(cachette.double)}`} onClick={() => setOuvert(false)}>{texte('Feuilleter jusque-là')}</a>}
+          {!ici && doubleIci && <p>{texte(`La note est sur la page de ${infoPage?.cote}. Les flèches du carnet permettent d’y aller.`)}</p>}
+          {ici && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => { agirQuete({ type: 'reveler', index }); setReaction((n) => n + 1); }}>{texte(index === 0 ? 'Écarter la farine' : 'Lire la note')}</button>}
+        </>}
       </>}
-      {fini && selection == null && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => { agirQuete({ type: 'rejouer' }); setSelection(null); }}>{texte('Rejouer la quête')}</button>}
-      <p className="gc-quete__objectif">{texte('Retrouve cinq dessins cachés. Chaque secret mène au suivant.')}</p>
-      <ol className="gc-quete__jalons" aria-label="Progression de la quête">{CACHETTES.map((c, n) => {
-        const trouve = n < quete.trouves || (n === quete.trouves && quete.revele);
-        return <li key={c.id} className={trouve ? 'gc-quete__jalon--trouve' : n === quete.trouves ? 'gc-quete__jalon--actuel' : undefined} aria-current={n === index ? 'step' : undefined}>
-          {n < quete.trouves ? <button type="button" aria-label={`Relire le secret ${n + 1} : ${c.titre}`} onClick={() => setSelection(n)}>✓</button> : <span aria-label={`${c.titre}, ${trouve ? 'découvert' : n > quete.trouves ? 'à débloquer' : 'à chercher'}`}>{trouve ? '✓' : n + 1}</span>}
-        </li>;
-      })}</ol>
-      <p className="gc-quete__touches">{texte('S : ouvrir le guide · Échap : fermer')}</p>
-      {!fini && quete.trouves > 0 && <button type="button" className="gc-quete__recommencer" onClick={() => { agirQuete({ type: 'rejouer' }); setSelection(null); }}>{texte('Recommencer depuis le début')}</button>}
-      <span className="gc-quete__annonce" role="status" aria-live="polite">{quete.trouves === CACHETTES.length ? 'Quête terminée. Les cinq secrets ont été retrouvés.' : `${decouverts} sur ${CACHETTES.length} secrets découverts. Prochaine cachette : ${CACHETTES[quete.trouves].lieu}.`}</span>
+      {quete.trouves > 0 && <details className="gc-quete__archives">
+        <summary>{texte('Notes retrouvées')}</summary>
+        <ul>{CACHETTES.slice(0, quete.trouves).map((c, n) => <li key={c.id}><button type="button" onClick={() => { setSelection(n); setAide(0); }}>{texte(c.titre)}</button></li>)}</ul>
+      </details>}
+      {fini && selection == null && <button type="button" className="gc-quete__recommencer" onClick={() => { agirQuete({ type: 'rejouer' }); setSelection(null); setAide(0); }}>{texte('Retrouver les notes une autre fois')}</button>}
+      <p className="gc-quete__touches">{texte('S : notes · Échap : replier')}</p>
+      <span className="gc-quete__annonce" role="status" aria-live="polite">{revele ? 'Une note se dévoile. Tu peux la lire puis la garder.' : aide === 0 ? 'Notes en marge ouvertes. Un indice est disponible si tu le souhaites.' : aide === 1 ? cachette.indice : `${reperePage}. ${cachette.pageTitre}. Cherche ${cachette.chercher}.`}</span>
     </section>}
   </>, ecran.controles);
 }

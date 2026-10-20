@@ -1,0 +1,357 @@
+{
+  "serie": "anglaise-v14",
+  "direction": "Acteurs originaux créés pour réaliser les vraies étapes du carnet, depuis la vaisselle v12 comme référence. Crayon fin/aquarelle mate, transparence conservée.",
+  "planches": [
+    {
+      "fichier": "patisserie.png",
+      "sujets": [
+        {
+          "nom": "acteurs/chocolat",
+          "sujet": "chocolat",
+          "cellule": [
+            0,
+            0,
+            515,
+            337
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/beurre",
+          "sujet": "beurre",
+          "cellule": [
+            545,
+            0,
+            1024,
+            337
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/sucre",
+          "sujet": "sucre",
+          "cellule": [
+            1050,
+            0,
+            1536,
+            337
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/casserole",
+          "sujet": "casserole",
+          "cellule": [
+            0,
+            340,
+            540,
+            699
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/moule",
+          "sujet": "moule",
+          "cellule": [
+            550,
+            340,
+            1024,
+            699
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/four",
+          "sujet": "four",
+          "cellule": [
+            1060,
+            340,
+            1536,
+            699
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/chantilly",
+          "sujet": "chantilly",
+          "cellule": [
+            0,
+            700,
+            515,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/tamis",
+          "sujet": "tamis",
+          "cellule": [
+            530,
+            700,
+            1060,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/chocolat-fondu",
+          "sujet": "chocolat-fondu",
+          "cellule": [
+            1065,
+            705,
+            1536,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "fruits-gestes.png",
+      "sujets": [
+        {
+          "nom": "acteurs/carottes-rapees",
+          "sujet": "carottes-rapees",
+          "cellule": [
+            0,
+            0,
+            515,
+            330
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/noix",
+          "sujet": "noix",
+          "cellule": [
+            540,
+            0,
+            1030,
+            330
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/myrtilles",
+          "sujet": "myrtilles",
+          "cellule": [
+            1050,
+            0,
+            1536,
+            330
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/pomme-coupee",
+          "sujet": "pomme-coupee",
+          "cellule": [
+            0,
+            335,
+            500,
+            665
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/banane",
+          "sujet": "banane",
+          "cellule": [
+            525,
+            330,
+            1040,
+            655
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/banane-rondelles",
+          "sujet": "banane-rondelles",
+          "cellule": [
+            1050,
+            340,
+            1536,
+            650
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/rouleau",
+          "sujet": "rouleau",
+          "cellule": [
+            0,
+            675,
+            550,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/poele",
+          "sujet": "poele",
+          "cellule": [
+            560,
+            655,
+            1060,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/louche",
+          "sujet": "louche",
+          "cellule": [
+            1065,
+            650,
+            1536,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "finition.png",
+      "sujets": [
+        {
+          "nom": "acteurs/carrot-cake",
+          "sujet": "carrot-cake",
+          "cellule": [
+            0,
+            0,
+            550,
+            500
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/cake-citron",
+          "sujet": "cake-citron",
+          "cellule": [
+            560,
+            0,
+            1050,
+            500
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/pate-sablee",
+          "sujet": "pate-sablee",
+          "cellule": [
+            1060,
+            0,
+            1536,
+            500
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/crepe",
+          "sujet": "crepe",
+          "cellule": [
+            0,
+            505,
+            565,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/boules-cookies",
+          "sujet": "boules-cookies",
+          "cellule": [
+            570,
+            505,
+            1055,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/beurre-fondu",
+          "sujet": "beurre-fondu",
+          "cellule": [
+            1060,
+            505,
+            1536,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        }
+      ]
+    }
+  ]
+}

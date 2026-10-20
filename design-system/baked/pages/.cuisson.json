@@ -1,5 +1,5 @@
 {
- "papier/f13": "ac89a7536d402ac5defe3a56448052547566ac2b49139f7f6f1c7632dae844ff",
+ "papier/f13": "7f498f3a59c636d8234f93918ec4be3b8e4248554a4795dbcf1da2cfcbc0a304",
  "page/julie-droite": {
   "cle": "1213305177583ac21e879c7475232589751bc8f92bec1936e3a4ae522bdaedad",
   "manifeste": {
@@ -114,7 +114,7 @@
    "relu": true
   }
  },
- "papier/f19": "d46c76e75594e175dfe28b7c1e5ed5d8425540c0b87471b62601e11cc7782604",
+ "papier/f19": "e6a92b0bfc7c27cb5618268e21bdf28f29f11e09b5f10f220822a181a7db59a0",
  "page/fin-droite": {
   "cle": "8e90bca8a8e82cdf3d199ec64784b2a9c7044258dfee6a6ac00a67c8fc25f097",
   "manifeste": {
@@ -223,7 +223,7 @@
    "relu": true
   }
  },
- "papier/f17": "9b2938f59ec3d88506f7c018d5f462e3b1ba287ee9523ad63d250e848d7fb138",
+ "papier/f17": "84b1c72797aa536edbaad1cfa1f30b588dcb559892f8c75e5dfb758067825108",
  "page/fin-gauche": {
   "cle": "994678aaaaa8e00ce2f43b4bc53415db3affeb743e018fd216a699934f35ddbe",
   "manifeste": {
@@ -285,7 +285,7 @@
    "relu": true
   }
  },
- "papier/f11": "faf6e6eff67e77e9a96f067bedd06a94d1b1a07657fe58177c2b60fb0e8274c7",
+ "papier/f11": "181e24ff7a203606ebd979b15d210096ad894147889c41c30644d34d541988e8",
  "page/julie-gauche": {
   "cle": "e602da1cc3a3d24d711f6103e7281fc6aa802a28b2fcfce14d97e6066c9ad1aa",
   "manifeste": {
@@ -490,7 +490,7 @@
    "relu": true
   }
  },
- "papier/f15": "396e6db6dfa839f0332267fb407bfa230b0032bf76f0e26b5c5919c02fbb90e1",
+ "papier/f15": "619ad1764d4bb9a15048a69a3673a074ebc4b630981ca49bf7e9a1516682dc47",
  "page/mathis-gauche": {
   "cle": "84f4073b6e95100b7168e633ffdd9bc597ba12f89bd9f72e89a8c72f22241c2e",
   "manifeste": {
@@ -799,21 +799,21 @@
    "relu": true
   }
  },
- "papier1x/f19": "d46c76e75594e175dfe28b7c1e5ed5d8425540c0b87471b62601e11cc7782604",
- "papier1x/f17": "9b2938f59ec3d88506f7c018d5f462e3b1ba287ee9523ad63d250e848d7fb138",
- "papier1x/f13": "ac89a7536d402ac5defe3a56448052547566ac2b49139f7f6f1c7632dae844ff",
- "papier1x/f11": "faf6e6eff67e77e9a96f067bedd06a94d1b1a07657fe58177c2b60fb0e8274c7",
- "papier1x/f15": "396e6db6dfa839f0332267fb407bfa230b0032bf76f0e26b5c5919c02fbb90e1",
+ "papier1x/f19": "e6a92b0bfc7c27cb5618268e21bdf28f29f11e09b5f10f220822a181a7db59a0",
+ "papier1x/f17": "84b1c72797aa536edbaad1cfa1f30b588dcb559892f8c75e5dfb758067825108",
+ "papier1x/f13": "7f498f3a59c636d8234f93918ec4be3b8e4248554a4795dbcf1da2cfcbc0a304",
+ "papier1x/f11": "181e24ff7a203606ebd979b15d210096ad894147889c41c30644d34d541988e8",
+ "papier1x/f15": "619ad1764d4bb9a15048a69a3673a074ebc4b630981ca49bf7e9a1516682dc47",
  "pagination/lisa": {
-  "cle": "f82a155ce095fa0f5cd326b69343f23cbe5721161dbc1dd1f7d5e8c18b3f8372",
+  "cle": "65cc42318a082c0aa0b88ce6e466122282fb0af0abbcd6829f7a164e0099a201",
   "pages": {
    "lisa-gauche": {
     "double": "lisa",
     "main": "ado",
     "encre": "bille-bleue",
     "recette": "lisa",
-    "serrage_max": 2,
-    "police": "kalam",
+    "serrage_max": 1,
+    "police": "caveat-appuye",
     "contexte_importants": {
      "ingredients": [
       "1 sachet de levure chimique",
@@ -847,7 +847,6 @@
     "marges": {
      "haut": 0.32056
     },
-    "pas_local": 0.96,
     "blocs": [
      {
       "type": "bandeau",
@@ -968,39 +967,6 @@
       ]
      },
      {
-      "type": "paragraphe",
-      "id": "section-preparation",
-      "segments": [
-       {
-        "texte": "Préparation",
-        "graine": 19520326,
-        "atome": "section-preparation"
-       }
-      ],
-      "alinea": 0.0,
-      "avant": 0.65,
-      "echelle": 1.1
-     },
-     {
-      "type": "etape",
-      "id": "etape-1",
-      "source": "etape-1",
-      "titre": {
-       "texte": "1.",
-       "graine": 55698702
-      },
-      "segments": [
-       {
-        "texte": "Mélanger au fouet électrique les 4 œufs et le sucre.",
-        "graine": 30436127,
-        "atome": "etape-1/phrase-1"
-       }
-      ],
-      "disposition": "tete",
-      "avant": 0.12,
-      "alinea": 0.0
-     },
-     {
       "type": "annotation",
       "id": "note-1",
       "texte": "« Tiptop pour la saison ! »",
@@ -1092,9 +1058,7 @@
      "ingredients-1/ligne-7",
      "ingredients-1/ligne-8",
      "ingredients-1/ligne-9",
-     "ingredients-1/ligne-10",
-     "section-preparation",
-     "etape-1/phrase-1"
+     "ingredients-1/ligne-10"
     ]
    },
    "lisa-droite": {
@@ -1103,7 +1067,7 @@
     "encre": "bille-bleue",
     "recette": "lisa",
     "serrage_max": 1,
-    "police": "kalam",
+    "police": "caveat-appuye",
     "contexte_importants": {
      "ingredients": [
       "1 sachet de levure chimique",
@@ -1145,6 +1109,39 @@
       "graine": 78291561
      },
      {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 19520326,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.0,
+      "echelle": 1.1
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "1.",
+       "graine": 55698702
+      },
+      "segments": [
+       {
+        "texte": "Mélanger au fouet électrique les 4 œufs et le sucre.",
+        "graine": 30436127,
+        "atome": "etape-1/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
       "type": "etape",
       "id": "etape-2",
       "source": "etape-2",
@@ -1170,7 +1167,7 @@
        }
       ],
       "disposition": "tete",
-      "avant": 0.0,
+      "avant": 0.12,
       "alinea": 0.0
      },
      {
@@ -1293,6 +1290,8 @@
      }
     ],
     "atomes": [
+     "section-preparation",
+     "etape-1/phrase-1",
      "etape-2/phrase-1.1",
      "etape-2/phrase-1.2",
      "etape-2/phrase-1.3",
@@ -1313,17 +1312,15 @@
    "lisa-droite"
   ],
   "disposition": "tete",
-  "ajustements": {
-   "lisa-gauche": "interligne −4 %"
-  },
+  "ajustements": {},
   "trous": {
-   "lisa-gauche": 0.28
+   "lisa-gauche": 1.3
   }
  },
  "papier/f9": "a52f7f30f0d2b1648ad24c79cf4742f0acd439966f26cf33b75fc2fb1cb8ee80",
  "papier1x/f9": "a52f7f30f0d2b1648ad24c79cf4742f0acd439966f26cf33b75fc2fb1cb8ee80",
  "page/lisa-gauche": {
-  "cle": "cacb1cbdef85f953f1b030dac1ce927fce3d9e340b1e9c1f60599593cac46039",
+  "cle": "f2a02354977c181c1108cb86760dfb129b318031512a6b363735693cf9ede915",
   "manifeste": {
    "double": "lisa",
    "cote": "gauche",
@@ -1376,7 +1373,7 @@
      ]
     ]
    },
-   "texte": "Lisa\nPour Cécile : Joyeux anniversaire Cécile ! YUMMY après c'est la régalade 😎 — Lisa\nCarrot cake\nIngrédients\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\nPréparation\n1. Mélanger au fouet électrique les 4 œufs et le sucre.\n« Tiptop pour la saison ! »",
+   "texte": "Lisa\nPour Cécile : Joyeux anniversaire Cécile ! YUMMY après c'est la régalade 😎 — Lisa\nCarrot cake\nIngrédients\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\n« Tiptop pour la saison ! »",
    "vivants": {
     "photo": [
      0.06,
@@ -1386,7 +1383,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 15,
+   "lignes": 14,
    "recette": "lisa",
    "croquis": [
     {
@@ -1394,10 +1391,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.8891,
-      0.3911,
-      0.023,
-      0.0163
+      0.2266,
+      0.4317,
+      0.0221,
+      0.0156
      ]
     }
    ],
@@ -1405,7 +1402,7 @@
   }
  },
  "page/lisa-droite": {
-  "cle": "4886d748e3ee1f2f76b09d3c9c056409536375a5f2ac856bcb41778d11620dda",
+  "cle": "b12955e4787c679ca7545d2d959d7228ce227a20ca80b18ed9cf9ad53064d55c",
   "manifeste": {
    "double": "lisa",
    "cote": "droite",
@@ -1458,7 +1455,7 @@
      ]
     ]
    },
-   "texte": "Lisa\n2. Incorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours au fouet électrique.\n3. Commencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer en augmentant la puissance jusqu'à obtention d'une pâte lisse.\n4. Ajouter les carottes râpées et les noix concassées. Mélanger doucement à la spatule jusqu'à pâte homogène.\n5. Huiler et fariner légèrement le moule et verser la préparation.\n6. Enfourner 40 à 45 minutes à 175 °C (th. 5/6). Laisser refroidir dans le moule.\nOption glaçage :\n3 c. à soupe de sucre glace + jus de citron ou fleur d'oranger (consistance crémeuse, durcit au séchage).",
+   "texte": "Lisa\nPréparation\n1. Mélanger au fouet électrique les 4 œufs et le sucre.\n2. Incorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours au fouet électrique.\n3. Commencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer en augmentant la puissance jusqu'à obtention d'une pâte lisse.\n4. Ajouter les carottes râpées et les noix concassées. Mélanger doucement à la spatule jusqu'à pâte homogène.\n5. Huiler et fariner légèrement le moule et verser la préparation.\n6. Enfourner 40 à 45 minutes à 175 °C (th. 5/6). Laisser refroidir dans le moule.\nOption glaçage :\n3 c. à soupe de sucre glace + jus de citron ou fleur d'oranger (consistance crémeuse, durcit au séchage).",
    "vivants": {
     "aq-lisa-1": [
      0.36,
@@ -1468,7 +1465,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 13,
+   "lignes": 15,
    "aquarelles": {
     "aq-lisa-1": {
      "aquarelle": "carotte",
@@ -1897,8 +1894,8 @@
    "relu": true
   }
  },
- "papier/f3": "27eb0746d1013659e364ae50c7876f231f1c816bac62e6164254ee5e87b972ea",
- "papier1x/f3": "27eb0746d1013659e364ae50c7876f231f1c816bac62e6164254ee5e87b972ea",
+ "papier/f3": "1843e5a3b506b91167f3cc08286327f6d3d3629f9f376bc8d9a2c49acb47cd62",
+ "papier1x/f3": "1843e5a3b506b91167f3cc08286327f6d3d3629f9f376bc8d9a2c49acb47cd62",
  "papier/f5": "658ba008b1ee8e4ef0b98defb9b0a6ac2386d6a53e8cb00ae9eb07880c1cc54c",
  "papier1x/f5": "658ba008b1ee8e4ef0b98defb9b0a6ac2386d6a53e8cb00ae9eb07880c1cc54c",
  "page/dedicace": {
@@ -2016,8 +2013,8 @@
    "relu": true
   }
  },
- "papier/garde-uni": "8a68712b8ec0be66c20d3c4bfc1e96be9b63527a39b4cadbfe70b7eeb7db3324",
- "papier1x/garde-uni": "8a68712b8ec0be66c20d3c4bfc1e96be9b63527a39b4cadbfe70b7eeb7db3324",
+ "papier/garde-uni": "c2d420e28a0a64051f89a56f5b46ae91353ae66231a5633b9dedd00cfdf59285",
+ "papier1x/garde-uni": "c2d420e28a0a64051f89a56f5b46ae91353ae66231a5633b9dedd00cfdf59285",
  "papier/f7": "884df34077f52d890ae5a391e5aec6fcd456f4ed0f9712711569c5838ab42f2e",
  "papier1x/f7": "884df34077f52d890ae5a391e5aec6fcd456f4ed0f9712711569c5838ab42f2e",
  "page/gateaux-droite": {
@@ -2792,10 +2789,10 @@
    "relu": true
   }
  },
- "papier/f23": "99b909b1348b1e5793be2642003f92f26c5a4cc13075d83d270adc0e4f921b0a",
- "papier1x/f23": "99b909b1348b1e5793be2642003f92f26c5a4cc13075d83d270adc0e4f921b0a",
- "papier/f21": "c7a5218dadc885f3ecba7cefa1e51698c11972075027f0ae75bc1aac4ec8fd09",
- "papier1x/f21": "c7a5218dadc885f3ecba7cefa1e51698c11972075027f0ae75bc1aac4ec8fd09",
+ "papier/f23": "14c4a31be97d26b4e023e2f59b95a94b39f943df9545d70d60e801e31f9bf8df",
+ "papier1x/f23": "14c4a31be97d26b4e023e2f59b95a94b39f943df9545d70d60e801e31f9bf8df",
+ "papier/f21": "013e15becefe5d0eea2d97c7e5dccfe5cd963ab15e56ec18718c35ff92210cd8",
+ "papier1x/f21": "013e15becefe5d0eea2d97c7e5dccfe5cd963ab15e56ec18718c35ff92210cd8",
  "pagination/bernard": {
   "cle": "ffa0874cb04e7c1eab7b9fe585ecab1f6c30fbda9e703e29602384929739ba0a",
   "pages": {
@@ -3591,8 +3588,8 @@
    "bernard-feuillet-recto": 1.45
   }
  },
- "papier/f25": "53cc8e6ae9ccb01f49ad3c2cb4f34891c3875274bfeeec5dde3b70191b3b2f34",
- "papier1x/f25": "53cc8e6ae9ccb01f49ad3c2cb4f34891c3875274bfeeec5dde3b70191b3b2f34",
+ "papier/f25": "11aae393a98ebe8fc04b7421834432d775b88f8d0411155e6e0ec6c291f1448d",
+ "papier1x/f25": "11aae393a98ebe8fc04b7421834432d775b88f8d0411155e6e0ec6c291f1448d",
  "page/bernard-gauche": {
   "cle": "253e5fab8cd821bc49f0fb4d4a0ad68ca39e2209a3cbd28acee5646b9d0982a2",
   "manifeste": {
@@ -6886,7 +6883,7 @@
   }
  },
  "pagination/pierrette": {
-  "cle": "8a7fba2426095636695e86526d16618858efa821a55f2ff738c86a0d3fc06fbb",
+  "cle": "7aceda1f53184b4a9b2bfc6e8c06e225fad224123c4500694eaddf5ebc46af08",
   "pages": {
    "pierrette-gauche": {
     "double": "pierrette",
@@ -6894,7 +6891,7 @@
     "encre": "brune",
     "recette": "pierrette",
     "serrage_max": 1,
-    "police": "kalam",
+    "police": "belle-aurore",
     "contexte_importants": {
      "ingredients": [
       "3 œufs, 170 g de sucre, le zeste râpé de 2 citrons, 160 g de farine, 1 c. à café de levure, 100 g de beurre fondu tiède, 50 g de crème liquide entière",
@@ -7133,7 +7130,7 @@
     "encre": "brune",
     "recette": "pierrette",
     "serrage_max": 1,
-    "police": "kalam",
+    "police": "belle-aurore",
     "contexte_importants": {
      "ingredients": [
       "3 œufs, 170 g de sucre, le zeste râpé de 2 citrons, 160 g de farine, 1 c. à café de levure, 100 g de beurre fondu tiède, 50 g de crème liquide entière",
@@ -7342,11 +7339,11 @@
   "disposition": "tete",
   "ajustements": {},
   "trous": {
-   "pierrette-gauche": 2.42
+   "pierrette-gauche": 2.53
   }
  },
  "pagination/lise": {
-  "cle": "375880c7c3a17d3b368cffb43f978380b93d5f2536b1d9de1bf64aca77714d1b",
+  "cle": "04d3c67c32e3b8d623be55c52d9506ba9645fb1fc2fc4eb625db586810b2153c",
   "pages": {
    "lise-gauche": {
     "double": "lise",
@@ -7354,7 +7351,7 @@
     "encre": "bic",
     "recette": "lise",
     "serrage_max": 1,
-    "police": "kalam",
+    "police": "caveat",
     "contexte_importants": {
      "ingredients": [
       "1 brique de crème fraîche liquide",
@@ -7544,25 +7541,6 @@
       "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
-     },
-     {
-      "type": "etape",
-      "id": "etape-3",
-      "source": "etape-3",
-      "titre": {
-       "texte": "3.",
-       "graine": 79465786
-      },
-      "segments": [
-       {
-        "texte": "Mélange crème + œufs + cannelle + sucre pour l'appareil.",
-        "graine": 28272546,
-        "atome": "etape-3/phrase-1"
-       }
-      ],
-      "disposition": "tete",
-      "avant": 0.12,
-      "alinea": 0.0
      }
     ],
     "atomes": [
@@ -7577,8 +7555,7 @@
      "ingredients-2/ligne-6",
      "section-preparation",
      "etape-1/phrase-1",
-     "etape-2/phrase-1",
-     "etape-3/phrase-1"
+     "etape-2/phrase-1"
     ]
    },
    "lise-droite": {
@@ -7587,7 +7564,7 @@
     "encre": "bic",
     "recette": "lise",
     "serrage_max": 1,
-    "police": "kalam",
+    "police": "caveat",
     "contexte_importants": {
      "ingredients": [
       "1 brique de crème fraîche liquide",
@@ -7638,6 +7615,25 @@
      },
      {
       "type": "etape",
+      "id": "etape-3",
+      "source": "etape-3",
+      "titre": {
+       "texte": "3.",
+       "graine": 79465786
+      },
+      "segments": [
+       {
+        "texte": "Mélange crème + œufs + cannelle + sucre pour l'appareil.",
+        "graine": 28272546,
+        "atome": "etape-3/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
       "id": "etape-4",
       "source": "etape-4",
       "titre": {
@@ -7652,11 +7648,12 @@
        }
       ],
       "disposition": "tete",
-      "avant": 0.0,
+      "avant": 0.12,
       "alinea": 0.0
      }
     ],
     "atomes": [
+     "etape-3/phrase-1",
      "etape-4/phrase-1"
     ]
    }
@@ -7668,19 +7665,19 @@
   "disposition": "tete",
   "ajustements": {},
   "trous": {
-   "lise-gauche": 0.17
+   "lise-gauche": 0.51
   }
  },
  "pagination/laura": {
-  "cle": "49bee16501fa1043d37c1d17e75a04d178563fbf4cf0a6d5d87f190665a51df1",
+  "cle": "5423c316596ff5207c165972f47352b5d419d613331278326e07199e3a2bb30f",
   "pages": {
    "laura-gauche": {
     "double": "laura",
     "main": "ecole",
     "encre": "bille-bleue",
     "recette": "laura",
-    "serrage_max": 1,
-    "police": "kalam",
+    "serrage_max": 2,
+    "police": "playwrite-tradition",
     "contexte_importants": {
      "ingredients": [
       "1 cuillère à soupe de sucre",
@@ -7887,7 +7884,7 @@
     "encre": "bille-bleue",
     "recette": "laura",
     "serrage_max": 1,
-    "police": "kalam",
+    "police": "playwrite-tradition",
     "contexte_importants": {
      "ingredients": [
       "1 cuillère à soupe de sucre",
@@ -8031,17 +8028,19 @@
    "laura-droite"
   ],
   "disposition": "tete",
-  "ajustements": {},
+  "ajustements": {
+   "laura-gauche": "serrage 2"
+  },
   "trous": {
-   "laura-gauche": 0.03
+   "laura-gauche": 0.14
   }
  },
- "papier/f27": "36b4df8913a0a72894dce532aa0654c6dac34de86c1c6e716e18429f8a77f3ef",
- "papier1x/f27": "36b4df8913a0a72894dce532aa0654c6dac34de86c1c6e716e18429f8a77f3ef",
- "papier/f31": "21ad74bbd0f77cb759c1f31227236c10240b41b7ac76ebdda2a8ebccc082a7c8",
- "papier1x/f31": "21ad74bbd0f77cb759c1f31227236c10240b41b7ac76ebdda2a8ebccc082a7c8",
- "papier/f29": "5b505d27afa24dcaa3323017f7e63afd753ef3f444ea6192b05bf88c9a932441",
- "papier1x/f29": "5b505d27afa24dcaa3323017f7e63afd753ef3f444ea6192b05bf88c9a932441",
+ "papier/f27": "2a26f5b69836e73e04e0683eb83f163506243c1f8497a9b674871c24ad91620a",
+ "papier1x/f27": "2a26f5b69836e73e04e0683eb83f163506243c1f8497a9b674871c24ad91620a",
+ "papier/f31": "b7036b990a82eaa16060ea741e339e5e095871356fb7a6d7112bb6d747a45e69",
+ "papier1x/f31": "b7036b990a82eaa16060ea741e339e5e095871356fb7a6d7112bb6d747a45e69",
+ "papier/f29": "c649a4d6e0b54a63a9efd278838aed890c90db4deb868dfe2603657cfe5dd0ed",
+ "papier1x/f29": "c649a4d6e0b54a63a9efd278838aed890c90db4deb868dfe2603657cfe5dd0ed",
  "page/crepes-droite": {
   "cle": "0560f243e76f732ac555a6f40220623e844948d747d118c5517d5bb88a5d6a4e",
   "manifeste": {
@@ -8205,8 +8204,8 @@
  },
  "papier/f35": "acdf5e49bf5621dc9d70f6b4c0487bc85cd0b38b003e5312b3a615bb76730183",
  "papier1x/f35": "acdf5e49bf5621dc9d70f6b4c0487bc85cd0b38b003e5312b3a615bb76730183",
- "papier/f33": "6181b0b32b94ab823e0b8e5b8cc6ea8b404ec998fb12dad9c64a9efd07a28319",
- "papier1x/f33": "6181b0b32b94ab823e0b8e5b8cc6ea8b404ec998fb12dad9c64a9efd07a28319",
+ "papier/f33": "72ec05db303fa9488fcbd313925f3d30da988d7f6a8cde1456199e1ade68b233",
+ "papier1x/f33": "72ec05db303fa9488fcbd313925f3d30da988d7f6a8cde1456199e1ade68b233",
  "page/tartes-droite": {
   "cle": "617e729499ba55b1759c7c3a607fc20f09da3f3fe413f1cc0cb26eeab7389bb5",
   "manifeste": {
@@ -8379,7 +8378,7 @@
   }
  },
  "page/pierrette-gauche": {
-  "cle": "75448b7d108c8413d28943e31765406bc972d2a7143b441a756c6d661ec1c174",
+  "cle": "fbfc6c45c441b5a7f5319149c4dba85e767ffb0308520587149c6b34f6e4f999",
   "manifeste": {
    "double": "pierrette",
    "cote": "gauche",
@@ -8448,7 +8447,7 @@
   }
  },
  "page/pierrette-droite": {
-  "cle": "a5f1e1167a00b9b0a9bc98b18db95419233a69ae1a0a91f14c41368c69ebfa25",
+  "cle": "5a29c85183136a7b07b5cec2dfba0ca87b3614085c1fb315ac2613c9f62ff0dc",
   "manifeste": {
    "double": "pierrette",
    "cote": "droite",
@@ -8524,7 +8523,7 @@
   }
  },
  "page/lise-gauche": {
-  "cle": "4743d6ca9b55d841c278805aecf19dd4981359c8330b82cd1110b28b7693a12e",
+  "cle": "55468a9af4e706f2b86b75106b1020bedc2cb06a75ab12c9c30b97cea91d90ab",
   "manifeste": {
    "double": "lise",
    "cote": "gauche",
@@ -8577,7 +8576,7 @@
      ]
     ]
    },
-   "texte": "Lise\nPour Cécile : Joyeux anniversaire ma Cécile ! Une valeur sûre partagée avec le cœur. Gros bisous ! — Lise\nTarte aux pommes de ma maman\n« J'suis pas la reine de la cuisine de goûter mais une valeur sûre : Tarte aux pommes de ma maman »\nIngrédients\n1 pâte sablée\n3 à 4 pommes\n1 brique de crème fraîche liquide\nCannelle en poudre\n2 œufs\n3 cuillères à soupe de sucre\nPréparation\n1. Fais ta pâte (t'es la reine des pâtes à tarte je peux rien t'apprendre) et étale-la.\n2. Dispose tes pommes découpées en quartiers fins ou rondelles.\n3. Mélange crème + œufs + cannelle + sucre pour l'appareil.",
+   "texte": "Lise\nPour Cécile : Joyeux anniversaire ma Cécile ! Une valeur sûre partagée avec le cœur. Gros bisous ! — Lise\nTarte aux pommes de ma maman\n« J'suis pas la reine de la cuisine de goûter mais une valeur sûre : Tarte aux pommes de ma maman »\nIngrédients\n1 pâte sablée\n3 à 4 pommes\n1 brique de crème fraîche liquide\nCannelle en poudre\n2 œufs\n3 cuillères à soupe de sucre\nPréparation\n1. Fais ta pâte (t'es la reine des pâtes à tarte je peux rien t'apprendre) et étale-la.\n2. Dispose tes pommes découpées en quartiers fins ou rondelles.",
    "vivants": {
     "photo": [
      0.06,
@@ -8587,13 +8586,13 @@
     ]
    },
    "deborde": [],
-   "lignes": 17,
+   "lignes": 16,
    "recette": "lise",
    "relu": true
   }
  },
  "page/lise-droite": {
-  "cle": "d91560c6bc5c3d80e48644e0577e9e094537887c34859ede156868eb4c9a96ca",
+  "cle": "e3f08162dadc37f9d848a3854561de06bc79af30eaedc8df876f81a1592a967a",
   "manifeste": {
    "double": "lise",
    "cote": "droite",
@@ -8646,7 +8645,7 @@
      ]
     ]
    },
-   "texte": "Lise\n4. Et hop au four à 180 degrés et régale-toi !!",
+   "texte": "Lise\n3. Mélange crème + œufs + cannelle + sucre pour l'appareil.\n4. Et hop au four à 180 degrés et régale-toi !!",
    "vivants": {
     "aq-lise-1": [
      0.35,
@@ -8662,7 +8661,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 1,
+   "lignes": 2,
    "aquarelles": {
     "aq-lise-1": {
      "aquarelle": "tarte-pommes",
@@ -8680,7 +8679,7 @@
   }
  },
  "page/laura-gauche": {
-  "cle": "db0085a355a018e2cbea46a4cdec943191a28de54b082dba7af7eaf6550130ba",
+  "cle": "de889d0af00b96bf2d34af6e8fe4731723ca9280a81b033161ffcd79341ae3ec",
   "manifeste": {
    "double": "laura",
    "cote": "gauche",
@@ -8749,7 +8748,7 @@
   }
  },
  "page/laura-droite": {
-  "cle": "9334e277cd5e70700fa9f2085ce81175268845f5f3406fd940455dd20e9a39c3",
+  "cle": "d17bd9f691766880ac93867471b26f4525f015fdf6386514d94de3a1554c5c1c",
   "manifeste": {
    "double": "laura",
    "cote": "droite",
@@ -8812,7 +8811,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 9,
+   "lignes": 8,
    "aquarelles": {
     "aq-laura-1": {
      "aquarelle": "crepes-banane",
@@ -8826,10 +8825,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.3886,
-      0.3305,
-      0.0205,
-      0.0145
+      0.1646,
+      0.2991,
+      0.0207,
+      0.0147
      ]
     }
    ],
@@ -8837,7 +8836,7 @@
   }
  },
  "pagination/emeline": {
-  "cle": "15c0e641d814adbfb7f77ac81a3792b224d63ad1d31cef572951d774dc103add",
+  "cle": "972076873b01b48b3eeee801b43bd6915271b416a5cf23829083579121fe2148",
   "pages": {
    "emeline-gauche": {
     "double": "emeline",
@@ -9274,15 +9273,15 @@
   }
  },
  "pagination/clemence": {
-  "cle": "ec174f49c72f6c062b85f1b02af8bb95a7cb47d4421b237121a1347e6407fd44",
+  "cle": "b1416f72843ba852ac9046c81f75244af2b7abcde966214fa92160f70185bf37",
   "pages": {
    "clemence-gauche": {
     "double": "clemence",
     "main": "ecole",
     "encre": "plume",
     "recette": "clemence",
-    "serrage_max": 1,
-    "police": "kalam",
+    "serrage_max": 2,
+    "police": "playwrite-moderne",
     "contexte_importants": {
      "ingredients": [
       "200 g de framboises fraîches + coulis",
@@ -9309,6 +9308,7 @@
     "marges": {
      "haut": 0.31499
     },
+    "pas_local": 0.96,
     "blocs": [
      {
       "type": "bandeau",
@@ -9538,7 +9538,7 @@
     "encre": "plume",
     "recette": "clemence",
     "serrage_max": 1,
-    "police": "kalam",
+    "police": "playwrite-moderne",
     "contexte_importants": {
      "ingredients": [
       "200 g de framboises fraîches + coulis",
@@ -9750,13 +9750,15 @@
    "clemence-droite"
   ],
   "disposition": "tete",
-  "ajustements": {},
+  "ajustements": {
+   "clemence-gauche": "interligne −4 %"
+  },
   "trous": {
-   "clemence-gauche": 1.78
+   "clemence-gauche": 2.25
   }
  },
  "pagination/anatole": {
-  "cle": "0f5bf23482655c82d75e5c80f25e6832a399669f7566f2f49ddc0168410a4799",
+  "cle": "11f99787791875f897855f9bdaead026d1fd38e6972475a8f5d33fa00c1f24ed",
   "pages": {
    "anatole-gauche": {
     "double": "anatole",
@@ -9764,7 +9766,7 @@
     "encre": "noire",
     "recette": "anatole",
     "serrage_max": 1,
-    "police": "kalam",
+    "police": "patrick",
     "contexte_importants": {
      "ingredients": [
       "1 c. à soupe de jus de citron",
@@ -10053,7 +10055,7 @@
     "encre": "noire",
     "recette": "anatole",
     "serrage_max": 1,
-    "police": "kalam",
+    "police": "patrick",
     "contexte_importants": {
      "ingredients": [
       "1 c. à soupe de jus de citron",
@@ -10190,11 +10192,11 @@
    "anatole-gauche": "phrase coupée (6)"
   },
   "trous": {
-   "anatole-gauche": 2.45
+   "anatole-gauche": 2.4
   }
  },
  "pagination/julien": {
-  "cle": "6ae4e9197e269d7c5e64a2231c135b4120ecefdb7dab00f9ed6edbc06f09352b",
+  "cle": "6806ec9e49d1d4e1fac1fbab1d6265c642ef110bf9dacebaabf3b9b6864804db",
   "pages": {
    "julien-gauche": {
     "double": "julien",
@@ -10202,7 +10204,7 @@
     "encre": "feutre",
     "recette": "julien",
     "serrage_max": 1,
-    "police": "kalam",
+    "police": "shantell",
     "contexte_importants": {
      "ingredients": [
       "1 c. à café d'extrait de vanille",
@@ -10440,7 +10442,7 @@
     "encre": "feutre",
     "recette": "julien",
     "serrage_max": 1,
-    "police": "kalam",
+    "police": "shantell",
     "contexte_importants": {
      "ingredients": [
       "1 c. à café d'extrait de vanille",
@@ -10634,11 +10636,11 @@
   "disposition": "tete",
   "ajustements": {},
   "trous": {
-   "julien-gauche": 2.54
+   "julien-gauche": 2.62
   }
  },
  "page/emeline-gauche": {
-  "cle": "c840aee08c372bd4796b90077192ab674fa934255493ba2d864f8b2cc8ed5669",
+  "cle": "890c8e96030d83be1ea181808ef6a7f3e0b935e4d72dea8ce8da42df6f0498b6",
   "manifeste": {
    "double": "emeline",
    "cote": "gauche",
@@ -10707,7 +10709,7 @@
   }
  },
  "page/emeline-droite": {
-  "cle": "3c593fff449a13bc6c1ec3a47c3b16959887c55511d219119d836559e505052c",
+  "cle": "0c74a9d14b5858b4a182c9965e433d21f71092bd66059b089eec29dcf48621f1",
   "manifeste": {
    "double": "emeline",
    "cote": "droite",
@@ -10782,7 +10784,7 @@
   }
  },
  "page/clemence-gauche": {
-  "cle": "53e03cc5ccd1d506550ea521596cc9ebf803be755c3e244ed4fbb33de3362696",
+  "cle": "5f6506eaed1c5e5fe61a85187bda90581e8dbc2e274e4303fe8de73fe5af06c6",
   "manifeste": {
    "double": "clemence",
    "cote": "gauche",
@@ -10851,7 +10853,7 @@
   }
  },
  "page/clemence-droite": {
-  "cle": "aeab36eb444539d1828c517007c13db7dfa87a7f28c329a16ad9d7218ac2d069",
+  "cle": "6bff027222702247a038325a82a7acbac2bb01eafc58db64130bef7e94b463c8",
   "manifeste": {
    "double": "clemence",
    "cote": "droite",
@@ -10926,7 +10928,7 @@
   }
  },
  "page/anatole-gauche": {
-  "cle": "f2ac6c348c57a8692f9e3a15ed481cb3495c0383c07ffdace342e947ae7fa34c",
+  "cle": "5e4d924a928cead19cf269aa9594cfdea1065bc22abde0a54380b29fb2207153",
   "manifeste": {
    "double": "anatole",
    "cote": "gauche",
@@ -10995,7 +10997,7 @@
   }
  },
  "page/anatole-droite": {
-  "cle": "a490e0d0fdd35bb5535ab555ac306165712cc32fa1c355f3401d03c20be115a0",
+  "cle": "27e521203ebf0e8ab160c1dd7426d2ca81309065e6a6ac7609575e65da4f4ca1",
   "manifeste": {
    "double": "anatole",
    "cote": "droite",
@@ -11070,7 +11072,7 @@
   }
  },
  "page/julien-gauche": {
-  "cle": "290347372da4504902dca7b7fe104f96bb2840af29462622365b9d39dd8df8c7",
+  "cle": "1d420226014e25130baffd179afbfd42359abacfc65c6ecd6666f71beed9b2a3",
   "manifeste": {
    "double": "julien",
    "cote": "gauche",
@@ -11139,7 +11141,7 @@
   }
  },
  "page/julien-droite": {
-  "cle": "87e5379646f1a3d2d53e31a1b4456c45c864e688245905701354daf68d9364a4",
+  "cle": "5067c608a12046fc9b94e0a09b8da446ee16b841117452a840eee9c4e955bb55",
   "manifeste": {
    "double": "julien",
    "cote": "droite",
@@ -11215,7 +11217,7 @@
   }
  },
  "page/garde": {
-  "cle": "54a89e430f981c629bf5876eb1e1365ac6eedbb823493f5996a34eb84ee828bc",
+  "cle": "8be4ab750f45755a546c093c443350da2d470de1bbc4beb1fe4a4b1b70e432ad",
   "manifeste": {
    "double": "titre",
    "cote": "gauche",
@@ -11278,11 +11280,11 @@
      0.6,
      0.0779
     ],
-    "aq-carotte": [
-     0.14,
-     0.55,
-     0.72,
-     0.34
+    "aq-plume": [
+     0.31,
+     0.57,
+     0.38,
+     0.25
     ]
    },
    "deborde": [],
@@ -11291,15 +11293,16 @@
     "aq-fanions": {
      "aquarelle": "guirlande"
     },
-    "aq-carotte": {
-     "aquarelle": "carotte"
+    "aq-plume": {
+     "aquarelle": "plume",
+     "angle": -8
     }
    },
    "relu": true
   }
  },
  "page/titre": {
-  "cle": "d6f72095e118021d36cf2da21672012f131674548387d0770e7132a024a233c9",
+  "cle": "b3b6e0f40816778bff15222218b32d6703afda68f4fb905d134354f188bdbe0d",
   "manifeste": {
    "double": "titre",
    "cote": "droite",

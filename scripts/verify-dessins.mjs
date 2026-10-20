@@ -60,7 +60,7 @@ if (suites.includes('tableaux-courbes') || suites.includes('tableaux')) {
   const bornes = [.7, .8, 1.7, 1.8, 1.9, 2.2, 2.5, 2.8, 3, 3.3, 3.5, 3.7, 3.8, 3.9, 4, 4.1, 4.4, 4.6, 4.7, 4.8, 5.2, 5.5, 5.6, 5.7, 6.2, 6.6, 6.9, 7, 7.5, 7.8, 7.95, 8, 8.3, 8.4, 9, 9.2, 9.8, 10.2, 10.3, 10.5, 10.7, 11.2, 11.5, 11.7, 12, 12.2, 12.4, 12.8, 13.4, 13.5, 14, 14.8, 15, 19, 20, 23];
   const nombres = (q) => q.acteurs.flatMap((a) => [a.x, a.y, a.w, a.angle, a.alpha]).concat(q.liquide, q.jet);
   let saut = 0, raccord = ''; const h = 1e-5;
-  for (const n of Object.keys(TABLEAUX)) for (const t of bornes) {
+  for (const n of Object.keys(TABLEAUX).filter(n=>!n.startsWith('recette-'))) for (const t of bornes) {
     if (t > TABLEAUX[n].duree) continue;
     const a = nombres(e(n, t - h)), b = nombres(e(n, t)), c = nombres(e(n, t + h));
     for (let k = 0; k < a.length; k++) {
@@ -353,13 +353,13 @@ if (suites.includes('films')) {
 // ---- tableaux : captures pendant les actions et raccourcis natifs -----------------------------------
 if (suites.includes('tableaux')) {
   const cas = [
-    ['lisa', 'carotte', 'carotte-grignote', [4500, 2800, 3500]],
+    ['lisa', 'carotte', 'recette-lisa', [4500, 2800, 3500]],
     ['titre', 'gateau-bougies', 'gateau-enchante', [4500]],
     ['fin', 'theiere', 'service-the', [2800, 3900]],
     ['crepes', 'oeufs', 'pate-crepes', [3600, 3400, 5000, 5000]],
     ['crepes', 'vanille', 'vanille-au-bol', [5000]],
-    ['clemence', 'framboises-speculoos', 'framboise-biscuit', [4000, 3800]],
-    ['pierrette', 'citron', 'coupe-citron', [3200, 1800]],
+    ['clemence', 'framboises-speculoos', 'recette-clemence', [4000, 3800]],
+    ['pierrette', 'citron', 'recette-pierrette', [3200, 1800]],
   ];
   const tableauxChoisis = liste('tableaux', '');
   for (const [spread, nom, type, pas] of cas) {
