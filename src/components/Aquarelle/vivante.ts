@@ -21,7 +21,7 @@ import { EFFETS, SCENES_PAGE, type Effets } from './effets';
 import { REPOS, SCENES, poseNeutre, type Ctx, type Fx } from './scenes';
 import { essaimDe, PAROLES, type Essaim } from './creatures';
 import partiesJson from './parties.json';
-import { Theatre, TABLEAUX, estTableau, tableauDe } from './tableaux';
+import { Theatre, TABLEAUX, ETAPES_TABLEAUX, estTableau, tableauDe, type CommandeTableau } from './tableaux';
 
 export type { Effets } from './effets';
 
@@ -529,6 +529,8 @@ export interface Toile {
   toucher(x: number, y: number): boolean;
   /** Joue une scène (vérification) : sur l'aquarelle `nom` (toutes sinon), la scène `scene` (la suivante sinon). */
   scene(nom?: string, scene?: string): void;
+  /** Rejoue un tableau, ou parcourt ses gestes avec les mêmes mouvements qu'en lecture automatique. */
+  commande(nom: string, commande: CommandeTableau): void;
   /** Finit d'un coup la peinture en cours (un clic dans le livre, comme pour l'encre ; vérification). */
   finir(): void;
   /** Vérification : fige le temps (true), qui n'avance plus que par `avancer`. */
@@ -560,6 +562,7 @@ interface Sprite {
   duree: number;
   delai: number;
   scene: { nom: string; debut: number; h: number; tocFait?: boolean } | null;
+  pilotage?: { temps: number; cible: number; horloge: number };
   prochaine: number;
   rang: number;
 }
@@ -581,9 +584,9 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
   const essaim: Essaim | null = essaimDe(opts.double);
   let attache = false;
   const micro = opts.douce ? 0 : 1;
-  const theatre = opts.coucheTableaux && !opts.douce ? new Theatre(opts.coucheTableaux, opts.dessins, opts.url, (nom, type) => {
+  const theatre = opts.coucheTableaux && !opts.douce ? new Theatre(opts.coucheTableaux, opts.dessins, opts.url, (nom, type, commande = 'rejouer') => {
     const s = sprites.find((s) => s.d.nom === nom); if (!s || !joue || arrete) return;
-    lancerScene(s, type, true);
+    commander(s, commande, type);
   }, A, opts.page) : null;
 
   // ---- placement : la boîte de chaque aquarelle, son image « contain » dans la zone ----
@@ -663,7 +666,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     if (estTableau(n)) {
       const autre = sprites.find((a) => a !== s && a.scene && estTableau(a.scene.nom));
       if (autre) {
-        if (explicite) { autre.scene = null; theatre?.cacher(autre.d.nom); autre.prochaine = horloge + 500; }
+        if (explicite) { autre.scene = null; delete autre.pilotage; theatre?.cacher(autre.d.nom); autre.prochaine = horloge + 500; }
         else { s.prochaine = horloge + 200; return false; }
       }
       // Les grands dessins se passent le relais : le premier ne monopolise pas la page.
@@ -674,9 +677,28 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       dernierTableau = s.d.nom;
     }
     theatre?.cacher(s.d.nom);
+    delete s.pilotage;
     s.scene = { nom: n, debut: horloge, h: Math.random() };
     derniereScene = horloge;
     return true;
+  };
+
+  const commander = (s: Sprite, commande: CommandeTableau, type = tableauDe(s.d.nom)) => {
+    if (!type || !joue || arrete) return;
+    const etapes = ETAPES_TABLEAUX[type];
+    if (commande === 'auto' || commande === 'rejouer' || !etapes?.length) {
+      lancerScene(s, type, true);
+      return;
+    }
+    if (commande === 'etapes' || !s.pilotage || s.scene?.nom !== type) {
+      if (lancerScene(s, type, true)) s.pilotage = { temps: 0, cible: etapes[0], horloge };
+      return;
+    }
+    const suivant = etapes.find((t) => t > s.pilotage!.temps + .01);
+    // Le dernier geste reste visible jusqu'à la commande suivante ; un nouveau tour repart au repos.
+    if (suivant === undefined) s.pilotage.temps = 0;
+    s.pilotage.cible = suivant ?? etapes[0];
+    s.pilotage.horloge = horloge;
   };
 
   const fxNeutre = (s: Sprite): Fx => ({
@@ -752,6 +774,11 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
 
   const avancerSprite = (s: Sprite) => {
     if (!s.img) return;
+    if (s.pilotage) {
+      const p = s.pilotage;
+      p.temps = Math.min(p.cible, p.temps + Math.max(0, horloge - p.horloge) / 1000);
+      p.horloge = horloge;
+    }
     // Les scènes et leur cadence avancent avec l'horloge, indépendamment du rendu.
     if (s.scene) {
       const sc = estTableau(s.scene.nom) ? TABLEAUX[s.scene.nom] : SCENES[s.scene.nom];
@@ -761,9 +788,10 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         const tasse = sprites.find((a) => a.d.nom === 'tasse-coeur');
         if (tasse && !tasse.scene) lancerScene(tasse, 'tinte');
       }
-      if (!sc || horloge - s.scene.debut > sc.duree * 1000) {
+      if (!sc || (!s.pilotage && horloge - s.scene.debut > sc.duree * 1000)) {
         theatre?.cacher(s.d.nom);
         s.scene = null;
+        delete s.pilotage;
         s.prochaine = horloge + 250 + Math.random() * 350;
       }
     }
@@ -775,7 +803,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       opts.peinte(s.d.nom);
       s.prochaine = horloge + AMORCE + s.d.ordre * 380 + Math.random() * 500;
     }
-    if (peint >= 1 && !s.scene && !opts.douce && horloge >= s.prochaine) {
+    if (peint >= 1 && !s.scene && !s.pilotage && !opts.douce && horloge >= s.prochaine) {
       // Plusieurs objets vivent ensemble ; les départs restent légèrement décalés.
       if (horloge - derniereScene > 350) lancerScene(s);
       else s.prochaine = derniereScene + 350 + Math.random() * 300;
@@ -792,7 +820,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     const { corps, poses, fx } = poser(s, peint >= 1 ? t : 0);
     // Une seule distribution au repos et en action. Aucun fondu vers une autre illustration.
     const tableau = type && theatre?.disponible(s.d.nom, type)
-      ? theatre.rendre(s.d.nom, type, s.scene?.nom === type ? (horloge - s.scene.debut) / 1000 : 0, peint)
+      ? theatre.rendre(s.d.nom, type, s.scene?.nom === type ? s.pilotage?.temps ?? (horloge - s.scene.debut) / 1000 : 0, peint, s.pilotage ? { temps: s.pilotage.temps, cible: s.pilotage.cible } : undefined)
       : 0;
     const presence = tableau;
 
@@ -1067,6 +1095,10 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     scene(nom?: string, scene?: string) {
       for (const s of sprites) if (!nom || s.d.nom === nom) lancerScene(s, scene, true);
     },
+    commande(nom: string, commande: CommandeTableau) {
+      const s = sprites.find((s) => s.d.nom === nom);
+      if (s) commander(s, commande);
+    },
     finir() {
       for (const s of sprites) if (s.debut !== Infinity) s.debut = -1e9;
     },
@@ -1096,7 +1128,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         pret: !!gl,
         joue,
         horloge: Math.round(horloge),
-        dessins: sprites.map((s) => { const courant = poser(s, horloge / 1000), p = courant.corps; return { nom: s.d.nom, peinte: s.debut === Infinity, scene: s.scene?.nom ?? null, parties: s.parties.length, masqueCharge: !!s.parts && !!s.fond, tableau: theatre?.etat(s.d.nom) ?? null, pose: { a: p.a, sx: p.sx, sy: p.sy, tx: p.tx, ty: p.ty, flex: p.flex }, posesParties: courant.poses.map((pose, k) => ({ nom: s.parties[k].nom, ...pose })) }; }),
+        dessins: sprites.map((s) => { const courant = poser(s, horloge / 1000), p = courant.corps; return { nom: s.d.nom, peinte: s.debut === Infinity, scene: s.scene?.nom ?? null, pilotage: s.pilotage ? { ...s.pilotage } : null, parties: s.parties.length, masqueCharge: !!s.parts && !!s.fond, tableau: theatre?.etat(s.d.nom) ?? null, pose: { a: p.a, sx: p.sx, sy: p.sy, tx: p.tx, ty: p.ty, flex: p.flex }, posesParties: courant.poses.map((pose, k) => ({ nom: s.parties[k].nom, ...pose })) }; }),
         creatures: essaim?.creatures.map((c) => ({ espece: c.espece, etat: c.etat, x: +c.x.toFixed(3), y: +c.y.toFixed(3), direction: c.direction, parole: c.parole, piste: c.piste, visible: texCreatures.has(c.espece) && c.etat !== 'attente' })) ?? [],
       };
     },

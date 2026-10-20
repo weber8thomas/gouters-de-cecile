@@ -1,0 +1,20 @@
+/** Vrais boutons et vraie horloge WebGL, isolés du coût des autres feuillets. */
+import {build} from 'esbuild';
+import assert from 'node:assert/strict';
+import {mkdirSync,writeFileSync} from 'node:fs';
+import {lancer,ARGS_GPU} from './lib/verif.mjs';
+const out='verification/out/coherence-v13/cuisine';mkdirSync(out,{recursive:true});
+const base=process.env.GC_TEST_URL??'http://127.0.0.1:5173';
+const b=await build({stdin:{contents:`import {toile} from './src/components/Aquarelle/vivante';import {assetInfo,assetUrl} from './src/lib/assets';
+window.creer=async()=>{document.body.replaceChildren();const host=document.createElement('div');Object.assign(host.style,{position:'relative',width:'1000px',height:'650px'});document.body.append(host);const canvas=document.createElement('canvas');canvas.width=500;canvas.height=325;Object.assign(canvas.style,{position:'absolute',width:'100%',height:'100%'});host.append(canvas);const couche=document.createElement('div');couche.className='gc-tableaux';host.append(couche);window.t=toile(canvas,{page:'fixture-cuisine-v13',double:'fixture',cote:'gauche',aspect:1000/650,coucheTableaux:couche,dessins:[{nom:'oeufs',zone:[0,0,1,1],angle:0,ordre:0,peindre:false}],douce:false,url:n=>assetInfo(n)?new URL(assetUrl(n),'${base}/').href:undefined,zones:[],pret:()=>window.pret=true,perdu:()=>window.perdu=true,peinte:()=>{}});window.t.jouer(true);window.t.figer(true);};`,resolveDir:process.cwd()},bundle:true,platform:'browser',format:'iife',write:false});
+const browser=await lancer({args:['--use-gl=angle',...ARGS_GPU,'--ignore-gpu-blocklist'],media:false});
+const page=await browser.newPage({viewport:{width:1000,height:650}});const errors=[];page.on('pageerror',e=>errors.push(String(e)));
+try{await page.routeWebSocket('**/*',ws=>ws.close());await page.goto(base);await page.setContent('<html><body style="margin:0;background:#f4ecd9"></body></html>');await page.addStyleTag({url:`${base}/src/components/Aquarelle/Aquarelle.css`});await page.addStyleTag({url:`${base}/design-system/tokens.css`});await page.addScriptTag({content:b.outputFiles[0].text});await page.evaluate(()=>window.creer());await page.waitForFunction(()=>window.pret&&!!document.querySelector('[data-gc-tableau-cible]:not(:disabled)'),null,{timeout:30000});
+const etat=()=>page.evaluate(()=>window.t.etat());const avancer=ms=>page.evaluate(ms=>window.t.avancer(ms),ms);await avancer(1500);assert.equal((await etat()).dessins[0].scene,'pate-crepes','départ automatique');
+await page.getByRole('button',{name:'Pas à pas',exact:true}).click();await avancer(6000);let e=(await etat()).dessins[0];assert.equal(e.pilotage.temps,4.45);assert.equal(e.pilotage.cible,4.45);await avancer(3000);assert.equal((await etat()).dessins[0].pilotage.temps,4.45,'le geste attend sans redémarrer');
+await page.getByRole('button',{name:'Suivant',exact:true}).focus();await page.keyboard.press('Enter');await avancer(4500);e=(await etat()).dessins[0];assert.equal(e.pilotage.temps,8.4);assert.equal(e.tableau.phase,'farine-dans-le-bol');
+await page.screenshot({path:out+'/farine.png'});
+await page.getByRole('button',{name:'Suivant',exact:true}).click();await avancer(3000);e=(await etat()).dessins[0];assert(e.tableau.versement.alpha>0,'lait coule pendant le geste');await page.screenshot({path:out+'/lait.png'});await avancer(6000);assert.equal((await etat()).dessins[0].pilotage.temps,13.5);
+await page.getByRole('button',{name:'Auto',exact:true}).click();assert.equal((await etat()).dessins[0].pilotage,null);await avancer(17000);assert.equal((await etat()).dessins[0].tableau.phase,'pate-lisse');await page.screenshot({path:out+'/melange.png'});
+await page.getByRole('button',{name:'Rejouer',exact:true}).click();assert((await etat()).dessins[0].scene==='pate-crepes');assert.deepEqual(errors,[]);writeFileSync(out+'/rapport.json',JSON.stringify({automatique:true,manuel:true,attente:true,clavier:true,lait:true,retourAuto:true,rejouer:true,errors},null,2));console.log('Cuisine : auto, gestes, attente, clavier, lait, retour auto et rejouer OK');
+}finally{await browser.close();}

@@ -100,3 +100,23 @@
 
 /* Le repli emploie les mêmes acteurs, et se cache avec son image quand la toile les prend en charge. */
 .gc-aquarelle[data-gc-aq="cachee"] > svg, .gc-aquarelle[data-gc-aq="toile"] > svg { visibility:hidden; }
+
+/* Deux façons de jouer la recette, dans sa réserve et sans dialogue. */
+.gc-recette-commandes {
+  position:absolute; display:flex; justify-content:center; align-items:center; gap:5px;
+  transform:translateY(-100%); padding:3px; box-sizing:border-box;
+  pointer-events:auto; container-type:inline-size;
+}
+.gc-recette-commandes button {
+  appearance:none; border:1px solid #997f6066; border-radius:12px;
+  padding:3px 8px; background:#f4ecdbe8; color:#5b412c; cursor:pointer;
+  font:500 clamp(11px,4.5cqi,18px)/1.2 Kalam,cursive !important;
+  white-space:nowrap;
+}
+.gc-recette-commandes button:focus-visible{outline:2px dashed #816244;outline-offset:2px}
+.gc-recette-commandes button:disabled{opacity:.45;cursor:default}
+.gc-recette-commandes__etape{font:500 clamp(11px,4.5cqi,18px)/1.2 Kalam,cursive!important;color:#5b412c}
+.gc-recette-commandes[data-mode='auto'] [data-commande='suivant'],
+.gc-recette-commandes[data-mode='auto'] [data-commande='auto'],
+.gc-recette-commandes[data-mode='etapes'] [data-commande='rejouer'],
+.gc-recette-commandes[data-mode='etapes'] [data-commande='etapes']{display:none}

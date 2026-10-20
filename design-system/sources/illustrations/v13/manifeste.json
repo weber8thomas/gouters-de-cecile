@@ -1,0 +1,68 @@
+{
+  "serie": "anglaise-v13",
+  "direction": "Crayon fin, aquarelle mate, palette anglaise commune ; acteurs de cuisine séparés. Original généré depuis la planche v12 comme référence. Le bol plein est conservé dans la source mais non exporté : garder le même bol animé évite tout échange de dessin.",
+  "planches": [
+    {
+      "fichier": "gestes-cuisine.png",
+      "sujets": [
+        {
+          "nom": "acteurs/pichet-lait",
+          "cellule": [
+            0,
+            0,
+            760,
+            520
+          ],
+          "taille": [
+            600,
+            600
+          ],
+          "sujet": "Pichet de lait en porcelaine fleurie"
+        },
+        {
+          "nom": "acteurs/sac-farine",
+          "cellule": [
+            770,
+            0,
+            1536,
+            525
+          ],
+          "taille": [
+            600,
+            600
+          ],
+          "sujet": "Sac de farine ouvert"
+        },
+        {
+          "nom": "acteurs/farine",
+          "cellule": [
+            0,
+            525,
+            760,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ],
+          "sujet": "Farine"
+        },
+        {
+          "nom": "acteurs/pate",
+          "cellule": [
+            985,
+            648,
+            1300,
+            710
+          ],
+          "taille": [
+            600,
+            200
+          ],
+          "cadrage_fixe": true,
+          "sujet": "Pigment de pâte prélevé au centre du bol pour remplir le bol existant sans en changer le dessin"
+        }
+      ]
+    }
+  ]
+}

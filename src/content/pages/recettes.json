@@ -152,13 +152,14 @@
           "page": "droite",
           "nom": "aq-emeline-1",
           "rect": [
-            0.36,
-            0.7,
-            0.38,
-            0.24
+            0.13,
+            0.35,
+            0.74,
+            0.55
           ],
           "aquarelle": "fondant-chocolat",
-          "angle": 0
+          "angle": 0,
+          "bande": true
         }
       ],
       "bandeau": {
@@ -593,14 +594,15 @@
           "page": "droite",
           "nom": "aq-julien-1",
           "rect": [
-            0.4,
-            0.72,
-            0.3,
-            0.24
+            0.13,
+            0.43,
+            0.74,
+            0.5
           ],
           "aquarelle": "cookies",
           "anime": "fleurit",
-          "angle": 3
+          "angle": 3,
+          "bande": true
         }
       ],
       "bandeau": {

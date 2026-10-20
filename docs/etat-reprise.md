@@ -28,6 +28,13 @@
   les audits redondants et les navigateurs concurrents pour économiser le quota.
 - Aucun redémarrage automatique après expiration du quota. La reprise nécessite un message utilisateur.
 
+## Revue v13
+
+Voir [la livraison v13](reprise-v13.md). Dessins agrandis, pages 15/29 rééquilibrées, conseils cités,
+carotte à 9,6 s et soulignements progressivement tracés. Gestes de cuisine partagés (œuf/farine/lait/fouet/fruits),
+modes Auto et Pas à pas. Guide avec page visée, Découvrir puis Continuer ; chien stable et bref hochement de tête.
+Aperçu courant : `essais/coherence-v13/`.
+
 ## Revue v12
 
 Voir [la livraison v12](reprise-v12.md) et [les recettes lisibles](lisibilite-recettes-v12.md).
@@ -45,7 +52,7 @@ et `pages/recettes.json` fixent l’ordre, les mains et les réserves. Les notes
 voisinage du titre peuvent se poser intégralement en marge basse ; le paginateur reporte le texte suivant.
 
 Les illustrations originales et leurs manifestes reproductibles sont dans
-`design-system/sources/illustrations/v9`, `v10`, `v11`, `v12`. V11 ajoute les desserts ; v12 des acteurs séparés et un chien frontal.
+`design-system/sources/illustrations/v9`, `v10`, `v11`, `v12`, `v13`. V11 ajoute les desserts ; v12 des acteurs séparés et un chien frontal ; v13 le pichet, la farine et une texture de pâte.
 Le site emploie uniquement les images cuites ; aucune génération ni modèle distant au runtime.
 Les scènes partagent une horloge. Même distribution au repos, pendant l’action et dans les feuilles
 qui tournent : pas de tasse qui devient trois, pas de changement de taille de carotte. Nouveaux tableaux :
@@ -86,7 +93,7 @@ OCR des quantités ; comparer les sources et les rendus. Les recettes en Kalam d
 exacts ; les anciennes pages neuronales restent à contrôler visuellement. Ne pas désactiver TLS ni les contrôles d’intégrité.
 
 Les contrôles utiles sont `verify-site.mjs` avec `--liens lisa,emeline,clemence,pierrette,anatole,lise,julien,laura`,
-`verify-dessins.mjs --suites tableaux`, `verify-coherence-v12.mjs`, le parcours de quête v12, `verify-luminosite-v10.mjs`,
+`verify-dessins.mjs --suites tableaux`, `verify-coherence-v13.mjs`, `verify-cuisine-v13.mjs`, le parcours de quête (scripts v12 mis à jour v13), `verify-luminosite-v10.mjs`,
 `verify-magie-zoom.mjs`, `verify-musique-v10.mjs` et `verify-musique-browser-v10.mjs`.
 Lancer les navigateurs successivement avec `GC_CHROME=/usr/bin/chromium`. Les captures ne prouvent pas
 la fluidité sur la TV physique ni Safari/Mac ; conserver ces limites dans les comptes rendus.
@@ -127,12 +134,12 @@ partagé des scènes, en temps simulé. Cela ne mesure pas les FPS du matériel 
 Après validation et commit propre, pousser normalement vers `codex/reprise-v8`, puis :
 
 ```sh
-python3 scripts/publish-preview.py --prefix essais/coherence-v12/
+python3 scripts/publish-preview.py --prefix essais/coherence-v13/
 ```
 
 Ce script garde la racine et les autres essais de `gh-pages`, vérifie les arbres puis le commit
 poussé, sans force. `publish-pages.mjs` remplace la racine : ne pas l’utiliser pour cet aperçu.
 Distinguer la preuve Git du déploiement public : le proxy peut refuser Pages (CONNECT403).
-Aperçu dédié : https://weber8thomas.github.io/gouters-de-cecile/essais/coherence-v12/
+Aperçu dédié : https://weber8thomas.github.io/gouters-de-cecile/essais/coherence-v13/
 Rapport des huit liens TV : `verification/out/recettes-v11/site/site.json`.
-Rapport de publication : `verification/out/previews/coherence-v12/preview-publication.json`.
+Rapport de publication : `verification/out/previews/coherence-v13/preview-publication.json`.

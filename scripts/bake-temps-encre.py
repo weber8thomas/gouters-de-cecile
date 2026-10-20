@@ -10,7 +10,8 @@ Sortie : design-system/baked/pages/temps/<page>.webp, 850 × 1200 (1 px de page)
 l'encre de la page selon cette carte, une fois, à l'arrivée sur la page.
 
 Le temps suit la longueur écrite : chaque trait avance la plume de sa longueur, et chaque levé de plume
-coûte LEVE px. Recalculé depuis la mise en page (déterministe), sans rien recuire : ce script est hors de
+coûte LEVE px. Les segments longs sont échantillonnés à un pixel : même un soulignement décrit par
+deux points se révèle progressivement. Recalculé depuis la mise en page (déterministe), sans rien recuire : ce script est hors de
 scripts/pages/, il ne change pas l'empreinte du moteur.
 """
 from __future__ import annotations
@@ -23,8 +24,6 @@ from PIL import Image, ImageDraw, ImageFilter
 
 ICI = Path(__file__).resolve().parent
 sys.path.insert(0, str(ICI / "pages"))
-
-import apercu as A  # noqa: E402  (prépare la cuisine comme l'aperçu : rien n'est écrit dans baked/)
 
 RACINE = ICI.parent
 SORTIE = RACINE / "design-system/baked/pages/temps"
@@ -68,8 +67,14 @@ def carte(mise, larg: int, haut: int) -> np.ndarray:
             d.ellipse([x - larg_trait / 2, y - larg_trait / 2, x + larg_trait / 2, y + larg_trait / 2], fill=v)
             continue
         for k in range(len(p) - 1, 0, -1):
-            v = int((t0 + cum[k - 1]) / total * MAX)
-            d.line([tuple(p[k - 1, :2]), tuple(p[k, :2])], fill=v, width=larg_trait)
+            # La densité des points du dessin ne doit pas définir la fluidité de l'écriture.
+            # Dessin en sens inverse : aux jointures et croisements, le temps le plus ancien gagne.
+            n = max(1, int(np.ceil(s[k - 1])))
+            a, b = p[k - 1, :2], p[k, :2]
+            for j in range(n, 0, -1):
+                debut = (j - 1) / n
+                v = int((t0 + cum[k - 1] + debut * s[k - 1]) / total * MAX)
+                d.line([tuple(a + (b - a) * debut), tuple(a + (b - a) * j / n)], fill=v, width=larg_trait)
     a = np.asarray(im, np.int64)
     for x, y, alpha, valeurs in glyphes:
         x0, y0, x1, y1 = max(0, x), max(0, y), min(larg, x + alpha.shape[1]), min(haut, y + alpha.shape[0])
@@ -84,6 +89,8 @@ def carte(mise, larg: int, haut: int) -> np.ndarray:
 
 
 def main(argv=None) -> int:
+    import apercu as A  # prépare la cuisine seulement pour une cuisson, pas pour tester carte()
+
     argv = sys.argv[1:] if argv is None else argv
     SORTIE.mkdir(parents=True, exist_ok=True)
     cu, _ = A.preparer(RACINE / "verification/out/temps/_cuisine")

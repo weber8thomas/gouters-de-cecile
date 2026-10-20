@@ -55,9 +55,21 @@ class PoliceLisible(unittest.TestCase):
             with self.subTest(recette=slug):
                 recette = RC.charger_recette(slug, configuration)
                 resultat = RC.paginer(recette, configuration, papiers)
-                attendus = {a.id for a in RC.atomes(recette)}
-                places = {a for ids in resultat.repartition.values() for a in ids}
-                self.assertEqual(places, attendus, "un ingrédient ou une phrase a quitté la pagination")
+                attendus = {a.id: a.texte.split() for a in RC.atomes(recette)}
+                places = {}
+                for pid in resultat.ordre:
+                    for b in resultat.pages[pid]["blocs"]:
+                        for s in b.get("segments", []) + b.get("lignes", []):
+                            if s.get("atome"):
+                                # Une phrase peut finir sur la page suivante. Contrôler ses mots
+                                # dans l'ordre, avec leur multiplicité, plutôt que refuser ~a/~b.
+                                aid = s["atome"].split("~")[0]
+                                places.setdefault(aid, []).extend(s["texte"].split())
+                self.assertEqual(places, attendus, "le texte intégral doit survivre aux coupures")
+                self.assertFalse(resultat.feuillet, "ces huit recettes tiennent sur leurs deux pages")
+                notes = [b["texte"] for p in resultat.pages.values() for b in p["blocs"]
+                         if b.get("id", "").startswith("note-")]
+                self.assertEqual(notes, [f'« {n["texte"]} »' for n in recette.get("notesMarge", [])])
                 etapes = [b for p in resultat.pages.values() for b in p["blocs"] if b["type"] == "etape"]
                 self.assertEqual(len(etapes), len(recette["etapes"]))
                 self.assertTrue(all(b["disposition"] == "tete" for b in etapes))

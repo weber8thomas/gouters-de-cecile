@@ -51,9 +51,9 @@
    "nom": "aq-theiere",
    "rect": [
     0.04,
-    0.7206,
+    0.65,
     0.44,
-    0.1944
+    0.29
    ],
    "aquarelle": "theiere",
    "anime": "vapeur"
@@ -61,20 +61,20 @@
   {
    "nom": "aq-gateau",
    "rect": [
-    0.42,
-    0.5667,
     0.48,
-    0.3483
+    0.46,
+    0.46,
+    0.46
    ],
    "aquarelle": "gateau-bougies"
   },
   {
    "nom": "aq-cupcake",
    "rect": [
-    0.805,
-    0.815,
-    0.13,
-    0.1
+    0.11,
+    0.43,
+    0.2,
+    0.15
    ],
    "aquarelle": "cupcake",
    "angle": 3

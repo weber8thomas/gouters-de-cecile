@@ -80,10 +80,10 @@
   {
    "nom": "aq-gateau-bougies",
    "rect": [
-    0.2987,
-    0.6495,
-    0.4,
-    0.2833
+    0.17,
+    0.65,
+    0.66,
+    0.3
    ],
    "aquarelle": "gateau-bougies"
   }

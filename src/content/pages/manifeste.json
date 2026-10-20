@@ -56,7 +56,7 @@
      ]
     ]
    },
-   "texte": "Anatole\n3. Mélanger délicatement les myrtilles avec le sucre roux, le sucre vanillé et le jus de citron, puis les répartir sur la pâte.\n4. Enfourner 30 à 35 minutes jusqu'à ce que la pâte soit bien dorée et les fruits compotés.\n5. La touche d'Anatole : Laisser refroidir complètement avant de servir avec une cuillère de crème fraîche épaisse.",
+   "texte": "Anatole\nla poudre d'amandes.\n3. Mélanger délicatement les myrtilles avec le sucre roux, le sucre vanillé et le jus de citron, puis les répartir sur la pâte.\n4. Enfourner 30 à 35 minutes jusqu'à ce que la pâte soit bien dorée et les fruits compotés.\n5. La touche d'Anatole : Laisser refroidir complètement avant de servir avec une cuillère de crème fraîche épaisse.",
    "vivants": {
     "aq-anatole-1": [
      0.36,
@@ -66,7 +66,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 6,
+   "lignes": 7,
    "aquarelles": {
     "aq-anatole-1": {
      "aquarelle": "tarte-myrtilles",
@@ -128,7 +128,7 @@
      ]
     ]
    },
-   "texte": "Anatole\nPour Cécile : Joyeux 30 ans Cécile ! Une vraie tarte des sous-bois pour fêter ça. Promis, les doigts bleus ça part au lavage ! Plein de gros bisous. — Anatole\nTarte à la myrtille\nIngrédients\n1 pâte sablée pur beurre\n450 g de myrtilles\n60 g de poudre d'amandes (le secret pour absorber le jus)\n50 g de sucre roux\n1 sachet de sucre vanillé\n1 c. à soupe de jus de citron\nPréparation\n1. Foncer le moule avec la pâte sablée, piquer le fond à la fourchette et réserver 15 min au frais.\n2. Préchauffer le four à 190 °C. Saupoudrer le fond de tarte avec la poudre d'amandes.\n(Myrtilles fraîches ou sauvages de préférence !)",
+   "texte": "Anatole\nPour Cécile : Joyeux 30 ans Cécile ! Une vraie tarte des sous-bois pour fêter ça. Promis, les doigts bleus ça part au lavage ! Plein de gros bisous. — Anatole\nTarte à la myrtille\nIngrédients\n1 pâte sablée pur beurre\n450 g de myrtilles\n60 g de poudre d'amandes (le secret pour absorber le jus)\n50 g de sucre roux\n1 sachet de sucre vanillé\n1 c. à soupe de jus de citron\nPréparation\n1. Foncer le moule avec la pâte sablée, piquer le fond à la fourchette et réserver 15 min au frais.\n2. Préchauffer le four à 190 °C. Saupoudrer le fond de tarte avec\n« Myrtilles fraîches ou sauvages de préférence ! »",
    "vivants": {
     "photo": [
      0.06,
@@ -138,7 +138,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 16,
+   "lignes": 15,
    "recette": "anatole",
    "relu": true
   },
@@ -795,7 +795,7 @@
      ]
     ]
    },
-   "texte": "Clémence\nPour Cécile : Pour la reine du jour ! L'alliance du croustillant du spéculoos et de l'acidulé de la framboise. Très bel anniversaire Cécile, régale-toi ! — Clémence\nCheesecake spéculoos & framboises\nIngrédients\nBase :\n200 g de spéculoos en miettes\n70 g de beurre fondu\nCrème :\n450 g de cream cheese (Philadelphia)\n150 g de crème fraîche épaisse\n90 g de sucre glace\n2 œufs\n(À préparer la veille, c'est encore meilleur !)",
+   "texte": "Clémence\nPour Cécile : Pour la reine du jour ! L'alliance du croustillant du spéculoos et de l'acidulé de la framboise. Très bel anniversaire Cécile, régale-toi ! — Clémence\nCheesecake spéculoos & framboises\nIngrédients\nBase :\n200 g de spéculoos en miettes\n70 g de beurre fondu\nCrème :\n450 g de cream cheese (Philadelphia)\n150 g de crème fraîche épaisse\n90 g de sucre glace\n2 œufs\n« À préparer la veille, c'est encore meilleur ! »",
    "vivants": {
     "photo": [
      0.06,
@@ -1020,21 +1020,21 @@
    "vivants": {
     "aq-theiere": [
      0.04,
-     0.7206,
+     0.65,
      0.44,
-     0.1944
+     0.29
     ],
     "aq-gateau": [
-     0.42,
-     0.5667,
      0.48,
-     0.3483
+     0.46,
+     0.46,
+     0.46
     ],
     "aq-cupcake": [
-     0.805,
-     0.815,
-     0.13,
-     0.1
+     0.11,
+     0.43,
+     0.2,
+     0.15
     ]
    },
    "deborde": [],
@@ -1106,17 +1106,17 @@
      ]
     ]
    },
-   "texte": "Emeline\n4. Verser dans un moule beurré. Cuire 20 à 22 minutes à 180 °C (le cœur doit rester légèrement tremblotant).\n5. L'astuce d'Emeline : Attendre 15 minutes qu'il tiédisse pour que le cœur devienne incroyablement fondant.",
+   "texte": "Emeline\nsel d'un geste souple.\n4. Verser dans un moule beurré. Cuire 20 à 22 minutes à 180 °C (le cœur doit rester légèrement tremblotant).\n5. L'astuce d'Emeline : Attendre 15 minutes qu'il tiédisse pour que le cœur devienne incroyablement fondant.",
    "vivants": {
     "aq-emeline-1": [
-     0.36,
-     0.7,
-     0.38,
-     0.24
+     0.13,
+     0.35,
+     0.74,
+     0.55
     ]
    },
    "deborde": [],
-   "lignes": 4,
+   "lignes": 5,
    "aquarelles": {
     "aq-emeline-1": {
      "aquarelle": "fondant-chocolat",
@@ -1178,7 +1178,7 @@
      ]
     ]
    },
-   "texte": "Emeline\nPour Cécile : 30 ans ça se fête avec du chocolat et beaucoup d'amour ! Une recette réconfortante à savourer sans modération. Joyeux anniversaire Cécile ! — Emeline\nGâteau fondant au chocolat\nIngrédients\n200 g de bon chocolat noir pâtissier\n150 g de beurre doux\n3 œufs entiers\n100 g de sucre de canne\n50 g de farine tamisée\n1 bonne pincée de fleur de sel\nPréparation\n1. Faire fondre le chocolat cassé en morceaux avec le beurre au bain-marie à feu très doux.\n2. Dans un saladier, fouetter vivement les œufs et le sucre jusqu'à ce que le mélange blanchisse.\n3. Verser le chocolat fondu tiédi, mélanger, puis incorporer la farine et la fleur de sel d'un geste souple.\n(Chocolat noir 70 % minimum !)",
+   "texte": "Emeline\nPour Cécile : 30 ans ça se fête avec du chocolat et beaucoup d'amour ! Une recette réconfortante à savourer sans modération. Joyeux anniversaire Cécile ! — Emeline\nGâteau fondant au chocolat\nIngrédients\n200 g de bon chocolat noir pâtissier\n150 g de beurre doux\n3 œufs entiers\n100 g de sucre de canne\n50 g de farine tamisée\n1 bonne pincée de fleur de sel\nPréparation\n1. Faire fondre le chocolat cassé en morceaux avec le beurre au bain-marie à feu très doux.\n2. Dans un saladier, fouetter vivement les œufs et le sucre jusqu'à ce que le mélange blanchisse.\n3. Verser le chocolat fondu tiédi, mélanger, puis incorporer la farine et la fleur de\n« Chocolat noir 70 % minimum ! »",
    "vivants": {
     "photo": [
      0.06,
@@ -1188,7 +1188,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 17,
+   "lignes": 16,
    "recette": "emeline",
    "relu": true
   },
@@ -1418,16 +1418,14 @@
      0.0779
     ],
     "aq-carotte": [
-     0.2,
-     0.57,
-     0.6,
-     0.28
+     0.14,
+     0.55,
+     0.72,
+     0.34
     ]
    },
    "deborde": [],
    "lignes": 0,
-   "croquis": [],
-   "relu": true,
    "aquarelles": {
     "aq-fanions": {
      "aquarelle": "guirlande"
@@ -1435,7 +1433,8 @@
     "aq-carotte": {
      "aquarelle": "carotte"
     }
-   }
+   },
+   "relu": true
   },
   "gateaux-droite": {
    "double": "gateaux",
@@ -1493,10 +1492,10 @@
    "texte": "Gâteaux & cakes\nLisa, Emeline, Clémence et Pierrette",
    "vivants": {
     "aq-gateau": [
-     0.28,
+     0.14,
      0.43,
-     0.44,
-     0.34
+     0.72,
+     0.45
     ]
    },
    "deborde": [],
@@ -1572,22 +1571,22 @@
      0.12
     ],
     "aq-fondant": [
-     0.15,
-     0.33,
-     0.7,
-     0.32
+     0.17,
+     0.31,
+     0.66,
+     0.29
     ],
     "aq-carotte": [
-     0.2,
-     0.69,
-     0.24,
-     0.12
+     0.19,
+     0.62,
+     0.29,
+     0.21
     ],
     "aq-citron": [
-     0.56,
-     0.69,
-     0.24,
-     0.12
+     0.53,
+     0.62,
+     0.29,
+     0.21
     ]
    },
    "deborde": [],
@@ -1668,10 +1667,10 @@
    "texte": "Julien\nPréparation\n1. Crémer le beurre pommade avec les sucres, puis ajouter l'œuf et la vanille.\n2. Ajouter la farine et le bicarbonate sans trop travailler la pâte. Incorporer les pépites et noisettes.\n3. Former des boules généreuses et les placer 30 min au frigo.\n4. Enfourner à 175 °C pendant 10 à 12 minutes (les bords doivent dorer mais le centre doit rester très mou).\n5. Le secret de Julien : Laisser tiédir sur la plaque, ils durcissent en surface tout en restant fondants à cœur.",
    "vivants": {
     "aq-julien-1": [
-     0.4,
-     0.72,
-     0.3,
-     0.24
+     0.13,
+     0.43,
+     0.74,
+     0.5
     ]
    },
    "deborde": [],
@@ -1738,7 +1737,7 @@
      ]
     ]
    },
-   "texte": "Julien\nPour Cécile : Bienvenue dans le club des trentenaires Cécile ! Des cookies bien dodus et crousti-fondants pour accompagner tous tes thés d'anniversaire. — Julien\nCookies moelleux pépites & noisettes\nIngrédients\n220 g de farine\n120 g de beurre demi-sel pommade\n100 g de cassonade + 40 g de sucre blanc\n1 œuf frais\n1 c. à café d'extrait de vanille\n1 c. à café de bicarbonate (ou levure)\n160 g de grosses pépites de chocolat (noir et lait)\n50 g de noisettes torréfiées concassées\n(Ne surtout pas trop les cuire !)",
+   "texte": "Julien\nPour Cécile : Bienvenue dans le club des trentenaires Cécile ! Des cookies bien dodus et crousti-fondants pour accompagner tous tes thés d'anniversaire. — Julien\nCookies moelleux pépites & noisettes\nIngrédients\n220 g de farine\n120 g de beurre demi-sel pommade\n100 g de cassonade + 40 g de sucre blanc\n1 œuf frais\n1 c. à café d'extrait de vanille\n1 c. à café de bicarbonate (ou levure)\n160 g de grosses pépites de chocolat (noir et lait)\n50 g de noisettes torréfiées concassées\n« Ne surtout pas trop les cuire ! »",
    "vivants": {
     "photo": [
      0.06,
@@ -2028,7 +2027,7 @@
      ]
     ]
    },
-   "texte": "Lisa\nPour Cécile : Joyeux anniversaire Cécile ! YUMMY après c'est la régalade 😎 — Lisa\nCarrot cake\nIngrédients\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\nPréparation\n1. Mélanger au fouet électrique les 4 œufs et le sucre.\n(Tiptop pour la saison !)",
+   "texte": "Lisa\nPour Cécile : Joyeux anniversaire Cécile ! YUMMY après c'est la régalade 😎 — Lisa\nCarrot cake\nIngrédients\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\nPréparation\n1. Mélanger au fouet électrique les 4 œufs et le sucre.\n« Tiptop pour la saison ! »",
    "vivants": {
     "photo": [
      0.06,
@@ -2257,7 +2256,7 @@
      ]
     ]
    },
-   "texte": "Pierrette\nPréparation\n1. Frotter longuement le sucre et les zestes entre les doigts pour libérer les huiles essentielles.\n2. Fouetter avec les œufs jusqu'à ce que le mélange double de volume.\n3. Ajouter la crème, puis la farine tamisée avec la levure, et enfin le beurre fondu.\n4. Cuire 42 min à 165 °C. Pendant ce temps, tiédir le jus de citron avec le sucre pour faire le sirop.\n5. Le secret de Pierrette : Dès la sortie du four, imbiber le cake encore très chaud avec le sirop tiède au pinceau jusqu'à complète absorption.",
+   "texte": "Pierrette\nSirop d'imbibage :\n60 g de jus de citron\n40 g de sucre\nPréparation\n1. Frotter longuement le sucre et les zestes entre les doigts pour libérer les huiles essentielles.\n2. Fouetter avec les œufs jusqu'à ce que le mélange double de volume.\n3. Ajouter la crème, puis la farine tamisée avec la levure, et enfin le beurre fondu.\n4. Cuire 42 min à 165 °C. Pendant ce temps, tiédir le jus de citron avec le sucre pour faire le sirop.\n5. Le secret de Pierrette : Dès la sortie du four, imbiber le cake encore très chaud avec le sirop tiède au pinceau jusqu'à complète absorption.",
    "vivants": {
     "aq-pierrette-1": [
      0.2,
@@ -2267,7 +2266,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 10,
+   "lignes": 13,
    "aquarelles": {
     "aq-pierrette-1": {
      "aquarelle": "citron",
@@ -2330,7 +2329,7 @@
      ]
     ]
    },
-   "texte": "Pierrette\nPour Cécile : Trente bougies pour notre Cécile chérie ! Voici le secret de mon cake au citron bien imbibé qui ne sèche jamais. Gros bisous tendres. — Pierrette\nLe cake au citron d'antan\nIngrédients\nAppareil :\n3 œufs\n170 g de sucre\nle zeste râpé de 2 citrons\n160 g de farine\n1 c. à café de levure\n100 g de beurre fondu tiède\n50 g de crème liquide entière\nSirop d'imbibage :\n60 g de jus de citron\n40 g de sucre\n(Citrons non traités bien lavés !)",
+   "texte": "Pierrette\nPour Cécile : Trente bougies pour notre Cécile chérie ! Voici le secret de mon cake au citron bien imbibé qui ne sèche jamais. Gros bisous tendres. — Pierrette\nLe cake au citron d'antan\nIngrédients\nAppareil :\n3 œufs\n170 g de sucre\nle zeste râpé de 2 citrons\n160 g de farine\n1 c. à café de levure\n100 g de beurre fondu tiède\n50 g de crème liquide entière\n« Citrons non traités bien lavés ! »",
    "vivants": {
     "photo": [
      0.06,
@@ -2340,7 +2339,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 15,
+   "lignes": 12,
    "recette": "pierrette",
    "relu": true
   },
@@ -2850,22 +2849,14 @@
      0.1204
     ],
     "aq-gateau-bougies": [
-     0.2987,
-     0.6495,
-     0.4,
-     0.2833
+     0.17,
+     0.65,
+     0.66,
+     0.3
     ]
    },
    "deborde": [],
    "lignes": 2,
-   "croquis": [],
-   "douteux": [
-    "Cécile (encre rendue lue « Cecile »)"
-   ],
-   "douteux_importants": [
-    "Cécile"
-   ],
-   "relu": true,
    "aquarelles": {
     "aq-fanions": {
      "aquarelle": "guirlande"
@@ -2873,7 +2864,8 @@
     "aq-gateau-bougies": {
      "aquarelle": "gateau-bougies"
     }
-   }
+   },
+   "relu": true
   }
  }
 }

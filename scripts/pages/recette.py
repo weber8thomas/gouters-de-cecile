@@ -569,7 +569,11 @@ def _note_marge(gab: Gabarits) -> list:
     for k, n in enumerate(gab.rec.get("notesMarge") or []):
         if n.get("pres", "titre") != "titre":
             continue
-        out.append({"type": "annotation", "id": f"note-{k + 1}", "texte": n["texte"],
+        # Les conseils personnels restent distincts des instructions, sans modifier leur source.
+        texte = n["texte"].strip()
+        if not (texte.startswith("«") and texte.endswith("»")):
+            texte = f"« {texte} »"
+        out.append({"type": "annotation", "id": f"note-{k + 1}", "texte": texte, "sans_parentheses": True,
                     "main": MAINS.get(n.get("main"), n.get("main")) or gab.style["main"],
                     "encre": n.get("encre") or gab.style["encre"],
                     "graine": graine_atome(gab.slug, f"note-{k + 1}"), "pente": -4.0,

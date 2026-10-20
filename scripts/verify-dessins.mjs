@@ -44,8 +44,8 @@ if (suites.includes('tableaux-courbes') || suites.includes('tableaux')) {
     levitation: e('levitation', 4.5).acteurs.every((a) => a.y < 340) && e('levitation', 9.3).acteurs.every((a) => a.y === 460),
     service: [[2.8, 0], [6.7, 1]].every(([t, k]) => { const q = e('service-the', t); return q.jet > .45 && q.tasseVisee === k && q.liquide[k] > .3; }) && e('service-the', 8).liquide.every((f) => f === 1),
     coupe: (() => { const a = e('coupe-citron', 5).acteurs; return a[0].alpha === 0 && a[1].alpha === 1 && a[2].alpha === 1 && a[2].x - a[1].x >= 280; })(),
-    grignotage: [[3.5, 0], [4.5, 1], [5.8, 2], [7.3, 3]].every(([t, k]) => e('carotte-grignote', t).acteurs[k].alpha === 1),
-    gateaux: e('gateau-enchante', 4.5).acteurs[0].y < 280 && e('gateau-enchante', 9.4).acteurs[0].y === 440 && e('gateau-enchante', 4.5).flammes.length === 5,
+    grignotage: [[3.5, 0], [4.5, 1], [5.8, 2], [7.3, 3]].every(([t, k]) => e('carotte-grignote', t * TABLEAUX['carotte-grignote'].duree / 11).acteurs[k].alpha === 1),
+    gateaux: e('gateau-enchante', 4.5).acteurs[0].y < 280 && e('gateau-enchante', 9.4).acteurs[0].y === 400 && e('gateau-enchante', 4.5).flammes.length === 5,
   };
   let erreurAttache = 0, etatsValides = true;
   for (let t = 0; t <= 11; t += .05) {
@@ -57,7 +57,7 @@ if (suites.includes('tableaux-courbes') || suites.includes('tableaux')) {
   etatsValides &&= e('carotte-grignote', 10.8).acteurs[0].alpha === 1;
   const cadrePierrette = cadreTableau('pierrette-droite', 'citron', [.5, .5, .28, .383]);
   etatsValides &&= cadrePierrette[0] >= 0 && cadrePierrette[0] + cadrePierrette[2] < .83;
-  const bornes = [.7, .8, 1.7, 1.8, 1.9, 2.2, 2.5, 2.8, 3, 3.3, 3.5, 3.7, 3.8, 3.9, 4, 4.1, 4.4, 4.6, 4.7, 4.8, 5.2, 5.5, 5.6, 5.7, 6.2, 6.6, 6.9, 7, 7.5, 7.8, 7.95, 8, 8.3, 8.4, 9, 9.2, 9.8, 10.2, 10.3, 10.5, 10.7];
+  const bornes = [.7, .8, 1.7, 1.8, 1.9, 2.2, 2.5, 2.8, 3, 3.3, 3.5, 3.7, 3.8, 3.9, 4, 4.1, 4.4, 4.6, 4.7, 4.8, 5.2, 5.5, 5.6, 5.7, 6.2, 6.6, 6.9, 7, 7.5, 7.8, 7.95, 8, 8.3, 8.4, 9, 9.2, 9.8, 10.2, 10.3, 10.5, 10.7, 11.2, 11.5, 11.7, 12, 12.2, 12.4, 12.8, 13.4, 13.5, 14, 14.8, 15, 19, 20, 23];
   const nombres = (q) => q.acteurs.flatMap((a) => [a.x, a.y, a.w, a.angle, a.alpha]).concat(q.liquide, q.jet);
   let saut = 0, raccord = ''; const h = 1e-5;
   for (const n of Object.keys(TABLEAUX)) for (const t of bornes) {
@@ -356,7 +356,7 @@ if (suites.includes('tableaux')) {
     ['lisa', 'carotte', 'carotte-grignote', [4500, 2800, 3500]],
     ['titre', 'gateau-bougies', 'gateau-enchante', [4500]],
     ['fin', 'theiere', 'service-the', [2800, 3900]],
-    ['crepes', 'oeufs', 'oeuf-au-bol', [3600, 3400]],
+    ['crepes', 'oeufs', 'pate-crepes', [3600, 3400, 5000, 5000]],
     ['crepes', 'vanille', 'vanille-au-bol', [5000]],
     ['clemence', 'framboises-speculoos', 'framboise-biscuit', [4000, 3800]],
     ['pierrette', 'citron', 'coupe-citron', [3200, 1800]],

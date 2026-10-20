@@ -16,17 +16,20 @@
       "chapitre": "gateaux",
       "taille": 1.75,
       "graine": 43,
-      "encre": "terracotta"
+      "encre": "terracotta",
+      "invites_taille": 1.35,
+      "invites_police": "kalam",
+      "invites_encre": "chocolat"
     }
   ],
   "vivants": [
     {
       "nom": "aq-gateau",
       "rect": [
-        0.28,
+        0.14,
         0.43,
-        0.44,
-        0.34
+        0.72,
+        0.45
       ],
       "aquarelle": "gateau",
       "anime": "fleurit",

@@ -559,10 +559,10 @@ class Mise:
         self.folio_mots: list = []  # le folio écrit à la main (hors du texte coulé, voir `folio`)
 
     # ---- écriture (N2) --------------------------------------------------------------------
-    def ecrire(self, texte, main, graine, encre=None, outil=None):
+    def ecrire(self, texte, main, graine, encre=None, outil=None, police=None):
         encre = encre_dispo(encre)
         ctx = self.desc.get("contexte_importants")
-        police = self.desc.get("police")
+        police = police or self.desc.get("police")
         cle = (texte, main, graine, encre, outil, police, json.dumps(ctx, sort_keys=True, ensure_ascii=False) if ctx else None)
         if cle not in self._bloc_cache:
             if cle not in _BLOCS:
@@ -612,7 +612,7 @@ class Mise:
                         bruts[-1] += "/"
                         n += 1
                     brut_p, marques_p = analyser(sp)
-                    bloc = self.ecrire(brut_p, main, g + 101 * k, enc_id, outil)
+                    bloc = self.ecrire(brut_p, main, g + 101 * k, enc_id, outil, police=s.get("police"))
                     k += 1
                     ref = ref or bloc
                     nouv = [m for l in bloc.lignes for m in l]
@@ -2117,9 +2117,9 @@ class Mise:
         main = b.get("invites_main", b.get("main", self.main))
         enc_id = encre_dispo(b.get("invites_encre", b.get("encre", self.encre)))
         info = ECR.main_info(main)
-        xh = max(self.xh_min, self.xh_de("annotation", main))
+        xh = max(self.xh_min, self.xh_de("annotation", main) * float(b.get("invites_taille", 1.0)))
         g = int(b.get("invites_graine", self.graine * 31 + idx * 7 + 5))
-        brut, marques, mots, bloc = self.ecrire_segments([{"texte": texte, "graine": g}], main, enc_id, b.get("outil"))
+        brut, marques, mots, bloc = self.ecrire_segments([{"texte": texte, "graine": g, "police": b.get("invites_police")}], main, enc_id, b.get("outil"))
         larg, asc, desc = self._mesure(mots, xh, info["espace"])
         titre_mots = [m for L in ls for m in L.mots]
         if titre_mots:

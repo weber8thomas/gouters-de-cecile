@@ -3,21 +3,23 @@
 import { assetInfo } from '../../lib/assets';
 import { cloche, lisse, trajet } from './scenes';
 import type { DessinPage } from './vivante';
+import { acteur, transition, casserOeuf, fouetter, fruitAuBol, verser } from './gestesCuisine';
 
-export type TableauNom = 'levitation' | 'service-the' | 'coupe-citron' | 'carotte-grignote' | 'gateau-enchante' | 'oeuf-au-bol' | 'vanille-au-bol' | 'framboise-biscuit';
+export type TableauNom = 'levitation' | 'service-the' | 'coupe-citron' | 'carotte-grignote' | 'gateau-enchante' | 'oeuf-au-bol' | 'vanille-au-bol' | 'framboise-biscuit' | 'pate-crepes';
 export const TABLEAUX: Record<TableauNom, { duree: number; libelle: string; assets: string[] }> = {
   levitation: { duree: 10, libelle: 'La tasse se soulève puis se repose', assets: ['tasse-vide'] },
   'service-the': { duree: 16, libelle: 'La théière sert le thé toute seule', assets: ['theiere-seule', 'tasse-vide'] },
   'coupe-citron': { duree: 11, libelle: 'Le citron se coupe en deux', assets: ['citron-entier', 'citron-gauche', 'citron-droite', 'couteau'] },
-  'carotte-grignote': { duree: 11, libelle: 'La carotte se grignote puis repousse', assets: [ 'carotte-0', 'carotte-1', 'carotte-2', 'carotte-3'] },
+  'carotte-grignote': { duree: 9.6, libelle: 'La carotte se grignote puis repousse', assets: [ 'carotte-0', 'carotte-1', 'carotte-2', 'carotte-3'] },
   'oeuf-au-bol': { duree: 14, libelle: 'L’œuf se casse dans le bol et le fouet mélange', assets: ['aquarelles/acteurs/bol', 'aquarelles/acteurs/oeuf', 'aquarelles/acteurs/coquille-gauche', 'aquarelles/acteurs/coquille-droite', 'aquarelles/acteurs/jaune', 'aquarelles/acteurs/fouet'] },
   'vanille-au-bol': { duree: 12, libelle: 'La gousse de vanille parfume le bol', assets: ['aquarelles/acteurs/bol', 'aquarelles/acteurs/gousse', 'aquarelles/acteurs/fleur-vanille'] },
-  'framboise-biscuit': { duree: 13, libelle: 'Les spéculoos se cassent et les framboises rejoignent le bol', assets: ['aquarelles/acteurs/bol', 'aquarelles/acteurs/framboise', 'aquarelles/acteurs/speculoos', 'aquarelles/acteurs/speculoos-gauche', 'aquarelles/acteurs/speculoos-droite'] },
+  'framboise-biscuit': { duree: 15, libelle: 'Les spéculoos se cassent et les framboises rejoignent le bol', assets: ['aquarelles/acteurs/bol', 'aquarelles/acteurs/framboise', 'aquarelles/acteurs/speculoos', 'aquarelles/acteurs/speculoos-gauche', 'aquarelles/acteurs/speculoos-droite', 'aquarelles/acteurs/fouet'] },
+  'pate-crepes': { duree: 23, libelle: 'Les œufs, la farine et le lait deviennent une pâte à crêpes', assets: ['aquarelles/acteurs/bol', 'aquarelles/acteurs/oeuf', 'aquarelles/acteurs/coquille-gauche', 'aquarelles/acteurs/coquille-droite', 'aquarelles/acteurs/jaune', 'aquarelles/acteurs/fouet', 'aquarelles/acteurs/pichet-lait', 'aquarelles/acteurs/sac-farine', 'aquarelles/acteurs/pate'] },
   'gateau-enchante': { duree: 10, libelle: 'Les gâteaux prennent leur envol', assets: ['aquarelles/gateau-bougies', 'aquarelles/gateau', 'aquarelles/cupcake', 'aquarelles/cupcake-bougie'] },
 };
 export const estTableau = (n: string): n is TableauNom => n in TABLEAUX;
 export function tableauDe(nom: string): TableauNom | undefined {
-  if (nom === 'oeufs') return 'oeuf-au-bol';
+  if (nom === 'oeufs') return 'pate-crepes';
   if (nom === 'vanille') return 'vanille-au-bol';
   if (nom === 'framboises-speculoos') return 'framboise-biscuit';
   if (nom === 'theiere') return 'service-the';
@@ -43,10 +45,13 @@ export interface EtatTableau {
   liquide: [number, number];
   jet: number;
   tasseVisee: 0 | 1;
+  couleurMiettes?:string;
   miettes?: { x: number; y: number; rayon: number; alpha: number }[];
+  surface?: {cx:number;cy:number;rx:number;ry:number;alpha:number};
+  versement?: {origine:[number,number];cible:[number,number];alpha:number;couleur:string};
   flammes?: { x: number; y: number; rayon: number; angle: number; force: number }[];
 }
-const acteur = (asset: string, x: number, y: number, w: number, angle = 0, alpha = 1): Acteur => ({ asset, x, y, w, angle, alpha });
+
 /** Coordonnées d'un repère peint dans le sprite, après sa transformation rigide. */
 export function pointActeur(a: Acteur, p: [number, number], aspects: Record<string, number> = {}): [number, number] {
   const h = a.w / (aspects[a.asset] ?? 1), an = a.angle * Math.PI / 180;
@@ -54,16 +59,21 @@ export function pointActeur(a: Acteur, p: [number, number], aspects: Record<stri
   return [a.x + dx * Math.cos(an) - dy * Math.sin(an), a.y + dx * Math.sin(an) + dy * Math.cos(an)];
 }
 
-const transition = (s: number, a: number, b: number) => Math.max(0, Math.min(1, lisse((s - a) / (b - a))));
+
 export const presenceTableau = (type: TableauNom, temps: number) => transition(temps, 0, .65) * (1 - transition(temps, TABLEAUX[type].duree - .8, TABLEAUX[type].duree));
 
 /** Cadres réservés aux dessins : aucune extension générale sur les textes ou les photos. */
-export function cadreTableau(page: string, nom: string, zone: [number, number, number, number]): [number, number, number, number] {
-  if (['julie-droite', 'pierrette-droite'].includes(page) && ['citron', 'citron-2'].includes(nom)) return [.2, .5, .58, .383];
-  if (page === 'titre' && nom === 'gateau-bougies') return [.2, .62, .6, .31];
-  return zone;
+export function cadreTableau(_page: string, _nom: string, zone: [number, number, number, number]): [number, number, number, number] { return zone; }
+export function vueTableau(type: TableauNom) {
+  return type === 'carotte-grignote' || type === 'levitation' ? '230 0 540 650' : type === 'gateau-enchante' ? '190 0 620 650' : type === 'coupe-citron' ? '180 0 640 650' : '0 0 1000 650';
 }
-
+export type CommandeTableau = 'rejouer' | 'auto' | 'etapes' | 'suivant';
+export const ETAPES_TABLEAUX: Partial<Record<TableauNom, number[]>> = {
+  'oeuf-au-bol': [2.5,3.15,4.45,9,14],
+  'vanille-au-bol': [2.8,7.5,12],
+  'framboise-biscuit': [2.6,4.4,8,11,15],
+  'pate-crepes': [4.45,8.4,13.5,18.5,23],
+};
 /** Coordonnées dans un petit théâtre de 1000 × 650. Les raccords de mouvement ont une vitesse nulle. */
 export function etatTableau(nom: TableauNom, s: number, aspects: Record<string, number> = {}, principal = 'gateau-bougies'): EtatTableau {
   const e: EtatTableau = { phase: 'arrivee', acteurs: [], liquide: [0, 0], jet: 0, tasseVisee: 0 };
@@ -92,6 +102,7 @@ export function etatTableau(nom: TableauNom, s: number, aspects: Record<string, 
     e.phase = s < 2.5 ? 'couteau-arrive' : s < 3.5 ? 'coupe' : s < 8 ? 'deux-moities' : 'reunion-magique';
     e.acteurs = [acteur('citron-entier', 500, 405, 385, 0, 1 - ouvert), acteur('citron-gauche', 500 - ecart, 422, 230, -ouvert * 5, ouvert), acteur('citron-droite', 500 + ecart, 422, 230, ouvert * 5, ouvert), acteur('couteau', lameX, lameY, 340, -24)];
   } else if (nom === 'carotte-grignote') {
+    s *= 11 / TABLEAUX[nom].duree;
     const bouchées = [3.8, 5.2, 6.6];
     const repousse = transition(s, 9, 10.5);
     const mange = bouchées.reduce((n, t) => n + transition(s, t, t + .3), 0) * (1 - repousse);
@@ -115,19 +126,9 @@ export function etatTableau(nom: TableauNom, s: number, aspects: Record<string, 
       });
     });
   } else if (nom === 'oeuf-au-bol') {
-    // Objets distincts : approche, fracture, gravité du jaune, fouet dans le bol, retour au repos.
-    const avance = transition(s, .7, 2.4) * (1 - transition(s, 11.2, 13.5));
-    const casse = transition(s, 2.6, 3.1) * (1 - transition(s, 10.8, 11.2));
-    const tombe = transition(s, 3.2, 4.25), bat = cloche(s, 4.5, 10.7);
-    const x = 185 + 315 * avance, y = 260 - 75 * avance;
-    const fouette = transition(s, 4.5, 5.5) * (1-transition(s,10.7,12.3));
     e.phase = s < 2.6 ? 'approche-du-bol' : s < 3.2 ? 'coquille-separee' : s < 4.5 ? 'jaune-tombe' : s < 10.7 ? 'fouet-melange' : 'retour';
-    e.acteurs = [acteur('aquarelles/acteurs/oeuf', x, y, 150, 0, 1-casse),
-      acteur('aquarelles/acteurs/coquille-gauche', x-70*casse, y-10*casse, 125, -35*casse, casse),
-      acteur('aquarelles/acteurs/coquille-droite', x+70*casse, y-10*casse, 125, 35*casse, casse),
-      acteur('aquarelles/acteurs/jaune', 500, 230+205*tombe*tombe, 115, 0, casse*(1-transition(s,4.1,4.45))),
-      acteur('aquarelles/acteurs/fouet', 785-265*fouette+bat*30*Math.sin(s*9), 285+80*bat+10*bat*Math.sin(s*18), 285, -40*fouette+bat*8*Math.sin(s*9)),
-      acteur('aquarelles/acteurs/bol', 500, 470, 480)];
+    e.acteurs = [acteur('aquarelles/acteurs/bol',500,470,480),...casserOeuf(s),fouetter(s,4.5,10.7)];
+    const bat=cloche(s,4.5,10.7);
     e.miettes = Array.from({length:8},(_,k)=>({x:500+Math.cos(k*2.4)*80*bat,y:355-Math.abs(Math.sin(s*7+k))*70*bat,rayon:2.5,alpha:bat*.55}));
   } else if (nom === 'vanille-au-bol') {
     const leve=transition(s,.8,2.6)*(1-transition(s,9,11.7)), gratte=cloche(s,3,8.5);
@@ -135,17 +136,30 @@ export function etatTableau(nom: TableauNom, s: number, aspects: Record<string, 
     e.acteurs=[acteur('aquarelles/acteurs/gousse',220+280*leve+gratte*12*Math.sin(s*9),225-45*leve,300,-20*leve),acteur('aquarelles/acteurs/fleur-vanille',800,450,180),acteur('aquarelles/acteurs/bol',500,470,460)];
     e.miettes=Array.from({length:15},(_,k)=>{const t=(s*.9+k/15)%1;return{x:475+Math.sin(k*5)*55,y:220+t*t*185,rayon:1.8,alpha:gratte*.8*Math.sin(t*Math.PI)}});
   } else if (nom === 'framboise-biscuit') {
-    const leve=transition(s,.7,2.5)*(1-transition(s,10.2,12.8)), casse=transition(s,2.8,3.4)*(1-transition(s,9.8,10.2));
+    const leve=transition(s,.7,2.5)*(1-transition(s,12,14.8)), casse=transition(s,2.8,3.4)*(1-transition(s,12,12.4));
     const x=220+280*leve,y=370-185*leve;
-    const baie=transition(s,5,7.2)*(1-transition(s,8.8,10.5));
-    e.phase=s<2.8?'biscuit-approche':s<4.5?'biscuit-casse':s<8.8?'framboises-dans-le-bol':'retour';
-    e.acteurs=[acteur('aquarelles/acteurs/speculoos',x,y,275,0,1-casse),acteur('aquarelles/acteurs/speculoos-gauche',x-65*casse,y,170,-18*casse,casse),acteur('aquarelles/acteurs/speculoos-droite',x+65*casse,y,170,18*casse,casse),acteur('aquarelles/acteurs/framboise',790-290*baie,390-200*Math.sin(Math.PI*baie),135,-120*baie),acteur('aquarelles/acteurs/framboise',860-350*baie,470-160*Math.sin(Math.PI*baie),105,90*baie),acteur('aquarelles/acteurs/bol',500,480,410)];
+    e.phase=s<2.8?'biscuit-approche':s<4.5?'biscuit-casse':s<8.5?'framboises-dans-le-bol':s<11.5?'melange':'retour';
+    e.acteurs=[acteur('aquarelles/acteurs/bol',500,480,500),acteur('aquarelles/acteurs/speculoos',x,y,275,0,1-casse),acteur('aquarelles/acteurs/speculoos-gauche',x-65*casse,y,170,-18*casse,casse),acteur('aquarelles/acteurs/speculoos-droite',x+65*casse,y,170,18*casse,casse),
+      fruitAuBol('aquarelles/acteurs/framboise',s,5,6.8,11.8,14,[790,390],[455,355],145,-35),
+      fruitAuBol('aquarelles/acteurs/framboise',s,5.7,7.6,12.2,14.8,[860,470],[550,365],125,30),
+      {...fouetter(s,8,11.5),alpha:transition(s,7.7,8.2)*(1-transition(s,13.1,14.6))}];
     const emiette=cloche(s,3,6.5);
-    e.miettes=Array.from({length:15},(_,k)=>{const t=(s*.8+k/15)%1;return{x:500+Math.sin(k*7)*85,y:225+200*t*t,rayon:2+k%3,alpha:emiette*.8*Math.sin(t*Math.PI)}});
+    e.miettes=Array.from({length:15},(_,k)=>{const t=(s*.8+k/15)%1;return{x:500+Math.sin(k*7)*85,y:225+170*t*t,rayon:2+k%3,alpha:emiette*.8*Math.sin(t*Math.PI)}});
+  } else if (nom === 'pate-crepes') {
+    const oeuf=casserOeuf(s<4.5?s:s<19?4.5:4.5+(s-19)*2.375);
+    const farine=verser('aquarelles/acteurs/sac-farine',s,4.6,8.3,[160,300],220,-70);
+    const lait=verser('aquarelles/acteurs/pichet-lait',s,9,13.4,[825,330],230,-48);
+    const pate=transition(s,13.4,15)*(1-transition(s,20,23));
+    e.phase=s<4.5?'oeuf-dans-le-bol':s<9?'farine-dans-le-bol':s<14?'lait-dans-le-bol':s<19?'pate-lisse':'retour';
+    e.acteurs=[acteur('aquarelles/acteurs/bol',500,470,480),...oeuf,farine.acteur,lait.acteur,fouetter(s,14,19)];
+    e.miettes=Array.from({length:15},(_,k)=>{const q=(s*.75+k/15)%1;return{x:500+Math.sin(k*7)*65,y:245+160*q*q,rayon:2+k%3,alpha:farine.debit*.8*Math.sin(q*Math.PI)}});
+    e.couleurMiettes='#e8dcc3';
+    e.surface={cx:500,cy:385,rx:164,ry:30,alpha:pate*.9};
+    e.versement={origine:pointActeur(lait.acteur,[.1,.28],aspects),cible:[500,385],alpha:lait.debit,couleur:'#eee1be'};
   } else {
     const envol = transition(s, .7, 2.7) * (1 - transition(s, 7.6, 9.3));
     const vol = cloche(s, 1.5, 8.8), phase = s * 1.25;
-    const patisserie = acteur(`aquarelles/${principal}`, 500 + 35 * vol * Math.sin(phase), 440 - 190 * envol + 18 * vol * Math.sin(phase * .8), 375, 5 * vol * Math.sin(phase));
+    const patisserie = acteur(`aquarelles/${principal}`, 500 + 35 * vol * Math.sin(phase), 400 - 145 * envol + 18 * vol * Math.sin(phase * .8), 490, 5 * vol * Math.sin(phase));
     e.phase = s < 2.7 ? 'gateaux-decollent' : s < 7.6 ? 'ronde-des-gateaux' : 'gateaux-se-posent';
     e.acteurs = [patisserie];
     const reperes: [number, number][] = principal === 'gateau-bougies' ? [[.2676, .2228], [.3525, .185], [.4926, .1472], [.6328, .1904], [.7287, .2228]] : principal === 'cupcake-bougie' ? [[.4624, .0946]] : [];
@@ -154,7 +168,7 @@ export function etatTableau(nom: TableauNom, s: number, aspects: Record<string, 
   return e;
 }
 
-type SceneDOM = { d: Omit<DessinPage, 'peindre'>; type: TableauNom; bouton: HTMLButtonElement; svg: SVGSVGElement; acteurs: SVGImageElement[]; liquides: SVGEllipseElement[]; fronts: SVGImageElement[]; jet: SVGPathElement; miettes: SVGCircleElement[]; flammes: SVGPathElement[]; pret: boolean; etat?: EtatTableau };
+type SceneDOM = { d: Omit<DessinPage, 'peindre'>; type: TableauNom; bouton: HTMLButtonElement; svg: SVGSVGElement; acteurs: SVGImageElement[]; liquides: SVGEllipseElement[]; fronts: SVGImageElement[]; jet: SVGPathElement; miettes: SVGCircleElement[]; flammes: SVGPathElement[]; surface: SVGImageElement; commandes?: HTMLDivElement; compteur?: HTMLOutputElement; pret: boolean; etat?: EtatTableau };
 const NS = 'http://www.w3.org/2000/svg';
 const svgEl = <K extends keyof SVGElementTagNameMap>(nom: K): SVGElementTagNameMap[K] => document.createElementNS(NS, nom);
 const attributs = (el: Element, a: Record<string, string | number>) => { for (const [k, v] of Object.entries(a)) el.setAttribute(k, String(v)); };
@@ -163,7 +177,7 @@ const logique = (a: string) => a.startsWith('aquarelles/') ? a : `aquarelles/sce
 export class Theatre {
   private scenes = new Map<string, SceneDOM>();
   private aspects: Record<string, number> = {};
-  constructor(private couche: HTMLElement, dessins: Omit<DessinPage, 'peindre'>[], private url: (nom: string) => string | undefined, declencher: (nom: string, type: TableauNom) => void, _aspect: number, page = '') {
+  constructor(private couche: HTMLElement, dessins: Omit<DessinPage, 'peindre'>[], private url: (nom: string) => string | undefined, declencher: (nom: string, type: TableauNom, commande: CommandeTableau) => void, _aspect: number, page = '') {
     for (const d of dessins) {
       const type = tableauDe(d.nom); if (!type || d.zone[2] < .24 || d.zone[3] < .15) continue;
       const def = TABLEAUX[type];
@@ -173,12 +187,13 @@ export class Theatre {
       bouton.setAttribute('data-gc-tableau-cible', d.nom);
       bouton.setAttribute('aria-label', def.libelle); bouton.title = def.libelle;
       Object.assign(bouton.style, { left: `${d.zone[0] * 100}%`, top: `${d.zone[1] * 100}%`, width: `${d.zone[2] * 100}%`, height: `${d.zone[3] * 100}%` });
-      bouton.addEventListener('pointerdown', (e) => e.stopPropagation()); bouton.addEventListener('click', (e) => { e.stopPropagation(); declencher(d.nom, type); });
-      const svg = svgEl('svg'); svg.classList.add('gc-tableau'); svg.setAttribute('aria-hidden', 'true'); attributs(svg, { viewBox: type === 'carotte-grignote' ? '230 0 540 650' : '0 0 1000 650', preserveAspectRatio: 'xMidYMid meet' });
+      bouton.addEventListener('pointerdown', (e) => e.stopPropagation()); bouton.addEventListener('click', (e) => { e.stopPropagation(); declencher(d.nom, type, 'rejouer'); });
+      const svg = svgEl('svg'); svg.classList.add('gc-tableau'); svg.setAttribute('aria-hidden', 'true'); attributs(svg, { viewBox: vueTableau(type), preserveAspectRatio: 'xMidYMid meet' });
       const [x, y, largeur, hauteur] = cadreTableau(page, d.nom, d.zone);
       Object.assign(svg.style, { left: `${x * 100}%`, top: `${y * 100}%`, width: `${largeur * 100}%`, height: `${hauteur * 100}%`, opacity: '0' });
       const acteurs: SVGImageElement[] = [];
-      for (let k = 0; k < 8; k++) { const im = svgEl('image'); im.setAttribute('preserveAspectRatio', 'xMidYMid meet'); svg.append(im); acteurs.push(im); }
+      for (let k = 0; k < 12; k++) { const im = svgEl('image'); im.setAttribute('preserveAspectRatio', 'xMidYMid meet'); svg.append(im); acteurs.push(im); }
+      const surface=svgEl('image'); const surfaceClip=svgEl('clipPath'),surfaceEllipse=svgEl('ellipse'),surfaceId=`gc-pate-${Math.random().toString(36).slice(2)}`; surfaceClip.id=surfaceId;surfaceClip.setAttribute('clipPathUnits','userSpaceOnUse');attributs(surfaceEllipse,{cx:500,cy:385,rx:164,ry:30});surfaceClip.append(surfaceEllipse);svg.append(surfaceClip);attributs(surface,{href:url('aquarelles/acteurs/pate')??'',opacity:0,'clip-path':`url(#${surfaceId})`,preserveAspectRatio:'none'}); svg.insertBefore(surface,acteurs[1]);
       const liquides = [svgEl('ellipse'), svgEl('ellipse')], fronts = [svgEl('image'), svgEl('image')];
       const defs = svgEl('defs'); svg.append(defs);
       for (let k = 0; k < 2; k++) {
@@ -194,8 +209,19 @@ export class Theatre {
       const flammes = Array.from({ length: 5 }, () => {
         const f = svgEl('path'); attributs(f, { d: 'M0,1 C-1.1,.2 -.7,-.9 0,-1.8 C.2,-.6 1.1,-.1 0,1Z', fill: '#d58c42', opacity: 0 }); svg.append(f); return f;
       });
-      this.couche.append(svg, bouton);
-      const scene: SceneDOM = { d, type, bouton, svg, acteurs, liquides, fronts, jet, miettes, flammes, pret: false }; this.scenes.set(d.nom, scene);
+      let commandes: HTMLDivElement|undefined, compteur:HTMLOutputElement|undefined;
+      if (ETAPES_TABLEAUX[type]) {
+        commandes=document.createElement('div'); commandes.className='gc-recette-commandes';
+        Object.assign(commandes.style,{left:`${d.zone[0]*100}%`,top:`${(d.zone[1]+d.zone[3]) *100}%`,width:`${d.zone[2]*100}%`});
+        commandes.setAttribute('role','group');commandes.setAttribute('aria-label','Animation de cuisine');
+        for(const [label,commande] of [['Rejouer','rejouer'],['Pas à pas','etapes'],['Suivant','suivant'],['Auto','auto']] as const){
+          const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.commande=commande;
+          b.addEventListener('pointerdown',e=>e.stopPropagation());b.addEventListener('click',e=>{e.stopPropagation();declencher(d.nom,type,commande)});commandes.append(b);
+        }
+        compteur=document.createElement('output');compteur.className='gc-recette-commandes__etape';commandes.append(compteur);
+      }
+      this.couche.append(svg, bouton);if(commandes)this.couche.append(commandes);
+      const scene: SceneDOM = { d, type, bouton, svg, acteurs, liquides, fronts, jet, miettes, flammes, surface, commandes, compteur, pret: false }; this.scenes.set(d.nom, scene);
       Promise.all(def.assets.map(async (a) => { const im = new Image(); im.src = url(logique(a))!; await im.decode(); })).then(() => { scene.pret = true; bouton.disabled = false; }).catch(() => { bouton.remove(); svg.remove(); this.scenes.delete(d.nom); });
     }
   }
@@ -210,23 +236,38 @@ export class Theatre {
     return h;
   }
 
-  rendre(nom: string, type: TableauNom, temps: number, peinture = 1): number {
+  rendre(nom: string, type: TableauNom, temps: number, peinture = 1, pilotage?:{temps:number;cible:number}): number {
     const s = this.scenes.get(nom); if (!s?.pret || s.type !== type) return 0;
     const e = etatTableau(type, temps, this.aspects, s.d.nom), alpha = Math.min(1, Math.max(0, peinture));
+    if(s.commandes){
+      s.commandes.dataset.mode=pilotage?'etapes':'auto';s.commandes.style.visibility=peinture>=1?'visible':'hidden';
+      const rep=ETAPES_TABLEAUX[type]??[];
+      if(s.compteur)s.compteur.textContent=pilotage?`${Math.max(1,rep.findIndex(t=>t>=pilotage.cible-.01)+1)}/${rep.length}`:'';
+      for(const b of s.commandes.querySelectorAll<HTMLButtonElement>('button'))b.disabled=!s.pret||(b.dataset.commande==='suivant'&&!!pilotage&&pilotage.temps<pilotage.cible-.01);
+    }
     s.etat = e; s.svg.style.opacity = String(alpha); s.svg.setAttribute('data-gc-tableau', type); s.svg.setAttribute('data-gc-phase', e.phase);
     s.acteurs.forEach((im, k) => { const a = e.acteurs[k]; if (a) this.poserImage(im, a); else im.setAttribute('opacity', '0'); });
+    const surface=e.surface;attributs(s.surface,{x:surface?(surface.cx-surface.rx):0,y:surface?(surface.cy-surface.ry):0,width:(surface?.rx??0)*2,height:(surface?.ry??0)*2,opacity:surface?.alpha??0});
     s.liquides.forEach((el) => el.setAttribute('opacity', '0')); s.fronts.forEach((el) => el.setAttribute('opacity', '0'));
     s.jet.setAttribute('opacity', '0');
     s.miettes.forEach((c, k) => {
       const m = e.miettes?.[k];
-      if (m) attributs(c, { cx: m.x, cy: m.y, r: m.rayon, opacity: m.alpha }); else c.setAttribute('opacity', '0');
+      if (m) attributs(c, { cx: m.x, cy: m.y, r: m.rayon, opacity: m.alpha, fill:e.couleurMiettes??'#c88b4d' }); else c.setAttribute('opacity', '0');
     });
     s.flammes.forEach((f, k) => {
       const a = e.flammes?.[k];
       if (a) attributs(f, { transform: `translate(${a.x} ${a.y}) rotate(${a.angle}) scale(${a.rayon})`, opacity: a.force });
       else f.setAttribute('opacity', '0');
     });
+    if(['oeuf-au-bol','vanille-au-bol','framboise-biscuit','pate-crepes'].includes(type)){
+      const bol=e.acteurs.find(a=>a.asset==='aquarelles/acteurs/bol');if(bol){
+        const h=this.poserImage(s.fronts[0],bol);
+        const clipId=s.fronts[0].getAttribute('clip-path')?.slice(4,-1);const r=clipId?s.svg.querySelector(clipId)?.querySelector('rect'):null;if(r)r.setAttribute('y',String(-h*.05));
+      }
+    }
+    if(e.versement){const v=e.versement;attributs(s.jet,{d:`M${v.origine[0]} ${v.origine[1]} Q${v.origine[0]-12} ${v.cible[1]-65} ${v.cible[0]} ${v.cible[1]}`,stroke:v.couleur,opacity:v.alpha*.9});}
     if (type === 'service-the') {
+      s.jet.setAttribute('stroke','#b78348');
       // Le liquide repose sous une copie de la lèvre avant : la tasse garde son dessin et son volume.
       for (let k = 0; k < 2; k++) {
         const a = e.acteurs[k + 1], info = assetInfo(logique(a.asset)), h = a.w / (info ? info.w / info.h : 1);

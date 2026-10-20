@@ -1,0 +1,34 @@
+{
+  "acteurs/pichet-lait": {
+    "sujet": "Pichet de lait en porcelaine fleurie",
+    "fichier": "acteurs/pichet-lait.png",
+    "source": "design-system/sources/illustrations/v13/gestes-cuisine.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v13"
+  },
+  "acteurs/sac-farine": {
+    "sujet": "Sac de farine ouvert",
+    "fichier": "acteurs/sac-farine.png",
+    "source": "design-system/sources/illustrations/v13/gestes-cuisine.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v13"
+  },
+  "acteurs/farine": {
+    "sujet": "Farine",
+    "fichier": "acteurs/farine.png",
+    "source": "design-system/sources/illustrations/v13/gestes-cuisine.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v13"
+  },
+  "acteurs/pate": {
+    "sujet": "Pigment de pâte prélevé au centre du bol pour remplir le bol existant sans en changer le dessin",
+    "fichier": "acteurs/pate.png",
+    "source": "design-system/sources/illustrations/v13/gestes-cuisine.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v13"
+  }
+}

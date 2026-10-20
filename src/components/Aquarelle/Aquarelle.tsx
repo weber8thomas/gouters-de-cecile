@@ -9,7 +9,7 @@ import { toile, webglOk, type DessinPage, type Toile } from './vivante';
 import { CREATURES } from './effets';
 import './Aquarelle.css';
 import { TableauFixe } from './TableauFixe';
-import { tableauDe } from './tableaux';
+import { tableauDe, type CommandeTableau } from './tableaux';
 
 export interface AquarelleProps {
   /** Nom de l'aquarelle cuite (design-system/baked/aquarelles/<nom>.webp). */
@@ -64,6 +64,7 @@ if (typeof window !== 'undefined') {
     finir: () => toiles.forEach((t) => t.finir()),
     /** Joue une scène : `nom` d'aquarelle (toutes sinon), `scene` (la suivante sinon). */
     scene: (nom?: string, scene?: string) => toiles.forEach((t) => t.scene(nom, scene)),
+    commande: (nom:string,commande:CommandeTableau) => toiles.forEach(t=>t.commande(nom,commande)),
     /** Touche une page (fractions de la page). */
     toucher: (page: string, x: number, y: number) => toiles.get(page)?.toucher(x, y) ?? false,
     /** Fige le temps de toutes les toiles (true), qui n'avance plus que par `avancer(ms)` : images exactes. */

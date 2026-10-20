@@ -1,0 +1,12 @@
+import {build} from 'esbuild';
+import {mkdirSync,writeFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+import {lancer} from './lib/verif.mjs';
+const out='verification/out/coherence-v13';mkdirSync(out,{recursive:true});
+const base=process.env.GC_TEST_URL??'http://127.0.0.1:5173';
+const bundle=await build({stdin:{contents:`import {Theatre,TABLEAUX} from './src/components/Aquarelle/tableaux';import {assetInfo,assetUrl} from './src/lib/assets';
+window.creer=async(nom,type)=>{document.body.replaceChildren();const c=document.createElement('div');Object.assign(c.style,{position:'relative',width:'1000px',height:'650px'});document.body.append(c);const t=new Theatre(c,[{nom,zone:[0,0,1,1],angle:0,ordre:0}],n=>assetInfo(n)?new URL(assetUrl(n),'${base}/').href:undefined,()=>{},1000/650);window.t=t;while(!t.disponible(nom,type))await new Promise(r=>setTimeout(r,50));return true};`,resolveDir:process.cwd()},bundle:true,platform:'browser',format:'iife',write:false});
+const browser=await lancer({args:[],media:false});const page=await browser.newPage({viewport:{width:1000,height:650}});const errors=[];page.on('pageerror',e=>errors.push(String(e)));await page.routeWebSocket('**/*',ws=>ws.close());await page.goto(base);await page.setContent('<html><body style="margin:0;background:#f4ecd9"></body></html>');await page.addScriptTag({content:bundle.outputFiles[0].text});
+const scenes=[['tasse-2','levitation',[0,4.5,10]],['theiere','service-the',[0,3,7,11,16]],['carotte','carotte-grignote',[0,3.8,6.5,9.6]],['citron','coupe-citron',[0,3.5,5,11]],['oeufs','pate-crepes',[0,3.6,7,12,17,23]],['vanille','vanille-au-bol',[0,5,12]],['framboises-speculoos','framboise-biscuit',[0,4,7.8,10.5,15]],['gateau-bougies','gateau-enchante',[0,4.5,10]]];
+const result=[];for(const[n,type,times]of scenes){await page.evaluate(([n,t])=>window.creer(n,t),[n,type]);for(const time of times){const e=await page.evaluate(([n,t,s])=>{window.t.rendre(n,t,s);return window.t.etat(n)},[n,type,time]);await page.screenshot({path:`${out}/${type}-${time}.png`});result.push({type,time,phase:e.phase,acteurs:e.acteurs.length});}assert(await page.locator('svg image').evaluateAll(ims=>ims.filter(im=>Number(im.getAttribute('opacity'))>0).every(im=>im.getAttribute('href'))));}
+assert.deepEqual(errors,[]);writeFileSync(`${out}/tableaux-browser.json`,JSON.stringify({captures:result,errors},null,2));await browser.close();console.log(`${result.length} captures SVG rendues sans exception`);
