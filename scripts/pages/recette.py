@@ -551,12 +551,16 @@ def _note_marge(gab: Gabarits) -> list:
                     "main": MAINS.get(n.get("main"), n.get("main")) or gab.style["main"],
                     "encre": n.get("encre") or gab.style["encre"],
                     "graine": graine_atome(gab.slug, f"note-{k + 1}"), "pente": -4.0,
-                    # d'abord à droite de la photo, au-dessus du titre (le bandeau et la photo occupent le haut)
-                    # (si le cadre laisse peu de place : plusieurs hauteurs au-dessus du titre, puis les anciennes places)
+                    # Garder les placements validés avant d'essayer les replis pour les notes longues.
                     "places": [{"au_dessus": "titre", "dx": 0.5, "dy": 3.0}, {"au_dessus": "titre", "dx": 0.5, "dy": 2.2},
                                {"au_dessus": "titre", "dx": 0.5, "dy": 4.0}, {"au_dessus": "titre", "dx": 0.5, "dy": 5.0},
                                {"au_dessus": "titre", "dx": 0.56, "dy": 3.0}, {"apres": "titre", "dx": 1.6, "dy": -0.5},
-                               {"apres": "titre", "dx": 1.1, "dy": 0.4}, {"au_dessus": "titre", "dx": 0.25, "dy": 1.2}]})
+                               {"apres": "titre", "dx": 1.1, "dy": 0.4}, {"au_dessus": "titre", "dx": 0.25, "dy": 1.2},
+                               {"au_dessus": "titre", "dx": 0.0, "dy": 1.2}, {"au_dessus": "titre", "dx": 0.0, "dy": 2.2},
+                               {"au_dessus": "titre", "dx": 0.0, "dy": 3.0},
+                               # Sinon la note reste entière en marge basse, au-dessus du folio. La sonde
+                               # de pagination garde moins d'atomes ici et fait suivre le reste, sans le couper.
+                               {"x": 0.065, "y": 0.91}, {"x": 0.065, "y": 0.88}, {"x": 0.065, "y": 0.85}]})
     return out
 
 
@@ -725,7 +729,7 @@ class Paginateur:
         return j
 
     def paginer(self) -> Resultat:
-        gab, A, n = self.gab, self.A, len(self.A)
+        gab = self.gab
         rep = {}
         note = _note_marge(gab)
         bg, j = self.remplir(gab.gauche, 0, fin=note)
@@ -734,8 +738,8 @@ class Paginateur:
         rep[gab.gauche["id"]] = (bg, 0, j, None, note)
         i = j
         j = self.plus_long(gab.droite, i)
-        if j >= n:
-            rep[gab.droite["id"]] = (gab.droite, i, n, None, None)
+        if j >= len(self.A):
+            rep[gab.droite["id"]] = (gab.droite, i, j, None, None)
             return self._resultat(rep, feuillet=False)
         suite = _note_suite(gab)
         bd, j = self.remplir(gab.droite_volant, i, fin=suite)
@@ -747,14 +751,14 @@ class Paginateur:
         i = j
         j = self.plus_long(gab.verso, i)
         rep[gab.verso["id"]] = (gab.verso, i, j, None, None)
-        if j < n:
-            raise Deborde(f"{gab.slug} : {n - j} atome(s) ne tiennent pas (dès « {A[j].id} » : {A[j].texte[:40]}…)")
+        if j < len(self.A):
+            raise Deborde(f"{gab.slug} : {len(self.A) - j} atome(s) ne tiennent pas (dès « {self.A[j].id} » : {self.A[j].texte[:40]}…)")
         return self._resultat(rep, feuillet=True)
 
     def paginer_suite(self, bases: list, note=None) -> Resultat:
         """Coulage sur une suite de pages (feuille A5 : recto, verso, pages en plus) : chacune prend le
         plus long préfixe qui tient (trou en bas comblé comme ailleurs). Deborde s'il reste des atomes."""
-        rep, i, n = {}, 0, len(self.A)
+        rep, i = {}, 0
         for k, base in enumerate(bases):
             fin = note if k == 0 else None
             if k == len(bases) - 1:
@@ -762,15 +766,20 @@ class Paginateur:
                 b2 = base
             else:
                 b2, j = self.remplir(base, i, fin=fin)
-            if k == 0 and j == 0 and n:
+            if k == 0 and j == 0 and self.A:
                 raise Deborde(f"{self.gab.slug} : rien ne tient sur {base['id']}")
             rep[base["id"]] = (b2, i, j, None, fin)
             i = j
-        if i < n:
-            raise Deborde(f"{self.gab.slug} : {n - i} atome(s) ne tiennent pas sur {len(bases)} pages (dès « {self.A[i].id} »)")
+        if i < len(self.A):
+            raise Deborde(f"{self.gab.slug} : {len(self.A) - i} atome(s) ne tiennent pas sur {len(bases)} pages (dès « {self.A[i].id} »)")
         return self._resultat(rep, feuillet=False, completer=False)
 
     def _resultat(self, rep, feuillet, completer=True) -> Resultat:
+        # remplir() peut couper une phrase et ajouter un atome : aucune tranche ne doit
+        # être oubliée, répétée ou arrêtée à une ancienne longueur de self.A.
+        couverts = [k for _, i, j, _, _ in rep.values() for k in range(i, j)]
+        if couverts != list(range(len(self.A))):
+            raise Deborde(f"{self.gab.slug} : pagination incomplète ({len(couverts)}/{len(self.A)} atomes)")
         pages, ordre, repartition = {}, [], {}
         for pid, (base, i, j, tete, fin) in rep.items():
             d = assembler(self.gab, base, self.A[i:j], tete, fin, self.disposition)

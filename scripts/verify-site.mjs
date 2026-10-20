@@ -8,13 +8,13 @@
 //     le site (même taille, référencée par le JavaScript), et absente de l'artifact du design system
 //     (inventaire de la cible artifact, dist/artifact/assets.json, bundle de l'artifact) ;
 // Par HTTP : un mp4 demandé avec « Range: bytes=0-1 » → 206, Content-Range, video/mp4, Accept-Ranges.
-// Dans le navigateur, pour chaque lien (--liens, défaut lisa,julie) et chaque écran :
+// Dans le navigateur, pour chaque lien (--liens, défaut lisa,pierrette) et chaque écran :
 //   - #<lien> ouvre la bonne double page (en cadrage « page » : la page vidéo, à gauche), l'URL le garde ;
 //   - photo collée sur la page vidéo ; les requêtes de la vidéo [data-gc-video] reçoivent des 206 ;
 //   - images des pages cuites décodées ; aucune 404, aucune requête en échec, aucune erreur console.
 // Ce qui n'existe pas encore dans le site (Lisa, mp4, photo) est ATTENTE.
 //
-//   node scripts/verify-site.mjs [--site dist/site] [--base /gouters-de-cecile/] [--liens lisa,julie]
+//   node scripts/verify-site.mjs [--site dist/site] [--base /gouters-de-cecile/] [--liens lisa,pierrette]
 //        [--only iphone13-paysage,ordi-1440,tv-1080] [--out verification/out/t/site]
 //   node scripts/verify-site.mjs --build [--build-out verification/out/t/site-build] [--gen]
 //        (vite build dans un dossier à part ; --gen régénère d'abord src/generated/ : gen-entry --target site)
@@ -30,7 +30,7 @@ import {
 
 const { opt, drapeau, liste } = lireArgs();
 const out = resolve(ROOT, opt('out', 'verification/out/t/site'));
-const liens = liste('liens', 'lisa,julie');
+const liens = liste('liens', 'lisa,pierrette');
 const base = opt('base', '/');
 let dossier = resolve(ROOT, opt('site', 'dist/site'));
 const R = new Rapport('site', { dir: out });

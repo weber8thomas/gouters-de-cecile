@@ -14,7 +14,7 @@ try {
   const ctx = await b.newContext(ecran('iphone13-paysage').ctx);
   await ctx.addInitScript(() => localStorage.setItem('gc:reglages:v4', JSON.stringify({ v: 1, animations: 'completes', muet: true, vitesseEcriture: 4 })));
   const p = await ctx.newPage();
-  await p.goto(c.url(ecran('iphone13-paysage'), opt('slug', 'julie')));
+  await p.goto(c.url(ecran('iphone13-paysage'), opt('slug', 'pierrette')));
   await p.waitForSelector('.gc-livre'); await p.waitForTimeout(300);
   // Sauter l'arrivée est une commande du carnet ; elle garde le lien profond et son rendu réel.
   await p.keyboard.press('Escape');

@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-20",
+  "recettes": [
+    {
+      "slug": "lisa",
+      "texte_et_quantites": "identiques au nouveau plan, mise en forme Markdown retirée",
+      "ingredients_lignes": 10,
+      "etapes": 6,
+      "caracteres_affichables": 1052,
+      "emoji_conserves": [
+        "😎"
+      ],
+      "source_sha256": "170036672c829aab8d6feff37069a120acee42c049f9aa7a68bc5db1211295b2"
+    },
+    {
+      "slug": "emeline",
+      "texte_et_quantites": "identiques au nouveau plan, mise en forme Markdown retirée",
+      "ingredients_lignes": 6,
+      "etapes": 5,
+      "caracteres_affichables": 850,
+      "emoji_conserves": [],
+      "source_sha256": "4301ef82afefbc89f73cb6cec984cb234cddcc31144c2938aeccdf7ad69c0564"
+    },
+    {
+      "slug": "clemence",
+      "texte_et_quantites": "identiques au nouveau plan, mise en forme Markdown retirée",
+      "ingredients_lignes": 3,
+      "etapes": 5,
+      "caracteres_affichables": 930,
+      "emoji_conserves": [],
+      "source_sha256": "6347ccae7f592a6a1204f6d39a5adb35739321bab2571efc8185dc38137173e0"
+    },
+    {
+      "slug": "pierrette",
+      "texte_et_quantites": "identiques au nouveau plan, mise en forme Markdown retirée",
+      "ingredients_lignes": 2,
+      "etapes": 5,
+      "caracteres_affichables": 901,
+      "emoji_conserves": [],
+      "source_sha256": "7da7cf4d3f556d17cae3064f8a10f218cb18045526654bce58234ec25e3653c6"
+    },
+    {
+      "slug": "anatole",
+      "texte_et_quantites": "identiques au nouveau plan, mise en forme Markdown retirée",
+      "ingredients_lignes": 6,
+      "etapes": 5,
+      "caracteres_affichables": 888,
+      "emoji_conserves": [],
+      "source_sha256": "d13ba140e126fd860d52d2386ac87db9ae5eff18b2c1afa0fc0057d63fd01fbe"
+    },
+    {
+      "slug": "lise",
+      "texte_et_quantites": "identiques au nouveau plan, mise en forme Markdown retirée",
+      "ingredients_lignes": 6,
+      "etapes": 4,
+      "caracteres_affichables": 575,
+      "emoji_conserves": [],
+      "source_sha256": "49d219deb0d03beec96c38b26837395d1e805a41c5515d4f0e98f000d3502fdd"
+    },
+    {
+      "slug": "julien",
+      "texte_et_quantites": "identiques au nouveau plan, mise en forme Markdown retirée",
+      "ingredients_lignes": 8,
+      "etapes": 5,
+      "caracteres_affichables": 931,
+      "emoji_conserves": [],
+      "source_sha256": "0d05b273289b861f21d4506937f37d55cd5c53281122f971b461be468ad4ebcf"
+    },
+    {
+      "slug": "laura",
+      "texte_et_quantites": "identiques au nouveau plan, mise en forme Markdown retirée",
+      "ingredients_lignes": 5,
+      "etapes": 4,
+      "caracteres_affichables": 759,
+      "emoji_conserves": [
+        "😋"
+      ],
+      "source_sha256": "82dfece7525f60b4356789ab793c82671bc5eb661f8cd266f463ed497e569fc2"
+    }
+  ],
+  "total": 8,
+  "a_valider_apres_integration": [
+    "Contrôles navigateur du build final ; médias réels encore absents."
+  ],
+  "schema_typescript": "tsc --noEmit OK",
+  "coherence_statique": "8 recettes = 8 entrées roster = 8 plans ; 4 chapitres ; 17 doubles ; titre/albums/sommaire/fin conservés ; aucune vidéo ; seuls actifs illustrés existants référencés.",
+  "cuisson": "Huit recettes complètes, deux pages chacune, images 1×/2×/4× générées sans débordement ; perte de fin de phrase de Julien corrigée.",
+  "emoji": "Les sources conservent 😎 et 😋 ; rendu par les croquis sourire-lunettes et sourire du carnet.",
+  "concordance_transcriptions": "8/8 : tous les mots sources, quantités comprises, présents dans les transcriptions des pages avec multiplicité. Ceci ne constitue pas une lecture OCR des pixels.",
+  "cartes_animation": "Cartes temps d’encre et carte Maraudeur recalculées pour le carnet complet.",
+  "build": "npm run build:site réussi, TypeScript compris ; version 20261020T055553."
+}

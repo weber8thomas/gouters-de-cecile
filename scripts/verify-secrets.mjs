@@ -50,8 +50,11 @@ if(arg>=0) {
   const v=await import('./lib/verif.mjs');
   const cible=await v.ouvrirCible({site:process.argv[arg+1]});
   const browser=await v.lancer({args:['--use-gl=angle',...v.ARGS_GPU,'--ignore-gpu-blocklist','--mute-audio'],media:false});
+  let pageCourante;
   try {
-    const {page}=await v.ouvrirPage(browser,cible,v.ecran('tv-1080'),'mathis',{init:[v.initReglages({animations:'completes',musiqueActive:false,lectureAuto:false})]});
+    console.log('QA TV : Lisa, puis intercalaire Biscuits (carnet des huit proches).');
+    const {page}=await v.ouvrirPage(browser,cible,v.ecran('tv-1080'),'lisa',{init:[v.initReglages({animations:'completes',musiqueActive:false,lectureAuto:false})]});
+    pageCourante=page;
     await page.waitForFunction(()=>document.querySelector('.gc-secrets--table[data-gc-secret-actif="oui"]'),null,{timeout:90000});
     await page.waitForFunction(()=>!document.querySelector('.gc-livre__page--visible [data-gc-ecrit="a-ecrire"]'),null,{timeout:25000});
     await page.waitForTimeout(700);
@@ -66,14 +69,18 @@ if(arg>=0) {
     });
     assert.equal(geometrie.collision,false); checks.push({nom:'le grand compagnon reste réellement hors du livre',ok:true,geometrie});
     assert.ok(geometrie.chien.h>=125); checks.push({nom:'présence du grand chien lisible sur TV (hauteur de scène ≥125 px)',ok:true,hauteur:geometrie.chien.h});
-    const images=await page.locator('.gc-secrets--table img').evaluateAll(imgs=>imgs.map(i=>({src:i.getAttribute('src'),w:i.naturalWidth,h:i.naturalHeight,ok:i.complete&&i.naturalWidth>0})));
+    const images=await page.locator('.gc-secrets--table img').evaluateAll(async imgs=>{
+      await Promise.all(imgs.map(i=>i.decode()));
+      return imgs.map(i=>({src:i.getAttribute('src'),w:i.naturalWidth,h:i.naturalHeight,ok:i.complete&&i.naturalWidth>0}));
+    });
     assert.ok(images.every(i=>i.ok)); assert.ok(images.some(i=>/bulle-vierge/.test(i.src)));
     const parole=await page.locator('.gc-secrets--table .gc-secrets__parole').evaluate(el=>({texte:el.textContent,famille:getComputedStyle(el).fontFamily,taille:getComputedStyle(el).fontSize}));
     assert.ok(['Une part pour le chien ?','Ça sent le beurre d’ici !'].includes(parole.texte));
     assert.match(parole.famille,/Caveat/i);
     checks.push({nom:'pose chargée, bulle dessinée et phrase française en vraie Caveat',ok:true,images,parole});
     await page.evaluate(()=>document.querySelector('.gc-secrets--table').getAnimations({subtree:true}).forEach(a=>{a.currentTime=7000;}));
-    await page.screenshot({path:resolve(out,'tv-mathis.png')});
+    await page.screenshot({path:resolve(out,'tv-lisa.png')});
+    console.log('QA TV : compagnon extérieur et bulle française contrôlés, capture Lisa écrite.');
     const anim=await page.locator('.gc-secrets--table .gc-secrets__compagnon').evaluate(el=>el.getAnimations().map(a=>({etat:a.playState,temps:a.currentTime})));
     assert.ok(anim.some(a=>a.etat==='running')); checks.push({nom:'chorégraphie du chien active, pas une illustration fixe',ok:true});
     const avantClic=await page.locator('.gc-secrets--table').getAttribute('data-gc-secret');
@@ -94,15 +101,17 @@ if(arg>=0) {
     const avantFleche=await pageActive(); await page.keyboard.press('ArrowRight');
     await page.waitForFunction(avant=>[...document.querySelectorAll('.gc-livre__page--visible [data-gc-page-cuite]')].map(e=>e.dataset.gcPageCuite).join(',')!==avant,avantFleche,{timeout:30000});
     checks.push({nom:'les flèches continuent à tourner le carnet après S/clic',ok:true});
+    console.log('QA TV : Entrée, clic, S, pause de geste et navigation par flèche contrôlés.');
     await page.waitForFunction(()=>document.querySelector('.gc-secrets--table')?.dataset.gcSecretActif==='oui',null,{timeout:30000});
     await page.evaluate(()=>{location.hash='biscuits';});
     await page.waitForFunction(()=>document.querySelector('.gc-livre__page--visible [data-gc-page-cuite="biscuits-droite"]')&&!document.querySelector('.gc-livre[data-gc-geste]'),null,{timeout:60000});
     await page.waitForFunction(()=>!document.querySelector('.gc-livre__page--visible [data-gc-ecrit="a-ecrire"]'),null,{timeout:25000});
-    const vignette=page.locator('.gc-livre__page--visible .gc-secrets[data-gc-secret-actif="oui"]').first();
+    // À gauche, les quatre poses de chien alternent ; les cachettes sont sur la page droite.
+    const vignette=page.locator('.gc-livre__page--visible .gc-secrets[data-gc-secrets="biscuits-droite"][data-gc-secret-actif="oui"]');
     await vignette.waitFor({state:'visible',timeout:15000});
     await page.evaluate(()=>document.querySelectorAll('.gc-secrets[data-gc-secret-actif="oui"]').forEach(el=>el.getAnimations({subtree:true}).forEach(a=>{a.currentTime=7000;})));
     await page.screenshot({path:resolve(out,'tv-biscuits.png')});
-    for(let n=0;n<12;n++) {
+    for(let n=0;n<36;n++) {
       if((await vignette.getAttribute('data-gc-secret'))==='constellation')break;
       await vignette.locator('button').click();
     }
@@ -113,6 +122,17 @@ if(arg>=0) {
     await page.emulateMedia({reducedMotion:'reduce'}); await page.waitForTimeout(150);
     const reduit=await page.locator('.gc-secrets--table .gc-secrets__compagnon').evaluate(el=>el.getAnimations().every(a=>a.playState!=='running'));
     assert.ok(reduit); checks.push({nom:'mouvement réduit coupe la chorégraphie',ok:true});
+  } catch(erreur) {
+    if(pageCourante&&!pageCourante.isClosed()) {
+      await pageCourante.screenshot({path:resolve(out,'echec.png')}).catch(()=>{});
+      const diagnostic=await pageCourante.evaluate(()=>({
+        livre:document.querySelector('.gc-livre')?.getAttribute('data-gc-etat'),
+        compagnon:document.querySelector('.gc-secrets--table')?.outerHTML.slice(0,1200),
+        pages:[...document.querySelectorAll('.gc-livre__page--visible [data-gc-page-cuite]')].map(e=>e.dataset.gcPageCuite),
+      })).catch(()=>null);
+      writeFileSync(resolve(out,'echec.json'),JSON.stringify({erreur:String(erreur),diagnostic,checks},null,2));
+    }
+    throw erreur;
   } finally { await browser.close(); await cible.close?.(); }
 }
 writeFileSync(resolve(out,'secrets.json'),JSON.stringify({checks},null,2));

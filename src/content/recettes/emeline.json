@@ -1,0 +1,69 @@
+{
+  "slug": "emeline",
+  "source": "src/content/recettes/emeline.txt",
+  "adaptations": [
+    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé."
+  ],
+  "style": {
+    "main": "soignee",
+    "encre": "chocolat",
+    "graine": 3911
+  },
+  "titre": "Gâteau fondant au chocolat",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "200 g de bon chocolat noir pâtissier"
+        },
+        {
+          "texte": "150 g de beurre doux"
+        },
+        {
+          "texte": "3 œufs entiers"
+        },
+        {
+          "texte": "100 g de sucre de canne"
+        },
+        {
+          "texte": "50 g de farine tamisée"
+        },
+        {
+          "texte": "1 bonne pincée de fleur de sel"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Faire fondre le chocolat cassé en morceaux avec le beurre au bain-marie à feu très doux."
+    },
+    {
+      "titre": "2.",
+      "texte": "Dans un saladier, fouetter vivement les œufs et le sucre jusqu'à ce que le mélange blanchisse."
+    },
+    {
+      "titre": "3.",
+      "texte": "Verser le chocolat fondu tiédi, mélanger, puis incorporer la farine et la fleur de sel d'un geste souple."
+    },
+    {
+      "titre": "4.",
+      "texte": "Verser dans un moule beurré. Cuire 20 à 22 minutes à 180 °C (le cœur doit rester légèrement tremblotant)."
+    },
+    {
+      "titre": "5.",
+      "texte": "L'astuce d'Emeline : Attendre 15 minutes qu'il tiédisse pour que le cœur devienne incroyablement fondant."
+    }
+  ],
+  "mot": "30 ans ça se fête avec du chocolat et beaucoup d'amour ! Une recette réconfortante à savourer sans modération. Joyeux anniversaire Cécile !",
+  "signature": "Emeline",
+  "nom": "Emeline",
+  "notesMarge": [
+    {
+      "texte": "Chocolat noir 70 % minimum !",
+      "pres": "titre"
+    }
+  ]
+}

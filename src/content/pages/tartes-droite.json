@@ -1,0 +1,23 @@
+{
+  "main": "soignee",
+  "encre": "plume",
+  "gabarit": "carnet",
+  "id": "tartes-droite",
+  "double": "tartes",
+  "cote": "droite",
+  "graine": 1602,
+  "marges": {
+    "haut": 0.27
+  },
+  "blocs": [
+    {
+      "id": "chapitre",
+      "type": "chapitre",
+      "chapitre": "tartes",
+      "taille": 1.75,
+      "graine": 1608,
+      "encre": "terracotta"
+    }
+  ],
+  "vivants": []
+}

@@ -1,17 +1,143 @@
 {
-  "_": "Ordre du carnet : source unique pour la cuisson (folios, sommaire, intercalaires : scripts/pages) et pour l'application (src/artboards/DemoCarnet/spreads.tsx). Chaque double page porte deux pages <id>-gauche et <id>-droite (src/content/pages/, design-system/baked/pages/). Folios : double page k (0 = titre) → gauche 2k+2, droite 2k+3 (une page de droite a toujours un folio impair : recto d'un feuillet, papiers.json). « graine » : graine de la double page (photo collée ; défaut tirée de l'id). « sansFolio » : pas de numéro écrit sur ces pages. « invites » : slugs du roster (le premier est l'invité principal ; « Aller à… », liens #<slug>, QR de l'A5). Le sommaire liste les invités dans cet ordre, avec le folio de leur page. Type « album » : double page d'images (zones `photo-<n>` réservées dans la description), sans invité ; absente du sommaire.",
+  "_": "Ordre du carnet des huit proches, selon le plan reçu le 19 octobre 2026. Les folios dérivent de cet ordre ; garder les textes intégraux et utiliser les feuillets volants existants pour les recettes longues.",
   "doubles": [
-    { "id": "titre", "type": "titre", "titre": "Page de titre", "sansFolio": true, "pages": { "gauche": "garde", "droite": "titre" } },
-    { "id": "cecile-1", "type": "album", "titre": "Cécile en cuisine" },
-    { "id": "cecile-2", "type": "album", "titre": "Cécile en cuisine (suite)" },
-    { "id": "sommaire", "type": "sommaire", "titre": "Sommaire", "pages": { "gauche": "dedicace", "droite": "sommaire" } },
-    { "id": "gateaux", "type": "intercalaire", "chapitre": "gateaux", "titre": "Gâteaux & cakes", "sansFolio": true },
-    { "id": "lisa", "graine": 2611, "type": "video", "invites": ["lisa"], "titre": "Lisa — Carrot cake" },
-    { "id": "julie", "graine": 4127, "type": "video", "invites": ["julie"], "titre": "Julie — Cake au citron" },
-    { "id": "biscuits", "type": "intercalaire", "chapitre": "biscuits", "titre": "Biscuits", "sansFolio": true },
-    { "id": "rose", "graine": 811, "type": "video", "invites": ["rose"], "titre": "Mamie Rose — Sablés" },
-    { "id": "mathis", "graine": 905, "type": "video", "invites": ["mathis"], "titre": "Mathis — Cookies" },
-    { "id": "bernard", "graine": 1733, "type": "video", "invites": ["bernard"], "titre": "Bernard — Tarte aux pommes" },
-    { "id": "fin", "graine": 1201, "type": "finale", "invites": ["cecile"], "titre": "Le mot de la fin" }
+    {
+      "id": "titre",
+      "type": "titre",
+      "titre": "Page de titre",
+      "sansFolio": true,
+      "pages": {
+        "gauche": "garde",
+        "droite": "titre"
+      }
+    },
+    {
+      "id": "cecile-1",
+      "type": "album",
+      "titre": "Cécile en cuisine"
+    },
+    {
+      "id": "cecile-2",
+      "type": "album",
+      "titre": "Cécile en cuisine (suite)"
+    },
+    {
+      "id": "sommaire",
+      "type": "sommaire",
+      "titre": "Sommaire",
+      "pages": {
+        "gauche": "dedicace",
+        "droite": "sommaire"
+      }
+    },
+    {
+      "id": "gateaux",
+      "type": "intercalaire",
+      "chapitre": "gateaux",
+      "titre": "Gâteaux & cakes",
+      "sansFolio": true
+    },
+    {
+      "id": "lisa",
+      "graine": 2611,
+      "type": "recette",
+      "invites": [
+        "lisa"
+      ],
+      "titre": "Lisa — Carrot cake"
+    },
+    {
+      "id": "emeline",
+      "graine": 3911,
+      "type": "recette",
+      "invites": [
+        "emeline"
+      ],
+      "titre": "Emeline — Gâteau fondant au chocolat"
+    },
+    {
+      "id": "clemence",
+      "graine": 5227,
+      "type": "recette",
+      "invites": [
+        "clemence"
+      ],
+      "titre": "Clémence — Cheesecake spéculoos & framboises"
+    },
+    {
+      "id": "pierrette",
+      "graine": 6343,
+      "type": "recette",
+      "invites": [
+        "pierrette"
+      ],
+      "titre": "Pierrette — Le cake au citron d'antan"
+    },
+    {
+      "id": "tartes",
+      "type": "intercalaire",
+      "chapitre": "tartes",
+      "titre": "Tartes & confitures",
+      "sansFolio": true
+    },
+    {
+      "id": "anatole",
+      "graine": 7459,
+      "type": "recette",
+      "invites": [
+        "anatole"
+      ],
+      "titre": "Anatole — Tarte à la myrtille"
+    },
+    {
+      "id": "lise",
+      "graine": 8573,
+      "type": "recette",
+      "invites": [
+        "lise"
+      ],
+      "titre": "Lise — Tarte aux pommes de ma maman"
+    },
+    {
+      "id": "biscuits",
+      "type": "intercalaire",
+      "chapitre": "biscuits",
+      "titre": "Biscuits",
+      "sansFolio": true
+    },
+    {
+      "id": "julien",
+      "graine": 9689,
+      "type": "recette",
+      "invites": [
+        "julien"
+      ],
+      "titre": "Julien — Cookies moelleux pépites & noisettes"
+    },
+    {
+      "id": "crepes",
+      "type": "intercalaire",
+      "chapitre": "crepes",
+      "titre": "Crêpes & gaufres",
+      "sansFolio": true
+    },
+    {
+      "id": "laura",
+      "graine": 10867,
+      "type": "recette",
+      "invites": [
+        "laura"
+      ],
+      "titre": "Laura — Crêpes gourmandes Nutella-banane-chantilly"
+    },
+    {
+      "id": "fin",
+      "graine": 1201,
+      "type": "finale",
+      "invites": [
+        "cecile"
+      ],
+      "titre": "Le mot de la fin"
+    }
   ]
 }

@@ -5,16 +5,12 @@
       "title": "Gâteaux & cakes"
     },
     {
-      "id": "biscuits",
-      "title": "Biscuits"
-    },
-    {
       "id": "tartes",
       "title": "Tartes & confitures"
     },
     {
-      "id": "boissons",
-      "title": "Boissons chaudes"
+      "id": "biscuits",
+      "title": "Biscuits"
     },
     {
       "id": "crepes",
@@ -25,202 +21,58 @@
     {
       "slug": "lisa",
       "firstName": "Lisa",
-      "genre": "f",
       "city": "",
       "chapter": "gateaux",
-      "video": {
-        "id": "lisa",
-        "caption": "Lisa et son carrot cake"
-      },
       "recette": "src/content/recettes/lisa.json"
     },
     {
-      "slug": "julie",
-      "firstName": "Julie",
-      "genre": "f",
-      "city": "Lyon",
+      "slug": "emeline",
+      "firstName": "Emeline",
+      "city": "",
       "chapter": "gateaux",
-      "video": {
-        "id": "julie",
-        "caption": "Julie, depuis Lyon"
-      },
-      "recette": "src/content/recettes/julie.json"
+      "recette": "src/content/recettes/emeline.json"
     },
     {
-      "slug": "hugo",
-      "firstName": "Hugo",
-      "genre": "m",
-      "city": "Nantes",
+      "slug": "clemence",
+      "firstName": "Clémence",
+      "city": "",
       "chapter": "gateaux",
-      "video": {
-        "caption": "Hugo et sa tribu, depuis Nantes",
-        "duration": 55
-      }
+      "recette": "src/content/recettes/clemence.json"
     },
     {
-      "slug": "odile",
-      "firstName": "Odile",
-      "genre": "f",
-      "city": "Annecy",
-      "chapter": "gateaux"
+      "slug": "pierrette",
+      "firstName": "Pierrette",
+      "city": "",
+      "chapter": "gateaux",
+      "recette": "src/content/recettes/pierrette.json"
     },
     {
-      "slug": "karim",
-      "firstName": "Karim",
-      "genre": "m",
-      "city": "Marseille",
-      "chapter": "gateaux"
-    },
-    {
-      "slug": "lea",
-      "firstName": "Léa",
-      "genre": "f",
-      "city": "Bordeaux",
-      "chapter": "biscuits",
-      "video": {
-        "caption": "Léa, depuis Bordeaux",
-        "duration": 38
-      }
-    },
-    {
-      "slug": "mathis",
-      "firstName": "Mathis",
-      "genre": "m",
-      "city": "Lille",
-      "chapter": "biscuits",
-      "video": {
-        "id": "mathis",
-        "caption": "Mathis, depuis Lille"
-      },
-      "recette": "src/content/recettes/mathis.json"
-    },
-    {
-      "slug": "ines",
-      "firstName": "Inès",
-      "genre": "f",
-      "city": "Toulouse",
-      "chapter": "biscuits"
-    },
-    {
-      "slug": "bernard",
-      "firstName": "Bernard",
-      "genre": "m",
-      "city": "Dijon",
-      "chapter": "biscuits",
-      "video": {
-        "id": "bernard",
-        "caption": "Bernard et sa tarte aux pommes"
-      },
-      "recette": "src/content/recettes/bernard.json"
-    },
-    {
-      "slug": "camille",
-      "firstName": "Camille",
-      "genre": "f",
-      "city": "Strasbourg",
+      "slug": "anatole",
+      "firstName": "Anatole",
+      "city": "",
       "chapter": "tartes",
-      "video": {
-        "caption": "Camille, depuis Strasbourg",
-        "duration": 47
-      }
+      "recette": "src/content/recettes/anatole.json"
     },
     {
-      "slug": "antoine",
-      "firstName": "Antoine",
-      "genre": "m",
-      "city": "Grenoble",
+      "slug": "lise",
+      "firstName": "Lise",
+      "city": "",
       "chapter": "tartes",
-      "video": {
-        "caption": "Antoine, depuis Grenoble",
-        "duration": 36
-      }
+      "recette": "src/content/recettes/lise.json"
     },
     {
-      "slug": "sophie",
-      "firstName": "Sophie",
-      "genre": "f",
-      "city": "Tours",
-      "chapter": "tartes"
-    },
-    {
-      "slug": "yasmine",
-      "firstName": "Yasmine",
-      "genre": "f",
-      "city": "Montpellier",
-      "chapter": "tartes"
-    },
-    {
-      "slug": "elise",
-      "firstName": "Élise",
-      "genre": "f",
-      "city": "Paris",
-      "chapter": "boissons",
-      "video": {
-        "caption": "Élise, depuis Paris",
-        "duration": 40
-      }
-    },
-    {
-      "slug": "rose",
-      "firstName": "Rose",
-      "genre": "f",
-      "city": "Vannes",
+      "slug": "julien",
+      "firstName": "Julien",
+      "city": "",
       "chapter": "biscuits",
-      "video": {
-        "id": "rose",
-        "caption": "Mamie Rose, depuis Vannes"
-      },
-      "recette": "src/content/recettes/rose.json"
+      "recette": "src/content/recettes/julien.json"
     },
     {
-      "slug": "noe",
-      "firstName": "Noé",
-      "genre": "m",
-      "city": "Rennes",
-      "chapter": "boissons"
-    },
-    {
-      "slug": "paul",
-      "firstName": "Paul",
-      "genre": "m",
-      "city": "Biarritz",
-      "chapter": "boissons"
-    },
-    {
-      "slug": "margaux",
-      "firstName": "Margaux",
-      "genre": "f",
-      "city": "Brest",
+      "slug": "laura",
+      "firstName": "Laura",
+      "city": "",
       "chapter": "crepes",
-      "video": {
-        "caption": "Margaux, depuis Brest",
-        "duration": 33
-      }
-    },
-    {
-      "slug": "lucas",
-      "firstName": "Lucas",
-      "genre": "m",
-      "city": "Bruxelles",
-      "chapter": "crepes",
-      "video": {
-        "caption": "Lucas, depuis Bruxelles",
-        "duration": 44
-      }
-    },
-    {
-      "slug": "anais",
-      "firstName": "Anaïs",
-      "genre": "f",
-      "city": "Caen",
-      "chapter": "crepes"
-    },
-    {
-      "slug": "victor",
-      "firstName": "Victor",
-      "genre": "m",
-      "city": "Clermont-Ferrand",
-      "chapter": "crepes"
+      "recette": "src/content/recettes/laura.json"
     }
   ]
 }

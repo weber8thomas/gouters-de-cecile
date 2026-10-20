@@ -4,17 +4,17 @@
  "hauteur": 1200.0,
  "echelle": 2.0,
  "pages": {
-  "bernard-droite": {
-   "double": "bernard",
+  "anatole-droite": {
+   "double": "anatole",
    "cote": "droite",
    "folio": 23,
    "papier": "pages/papier/f23",
    "miroir": false,
-   "encre": "pages/bernard-droite",
+   "encre": "pages/anatole-droite",
    "papier1x": "pages/1x/papier/f23",
-   "encre1x": "pages/1x/bernard-droite",
+   "encre1x": "pages/1x/anatole-droite",
    "encre4x": {
-    "base": "pages/4x/bernard-droite",
+    "base": "pages/4x/anatole-droite",
     "echelle": 4.0,
     "px": [
      3400,
@@ -56,341 +56,101 @@
      ]
     ]
    },
-   "texte": "Bernard\n1 c. à c. de cannelle\n1 noix de beurre (environ 20 g)\n1 jaune d'œuf battu, pour dorer le bord\nÉtape 1\nPréchauffe le four à th. 7 (210 °C). Beurre le moule à tarte, étale la pâte dedans et pique-la plusieurs fois à la fourchette.\nÉtape 2\nPèle les pommes, coupe-les en quartiers puis en lamelles pas trop fines. Arrose-les tout de suite de jus de citron, sinon elles noircissent. C'est ce que faisait ma mère.\nÉtape 3\nDispose les lamelles en rosace, en partant du bord et en serrant bien : elles s'affaissent un peu à la cuisson, c'est normal.\nÉtape 4\nSaupoudre de sucre et de cannelle,\nsuite sur la feuille",
+   "texte": "Anatole\n2.\nPréchauffer le four à 190 °C. Saupoudrer le fond de tarte avec la poudre d'amandes.\n3.\nMélanger délicatement les myrtilles avec le sucre roux, le sucre vanillé et le jus de citron, puis les répartir sur la pâte.\n4.\nEnfourner 30 à 35 minutes jusqu'à ce que la pâte soit bien dorée et les fruits compotés.\n5.\nLa touche d'Anatole : Laisser refroidir complètement avant de servir avec une cuillère de crème fraîche épaisse.",
    "vivants": {
-    "volant": [
-     0.83,
-     0.66,
-     0.17,
-     0.215
-    ],
-    "aq-tarte": [
-     0.42,
-     0.56,
-     0.4,
-     0.189
-    ],
-    "aq-pomme": [
-     0.14,
-     0.62,
-     0.2,
-     0.245
-    ]
-   },
-   "deborde": [],
-   "lignes": 20,
-   "aquarelles": {
-    "aq-tarte": {
-     "aquarelle": "tarte-pommes",
-     "anime": "fleurit"
-    },
-    "aq-pomme": {
-     "aquarelle": "pomme",
-     "anime": "fleurit",
-     "angle": -6
-    }
-   },
-   "volant": {
-    "recto": "bernard-feuillet-recto",
-    "verso": "bernard-feuillet-verso",
-    "angle": -7.0,
-    "rect": [
-     0.85,
-     0.685,
-     0.82,
-     0.88
-    ]
-   },
-   "suite": "bernard-feuillet-recto",
-   "recette": "bernard",
-   "douteux": [
-    "battu, (groupe « battu, » lu « b a ttu »)",
-    "noix (encre rendue lue « n oix »)",
-    "battu, (encre rendue lue « b a ttu »)",
-    "dorer (encre rendue lue « dorier »)",
-    "cannelle, (encre rendue lue « cannelle »)"
-   ],
-   "douteux_importants": [
-    "battu,",
-    "cannelle,",
-    "dorer",
-    "noix"
-   ],
-   "relu": true
-  },
-  "bernard-feuillet-recto": {
-   "double": "bernard",
-   "cote": "droite",
-   "folio": null,
-   "papier": "pages/papier/c-lisa-recto",
-   "miroir": false,
-   "encre": "pages/bernard-feuillet-recto",
-   "papier1x": "pages/1x/papier/c-lisa-recto",
-   "encre1x": "pages/1x/bernard-feuillet-recto",
-   "encre4x": {
-    "base": "pages/4x/bernard-feuillet-recto",
-    "echelle": 4.0,
-    "px": [
-     2788,
-     4224
-    ],
-    "recouvrement": 4,
-    "tuiles": [
-     [
-      0,
-      0,
-      0.0,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      0,
-      1,
-      0.498565,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      0,
-      0.0,
-      0.499053,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      1,
-      0.498565,
-      0.499053,
-      0.501435,
-      0.500947
-     ]
-    ]
-   },
-   "texte": "(suite)\npuis répartis le beurre en petites noisettes sur le dessus.\nÉtape 5\nReplie le bord de la pâte sur les pommes et dore-le au jaune d'œuf battu. Il faut être patient avec le pinceau, mais ça vaut le coup.\nCuisson :\n40 min à th. 7. La pâte doit être bien dorée sur les bords, et les pommes un peu caramélisées.\nLaisse-la refroidir au moins 20 minutes avant de la découper, sinon les lamelles glissent. Elle est aussi bonne tiède que froide, mais je préfère tiède.\nOption de Dijon :\n1 c. à s. de crème de cassis\n1 c. à c. d'eau chaude pour la rendre fluide\nAu sortir du four, nappe les pommes de crème de cassis tiède au pinceau. C'est la touche de chez nous, et ça",
-   "vivants": {},
-   "deborde": [],
-   "lignes": 23,
-   "type": "feuillet",
-   "taille": [
-    697,
-    1056
-   ],
-   "face": "recto",
-   "dos": "bernard-feuillet-verso",
-   "suite": "bernard-feuillet-verso",
-   "recette": "bernard",
-   "douteux": [
-    "beurre (encre rendue lue « benvre »)",
-    "5 (encre rendue lue « t »)",
-    "th. 7. (encre rendue lue « th ? »)",
-    "20 (encre rendue lue « 2 0 »)",
-    "1 c. à s. (encre rendue lue « 1c a s »)",
-    "1 c. à c. (encre rendue lue « 1 c a c. »)"
-   ],
-   "douteux_importants": [
-    "1 c. à c.",
-    "1 c. à s.",
-    "20",
-    "5",
-    "beurre",
-    "th. 7."
-   ],
-   "relu": true
-  },
-  "bernard-feuillet-verso": {
-   "double": "bernard",
-   "cote": "droite",
-   "folio": null,
-   "papier": "pages/papier/c-lisa-verso",
-   "miroir": false,
-   "encre": "pages/bernard-feuillet-verso",
-   "papier1x": "pages/1x/papier/c-lisa-verso",
-   "encre1x": "pages/1x/bernard-feuillet-verso",
-   "encre4x": {
-    "base": "pages/4x/bernard-feuillet-verso",
-    "echelle": 4.0,
-    "px": [
-     2788,
-     4224
-    ],
-    "recouvrement": 4,
-    "tuiles": [
-     [
-      0,
-      0,
-      0.0,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      0,
-      1,
-      0.498565,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      0,
-      0.0,
-      0.499053,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      1,
-      0.498565,
-      0.499053,
-      0.501435,
-      0.500947
-     ]
-    ]
-   },
-   "texte": "brille joliment.\nBon appétit à toute la tablée, bon anniversaire !",
-   "vivants": {},
-   "deborde": [],
-   "lignes": 3,
-   "type": "feuillet",
-   "taille": [
-    697,
-    1056
-   ],
-   "face": "verso",
-   "dos": "bernard-feuillet-recto",
-   "recette": "bernard",
-   "croquis": [
-    {
-     "nom": "tasse",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.3426,
-      0.1113,
-      0.0253,
-      0.0167
-     ]
-    }
-   ],
-   "relu": true
-  },
-  "bernard-gauche": {
-   "double": "bernard",
-   "cote": "gauche",
-   "folio": 22,
-   "papier": "pages/papier/f21",
-   "miroir": true,
-   "encre": "pages/bernard-gauche",
-   "papier1x": "pages/1x/papier/f21",
-   "encre1x": "pages/1x/bernard-gauche",
-   "encre4x": {
-    "base": "pages/4x/bernard-gauche",
-    "echelle": 4.0,
-    "px": [
-     3400,
-     4800
-    ],
-    "recouvrement": 4,
-    "tuiles": [
-     [
-      0,
-      0,
-      0.0,
-      0.0,
-      0.501176,
-      0.500833
-     ],
-     [
-      0,
-      1,
-      0.498824,
-      0.0,
-      0.501176,
-      0.500833
-     ],
-     [
-      1,
-      0,
-      0.0,
-      0.499167,
-      0.501176,
-      0.500833
-     ],
-     [
-      1,
-      1,
-      0.498824,
-      0.499167,
-      0.501176,
-      0.500833
-     ]
-    ]
-   },
-   "texte": "Bernard, depuis Dijon\nPour Cécile : Joyeux anniversaire Cécile, garde-moi une part de tarte ! Je repasse la chercher dimanche. — Bernard\nMa tarte aux pommes\nPour le fond :\n1 pâte brisée (environ 250 g)\nun peu de beurre pour le moule\n1 c. à s. de farine pour le plan de travail\nPour la garniture :\n5 pommes (reinettes ou golden)\n1 c. à c. de jus de citron\n2 c. à s. de sucre en poudre\n(des reinettes !)",
-   "vivants": {
-    "photo": [
-     0.06,
-     0.035,
-     0.49394,
-     0.28004
+    "aq-anatole-1": [
+     0.36,
+     0.7,
+     0.38,
+     0.24
     ]
    },
    "deborde": [],
    "lignes": 14,
-   "recette": "bernard",
-   "croquis": [
-    {
-     "nom": "pomme",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.7492,
-      0.1429,
-      0.19,
-      0.1204
-     ]
+   "aquarelles": {
+    "aq-anatole-1": {
+     "aquarelle": "tarte-myrtilles",
+     "angle": 0
     }
-   ],
-   "douteux": [
-    "moule (groupe « moule » lu « m oule »)",
-    "Cécile (encre rendue lue « Cecile »)",
-    "Cécile, (encre rendue lue « Ceciler »)",
-    "brisée (encre rendue lue « briske »)",
-    "beurre (encre rendue lue « bevrre »)",
-    "moule (encre rendue lue « mcile »)",
-    "1 c. à s. (encre rendue lue « 1 c a s »)",
-    "pommes (encre rendue lue « pom meg »)",
-    "1 c. à c. (encre rendue lue « 1'c. a c. »)",
-    "2 c. à s. (encre rendue lue « 2 a d s. »)"
-   ],
-   "douteux_importants": [
-    "1 c. à c.",
-    "1 c. à s.",
-    "2 c. à s.",
-    "Cécile",
-    "Cécile,",
-    "beurre",
-    "brisée",
-    "moule",
-    "pommes"
-   ],
+   },
+   "recette": "anatole",
+   "relu": true
+  },
+  "anatole-gauche": {
+   "double": "anatole",
+   "cote": "gauche",
+   "folio": 22,
+   "papier": "pages/papier/f21",
+   "miroir": true,
+   "encre": "pages/anatole-gauche",
+   "papier1x": "pages/1x/papier/f21",
+   "encre1x": "pages/1x/anatole-gauche",
+   "encre4x": {
+    "base": "pages/4x/anatole-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Anatole\nPour Cécile : Joyeux 30 ans Cécile ! Une vraie tarte des sous-bois pour fêter ça. Promis, les doigts bleus ça part au lavage ! Plein de gros bisous. — Anatole\nTarte à la myrtille\n1 pâte sablée pur beurre\n450 g de myrtilles\n60 g de poudre d'amandes (le secret pour absorber le jus)\n50 g de sucre roux\n1 sachet de sucre vanillé\n1 c. à soupe de jus de citron\n1.\nFoncer le moule avec la pâte sablée, piquer le fond à la fourchette et réserver 15 min au frais.\n(Myrtilles fraîches ou sauvages de préférence !)",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.48674,
+     0.27304
+    ]
+   },
+   "deborde": [],
+   "lignes": 16,
+   "recette": "anatole",
    "relu": true
   },
   "biscuits-droite": {
    "double": "biscuits",
    "cote": "droite",
-   "folio": 17,
+   "folio": 27,
    "sansFolio": true,
-   "papier": "pages/papier/f17",
+   "papier": "pages/papier/f27",
    "miroir": false,
    "encre": "pages/biscuits-droite",
-   "papier1x": "pages/1x/papier/f17",
+   "papier1x": "pages/1x/papier/f27",
    "encre1x": "pages/1x/biscuits-droite",
    "encre4x": {
     "base": "pages/4x/biscuits-droite",
@@ -435,7 +195,7 @@
      ]
     ]
    },
-   "texte": "Biscuits\nMamie Rose, Mathis et Bernard",
+   "texte": "Biscuits\nJulien",
    "vivants": {
     "aq-sables": [
      0.27,
@@ -464,23 +224,17 @@
      "angle": 4
     }
    },
-   "douteux": [
-    "Rose, (encre rendue lue « rose »)"
-   ],
-   "douteux_importants": [
-    "Rose,"
-   ],
    "relu": true
   },
   "biscuits-gauche": {
    "double": "biscuits",
    "cote": "gauche",
-   "folio": 16,
+   "folio": 26,
    "sansFolio": true,
-   "papier": "pages/papier/f15",
+   "papier": "pages/papier/f25",
    "miroir": true,
    "encre": "pages/biscuits-gauche",
-   "papier1x": "pages/1x/papier/f15",
+   "papier1x": "pages/1x/papier/f25",
    "encre1x": "pages/1x/biscuits-gauche",
    "encre4x": {
     "base": "pages/4x/biscuits-gauche",
@@ -925,6 +679,309 @@
    ],
    "relu": true
   },
+  "clemence-droite": {
+   "double": "clemence",
+   "cote": "droite",
+   "folio": 17,
+   "papier": "pages/papier/f17",
+   "miroir": false,
+   "encre": "pages/clemence-droite",
+   "papier1x": "pages/1x/papier/f17",
+   "encre1x": "pages/1x/clemence-droite",
+   "encre4x": {
+    "base": "pages/4x/clemence-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Clémence\n1.\nMélanger les miettes de spéculoos et le beurre fondu. Tasser au fond d'un moule à charnière et réserver 30 min au frais.\n2.\nFouetter le cream cheese avec le sucre glace, ajouter la crème fraîche, puis les œufs un à un sans trop battre.\n3.\nVerser sur le biscuit, enfoncer quelques framboises dans la crème.\n4.\nCuire 45 min à 150 °C au four. Laisser refroidir dans le four éteint, puis réfrigérer au moins 6h.\n5.\nLe dressage de Clémence : Recouvrir de framboises fraîches et d'un coulis au moment de servir.",
+   "vivants": {
+    "aq-clemence-1": [
+     0.36,
+     0.7,
+     0.38,
+     0.24
+    ]
+   },
+   "deborde": [],
+   "lignes": 14,
+   "aquarelles": {
+    "aq-clemence-1": {
+     "aquarelle": "framboises-speculoos",
+     "angle": 0
+    }
+   },
+   "recette": "clemence",
+   "relu": true
+  },
+  "clemence-gauche": {
+   "double": "clemence",
+   "cote": "gauche",
+   "folio": 16,
+   "papier": "pages/papier/f15",
+   "miroir": true,
+   "encre": "pages/clemence-gauche",
+   "papier1x": "pages/1x/papier/f15",
+   "encre1x": "pages/1x/clemence-gauche",
+   "encre4x": {
+    "base": "pages/4x/clemence-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Clémence\nPour Cécile : Pour la reine du jour ! L'alliance du croustillant du spéculoos et de l'acidulé de la framboise. Très bel anniversaire Cécile, régale-toi ! — Clémence\nCheesecake spéculoos & framboises\nBase :\n200 g de spéculoos en miettes, 70 g de beurre fondu\nCrème :\n450 g de cream cheese (Philadelphia), 150 g de crème fraîche épaisse, 90 g de sucre glace, 2 œufs\nGarniture :\n200 g de framboises fraîches + coulis\n(À préparer la veille, c'est encore meilleur !)",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.48357,
+     0.26999
+    ]
+   },
+   "deborde": [],
+   "lignes": 11,
+   "recette": "clemence",
+   "relu": true
+  },
+  "crepes-droite": {
+   "double": "crepes",
+   "cote": "droite",
+   "folio": 31,
+   "sansFolio": true,
+   "papier": "pages/papier/f31",
+   "miroir": false,
+   "encre": "pages/crepes-droite",
+   "papier1x": "pages/1x/papier/f31",
+   "encre1x": "pages/1x/crepes-droite",
+   "encre4x": {
+    "base": "pages/4x/crepes-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Crêpes & gaufres\nLaura",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 1,
+   "relu": true
+  },
+  "crepes-gauche": {
+   "double": "crepes",
+   "cote": "gauche",
+   "folio": 30,
+   "sansFolio": true,
+   "papier": "pages/papier/f29",
+   "miroir": true,
+   "encre": "pages/crepes-gauche",
+   "papier1x": "pages/1x/papier/f29",
+   "encre1x": "pages/1x/crepes-gauche",
+   "encre4x": {
+    "base": "pages/4x/crepes-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "",
+   "vivants": {
+    "aq-guirlande": [
+     0.12,
+     0.15,
+     0.76,
+     0.12
+    ],
+    "aq-crepes-1": [
+     0.18,
+     0.38,
+     0.3,
+     0.22
+    ],
+    "aq-crepes-2": [
+     0.57,
+     0.34,
+     0.24,
+     0.24
+    ],
+    "aq-crepes-3": [
+     0.32,
+     0.64,
+     0.36,
+     0.24
+    ]
+   },
+   "deborde": [],
+   "lignes": 0,
+   "aquarelles": {
+    "aq-guirlande": {
+     "aquarelle": "guirlande",
+     "anime": "balance",
+     "angle": 0
+    },
+    "aq-crepes-1": {
+     "aquarelle": "oeufs",
+     "anime": "fleurit",
+     "angle": 3
+    },
+    "aq-crepes-2": {
+     "aquarelle": "vanille",
+     "anime": "fleurit",
+     "angle": -4
+    },
+    "aq-crepes-3": {
+     "aquarelle": "tasse-2",
+     "anime": "fleurit",
+     "angle": 3
+    }
+   },
+   "relu": true
+  },
   "dedicace": {
    "double": "sommaire",
    "cote": "gauche",
@@ -1015,14 +1072,152 @@
    },
    "relu": true
   },
+  "emeline-droite": {
+   "double": "emeline",
+   "cote": "droite",
+   "folio": 15,
+   "papier": "pages/papier/f15",
+   "miroir": false,
+   "encre": "pages/emeline-droite",
+   "papier1x": "pages/1x/papier/f15",
+   "encre1x": "pages/1x/emeline-droite",
+   "encre4x": {
+    "base": "pages/4x/emeline-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Emeline\n3.\nVerser le chocolat fondu tiédi, mélanger, puis incorporer la farine et la fleur de sel d'un geste souple.\n4.\nVerser dans un moule beurré. Cuire 20 à 22 minutes à 180 °C (le cœur doit rester légèrement tremblotant).\n5.\nL'astuce d'Emeline : Attendre 15 minutes qu'il tiédisse pour que le cœur devienne incroyablement fondant.",
+   "vivants": {
+    "aq-emeline-1": [
+     0.36,
+     0.7,
+     0.38,
+     0.24
+    ]
+   },
+   "deborde": [],
+   "lignes": 9,
+   "aquarelles": {
+    "aq-emeline-1": {
+     "aquarelle": "fondant-chocolat",
+     "angle": 0
+    }
+   },
+   "recette": "emeline",
+   "relu": true
+  },
+  "emeline-gauche": {
+   "double": "emeline",
+   "cote": "gauche",
+   "folio": 14,
+   "papier": "pages/papier/f13",
+   "miroir": true,
+   "encre": "pages/emeline-gauche",
+   "papier1x": "pages/1x/papier/f13",
+   "encre1x": "pages/1x/emeline-gauche",
+   "encre4x": {
+    "base": "pages/4x/emeline-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Emeline\nPour Cécile : 30 ans ça se fête avec du chocolat et beaucoup d'amour ! Une recette réconfortante à savourer sans modération. Joyeux anniversaire Cécile ! — Emeline\nGâteau fondant au chocolat\n200 g de bon chocolat noir pâtissier\n150 g de beurre doux\n3 œufs entiers\n100 g de sucre de canne\n50 g de farine tamisée\n1 bonne pincée de fleur de sel\n1.\nFaire fondre le chocolat cassé en morceaux avec le beurre au bain-marie à feu très doux.\n2.\nDans un saladier, fouetter vivement les œufs et le sucre jusqu'à ce que le mélange blanchisse.\n(Chocolat noir 70 % minimum !)",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.48569,
+     0.27203
+    ]
+   },
+   "deborde": [],
+   "lignes": 16,
+   "recette": "emeline",
+   "relu": true
+  },
   "fin-droite": {
    "double": "fin",
    "cote": "droite",
-   "folio": 25,
-   "papier": "pages/papier/f25",
+   "folio": 35,
+   "papier": "pages/papier/f35",
    "miroir": false,
    "encre": "pages/fin-droite",
-   "papier1x": "pages/1x/papier/f25",
+   "papier1x": "pages/1x/papier/f35",
    "encre1x": "pages/1x/fin-droite",
    "encre4x": {
     "base": "pages/4x/fin-droite",
@@ -1123,11 +1318,11 @@
   "fin-gauche": {
    "double": "fin",
    "cote": "gauche",
-   "folio": 24,
-   "papier": "pages/papier/f23",
+   "folio": 34,
+   "papier": "pages/papier/f33",
    "miroir": true,
    "encre": "pages/fin-gauche",
-   "papier1x": "pages/1x/papier/f23",
+   "papier1x": "pages/1x/papier/f33",
    "encre1x": "pages/1x/fin-gauche",
    "encre4x": {
     "base": "pages/4x/fin-gauche",
@@ -1176,12 +1371,6 @@
    "vivants": {},
    "deborde": [],
    "lignes": 4,
-   "douteux": [
-    "Cécile (encre rendue lue « Cecile »)"
-   ],
-   "douteux_importants": [
-    "Cécile"
-   ],
    "relu": true
   },
   "garde": {
@@ -1319,7 +1508,7 @@
      ]
     ]
    },
-   "texte": "Gâteaux & cakes\nLisa et Julie",
+   "texte": "Gâteaux & cakes\nLisa, Emeline, Clémence et Pierrette",
    "vivants": {
     "aq-gateau": [
      0.31,
@@ -1467,17 +1656,17 @@
    },
    "relu": true
   },
-  "julie-droite": {
-   "double": "julie",
+  "julien-droite": {
+   "double": "julien",
    "cote": "droite",
-   "folio": 15,
-   "papier": "pages/papier/f15",
+   "folio": 29,
+   "papier": "pages/papier/f29",
    "miroir": false,
-   "encre": "pages/julie-droite",
-   "papier1x": "pages/1x/papier/f15",
-   "encre1x": "pages/1x/julie-droite",
+   "encre": "pages/julien-droite",
+   "papier1x": "pages/1x/papier/f29",
+   "encre1x": "pages/1x/julien-droite",
    "encre4x": {
-    "base": "pages/4x/julie-droite",
+    "base": "pages/4x/julien-droite",
     "echelle": 4.0,
     "px": [
      3400,
@@ -1519,250 +1708,38 @@
      ]
     ]
    },
-   "texte": "Julie\npuis la farine, la levure et le sel, en mélangeant à la spatule sans trop travailler la pâte.\nÉtape 4\nAjoute les graines de pavot, puis le beurre fondu et tiède en filet, tout en continuant de mélanger. La pâte doit être lisse et un peu brillante.\nÉtape 5\nVerse dans le moule et lisse le dessus avec le dos d'une cuillère. Le cake lève tout seul, pas besoin de tapoter le moule.\nÉtape 6\nEnfourne 40 min à th. 6 (180 °C). Pique la lame d'un couteau au centre : si elle ressort sèche, il est cuit. Le dessus doit être bien doré.\nLaisse-le reposer 10 minutes dans le moule, puis démoule-le sur une grille pour qu'il refroidisse complètement.\nsuite sur la feuille",
+   "texte": "Julien\nl'œuf et la vanille.\n2.\nAjouter la farine et le bicarbonate sans trop travailler la pâte. Incorporer les pépites et noisettes.\n3.\nFormer des boules généreuses et les placer 30 min au frigo.\n4.\nEnfourner à 175 °C pendant 10 à 12 minutes (les bords doivent dorer mais le centre doit rester très mou).\n5.\nLe secret de Julien : Laisser tiédir sur la plaque, ils durcissent en surface tout en restant fondants à cœur.",
    "vivants": {
-    "volant": [
-     0.83,
-     0.66,
-     0.17,
-     0.215
-    ],
-    "aq-citron": [
-     0.5,
-     0.5,
-     0.28,
-     0.383
-    ],
-    "aq-citron-2": [
-     0.16,
-     0.58,
-     0.26,
-     0.27
+    "aq-julien-1": [
+     0.4,
+     0.72,
+     0.3,
+     0.24
     ]
    },
    "deborde": [],
-   "lignes": 14,
+   "lignes": 12,
    "aquarelles": {
-    "aq-citron": {
-     "aquarelle": "citron",
+    "aq-julien-1": {
+     "aquarelle": "cookies",
      "anime": "fleurit",
-     "angle": 6
-    },
-    "aq-citron-2": {
-     "aquarelle": "citron-2",
-     "anime": "fleurit",
-     "angle": -5
+     "angle": 3
     }
    },
-   "volant": {
-    "recto": "julie-feuillet-recto",
-    "verso": "julie-feuillet-verso",
-    "angle": -7.0,
-    "rect": [
-     0.85,
-     0.685,
-     0.82,
-     0.88
-    ]
-   },
-   "suite": "julie-feuillet-recto",
-   "recette": "julie",
-   "douteux": [
-    "moule, (groupe « moule, » lu « mouter »)",
-    "beurre (encre rendue lue « benrre »)",
-    "moule, (encre rendue lue « mouter »)"
-   ],
-   "douteux_importants": [
-    "beurre",
-    "moule,"
-   ],
+   "recette": "julien",
    "relu": true
   },
-  "julie-feuillet-recto": {
-   "double": "julie",
-   "cote": "droite",
-   "folio": null,
-   "papier": "pages/papier/c-lisa-recto",
-   "miroir": false,
-   "encre": "pages/julie-feuillet-recto",
-   "papier1x": "pages/1x/papier/c-lisa-recto",
-   "encre1x": "pages/1x/julie-feuillet-recto",
-   "encre4x": {
-    "base": "pages/4x/julie-feuillet-recto",
-    "echelle": 4.0,
-    "px": [
-     2788,
-     4224
-    ],
-    "recouvrement": 4,
-    "tuiles": [
-     [
-      0,
-      0,
-      0.0,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      0,
-      1,
-      0.498565,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      0,
-      0.0,
-      0.499053,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      1,
-      0.498565,
-      0.499053,
-      0.501435,
-      0.500947
-     ]
-    ]
-   },
-   "texte": "(suite)\nGlaçage au citron (en option) :\n100 g de sucre glace\n1 c. à s. de jus de citron\nquelques gouttes de colorant jaune (facultatif)\nMélange doucement, il doit être épais et crémeux. Nappe le cake une fois refroidi : le glaçage durcit en séchant, comme une fine coque. C'est mon côté gourmand.\nBonne dégustation, et à la prochaine pause goûter !",
-   "vivants": {},
-   "deborde": [],
-   "lignes": 9,
-   "type": "feuillet",
-   "taille": [
-    697,
-    1056
-   ],
-   "face": "recto",
-   "dos": "julie-feuillet-verso",
-   "suite": "julie-feuillet-verso",
-   "recette": "julie",
-   "croquis": [
-    {
-     "nom": "citron",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.1248,
-      0.1205,
-      0.0188,
-      0.0124
-     ]
-    },
-    {
-     "nom": "citron",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.1259,
-      0.1589,
-      0.0192,
-      0.0127
-     ]
-    },
-    {
-     "nom": "sourire",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.9294,
-      0.3545,
-      0.0253,
-      0.0167
-     ]
-    }
-   ],
-   "douteux": [
-    "1 c. à s. (encre rendue lue « 1 ca s »)"
-   ],
-   "douteux_importants": [
-    "1 c. à s."
-   ],
-   "relu": true
-  },
-  "julie-feuillet-verso": {
-   "double": "julie",
-   "cote": "droite",
-   "folio": null,
-   "papier": "pages/papier/c-lisa-verso",
-   "miroir": false,
-   "encre": "pages/julie-feuillet-verso",
-   "papier1x": "pages/1x/papier/c-lisa-verso",
-   "encre1x": "pages/1x/julie-feuillet-verso",
-   "encre4x": {
-    "base": "pages/4x/julie-feuillet-verso",
-    "echelle": 4.0,
-    "px": [
-     2788,
-     4224
-    ],
-    "recouvrement": 4,
-    "tuiles": [
-     [
-      0,
-      0,
-      0.0,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      0,
-      1,
-      0.498565,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      0,
-      0.0,
-      0.499053,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      1,
-      0.498565,
-      0.499053,
-      0.501435,
-      0.500947
-     ]
-    ]
-   },
-   "texte": "",
-   "vivants": {},
-   "deborde": [],
-   "lignes": 0,
-   "type": "feuillet",
-   "taille": [
-    697,
-    1056
-   ],
-   "face": "verso",
-   "dos": "julie-feuillet-recto",
-   "recette": "julie",
-   "relu": true
-  },
-  "julie-gauche": {
-   "double": "julie",
+  "julien-gauche": {
+   "double": "julien",
    "cote": "gauche",
-   "folio": 14,
-   "papier": "pages/papier/f13",
+   "folio": 28,
+   "papier": "pages/papier/f27",
    "miroir": true,
-   "encre": "pages/julie-gauche",
-   "papier1x": "pages/1x/papier/f13",
-   "encre1x": "pages/1x/julie-gauche",
+   "encre": "pages/julien-gauche",
+   "papier1x": "pages/1x/papier/f27",
+   "encre1x": "pages/1x/julien-gauche",
    "encre4x": {
-    "base": "pages/4x/julie-gauche",
+    "base": "pages/4x/julien-gauche",
     "echelle": 4.0,
     "px": [
      3400,
@@ -1804,7 +1781,7 @@
      ]
     ]
    },
-   "texte": "Julie, depuis Lyon\nPour Cécile : Pour toutes nos pauses goûter à refaire le monde. Joyeux anniversaire ma Cécile ! — Julie\nLe cake citron de Julie\nPour le cake :\n3 œufs\n120 g de sucre en poudre\n2 citrons non traités (zestes et jus)\n180 g de farine\n½ sachet de levure chimique\n1 pincée de sel\n1 c. à s. de graines de pavot\n125 g de beurre, fondu et tiède\n1 noix de beurre et 1 c. à s. de farine pour le moule\nÉtape 1\nPréchauffe le four à th. 6 (180 °C). Beurre le moule à cake et saupoudre-le de farine, sinon le citron colle.\nÉtape 2\nFouette les œufs avec le sucre pendant 3 bonnes minutes, jusqu'à ce que le mélange blanchisse et gonfle. C'est le moment où je mets de la musique, ça passe plus vite.\nÉtape 3\nAjoute les zestes et le jus des citrons,\n(meilleur le lendemain !)",
+   "texte": "Julien\nPour Cécile : Bienvenue dans le club des trentenaires Cécile ! Des cookies bien dodus et crousti-fondants pour accompagner tous tes thés d'anniversaire. — Julien\nCookies moelleux pépites & noisettes\n220 g de farine\n120 g de beurre demi-sel pommade\n100 g de cassonade + 40 g de sucre blanc\n1 œuf frais\n1 c. à café d'extrait de vanille\n1 c. à café de bicarbonate (ou levure)\n160 g de grosses pépites de chocolat (noir et lait)\n50 g de noisettes torréfiées concassées\n1.\nCrémer le beurre pommade avec les sucres, puis ajouter\n(Ne surtout pas trop les cuire !)",
    "vivants": {
     "photo": [
      0.06,
@@ -1814,37 +1791,159 @@
     ]
    },
    "deborde": [],
-   "lignes": 24,
-   "recette": "julie",
+   "lignes": 14,
+   "recette": "julien",
+   "relu": true
+  },
+  "laura-droite": {
+   "double": "laura",
+   "cote": "droite",
+   "folio": 33,
+   "papier": "pages/papier/f33",
+   "miroir": false,
+   "encre": "pages/laura-droite",
+   "papier1x": "pages/1x/papier/f33",
+   "encre1x": "pages/1x/laura-droite",
+   "encre4x": {
+    "base": "pages/4x/laura-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Laura\ny verser une louche de pâte à crêpe.\n3.\nRetourner la crêpe dès que les bords se décollent. Attendre quelques secondes et retirer la crêpe.\n4.\nGarnir la crêpe d'une belle cuillère à soupe de Nutella, d'une banane coupée en rondelles et de crème chantilly avant de la rouler et de l'engloutir pour le goûter 😋",
+   "vivants": {
+    "aq-laura-1": [
+     0.36,
+     0.7,
+     0.38,
+     0.24
+    ]
+   },
+   "deborde": [],
+   "lignes": 8,
+   "aquarelles": {
+    "aq-laura-1": {
+     "aquarelle": "crepes-banane",
+     "angle": 0
+    }
+   },
+   "recette": "laura",
    "croquis": [
     {
-     "nom": "citron",
-     "role": "dessin",
+     "nom": "sourire",
+     "role": "icone",
      "dessine": true,
      "boite": [
-      0.7479,
-      0.3691,
-      0.19,
-      0.1204
+      0.6285,
+      0.2983,
+      0.0202,
+      0.0143
      ]
     }
    ],
-   "douteux": [
-    "œufs (encre rendue lue « cents . »)",
-    "(zestes (encre rendue lue « Creates »)",
-    "1 (encre rendue lue « n »)",
-    "1 c. à s. (encre rendue lue « 1c d s »)",
-    "1 (encre rendue lue « 1 »)",
-    "1 c. à s. (encre rendue lue « 1cas »)",
-    "3 (encre rendue lue « 3 »)"
-   ],
-   "douteux_importants": [
-    "(zestes",
-    "1",
-    "1 c. à s.",
-    "3",
-    "œufs"
-   ],
+   "relu": true
+  },
+  "laura-gauche": {
+   "double": "laura",
+   "cote": "gauche",
+   "folio": 32,
+   "papier": "pages/papier/f31",
+   "miroir": true,
+   "encre": "pages/laura-gauche",
+   "papier1x": "pages/1x/papier/f31",
+   "encre1x": "pages/1x/laura-gauche",
+   "encre4x": {
+    "base": "pages/4x/laura-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Laura\nPour Cécile : Joyeux 30 ans ma Cécile ! Une crêpe bien gourmande pour notre reine du goûter. Profite à fond de ta journée ! — Laura\nCrêpes gourmandes Nutella-banane-chantilly\n250 g de farine\n3 œufs\n50 cl de lait\n1 cuillère à soupe de sucre\nPour la garniture :\nNutella, 1 banane coupée en rondelles, crème chantilly\n1.\nMélanger les œufs, la farine, le sucre et ajouter au fur et à mesure le lait jusqu'à obtention d'une pâte lisse.\n2.\nHuiler la crêpière. Dès qu'elle est bien chaude,",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.48778,
+     0.27405
+    ]
+   },
+   "deborde": [],
+   "lignes": 14,
+   "recette": "laura",
    "relu": true
   },
   "lisa-droite": {
@@ -1899,81 +1998,25 @@
      ]
     ]
    },
-   "texte": "Lisa\npuis allumer le fouet en augmentant de puissance progressivement jusqu'à obtention d'une pâte lisse.\nÉtape 4\nAjouter les carottes râpées et les noix concassées. Mélanger au fouet doucement jusqu'à ce que la pâte soit homogène.\nÉtape 5\nHuiler et fariner légèrement le moule et verser la préparation.\nÉtape 6\nEnfourner 40 à 45 minutes selon votre four à 175° (th 5/6). Perso sur mon four je vais même jusqu’à 1h, mais vérifie tous les quarts d’heure quand même. Piquer pour vérifier que le gâteau soit cuit.\nLaisse le gâteau dans le moule jusqu’à ce qu’il refroidisse.\nOption avec le glaçage plutôt healthy, sans beurre quoi…\n3 cuillères à soupe de sucre glace\nJus de citron ou fleur d’oranger selon préférences\nBonus : Colorant alimentaire\nAttention le mélange ne doit pas trop être liquide, il faut qu’il soit crémeux. Il durcira au séchage !\nYummy après c’est la régalade\nLisa",
+   "texte": "Lisa\n2.\nIncorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours au fouet électrique.\n3.\nCommencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer en augmentant la puissance jusqu'à obtention d'une pâte lisse.\n4.\nAjouter les carottes râpées et les noix concassées. Mélanger doucement à la spatule jusqu'à pâte homogène.\n5.\nHuiler et fariner légèrement le moule et verser la préparation.\n6.\nEnfourner 40 à 45 minutes à 175 °C (th. 5/6). Laisser refroidir dans le moule.\nOption glaçage :\n3 c. à soupe de sucre glace + jus de citron ou fleur d'oranger (consistance crémeuse, durcit au séchage).",
    "vivants": {
-    "aq-carotte": [
-     0.3,
-     0.79,
-     0.1,
-     0.17
+    "aq-lisa-1": [
+     0.36,
+     0.64,
+     0.34,
+     0.32
     ]
    },
    "deborde": [],
-   "lignes": 22,
+   "lignes": 18,
    "aquarelles": {
-    "aq-carotte": {
+    "aq-lisa-1": {
      "aquarelle": "carotte",
      "anime": "balance",
-     "angle": -24
+     "angle": -20
     }
    },
    "recette": "lisa",
-   "croquis": [
-    {
-     "nom": "cupcake",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.0995,
-      0.5737,
-      0.0182,
-      0.0129
-     ]
-    },
-    {
-     "nom": "cupcake",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.099,
-      0.5994,
-      0.0199,
-      0.0141
-     ]
-    },
-    {
-     "nom": "carotte",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.6133,
-      0.7388,
-      0.0215,
-      0.0152
-     ]
-    },
-    {
-     "nom": "sourire-lunettes",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.6388,
-      0.737,
-      0.0225,
-      0.0159
-     ]
-    }
-   ],
-   "douteux": [
-    "6). (encre rendue lue « oj »)",
-    "1h, (encre rendue lue « th »)",
-    "beurre (encre rendue lue « bencre »)"
-   ],
-   "douteux_importants": [
-    "1h,",
-    "6).",
-    "beurre"
-   ],
    "relu": true
   },
   "lisa-gauche": {
@@ -2028,7 +2071,7 @@
      ]
     ]
    },
-   "texte": "Lisa\nPour Cécile : mot à venir\nCarrot cake\n250g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300g de carottes (3 à 4 grosses carottes)\n250g de farine fluide\n2 cuillères à café d’extrait de vanille\n2 cuillères de muscade\n2 à 3 cuillères à café de cannelle (moins selon les goûts)\n4 œufs\n120g de noix concassées\nÉtape 1\nMélanger au fouet électrique les 4 œufs et le sucre.\nÉtape 2\nIncorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours à l'aide du fouet électrique.\nÉtape 3\nCommencer à mélanger avec le fouet éteint (pour éviter les projections),\n(tiptop pour la saison !)",
+   "texte": "Lisa\nPour Cécile : Joyeux anniversaire Cécile ! YUMMY après c'est la régalade 😎 — Lisa\nCarrot cake\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\n1.\nMélanger au fouet électrique les 4 œufs et le sucre.\n(Tiptop pour la saison !)",
    "vivants": {
     "photo": [
      0.06,
@@ -2038,170 +2081,34 @@
     ]
    },
    "deborde": [],
-   "lignes": 21,
+   "lignes": 15,
    "recette": "lisa",
    "croquis": [
     {
-     "nom": "carotte",
-     "role": "puce",
+     "nom": "sourire-lunettes",
+     "role": "icone",
      "dessine": true,
      "boite": [
-      0.0629,
-      0.3758,
-      0.019,
-      0.0134
-     ]
-    },
-    {
-     "nom": "carotte",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.0602,
-      0.4018,
-      0.0186,
-      0.0132
-     ]
-    },
-    {
-     "nom": "carotte",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.0615,
-      0.4305,
-      0.0197,
-      0.014
-     ]
-    },
-    {
-     "nom": "carotte",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.0621,
-      0.4632,
-      0.0178,
-      0.0126
-     ]
-    },
-    {
-     "nom": "carotte",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.062,
-      0.4901,
-      0.0194,
-      0.0138
-     ]
-    },
-    {
-     "nom": "carotte",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.0608,
-      0.5192,
-      0.0186,
-      0.0132
-     ]
-    },
-    {
-     "nom": "carotte",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.0593,
-      0.5484,
-      0.0189,
-      0.0134
-     ]
-    },
-    {
-     "nom": "carotte",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.0613,
-      0.5791,
-      0.0199,
-      0.0141
-     ]
-    },
-    {
-     "nom": "carotte",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.0617,
-      0.6343,
-      0.0176,
-      0.0125
-     ]
-    },
-    {
-     "nom": "carotte",
-     "role": "puce",
-     "dessine": true,
-     "boite": [
-      0.0592,
-      0.6637,
-      0.019,
-      0.0135
-     ]
-    },
-    {
-     "nom": "carrot-cake",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.7523,
-      0.4409,
-      0.19,
-      0.1204
+      0.2368,
+      0.4372,
+      0.0229,
+      0.0162
      ]
     }
    ],
-   "douteux": [
-    "1 (groupe « 1 » lu « A »)",
-    "250g (encre rendue lue « 3509 »)",
-    "d’huile (encre rendue lue « dihuile »)",
-    "huile (encre rendue lue « hike . »)",
-    "1 (encre rendue lue « n »)",
-    "300g (encre rendue lue « 2009 »)",
-    "2 (encre rendue lue « 2 »)",
-    "4 (encre rendue lue « 4 »)",
-    "œufs (encre rendue lue « cents . »)",
-    "120g (encre rendue lue « (209 »)",
-    "1 (encre rendue lue « A »)",
-    "muscade, (encre rendue lue « muscade . »)"
-   ],
-   "douteux_importants": [
-    "1",
-    "120g",
-    "2",
-    "250g",
-    "300g",
-    "4",
-    "d’huile",
-    "huile",
-    "muscade,",
-    "œufs"
-   ],
    "relu": true
   },
-  "mathis-droite": {
-   "double": "mathis",
+  "lise-droite": {
+   "double": "lise",
    "cote": "droite",
-   "folio": 21,
-   "papier": "pages/papier/f21",
+   "folio": 25,
+   "papier": "pages/papier/f25",
    "miroir": false,
-   "encre": "pages/mathis-droite",
-   "papier1x": "pages/1x/papier/f21",
-   "encre1x": "pages/1x/mathis-droite",
+   "encre": "pages/lise-droite",
+   "papier1x": "pages/1x/papier/f25",
+   "encre1x": "pages/1x/lise-droite",
    "encre4x": {
-    "base": "pages/4x/mathis-droite",
+    "base": "pages/4x/lise-droite",
     "echelle": 4.0,
     "px": [
      3400,
@@ -2243,230 +2150,49 @@
      ]
     ]
    },
-   "texte": "Mathis\nÉtape 1\nPréchauffe le four à 170 °C. Sors le beurre une heure avant, il doit être mou, pas fondu !!\nÉtape 2\nFouette le beurre avec les deux sucres pendant 2 minutes, jusqu'à ce que ça devienne crémeux. J'ai mis de la musique, ça aide.\nÉtape 3\nAjoute l'œuf et mélange bien. Puis la farine, la levure et le sel, doucement à la spatule. Pas besoin de trop travailler, sinon les cookies deviennent durs.\nÉtape 4\nIncorpore les pépites et les morceaux de chocolat noir. Mets beaucoup de pépites !! C'est le meilleur moment, et tu as le droit de goûter (une fois).\nÉtape 5\nForme des boules de la taille d'une noix, espacées de 5 cm sur la plaque couverte de papier sulfurisé, et aplatis-les un peu avec la paume.\nsuite sur la feuille",
+   "texte": "Lise\n4.\nEt hop au four à 180 degrés et régale-toi !!",
    "vivants": {
-    "volant": [
-     0.83,
-     0.66,
-     0.17,
-     0.215
+    "aq-lise-1": [
+     0.35,
+     0.7,
+     0.4,
+     0.2
     ],
-    "aq-cookies": [
-     0.5,
-     0.62,
-     0.26,
+    "aq-lise-2": [
+     0.12,
+     0.73,
+     0.19,
      0.23
     ]
    },
    "deborde": [],
-   "lignes": 22,
+   "lignes": 2,
    "aquarelles": {
-    "aq-cookies": {
-     "aquarelle": "cookies",
-     "anime": "balance",
-     "angle": 4
+    "aq-lise-1": {
+     "aquarelle": "tarte-pommes",
+     "anime": "fleurit",
+     "angle": 0
+    },
+    "aq-lise-2": {
+     "aquarelle": "pomme",
+     "anime": "fleurit",
+     "angle": -5
     }
    },
-   "volant": {
-    "recto": "mathis-feuillet-recto",
-    "verso": "mathis-feuillet-verso",
-    "angle": -7.0,
-    "rect": [
-     0.85,
-     0.685,
-     0.82,
-     0.88
-    ]
-   },
-   "suite": "mathis-feuillet-recto",
-   "recette": "mathis",
-   "douteux": [
-    "l'œuf",
-    "farine, (encre rendue lue « famine . »)",
-    "sel, (encre rendue lue « sch. »)",
-    "pépites (encre rendue lue « pepites »)"
-   ],
-   "douteux_importants": [
-    "farine,",
-    "l'œuf",
-    "pépites",
-    "sel,"
-   ],
+   "recette": "lise",
    "relu": true
   },
-  "mathis-feuillet-recto": {
-   "double": "mathis",
-   "cote": "droite",
-   "folio": null,
-   "papier": "pages/papier/c-lisa-recto",
-   "miroir": false,
-   "encre": "pages/mathis-feuillet-recto",
-   "papier1x": "pages/1x/papier/c-lisa-recto",
-   "encre1x": "pages/1x/mathis-feuillet-recto",
-   "encre4x": {
-    "base": "pages/4x/mathis-feuillet-recto",
-    "echelle": 4.0,
-    "px": [
-     2788,
-     4224
-    ],
-    "recouvrement": 4,
-    "tuiles": [
-     [
-      0,
-      0,
-      0.0,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      0,
-      1,
-      0.498565,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      0,
-      0.0,
-      0.499053,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      1,
-      0.498565,
-      0.499053,
-      0.501435,
-      0.500947
-     ]
-    ]
-   },
-   "texte": "(suite)\nCuisson :\n10 min à 170 °C. Ils restent mous au milieu, c'est normal. Laisse-les 5 minutes sur la plaque avant de les décoller.\nAttends qu'ils refroidissent un peu, sinon ils cassent. Après, tu peux les manger à la pelle !!\nLe petit plus de Mathis :\n1 pincée de fleur de sel sur le dessus, avant la cuisson\nquelques pépites en plus, bien enfoncées\nLe sel avec le chocolat, c'est trop bon. Essaie, tu me remercieras !\nBon anniv Cécile, on mange les cookies ensemble !!",
-   "vivants": {},
-   "deborde": [],
-   "lignes": 16,
-   "type": "feuillet",
-   "taille": [
-    697,
-    1056
-   ],
-   "face": "recto",
-   "dos": "mathis-feuillet-verso",
-   "suite": "mathis-feuillet-verso",
-   "recette": "mathis",
-   "croquis": [
-    {
-     "nom": "sourire",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.3082,
-      0.6862,
-      0.0303,
-      0.02
-     ]
-    }
-   ],
-   "douteux": [
-    "Cuisson (encre rendue lue « Crisson »)",
-    "avant (encre rendue lue « avant »)",
-    "cuisson (encre rendue lue « unison »)",
-    "enfoncées (encre rendue lue « enforces »)",
-    "sel (encre rendue lue « set »)",
-    "Cécile, (encre rendue lue « Cecile . »)"
-   ],
-   "douteux_importants": [
-    "Cuisson",
-    "Cécile,",
-    "avant",
-    "cuisson",
-    "enfoncées",
-    "sel"
-   ],
-   "relu": true
-  },
-  "mathis-feuillet-verso": {
-   "double": "mathis",
-   "cote": "droite",
-   "folio": null,
-   "papier": "pages/papier/c-lisa-verso",
-   "miroir": false,
-   "encre": "pages/mathis-feuillet-verso",
-   "papier1x": "pages/1x/papier/c-lisa-verso",
-   "encre1x": "pages/1x/mathis-feuillet-verso",
-   "encre4x": {
-    "base": "pages/4x/mathis-feuillet-verso",
-    "echelle": 4.0,
-    "px": [
-     2788,
-     4224
-    ],
-    "recouvrement": 4,
-    "tuiles": [
-     [
-      0,
-      0,
-      0.0,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      0,
-      1,
-      0.498565,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      0,
-      0.0,
-      0.499053,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      1,
-      0.498565,
-      0.499053,
-      0.501435,
-      0.500947
-     ]
-    ]
-   },
-   "texte": "",
-   "vivants": {},
-   "deborde": [],
-   "lignes": 0,
-   "type": "feuillet",
-   "taille": [
-    697,
-    1056
-   ],
-   "face": "verso",
-   "dos": "mathis-feuillet-recto",
-   "recette": "mathis",
-   "relu": true
-  },
-  "mathis-gauche": {
-   "double": "mathis",
+  "lise-gauche": {
+   "double": "lise",
    "cote": "gauche",
-   "folio": 20,
-   "papier": "pages/papier/f19",
+   "folio": 24,
+   "papier": "pages/papier/f23",
    "miroir": true,
-   "encre": "pages/mathis-gauche",
-   "papier1x": "pages/1x/papier/f19",
-   "encre1x": "pages/1x/mathis-gauche",
+   "encre": "pages/lise-gauche",
+   "papier1x": "pages/1x/papier/f23",
+   "encre1x": "pages/1x/lise-gauche",
    "encre4x": {
-    "base": "pages/4x/mathis-gauche",
+    "base": "pages/4x/lise-gauche",
     "echelle": 4.0,
     "px": [
      3400,
@@ -2508,63 +2234,31 @@
      ]
     ]
    },
-   "texte": "Mathis, depuis Lille\nPour Cécile : Joyeux anniv Cécile !! Les cookies c'est pour toi, mais laisse-m'en au moins trois !! — Mathis\nLes cookies de Mathis\nPour la pâte :\n1 œuf\n100 g de beurre mou\n75 g de sucre roux\n50 g de sucre blanc\n200 g de farine\n½ sachet de levure chimique\n1 pincée de sel\nPour le choco :\n150 g de pépites de chocolat\n50 g de chocolat noir coupé en morceaux\n(la meilleure, je jure !)",
+   "texte": "Lise\nPour Cécile : Joyeux anniversaire ma Cécile ! Une valeur sûre partagée avec le cœur. Gros bisous ! — Lise\nTarte aux pommes de ma maman\nJ'suis pas la reine de la cuisine de goûter mais une valeur sûre : Tarte aux pommes de ma maman\n1 pâte sablée\n3 à 4 pommes\n1 brique de crème fraîche liquide\nCannelle en poudre\n2 œufs\n3 cuillères à soupe de sucre\n1.\nFais ta pâte (t'es la reine des pâtes à tarte je peux rien t'apprendre) et étale-la.\n2.\nDispose tes pommes découpées en quartiers fins ou rondelles.\n3.\nMélange crème + œufs + cannelle + sucre pour l'appareil.",
    "vivants": {
     "photo": [
      0.06,
      0.035,
-     0.49242,
-     0.27855
+     0.4841,
+     0.2705
     ]
    },
    "deborde": [],
-   "lignes": 17,
-   "recette": "mathis",
-   "croquis": [
-    {
-     "nom": "cookie",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.7687,
-      0.4694,
-      0.19,
-      0.1204
-     ]
-    }
-   ],
-   "douteux": [
-    "½ (groupe « ½ » lu « 1 ft »)",
-    "Mathis (encre rendue lue « Mathis »)",
-    "œuf (encre rendue lue « auf . »)",
-    "beurre (encre rendue lue « Vcurre »)",
-    "75 g (encre rendue lue « 25 9 »)",
-    "½ (encre rendue lue « 1 ft »)",
-    "sel (encre rendue lue « set »)",
-    "coupé (encre rendue lue « roype »)"
-   ],
-   "douteux_importants": [
-    "75 g",
-    "Mathis",
-    "beurre",
-    "coupé",
-    "sel",
-    "½",
-    "œuf"
-   ],
+   "lignes": 18,
+   "recette": "lise",
    "relu": true
   },
-  "rose-droite": {
-   "double": "rose",
+  "pierrette-droite": {
+   "double": "pierrette",
    "cote": "droite",
    "folio": 19,
    "papier": "pages/papier/f19",
    "miroir": false,
-   "encre": "pages/rose-droite",
+   "encre": "pages/pierrette-droite",
    "papier1x": "pages/1x/papier/f19",
-   "encre1x": "pages/1x/rose-droite",
+   "encre1x": "pages/1x/pierrette-droite",
    "encre4x": {
-    "base": "pages/4x/rose-droite",
+    "base": "pages/4x/pierrette-droite",
     "echelle": 4.0,
     "px": [
      3400,
@@ -2606,227 +2300,49 @@
      ]
     ]
    },
-   "texte": "Mamie Rose\nÉtape 2\nAjoute le sucre glace, le sel, la cannelle et le zeste, puis le jaune. Pétris juste ce qu'il faut, sinon les sablés deviennent durs. Ma mère disait : on caresse la pâte, on ne la pétrit pas.\nÉtape 3\nFais une boule, enveloppe-la de film et mets-la une heure au frais. Moi je la prépare la veille, c'est plus facile à étaler.\nÉtape 4\nÉtale la pâte sur ½ cm d'épaisseur, entre deux feuilles de papier cuisson, puis découpe au verre. Repasse les chutes une seule fois, pas plus.\nÉtape 5\nPose les sablés sur la plaque, dore-les au jaune battu avec l'eau, et raie le dessus à la fourchette. Les petits traits, c'est ma signature depuis toujours.\nÉtape 6\nCuis 12 min à th. 6 (180 °C) : ils doivent rester blonds, surtout pas dorés. Laisse-les refroidir sur la plaque avant de les toucher.\nsuite sur la feuille",
+   "texte": "Pierrette\n3.\nAjouter la crème, puis la farine tamisée avec la levure, et enfin le beurre fondu.\n4.\nCuire 42 min à 165 °C. Pendant ce temps, tiédir le jus de citron avec le sucre pour faire le sirop.\n5.\nLe secret de Pierrette : Dès la sortie du four, imbiber le cake encore très chaud avec le sirop tiède au pinceau jusqu'à complète absorption.",
    "vivants": {
-    "volant": [
-     0.83,
-     0.66,
-     0.17,
-     0.215
-    ],
-    "aq-cannelle": [
-     0.5,
-     0.56,
-     0.32,
+    "aq-pierrette-1": [
+     0.48,
+     0.68,
+     0.27,
      0.29
     ],
-    "aq-etoiles": [
-     0.14,
-     0.6,
-     0.2,
-     0.238
+    "aq-pierrette-2": [
+     0.13,
+     0.74,
+     0.22,
+     0.2
     ]
    },
    "deborde": [],
-   "lignes": 16,
+   "lignes": 9,
    "aquarelles": {
-    "aq-cannelle": {
-     "aquarelle": "cannelle",
-     "anime": "balance",
+    "aq-pierrette-1": {
+     "aquarelle": "citron",
+     "anime": "fleurit",
      "angle": 5
     },
-    "aq-etoiles": {
-     "aquarelle": "sables-etoiles",
-     "anime": "balance",
-     "angle": -4
+    "aq-pierrette-2": {
+     "aquarelle": "citron-2",
+     "anime": "fleurit",
+     "angle": -5
     }
    },
-   "volant": {
-    "recto": "rose-feuillet-recto",
-    "verso": "rose-feuillet-verso",
-    "angle": -7.0,
-    "rect": [
-     0.85,
-     0.685,
-     0.82,
-     0.88
-    ]
-   },
-   "suite": "rose-feuillet-recto",
-   "recette": "rose",
-   "douteux": [
-    "sel, (encre rendue lue « seh »)",
-    "4 (encre rendue lue « U »)"
-   ],
-   "douteux_importants": [
-    "4",
-    "sel,"
-   ],
+   "recette": "pierrette",
    "relu": true
   },
-  "rose-feuillet-recto": {
-   "double": "rose",
-   "cote": "droite",
-   "folio": null,
-   "papier": "pages/papier/c-lisa-recto",
-   "miroir": false,
-   "encre": "pages/rose-feuillet-recto",
-   "papier1x": "pages/1x/papier/c-lisa-recto",
-   "encre1x": "pages/1x/rose-feuillet-recto",
-   "encre4x": {
-    "base": "pages/4x/rose-feuillet-recto",
-    "echelle": 4.0,
-    "px": [
-     2788,
-     4224
-    ],
-    "recouvrement": 4,
-    "tuiles": [
-     [
-      0,
-      0,
-      0.0,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      0,
-      1,
-      0.498565,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      0,
-      0.0,
-      0.499053,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      1,
-      0.498565,
-      0.499053,
-      0.501435,
-      0.500947
-     ]
-    ]
-   },
-   "texte": "(suite)\nUne fois froids, range-les dans la boîte en fer. C'est là qu'ils restent le plus tendres, et qu'on les garde pour les jours de fête.\nPour Noël, je change un peu :\nle zeste remplacé par 1 c. à c. de cannelle\n1 blanc d'œuf battu avec 150 g de sucre glace\nquelques gouttes de citron\nJe les découpe en étoiles avec le petit emporte-pièce, et je nappe le glaçage au pinceau sur les sablés refroidis. Tout le monde en veut dans la boîte.\nBonne dégustation, et laisse-m'en quelques-uns !",
-   "vivants": {},
-   "deborde": [],
-   "lignes": 12,
-   "type": "feuillet",
-   "taille": [
-    697,
-    1056
-   ],
-   "face": "recto",
-   "dos": "rose-feuillet-verso",
-   "suite": "rose-feuillet-verso",
-   "recette": "rose",
-   "croquis": [
-    {
-     "nom": "sourire",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.7834,
-      0.4765,
-      0.0223,
-      0.0147
-     ]
-    }
-   ],
-   "douteux": [
-    "1 c. à c. (encre rendue lue « 1 C. A C. »)"
-   ],
-   "douteux_importants": [
-    "1 c. à c."
-   ],
-   "relu": true
-  },
-  "rose-feuillet-verso": {
-   "double": "rose",
-   "cote": "droite",
-   "folio": null,
-   "papier": "pages/papier/c-lisa-verso",
-   "miroir": false,
-   "encre": "pages/rose-feuillet-verso",
-   "papier1x": "pages/1x/papier/c-lisa-verso",
-   "encre1x": "pages/1x/rose-feuillet-verso",
-   "encre4x": {
-    "base": "pages/4x/rose-feuillet-verso",
-    "echelle": 4.0,
-    "px": [
-     2788,
-     4224
-    ],
-    "recouvrement": 4,
-    "tuiles": [
-     [
-      0,
-      0,
-      0.0,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      0,
-      1,
-      0.498565,
-      0.0,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      0,
-      0.0,
-      0.499053,
-      0.501435,
-      0.500947
-     ],
-     [
-      1,
-      1,
-      0.498565,
-      0.499053,
-      0.501435,
-      0.500947
-     ]
-    ]
-   },
-   "texte": "",
-   "vivants": {},
-   "deborde": [],
-   "lignes": 0,
-   "type": "feuillet",
-   "taille": [
-    697,
-    1056
-   ],
-   "face": "verso",
-   "dos": "rose-feuillet-recto",
-   "recette": "rose",
-   "relu": true
-  },
-  "rose-gauche": {
-   "double": "rose",
+  "pierrette-gauche": {
+   "double": "pierrette",
    "cote": "gauche",
    "folio": 18,
    "papier": "pages/papier/f17",
    "miroir": true,
-   "encre": "pages/rose-gauche",
+   "encre": "pages/pierrette-gauche",
    "papier1x": "pages/1x/papier/f17",
-   "encre1x": "pages/1x/rose-gauche",
+   "encre1x": "pages/1x/pierrette-gauche",
    "encre4x": {
-    "base": "pages/4x/rose-gauche",
+    "base": "pages/4x/pierrette-gauche",
     "echelle": 4.0,
     "px": [
      3400,
@@ -2868,43 +2384,18 @@
      ]
     ]
    },
-   "texte": "Mamie Rose, depuis Vannes\nPour Cécile : Ma recette de toujours, pour ma Cécile qui en volait toujours un de plus. Joyeux anniversaire, mon trésor ! — Mamie Rose\nLes sablés de Rose\nPour la pâte :\n250 g de farine\n125 g de beurre bien froid, coupé en dés\n100 g de sucre glace\n1 jaune d'œuf\n1 pincée de sel\n1 pincée de cannelle\nle zeste d'un citron non traité\nPour dorer :\n1 jaune d'œuf en plus\n1 c. à c. d'eau\nÉtape 1\nDans un grand saladier, sable la farine et le beurre du bout des doigts, jusqu'à ce que ça ressemble à de la semoule. Ça prend un bon quart d'heure, ne te presse pas.\n(beurre bien froid !)",
+   "texte": "Pierrette\nPour Cécile : Trente bougies pour notre Cécile chérie ! Voici le secret de mon cake au citron bien imbibé qui ne sèche jamais. Gros bisous tendres. — Pierrette\nLe cake au citron d'antan\nAppareil :\n3 œufs, 170 g de sucre, le zeste râpé de 2 citrons, 160 g de farine, 1 c. à café de levure, 100 g de beurre fondu tiède, 50 g de crème liquide entière\nSirop d'imbibage :\n60 g de jus de citron, 40 g de sucre\n1.\nFrotter longuement le sucre et les zestes entre les doigts pour libérer les huiles essentielles.\n2.\nFouetter avec les œufs jusqu'à ce que le mélange double de volume.\n(Citrons non traités bien lavés !)",
    "vivants": {
     "photo": [
      0.06,
      0.035,
-     0.48304,
-     0.26948
+     0.48726,
+     0.27354
     ]
    },
    "deborde": [],
-   "lignes": 20,
-   "recette": "rose",
-   "croquis": [
-    {
-     "nom": "beurre",
-     "role": "dessin",
-     "dessine": true,
-     "boite": [
-      0.7486,
-      0.3691,
-      0.19,
-      0.1204
-     ]
-    }
-   ],
-   "douteux": [
-    "Mamie (encre rendue lue « Marie »)",
-    "Cécile (encre rendue lue « exile »)",
-    "Rose (encre rendue lue « rose »)",
-    "1 c. à c. (encre rendue lue « 1c.dc. »)"
-   ],
-   "douteux_importants": [
-    "1 c. à c.",
-    "Cécile",
-    "Mamie",
-    "Rose"
-   ],
+   "lignes": 13,
+   "recette": "pierrette",
    "relu": true
   },
   "sommaire": {
@@ -2959,60 +2450,24 @@
      ]
     ]
    },
-   "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nJulie — Cake au citron, page 14\nBiscuits\nMamie Rose — Sablés, page 18\nMathis — cookies, page 20\nBernard — tarte aux pommes, page 22\nLe mot de la fin, page 24",
+   "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nEmeline — Gâteau fondant au chocolat, page 14\nClémence — Cheesecake spéculoos & framboises, page 16\nPierrette — Le cake au citron d'antan, page 18\nTartes & confitures\nAnatole — Tarte à la myrtille, page 22\nLise — Tarte aux pommes de ma maman, page 24\nBiscuits\nJulien — Cookies moelleux pépites & noisettes, page 28\nCrêpes & gaufres\nLaura — Crêpes gourmandes Nutella-banane-chantilly, page 32\nLe mot de la fin, page 34",
    "vivants": {
     "aq-tasse": [
      0.75,
      0.045,
      0.17,
      0.117
-    ],
-    "vg-lisa": [
-     0.12045,
-     0.21368,
-     0.115,
-     0.082
-    ],
-    "vg-julie": [
-     0.12155,
-     0.29681,
-     0.115,
-     0.068
-    ],
-    "vg-rose": [
-     0.12167,
-     0.47005,
-     0.115,
-     0.068
-    ],
-    "vg-mathis": [
-     0.12956,
-     0.54697,
-     0.115,
-     0.068
-    ],
-    "vg-bernard": [
-     0.1219,
-     0.62011,
-     0.115,
-     0.068
-    ],
-    "vg-fin": [
-     0.12097,
-     0.69605,
-     0.115,
-     0.068
     ]
    },
    "deborde": [],
-   "lignes": 9,
+   "lignes": 14,
    "liens": [
     {
      "cible": "gateaux",
      "rect": [
-      0.09611,
-      0.14011,
-      0.35641,
+      0.09601,
+      0.13673,
+      0.34961,
       0.0424
      ]
     },
@@ -3021,67 +2476,115 @@
      "invite": "lisa",
      "rect": [
       0.23606,
-      0.24009,
+      0.23136,
       0.70199,
       0.02712
      ]
     },
     {
-     "cible": "julie",
-     "invite": "julie",
+     "cible": "emeline",
+     "invite": "emeline",
      "rect": [
-      0.23736,
-      0.31813,
-      0.70033,
+      0.23727,
+      0.30472,
+      0.69912,
       0.02712
+     ]
+    },
+    {
+     "cible": "clemence",
+     "invite": "clemence",
+     "rect": [
+      0.23672,
+      0.3698,
+      0.69965,
+      0.02855
+     ]
+    },
+    {
+     "cible": "pierrette",
+     "invite": "pierrette",
+     "rect": [
+      0.23758,
+      0.43973,
+      0.69828,
+      0.02761
+     ]
+    },
+    {
+     "cible": "tartes",
+     "rect": [
+      0.09294,
+      0.48146,
+      0.36831,
+      0.0424
+     ]
+    },
+    {
+     "cible": "anatole",
+     "invite": "anatole",
+     "rect": [
+      0.23838,
+      0.56746,
+      0.69749,
+      0.03444
+     ]
+    },
+    {
+     "cible": "lise",
+     "invite": "lise",
+     "rect": [
+      0.23683,
+      0.6309,
+      0.69836,
+      0.02833
      ]
     },
     {
      "cible": "biscuits",
      "rect": [
-      0.09262,
-      0.38678,
-      0.16843,
+      0.09678,
+      0.66458,
+      0.17218,
       0.0424
      ]
     },
     {
-     "cible": "rose",
-     "invite": "rose",
+     "cible": "julien",
+     "invite": "julien",
      "rect": [
-      0.2373,
-      0.4834,
-      0.69796,
-      0.03302
+      0.23621,
+      0.7467,
+      0.70063,
+      0.03131
      ]
     },
     {
-     "cible": "mathis",
-     "invite": "mathis",
+     "cible": "crepes",
      "rect": [
-      0.24533,
-      0.5658,
-      0.6935,
-      0.02712
+      0.09863,
+      0.7769,
+      0.36029,
+      0.04557
      ]
     },
     {
-     "cible": "bernard",
-     "invite": "bernard",
+     "cible": "laura",
+     "invite": "laura",
      "rect": [
-      0.23826,
-      0.64059,
-      0.6952,
-      0.02712
+      0.23681,
+      0.86295,
+      0.69858,
+      0.03182
      ]
     },
     {
      "cible": "fin",
      "rect": [
-      0.23648,
-      0.71636,
-      0.70043,
-      0.02729
+      0.2386,
+      0.91247,
+      0.69948,
+      0.03096
      ]
     }
    ],
@@ -3090,46 +2593,173 @@
      "aquarelle": "tasse-2",
      "anime": "vapeur",
      "angle": -4
-    },
-    "vg-lisa": {
-     "aquarelle": "carotte",
+    }
+   },
+   "relu": true
+  },
+  "tartes-droite": {
+   "double": "tartes",
+   "cote": "droite",
+   "folio": 21,
+   "sansFolio": true,
+   "papier": "pages/papier/f21",
+   "miroir": false,
+   "encre": "pages/tartes-droite",
+   "papier1x": "pages/1x/papier/f21",
+   "encre1x": "pages/1x/tartes-droite",
+   "encre4x": {
+    "base": "pages/4x/tartes-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Tartes & confitures\nAnatole et Lise",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 1,
+   "relu": true
+  },
+  "tartes-gauche": {
+   "double": "tartes",
+   "cote": "gauche",
+   "folio": 20,
+   "sansFolio": true,
+   "papier": "pages/papier/f19",
+   "miroir": true,
+   "encre": "pages/tartes-gauche",
+   "papier1x": "pages/1x/papier/f19",
+   "encre1x": "pages/1x/tartes-gauche",
+   "encre4x": {
+    "base": "pages/4x/tartes-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "",
+   "vivants": {
+    "aq-guirlande": [
+     0.12,
+     0.15,
+     0.76,
+     0.12
+    ],
+    "aq-tartes-1": [
+     0.23,
+     0.32,
+     0.56,
+     0.26
+    ],
+    "aq-tartes-2": [
+     0.2,
+     0.66,
+     0.24,
+     0.23
+    ],
+    "aq-tartes-3": [
+     0.56,
+     0.6,
+     0.23,
+     0.28
+    ]
+   },
+   "deborde": [],
+   "lignes": 0,
+   "aquarelles": {
+    "aq-guirlande": {
+     "aquarelle": "guirlande",
      "anime": "balance",
-     "angle": -62
+     "angle": 0
     },
-    "vg-julie": {
-     "aquarelle": "citron-2",
-     "anime": "fleurit",
-     "angle": 4
-    },
-    "vg-rose": {
-     "aquarelle": "sables-etoiles",
-     "anime": "fleurit",
-     "angle": -5
-    },
-    "vg-mathis": {
-     "aquarelle": "cookies",
+    "aq-tartes-1": {
+     "aquarelle": "tarte-pommes",
      "anime": "fleurit",
      "angle": 3
     },
-    "vg-bernard": {
-     "aquarelle": "tarte-pommes",
+    "aq-tartes-2": {
+     "aquarelle": "pomme",
      "anime": "fleurit",
-     "angle": -3
+     "angle": -4
     },
-    "vg-fin": {
-     "aquarelle": "theiere",
-     "anime": "vapeur",
-     "angle": 2
+    "aq-tartes-3": {
+     "aquarelle": "citron",
+     "anime": "fleurit",
+     "angle": 3
     }
    },
-   "douteux": [
-    "Rose (encre rendue lue « rose »)",
-    "pommes (encre rendue lue « p ommes »)"
-   ],
-   "douteux_importants": [
-    "Rose",
-    "pommes"
-   ],
    "relu": true
   },
   "titre": {

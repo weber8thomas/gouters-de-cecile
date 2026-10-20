@@ -1,4 +1,4 @@
-// La même double page de Julie vue sur cinq écrans simulés, côte à côte et à la même échelle (px CSS) :
+// La même double page de Lisa vue sur cinq écrans simulés, côte à côte et à la même échelle (px CSS) :
 // téléphone debout et couché, tablette debout, ordinateur, TV. Chaque écran est un <Ecran> sous un
 // ViewportOverride (taille, tactile, zones sûres), dans un cadre d'appareil sobre dessiné en CSS.
 // Statique : aucun geste, aucun clavier, aucun mouvement.
@@ -8,7 +8,7 @@ import { Livre } from '../../components/Livre';
 import { CameraProvider } from '../../lib/camera';
 import { ViewportOverride, type ViewportForce } from '../../lib/viewport';
 import type { Distance } from '../../lib/settings';
-import { JULIE } from '../DemoCarnet/spreads';
+import { LISA } from '../DemoCarnet/spreads';
 import './Formats.css';
 
 /** Échelle commune : 1 px CSS de chaque appareil = 0,36 px de la carte. */
@@ -26,7 +26,7 @@ interface Simule {
   cote?: 'gauche' | 'droite';
 }
 
-const SPREADS = [JULIE];
+const SPREADS = [LISA];
 
 const ECRANS: Record<string, Simule> = {
   tv: { cle: 'tv', appareil: 'tv', legende: 'la TV, à 3 m', detail: '1920 × 1080 · double page', vp: { w: 1920, h: 1080, dpr: 1, tactile: false, pleinEcran: true }, distance: 'moyenne' },

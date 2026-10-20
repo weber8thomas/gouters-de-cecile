@@ -3,14 +3,15 @@
 Les planches originales `actions.png`, `chiens.png`, `details.png` et `bulles.png` ont été créées
 avec génération d’images et direction artistique commune : crayon fin, aquarelle mate, porcelaine
 anglaise crème à fleurs, palette sauge/rose/ocre. `details-intact.png` est une modification de la
-carotte de la même planche, avant la première morsure. Les bulles **Tea time!** et **Jolly good!**
-sont des dessins manuscrits dans les pixels de la planche ; aucun texte typographique n’est ajouté.
+carotte de la même planche, avant la première morsure. Les anciennes bulles anglaises de `bulles.png`
+restent archivées comme sources ; le carnet utilise `bulles-vierges.png`, avec les phrases françaises
+validées composées en Caveat : « Une part pour le chien ? » et « Ça sent le beurre d’ici ! ».
 Le citron entier est isolé de la série v9 en conservant ses pixels. Ces sources sont conservées
 pour ce projet ; aucune nouvelle génération ni connexion distante ne sert à l’exécution du site.
 
 `manifeste.json` fixe les cellules, dimensions et exceptions de cadrage. Les quatre carottes
 conservent un canevas commun ; les points d’attache mesurés dans `Aquarelle/tableaux.ts` alignent
-leurs fanes et gardent la bouche du lapin au contact de la partie grignotée. Les sujets proches
+leurs fanes pendant les morsures successives et la repousse. Le lapin a été retiré des scènes. Les sujets proches
 sont isolés par leur composante alpha. Les corps gardent leurs proportions pendant l’animation.
 
 Reconstruction depuis les sources versionnées :

@@ -1,7 +1,6 @@
 // Doubles pages de la démo du carnet, partagées par l'application (Carnet), la carte DemoCarnet et la
 // carte Formats. L'ordre vient de src/content/carnet.json (source unique, aussi lue par la cuisson) :
-// page de titre, sommaire, intercalaires, Lisa (vraie recette, longue : feuillet volant), Julie, Mamie
-// Rose, Mathis et Bernard, puis le mot de la fin. Toutes sur la table en bois (CONTRACT § 12, § 13).
+// ouverture, albums, sommaire, quatre chapitres et les huit recettes reçues, puis le mot de la fin.
 //
 // Chaque page est une PAGE CUITE (<PageCuite>, scripts/bake-pages.mjs) : vrai papier ancien scanné,
 // écriture générée trait par trait et croquis, l'encre cuite dans le papier. Ce qui reste vivant se
@@ -24,8 +23,11 @@ import { useRenderMode, type SpreadSpec } from '../../lib/spread';
 import videosJson from '../../content/videos.json';
 import carnetJson from '../../content/carnet.json';
 import photosCecileJson from '../../content/photos-cecile.json';
-import { assetUrl } from '../../lib/assets';
+import rosterJson from '../../content/roster.json';
+import { assetUrl, cssUrl } from '../../lib/assets';
+import { handStyle } from '../../lib/hands';
 import type { Carnet, DoubleCarnet } from '../../content/types';
+import './Souvenirs.css';
 
 const VIDEOS = videosJson as unknown as Record<string, Omit<VideoInfo, 'id'>>;
 
@@ -46,6 +48,19 @@ interface VolantInfo { recto: string; verso?: string | null; angle?: number }
 
 /** Tirages de l'album « Cécile en cuisine » (src/content/photos-cecile.json), dans l'ordre des zones photo-1…photo-10. */
 const PHOTOS_CECILE = photosCecileJson as { id: string; age: string; tirage: string; coins: string; angle?: number }[];
+
+/** Carte au monogramme du proche, en attendant son véritable souvenir. Aucun portrait de tiers. */
+function CarteSouvenir({ slug, papier }: { slug: string; papier: string }) {
+  const proche = rosterJson.guests.find(g => g.slug === slug);
+  if (!proche) return null;
+  return <div className="gc-carte-souvenir" aria-hidden="true" style={{ '--gc-souvenir-papier':cssUrl(papier) } as React.CSSProperties}>
+    <div className="gc-carte-souvenir__papier">
+      <svg viewBox="0 0 300 200" preserveAspectRatio="none"><path d="M7 8 Q150 5 292 9 L290 191 Q150 194 8 190 Z M10 11 L289 12 287 188 11 187 Z"/></svg>
+      <span style={handStyle('cecile','title','brune')}>{proche.firstName[0]}</span>
+    </div>
+    <img className="gc-carte-souvenir__coins" src={assetUrl('photos/lisa/coins')} alt="" draggable={false}/>
+  </div>;
+}
 
 /**
  * Un tirage collé sans vidéo (album « Cécile en cuisine ») : le tirage et ses coins, un peu de travers.
@@ -113,6 +128,7 @@ function Page({ id, graine }: { id: string; graine: number }) {
   const slots: Record<string, React.ReactNode> = {};
   const video = videoInfo(videoDePage(id));
   if (video) slots.photo = <PhotoCollee video={video} graine={graine} />;
+  else if (info?.vivants?.photo && info.double) slots.photo = <CarteSouvenir slug={info.double} papier={info.papier}/>;
   for (const nom of Object.keys(info?.vivants ?? {})) {
     const n = /^photo-(\d+)$/.exec(nom);
     const t = n ? PHOTOS_CECILE[Number(n[1]) - 1] : undefined;
@@ -180,5 +196,5 @@ export const CREDITS_VIDEOS: { titre: string; auteur: string; licence: string; s
   return { titre: (v as { titre: string }).titre, auteur: c?.auteur ?? '', licence: c?.licence ?? '', source: c?.source ?? '' };
 });
 
-/** La double page de Julie (carte Formats). */
-export const JULIE: SpreadSpec = SPREADS_DEMO.find((s) => s.id === 'julie')!;
+/** La double page de Lisa (carte Formats). */
+export const LISA: SpreadSpec = SPREADS_DEMO.find((s) => s.id === 'lisa')!;

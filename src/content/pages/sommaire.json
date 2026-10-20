@@ -1,114 +1,63 @@
 {
- "main": "soignee",
- "encre": "plume",
- "gabarit": "carnet",
- "id": "sommaire",
- "double": "sommaire",
- "cote": "droite",
- "folio": 5,
- "graine": 501,
- "marges": {
-  "haut": 0.075
- },
- "_": "Lignes générées depuis src/content/carnet.json et le roster (recette.lignes_sommaire) ; chaque ligne est un lien (manifeste : liens). `titres` : texte d'un invité d'une double page partagée. Page décorée : une petite aquarelle vivante dans le retrait de chaque entrée (`vignettes` : zones vivantes posées par la mise en page), une frise de rinceau en bas, la tasse fumante près du titre.",
- "blocs": [
-  {
-   "id": "titre",
-   "type": "titre",
-   "texte": "Sommaire",
-   "echelle": 1.9,
-   "graine": 44,
-   "position": "centre",
-   "souligne": "trait",
-   "encre": "terracotta"
+  "main": "soignee",
+  "encre": "plume",
+  "gabarit": "carnet",
+  "id": "sommaire",
+  "double": "sommaire",
+  "cote": "droite",
+  "folio": 5,
+  "graine": 501,
+  "marges": {
+    "haut": 0.075
   },
-  {
-   "id": "frise",
-   "type": "ornement",
-   "forme": "frise",
-   "rect": [
-    0.16,
-    0.83,
-    0.68,
-    0.03
-   ],
-   "encre": "terracotta",
-   "graine": 5013
-  },
-  {
-   "id": "sommaire",
-   "type": "sommaire",
-   "fin": true,
-   "titres": {
-    "mathis": "Mathis — cookies",
-    "bernard": "Bernard — tarte aux pommes"
-   },
-   "retrait": 0.15,
-   "avant": 1.6,
-   "vignette": 0.068,
-   "vignette_largeur": 0.115,
-   "vignettes": {
-    "lisa": {
-     "zone": "vg-lisa",
-     "hauteur": 0.082
+  "_": "Sommaire des huit proches et quatre chapitres, généré depuis carnet.json ; aucun titre ni vignette d’invité fictif conservé. Les textes de recette restent intégraux.",
+  "blocs": [
+    {
+      "id": "titre",
+      "type": "titre",
+      "texte": "Sommaire",
+      "echelle": 1.9,
+      "graine": 44,
+      "position": "centre",
+      "souligne": "trait",
+      "encre": "terracotta"
     },
-    "julie": "vg-julie",
-    "rose": "vg-rose",
-    "mathis": "vg-mathis",
-    "bernard": "vg-bernard",
-    "fin": "vg-fin"
-   },
-   "graine": 23457
-  }
- ],
- "vivants": [
-  {
-   "nom": "aq-tasse",
-   "rect": [
-    0.75,
-    0.045,
-    0.17,
-    0.117
-   ],
-   "aquarelle": "tasse-2",
-   "anime": "vapeur",
-   "angle": -4
-  },
-  {
-   "nom": "vg-lisa",
-   "aquarelle": "carotte",
-   "anime": "balance",
-   "angle": -62
-  },
-  {
-   "nom": "vg-julie",
-   "aquarelle": "citron-2",
-   "anime": "fleurit",
-   "angle": 4
-  },
-  {
-   "nom": "vg-rose",
-   "aquarelle": "sables-etoiles",
-   "anime": "fleurit",
-   "angle": -5
-  },
-  {
-   "nom": "vg-mathis",
-   "aquarelle": "cookies",
-   "anime": "fleurit",
-   "angle": 3
-  },
-  {
-   "nom": "vg-bernard",
-   "aquarelle": "tarte-pommes",
-   "anime": "fleurit",
-   "angle": -3
-  },
-  {
-   "nom": "vg-fin",
-   "aquarelle": "theiere",
-   "anime": "vapeur",
-   "angle": 2
-  }
- ]
+    {
+      "id": "frise",
+      "type": "ornement",
+      "forme": "frise",
+      "rect": [
+        0.16,
+        0.83,
+        0.68,
+        0.03
+      ],
+      "encre": "terracotta",
+      "graine": 5013
+    },
+    {
+      "id": "sommaire",
+      "type": "sommaire",
+      "fin": true,
+      "retrait": 0.15,
+      "avant": 1.6,
+      "vignette": 0.068,
+      "vignette_largeur": 0.115,
+      "graine": 23457
+    }
+  ],
+  "vivants": [
+    {
+      "nom": "aq-tasse",
+      "rect": [
+        0.75,
+        0.045,
+        0.17,
+        0.117
+      ],
+      "aquarelle": "tasse-2",
+      "anime": "vapeur",
+      "angle": -4
+    }
+  ]
 }

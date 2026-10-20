@@ -1,0 +1,64 @@
+{
+  "slug": "lise",
+  "source": "src/content/recettes/lise.txt",
+  "adaptations": [
+    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé."
+  ],
+  "style": {
+    "main": "soignee",
+    "encre": "bic",
+    "graine": 8573
+  },
+  "titre": "Tarte aux pommes de ma maman",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "paragraphes": [
+        "J'suis pas la reine de la cuisine de goûter mais une valeur sûre : Tarte aux pommes de ma maman"
+      ]
+    },
+    {
+      "lignes": [
+        {
+          "texte": "1 pâte sablée"
+        },
+        {
+          "texte": "3 à 4 pommes"
+        },
+        {
+          "texte": "1 brique de crème fraîche liquide"
+        },
+        {
+          "texte": "Cannelle en poudre"
+        },
+        {
+          "texte": "2 œufs"
+        },
+        {
+          "texte": "3 cuillères à soupe de sucre"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Fais ta pâte (t'es la reine des pâtes à tarte je peux rien t'apprendre) et étale-la."
+    },
+    {
+      "titre": "2.",
+      "texte": "Dispose tes pommes découpées en quartiers fins ou rondelles."
+    },
+    {
+      "titre": "3.",
+      "texte": "Mélange crème + œufs + cannelle + sucre pour l'appareil."
+    },
+    {
+      "titre": "4.",
+      "texte": "Et hop au four à 180 degrés et régale-toi !!"
+    }
+  ],
+  "mot": "Joyeux anniversaire ma Cécile ! Une valeur sûre partagée avec le cœur. Gros bisous !",
+  "signature": "Lise",
+  "nom": "Lise"
+}

@@ -1,0 +1,69 @@
+{
+  "slug": "anatole",
+  "source": "src/content/recettes/anatole.txt",
+  "adaptations": [
+    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé."
+  ],
+  "style": {
+    "main": "papa",
+    "encre": "noire",
+    "graine": 7459
+  },
+  "titre": "Tarte à la myrtille",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "1 pâte sablée pur beurre"
+        },
+        {
+          "texte": "450 g de myrtilles"
+        },
+        {
+          "texte": "60 g de poudre d'amandes (le secret pour absorber le jus)"
+        },
+        {
+          "texte": "50 g de sucre roux"
+        },
+        {
+          "texte": "1 sachet de sucre vanillé"
+        },
+        {
+          "texte": "1 c. à soupe de jus de citron"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Foncer le moule avec la pâte sablée, piquer le fond à la fourchette et réserver 15 min au frais."
+    },
+    {
+      "titre": "2.",
+      "texte": "Préchauffer le four à 190 °C. Saupoudrer le fond de tarte avec la poudre d'amandes."
+    },
+    {
+      "titre": "3.",
+      "texte": "Mélanger délicatement les myrtilles avec le sucre roux, le sucre vanillé et le jus de citron, puis les répartir sur la pâte."
+    },
+    {
+      "titre": "4.",
+      "texte": "Enfourner 30 à 35 minutes jusqu'à ce que la pâte soit bien dorée et les fruits compotés."
+    },
+    {
+      "titre": "5.",
+      "texte": "La touche d'Anatole : Laisser refroidir complètement avant de servir avec une cuillère de crème fraîche épaisse."
+    }
+  ],
+  "mot": "Joyeux 30 ans Cécile ! Une vraie tarte des sous-bois pour fêter ça. Promis, les doigts bleus ça part au lavage ! Plein de gros bisous.",
+  "signature": "Anatole",
+  "nom": "Anatole",
+  "notesMarge": [
+    {
+      "texte": "Myrtilles fraîches ou sauvages de préférence !",
+      "pres": "titre"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Secrets du carnet
 
-`<SecretsDuCarnet page="mathis-gauche" />` se pose dans `PageCuite.dessus`, à côté de la toile des
+`<SecretsDuCarnet page="lisa-gauche" />` se pose dans `PageCuite.dessus`, à côté de la toile des
 aquarelles. `<CompagnonDuCarnet />` se monte une seule fois sous `Ecran`, à côté du `Livre` ; son
 portail vers les contrôles reste hors de la loupe.
 

@@ -90,6 +90,10 @@ PONCT = re.compile(r"^[!?:;»)\].,…]+$")
 UNITES = {"g", "kg", "cl", "ml", "l", "dl", "min", "h", "mm", "cm", "%", "°C", "°", "°C)", "g,", "g.", "min.", "min,"}
 ICONE = re.compile(r"^:([a-z][a-z0-9-]*):$")
 _COUPE_ICONES = re.compile(r"(:[a-z][a-z0-9-]*:)")
+# Les deux emojis reçus restent dans les sources et le texte accessible. La main les dessine comme
+# les pictogrammes existants, au lieu de demander au réseau d'écrire des glyphes qu'il ne connaît pas.
+EMOJIS_RECUS = {"😎": "sourire-lunettes", "😋": "sourire"}
+_COUPE_EMOJIS = re.compile(r"(:[a-z][a-z0-9-]*:|😎|😋)")
 
 
 def _norm(s: str) -> str:
@@ -574,12 +578,12 @@ class Mise:
         n = 0
         for s in segments:
             g = int(s["graine"])
-            morceaux = [p for p in _COUPE_ICONES.split(s["texte"]) if p.strip()]
+            morceaux = [p for p in _COUPE_EMOJIS.split(s["texte"]) if p.strip()]
             k = 0
             for p in morceaux:
                 p = p.strip()
-                if ICONE.match(p):
-                    ic = mot_icone(ICONE.match(p).group(1))
+                if ICONE.match(p) or p in EMOJIS_RECUS:
+                    ic = mot_icone(EMOJIS_RECUS[p] if p in EMOJIS_RECUS else ICONE.match(p).group(1))
                     if mots:  # l'emoji suit le mot écrit juste avant : il ne passe pas seul à la ligne
                         ic.colle = True
                         ic.espace_avant = 0.45 if not ICONE.match(mots[-1].texte) else 0.12

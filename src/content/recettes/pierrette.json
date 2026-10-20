@@ -1,0 +1,63 @@
+{
+  "slug": "pierrette",
+  "source": "src/content/recettes/pierrette.txt",
+  "adaptations": [
+    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé."
+  ],
+  "style": {
+    "main": "mamie",
+    "encre": "brune",
+    "graine": 6343
+  },
+  "titre": "Le cake au citron d'antan",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "titre": "Appareil :",
+      "lignes": [
+        {
+          "texte": "3 œufs, 170 g de sucre, le zeste râpé de 2 citrons, 160 g de farine, 1 c. à café de levure, 100 g de beurre fondu tiède, 50 g de crème liquide entière"
+        }
+      ]
+    },
+    {
+      "titre": "Sirop d'imbibage :",
+      "lignes": [
+        {
+          "texte": "60 g de jus de citron, 40 g de sucre"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Frotter longuement le sucre et les zestes entre les doigts pour libérer les huiles essentielles."
+    },
+    {
+      "titre": "2.",
+      "texte": "Fouetter avec les œufs jusqu'à ce que le mélange double de volume."
+    },
+    {
+      "titre": "3.",
+      "texte": "Ajouter la crème, puis la farine tamisée avec la levure, et enfin le beurre fondu."
+    },
+    {
+      "titre": "4.",
+      "texte": "Cuire 42 min à 165 °C. Pendant ce temps, tiédir le jus de citron avec le sucre pour faire le sirop."
+    },
+    {
+      "titre": "5.",
+      "texte": "Le secret de Pierrette : Dès la sortie du four, imbiber le cake encore très chaud avec le sirop tiède au pinceau jusqu'à complète absorption."
+    }
+  ],
+  "mot": "Trente bougies pour notre Cécile chérie ! Voici le secret de mon cake au citron bien imbibé qui ne sèche jamais. Gros bisous tendres.",
+  "signature": "Pierrette",
+  "nom": "Pierrette",
+  "notesMarge": [
+    {
+      "texte": "Citrons non traités bien lavés !",
+      "pres": "titre"
+    }
+  ]
+}

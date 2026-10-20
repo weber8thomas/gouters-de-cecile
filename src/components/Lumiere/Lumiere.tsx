@@ -24,7 +24,9 @@ const r4 = (v: number) => Math.round(v * 1e4) / 1e4;
 const reglage = (i: number, base: number, pente: number, min: number, max: number) => r4(borne(base + pente * (i - 1), min, max));
 
 const calculOpacitePapier = (fb: number, f: number, lum: number, eclat: number) => {
-  const v = 0.8 * fb + 0.2 * f;
+  // Bougie applique déjà ce gain à son signal rendu. Ramener sa variation autour de 1 avant
+  // d'appliquer l'éclat au papier, sinon les réglages élevés écrêtent tout le vacillement à 1.
+  const v = 0.8 * (fb / (0.6 + 0.4 * eclat)) + 0.2 * f;
   // À 200 % (eclat = 2), base ≈ 0,76 avec une forte amplitude de vacillement sans écrêter à 1.
   const base = Math.min(0.86, 0.46 * Math.pow(eclat, 0.72) * (0.88 + 0.08 * lum));
   const pente = 1.45 * Math.pow(eclat, 0.85);
