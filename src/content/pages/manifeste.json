@@ -56,7 +56,7 @@
      ]
     ]
    },
-   "texte": "Anatole\n2.\nPréchauffer le four à 190 °C. Saupoudrer le fond de tarte avec la poudre d'amandes.\n3.\nMélanger délicatement les myrtilles avec le sucre roux, le sucre vanillé et le jus de citron, puis les répartir sur la pâte.\n4.\nEnfourner 30 à 35 minutes jusqu'à ce que la pâte soit bien dorée et les fruits compotés.\n5.\nLa touche d'Anatole : Laisser refroidir complètement avant de servir avec une cuillère de crème fraîche épaisse.",
+   "texte": "Anatole\n3. Mélanger délicatement les myrtilles avec le sucre roux, le sucre vanillé et le jus de citron, puis les répartir sur la pâte.\n4. Enfourner 30 à 35 minutes jusqu'à ce que la pâte soit bien dorée et les fruits compotés.\n5. La touche d'Anatole : Laisser refroidir complètement avant de servir avec une cuillère de crème fraîche épaisse.",
    "vivants": {
     "aq-anatole-1": [
      0.36,
@@ -66,7 +66,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 14,
+   "lignes": 6,
    "aquarelles": {
     "aq-anatole-1": {
      "aquarelle": "tarte-myrtilles",
@@ -128,7 +128,7 @@
      ]
     ]
    },
-   "texte": "Anatole\nPour Cécile : Joyeux 30 ans Cécile ! Une vraie tarte des sous-bois pour fêter ça. Promis, les doigts bleus ça part au lavage ! Plein de gros bisous. — Anatole\nTarte à la myrtille\n1 pâte sablée pur beurre\n450 g de myrtilles\n60 g de poudre d'amandes (le secret pour absorber le jus)\n50 g de sucre roux\n1 sachet de sucre vanillé\n1 c. à soupe de jus de citron\n1.\nFoncer le moule avec la pâte sablée, piquer le fond à la fourchette et réserver 15 min au frais.\n(Myrtilles fraîches ou sauvages de préférence !)",
+   "texte": "Anatole\nPour Cécile : Joyeux 30 ans Cécile ! Une vraie tarte des sous-bois pour fêter ça. Promis, les doigts bleus ça part au lavage ! Plein de gros bisous. — Anatole\nTarte à la myrtille\nIngrédients\n1 pâte sablée pur beurre\n450 g de myrtilles\n60 g de poudre d'amandes (le secret pour absorber le jus)\n50 g de sucre roux\n1 sachet de sucre vanillé\n1 c. à soupe de jus de citron\nPréparation\n1. Foncer le moule avec la pâte sablée, piquer le fond à la fourchette et réserver 15 min au frais.\n2. Préchauffer le four à 190 °C. Saupoudrer le fond de tarte avec la poudre d'amandes.\n(Myrtilles fraîches ou sauvages de préférence !)",
    "vivants": {
     "photo": [
      0.06,
@@ -484,7 +484,7 @@
      ]
     ]
    },
-   "texte": "Cécile en cuisine\nCécile, ……… ans\nCécile, ……… ans\nCécile, ……… ans",
+   "texte": "Le goût des bonnes choses\nCécile, ……… ans\nCécile, ……… ans\nCécile, ……… ans",
    "vivants": {
     "photo-1": [
      0.08,
@@ -506,15 +506,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 1,
-   "douteux": [
-    "Cécile (encre rendue lue « Cecile »)",
-    "Cécile, (encre rendue lue « Cecile »)"
-   ],
-   "douteux_importants": [
-    "Cécile",
-    "Cécile,"
-   ],
+   "lignes": 2,
    "relu": true
   },
   "cecile-2-droite": {
@@ -731,17 +723,17 @@
      ]
     ]
    },
-   "texte": "Clémence\n1.\nMélanger les miettes de spéculoos et le beurre fondu. Tasser au fond d'un moule à charnière et réserver 30 min au frais.\n2.\nFouetter le cream cheese avec le sucre glace, ajouter la crème fraîche, puis les œufs un à un sans trop battre.\n3.\nVerser sur le biscuit, enfoncer quelques framboises dans la crème.\n4.\nCuire 45 min à 150 °C au four. Laisser refroidir dans le four éteint, puis réfrigérer au moins 6h.\n5.\nLe dressage de Clémence : Recouvrir de framboises fraîches et d'un coulis au moment de servir.",
+   "texte": "Clémence\nGarniture :\n200 g de framboises fraîches + coulis\nPréparation\n1. Mélanger les miettes de spéculoos et le beurre fondu. Tasser au fond d'un moule à charnière et réserver 30 min au frais.\n2. Fouetter le cream cheese avec le sucre glace, ajouter la crème fraîche, puis les œufs un à un sans trop battre.\n3. Verser sur le biscuit, enfoncer quelques framboises dans la crème.\n4. Cuire 45 min à 150 °C au four. Laisser refroidir dans le four éteint, puis réfrigérer au moins 6h.\n5. Le dressage de Clémence : Recouvrir de framboises fraîches et d'un coulis au moment de servir.",
    "vivants": {
     "aq-clemence-1": [
-     0.36,
-     0.7,
-     0.38,
-     0.24
+     0.16,
+     0.56,
+     0.68,
+     0.38
     ]
    },
    "deborde": [],
-   "lignes": 14,
+   "lignes": 12,
    "aquarelles": {
     "aq-clemence-1": {
      "aquarelle": "framboises-speculoos",
@@ -803,7 +795,7 @@
      ]
     ]
    },
-   "texte": "Clémence\nPour Cécile : Pour la reine du jour ! L'alliance du croustillant du spéculoos et de l'acidulé de la framboise. Très bel anniversaire Cécile, régale-toi ! — Clémence\nCheesecake spéculoos & framboises\nBase :\n200 g de spéculoos en miettes, 70 g de beurre fondu\nCrème :\n450 g de cream cheese (Philadelphia), 150 g de crème fraîche épaisse, 90 g de sucre glace, 2 œufs\nGarniture :\n200 g de framboises fraîches + coulis\n(À préparer la veille, c'est encore meilleur !)",
+   "texte": "Clémence\nPour Cécile : Pour la reine du jour ! L'alliance du croustillant du spéculoos et de l'acidulé de la framboise. Très bel anniversaire Cécile, régale-toi ! — Clémence\nCheesecake spéculoos & framboises\nIngrédients\nBase :\n200 g de spéculoos en miettes\n70 g de beurre fondu\nCrème :\n450 g de cream cheese (Philadelphia)\n150 g de crème fraîche épaisse\n90 g de sucre glace\n2 œufs\n(À préparer la veille, c'est encore meilleur !)",
    "vivants": {
     "photo": [
      0.06,
@@ -813,7 +805,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 11,
+   "lignes": 13,
    "recette": "clemence",
    "relu": true
   },
@@ -871,9 +863,22 @@
     ]
    },
    "texte": "Crêpes & gaufres\nLaura",
-   "vivants": {},
+   "vivants": {
+    "aq-vanille": [
+     0.27,
+     0.53,
+     0.46,
+     0.3
+    ]
+   },
    "deborde": [],
    "lignes": 1,
+   "aquarelles": {
+    "aq-vanille": {
+     "aquarelle": "vanille",
+     "angle": 0
+    }
+   },
    "relu": true
   },
   "crepes-gauche": {
@@ -937,23 +942,11 @@
      0.76,
      0.12
     ],
-    "aq-crepes-1": [
-     0.18,
-     0.38,
-     0.3,
-     0.22
-    ],
-    "aq-crepes-2": [
-     0.57,
-     0.34,
-     0.24,
-     0.24
-    ],
-    "aq-crepes-3": [
+    "aq-atelier": [
+     0.13,
      0.32,
-     0.64,
-     0.36,
-     0.24
+     0.74,
+     0.5
     ]
    },
    "deborde": [],
@@ -964,20 +957,9 @@
      "anime": "balance",
      "angle": 0
     },
-    "aq-crepes-1": {
+    "aq-atelier": {
      "aquarelle": "oeufs",
-     "anime": "fleurit",
-     "angle": 3
-    },
-    "aq-crepes-2": {
-     "aquarelle": "vanille",
-     "anime": "fleurit",
-     "angle": -4
-    },
-    "aq-crepes-3": {
-     "aquarelle": "tasse-2",
-     "anime": "fleurit",
-     "angle": 3
+     "angle": 0
     }
    },
    "relu": true
@@ -1124,7 +1106,7 @@
      ]
     ]
    },
-   "texte": "Emeline\n3.\nVerser le chocolat fondu tiédi, mélanger, puis incorporer la farine et la fleur de sel d'un geste souple.\n4.\nVerser dans un moule beurré. Cuire 20 à 22 minutes à 180 °C (le cœur doit rester légèrement tremblotant).\n5.\nL'astuce d'Emeline : Attendre 15 minutes qu'il tiédisse pour que le cœur devienne incroyablement fondant.",
+   "texte": "Emeline\n4. Verser dans un moule beurré. Cuire 20 à 22 minutes à 180 °C (le cœur doit rester légèrement tremblotant).\n5. L'astuce d'Emeline : Attendre 15 minutes qu'il tiédisse pour que le cœur devienne incroyablement fondant.",
    "vivants": {
     "aq-emeline-1": [
      0.36,
@@ -1134,7 +1116,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 9,
+   "lignes": 4,
    "aquarelles": {
     "aq-emeline-1": {
      "aquarelle": "fondant-chocolat",
@@ -1196,7 +1178,7 @@
      ]
     ]
    },
-   "texte": "Emeline\nPour Cécile : 30 ans ça se fête avec du chocolat et beaucoup d'amour ! Une recette réconfortante à savourer sans modération. Joyeux anniversaire Cécile ! — Emeline\nGâteau fondant au chocolat\n200 g de bon chocolat noir pâtissier\n150 g de beurre doux\n3 œufs entiers\n100 g de sucre de canne\n50 g de farine tamisée\n1 bonne pincée de fleur de sel\n1.\nFaire fondre le chocolat cassé en morceaux avec le beurre au bain-marie à feu très doux.\n2.\nDans un saladier, fouetter vivement les œufs et le sucre jusqu'à ce que le mélange blanchisse.\n(Chocolat noir 70 % minimum !)",
+   "texte": "Emeline\nPour Cécile : 30 ans ça se fête avec du chocolat et beaucoup d'amour ! Une recette réconfortante à savourer sans modération. Joyeux anniversaire Cécile ! — Emeline\nGâteau fondant au chocolat\nIngrédients\n200 g de bon chocolat noir pâtissier\n150 g de beurre doux\n3 œufs entiers\n100 g de sucre de canne\n50 g de farine tamisée\n1 bonne pincée de fleur de sel\nPréparation\n1. Faire fondre le chocolat cassé en morceaux avec le beurre au bain-marie à feu très doux.\n2. Dans un saladier, fouetter vivement les œufs et le sucre jusqu'à ce que le mélange blanchisse.\n3. Verser le chocolat fondu tiédi, mélanger, puis incorporer la farine et la fleur de sel d'un geste souple.\n(Chocolat noir 70 % minimum !)",
    "vivants": {
     "photo": [
      0.06,
@@ -1206,7 +1188,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 16,
+   "lignes": 17,
    "recette": "emeline",
    "relu": true
   },
@@ -1511,10 +1493,10 @@
    "texte": "Gâteaux & cakes\nLisa, Emeline, Clémence et Pierrette",
    "vivants": {
     "aq-gateau": [
-     0.31,
-     0.4,
-     0.38,
-     0.315
+     0.28,
+     0.43,
+     0.44,
+     0.34
     ]
    },
    "deborde": [],
@@ -1589,35 +1571,23 @@
      0.76,
      0.12
     ],
-    "aq-ble": [
-     0.12,
-     0.34,
+    "aq-fondant": [
      0.15,
-     0.198
+     0.33,
+     0.7,
+     0.32
     ],
-    "aq-oranges": [
-     0.73,
-     0.34,
-     0.15,
-     0.211
+    "aq-carotte": [
+     0.2,
+     0.69,
+     0.24,
+     0.12
     ],
-    "aq-cupcake": [
-     0.32,
-     0.31,
-     0.36,
-     0.37
-    ],
-    "aq-tasse": [
-     0.1,
-     0.645,
-     0.27,
-     0.18
-    ],
-    "aq-oeufs": [
-     0.65,
-     0.645,
-     0.25,
-     0.157
+    "aq-citron": [
+     0.56,
+     0.69,
+     0.24,
+     0.12
     ]
    },
    "deborde": [],
@@ -1628,30 +1598,17 @@
      "anime": "balance",
      "angle": 0
     },
-    "aq-ble": {
-     "aquarelle": "ble",
-     "anime": "balance",
-     "angle": -8
+    "aq-fondant": {
+     "aquarelle": "fondant-chocolat",
+     "angle": 0
     },
-    "aq-oranges": {
-     "aquarelle": "orange-2",
-     "anime": "fleurit",
-     "angle": 6
+    "aq-carotte": {
+     "aquarelle": "carotte",
+     "angle": 0
     },
-    "aq-cupcake": {
-     "aquarelle": "cupcake-bougie",
-     "anime": "fleurit",
-     "angle": 2
-    },
-    "aq-tasse": {
-     "aquarelle": "tasse-coeur",
-     "anime": "vapeur",
-     "angle": -3
-    },
-    "aq-oeufs": {
-     "aquarelle": "oeufs",
-     "anime": "fleurit",
-     "angle": 4
+    "aq-citron": {
+     "aquarelle": "citron",
+     "angle": 0
     }
    },
    "relu": true
@@ -1708,7 +1665,7 @@
      ]
     ]
    },
-   "texte": "Julien\nl'œuf et la vanille.\n2.\nAjouter la farine et le bicarbonate sans trop travailler la pâte. Incorporer les pépites et noisettes.\n3.\nFormer des boules généreuses et les placer 30 min au frigo.\n4.\nEnfourner à 175 °C pendant 10 à 12 minutes (les bords doivent dorer mais le centre doit rester très mou).\n5.\nLe secret de Julien : Laisser tiédir sur la plaque, ils durcissent en surface tout en restant fondants à cœur.",
+   "texte": "Julien\nPréparation\n1. Crémer le beurre pommade avec les sucres, puis ajouter l'œuf et la vanille.\n2. Ajouter la farine et le bicarbonate sans trop travailler la pâte. Incorporer les pépites et noisettes.\n3. Former des boules généreuses et les placer 30 min au frigo.\n4. Enfourner à 175 °C pendant 10 à 12 minutes (les bords doivent dorer mais le centre doit rester très mou).\n5. Le secret de Julien : Laisser tiédir sur la plaque, ils durcissent en surface tout en restant fondants à cœur.",
    "vivants": {
     "aq-julien-1": [
      0.4,
@@ -1718,7 +1675,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 12,
+   "lignes": 10,
    "aquarelles": {
     "aq-julien-1": {
      "aquarelle": "cookies",
@@ -1781,7 +1738,7 @@
      ]
     ]
    },
-   "texte": "Julien\nPour Cécile : Bienvenue dans le club des trentenaires Cécile ! Des cookies bien dodus et crousti-fondants pour accompagner tous tes thés d'anniversaire. — Julien\nCookies moelleux pépites & noisettes\n220 g de farine\n120 g de beurre demi-sel pommade\n100 g de cassonade + 40 g de sucre blanc\n1 œuf frais\n1 c. à café d'extrait de vanille\n1 c. à café de bicarbonate (ou levure)\n160 g de grosses pépites de chocolat (noir et lait)\n50 g de noisettes torréfiées concassées\n1.\nCrémer le beurre pommade avec les sucres, puis ajouter\n(Ne surtout pas trop les cuire !)",
+   "texte": "Julien\nPour Cécile : Bienvenue dans le club des trentenaires Cécile ! Des cookies bien dodus et crousti-fondants pour accompagner tous tes thés d'anniversaire. — Julien\nCookies moelleux pépites & noisettes\nIngrédients\n220 g de farine\n120 g de beurre demi-sel pommade\n100 g de cassonade + 40 g de sucre blanc\n1 œuf frais\n1 c. à café d'extrait de vanille\n1 c. à café de bicarbonate (ou levure)\n160 g de grosses pépites de chocolat (noir et lait)\n50 g de noisettes torréfiées concassées\n(Ne surtout pas trop les cuire !)",
    "vivants": {
     "photo": [
      0.06,
@@ -1791,7 +1748,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 14,
+   "lignes": 13,
    "recette": "julien",
    "relu": true
   },
@@ -1847,7 +1804,7 @@
      ]
     ]
    },
-   "texte": "Laura\ny verser une louche de pâte à crêpe.\n3.\nRetourner la crêpe dès que les bords se décollent. Attendre quelques secondes et retirer la crêpe.\n4.\nGarnir la crêpe d'une belle cuillère à soupe de Nutella, d'une banane coupée en rondelles et de crème chantilly avant de la rouler et de l'engloutir pour le goûter 😋",
+   "texte": "Laura\nle sucre et ajouter au fur et à mesure le lait jusqu'à obtention d'une pâte lisse.\n2. Huiler la crêpière. Dès qu'elle est bien chaude, y verser une louche de pâte à crêpe.\n3. Retourner la crêpe dès que les bords se décollent. Attendre quelques secondes et retirer la crêpe.\n4. Garnir la crêpe d'une belle cuillère à soupe de Nutella, d'une banane coupée en rondelles et de crème chantilly avant de la rouler et de l'engloutir pour le goûter 😋",
    "vivants": {
     "aq-laura-1": [
      0.36,
@@ -1857,7 +1814,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 8,
+   "lignes": 9,
    "aquarelles": {
     "aq-laura-1": {
      "aquarelle": "crepes-banane",
@@ -1871,10 +1828,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.6285,
-      0.2983,
-      0.0202,
-      0.0143
+      0.3886,
+      0.3305,
+      0.0205,
+      0.0145
      ]
     }
    ],
@@ -1932,7 +1889,7 @@
      ]
     ]
    },
-   "texte": "Laura\nPour Cécile : Joyeux 30 ans ma Cécile ! Une crêpe bien gourmande pour notre reine du goûter. Profite à fond de ta journée ! — Laura\nCrêpes gourmandes Nutella-banane-chantilly\n250 g de farine\n3 œufs\n50 cl de lait\n1 cuillère à soupe de sucre\nPour la garniture :\nNutella, 1 banane coupée en rondelles, crème chantilly\n1.\nMélanger les œufs, la farine, le sucre et ajouter au fur et à mesure le lait jusqu'à obtention d'une pâte lisse.\n2.\nHuiler la crêpière. Dès qu'elle est bien chaude,",
+   "texte": "Laura\nPour Cécile : Joyeux 30 ans ma Cécile ! Une crêpe bien gourmande pour notre reine du goûter. Profite à fond de ta journée ! — Laura\nCrêpes gourmandes Nutella-banane-chantilly\nIngrédients\n250 g de farine\n3 œufs\n50 cl de lait\n1 cuillère à soupe de sucre\nPour la garniture :\nNutella\n1 banane coupée en rondelles\ncrème chantilly\nPréparation\n1. Mélanger les œufs, la farine,",
    "vivants": {
     "photo": [
      0.06,
@@ -1998,7 +1955,7 @@
      ]
     ]
    },
-   "texte": "Lisa\n2.\nIncorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours au fouet électrique.\n3.\nCommencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer en augmentant la puissance jusqu'à obtention d'une pâte lisse.\n4.\nAjouter les carottes râpées et les noix concassées. Mélanger doucement à la spatule jusqu'à pâte homogène.\n5.\nHuiler et fariner légèrement le moule et verser la préparation.\n6.\nEnfourner 40 à 45 minutes à 175 °C (th. 5/6). Laisser refroidir dans le moule.\nOption glaçage :\n3 c. à soupe de sucre glace + jus de citron ou fleur d'oranger (consistance crémeuse, durcit au séchage).",
+   "texte": "Lisa\n2. Incorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours au fouet électrique.\n3. Commencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer en augmentant la puissance jusqu'à obtention d'une pâte lisse.\n4. Ajouter les carottes râpées et les noix concassées. Mélanger doucement à la spatule jusqu'à pâte homogène.\n5. Huiler et fariner légèrement le moule et verser la préparation.\n6. Enfourner 40 à 45 minutes à 175 °C (th. 5/6). Laisser refroidir dans le moule.\nOption glaçage :\n3 c. à soupe de sucre glace + jus de citron ou fleur d'oranger (consistance crémeuse, durcit au séchage).",
    "vivants": {
     "aq-lisa-1": [
      0.36,
@@ -2008,7 +1965,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 18,
+   "lignes": 13,
    "aquarelles": {
     "aq-lisa-1": {
      "aquarelle": "carotte",
@@ -2071,7 +2028,7 @@
      ]
     ]
    },
-   "texte": "Lisa\nPour Cécile : Joyeux anniversaire Cécile ! YUMMY après c'est la régalade 😎 — Lisa\nCarrot cake\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\n1.\nMélanger au fouet électrique les 4 œufs et le sucre.\n(Tiptop pour la saison !)",
+   "texte": "Lisa\nPour Cécile : Joyeux anniversaire Cécile ! YUMMY après c'est la régalade 😎 — Lisa\nCarrot cake\nIngrédients\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\nPréparation\n1. Mélanger au fouet électrique les 4 œufs et le sucre.\n(Tiptop pour la saison !)",
    "vivants": {
     "photo": [
      0.06,
@@ -2089,10 +2046,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.2368,
-      0.4372,
-      0.0229,
-      0.0162
+      0.8891,
+      0.3911,
+      0.023,
+      0.0163
      ]
     }
    ],
@@ -2150,7 +2107,7 @@
      ]
     ]
    },
-   "texte": "Lise\n4.\nEt hop au four à 180 degrés et régale-toi !!",
+   "texte": "Lise\n4. Et hop au four à 180 degrés et régale-toi !!",
    "vivants": {
     "aq-lise-1": [
      0.35,
@@ -2166,7 +2123,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 2,
+   "lignes": 1,
    "aquarelles": {
     "aq-lise-1": {
      "aquarelle": "tarte-pommes",
@@ -2234,7 +2191,7 @@
      ]
     ]
    },
-   "texte": "Lise\nPour Cécile : Joyeux anniversaire ma Cécile ! Une valeur sûre partagée avec le cœur. Gros bisous ! — Lise\nTarte aux pommes de ma maman\nJ'suis pas la reine de la cuisine de goûter mais une valeur sûre : Tarte aux pommes de ma maman\n1 pâte sablée\n3 à 4 pommes\n1 brique de crème fraîche liquide\nCannelle en poudre\n2 œufs\n3 cuillères à soupe de sucre\n1.\nFais ta pâte (t'es la reine des pâtes à tarte je peux rien t'apprendre) et étale-la.\n2.\nDispose tes pommes découpées en quartiers fins ou rondelles.\n3.\nMélange crème + œufs + cannelle + sucre pour l'appareil.",
+   "texte": "Lise\nPour Cécile : Joyeux anniversaire ma Cécile ! Une valeur sûre partagée avec le cœur. Gros bisous ! — Lise\nTarte aux pommes de ma maman\n« J'suis pas la reine de la cuisine de goûter mais une valeur sûre : Tarte aux pommes de ma maman »\nIngrédients\n1 pâte sablée\n3 à 4 pommes\n1 brique de crème fraîche liquide\nCannelle en poudre\n2 œufs\n3 cuillères à soupe de sucre\nPréparation\n1. Fais ta pâte (t'es la reine des pâtes à tarte je peux rien t'apprendre) et étale-la.\n2. Dispose tes pommes découpées en quartiers fins ou rondelles.\n3. Mélange crème + œufs + cannelle + sucre pour l'appareil.",
    "vivants": {
     "photo": [
      0.06,
@@ -2244,7 +2201,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 18,
+   "lignes": 17,
    "recette": "lise",
    "relu": true
   },
@@ -2300,33 +2257,22 @@
      ]
     ]
    },
-   "texte": "Pierrette\n3.\nAjouter la crème, puis la farine tamisée avec la levure, et enfin le beurre fondu.\n4.\nCuire 42 min à 165 °C. Pendant ce temps, tiédir le jus de citron avec le sucre pour faire le sirop.\n5.\nLe secret de Pierrette : Dès la sortie du four, imbiber le cake encore très chaud avec le sirop tiède au pinceau jusqu'à complète absorption.",
+   "texte": "Pierrette\nPréparation\n1. Frotter longuement le sucre et les zestes entre les doigts pour libérer les huiles essentielles.\n2. Fouetter avec les œufs jusqu'à ce que le mélange double de volume.\n3. Ajouter la crème, puis la farine tamisée avec la levure, et enfin le beurre fondu.\n4. Cuire 42 min à 165 °C. Pendant ce temps, tiédir le jus de citron avec le sucre pour faire le sirop.\n5. Le secret de Pierrette : Dès la sortie du four, imbiber le cake encore très chaud avec le sirop tiède au pinceau jusqu'à complète absorption.",
    "vivants": {
     "aq-pierrette-1": [
-     0.48,
-     0.68,
-     0.27,
-     0.29
-    ],
-    "aq-pierrette-2": [
-     0.13,
-     0.74,
-     0.22,
-     0.2
+     0.2,
+     0.5,
+     0.58,
+     0.383
     ]
    },
    "deborde": [],
-   "lignes": 9,
+   "lignes": 10,
    "aquarelles": {
     "aq-pierrette-1": {
      "aquarelle": "citron",
      "anime": "fleurit",
-     "angle": 5
-    },
-    "aq-pierrette-2": {
-     "aquarelle": "citron-2",
-     "anime": "fleurit",
-     "angle": -5
+     "angle": 0
     }
    },
    "recette": "pierrette",
@@ -2384,7 +2330,7 @@
      ]
     ]
    },
-   "texte": "Pierrette\nPour Cécile : Trente bougies pour notre Cécile chérie ! Voici le secret de mon cake au citron bien imbibé qui ne sèche jamais. Gros bisous tendres. — Pierrette\nLe cake au citron d'antan\nAppareil :\n3 œufs, 170 g de sucre, le zeste râpé de 2 citrons, 160 g de farine, 1 c. à café de levure, 100 g de beurre fondu tiède, 50 g de crème liquide entière\nSirop d'imbibage :\n60 g de jus de citron, 40 g de sucre\n1.\nFrotter longuement le sucre et les zestes entre les doigts pour libérer les huiles essentielles.\n2.\nFouetter avec les œufs jusqu'à ce que le mélange double de volume.\n(Citrons non traités bien lavés !)",
+   "texte": "Pierrette\nPour Cécile : Trente bougies pour notre Cécile chérie ! Voici le secret de mon cake au citron bien imbibé qui ne sèche jamais. Gros bisous tendres. — Pierrette\nLe cake au citron d'antan\nIngrédients\nAppareil :\n3 œufs\n170 g de sucre\nle zeste râpé de 2 citrons\n160 g de farine\n1 c. à café de levure\n100 g de beurre fondu tiède\n50 g de crème liquide entière\nSirop d'imbibage :\n60 g de jus de citron\n40 g de sucre\n(Citrons non traités bien lavés !)",
    "vivants": {
     "photo": [
      0.06,
@@ -2394,7 +2340,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 13,
+   "lignes": 15,
    "recette": "pierrette",
    "relu": true
   },
@@ -2450,13 +2396,61 @@
      ]
     ]
    },
-   "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nEmeline — Gâteau fondant au chocolat, page 14\nClémence — Cheesecake spéculoos & framboises, page 16\nPierrette — Le cake au citron d'antan, page 18\nTartes & confitures\nAnatole — Tarte à la myrtille, page 22\nLise — Tarte aux pommes de ma maman, page 24\nBiscuits\nJulien — Cookies moelleux pépites & noisettes, page 28\nCrêpes & gaufres\nLaura — Crêpes gourmandes Nutella-banane-chantilly, page 32\nLe mot de la fin, page 34",
+   "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nEmeline — Fondant au chocolat, page 14\nClémence — Cheesecake framboises, page 16\nPierrette — Cake au citron, page 18\nTartes & confitures\nAnatole — Tarte aux myrtilles, page 22\nLise — Tarte aux pommes, page 24\nBiscuits\nJulien — Cookies & noisettes, page 28\nCrêpes & gaufres\nLaura — Crêpes gourmandes, page 32\nLe mot de la fin, page 34",
    "vivants": {
     "aq-tasse": [
      0.75,
      0.045,
      0.17,
      0.117
+    ],
+    "vignette-lisa": [
+     0.15545,
+     0.19004,
+     0.12,
+     0.04
+    ],
+    "vignette-emeline": [
+     0.15392,
+     0.22515,
+     0.12,
+     0.04
+    ],
+    "vignette-clemence": [
+     0.15982,
+     0.26497,
+     0.12,
+     0.04
+    ],
+    "vignette-pierrette": [
+     0.15433,
+     0.30022,
+     0.12,
+     0.04
+    ],
+    "vignette-anatole": [
+     0.15606,
+     0.40457,
+     0.12,
+     0.04
+    ],
+    "vignette-lise": [
+     0.1569,
+     0.44103,
+     0.12,
+     0.04
+    ],
+    "vignette-julien": [
+     0.15927,
+     0.54718,
+     0.12,
+     0.04
+    ],
+    "vignette-laura": [
+     0.15086,
+     0.64973,
+     0.12,
+     0.04
     ]
    },
    "deborde": [],
@@ -2465,9 +2459,9 @@
     {
      "cible": "gateaux",
      "rect": [
-      0.09601,
-      0.13673,
-      0.34961,
+      0.09574,
+      0.14011,
+      0.29824,
       0.0424
      ]
     },
@@ -2475,9 +2469,9 @@
      "cible": "lisa",
      "invite": "lisa",
      "rect": [
-      0.23606,
-      0.23136,
-      0.70199,
+      0.27606,
+      0.19558,
+      0.6593,
       0.02712
      ]
     },
@@ -2485,9 +2479,9 @@
      "cible": "emeline",
      "invite": "emeline",
      "rect": [
-      0.23727,
-      0.30472,
-      0.69912,
+      0.27453,
+      0.23247,
+      0.65916,
       0.02712
      ]
     },
@@ -2495,28 +2489,28 @@
      "cible": "clemence",
      "invite": "clemence",
      "rect": [
-      0.23672,
-      0.3698,
-      0.69965,
-      0.02855
+      0.28044,
+      0.27044,
+      0.65677,
+      0.02712
      ]
     },
     {
      "cible": "pierrette",
      "invite": "pierrette",
      "rect": [
-      0.23758,
-      0.43973,
-      0.69828,
-      0.02761
+      0.27495,
+      0.30661,
+      0.65947,
+      0.02712
      ]
     },
     {
      "cible": "tartes",
      "rect": [
-      0.09294,
-      0.48146,
-      0.36831,
+      0.09734,
+      0.3555,
+      0.35292,
       0.0424
      ]
     },
@@ -2524,28 +2518,28 @@
      "cible": "anatole",
      "invite": "anatole",
      "rect": [
-      0.23838,
-      0.56746,
-      0.69749,
-      0.03444
+      0.27649,
+      0.41001,
+      0.65852,
+      0.02712
      ]
     },
     {
      "cible": "lise",
      "invite": "lise",
      "rect": [
-      0.23683,
-      0.6309,
-      0.69836,
-      0.02833
+      0.27748,
+      0.4474,
+      0.65632,
+      0.02712
      ]
     },
     {
      "cible": "biscuits",
      "rect": [
-      0.09678,
-      0.66458,
-      0.17218,
+      0.09329,
+      0.49595,
+      0.141,
       0.0424
      ]
     },
@@ -2553,38 +2547,38 @@
      "cible": "julien",
      "invite": "julien",
      "rect": [
-      0.23621,
-      0.7467,
-      0.70063,
-      0.03131
+      0.27969,
+      0.55448,
+      0.65726,
+      0.02712
      ]
     },
     {
      "cible": "crepes",
      "rect": [
-      0.09863,
-      0.7769,
-      0.36029,
-      0.04557
+      0.09175,
+      0.60175,
+      0.30349,
+      0.0424
      ]
     },
     {
      "cible": "laura",
      "invite": "laura",
      "rect": [
-      0.23681,
-      0.86295,
-      0.69858,
-      0.03182
+      0.27148,
+      0.65511,
+      0.66442,
+      0.02712
      ]
     },
     {
      "cible": "fin",
      "rect": [
-      0.2386,
-      0.91247,
-      0.69948,
-      0.03096
+      0.2767,
+      0.70942,
+      0.66115,
+      0.02712
      ]
     }
    ],
@@ -2593,6 +2587,38 @@
      "aquarelle": "tasse-2",
      "anime": "vapeur",
      "angle": -4
+    },
+    "vignette-lisa": {
+     "aquarelle": "carotte",
+     "anime": "fixe"
+    },
+    "vignette-emeline": {
+     "aquarelle": "fondant-chocolat",
+     "anime": "fixe"
+    },
+    "vignette-clemence": {
+     "aquarelle": "framboises-speculoos",
+     "anime": "fixe"
+    },
+    "vignette-pierrette": {
+     "aquarelle": "citron",
+     "anime": "fixe"
+    },
+    "vignette-anatole": {
+     "aquarelle": "tarte-myrtilles",
+     "anime": "fixe"
+    },
+    "vignette-lise": {
+     "aquarelle": "pomme",
+     "anime": "fixe"
+    },
+    "vignette-julien": {
+     "aquarelle": "cookies",
+     "anime": "fixe"
+    },
+    "vignette-laura": {
+     "aquarelle": "crepes-banane",
+     "anime": "fixe"
     }
    },
    "relu": true

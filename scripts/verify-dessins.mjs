@@ -41,7 +41,7 @@ if (suites.includes('tableaux-courbes') || suites.includes('tableaux')) {
   const aspects = { 'carotte-0': 512 / 600, 'carotte-1': 512 / 600, 'carotte-2': 512 / 600, 'carotte-3': 512 / 600 };
   const e = (n, t) => etatTableau(n, t, aspects);
   const actions = {
-    levitation: e('levitation', 4.5).acteurs.every((a) => a.y < 340) && e('levitation', 9.3).acteurs.every((a) => a.y === 505),
+    levitation: e('levitation', 4.5).acteurs.every((a) => a.y < 340) && e('levitation', 9.3).acteurs.every((a) => a.y === 460),
     service: [[2.8, 0], [6.7, 1]].every(([t, k]) => { const q = e('service-the', t); return q.jet > .45 && q.tasseVisee === k && q.liquide[k] > .3; }) && e('service-the', 8).liquide.every((f) => f === 1),
     coupe: (() => { const a = e('coupe-citron', 5).acteurs; return a[0].alpha === 0 && a[1].alpha === 1 && a[2].alpha === 1 && a[2].x - a[1].x >= 280; })(),
     grignotage: [[3.5, 0], [4.5, 1], [5.8, 2], [7.3, 3]].every(([t, k]) => e('carotte-grignote', t).acteurs[k].alpha === 1),
@@ -356,7 +356,9 @@ if (suites.includes('tableaux')) {
     ['lisa', 'carotte', 'carotte-grignote', [4500, 2800, 3500]],
     ['titre', 'gateau-bougies', 'gateau-enchante', [4500]],
     ['fin', 'theiere', 'service-the', [2800, 3900]],
-    ['gateaux', 'tasse-coeur', 'levitation', [4500]],
+    ['crepes', 'oeufs', 'oeuf-au-bol', [3600, 3400]],
+    ['crepes', 'vanille', 'vanille-au-bol', [5000]],
+    ['clemence', 'framboises-speculoos', 'framboise-biscuit', [4000, 3800]],
     ['pierrette', 'citron', 'coupe-citron', [3200, 1800]],
   ];
   const tableauxChoisis = liste('tableaux', '');
@@ -373,13 +375,13 @@ if (suites.includes('tableaux')) {
       await ctx.close(); continue;
     }
     await page.evaluate(() => window.__gcDessins?.avancer(2500));
-    let spontane = (await etat(page)).flatMap((t) => t.dessins).some((d) => d.tableau?.nom === type);
+    let spontane = (await etat(page)).flatMap((t) => t.dessins).some((d) => d.scene === type);
     // Plusieurs tableaux alternent dans un chapitre : observer leur cycle, en temps simulé.
     let attenteAutomatique = 0;
     for (let k = 0; !spontane && k < 90; k++) {
       await page.evaluate(() => window.__gcDessins?.avancer(1000));
       attenteAutomatique += 1000;
-      spontane = (await etat(page)).flatMap((t) => t.dessins).some((d) => d.tableau?.nom === type);
+      spontane = (await etat(page)).flatMap((t) => t.dessins).some((d) => d.scene === type);
     }
     rapport.ajouter(null, `[tableaux] ${type} : départ automatique sans geste`, spontane ? 'OK' : 'KO', `observation ${attenteAutomatique / 1000} s simulées`);
     await bouton.focus(); await page.keyboard.press('Enter');

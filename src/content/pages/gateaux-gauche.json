@@ -1,99 +1,72 @@
 {
- "main": "soignee",
- "encre": "plume",
- "gabarit": "carnet",
- "id": "gateaux-gauche",
- "double": "gateaux",
- "cote": "gauche",
- "graine": 601,
- "_": "Frontispice du chapitre (face au titre « Gâteaux et cakes ») : un cadre orné à la plume terre cuite (volutes, nœud de ruban, petit cœur), une guirlande de fanions sous le ruban et une table de goûter d'anniversaire qui vit (aquarelles vivantes : la tasse au cœur qui bat, le cupcake dont on souffle la bougie, les œufs qui se dandinent, le blé au vent, les oranges qui sautent). Aucun mot.",
- "blocs": [
-  {
-   "id": "cadre",
-   "type": "ornement",
-   "forme": "cadre",
-   "rect": [
-    0.075,
-    0.055,
-    0.85,
-    0.87
-   ],
-   "encre": "terracotta",
-   "graine": 6011
-  }
- ],
- "vivants": [
-  {
-   "nom": "aq-guirlande",
-   "rect": [
-    0.12,
-    0.15,
-    0.76,
-    0.12
-   ],
-   "aquarelle": "guirlande",
-   "anime": "balance",
-   "angle": 0
-  },
-  {
-   "nom": "aq-ble",
-   "rect": [
-    0.12,
-    0.34,
-    0.15,
-    0.198
-   ],
-   "aquarelle": "ble",
-   "anime": "balance",
-   "angle": -8
-  },
-  {
-   "nom": "aq-oranges",
-   "rect": [
-    0.73,
-    0.34,
-    0.15,
-    0.211
-   ],
-   "aquarelle": "orange-2",
-   "anime": "fleurit",
-   "angle": 6
-  },
-  {
-   "nom": "aq-cupcake",
-   "rect": [
-    0.32,
-    0.31,
-    0.36,
-    0.37
-   ],
-   "aquarelle": "cupcake-bougie",
-   "anime": "fleurit",
-   "angle": 2
-  },
-  {
-   "nom": "aq-tasse",
-   "rect": [
-    0.1,
-    0.645,
-    0.27,
-    0.18
-   ],
-   "aquarelle": "tasse-coeur",
-   "anime": "vapeur",
-   "angle": -3
-  },
-  {
-   "nom": "aq-oeufs",
-   "rect": [
-    0.65,
-    0.645,
-    0.25,
-    0.157
-   ],
-   "aquarelle": "oeufs",
-   "anime": "fleurit",
-   "angle": 4
-  }
- ]
+  "main": "soignee",
+  "encre": "plume",
+  "gabarit": "carnet",
+  "id": "gateaux-gauche",
+  "double": "gateaux",
+  "cote": "gauche",
+  "graine": 601,
+  "_": "Un seul plateau de pâtisseries du chapitre : chocolat, carotte, citron ; pas de répétitions de tasses ni mélange de fruits sans rapport.",
+  "blocs": [
+    {
+      "id": "cadre",
+      "type": "ornement",
+      "forme": "cadre",
+      "rect": [
+        0.075,
+        0.055,
+        0.85,
+        0.87
+      ],
+      "encre": "terracotta",
+      "graine": 6011
+    }
+  ],
+  "vivants": [
+    {
+      "nom": "aq-guirlande",
+      "rect": [
+        0.12,
+        0.15,
+        0.76,
+        0.12
+      ],
+      "aquarelle": "guirlande",
+      "anime": "balance",
+      "angle": 0
+    },
+    {
+      "nom": "aq-fondant",
+      "rect": [
+        0.15,
+        0.33,
+        0.7,
+        0.32
+      ],
+      "aquarelle": "fondant-chocolat",
+      "angle": 0
+    },
+    {
+      "nom": "aq-carotte",
+      "rect": [
+        0.2,
+        0.69,
+        0.24,
+        0.12
+      ],
+      "aquarelle": "carotte",
+      "angle": 0
+    },
+    {
+      "nom": "aq-citron",
+      "rect": [
+        0.56,
+        0.69,
+        0.24,
+        0.12
+      ],
+      "aquarelle": "citron",
+      "angle": 0
+    }
+  ]
 }

@@ -1,4 +1,4 @@
-// Playlist du carnet : rotation « toutes » de 25 s, ou lecture/enchaînement des morceaux choisis.
+// Playlist du carnet : morceaux entiers, dans l'ordre ou en répétition du morceau choisi.
 // Déverrouillée par le premier geste, fondus croisés, pause pendant les vidéos et reprise à la même place.
 // Deux tampons au maximum (morceau courant et suivant), réseau et décodage bornés ; crédits au menu.
 import React from 'react';
@@ -16,19 +16,21 @@ export const NIVEAU_MUSIQUE = 0.2;
 export const SOURDINE_VIDEO_MUSIQUE = 0;
 const FONDU_ENTREE = 4;
 const FONDU_CHANGEMENT = 3;
-const DUREE_EXTRAIT_ROTATION = 25;
+const RESPIRATION = 0.35;
+const FONDU_ENTREE_SUIVANT = 1.6;
+const AVANCE_PRECHARGEMENT = 20;
 const tampons = new Map<string, AudioBuffer>();
 const chargements = new Map<string, Promise<AudioBuffer | null>>();
 const echecs = new Set<string>();
 const abonnes = new Set<() => void>();
 interface Voix {
   id: string; src: AudioBufferSourceNode; gain: GainNode; debut: number; offset: number; duree: number;
-  rotationEcoulee: number; rotationDepuis: number;
 }
 let voix: Voix | null = null;
-let reprise: { id: string; offset: number; rotation: number } | null = null;
+let reprise: { id: string; offset: number } | null = null;
 let indexRotation = 0;
-let rotationDemandee = false;
+let toutesDemandees = false;
+let entreeNaturelle: string | null = null;
 let maitre: GainNode | null = null;
 let maitreDe: AudioContext | null = null;
 let chargeId: string | null = null;
@@ -39,7 +41,6 @@ export interface EtatMusique {
   enchaine: boolean; decodes: number;
 }
 let snapshot: EtatMusique = { morceau: null, titre: '', joue: false, niveau: 0, cible: 0, muet: false, statut: 'arretee', enchaine: true, decodes: 0 };
-const enRotation = () => { const r = getReglages(); return r.musiqueActive && r.musique === 'toutes' && r.musiqueEnchaine; };
 function demande(): Morceau | null {
   const r = getReglages();
   if (!r.musiqueActive) return null;
@@ -83,7 +84,7 @@ export function changerMorceau(direction: -1 | 1): void {
   const courant = r.musique === 'toutes' ? MORCEAUX[indexRotation]?.id : r.musique;
   const m = voisin(courant ?? '', direction);
   if (!m) return;
-  echecs.delete(m.id); erreur = null; reprise = null;
+  echecs.delete(m.id); erreur = null; reprise = null; entreeNaturelle = null;
   if (r.musique === 'toutes') {
     indexRotation = MORCEAUX.findIndex(x => x.id === m.id);
     setReglages({ musiqueActive: true });
@@ -128,15 +129,19 @@ function regler(duree = 0.2): void {
 }
 function taire(v: Voix, c: AudioContext, duree: number): void {
   const t = c.currentTime; v.src.onended = () => { v.src.disconnect(); v.gain.disconnect(); };
-  v.gain.gain.cancelScheduledValues(t); v.gain.gain.setValueAtTime(v.gain.gain.value, t);
-  v.gain.gain.linearRampToValueAtTime(0, t + duree);
+  const g = v.gain.gain, depart = g.value;
+  if (g.cancelAndHoldAtTime) g.cancelAndHoldAtTime(t);
+  else { g.cancelScheduledValues(0); g.setValueAtTime(depart, t); }
+  // Puissance égale avec l'entrée du suivant : pas de creux brutal au milieu du fondu manuel.
+  const courbe = Float32Array.from({ length: 64 }, (_, i) => depart * Math.cos(i / 63 * Math.PI / 2));
+  courbe[courbe.length - 1] = 0;
+  g.setValueCurveAtTime(courbe, t + 0.001, duree);
   try { v.src.stop(t + duree + 0.02); } catch { /* déjà terminée */ }
 }
 function arreter(garder = true): void {
   const c = contexteAudio(); if (!voix || !c) return;
   if (garder) reprise = {
     id: voix.id, offset: Math.min(voix.duree, voix.offset + Math.max(0, c.currentTime - voix.debut)),
-    rotation: voix.rotationEcoulee + Math.max(0, c.currentTime - voix.rotationDepuis),
   };
   else reprise = null;
   taire(voix, c, 0.25); voix = null;
@@ -148,43 +153,44 @@ function avancerAutomatiquement(): void {
   const m = r.musiqueEnchaine ? voisin(actuel.id) : actuel;
   if (!m) return;
   reprise = null;
+  entreeNaturelle = m.id;
   if (r.musique === 'toutes') indexRotation = MORCEAUX.findIndex(x => x.id === m.id);
-  if (m.id === actuel.id) {
-    const c = contexteAudio(), b = tampons.get(m.id);
-    if (c && b && c.state === 'running') lancer(m, c, b); else { voix = null; suivre(); }
-  }
-  else if (r.musique === 'toutes') suivre();
+  if (r.musique === 'toutes' || m.id === actuel.id) suivre();
   else setReglages({ musique: m.id });
 }
 function lancer(m: Morceau, c: AudioContext, b: AudioBuffer): void {
   if (!maitre || maitreDe !== c) { maitre = c.createGain(); maitre.gain.value = niveauMusique(); maitre.connect(c.destination); maitreDe = c; }
-  const precedente = voix, t = c.currentTime + 0.03;
+  const precedente = voix, naturelle = !precedente && entreeNaturelle === m.id;
+  const t = c.currentTime + 0.03 + (naturelle ? RESPIRATION : 0);
   let offset = reprise?.id === m.id ? reprise.offset : 0;
-  let rotationEcoulee = reprise?.id === m.id ? reprise.rotation : 0;
-  if (offset >= b.duration - 0.1) { offset = 0; rotationEcoulee = 0; }
-  reprise = null;
+  if (offset >= b.duration) offset = 0;
+  reprise = null; entreeNaturelle = null;
   if (precedente) taire(precedente, c, FONDU_CHANGEMENT);
   const src = c.createBufferSource(), gain = c.createGain(); src.buffer = b; src.loop = false;
-  gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(1, t + (precedente ? FONDU_CHANGEMENT : FONDU_ENTREE));
+  gain.gain.value = 0;
+  const dureeFondu = precedente ? FONDU_CHANGEMENT : naturelle ? FONDU_ENTREE_SUIVANT : FONDU_ENTREE;
+  const entree = Float32Array.from({ length: 64 }, (_, i) => {
+    const s = Math.sin(i / 63 * Math.PI / 2);
+    return precedente ? s : s * s;
+  });
+  gain.gain.setValueCurveAtTime(entree, t, dureeFondu);
   src.connect(gain); gain.connect(maitre); src.start(t, offset);
-  const v: Voix = { id: m.id, src, gain, debut: t, offset, duree: b.duration, rotationEcoulee, rotationDepuis: t }; voix = v;
+  const v: Voix = { id: m.id, src, gain, debut: t, offset, duree: b.duration }; voix = v;
   src.onended = () => { src.disconnect(); gain.disconnect(); if (voix !== v) return; voix = null; if (demande()?.id !== v.id) suivre(); else avancerAutomatiquement(); };
   erreur = null; elaguer(); prevenir();
 }
 function suivre(): void {
   regler();
-  const rotation = enRotation();
-  if (rotation !== rotationDemandee) {
-    rotationDemandee = rotation;
-    if (rotation && voix) {
+  const toutes = getReglages().musique === 'toutes';
+  if (toutes !== toutesDemandees) {
+    toutesDemandees = toutes;
+    if (toutes && voix) {
       const index = MORCEAUX.findIndex(m => m.id === voix?.id);
       if (index >= 0) indexRotation = index;
     }
-    // Commencer l'extrait au changement de mode ; une pause vidéo ne change pas ce mode.
-    if (voix) { voix.rotationEcoulee = 0; voix.rotationDepuis = contexteAudio()?.currentTime ?? voix.debut; }
-    if (reprise) reprise.rotation = 0;
   }
   const m = demande(), c = contexteAudio();
+  if (entreeNaturelle !== m?.id) entreeNaturelle = null;
   if (!m || videoEnLecture()) { arreter(); chargeId = null; prevenir(); return; }
   if (!c || c.state !== 'running' || document.hidden) { prevenir(); return; }
   if (voix?.id === m.id) { prevenir(); return; }
@@ -216,12 +222,11 @@ function verifierFin(): void {
   const c = contexteAudio(), v = voix, r = getReglages();
   if (!c || c.state !== 'running' || !v || document.hidden || videoEnLecture()) return;
   const reste = v.duree - v.offset - (c.currentTime - v.debut);
-  const ecouteRotation = v.rotationEcoulee + Math.max(0, c.currentTime - v.rotationDepuis);
   const m = r.musiqueEnchaine ? voisin(v.id) : MORCEAUX.find(x => x.id === v.id);
   if (!m || echecs.has(m.id)) return;
-  const delai = enRotation() ? Math.min(reste - FONDU_CHANGEMENT, DUREE_EXTRAIT_ROTATION - ecouteRotation) : reste - FONDU_CHANGEMENT;
-  if (delai < 20) void decoder(m, c);
-  if (delai <= 0 && tampons.has(m.id)) avancerAutomatiquement();
+  // Préparer le suivant sans toucher à la voix courante. Seul son événement ended fait avancer
+  // la playlist : ni extrait de 25 s, ni fondu qui escamote les trois dernières secondes du morceau.
+  if (reste <= AVANCE_PRECHARGEMENT) void decoder(m, c);
 }
 if (typeof window !== 'undefined') {
   besoinAudio(voulue); abonnerAudio(suivre); abonnerReglages(suivre);

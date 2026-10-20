@@ -1,36 +1,36 @@
 {
- "main": "soignee",
- "encre": "plume",
- "gabarit": "carnet",
- "id": "gateaux-droite",
- "double": "gateaux",
- "cote": "droite",
- "graine": 602,
- "marges": {
-  "haut": 0.27
- },
- "blocs": [
-  {
-   "id": "chapitre",
-   "type": "chapitre",
-   "chapitre": "gateaux",
-   "taille": 1.75,
-   "graine": 43,
-   "encre": "terracotta"
-  }
- ],
- "vivants": [
-  {
-   "nom": "aq-gateau",
-   "rect": [
-    0.31,
-    0.4,
-    0.38,
-    0.315
-   ],
-   "aquarelle": "gateau",
-   "anime": "fleurit",
-   "angle": -3
-  }
- ]
+  "main": "soignee",
+  "encre": "plume",
+  "gabarit": "carnet",
+  "id": "gateaux-droite",
+  "double": "gateaux",
+  "cote": "droite",
+  "graine": 602,
+  "marges": {
+    "haut": 0.27
+  },
+  "blocs": [
+    {
+      "id": "chapitre",
+      "type": "chapitre",
+      "chapitre": "gateaux",
+      "taille": 1.75,
+      "graine": 43,
+      "encre": "terracotta"
+    }
+  ],
+  "vivants": [
+    {
+      "nom": "aq-gateau",
+      "rect": [
+        0.28,
+        0.43,
+        0.44,
+        0.34
+      ],
+      "aquarelle": "gateau",
+      "anime": "fleurit",
+      "angle": -3
+    }
+  ]
 }

@@ -47,10 +47,20 @@ def carte(mise, larg: int, haut: int) -> np.ndarray:
     for s in longueurs:
         debuts.append(debut)
         debut += float(s.sum()) + LEVE
+    glyphes = []
     # du dernier au premier : le trait écrit le plus tôt garde le pixel (croisements)
     for t, s, t0 in reversed(list(zip(traces, longueurs, debuts))):
         p = np.asarray(t.pts, float)
         cum = np.concatenate([[0.0], np.cumsum(s)])
+        if getattr(t, "glyphe", None):
+            from police_lisible import rasteriser
+            x, y, alpha = rasteriser(t.glyphe, 1.)
+            # Révélation continue de gauche à droite : les glyphes exacts s'écrivent dans l'ordre,
+            # sans demander au réseau de redessiner leurs lettres ni laisser leur intérieur vide.
+            progression = np.linspace(0., float(cum[-1]), alpha.shape[1])[None, :]
+            valeurs = np.broadcast_to(((t0 + progression) / total * MAX).astype(np.int64), alpha.shape)
+            glyphes.append((x, y, alpha, valeurs))
+            continue
         larg_trait = max(2, int(round(t.diam * 1.3 + 2)))
         if len(p) == 1:
             v = int(t0 / total * MAX)
@@ -61,6 +71,13 @@ def carte(mise, larg: int, haut: int) -> np.ndarray:
             v = int((t0 + cum[k - 1]) / total * MAX)
             d.line([tuple(p[k - 1, :2]), tuple(p[k, :2])], fill=v, width=larg_trait)
     a = np.asarray(im, np.int64)
+    for x, y, alpha, valeurs in glyphes:
+        x0, y0, x1, y1 = max(0, x), max(0, y), min(larg, x + alpha.shape[1]), min(haut, y + alpha.shape[0])
+        if x1 <= x0 or y1 <= y0:
+            continue
+        masque = alpha[y0-y:y1-y, x0-x:x1-x] > .01
+        v = valeurs[y0-y:y1-y, x0-x:x1-x]
+        a[y0:y1, x0:x1] = np.where(masque, np.minimum(a[y0:y1, x0:x1], v), a[y0:y1, x0:x1])
     # un pixel de marge, au temps le plus tôt voisin (l'encre déborde du trait idéal)
     a = np.asarray(Image.fromarray(a.astype(np.int32)).filter(ImageFilter.MinFilter(3)), np.int64)
     return np.clip(a, 0, MAX).astype(np.uint16)

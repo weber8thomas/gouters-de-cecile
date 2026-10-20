@@ -9,17 +9,19 @@
   Conserver tous les textes, quantités, mots et notes. Utiliser la pagination existante, sans réduire
   l’écriture pour faire tenir une recette. Voir [audit des sources](audit-recettes-v11.md).
 - Illustrations anglaises anciennes au crayon fin et à l’aquarelle mate, beaucoup d’animations et de
-  cachettes, Jack Russell très présent. Carotte agrandie et grignotée progressivement, sans lapin.
-- Bulles françaises validées : « Une part pour le chien ? » et « Ça sent le beurre d’ici ! »,
-  fond dessiné et écriture Caveat. Terrible Cécile, Fée du logis, Cordon bleu et Douce Cécile sont
-  des cachettes animées réparties dans le carnet.
+  cachettes. Depuis la nouvelle revue v12 : aucun Jack Russell dans le papier ; un chien frontal, assis sur la table, guide une quête. Carotte de taille constante au repos/en action, sans lapin.
+- Quête séquentielle de cinq cachettes : serment gourmand, albums, cuisine, anniversaire.
+  Douce Cécile est ironique : « Oh, Cécile est si calme et douce… » puis « Scorpion ascendant Scorpion.
+  Les proches savent. » Aucun récit biographique ajouté. Anecdote de la poêle retirée à la demande
+  du 20 octobre. Les lunettes au clic et les pattes canines dans le livre sont supprimées.
 - Vrais clips et portraits encore absents. Cartes manuscrites au monogramme en attendant ; aucun
   portrait de tiers attribué aux proches. Anciens médias et recettes fictives archivés hors des actifs.
 - Luminosité initiale 150 %, plage 50–300 %. Éclat bougie initial 200 %, plage 25–400 %.
   Conserver le vacillement, même aux intensités élevées. Écriture initiale 200 %.
   Les choix explicitement enregistrés par un visiteur sont préservés.
-- Sept morceaux existants, dont Melodie Victoria, piano et Casse-Noisette. Mode « toutes » : rotation
-  toutes les 25 secondes écoutées ; piste choisie : enchaînement en fin de morceau si activé.
+- Sept morceaux existants, dont Melodie Victoria, piano et Casse-Noisette. Tous joués en entier :
+  préchargement du suivant, fin naturelle, respiration 350 ms et entrée douce 1,6 s. Changement manuel
+  en fondu croisé de 3 s. Aucun seuil de 25 secondes ni départ anticipé en fin de piste.
   Lecture après geste, pause pendant une vidéo puis reprise à la même position. Licences dans la banque.
 - Couverture avec cachet de cire « 30 ». Ne pas refondre l’architecture ni relancer de génération sans raison.
 - Git, sous-agents nécessaires et publication d’aperçus autorisés. Réutiliser les spécialistes ; éviter
@@ -37,12 +39,18 @@ et `pages/recettes.json` fixent l’ordre, les mains et les réserves. Les notes
 voisinage du titre peuvent se poser intégralement en marge basse ; le paginateur reporte le texte suivant.
 
 Les illustrations originales et leurs manifestes reproductibles sont dans
-`design-system/sources/illustrations/v9`, `v10`, `v11`. V11 ajoute les quatre desserts manquants.
+`design-system/sources/illustrations/v9`, `v10`, `v11`, `v12`. V11 ajoute les desserts ; v12 des acteurs séparés et un chien frontal.
 Le site emploie uniquement les images cuites ; aucune génération ni modèle distant au runtime.
-Les scènes partagent une horloge : tasses en lévitation, théière servant deux tasses, citron coupé
-puis réuni, carotte mangée et repoussant, gâteaux enchantés. Les aquarelles restent entières ; seuls
-les citrons ont deux masques construits sur leurs composantes alpha réelles, jamais de rectangle dur.
-Toile vivante et images fixes sont au même niveau au-dessus de la lumière du papier, théâtre au niveau5.
+Les scènes partagent une horloge. Même distribution au repos, pendant l’action et dans les feuilles
+qui tournent : pas de tasse qui devient trois, pas de changement de taille de carotte. Nouveaux tableaux :
+œuf/coquilles/jaune/bol/fouet, vanille/graines/bol et biscuit cassé/framboises/bol. Les autres dessins
+sans acteurs séparés conservent leurs mouvements d’ensemble ; ne pas les annoncer tous articulés.
+Toile vivante au niveau 4, théâtre SVG au niveau 5, lumière du papier au niveau 1.
+
+Les huit recettes emploient désormais les glyphes déterministes de Kalam, avec des encres différentes.
+Le paginateur reste le même, les textes restent entiers. Ingrédients à puces, sections distinctes,
+numéros d’étapes en début de ligne et citation de Lise entre guillemets. La carte d’écriture et la
+carte magique suivent les masques réels des mots. Les sommaires ont huit vignettes associées aux recettes.
 
 ## Reprendre et vérifier
 
@@ -68,18 +76,18 @@ npm run build:site
 Les poids locaux X-ray et les amorces sont prêts dans `vendor/poids`. S’ils manquent mais que les
 sources téléchargées sont présentes : `tools/ecriture/.venv/bin/python -I tools/ecriture/convertir_poids.py`.
 TrOCR reste absent : le proxy refuse son téléchargement Hugging Face. Ne pas annoncer de relecture
-OCR des quantités ; comparer les sources et les rendus, et choisir une nouvelle graine ciblée si un
-chiffre est ambigu. Ne pas désactiver TLS ni les contrôles d’intégrité.
+OCR des quantités ; comparer les sources et les rendus. Les recettes en Kalam dessinent les caractères
+exacts ; les anciennes pages neuronales restent à contrôler visuellement. Ne pas désactiver TLS ni les contrôles d’intégrité.
 
 Les contrôles utiles sont `verify-site.mjs` avec `--liens lisa,emeline,clemence,pierrette,anatole,lise,julien,laura`,
-`verify-dessins.mjs --suites tableaux`, `verify-secrets.mjs`, `verify-luminosite-v10.mjs`,
+`verify-dessins.mjs --suites tableaux`, `verify-coherence-v12.mjs`, le parcours de quête v12, `verify-luminosite-v10.mjs`,
 `verify-magie-zoom.mjs`, `verify-musique-v10.mjs` et `verify-musique-browser-v10.mjs`.
 Lancer les navigateurs successivement avec `GC_CHROME=/usr/bin/chromium`. Les captures ne prouvent pas
 la fluidité sur la TV physique ni Safari/Mac ; conserver ces limites dans les comptes rendus.
 Deux cas historiques de la longue suite réglages restent non résolus : absence de tour après un
 long parcours de menu et injection de migration lente. Ne pas annoncer cette suite entièrement verte.
 
-## Vérifications du 20 octobre
+## Vérifications antérieures v11 (avant cette nouvelle revue)
 
 Les huit transcriptions de recettes conservent tous les mots sources, quantités comprises, avec leur
 multiplicité ; aucun débordement. Une perte de fin de phrase de Julien a été corrigée : après une
@@ -113,12 +121,12 @@ partagé des scènes, en temps simulé. Cela ne mesure pas les FPS du matériel 
 Après validation et commit propre, pousser normalement vers `codex/reprise-v8`, puis :
 
 ```sh
-python3 scripts/publish-preview.py --prefix essais/recettes-v11/
+python3 scripts/publish-preview.py --prefix essais/coherence-v12/
 ```
 
 Ce script garde la racine et les autres essais de `gh-pages`, vérifie les arbres puis le commit
 poussé, sans force. `publish-pages.mjs` remplace la racine : ne pas l’utiliser pour cet aperçu.
 Distinguer la preuve Git du déploiement public : le proxy peut refuser Pages (CONNECT403).
-Aperçu dédié : https://weber8thomas.github.io/gouters-de-cecile/essais/recettes-v11/
+Aperçu dédié : https://weber8thomas.github.io/gouters-de-cecile/essais/coherence-v12/
 Rapport des huit liens TV : `verification/out/recettes-v11/site/site.json`.
-Rapport de publication : `verification/out/previews/recettes-v11/preview-publication.json`.
+Rapport de publication : `verification/out/previews/coherence-v12/preview-publication.json`.

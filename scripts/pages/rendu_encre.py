@@ -113,10 +113,15 @@ def rasteriser(traces, larg: int, haut: int, echelle: float, bruit: np.ndarray, 
     `bruit` a la forme de la fenêtre. Un trait marqué `sans_saut` (drapeau du lot E : glyphe d'un mot
     important) ne descend jamais sous PLANCHER_SANS_SAUT d'encre : pas de blanc de bille dedans."""
     paquets: dict = {}
+    glyphes: dict = {}
     ox, oy = float(origine[0]), float(origine[1])
     r_min = rayon(0.55, echelle)
     pas = 0.25 * echelle  # 0,5 px à l'échelle 2
     for tr in traces:
+        if getattr(tr, "glyphe", None):
+            cle = (tr.encre["id"], tr.encre.get("outil"), tr.encre["charge"], tr.encre["clair"])
+            glyphes.setdefault(cle, []).append(tr.glyphe)
+            continue
         P = tr.pts.copy()
         P[:, :2] *= echelle
         if ox or oy:
@@ -165,6 +170,21 @@ def rasteriser(traces, larg: int, haut: int, echelle: float, bruit: np.ndarray, 
         a = cov.reshape(haut, larg)
         t = np.where(a > 1e-4, ta.reshape(haut, larg) / np.maximum(a, 1e-4), 0)
         sortie[cle] = (a, t, dict(id=cle[0], outil=cle[1], charge=cle[2], clair=cle[3]))
+    if glyphes:
+        from police_lisible import rasteriser as rasteriser_glyphe
+        for cle, mots in glyphes.items():
+            a, t, encre = sortie.get(cle, (np.zeros((haut, larg), np.float32),
+                                          np.zeros((haut, larg), np.float32),
+                                          dict(id=cle[0], outil=cle[1], charge=cle[2], clair=cle[3])))
+            for mot in mots:
+                x, y, alpha = rasteriser_glyphe(mot, echelle, origine)
+                x0, y0, x1, y1 = max(0, x), max(0, y), min(larg, x + alpha.shape[1]), min(haut, y + alpha.shape[0])
+                if x1 <= x0 or y1 <= y0:
+                    continue
+                masque = alpha[y0 - y:y1 - y, x0 - x:x1 - x]
+                a[y0:y1, x0:x1] = np.maximum(a[y0:y1, x0:x1], masque)
+                t[y0:y1, x0:x1] = np.maximum(t[y0:y1, x0:x1], (masque > 0) * .95)
+            sortie[cle] = (a, t, encre)
     return sortie
 
 

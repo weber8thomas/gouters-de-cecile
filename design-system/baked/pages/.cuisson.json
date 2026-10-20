@@ -1,5 +1,5 @@
 {
- "papier/f13": "babd3b7d9161baa2537974bdb019df2d709c90321c4b9e59d7f12ca8e90e219d",
+ "papier/f13": "98ecf9255ce6d9061cf206102ae5686db6295d4ea102fd5fbcd9f0cd52bca7f9",
  "page/julie-droite": {
   "cle": "1213305177583ac21e879c7475232589751bc8f92bec1936e3a4ae522bdaedad",
   "manifeste": {
@@ -114,7 +114,7 @@
    "relu": true
   }
  },
- "papier/f19": "d702798b6b4e97c3960d693e7daf473c7a1169115919e025d34fe7161cb02c4a",
+ "papier/f19": "69702f340201f97154f60962291b71889bc464a4e18f1ee7e2e07ba8f985b456",
  "page/fin-droite": {
   "cle": "8e90bca8a8e82cdf3d199ec64784b2a9c7044258dfee6a6ac00a67c8fc25f097",
   "manifeste": {
@@ -223,7 +223,7 @@
    "relu": true
   }
  },
- "papier/f17": "c16dd7bacbc7230db2a4be9d76c8237a43073aec3f11253076db789204c448b3",
+ "papier/f17": "cfbdc953dc85724a1224b70f2a7fd46d9f60992dd881e9bdece06aa77cbc617a",
  "page/fin-gauche": {
   "cle": "994678aaaaa8e00ce2f43b4bc53415db3affeb743e018fd216a699934f35ddbe",
   "manifeste": {
@@ -285,7 +285,7 @@
    "relu": true
   }
  },
- "papier/f11": "32da7addbf83662ac16488565b4c18b341daca60c53d309436378bcaeeb27fad",
+ "papier/f11": "bda582896fb1050454bf95422310cd2b139c5f3703bdd7288c13d5ff11f8a4f1",
  "page/julie-gauche": {
   "cle": "e602da1cc3a3d24d711f6103e7281fc6aa802a28b2fcfce14d97e6066c9ad1aa",
   "manifeste": {
@@ -490,7 +490,7 @@
    "relu": true
   }
  },
- "papier/f15": "35cb30f3da681c44d9c9c4e34fa37df49d8c94b79510407d7121e2e5066896c4",
+ "papier/f15": "9c3daab784da8d84b2e9a58e98e85c62e13c7c2058bcdd6a52bb64477e891569",
  "page/mathis-gauche": {
   "cle": "84f4073b6e95100b7168e633ffdd9bc597ba12f89bd9f72e89a8c72f22241c2e",
   "manifeste": {
@@ -799,20 +799,21 @@
    "relu": true
   }
  },
- "papier1x/f19": "d702798b6b4e97c3960d693e7daf473c7a1169115919e025d34fe7161cb02c4a",
- "papier1x/f17": "c16dd7bacbc7230db2a4be9d76c8237a43073aec3f11253076db789204c448b3",
- "papier1x/f13": "babd3b7d9161baa2537974bdb019df2d709c90321c4b9e59d7f12ca8e90e219d",
- "papier1x/f11": "32da7addbf83662ac16488565b4c18b341daca60c53d309436378bcaeeb27fad",
- "papier1x/f15": "35cb30f3da681c44d9c9c4e34fa37df49d8c94b79510407d7121e2e5066896c4",
+ "papier1x/f19": "69702f340201f97154f60962291b71889bc464a4e18f1ee7e2e07ba8f985b456",
+ "papier1x/f17": "cfbdc953dc85724a1224b70f2a7fd46d9f60992dd881e9bdece06aa77cbc617a",
+ "papier1x/f13": "98ecf9255ce6d9061cf206102ae5686db6295d4ea102fd5fbcd9f0cd52bca7f9",
+ "papier1x/f11": "bda582896fb1050454bf95422310cd2b139c5f3703bdd7288c13d5ff11f8a4f1",
+ "papier1x/f15": "9c3daab784da8d84b2e9a58e98e85c62e13c7c2058bcdd6a52bb64477e891569",
  "pagination/lisa": {
-  "cle": "7d896672030457e59584cfd3db126c35e04506a7a01de784fa72d82aba272ef9",
+  "cle": "b0f16c4fe950fd0dd3c1e85f56e1a3fc344ecbd35fcacb37f413344ce1d255c5",
   "pages": {
    "lisa-gauche": {
     "double": "lisa",
     "main": "ado",
     "encre": "bille-bleue",
     "recette": "lisa",
-    "serrage_max": 1,
+    "serrage_max": 2,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "1 sachet de levure chimique",
@@ -846,6 +847,7 @@
     "marges": {
      "haut": 0.32056
     },
+    "pas_local": 0.96,
     "blocs": [
      {
       "type": "bandeau",
@@ -883,73 +885,101 @@
       "avant": 0.0
      },
      {
+      "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 95700423,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
       "type": "ingredients",
       "id": "ingredients-1@ligne-1",
       "disposition": "puces",
       "graine_puces": 56996669,
-      "avant": 0.3,
+      "avant": 0.4,
       "lignes": [
        {
         "texte": "250 g de sucre",
         "graine": 21633835,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-1"
        },
        {
         "texte": "180 g d’huile de coco (ou autre huile végétale)",
         "graine": 95246954,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-2"
        },
        {
         "texte": "1 sachet de levure chimique",
         "graine": 26142831,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-3"
        },
        {
         "texte": "300 g de carottes (3 à 4 grosses carottes râpées)",
         "graine": 67556384,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-4"
        },
        {
         "texte": "250 g de farine fluide",
         "graine": 53728772,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-5"
        },
        {
         "texte": "2 c. à café d’extrait de vanille",
         "graine": 32447935,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-6"
        },
        {
         "texte": "2 c. à café de muscade",
         "graine": 34576742,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-7"
        },
        {
         "texte": "2 à 3 c. à café de cannelle (selon les goûts)",
         "graine": 64443171,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-8"
        },
        {
         "texte": "4 œufs",
         "graine": 16699654,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-9"
        },
        {
         "texte": "120 g de noix concassées",
         "graine": 85821913,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-10"
        }
       ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 19520326,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
      },
      {
       "type": "etape",
@@ -966,8 +996,8 @@
         "atome": "etape-1/phrase-1"
        }
       ],
-      "disposition": "ligne",
-      "avant": 0.45,
+      "disposition": "tete",
+      "avant": 0.12,
       "alinea": 0.0
      },
      {
@@ -1051,6 +1081,7 @@
     ],
     "atomes": [
      "titre",
+     "section-ingredients",
      "ingredients-1/ligne-1",
      "ingredients-1/ligne-2",
      "ingredients-1/ligne-3",
@@ -1061,6 +1092,7 @@
      "ingredients-1/ligne-8",
      "ingredients-1/ligne-9",
      "ingredients-1/ligne-10",
+     "section-preparation",
      "etape-1/phrase-1"
     ]
    },
@@ -1070,6 +1102,7 @@
     "encre": "bille-bleue",
     "recette": "lisa",
     "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "1 sachet de levure chimique",
@@ -1135,7 +1168,7 @@
         "atome": "etape-2/phrase-1.3"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.0,
       "alinea": 0.0
      },
@@ -1159,7 +1192,7 @@
         "atome": "etape-3/phrase-1.2"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -1183,7 +1216,7 @@
         "atome": "etape-4/phrase-2"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -1202,7 +1235,7 @@
         "atome": "etape-5/phrase-1"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -1226,7 +1259,7 @@
         "atome": "etape-6/phrase-2"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -1278,16 +1311,18 @@
    "lisa-gauche",
    "lisa-droite"
   ],
-  "disposition": "ligne",
-  "ajustements": {},
+  "disposition": "tete",
+  "ajustements": {
+   "lisa-gauche": "interligne −4 %"
+  },
   "trous": {
-   "lisa-gauche": 0.72
+   "lisa-gauche": 0.28
   }
  },
- "papier/f9": "1b6aa096c01699aaadac0ef480b0c3965ee35a3e5395ba192b97c9b522018097",
- "papier1x/f9": "1b6aa096c01699aaadac0ef480b0c3965ee35a3e5395ba192b97c9b522018097",
+ "papier/f9": "8fcb5cfa1dc6e75607d3692515d0dd48ba2d41f0b6fa4bb57e8d9183f52d8f92",
+ "papier1x/f9": "8fcb5cfa1dc6e75607d3692515d0dd48ba2d41f0b6fa4bb57e8d9183f52d8f92",
  "page/lisa-gauche": {
-  "cle": "b663dec1d26a73be25d56589f80c652890d86cda673608c2975f18ce9f2a187c",
+  "cle": "75ea242b2f41b43a2d9a02acb2c4c830a994fc4470541e3f050ced0da5845f55",
   "manifeste": {
    "double": "lisa",
    "cote": "gauche",
@@ -1340,7 +1375,7 @@
      ]
     ]
    },
-   "texte": "Lisa\nPour Cécile : Joyeux anniversaire Cécile ! YUMMY après c'est la régalade 😎 — Lisa\nCarrot cake\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\n1.\nMélanger au fouet électrique les 4 œufs et le sucre.\n(Tiptop pour la saison !)",
+   "texte": "Lisa\nPour Cécile : Joyeux anniversaire Cécile ! YUMMY après c'est la régalade 😎 — Lisa\nCarrot cake\nIngrédients\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\nPréparation\n1. Mélanger au fouet électrique les 4 œufs et le sucre.\n(Tiptop pour la saison !)",
    "vivants": {
     "photo": [
      0.06,
@@ -1358,10 +1393,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.2368,
-      0.4372,
-      0.0229,
-      0.0162
+      0.8891,
+      0.3911,
+      0.023,
+      0.0163
      ]
     }
    ],
@@ -1369,7 +1404,7 @@
   }
  },
  "page/lisa-droite": {
-  "cle": "8c3b2a94185e03d4799afcddbf2e88320c902354f435a64a1ff6444a827d036b",
+  "cle": "86259fae6718598504f6f410b9e4fe8d035bd47cde35d6248b38da5b1c07da1d",
   "manifeste": {
    "double": "lisa",
    "cote": "droite",
@@ -1422,7 +1457,7 @@
      ]
     ]
    },
-   "texte": "Lisa\n2.\nIncorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours au fouet électrique.\n3.\nCommencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer en augmentant la puissance jusqu'à obtention d'une pâte lisse.\n4.\nAjouter les carottes râpées et les noix concassées. Mélanger doucement à la spatule jusqu'à pâte homogène.\n5.\nHuiler et fariner légèrement le moule et verser la préparation.\n6.\nEnfourner 40 à 45 minutes à 175 °C (th. 5/6). Laisser refroidir dans le moule.\nOption glaçage :\n3 c. à soupe de sucre glace + jus de citron ou fleur d'oranger (consistance crémeuse, durcit au séchage).",
+   "texte": "Lisa\n2. Incorporer l'extrait de vanille, la muscade, la cannelle et l'huile, toujours au fouet électrique.\n3. Commencer à mélanger avec le fouet éteint (pour éviter les projections), puis allumer en augmentant la puissance jusqu'à obtention d'une pâte lisse.\n4. Ajouter les carottes râpées et les noix concassées. Mélanger doucement à la spatule jusqu'à pâte homogène.\n5. Huiler et fariner légèrement le moule et verser la préparation.\n6. Enfourner 40 à 45 minutes à 175 °C (th. 5/6). Laisser refroidir dans le moule.\nOption glaçage :\n3 c. à soupe de sucre glace + jus de citron ou fleur d'oranger (consistance crémeuse, durcit au séchage).",
    "vivants": {
     "aq-lisa-1": [
      0.36,
@@ -1432,7 +1467,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 18,
+   "lignes": 13,
    "aquarelles": {
     "aq-lisa-1": {
      "aquarelle": "carotte",
@@ -1612,7 +1647,7 @@
   }
  },
  "page/biscuits-droite": {
-  "cle": "b374eb3a40a335735d2cf4f6d2875b493e9c033e9ab3ea02235513a67bdbd972",
+  "cle": "a0e5210bd9bb676f1b6464d2f7e886224c451bbd38a51fb2003d8c48933bc620",
   "manifeste": {
    "double": "biscuits",
    "cote": "droite",
@@ -1699,7 +1734,7 @@
   }
  },
  "page/biscuits-gauche": {
-  "cle": "9bd546e58007a4488abcc62e4b51c276b759fa20a8f4172f58e1444748404f33",
+  "cle": "732c4ab5c40cb88c36b74b0cd502be56f282506e635a11ae2c07045dc6b57920",
   "manifeste": {
    "double": "biscuits",
    "cote": "gauche",
@@ -1861,12 +1896,12 @@
    "relu": true
   }
  },
- "papier/f3": "0277e8a272b3ace021756d18aceaa103c1b506cc564acbef78e25bbf914946d7",
- "papier1x/f3": "0277e8a272b3ace021756d18aceaa103c1b506cc564acbef78e25bbf914946d7",
- "papier/f5": "85fbb5527dd5e7c3da73c23d559d804d55c0126de6df3e7fc5bd1bacd72da223",
- "papier1x/f5": "85fbb5527dd5e7c3da73c23d559d804d55c0126de6df3e7fc5bd1bacd72da223",
+ "papier/f3": "4fbe9ee21731c41aa8ddd0f753073bdeb6fbc31397065a6334f47115532b2992",
+ "papier1x/f3": "4fbe9ee21731c41aa8ddd0f753073bdeb6fbc31397065a6334f47115532b2992",
+ "papier/f5": "658ba008b1ee8e4ef0b98defb9b0a6ac2386d6a53e8cb00ae9eb07880c1cc54c",
+ "papier1x/f5": "658ba008b1ee8e4ef0b98defb9b0a6ac2386d6a53e8cb00ae9eb07880c1cc54c",
  "page/dedicace": {
-  "cle": "a08b7abe1e586cb77f98ec51a68d88421cc183fa4066dab4052af4ee7b28c033",
+  "cle": "782e051c617c7f016f211a1a320723cc61a5230a657b5f045f88af5eadc1aa28",
   "manifeste": {
    "double": "sommaire",
    "cote": "gauche",
@@ -1982,10 +2017,10 @@
  },
  "papier/garde-uni": "f95351f4c0a79f023e7dc707eb2fe445799335a3b26efba9a6dcbc0bdeea4344",
  "papier1x/garde-uni": "f95351f4c0a79f023e7dc707eb2fe445799335a3b26efba9a6dcbc0bdeea4344",
- "papier/f7": "2afba72bcfc1c71a2c8f4a5ba825b896977a4cee1b2005873f362bdd5372af83",
- "papier1x/f7": "2afba72bcfc1c71a2c8f4a5ba825b896977a4cee1b2005873f362bdd5372af83",
+ "papier/f7": "e041e507f653e97fa8b2adb7c83f6ae53a5084528bd8644c378539ac3fb67ad2",
+ "papier1x/f7": "e041e507f653e97fa8b2adb7c83f6ae53a5084528bd8644c378539ac3fb67ad2",
  "page/gateaux-droite": {
-  "cle": "47b5f183c8fc803d64692a3cd746ed8705fb1ae10ff5c6b4e7c126c0bd3e78dd",
+  "cle": "596020b6fffcb8b3032088a1ac31bcf68ffd61e38a77421e4403a2f12c026e51",
   "manifeste": {
    "double": "gateaux",
    "cote": "droite",
@@ -2042,10 +2077,10 @@
    "texte": "Gâteaux & cakes\nLisa, Emeline, Clémence et Pierrette",
    "vivants": {
     "aq-gateau": [
-     0.31,
-     0.4,
-     0.38,
-     0.315
+     0.28,
+     0.43,
+     0.44,
+     0.34
     ]
    },
    "deborde": [],
@@ -2061,7 +2096,7 @@
   }
  },
  "page/gateaux-gauche": {
-  "cle": "1732a54f816d569e9a79801e0466dc11af30386477675d3df27fb5e2ed3bb447",
+  "cle": "45a7ee2ed2ddb82f3ecc924c01a30f0e8f0ac5490ed888ae81933fdce743fd2f",
   "manifeste": {
    "double": "gateaux",
    "cote": "gauche",
@@ -2123,35 +2158,23 @@
      0.76,
      0.12
     ],
-    "aq-ble": [
-     0.12,
-     0.34,
+    "aq-fondant": [
      0.15,
-     0.198
+     0.33,
+     0.7,
+     0.32
     ],
-    "aq-oranges": [
-     0.73,
-     0.34,
-     0.15,
-     0.211
+    "aq-carotte": [
+     0.2,
+     0.69,
+     0.24,
+     0.12
     ],
-    "aq-cupcake": [
-     0.32,
-     0.31,
-     0.36,
-     0.37
-    ],
-    "aq-tasse": [
-     0.1,
-     0.645,
-     0.27,
-     0.18
-    ],
-    "aq-oeufs": [
-     0.65,
-     0.645,
-     0.25,
-     0.157
+    "aq-citron": [
+     0.56,
+     0.69,
+     0.24,
+     0.12
     ]
    },
    "deborde": [],
@@ -2162,37 +2185,24 @@
      "anime": "balance",
      "angle": 0
     },
-    "aq-ble": {
-     "aquarelle": "ble",
-     "anime": "balance",
-     "angle": -8
+    "aq-fondant": {
+     "aquarelle": "fondant-chocolat",
+     "angle": 0
     },
-    "aq-oranges": {
-     "aquarelle": "orange-2",
-     "anime": "fleurit",
-     "angle": 6
+    "aq-carotte": {
+     "aquarelle": "carotte",
+     "angle": 0
     },
-    "aq-cupcake": {
-     "aquarelle": "cupcake-bougie",
-     "anime": "fleurit",
-     "angle": 2
-    },
-    "aq-tasse": {
-     "aquarelle": "tasse-coeur",
-     "anime": "vapeur",
-     "angle": -3
-    },
-    "aq-oeufs": {
-     "aquarelle": "oeufs",
-     "anime": "fleurit",
-     "angle": 4
+    "aq-citron": {
+     "aquarelle": "citron",
+     "angle": 0
     }
    },
    "relu": true
   }
  },
  "page/sommaire": {
-  "cle": "d946cb4e5e27ba8e68ea29389162820ee3f8ad90c1bc739c0a8f6279b4b75277",
+  "cle": "e923369347ce409e914433c277cfe3cc5f354dcbe60ce3600d204ae0d1e168f5",
   "manifeste": {
    "double": "sommaire",
    "cote": "droite",
@@ -2245,13 +2255,61 @@
      ]
     ]
    },
-   "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nEmeline — Gâteau fondant au chocolat, page 14\nClémence — Cheesecake spéculoos & framboises, page 16\nPierrette — Le cake au citron d'antan, page 18\nTartes & confitures\nAnatole — Tarte à la myrtille, page 22\nLise — Tarte aux pommes de ma maman, page 24\nBiscuits\nJulien — Cookies moelleux pépites & noisettes, page 28\nCrêpes & gaufres\nLaura — Crêpes gourmandes Nutella-banane-chantilly, page 32\nLe mot de la fin, page 34",
+   "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nEmeline — Fondant au chocolat, page 14\nClémence — Cheesecake framboises, page 16\nPierrette — Cake au citron, page 18\nTartes & confitures\nAnatole — Tarte aux myrtilles, page 22\nLise — Tarte aux pommes, page 24\nBiscuits\nJulien — Cookies & noisettes, page 28\nCrêpes & gaufres\nLaura — Crêpes gourmandes, page 32\nLe mot de la fin, page 34",
    "vivants": {
     "aq-tasse": [
      0.75,
      0.045,
      0.17,
      0.117
+    ],
+    "vignette-lisa": [
+     0.15545,
+     0.19004,
+     0.12,
+     0.04
+    ],
+    "vignette-emeline": [
+     0.15392,
+     0.22515,
+     0.12,
+     0.04
+    ],
+    "vignette-clemence": [
+     0.15982,
+     0.26497,
+     0.12,
+     0.04
+    ],
+    "vignette-pierrette": [
+     0.15433,
+     0.30022,
+     0.12,
+     0.04
+    ],
+    "vignette-anatole": [
+     0.15606,
+     0.40457,
+     0.12,
+     0.04
+    ],
+    "vignette-lise": [
+     0.1569,
+     0.44103,
+     0.12,
+     0.04
+    ],
+    "vignette-julien": [
+     0.15927,
+     0.54718,
+     0.12,
+     0.04
+    ],
+    "vignette-laura": [
+     0.15086,
+     0.64973,
+     0.12,
+     0.04
     ]
    },
    "deborde": [],
@@ -2260,9 +2318,9 @@
     {
      "cible": "gateaux",
      "rect": [
-      0.09601,
-      0.13673,
-      0.34961,
+      0.09574,
+      0.14011,
+      0.29824,
       0.0424
      ]
     },
@@ -2270,9 +2328,9 @@
      "cible": "lisa",
      "invite": "lisa",
      "rect": [
-      0.23606,
-      0.23136,
-      0.70199,
+      0.27606,
+      0.19558,
+      0.6593,
       0.02712
      ]
     },
@@ -2280,9 +2338,9 @@
      "cible": "emeline",
      "invite": "emeline",
      "rect": [
-      0.23727,
-      0.30472,
-      0.69912,
+      0.27453,
+      0.23247,
+      0.65916,
       0.02712
      ]
     },
@@ -2290,28 +2348,28 @@
      "cible": "clemence",
      "invite": "clemence",
      "rect": [
-      0.23672,
-      0.3698,
-      0.69965,
-      0.02855
+      0.28044,
+      0.27044,
+      0.65677,
+      0.02712
      ]
     },
     {
      "cible": "pierrette",
      "invite": "pierrette",
      "rect": [
-      0.23758,
-      0.43973,
-      0.69828,
-      0.02761
+      0.27495,
+      0.30661,
+      0.65947,
+      0.02712
      ]
     },
     {
      "cible": "tartes",
      "rect": [
-      0.09294,
-      0.48146,
-      0.36831,
+      0.09734,
+      0.3555,
+      0.35292,
       0.0424
      ]
     },
@@ -2319,28 +2377,28 @@
      "cible": "anatole",
      "invite": "anatole",
      "rect": [
-      0.23838,
-      0.56746,
-      0.69749,
-      0.03444
+      0.27649,
+      0.41001,
+      0.65852,
+      0.02712
      ]
     },
     {
      "cible": "lise",
      "invite": "lise",
      "rect": [
-      0.23683,
-      0.6309,
-      0.69836,
-      0.02833
+      0.27748,
+      0.4474,
+      0.65632,
+      0.02712
      ]
     },
     {
      "cible": "biscuits",
      "rect": [
-      0.09678,
-      0.66458,
-      0.17218,
+      0.09329,
+      0.49595,
+      0.141,
       0.0424
      ]
     },
@@ -2348,38 +2406,38 @@
      "cible": "julien",
      "invite": "julien",
      "rect": [
-      0.23621,
-      0.7467,
-      0.70063,
-      0.03131
+      0.27969,
+      0.55448,
+      0.65726,
+      0.02712
      ]
     },
     {
      "cible": "crepes",
      "rect": [
-      0.09863,
-      0.7769,
-      0.36029,
-      0.04557
+      0.09175,
+      0.60175,
+      0.30349,
+      0.0424
      ]
     },
     {
      "cible": "laura",
      "invite": "laura",
      "rect": [
-      0.23681,
-      0.86295,
-      0.69858,
-      0.03182
+      0.27148,
+      0.65511,
+      0.66442,
+      0.02712
      ]
     },
     {
      "cible": "fin",
      "rect": [
-      0.2386,
-      0.91247,
-      0.69948,
-      0.03096
+      0.2767,
+      0.70942,
+      0.66115,
+      0.02712
      ]
     }
    ],
@@ -2388,13 +2446,45 @@
      "aquarelle": "tasse-2",
      "anime": "vapeur",
      "angle": -4
+    },
+    "vignette-lisa": {
+     "aquarelle": "carotte",
+     "anime": "fixe"
+    },
+    "vignette-emeline": {
+     "aquarelle": "fondant-chocolat",
+     "anime": "fixe"
+    },
+    "vignette-clemence": {
+     "aquarelle": "framboises-speculoos",
+     "anime": "fixe"
+    },
+    "vignette-pierrette": {
+     "aquarelle": "citron",
+     "anime": "fixe"
+    },
+    "vignette-anatole": {
+     "aquarelle": "tarte-myrtilles",
+     "anime": "fixe"
+    },
+    "vignette-lise": {
+     "aquarelle": "pomme",
+     "anime": "fixe"
+    },
+    "vignette-julien": {
+     "aquarelle": "cookies",
+     "anime": "fixe"
+    },
+    "vignette-laura": {
+     "aquarelle": "crepes-banane",
+     "anime": "fixe"
     }
    },
    "relu": true
   }
  },
  "page/cecile-1-droite": {
-  "cle": "0c6fcde5353f24fe5d1420b2ab8fdea52a1440dc60b747c9b9c3dc85d29ec6cf",
+  "cle": "1a6981166ef3fe56ee0049ab1044f437432225e97c89c34c2387d39397507aa0",
   "manifeste": {
    "double": "cecile-1",
    "cote": "droite",
@@ -2464,18 +2554,11 @@
    },
    "deborde": [],
    "lignes": 0,
-   "douteux": [
-    "Cécile, (encre rendue lue « Cecile »)",
-    "Cécile, (encre rendue lue « Cecile »)"
-   ],
-   "douteux_importants": [
-    "Cécile,"
-   ],
    "relu": true
   }
  },
  "page/cecile-1-gauche": {
-  "cle": "c71c1dcd2e7520796975025f0a75edd69f72b97ba0ffd9ecda07132b0b1ea734",
+  "cle": "136143aad3039ec987a690396cf173443d5416276d645c0a04190f1802e26ecb",
   "manifeste": {
    "double": "cecile-1",
    "cote": "gauche",
@@ -2528,7 +2611,7 @@
      ]
     ]
    },
-   "texte": "Cécile en cuisine\nCécile, ……… ans\nCécile, ……… ans\nCécile, ……… ans",
+   "texte": "Le goût des bonnes choses\nCécile, ……… ans\nCécile, ……… ans\nCécile, ……… ans",
    "vivants": {
     "photo-1": [
      0.08,
@@ -2550,20 +2633,12 @@
     ]
    },
    "deborde": [],
-   "lignes": 1,
-   "douteux": [
-    "Cécile (encre rendue lue « Cecile »)",
-    "Cécile, (encre rendue lue « Cecile »)"
-   ],
-   "douteux_importants": [
-    "Cécile",
-    "Cécile,"
-   ],
+   "lignes": 2,
    "relu": true
   }
  },
  "page/cecile-2-droite": {
-  "cle": "6d63aabd3fef2a0fd0f29d5fb3561ee0233e7d3fc78d088c673953037182dc7e",
+  "cle": "64b9c53bfecb2557c5f229c76f0d837b31677521136b8bf2f6ce5c6739c932b5",
   "manifeste": {
    "double": "cecile-2",
    "cote": "droite",
@@ -2633,17 +2708,11 @@
    },
    "deborde": [],
    "lignes": 0,
-   "douteux": [
-    "Cécile, (encre rendue lue « Cecile »)"
-   ],
-   "douteux_importants": [
-    "Cécile,"
-   ],
    "relu": true
   }
  },
  "page/cecile-2-gauche": {
-  "cle": "2a5700cff18fea903e9afe83a98ea3b8eff5b88f4593c7823b5972b65d3dc104",
+  "cle": "177258f1ad140ede44eb7d2de9b9bce51394da997ef0c008a82dc5b7fd37c6b3",
   "manifeste": {
    "double": "cecile-2",
    "cote": "gauche",
@@ -2719,21 +2788,13 @@
    },
    "deborde": [],
    "lignes": 0,
-   "douteux": [
-    "Cécile, (encre rendue lue « Cecile . »)",
-    "Cécile, (encre rendue lue « Cecile »)",
-    "Cécile, (encre rendue lue « Cecile »)"
-   ],
-   "douteux_importants": [
-    "Cécile,"
-   ],
    "relu": true
   }
  },
- "papier/f23": "82f41e140e0c6622f7871e692f7651c62c707962e1e1daa514a64a9f2c595a91",
- "papier1x/f23": "82f41e140e0c6622f7871e692f7651c62c707962e1e1daa514a64a9f2c595a91",
- "papier/f21": "d95782c014b9708bd8c01c5e0676ea5fb14dab8f53f0113c9f27c25f56e965fc",
- "papier1x/f21": "d95782c014b9708bd8c01c5e0676ea5fb14dab8f53f0113c9f27c25f56e965fc",
+ "papier/f23": "46f43fba59d334b8ed515152e7155e79742d2a21ddc6e9b9ef7307eefc17ab97",
+ "papier1x/f23": "46f43fba59d334b8ed515152e7155e79742d2a21ddc6e9b9ef7307eefc17ab97",
+ "papier/f21": "515d519afe47f20dd234072c081e38e735dae1860be98f11d12c76f1c6c24d36",
+ "papier1x/f21": "515d519afe47f20dd234072c081e38e735dae1860be98f11d12c76f1c6c24d36",
  "pagination/bernard": {
   "cle": "ffa0874cb04e7c1eab7b9fe585ecab1f6c30fbda9e703e29602384929739ba0a",
   "pages": {
@@ -3529,8 +3590,8 @@
    "bernard-feuillet-recto": 1.45
   }
  },
- "papier/f25": "77e68d75d82a8a5a88e0d7db6ae45de45e7228df99f3974ca77ff74d24095c50",
- "papier1x/f25": "77e68d75d82a8a5a88e0d7db6ae45de45e7228df99f3974ca77ff74d24095c50",
+ "papier/f25": "53cc8e6ae9ccb01f49ad3c2cb4f34891c3875274bfeeec5dde3b70191b3b2f34",
+ "papier1x/f25": "53cc8e6ae9ccb01f49ad3c2cb4f34891c3875274bfeeec5dde3b70191b3b2f34",
  "page/bernard-gauche": {
   "cle": "253e5fab8cd821bc49f0fb4d4a0ad68ca39e2209a3cbd28acee5646b9d0982a2",
   "manifeste": {
@@ -6824,14 +6885,15 @@
   }
  },
  "pagination/pierrette": {
-  "cle": "52e0d47a4399f304e5137730c04d5a50ebc7b7ee6d4767ae10dc87bdd1182b9c",
+  "cle": "af82294c94400486edf15adb4efa851109d7fe83d5bdd8cbba3ec1fc1765d0a2",
   "pages": {
    "pierrette-gauche": {
     "double": "pierrette",
     "main": "mamie",
     "encre": "brune",
     "recette": "pierrette",
-    "serrage_max": 1,
+    "serrage_max": 2,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "3 œufs, 170 g de sucre, le zeste râpé de 2 citrons, 160 g de farine, 1 c. à café de levure, 100 g de beurre fondu tiède, 50 g de crème liquide entière",
@@ -6857,6 +6919,7 @@
     "marges": {
      "haut": 0.31854
     },
+    "pas_local": 0.96,
     "blocs": [
      {
       "type": "bandeau",
@@ -6895,6 +6958,20 @@
      },
      {
       "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 82552086,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "paragraphe",
       "id": "ingredients-1/titre",
       "segments": [
        {
@@ -6914,10 +6991,46 @@
       "avant": 0.0,
       "lignes": [
        {
-        "texte": "3 œufs, 170 g de sucre, le zeste râpé de 2 citrons, 160 g de farine, 1 c. à café de levure, 100 g de beurre fondu tiède, 50 g de crème liquide entière",
+        "texte": "3 œufs",
         "graine": 46981360,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-1"
+       },
+       {
+        "texte": "170 g de sucre",
+        "graine": 42693987,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-2"
+       },
+       {
+        "texte": "le zeste râpé de 2 citrons",
+        "graine": 65987838,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-3"
+       },
+       {
+        "texte": "160 g de farine",
+        "graine": 51278777,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-4"
+       },
+       {
+        "texte": "1 c. à café de levure",
+        "graine": 24752512,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-5"
+       },
+       {
+        "texte": "100 g de beurre fondu tiède",
+        "graine": 93832142,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-6"
+       },
+       {
+        "texte": "50 g de crème liquide entière",
+        "graine": 54576451,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-7"
        }
       ]
      },
@@ -6942,50 +7055,18 @@
       "avant": 0.0,
       "lignes": [
        {
-        "texte": "60 g de jus de citron, 40 g de sucre",
+        "texte": "60 g de jus de citron",
         "graine": 96417072,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-2/ligne-1"
+       },
+       {
+        "texte": "40 g de sucre",
+        "graine": 19352002,
+        "puce": "point",
+        "atome": "ingredients-2/ligne-2"
        }
       ]
-     },
-     {
-      "type": "etape",
-      "id": "etape-1",
-      "source": "etape-1",
-      "titre": {
-       "texte": "1.",
-       "graine": 20861271
-      },
-      "segments": [
-       {
-        "texte": "Frotter longuement le sucre et les zestes entre les doigts pour libérer les huiles essentielles.",
-        "graine": 53270108,
-        "atome": "etape-1/phrase-1"
-       }
-      ],
-      "disposition": "ligne",
-      "avant": 0.45,
-      "alinea": 0.0
-     },
-     {
-      "type": "etape",
-      "id": "etape-2",
-      "source": "etape-2",
-      "titre": {
-       "texte": "2.",
-       "graine": 91456136
-      },
-      "segments": [
-       {
-        "texte": "Fouetter avec les œufs jusqu'à ce que le mélange double de volume.",
-        "graine": 69489750,
-        "atome": "etape-2/phrase-1"
-       }
-      ],
-      "disposition": "ligne",
-      "avant": 0.12,
-      "alinea": 0.0
      },
      {
       "type": "annotation",
@@ -7068,12 +7149,18 @@
     ],
     "atomes": [
      "titre",
+     "section-ingredients",
      "ingredients-1/titre",
      "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
+     "ingredients-1/ligne-3",
+     "ingredients-1/ligne-4",
+     "ingredients-1/ligne-5",
+     "ingredients-1/ligne-6",
+     "ingredients-1/ligne-7",
      "ingredients-2/titre",
      "ingredients-2/ligne-1",
-     "etape-1/phrase-1",
-     "etape-2/phrase-1"
+     "ingredients-2/ligne-2"
     ]
    },
    "pierrette-droite": {
@@ -7082,6 +7169,7 @@
     "encre": "brune",
     "recette": "pierrette",
     "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "3 œufs, 170 g de sucre, le zeste râpé de 2 citrons, 160 g de farine, 1 c. à café de levure, 100 g de beurre fondu tiède, 50 g de crème liquide entière",
@@ -7097,26 +7185,14 @@
      {
       "nom": "aq-pierrette-1",
       "rect": [
-       0.48,
-       0.68,
-       0.27,
-       0.29
+       0.2,
+       0.5,
+       0.58,
+       0.383
       ],
       "aquarelle": "citron",
       "anime": "fleurit",
-      "angle": 5
-     },
-     {
-      "nom": "aq-pierrette-2",
-      "rect": [
-       0.13,
-       0.74,
-       0.22,
-       0.2
-      ],
-      "aquarelle": "citron-2",
-      "anime": "fleurit",
-      "angle": -5
+      "angle": 0
      }
     ],
     "blocs": [
@@ -7125,6 +7201,58 @@
       "id": "courant",
       "texte": "Pierrette",
       "graine": 33182245
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 20115911,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.0,
+      "echelle": 1.1
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "1.",
+       "graine": 20861271
+      },
+      "segments": [
+       {
+        "texte": "Frotter longuement le sucre et les zestes entre les doigts pour libérer les huiles essentielles.",
+        "graine": 53270108,
+        "atome": "etape-1/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "2.",
+       "graine": 91456136
+      },
+      "segments": [
+       {
+        "texte": "Fouetter avec les œufs jusqu'à ce que le mélange double de volume.",
+        "graine": 69489750,
+        "atome": "etape-2/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
      },
      {
       "type": "etape",
@@ -7141,8 +7269,8 @@
         "atome": "etape-3/phrase-1"
        }
       ],
-      "disposition": "ligne",
-      "avant": 0.0,
+      "disposition": "tete",
+      "avant": 0.12,
       "alinea": 0.0
      },
      {
@@ -7165,7 +7293,7 @@
         "atome": "etape-4/phrase-2"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -7189,12 +7317,15 @@
         "atome": "etape-5/phrase-1.2"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      }
     ],
     "atomes": [
+     "section-preparation",
+     "etape-1/phrase-1",
+     "etape-2/phrase-1",
      "etape-3/phrase-1",
      "etape-4/phrase-1",
      "etape-4/phrase-2",
@@ -7207,14 +7338,16 @@
    "pierrette-gauche",
    "pierrette-droite"
   ],
-  "disposition": "ligne",
-  "ajustements": {},
+  "disposition": "tete",
+  "ajustements": {
+   "pierrette-gauche": "interligne −4 %"
+  },
   "trous": {
-   "pierrette-gauche": 0.41
+   "pierrette-gauche": 0.18
   }
  },
  "pagination/lise": {
-  "cle": "25c303e6f7b75db2a3ec8ea0625a241626dbd014df8884015432231100f6e3a0",
+  "cle": "375880c7c3a17d3b368cffb43f978380b93d5f2536b1d9de1bf64aca77714d1b",
   "pages": {
    "lise-gauche": {
     "double": "lise",
@@ -7222,6 +7355,7 @@
     "encre": "bic",
     "recette": "lise",
     "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "1 brique de crème fraîche liquide",
@@ -7293,13 +7427,27 @@
       "source": "ingredients-1/paragraphe-1",
       "segments": [
        {
-        "texte": "J'suis pas la reine de la cuisine de goûter mais une valeur sûre : Tarte aux pommes de ma maman",
+        "texte": "« J'suis pas la reine de la cuisine de goûter mais une valeur sûre : Tarte aux pommes de ma maman »",
         "graine": 69205949,
         "atome": "ingredients-1/paragraphe-1/phrase-1"
        }
       ],
       "avant": 0.45,
       "alinea": 0.04
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 11472520,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
      },
      {
       "type": "ingredients",
@@ -7311,40 +7459,54 @@
        {
         "texte": "1 pâte sablée",
         "graine": 74094615,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-2/ligne-1"
        },
        {
         "texte": "3 à 4 pommes",
         "graine": 41427019,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-2/ligne-2"
        },
        {
         "texte": "1 brique de crème fraîche liquide",
         "graine": 8461145,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-2/ligne-3"
        },
        {
         "texte": "Cannelle en poudre",
         "graine": 33119461,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-2/ligne-4"
        },
        {
         "texte": "2 œufs",
         "graine": 26040568,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-2/ligne-5"
        },
        {
         "texte": "3 cuillères à soupe de sucre",
         "graine": 18486499,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-2/ligne-6"
        }
       ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 97495330,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
      },
      {
       "type": "etape",
@@ -7361,8 +7523,8 @@
         "atome": "etape-1/phrase-1"
        }
       ],
-      "disposition": "ligne",
-      "avant": 0.45,
+      "disposition": "tete",
+      "avant": 0.12,
       "alinea": 0.0
      },
      {
@@ -7380,7 +7542,7 @@
         "atome": "etape-2/phrase-1"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -7399,7 +7561,7 @@
         "atome": "etape-3/phrase-1"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      }
@@ -7407,12 +7569,14 @@
     "atomes": [
      "titre",
      "ingredients-1/paragraphe-1/phrase-1",
+     "section-ingredients",
      "ingredients-2/ligne-1",
      "ingredients-2/ligne-2",
      "ingredients-2/ligne-3",
      "ingredients-2/ligne-4",
      "ingredients-2/ligne-5",
      "ingredients-2/ligne-6",
+     "section-preparation",
      "etape-1/phrase-1",
      "etape-2/phrase-1",
      "etape-3/phrase-1"
@@ -7424,6 +7588,7 @@
     "encre": "bic",
     "recette": "lise",
     "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "1 brique de crème fraîche liquide",
@@ -7487,7 +7652,7 @@
         "atome": "etape-4/phrase-1"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.0,
       "alinea": 0.0
      }
@@ -7501,14 +7666,14 @@
    "lise-gauche",
    "lise-droite"
   ],
-  "disposition": "ligne",
+  "disposition": "tete",
   "ajustements": {},
   "trous": {
-   "lise-gauche": 0.35
+   "lise-gauche": 0.17
   }
  },
  "pagination/laura": {
-  "cle": "9580bca832d470212de7b1a3d489c70ec50a052aeebfa8ef34a36eeb173e139f",
+  "cle": "49bee16501fa1043d37c1d17e75a04d178563fbf4cf0a6d5d87f190665a51df1",
   "pages": {
    "laura-gauche": {
     "double": "laura",
@@ -7516,6 +7681,7 @@
     "encre": "bille-bleue",
     "recette": "laura",
     "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "1 cuillère à soupe de sucre",
@@ -7581,34 +7747,48 @@
       "avant": 0.0
      },
      {
+      "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 32672065,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
       "type": "ingredients",
       "id": "ingredients-1@ligne-1",
       "disposition": "puces",
       "graine_puces": 79517059,
-      "avant": 0.3,
+      "avant": 0.4,
       "lignes": [
        {
         "texte": "250 g de farine",
         "graine": 11818207,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-1"
        },
        {
         "texte": "3 œufs",
         "graine": 10853962,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-2"
        },
        {
         "texte": "50 cl de lait",
         "graine": 9442686,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-3"
        },
        {
         "texte": "1 cuillère à soupe de sucre",
         "graine": 74200716,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-4"
        }
       ]
@@ -7634,12 +7814,38 @@
       "avant": 0.0,
       "lignes": [
        {
-        "texte": "Nutella, 1 banane coupée en rondelles, crème chantilly",
+        "texte": "Nutella",
         "graine": 56972916,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-2/ligne-1"
+       },
+       {
+        "texte": "1 banane coupée en rondelles",
+        "graine": 51626001,
+        "puce": "point",
+        "atome": "ingredients-2/ligne-2"
+       },
+       {
+        "texte": "crème chantilly",
+        "graine": 85748507,
+        "puce": "point",
+        "atome": "ingredients-2/ligne-3"
        }
       ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 8399661,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
      },
      {
       "type": "etape",
@@ -7654,54 +7860,26 @@
         "texte": "Mélanger les œufs, la farine,",
         "graine": 15306742,
         "atome": "etape-1/phrase-1.1"
-       },
-       {
-        "texte": "le sucre et ajouter au fur et à mesure le lait jusqu'à obtention d'une pâte lisse.",
-        "graine": 25165977,
-        "atome": "etape-1/phrase-1.2"
        }
       ],
-      "disposition": "ligne",
-      "avant": 0.45,
-      "alinea": 0.0
-     },
-     {
-      "type": "etape",
-      "id": "etape-2",
-      "source": "etape-2",
-      "titre": {
-       "texte": "2.",
-       "graine": 35215412
-      },
-      "segments": [
-       {
-        "texte": "Huiler la crêpière.",
-        "graine": 72857710,
-        "atome": "etape-2/phrase-1"
-       },
-       {
-        "texte": "Dès qu'elle est bien chaude,",
-        "graine": 52719915,
-        "atome": "etape-2/phrase-2.1"
-       }
-      ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      }
     ],
     "atomes": [
      "titre",
+     "section-ingredients",
      "ingredients-1/ligne-1",
      "ingredients-1/ligne-2",
      "ingredients-1/ligne-3",
      "ingredients-1/ligne-4",
      "ingredients-2/titre",
      "ingredients-2/ligne-1",
-     "etape-1/phrase-1.1",
-     "etape-1/phrase-1.2",
-     "etape-2/phrase-1",
-     "etape-2/phrase-2.1"
+     "ingredients-2/ligne-2",
+     "ingredients-2/ligne-3",
+     "section-preparation",
+     "etape-1/phrase-1.1"
     ]
    },
    "laura-droite": {
@@ -7710,6 +7888,7 @@
     "encre": "bille-bleue",
     "recette": "laura",
     "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "1 cuillère à soupe de sucre",
@@ -7746,16 +7925,45 @@
      },
      {
       "type": "paragraphe",
-      "id": "etape-2@phrase-2.2",
-      "source": "etape-2",
+      "id": "etape-1@phrase-1.2",
+      "source": "etape-1",
       "segments": [
+       {
+        "texte": "le sucre et ajouter au fur et à mesure le lait jusqu'à obtention d'une pâte lisse.",
+        "graine": 25165977,
+        "atome": "etape-1/phrase-1.2"
+       }
+      ],
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "2.",
+       "graine": 35215412
+      },
+      "segments": [
+       {
+        "texte": "Huiler la crêpière.",
+        "graine": 72857710,
+        "atome": "etape-2/phrase-1"
+       },
+       {
+        "texte": "Dès qu'elle est bien chaude,",
+        "graine": 52719915,
+        "atome": "etape-2/phrase-2.1"
+       },
        {
         "texte": "y verser une louche de pâte à crêpe.",
         "graine": 43552175,
         "atome": "etape-2/phrase-2.2"
        }
       ],
-      "avant": 0.0,
+      "disposition": "tete",
+      "avant": 0.12,
       "alinea": 0.0
      },
      {
@@ -7778,7 +7986,7 @@
         "atome": "etape-3/phrase-2"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -7802,12 +8010,15 @@
         "atome": "etape-4/phrase-1.2"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      }
     ],
     "atomes": [
+     "etape-1/phrase-1.2",
+     "etape-2/phrase-1",
+     "etape-2/phrase-2.1",
      "etape-2/phrase-2.2",
      "etape-3/phrase-1",
      "etape-3/phrase-2",
@@ -7820,20 +8031,20 @@
    "laura-gauche",
    "laura-droite"
   ],
-  "disposition": "ligne",
+  "disposition": "tete",
   "ajustements": {},
   "trous": {
-   "laura-gauche": 0.08
+   "laura-gauche": 0.03
   }
  },
- "papier/f27": "8b10a44d72a662141dfa19181521d02296b3be00480289d26b02777c20c11829",
- "papier1x/f27": "8b10a44d72a662141dfa19181521d02296b3be00480289d26b02777c20c11829",
- "papier/f31": "c29f5875b026cdf6b4718a6eaef2ecd9ba17af9e63b289606500704eb8dbb122",
- "papier1x/f31": "c29f5875b026cdf6b4718a6eaef2ecd9ba17af9e63b289606500704eb8dbb122",
- "papier/f29": "2787c6a189fc789506431ade29d24c57032ab940a23fc68d6fca6747e90b42e7",
- "papier1x/f29": "2787c6a189fc789506431ade29d24c57032ab940a23fc68d6fca6747e90b42e7",
+ "papier/f27": "17b81e46f2635a997d12cd5216d120ca7628e99fd38fe7e81e8f25bc552fdd68",
+ "papier1x/f27": "17b81e46f2635a997d12cd5216d120ca7628e99fd38fe7e81e8f25bc552fdd68",
+ "papier/f31": "21ad74bbd0f77cb759c1f31227236c10240b41b7ac76ebdda2a8ebccc082a7c8",
+ "papier1x/f31": "21ad74bbd0f77cb759c1f31227236c10240b41b7ac76ebdda2a8ebccc082a7c8",
+ "papier/f29": "8aa36abd27f21cbfaee4362a6d7319c4e0fc5fd7040fead346c916b570beb708",
+ "papier1x/f29": "8aa36abd27f21cbfaee4362a6d7319c4e0fc5fd7040fead346c916b570beb708",
  "page/crepes-droite": {
-  "cle": "f9bc88c60e72060931c6c461c3e8829b4f1ad9fd5487fd0d79f1bcb26ccb5c92",
+  "cle": "0560f243e76f732ac555a6f40220623e844948d747d118c5517d5bb88a5d6a4e",
   "manifeste": {
    "double": "crepes",
    "cote": "droite",
@@ -7888,14 +8099,27 @@
     ]
    },
    "texte": "Crêpes & gaufres\nLaura",
-   "vivants": {},
+   "vivants": {
+    "aq-vanille": [
+     0.27,
+     0.53,
+     0.46,
+     0.3
+    ]
+   },
    "deborde": [],
    "lignes": 1,
+   "aquarelles": {
+    "aq-vanille": {
+     "aquarelle": "vanille",
+     "angle": 0
+    }
+   },
    "relu": true
   }
  },
  "page/crepes-gauche": {
-  "cle": "8259907d7931251dc3ad180d18e6c02b51c66ece21551740b164441cbff593ec",
+  "cle": "767760c44b5a1d98cff30331e0eef461840907210489f0fafe9f31aa0f773369",
   "manifeste": {
    "double": "crepes",
    "cote": "gauche",
@@ -7957,23 +8181,11 @@
      0.76,
      0.12
     ],
-    "aq-crepes-1": [
-     0.18,
-     0.38,
-     0.3,
-     0.22
-    ],
-    "aq-crepes-2": [
-     0.57,
-     0.34,
-     0.24,
-     0.24
-    ],
-    "aq-crepes-3": [
+    "aq-atelier": [
+     0.13,
      0.32,
-     0.64,
-     0.36,
-     0.24
+     0.74,
+     0.5
     ]
    },
    "deborde": [],
@@ -7984,20 +8196,9 @@
      "anime": "balance",
      "angle": 0
     },
-    "aq-crepes-1": {
+    "aq-atelier": {
      "aquarelle": "oeufs",
-     "anime": "fleurit",
-     "angle": 3
-    },
-    "aq-crepes-2": {
-     "aquarelle": "vanille",
-     "anime": "fleurit",
-     "angle": -4
-    },
-    "aq-crepes-3": {
-     "aquarelle": "tasse-2",
-     "anime": "fleurit",
-     "angle": 3
+     "angle": 0
     }
    },
    "relu": true
@@ -8005,8 +8206,8 @@
  },
  "papier/f35": "acdf5e49bf5621dc9d70f6b4c0487bc85cd0b38b003e5312b3a615bb76730183",
  "papier1x/f35": "acdf5e49bf5621dc9d70f6b4c0487bc85cd0b38b003e5312b3a615bb76730183",
- "papier/f33": "fe86ac038c3d508838321adb00f5aedd59a6b5aaec92821458584685e430555f",
- "papier1x/f33": "fe86ac038c3d508838321adb00f5aedd59a6b5aaec92821458584685e430555f",
+ "papier/f33": "6181b0b32b94ab823e0b8e5b8cc6ea8b404ec998fb12dad9c64a9efd07a28319",
+ "papier1x/f33": "6181b0b32b94ab823e0b8e5b8cc6ea8b404ec998fb12dad9c64a9efd07a28319",
  "page/tartes-droite": {
   "cle": "617e729499ba55b1759c7c3a607fc20f09da3f3fe413f1cc0cb26eeab7389bb5",
   "manifeste": {
@@ -8179,7 +8380,7 @@
   }
  },
  "page/pierrette-gauche": {
-  "cle": "93e9b20523134fb11a1b49e16ed5e0586e23c523f4ba679e512a55a3fe2c2659",
+  "cle": "f18f99099919658597bae9b8b5b755061d1699e99fa1ab8c82cfff4434045578",
   "manifeste": {
    "double": "pierrette",
    "cote": "gauche",
@@ -8232,7 +8433,7 @@
      ]
     ]
    },
-   "texte": "Pierrette\nPour Cécile : Trente bougies pour notre Cécile chérie ! Voici le secret de mon cake au citron bien imbibé qui ne sèche jamais. Gros bisous tendres. — Pierrette\nLe cake au citron d'antan\nAppareil :\n3 œufs, 170 g de sucre, le zeste râpé de 2 citrons, 160 g de farine, 1 c. à café de levure, 100 g de beurre fondu tiède, 50 g de crème liquide entière\nSirop d'imbibage :\n60 g de jus de citron, 40 g de sucre\n1.\nFrotter longuement le sucre et les zestes entre les doigts pour libérer les huiles essentielles.\n2.\nFouetter avec les œufs jusqu'à ce que le mélange double de volume.\n(Citrons non traités bien lavés !)",
+   "texte": "Pierrette\nPour Cécile : Trente bougies pour notre Cécile chérie ! Voici le secret de mon cake au citron bien imbibé qui ne sèche jamais. Gros bisous tendres. — Pierrette\nLe cake au citron d'antan\nIngrédients\nAppareil :\n3 œufs\n170 g de sucre\nle zeste râpé de 2 citrons\n160 g de farine\n1 c. à café de levure\n100 g de beurre fondu tiède\n50 g de crème liquide entière\nSirop d'imbibage :\n60 g de jus de citron\n40 g de sucre\n(Citrons non traités bien lavés !)",
    "vivants": {
     "photo": [
      0.06,
@@ -8242,13 +8443,13 @@
     ]
    },
    "deborde": [],
-   "lignes": 13,
+   "lignes": 15,
    "recette": "pierrette",
    "relu": true
   }
  },
  "page/pierrette-droite": {
-  "cle": "3145e67e8c75e193a5fbd05ed49a9156b3926f918bf81c77ad70c97dc04ece6b",
+  "cle": "44f5b7335ecee9a4384c046e5cea182770d96390368589d5c9e165698f38d4fc",
   "manifeste": {
    "double": "pierrette",
    "cote": "droite",
@@ -8301,33 +8502,22 @@
      ]
     ]
    },
-   "texte": "Pierrette\n3.\nAjouter la crème, puis la farine tamisée avec la levure, et enfin le beurre fondu.\n4.\nCuire 42 min à 165 °C. Pendant ce temps, tiédir le jus de citron avec le sucre pour faire le sirop.\n5.\nLe secret de Pierrette : Dès la sortie du four, imbiber le cake encore très chaud avec le sirop tiède au pinceau jusqu'à complète absorption.",
+   "texte": "Pierrette\nPréparation\n1. Frotter longuement le sucre et les zestes entre les doigts pour libérer les huiles essentielles.\n2. Fouetter avec les œufs jusqu'à ce que le mélange double de volume.\n3. Ajouter la crème, puis la farine tamisée avec la levure, et enfin le beurre fondu.\n4. Cuire 42 min à 165 °C. Pendant ce temps, tiédir le jus de citron avec le sucre pour faire le sirop.\n5. Le secret de Pierrette : Dès la sortie du four, imbiber le cake encore très chaud avec le sirop tiède au pinceau jusqu'à complète absorption.",
    "vivants": {
     "aq-pierrette-1": [
-     0.48,
-     0.68,
-     0.27,
-     0.29
-    ],
-    "aq-pierrette-2": [
-     0.13,
-     0.74,
-     0.22,
-     0.2
+     0.2,
+     0.5,
+     0.58,
+     0.383
     ]
    },
    "deborde": [],
-   "lignes": 9,
+   "lignes": 10,
    "aquarelles": {
     "aq-pierrette-1": {
      "aquarelle": "citron",
      "anime": "fleurit",
-     "angle": 5
-    },
-    "aq-pierrette-2": {
-     "aquarelle": "citron-2",
-     "anime": "fleurit",
-     "angle": -5
+     "angle": 0
     }
    },
    "recette": "pierrette",
@@ -8335,7 +8525,7 @@
   }
  },
  "page/lise-gauche": {
-  "cle": "fc0f602baed17768560986d5decdd70b267fdacd34c1ef9483f016781d54050d",
+  "cle": "4743d6ca9b55d841c278805aecf19dd4981359c8330b82cd1110b28b7693a12e",
   "manifeste": {
    "double": "lise",
    "cote": "gauche",
@@ -8388,7 +8578,7 @@
      ]
     ]
    },
-   "texte": "Lise\nPour Cécile : Joyeux anniversaire ma Cécile ! Une valeur sûre partagée avec le cœur. Gros bisous ! — Lise\nTarte aux pommes de ma maman\nJ'suis pas la reine de la cuisine de goûter mais une valeur sûre : Tarte aux pommes de ma maman\n1 pâte sablée\n3 à 4 pommes\n1 brique de crème fraîche liquide\nCannelle en poudre\n2 œufs\n3 cuillères à soupe de sucre\n1.\nFais ta pâte (t'es la reine des pâtes à tarte je peux rien t'apprendre) et étale-la.\n2.\nDispose tes pommes découpées en quartiers fins ou rondelles.\n3.\nMélange crème + œufs + cannelle + sucre pour l'appareil.",
+   "texte": "Lise\nPour Cécile : Joyeux anniversaire ma Cécile ! Une valeur sûre partagée avec le cœur. Gros bisous ! — Lise\nTarte aux pommes de ma maman\n« J'suis pas la reine de la cuisine de goûter mais une valeur sûre : Tarte aux pommes de ma maman »\nIngrédients\n1 pâte sablée\n3 à 4 pommes\n1 brique de crème fraîche liquide\nCannelle en poudre\n2 œufs\n3 cuillères à soupe de sucre\nPréparation\n1. Fais ta pâte (t'es la reine des pâtes à tarte je peux rien t'apprendre) et étale-la.\n2. Dispose tes pommes découpées en quartiers fins ou rondelles.\n3. Mélange crème + œufs + cannelle + sucre pour l'appareil.",
    "vivants": {
     "photo": [
      0.06,
@@ -8398,13 +8588,13 @@
     ]
    },
    "deborde": [],
-   "lignes": 18,
+   "lignes": 17,
    "recette": "lise",
    "relu": true
   }
  },
  "page/lise-droite": {
-  "cle": "4867fd07e560782df20c30b77b59e8f8389b05afa8899333281122e51eec870d",
+  "cle": "d91560c6bc5c3d80e48644e0577e9e094537887c34859ede156868eb4c9a96ca",
   "manifeste": {
    "double": "lise",
    "cote": "droite",
@@ -8457,7 +8647,7 @@
      ]
     ]
    },
-   "texte": "Lise\n4.\nEt hop au four à 180 degrés et régale-toi !!",
+   "texte": "Lise\n4. Et hop au four à 180 degrés et régale-toi !!",
    "vivants": {
     "aq-lise-1": [
      0.35,
@@ -8473,7 +8663,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 2,
+   "lignes": 1,
    "aquarelles": {
     "aq-lise-1": {
      "aquarelle": "tarte-pommes",
@@ -8491,7 +8681,7 @@
   }
  },
  "page/laura-gauche": {
-  "cle": "ffd7958974b53ccfb5235e9536c529c8e88dfbf354d4607e18157a1b3aaeb902",
+  "cle": "db0085a355a018e2cbea46a4cdec943191a28de54b082dba7af7eaf6550130ba",
   "manifeste": {
    "double": "laura",
    "cote": "gauche",
@@ -8544,7 +8734,7 @@
      ]
     ]
    },
-   "texte": "Laura\nPour Cécile : Joyeux 30 ans ma Cécile ! Une crêpe bien gourmande pour notre reine du goûter. Profite à fond de ta journée ! — Laura\nCrêpes gourmandes Nutella-banane-chantilly\n250 g de farine\n3 œufs\n50 cl de lait\n1 cuillère à soupe de sucre\nPour la garniture :\nNutella, 1 banane coupée en rondelles, crème chantilly\n1.\nMélanger les œufs, la farine, le sucre et ajouter au fur et à mesure le lait jusqu'à obtention d'une pâte lisse.\n2.\nHuiler la crêpière. Dès qu'elle est bien chaude,",
+   "texte": "Laura\nPour Cécile : Joyeux 30 ans ma Cécile ! Une crêpe bien gourmande pour notre reine du goûter. Profite à fond de ta journée ! — Laura\nCrêpes gourmandes Nutella-banane-chantilly\nIngrédients\n250 g de farine\n3 œufs\n50 cl de lait\n1 cuillère à soupe de sucre\nPour la garniture :\nNutella\n1 banane coupée en rondelles\ncrème chantilly\nPréparation\n1. Mélanger les œufs, la farine,",
    "vivants": {
     "photo": [
      0.06,
@@ -8560,7 +8750,7 @@
   }
  },
  "page/laura-droite": {
-  "cle": "d48ae69a596bdbcf126a09f46bb42e307aaee38ed3a69246a3e93b93e0a4d23b",
+  "cle": "9334e277cd5e70700fa9f2085ce81175268845f5f3406fd940455dd20e9a39c3",
   "manifeste": {
    "double": "laura",
    "cote": "droite",
@@ -8613,7 +8803,7 @@
      ]
     ]
    },
-   "texte": "Laura\ny verser une louche de pâte à crêpe.\n3.\nRetourner la crêpe dès que les bords se décollent. Attendre quelques secondes et retirer la crêpe.\n4.\nGarnir la crêpe d'une belle cuillère à soupe de Nutella, d'une banane coupée en rondelles et de crème chantilly avant de la rouler et de l'engloutir pour le goûter 😋",
+   "texte": "Laura\nle sucre et ajouter au fur et à mesure le lait jusqu'à obtention d'une pâte lisse.\n2. Huiler la crêpière. Dès qu'elle est bien chaude, y verser une louche de pâte à crêpe.\n3. Retourner la crêpe dès que les bords se décollent. Attendre quelques secondes et retirer la crêpe.\n4. Garnir la crêpe d'une belle cuillère à soupe de Nutella, d'une banane coupée en rondelles et de crème chantilly avant de la rouler et de l'engloutir pour le goûter 😋",
    "vivants": {
     "aq-laura-1": [
      0.36,
@@ -8623,7 +8813,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 8,
+   "lignes": 9,
    "aquarelles": {
     "aq-laura-1": {
      "aquarelle": "crepes-banane",
@@ -8637,10 +8827,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.6285,
-      0.2983,
-      0.0202,
-      0.0143
+      0.3886,
+      0.3305,
+      0.0205,
+      0.0145
      ]
     }
    ],
@@ -8648,7 +8838,7 @@
   }
  },
  "pagination/emeline": {
-  "cle": "0bbd6bc2bcb77b6105d4b94e36f4408919dc7a3c831a022c85c406dc5a084286",
+  "cle": "1f1a01fd14e20f5042ddcb58d1fc712207d5fdd2076511d8e54122ee44a9d5de",
   "pages": {
    "emeline-gauche": {
     "double": "emeline",
@@ -8656,6 +8846,7 @@
     "encre": "chocolat",
     "recette": "emeline",
     "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "1 bonne pincée de fleur de sel",
@@ -8722,49 +8913,77 @@
       "avant": 0.0
      },
      {
+      "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 99924458,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
       "type": "ingredients",
       "id": "ingredients-1@ligne-1",
       "disposition": "puces",
       "graine_puces": 37354926,
-      "avant": 0.3,
+      "avant": 0.4,
       "lignes": [
        {
         "texte": "200 g de bon chocolat noir pâtissier",
         "graine": 21047429,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-1"
        },
        {
         "texte": "150 g de beurre doux",
         "graine": 83805235,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-2"
        },
        {
         "texte": "3 œufs entiers",
         "graine": 682955,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-3"
        },
        {
         "texte": "100 g de sucre de canne",
         "graine": 59393380,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-4"
        },
        {
         "texte": "50 g de farine tamisée",
         "graine": 2405872,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-5"
        },
        {
         "texte": "1 bonne pincée de fleur de sel",
         "graine": 41578664,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-6"
        }
       ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 1970878,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
      },
      {
       "type": "etape",
@@ -8781,8 +9000,8 @@
         "atome": "etape-1/phrase-1"
        }
       ],
-      "disposition": "ligne",
-      "avant": 0.45,
+      "disposition": "tete",
+      "avant": 0.12,
       "alinea": 0.0
      },
      {
@@ -8800,7 +9019,31 @@
         "atome": "etape-2/phrase-1"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-3",
+      "source": "etape-3",
+      "titre": {
+       "texte": "3.",
+       "graine": 52903112
+      },
+      "segments": [
+       {
+        "texte": "Verser le chocolat fondu tiédi,",
+        "graine": 52163486,
+        "atome": "etape-3/phrase-1.1"
+       },
+       {
+        "texte": "mélanger, puis incorporer la farine et la fleur de sel d'un geste souple.",
+        "graine": 4190000,
+        "atome": "etape-3/phrase-1.2"
+       }
+      ],
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -8813,21 +9056,6 @@
       "graine": 8633001,
       "pente": -4.0,
       "places": [
-       {
-        "au_dessus": "titre",
-        "dx": 0.0,
-        "dy": 1.2
-       },
-       {
-        "au_dessus": "titre",
-        "dx": 0.0,
-        "dy": 2.2
-       },
-       {
-        "au_dessus": "titre",
-        "dx": 0.0,
-        "dy": 3.0
-       },
        {
         "au_dessus": "titre",
         "dx": 0.5,
@@ -8869,6 +9097,21 @@
         "dy": 1.2
        },
        {
+        "au_dessus": "titre",
+        "dx": 0.0,
+        "dy": 1.2
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.0,
+        "dy": 2.2
+       },
+       {
+        "au_dessus": "titre",
+        "dx": 0.0,
+        "dy": 3.0
+       },
+       {
         "x": 0.065,
         "y": 0.91
        },
@@ -8885,14 +9128,18 @@
     ],
     "atomes": [
      "titre",
+     "section-ingredients",
      "ingredients-1/ligne-1",
      "ingredients-1/ligne-2",
      "ingredients-1/ligne-3",
      "ingredients-1/ligne-4",
      "ingredients-1/ligne-5",
      "ingredients-1/ligne-6",
+     "section-preparation",
      "etape-1/phrase-1",
-     "etape-2/phrase-1"
+     "etape-2/phrase-1",
+     "etape-3/phrase-1.1",
+     "etape-3/phrase-1.2"
     ]
    },
    "emeline-droite": {
@@ -8901,6 +9148,7 @@
     "encre": "chocolat",
     "recette": "emeline",
     "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "1 bonne pincée de fleur de sel",
@@ -8938,30 +9186,6 @@
      },
      {
       "type": "etape",
-      "id": "etape-3",
-      "source": "etape-3",
-      "titre": {
-       "texte": "3.",
-       "graine": 52903112
-      },
-      "segments": [
-       {
-        "texte": "Verser le chocolat fondu tiédi,",
-        "graine": 52163486,
-        "atome": "etape-3/phrase-1.1"
-       },
-       {
-        "texte": "mélanger, puis incorporer la farine et la fleur de sel d'un geste souple.",
-        "graine": 4190000,
-        "atome": "etape-3/phrase-1.2"
-       }
-      ],
-      "disposition": "ligne",
-      "avant": 0.0,
-      "alinea": 0.0
-     },
-     {
-      "type": "etape",
       "id": "etape-4",
       "source": "etape-4",
       "titre": {
@@ -8980,8 +9204,8 @@
         "atome": "etape-4/phrase-2"
        }
       ],
-      "disposition": "ligne",
-      "avant": 0.12,
+      "disposition": "tete",
+      "avant": 0.0,
       "alinea": 0.0
      },
      {
@@ -8999,14 +9223,12 @@
         "atome": "etape-5/phrase-1"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      }
     ],
     "atomes": [
-     "etape-3/phrase-1.1",
-     "etape-3/phrase-1.2",
      "etape-4/phrase-1",
      "etape-4/phrase-2",
      "etape-5/phrase-1"
@@ -9017,14 +9239,14 @@
    "emeline-gauche",
    "emeline-droite"
   ],
-  "disposition": "ligne",
+  "disposition": "tete",
   "ajustements": {},
   "trous": {
-   "emeline-gauche": 2.42
+   "emeline-gauche": 0.03
   }
  },
  "pagination/clemence": {
-  "cle": "6b0b70180451b0c0616693d92ce8caddfb7310aef38a85395864c411ae4290f7",
+  "cle": "48ee2b9201f87b9cbc5e4232656aabffb63eed64e1167cd2590a4376d9f000d2",
   "pages": {
    "clemence-gauche": {
     "double": "clemence",
@@ -9032,6 +9254,7 @@
     "encre": "plume",
     "recette": "clemence",
     "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "200 g de framboises fraîches + coulis",
@@ -9096,6 +9319,20 @@
      },
      {
       "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 37775314,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "paragraphe",
       "id": "ingredients-1/titre",
       "segments": [
        {
@@ -9115,10 +9352,16 @@
       "avant": 0.0,
       "lignes": [
        {
-        "texte": "200 g de spéculoos en miettes, 70 g de beurre fondu",
+        "texte": "200 g de spéculoos en miettes",
         "graine": 59829431,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-1"
+       },
+       {
+        "texte": "70 g de beurre fondu",
+        "graine": 24683790,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-2"
        }
       ]
      },
@@ -9143,38 +9386,28 @@
       "avant": 0.0,
       "lignes": [
        {
-        "texte": "450 g de cream cheese (Philadelphia), 150 g de crème fraîche épaisse, 90 g de sucre glace, 2 œufs",
+        "texte": "450 g de cream cheese (Philadelphia)",
         "graine": 76813336,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-2/ligne-1"
-       }
-      ]
-     },
-     {
-      "type": "paragraphe",
-      "id": "ingredients-3/titre",
-      "segments": [
+       },
        {
-        "texte": "Garniture :",
-        "graine": 31711250,
-        "atome": "ingredients-3/titre"
-       }
-      ],
-      "alinea": 0.0,
-      "avant": 0.65
-     },
-     {
-      "type": "ingredients",
-      "id": "ingredients-3@ligne-1",
-      "disposition": "puces",
-      "graine_puces": 57832761,
-      "avant": 0.0,
-      "lignes": [
+        "texte": "150 g de crème fraîche épaisse",
+        "graine": 76707919,
+        "puce": "point",
+        "atome": "ingredients-2/ligne-2"
+       },
        {
-        "texte": "200 g de framboises fraîches + coulis",
-        "graine": 64771190,
-        "puce": null,
-        "atome": "ingredients-3/ligne-1"
+        "texte": "90 g de sucre glace",
+        "graine": 99944180,
+        "puce": "point",
+        "atome": "ingredients-2/ligne-3"
+       },
+       {
+        "texte": "2 œufs",
+        "graine": 86486523,
+        "puce": "point",
+        "atome": "ingredients-2/ligne-4"
        }
       ]
      },
@@ -9259,12 +9492,15 @@
     ],
     "atomes": [
      "titre",
+     "section-ingredients",
      "ingredients-1/titre",
      "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
      "ingredients-2/titre",
      "ingredients-2/ligne-1",
-     "ingredients-3/titre",
-     "ingredients-3/ligne-1"
+     "ingredients-2/ligne-2",
+     "ingredients-2/ligne-3",
+     "ingredients-2/ligne-4"
     ]
    },
    "clemence-droite": {
@@ -9273,6 +9509,7 @@
     "encre": "plume",
     "recette": "clemence",
     "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "200 g de framboises fraîches + coulis",
@@ -9289,10 +9526,10 @@
      {
       "nom": "aq-clemence-1",
       "rect": [
-       0.36,
-       0.7,
-       0.38,
-       0.24
+       0.16,
+       0.56,
+       0.68,
+       0.38
       ],
       "aquarelle": "framboises-speculoos",
       "angle": 0
@@ -9304,6 +9541,48 @@
       "id": "courant",
       "texte": "Clémence",
       "graine": 35722436
+     },
+     {
+      "type": "paragraphe",
+      "id": "ingredients-3/titre",
+      "segments": [
+       {
+        "texte": "Garniture :",
+        "graine": 31711250,
+        "atome": "ingredients-3/titre"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.0
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-3@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 57832761,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "200 g de framboises fraîches + coulis",
+        "graine": 64771190,
+        "puce": "point",
+        "atome": "ingredients-3/ligne-1"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 36367315,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
      },
      {
       "type": "etape",
@@ -9325,8 +9604,8 @@
         "atome": "etape-1/phrase-2"
        }
       ],
-      "disposition": "ligne",
-      "avant": 0.0,
+      "disposition": "tete",
+      "avant": 0.12,
       "alinea": 0.0
      },
      {
@@ -9349,7 +9628,7 @@
         "atome": "etape-2/phrase-1.2"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -9368,7 +9647,7 @@
         "atome": "etape-3/phrase-1"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -9397,7 +9676,7 @@
         "atome": "etape-4/phrase-2.2"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -9416,12 +9695,15 @@
         "atome": "etape-5/phrase-1"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      }
     ],
     "atomes": [
+     "ingredients-3/titre",
+     "ingredients-3/ligne-1",
+     "section-preparation",
      "etape-1/phrase-1",
      "etape-1/phrase-2",
      "etape-2/phrase-1.1",
@@ -9438,14 +9720,14 @@
    "clemence-gauche",
    "clemence-droite"
   ],
-  "disposition": "ligne",
+  "disposition": "tete",
   "ajustements": {},
   "trous": {
-   "clemence-gauche": 2.79
+   "clemence-gauche": 1.78
   }
  },
  "pagination/anatole": {
-  "cle": "28c94cef01edbc18d321740a7e47b87fd47b36245c5e58c9f24b7516f5d7d4d1",
+  "cle": "6150a5ff8e2d39c59d12b1ada77a314d44cdaba8c29e33a547bdd329dce6af03",
   "pages": {
    "anatole-gauche": {
     "double": "anatole",
@@ -9453,6 +9735,7 @@
     "encre": "noire",
     "recette": "anatole",
     "serrage_max": 2,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "1 c. à soupe de jus de citron",
@@ -9520,49 +9803,77 @@
       "avant": 0.0
      },
      {
+      "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 13169064,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
       "type": "ingredients",
       "id": "ingredients-1@ligne-1",
       "disposition": "puces",
       "graine_puces": 45555453,
-      "avant": 0.3,
+      "avant": 0.4,
       "lignes": [
        {
         "texte": "1 pâte sablée pur beurre",
         "graine": 78613482,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-1"
        },
        {
         "texte": "450 g de myrtilles",
         "graine": 11569385,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-2"
        },
        {
         "texte": "60 g de poudre d'amandes (le secret pour absorber le jus)",
         "graine": 17899002,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-3"
        },
        {
         "texte": "50 g de sucre roux",
         "graine": 39191573,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-4"
        },
        {
         "texte": "1 sachet de sucre vanillé",
         "graine": 67768360,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-5"
        },
        {
         "texte": "1 c. à soupe de jus de citron",
         "graine": 28736427,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-6"
        }
       ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 77242456,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
      },
      {
       "type": "etape",
@@ -9584,8 +9895,32 @@
         "atome": "etape-1/phrase-1.2"
        }
       ],
-      "disposition": "ligne",
-      "avant": 0.45,
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "2.",
+       "graine": 43539158
+      },
+      "segments": [
+       {
+        "texte": "Préchauffer le four à 190 °C.",
+        "graine": 79589258,
+        "atome": "etape-2/phrase-1"
+       },
+       {
+        "texte": "Saupoudrer le fond de tarte avec la poudre d'amandes.",
+        "graine": 21002676,
+        "atome": "etape-2/phrase-2"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
       "alinea": 0.0
      },
      {
@@ -9669,14 +10004,18 @@
     ],
     "atomes": [
      "titre",
+     "section-ingredients",
      "ingredients-1/ligne-1",
      "ingredients-1/ligne-2",
      "ingredients-1/ligne-3",
      "ingredients-1/ligne-4",
      "ingredients-1/ligne-5",
      "ingredients-1/ligne-6",
+     "section-preparation",
      "etape-1/phrase-1.1",
-     "etape-1/phrase-1.2"
+     "etape-1/phrase-1.2",
+     "etape-2/phrase-1",
+     "etape-2/phrase-2"
     ]
    },
    "anatole-droite": {
@@ -9685,6 +10024,7 @@
     "encre": "noire",
     "recette": "anatole",
     "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "1 c. à soupe de jus de citron",
@@ -9722,30 +10062,6 @@
      },
      {
       "type": "etape",
-      "id": "etape-2",
-      "source": "etape-2",
-      "titre": {
-       "texte": "2.",
-       "graine": 43539158
-      },
-      "segments": [
-       {
-        "texte": "Préchauffer le four à 190 °C.",
-        "graine": 79589258,
-        "atome": "etape-2/phrase-1"
-       },
-       {
-        "texte": "Saupoudrer le fond de tarte avec la poudre d'amandes.",
-        "graine": 21002676,
-        "atome": "etape-2/phrase-2"
-       }
-      ],
-      "disposition": "ligne",
-      "avant": 0.0,
-      "alinea": 0.0
-     },
-     {
-      "type": "etape",
       "id": "etape-3",
       "source": "etape-3",
       "titre": {
@@ -9769,8 +10085,8 @@
         "atome": "etape-3/phrase-1.3"
        }
       ],
-      "disposition": "ligne",
-      "avant": 0.12,
+      "disposition": "tete",
+      "avant": 0.0,
       "alinea": 0.0
      },
      {
@@ -9788,7 +10104,7 @@
         "atome": "etape-4/phrase-1"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -9807,14 +10123,12 @@
         "atome": "etape-5/phrase-1"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      }
     ],
     "atomes": [
-     "etape-2/phrase-1",
-     "etape-2/phrase-2",
      "etape-3/phrase-1.1",
      "etape-3/phrase-1.2",
      "etape-3/phrase-1.3",
@@ -9827,23 +10141,24 @@
    "anatole-gauche",
    "anatole-droite"
   ],
-  "disposition": "ligne",
+  "disposition": "tete",
   "ajustements": {
    "anatole-gauche": "interligne −4 %"
   },
   "trous": {
-   "anatole-gauche": 3.0
+   "anatole-gauche": 2.33
   }
  },
  "pagination/julien": {
-  "cle": "469e9a9de56fd53c611fc9e82f9468c6967cefc8f90a9788397c775e86a07c94",
+  "cle": "f9e4412550248737e95f6b6b2224d586193c7a046d62056f105c09b2a1df7e02",
   "pages": {
    "julien-gauche": {
     "double": "julien",
     "main": "ado",
     "encre": "feutre",
     "recette": "julien",
-    "serrage_max": 2,
+    "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "1 c. à café d'extrait de vanille",
@@ -9875,7 +10190,6 @@
     "marges": {
      "haut": 0.31703
     },
-    "pas_local": 0.96,
     "blocs": [
      {
       "type": "bandeau",
@@ -9913,85 +10227,75 @@
       "avant": 0.0
      },
      {
+      "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 6043905,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
       "type": "ingredients",
       "id": "ingredients-1@ligne-1",
       "disposition": "puces",
       "graine_puces": 82779285,
-      "avant": 0.3,
+      "avant": 0.4,
       "lignes": [
        {
         "texte": "220 g de farine",
         "graine": 28470257,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-1"
        },
        {
         "texte": "120 g de beurre demi-sel pommade",
         "graine": 17255052,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-2"
        },
        {
         "texte": "100 g de cassonade + 40 g de sucre blanc",
         "graine": 97880215,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-3"
        },
        {
         "texte": "1 œuf frais",
         "graine": 64919178,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-4"
        },
        {
         "texte": "1 c. à café d'extrait de vanille",
         "graine": 16627776,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-5"
        },
        {
         "texte": "1 c. à café de bicarbonate (ou levure)",
         "graine": 72795851,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-6"
        },
        {
         "texte": "160 g de grosses pépites de chocolat (noir et lait)",
         "graine": 23160422,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-7"
        },
        {
         "texte": "50 g de noisettes torréfiées concassées",
         "graine": 31430132,
-        "puce": null,
+        "puce": "point",
         "atome": "ingredients-1/ligne-8"
        }
       ]
-     },
-     {
-      "type": "etape",
-      "id": "etape-1",
-      "source": "etape-1",
-      "titre": {
-       "texte": "1.",
-       "graine": 3650356
-      },
-      "segments": [
-       {
-        "texte": "Crémer le beurre pommade avec les sucres,",
-        "graine": 93680300,
-        "atome": "etape-1/phrase-1.1"
-       },
-       {
-        "texte": "puis ajouter",
-        "graine": 11078622,
-        "atome": "etape-1/phrase-1.2~a"
-       }
-      ],
-      "disposition": "ligne",
-      "avant": 0.45,
-      "alinea": 0.0
      },
      {
       "type": "annotation",
@@ -10074,6 +10378,7 @@
     ],
     "atomes": [
      "titre",
+     "section-ingredients",
      "ingredients-1/ligne-1",
      "ingredients-1/ligne-2",
      "ingredients-1/ligne-3",
@@ -10081,9 +10386,7 @@
      "ingredients-1/ligne-5",
      "ingredients-1/ligne-6",
      "ingredients-1/ligne-7",
-     "ingredients-1/ligne-8",
-     "etape-1/phrase-1.1",
-     "etape-1/phrase-1.2~a"
+     "ingredients-1/ligne-8"
     ]
    },
    "julien-droite": {
@@ -10092,6 +10395,7 @@
     "encre": "feutre",
     "recette": "julien",
     "serrage_max": 1,
+    "police": "kalam",
     "contexte_importants": {
      "ingredients": [
       "1 c. à café d'extrait de vanille",
@@ -10132,16 +10436,40 @@
      },
      {
       "type": "paragraphe",
-      "id": "etape-1@phrase-1.2~b",
-      "source": "etape-1",
+      "id": "section-preparation",
       "segments": [
        {
-        "texte": "l'œuf et la vanille.",
-        "graine": 38396649,
-        "atome": "etape-1/phrase-1.2~b"
+        "texte": "Préparation",
+        "graine": 3854834,
+        "atome": "section-preparation"
        }
       ],
+      "alinea": 0.0,
       "avant": 0.0,
+      "echelle": 1.1
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "1.",
+       "graine": 3650356
+      },
+      "segments": [
+       {
+        "texte": "Crémer le beurre pommade avec les sucres,",
+        "graine": 93680300,
+        "atome": "etape-1/phrase-1.1"
+       },
+       {
+        "texte": "puis ajouter l'œuf et la vanille.",
+        "graine": 11078622,
+        "atome": "etape-1/phrase-1.2"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
       "alinea": 0.0
      },
      {
@@ -10164,7 +10492,7 @@
         "atome": "etape-2/phrase-2"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -10183,7 +10511,7 @@
         "atome": "etape-3/phrase-1"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -10202,7 +10530,7 @@
         "atome": "etape-4/phrase-1"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      },
@@ -10226,13 +10554,15 @@
         "atome": "etape-5/phrase-1.2"
        }
       ],
-      "disposition": "ligne",
+      "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
      }
     ],
     "atomes": [
-     "etape-1/phrase-1.2~b",
+     "section-preparation",
+     "etape-1/phrase-1.1",
+     "etape-1/phrase-1.2",
      "etape-2/phrase-1",
      "etape-2/phrase-2",
      "etape-3/phrase-1",
@@ -10246,16 +10576,14 @@
    "julien-gauche",
    "julien-droite"
   ],
-  "disposition": "ligne",
-  "ajustements": {
-   "julien-gauche": "interligne −4 % + phrase coupée (2)"
-  },
+  "disposition": "tete",
+  "ajustements": {},
   "trous": {
-   "julien-gauche": 2.2
+   "julien-gauche": 2.54
   }
  },
  "page/emeline-gauche": {
-  "cle": "f2ed487e51956454231d76e9860449afb39ad360eb70a7e23060f0097b4e39d8",
+  "cle": "268cfe5f39aca5b35f9984db9c8262b44d04442739fd6a4ae16f4aef193dd80f",
   "manifeste": {
    "double": "emeline",
    "cote": "gauche",
@@ -10308,7 +10636,7 @@
      ]
     ]
    },
-   "texte": "Emeline\nPour Cécile : 30 ans ça se fête avec du chocolat et beaucoup d'amour ! Une recette réconfortante à savourer sans modération. Joyeux anniversaire Cécile ! — Emeline\nGâteau fondant au chocolat\n200 g de bon chocolat noir pâtissier\n150 g de beurre doux\n3 œufs entiers\n100 g de sucre de canne\n50 g de farine tamisée\n1 bonne pincée de fleur de sel\n1.\nFaire fondre le chocolat cassé en morceaux avec le beurre au bain-marie à feu très doux.\n2.\nDans un saladier, fouetter vivement les œufs et le sucre jusqu'à ce que le mélange blanchisse.\n(Chocolat noir 70 % minimum !)",
+   "texte": "Emeline\nPour Cécile : 30 ans ça se fête avec du chocolat et beaucoup d'amour ! Une recette réconfortante à savourer sans modération. Joyeux anniversaire Cécile ! — Emeline\nGâteau fondant au chocolat\nIngrédients\n200 g de bon chocolat noir pâtissier\n150 g de beurre doux\n3 œufs entiers\n100 g de sucre de canne\n50 g de farine tamisée\n1 bonne pincée de fleur de sel\nPréparation\n1. Faire fondre le chocolat cassé en morceaux avec le beurre au bain-marie à feu très doux.\n2. Dans un saladier, fouetter vivement les œufs et le sucre jusqu'à ce que le mélange blanchisse.\n3. Verser le chocolat fondu tiédi, mélanger, puis incorporer la farine et la fleur de sel d'un geste souple.\n(Chocolat noir 70 % minimum !)",
    "vivants": {
     "photo": [
      0.06,
@@ -10318,13 +10646,13 @@
     ]
    },
    "deborde": [],
-   "lignes": 16,
+   "lignes": 17,
    "recette": "emeline",
    "relu": true
   }
  },
  "page/emeline-droite": {
-  "cle": "11e28d5b8c56d2cc6a9b31df6595e750c400801bc1c3cf3e682c088c282fdd7f",
+  "cle": "2c71d9145f34772ec9e97969ff157fa88b803c465a8e0dbe69875d600208832a",
   "manifeste": {
    "double": "emeline",
    "cote": "droite",
@@ -10377,7 +10705,7 @@
      ]
     ]
    },
-   "texte": "Emeline\n3.\nVerser le chocolat fondu tiédi, mélanger, puis incorporer la farine et la fleur de sel d'un geste souple.\n4.\nVerser dans un moule beurré. Cuire 20 à 22 minutes à 180 °C (le cœur doit rester légèrement tremblotant).\n5.\nL'astuce d'Emeline : Attendre 15 minutes qu'il tiédisse pour que le cœur devienne incroyablement fondant.",
+   "texte": "Emeline\n4. Verser dans un moule beurré. Cuire 20 à 22 minutes à 180 °C (le cœur doit rester légèrement tremblotant).\n5. L'astuce d'Emeline : Attendre 15 minutes qu'il tiédisse pour que le cœur devienne incroyablement fondant.",
    "vivants": {
     "aq-emeline-1": [
      0.36,
@@ -10387,7 +10715,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 9,
+   "lignes": 4,
    "aquarelles": {
     "aq-emeline-1": {
      "aquarelle": "fondant-chocolat",
@@ -10399,7 +10727,7 @@
   }
  },
  "page/clemence-gauche": {
-  "cle": "5818ff5672c2fa25df880b0f946a6c9b3cb3dc0fa4f2b4ba4376e86781ef5082",
+  "cle": "0d9b8c5c111315f32414f7ae9b7c3ebd5dbc773f2f5d5ea1b4a040a60943358c",
   "manifeste": {
    "double": "clemence",
    "cote": "gauche",
@@ -10452,7 +10780,7 @@
      ]
     ]
    },
-   "texte": "Clémence\nPour Cécile : Pour la reine du jour ! L'alliance du croustillant du spéculoos et de l'acidulé de la framboise. Très bel anniversaire Cécile, régale-toi ! — Clémence\nCheesecake spéculoos & framboises\nBase :\n200 g de spéculoos en miettes, 70 g de beurre fondu\nCrème :\n450 g de cream cheese (Philadelphia), 150 g de crème fraîche épaisse, 90 g de sucre glace, 2 œufs\nGarniture :\n200 g de framboises fraîches + coulis\n(À préparer la veille, c'est encore meilleur !)",
+   "texte": "Clémence\nPour Cécile : Pour la reine du jour ! L'alliance du croustillant du spéculoos et de l'acidulé de la framboise. Très bel anniversaire Cécile, régale-toi ! — Clémence\nCheesecake spéculoos & framboises\nIngrédients\nBase :\n200 g de spéculoos en miettes\n70 g de beurre fondu\nCrème :\n450 g de cream cheese (Philadelphia)\n150 g de crème fraîche épaisse\n90 g de sucre glace\n2 œufs\n(À préparer la veille, c'est encore meilleur !)",
    "vivants": {
     "photo": [
      0.06,
@@ -10462,13 +10790,13 @@
     ]
    },
    "deborde": [],
-   "lignes": 11,
+   "lignes": 13,
    "recette": "clemence",
    "relu": true
   }
  },
  "page/clemence-droite": {
-  "cle": "4437a2c352555ecdfcbfb87b3a94887b34c621c24d72f86edc20354edd0356b0",
+  "cle": "3a727280a5e41e9430fb2e3f23f0229319927671f06d10d984b3e1c306337009",
   "manifeste": {
    "double": "clemence",
    "cote": "droite",
@@ -10521,17 +10849,17 @@
      ]
     ]
    },
-   "texte": "Clémence\n1.\nMélanger les miettes de spéculoos et le beurre fondu. Tasser au fond d'un moule à charnière et réserver 30 min au frais.\n2.\nFouetter le cream cheese avec le sucre glace, ajouter la crème fraîche, puis les œufs un à un sans trop battre.\n3.\nVerser sur le biscuit, enfoncer quelques framboises dans la crème.\n4.\nCuire 45 min à 150 °C au four. Laisser refroidir dans le four éteint, puis réfrigérer au moins 6h.\n5.\nLe dressage de Clémence : Recouvrir de framboises fraîches et d'un coulis au moment de servir.",
+   "texte": "Clémence\nGarniture :\n200 g de framboises fraîches + coulis\nPréparation\n1. Mélanger les miettes de spéculoos et le beurre fondu. Tasser au fond d'un moule à charnière et réserver 30 min au frais.\n2. Fouetter le cream cheese avec le sucre glace, ajouter la crème fraîche, puis les œufs un à un sans trop battre.\n3. Verser sur le biscuit, enfoncer quelques framboises dans la crème.\n4. Cuire 45 min à 150 °C au four. Laisser refroidir dans le four éteint, puis réfrigérer au moins 6h.\n5. Le dressage de Clémence : Recouvrir de framboises fraîches et d'un coulis au moment de servir.",
    "vivants": {
     "aq-clemence-1": [
-     0.36,
-     0.7,
-     0.38,
-     0.24
+     0.16,
+     0.56,
+     0.68,
+     0.38
     ]
    },
    "deborde": [],
-   "lignes": 14,
+   "lignes": 12,
    "aquarelles": {
     "aq-clemence-1": {
      "aquarelle": "framboises-speculoos",
@@ -10543,7 +10871,7 @@
   }
  },
  "page/anatole-gauche": {
-  "cle": "4674498ba2af086343165d95942c7db32295ba3f482399c65e8f3ca80803a392",
+  "cle": "5d32e22cb51879293976910b7e3d179bfab036581094dfcf382560d677de1fdf",
   "manifeste": {
    "double": "anatole",
    "cote": "gauche",
@@ -10596,7 +10924,7 @@
      ]
     ]
    },
-   "texte": "Anatole\nPour Cécile : Joyeux 30 ans Cécile ! Une vraie tarte des sous-bois pour fêter ça. Promis, les doigts bleus ça part au lavage ! Plein de gros bisous. — Anatole\nTarte à la myrtille\n1 pâte sablée pur beurre\n450 g de myrtilles\n60 g de poudre d'amandes (le secret pour absorber le jus)\n50 g de sucre roux\n1 sachet de sucre vanillé\n1 c. à soupe de jus de citron\n1.\nFoncer le moule avec la pâte sablée, piquer le fond à la fourchette et réserver 15 min au frais.\n(Myrtilles fraîches ou sauvages de préférence !)",
+   "texte": "Anatole\nPour Cécile : Joyeux 30 ans Cécile ! Une vraie tarte des sous-bois pour fêter ça. Promis, les doigts bleus ça part au lavage ! Plein de gros bisous. — Anatole\nTarte à la myrtille\nIngrédients\n1 pâte sablée pur beurre\n450 g de myrtilles\n60 g de poudre d'amandes (le secret pour absorber le jus)\n50 g de sucre roux\n1 sachet de sucre vanillé\n1 c. à soupe de jus de citron\nPréparation\n1. Foncer le moule avec la pâte sablée, piquer le fond à la fourchette et réserver 15 min au frais.\n2. Préchauffer le four à 190 °C. Saupoudrer le fond de tarte avec la poudre d'amandes.\n(Myrtilles fraîches ou sauvages de préférence !)",
    "vivants": {
     "photo": [
      0.06,
@@ -10612,7 +10940,7 @@
   }
  },
  "page/anatole-droite": {
-  "cle": "b6f7bf342e0a151a5d52613e32ff028c9baf52b608aecf93c60d66e469bfc471",
+  "cle": "2e2afa5863f1b4728baf32c602785243a3478c1cc5d6576f27aa7b678cd2cecb",
   "manifeste": {
    "double": "anatole",
    "cote": "droite",
@@ -10665,7 +10993,7 @@
      ]
     ]
    },
-   "texte": "Anatole\n2.\nPréchauffer le four à 190 °C. Saupoudrer le fond de tarte avec la poudre d'amandes.\n3.\nMélanger délicatement les myrtilles avec le sucre roux, le sucre vanillé et le jus de citron, puis les répartir sur la pâte.\n4.\nEnfourner 30 à 35 minutes jusqu'à ce que la pâte soit bien dorée et les fruits compotés.\n5.\nLa touche d'Anatole : Laisser refroidir complètement avant de servir avec une cuillère de crème fraîche épaisse.",
+   "texte": "Anatole\n3. Mélanger délicatement les myrtilles avec le sucre roux, le sucre vanillé et le jus de citron, puis les répartir sur la pâte.\n4. Enfourner 30 à 35 minutes jusqu'à ce que la pâte soit bien dorée et les fruits compotés.\n5. La touche d'Anatole : Laisser refroidir complètement avant de servir avec une cuillère de crème fraîche épaisse.",
    "vivants": {
     "aq-anatole-1": [
      0.36,
@@ -10675,7 +11003,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 14,
+   "lignes": 6,
    "aquarelles": {
     "aq-anatole-1": {
      "aquarelle": "tarte-myrtilles",
@@ -10687,7 +11015,7 @@
   }
  },
  "page/julien-gauche": {
-  "cle": "f8aa14552e7d98ea8e971cd3aaad3a8d7577c702618644b46d50aa3f3ae04459",
+  "cle": "8cec2106a23644281313f58996402643c25d418175e7c0551563f15a761c0055",
   "manifeste": {
    "double": "julien",
    "cote": "gauche",
@@ -10740,7 +11068,7 @@
      ]
     ]
    },
-   "texte": "Julien\nPour Cécile : Bienvenue dans le club des trentenaires Cécile ! Des cookies bien dodus et crousti-fondants pour accompagner tous tes thés d'anniversaire. — Julien\nCookies moelleux pépites & noisettes\n220 g de farine\n120 g de beurre demi-sel pommade\n100 g de cassonade + 40 g de sucre blanc\n1 œuf frais\n1 c. à café d'extrait de vanille\n1 c. à café de bicarbonate (ou levure)\n160 g de grosses pépites de chocolat (noir et lait)\n50 g de noisettes torréfiées concassées\n1.\nCrémer le beurre pommade avec les sucres, puis ajouter\n(Ne surtout pas trop les cuire !)",
+   "texte": "Julien\nPour Cécile : Bienvenue dans le club des trentenaires Cécile ! Des cookies bien dodus et crousti-fondants pour accompagner tous tes thés d'anniversaire. — Julien\nCookies moelleux pépites & noisettes\nIngrédients\n220 g de farine\n120 g de beurre demi-sel pommade\n100 g de cassonade + 40 g de sucre blanc\n1 œuf frais\n1 c. à café d'extrait de vanille\n1 c. à café de bicarbonate (ou levure)\n160 g de grosses pépites de chocolat (noir et lait)\n50 g de noisettes torréfiées concassées\n(Ne surtout pas trop les cuire !)",
    "vivants": {
     "photo": [
      0.06,
@@ -10750,13 +11078,13 @@
     ]
    },
    "deborde": [],
-   "lignes": 14,
+   "lignes": 13,
    "recette": "julien",
    "relu": true
   }
  },
  "page/julien-droite": {
-  "cle": "753bd281781191a23e28d59dafc799dc7d51922b0654d65f9b6596cbc7695823",
+  "cle": "8e19ccd55bb848cf324caf594a347f1ef012fe41c457b1442dc7964fdf79109e",
   "manifeste": {
    "double": "julien",
    "cote": "droite",
@@ -10809,7 +11137,7 @@
      ]
     ]
    },
-   "texte": "Julien\nl'œuf et la vanille.\n2.\nAjouter la farine et le bicarbonate sans trop travailler la pâte. Incorporer les pépites et noisettes.\n3.\nFormer des boules généreuses et les placer 30 min au frigo.\n4.\nEnfourner à 175 °C pendant 10 à 12 minutes (les bords doivent dorer mais le centre doit rester très mou).\n5.\nLe secret de Julien : Laisser tiédir sur la plaque, ils durcissent en surface tout en restant fondants à cœur.",
+   "texte": "Julien\nPréparation\n1. Crémer le beurre pommade avec les sucres, puis ajouter l'œuf et la vanille.\n2. Ajouter la farine et le bicarbonate sans trop travailler la pâte. Incorporer les pépites et noisettes.\n3. Former des boules généreuses et les placer 30 min au frigo.\n4. Enfourner à 175 °C pendant 10 à 12 minutes (les bords doivent dorer mais le centre doit rester très mou).\n5. Le secret de Julien : Laisser tiédir sur la plaque, ils durcissent en surface tout en restant fondants à cœur.",
    "vivants": {
     "aq-julien-1": [
      0.4,
@@ -10819,7 +11147,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 12,
+   "lignes": 10,
    "aquarelles": {
     "aq-julien-1": {
      "aquarelle": "cookies",

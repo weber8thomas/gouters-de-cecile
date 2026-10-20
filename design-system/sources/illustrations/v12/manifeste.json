@@ -1,0 +1,198 @@
+{
+  "serie": "anglaise-v12",
+  "direction": "Acteurs séparés pour interactions, mêmes pigments et mêmes objets au repos et en action. Original transparent conservé, sans reconstruction géométrique.",
+  "planches": [
+    {
+      "fichier": "acteurs.png",
+      "sujets": [
+        {
+          "nom": "acteurs/bol",
+          "sujet": "bol",
+          "cellule": [
+            75,
+            0,
+            580,
+            285
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/oeuf",
+          "sujet": "oeuf",
+          "cellule": [
+            650,
+            0,
+            950,
+            285
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/coquille-gauche",
+          "sujet": "coquille-gauche",
+          "cellule": [
+            1090,
+            10,
+            1380,
+            280
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/coquille-droite",
+          "sujet": "coquille-droite",
+          "cellule": [
+            175,
+            295,
+            450,
+            505
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/jaune",
+          "sujet": "jaune",
+          "cellule": [
+            600,
+            315,
+            970,
+            520
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/fouet",
+          "sujet": "fouet",
+          "cellule": [
+            1010,
+            268,
+            1510,
+            530
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/fleur-vanille",
+          "sujet": "fleur-vanille",
+          "cellule": [
+            145,
+            505,
+            490,
+            754
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/gousse",
+          "sujet": "gousse",
+          "cellule": [
+            550,
+            555,
+            1050,
+            733
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/framboise",
+          "sujet": "framboise",
+          "cellule": [
+            1135,
+            530,
+            1395,
+            755
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/speculoos",
+          "sujet": "speculoos",
+          "cellule": [
+            30,
+            750,
+            550,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/speculoos-gauche",
+          "sujet": "speculoos-gauche",
+          "cellule": [
+            580,
+            750,
+            980,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/speculoos-droite",
+          "sujet": "speculoos-droite",
+          "cellule": [
+            1070,
+            765,
+            1500,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "chien-guide.png",
+      "sujets": [
+        {
+          "nom": "jack-russell-guide",
+          "sujet": "Compagnon assis regardant le lecteur",
+          "cellule": [
+            0,
+            0,
+            1122,
+            1402
+          ],
+          "taille": [
+            600,
+            800
+          ]
+        }
+      ]
+    }
+  ]
+}

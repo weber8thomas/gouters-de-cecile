@@ -1,57 +1,50 @@
 # Aquarelles vivantes
 
-Une toile WebGL par page peint les illustrations puis anime leurs effets. `tableaux.ts` ajoute des
-scènes SVG avec de vrais acteurs indépendants, pilotées par **la même horloge** que la toile : aucune
-boucle ou animation CSS supplémentaire. Les sprites gardent leurs proportions et leur dessin.
+Une toile par page pilote la peinture et la même horloge anime les acteurs SVG. Aucun minuteur ni
+boucle supplémentaire par objet. Les mouvements s’arrêtent hors vue, pendant les gestes et en onglet
+masqué. Les sprites conservent leurs proportions et leurs pigments.
+
+Depuis la reprise v12, le théâtre reste présent au repos : il n’échange plus l’illustration contre une
+autre composition à chaque action. `TableauFixe.tsx` pose exactement les mêmes acteurs dans les
+feuilles tournantes, en mode doux et sans WebGL. Le chargement attend tous les acteurs ensemble.
 
 | Tableau | Action | Durée |
 | --- | --- | --- |
-| `service-the` | La théière se déplace, s'incline, sert deux tasses ; le liquide reste sous la lèvre avant. | 11 s |
-| `levitation` | Trois tasses décollent, flottent à des hauteurs différentes et se reposent. | 10 s |
-| `coupe-citron` | Un couteau descend, deux moitiés se séparent puis se réunissent. | 11 s |
-| `carotte-grignote` | La grande carotte se grignote en trois bouchées, laisse quelques miettes puis repousse. | 11 s |
-| `gateau-enchante` | Un gâteau et deux cupcakes s'envolent en arcs ; les flammes suivent les bougies. | 10 s |
+| `service-the` | La même théière sert les deux mêmes tasses, qui se soulèvent pour déguster puis se reposent. | 16 s |
+| `levitation` | Une seule tasse se soulève puis retrouve sa place. | 10 s |
+| `coupe-citron` | Couteau, séparation des deux moitiés, réunion magique. Un seul citron sur la page de Pierrette. | 11 s |
+| `carotte-grignote` | Trois bouchées, miettes et repousse ; même taille au repos et en action, fanes ancrées. | 11 s |
+| `gateau-enchante` | Le gâteau reste seul, les flammes suivent les bougies, sans apparition de cupcakes supplémentaires. | 10 s |
+| `oeuf-au-bol` | L’œuf arrive, la coquille s’ouvre, le jaune tombe puis le fouet mélange dans le bol. | 14 s |
+| `vanille-au-bol` | La gousse se soulève et ses graines tombent dans le bol. | 12 s |
+| `framboise-biscuit` | Le biscuit se casse et laisse tomber ses miettes ; les framboises rejoignent le bol. | 13 s |
 
-Les tableaux et les actions des illustrations (œuf qui toque la tasse, tasses qui tintent…) démarrent
-après la peinture, se relaient sur une même face et reprennent après 200 à 600 ms environ. Le contact
-œuf → tasse est déclenché une seule fois par l'horloge, jamais pendant le rendu ou la lecture de `etat()`.
-Le clic, le toucher et Entrée/Espace sur un dessin permettent de lancer son
-tableau. Les icônes trop petites gardent leurs effets habituels. `cadreTableau` réserve les scènes aux
-espaces illustrés : les deux citrons de Pierrette (ancienne page Julie) s'effacent ensemble pendant
-la coupe pour éviter les doublons. La grande carotte dispose d'un cadre resserré, sans lapin : quatre
-peintures entières montrent les bouchées puis la repousse en sens inverse. Les repères des attaches
-des fanes compensent les différences de cadrage des sprites v10. Aucun masque de tasses, soucoupes,
-framboises ou biscuits n'est réactivé ; seuls les deux masques alpha des citrons sont autorisés.
-Les scénarios conservent translations et rotations rigides, sans étirement. Les quatre illustrations
-des nouvelles recettes (`fondant-chocolat`, `framboises-speculoos`, `tarte-myrtilles`, `crepes-banane`)
-jouent des gestes d'ensemble sans masque de parties.
+Les sources transparentes et cadrages des nouveaux acteurs sont versionnés dans
+`design-system/sources/illustrations/v12`. L’export conserve leurs pixels ; aucune reconstruction
+rectangulaire d’une partie de dessin. Les deux anciens masques réels des citrons restent les seuls
+masques autorisés. Les petites vignettes du sommaire ne deviennent pas des théâtres.
 
-L'horloge s'arrête hors vue, pendant le mouvement du livre et lorsque l'onglet est masqué. Le réglage
-explicite « moins d'animations » conserve les images fixes, sans théâtre. La préférence système suit
-le niveau `doux` défini par `lib/motion.ts`. Une perte du contexte WebGL rend les images fixes visibles.
-La vitesse des tableaux suit le réglage commun de vitesse des animations.
+Les clics/Entrée/Espace peuvent rejouer l’action ; les scènes se lancent aussi seules. Les trois nouvelles
+scènes remplacent les translations d’ensemble des œufs, vanille et framboises/spéculoos. Les autres
+illustrations sans acteurs séparés conservent leurs gestes d’ensemble : ne pas prétendre que chaque
+dessin du carnet possède déjà sa propre scène articulée.
 
-La toile est au niveau `z-index: 4`, comme les images fixes, et le théâtre SVG au niveau 5 : ils restent
-au-dessus de la lumière du papier (niveau 1). Le buffer utilise la taille réellement affichée, y compris
-la réduction de la scène sur mobile, avec un DPR plafonné à 2 et un côté maximal de 1600 px.
+Toile au niveau 4, théâtre au niveau 5, lumière du papier au niveau 1. Buffer ajusté à la taille réellement
+vue, DPR plafonné à 2 et côté maximal 1600 px. Les captures SVG doivent inclure le DOM, pas seulement
+le canvas WebGL.
 
 ## Vérification
 
-`window.__gcDessins` expose `etat()`, `finir()`, `scene(nom?, type?)`, `toucher(page, x, y)`,
-`figer(oui)` et `avancer(ms)`. L'état de chaque dessin contient son `tableau`, sa phase et les poses des
-acteurs. Pour une pose précise : figer, lancer la scène puis avancer son horloge. Les captures de scènes
-comprennent le DOM/SVG : une extraction du canvas seul ne les montre pas.
-
 ```sh
-# Actions et raccords C1, sans navigateur.
+node scripts/verify-coherence-v12.mjs
 node scripts/verify-dessins.mjs --suites tableaux-courbes
-
-# Site déjà construit : départs autonomes, clavier et captures aux instants d'action.
+GC_CHROME=/usr/bin/chromium node scripts/verify-tableaux-v12.mjs
 GC_CHROME=/usr/bin/chromium node scripts/verify-dessins.mjs --site dist/site --suites tableaux
 ```
 
-Les cinq scènes sont capturées sur Lisa, titre, fin, gâteaux et Pierrette. La suite vérifie aussi la stabilité
-des fanes, l’absence de lapin, la repousse, le service des deux tasses, les quatre états de carotte,
-la séparation des moitiés et les raccords C1. Les images à temps déterministes prouvent les poses,
-pas une cadence matérielle :
-Chromium SwiftShader ne mesure pas les performances d'un GPU de téléphone ou de TV.
+Les tests vérifient la distribution et l’échelle constantes, la pose de repos en fin de cycle, les
+interactions, l’ancrage de la carotte, les pas humains espacés et les raccords de vitesse. Les captures
+isolées servent à examiner les actions, les captures dans le livre à vérifier leur place dans la page.
+`window.__gcDessins` expose `etat`, `finir`, `scene`, `figer`, `avancer`. `tableau` décrit aussi la pose de
+repos : pour constater un départ autonome, lire `scene`, pas seulement la présence de `tableau`.
+Chromium logiciel ne prouve pas la cadence du GPU d’un téléphone ou de l’ordinateur HDMI.

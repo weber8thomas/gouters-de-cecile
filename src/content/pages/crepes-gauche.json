@@ -6,7 +6,7 @@
   "double": "crepes",
   "cote": "gauche",
   "graine": 2001,
-  "_": "Intercalaire du nouveau chapitre ; cadre à la plume et ingrédients aquarellés disponibles. Décor existant, sans illustration de recette inexacte.",
+  "_": "Atelier de pâte : le même œuf, le même bol et le même fouet au repos et en action ; pas de tasse remplacée par trois autres.",
   "blocs": [
     {
       "id": "cadre",
@@ -36,40 +36,15 @@
       "angle": 0
     },
     {
-      "nom": "aq-crepes-1",
+      "nom": "aq-atelier",
       "rect": [
-        0.18,
-        0.38,
-        0.3,
-        0.22
+        0.13,
+        0.32,
+        0.74,
+        0.5
       ],
       "aquarelle": "oeufs",
-      "anime": "fleurit",
-      "angle": 3
-    },
-    {
-      "nom": "aq-crepes-2",
-      "rect": [
-        0.57,
-        0.34,
-        0.24,
-        0.24
-      ],
-      "aquarelle": "vanille",
-      "anime": "fleurit",
-      "angle": -4
-    },
-    {
-      "nom": "aq-crepes-3",
-      "rect": [
-        0.32,
-        0.64,
-        0.36,
-        0.24
-      ],
-      "aquarelle": "tasse-2",
-      "anime": "fleurit",
-      "angle": 3
+      "angle": 0
     }
   ]
 }

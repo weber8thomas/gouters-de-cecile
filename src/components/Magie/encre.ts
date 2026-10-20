@@ -310,7 +310,6 @@ export type GenreSecret =
   | 'miam';
 
 export const GENRES_SECRETS: readonly GenreSecret[] = [
-  'lunettes-eclair',
   'tasse-magique',
   'couronne-30',
   'baguette',
@@ -865,8 +864,8 @@ export interface Pas {
 
 /**
  * Une promenade dans le papier libre : marche de case libre en case libre (en partant éventuellement
- * près de `(xDepart, yDepart)` quand une cachette s'ouvre), lissée, avec des pas humains et/ou les
- * petites pattes d'un Jack Russell qui trottine derrière ou à côté dans les marges.
+ * près de la position demandée), lissée, avec une seule piste de chaussures humaines.
+ * Les empreintes se réservent mutuellement une marge ; le chien reste hors du papier.
  */
 export function promenade(
   g: Grille,
@@ -923,81 +922,27 @@ export function promenade(
     pts = n;
   }
 
-  const modePattesSeules = depart?.pattesSeules ?? (meilleur.length < 5 || alea() < 0.36);
-  const avecCompagnon = !modePattesSeules && alea() < 0.78;
+  // Une seule écriture de piste : des chaussures humaines, espacées. Le compagnon reste sur la table.
   const out: Pas[] = [];
-
-  if (!modePattesSeules) {
-    // 1. Les pas du maraudeur (chaussures)
-    const FOULEE = 30;
-    let reste = 0;
-    let gauche = alea() < 0.5;
-    let idxPas = 0;
-    for (let q = 0; q < pts.length - 1; q++) {
-      const a = pts[q];
-      const b = pts[q + 1];
-      const l = Math.hypot(b.x - a.x, b.y - a.y);
-      const cap = Math.atan2(b.y - a.y, b.x - a.x);
-      let s = reste;
-      while (s < l) {
-        const u = s / l;
-        const nx = -Math.sin(cap);
-        const ny = Math.cos(cap);
-        const e = gauche ? -7.5 : 7.5;
-        const px = a.x + (b.x - a.x) * u + nx * e;
-        const py = a.y + (b.y - a.y) * u + ny * e;
-        if (libre(g, [px - 6, py - 6, px + 6, py + 6])) {
-          out.push({ x: px, y: py, cap: cap + (gauche ? -0.1 : 0.1), gauche, patte: false, dt: idxPas * 0.34 });
-          idxPas++;
-        }
-        gauche = !gauche;
-        s += FOULEE;
+  const FOULEE = 58;
+  let reste = 0;
+  let gauche = alea() < .5;
+  for (let q = 0; q < pts.length - 1; q++) {
+    const a = pts[q], b = pts[q+1];
+    const l = Math.hypot(b.x-a.x, b.y-a.y), cap = Math.atan2(b.y-a.y,b.x-a.x);
+    let s = reste;
+    while (s < l) {
+      const u = s/l, ecart = gauche ? -12 : 12;
+      const x = a.x+(b.x-a.x)*u-Math.sin(cap)*ecart;
+      const y = a.y+(b.y-a.y)*u+Math.cos(cap)*ecart;
+      if (libre(g,[x-10,y-10,x+10,y+10]) && out.every(p=>Math.hypot(p.x-x,p.y-y)>34)) {
+        out.push({x,y,cap:cap+(gauche?-.06:.06),gauche,patte:false,dt:out.length*.52});
       }
-      reste = s - l;
+      gauche=!gauche; s+=FOULEE;
     }
-  }
-
-  if (modePattesSeules || avecCompagnon) {
-    // 2. Les petites pattes de Jack Russell qui trottinent (seules ou juste derrière les pas humains)
-    const FOULEE_CHIEN = 18.5;
-    let reste = 0;
-    let gauche = alea() < 0.5;
-    let idxPatte = 0;
-    const retard = modePattesSeules ? 0 : 0.48;
-    const cadence = modePattesSeules ? 0.19 : 0.21;
-    for (let q = 0; q < pts.length - 1; q++) {
-      const a = pts[q];
-      const b = pts[q + 1];
-      const l = Math.hypot(b.x - a.x, b.y - a.y);
-      const cap = Math.atan2(b.y - a.y, b.x - a.x);
-      let s = reste;
-      while (s < l) {
-        const u = s / l;
-        const nx = -Math.sin(cap);
-        const ny = Math.cos(cap);
-        // Le petit chien zigzague légèrement d'un bord à l'autre du sentier
-        const zig = avecCompagnon ? Math.sin(idxPatte * 0.7) * 6 : 0;
-        const e = (gauche ? -4.8 : 4.8) + zig;
-        const px = a.x + (b.x - a.x) * u + nx * e;
-        const py = a.y + (b.y - a.y) * u + ny * e;
-        if (libre(g, [px - 5, py - 5, px + 5, py + 5])) {
-          out.push({
-            x: px,
-            y: py,
-            cap: cap + (gauche ? -0.08 : 0.08),
-            gauche,
-            patte: true,
-            dt: retard + idxPatte * cadence,
-          });
-          idxPatte++;
-        }
-        gauche = !gauche;
-        s += FOULEE_CHIEN;
-      }
-      reste = s - l;
-    }
+    reste=s-l;
   }
 
   out.sort((a, b) => (a.dt ?? 0) - (b.dt ?? 0));
-  return out.length >= 4 ? out : null;
+  return out.length >= 3 ? out : null;
 }

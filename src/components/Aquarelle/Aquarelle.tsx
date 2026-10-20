@@ -8,6 +8,8 @@ import type { ToucherPage } from '../Livre/evenements';
 import { toile, webglOk, type DessinPage, type Toile } from './vivante';
 import { CREATURES } from './effets';
 import './Aquarelle.css';
+import { TableauFixe } from './TableauFixe';
+import { tableauDe } from './tableaux';
 
 export interface AquarelleProps {
   /** Nom de l'aquarelle cuite (design-system/baked/aquarelles/<nom>.webp). */
@@ -90,11 +92,15 @@ export function Aquarelle({ nom, anime = 'fleurit', angle = 0, ordre = 0, page }
   const mode = useRenderMode();
   React.useSyncExternalStore(abonner, lireVersion, lireVersion);
   const src = assetUrl(`aquarelles/${nom}`);
+  const info = page ? PAGES_CUITES.pages[page] : undefined;
+  const z = info && Object.entries(info.aquarelles ?? {}).find(([,a]) => a.aquarelle === nom)?.[0];
+  const zone = z ? info?.vivants[z] : undefined;
+  const tableau = !!tableauDe(nom) && !!zone && zone[2] >= .24 && zone[3] >= .15;
   const gl = typeof document !== 'undefined' && webglOk();
   const aPeindre = gl && !reduit && !!page && !echouees.has(page) && !peintes.has(`${page}/${nom}`);
   const parToile = mode === 'live' && !!page && pretes.has(page);
   const style = {
-    '--gc-aq-angle': `${angle}deg`,
+    '--gc-aq-angle': `${tableau ? 0 : angle}deg`,
     '--gc-aq-delai': `${(0.45 + ordre * 0.3).toFixed(2)}s`,
   } as React.CSSProperties;
   const animCss = reduit || gl ? 'fixe' : anime;
@@ -102,7 +108,7 @@ export function Aquarelle({ nom, anime = 'fleurit', angle = 0, ordre = 0, page }
   const vue = parToile ? 'toile' : aPeindre ? 'cachee' : undefined;
   return (
     <div className={cls} style={style} aria-hidden="true" data-gc-aquarelle={nom} data-gc-aq={vue}>
-      <img src={src} alt="" draggable={false} decoding="async" />
+      {tableau && page && zone ? <TableauFixe nom={nom} page={page} zone={zone}/> : <img src={src} alt="" draggable={false} decoding="async" />}
       {animCss === 'vapeur' && (
         <>
           <span className="gc-aquarelle__volute" />

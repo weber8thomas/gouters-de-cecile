@@ -1,5 +1,4 @@
-/** Vignettes du carnet : leur boîte entière est libre d'encre, de liens et de photos.
- * Les gestes restent dans cette boîte, même la lettre qui s'envole et les traces de pattes. */
+/** Cachettes du carnet : leur boîte entière reste libre d'encre, de liens et de photos. */
 export type RectSecret = [number, number, number, number];
 
 /** Place le compagnon sur la table visible, dans le repère de l'écran (pas celui de la page).
@@ -27,34 +26,6 @@ export function placerCompagnon(ecran: RectSecret, livre: RectSecret, bougie?: R
   });
   return meilleur ? (meilleur as { rect: RectSecret; score: number }).rect : null;
 }
-export const SECRETS = [
-  { id: 'chien-cle', titre: 'Le gardien des secrets', mot: 'La clé des petits bonheurs', chien: 'jack-russell' },
-  { id: 'chien-etoile', titre: 'Une étoile à rapporter', mot: 'Encore une fois ?', chien: 'jack-russell-joue' },
-  { id: 'chien-dodo', titre: 'Un rêve de goûter', mot: 'Chut… il rêve de biscuits.', chien: 'jack-russell-dort' },
-  { id: 'chien-pattes', titre: 'Sur la piste des miettes', mot: 'Élémentaire, mon cher Jack !', chien: 'jack-russell-assis' },
-  { id: 'lettre', titre: 'Le courrier de Terrible Cécile', mot: 'Terrible Cécile… même les lettres s’envolent !' },
-  { id: 'poche', titre: 'La poche sans fond', mot: 'Une pincée de merveilleux.' },
-  { id: 'constellation', titre: 'La carte des étoiles', mot: 'Les étoiles ont leur recette.' },
-  { id: 'plume', titre: 'La plume de Douce Cécile', mot: 'Douce Cécile, un mot tendre à chaque page.' },
-  { id: 'porte', titre: 'La cachette de la Fée du logis', mot: 'Fée du logis : une maison pleine de magie.' },
-  { id: 'livre', titre: 'Le grimoire de Cordon bleu', mot: 'Cordon bleu : le secret est dans le carnet.' },
-  { id: 'trente', titre: 'Trente tours de magie', mot: '30 ans, et toute la magie devant soi.' },
-  { id: 'piste', titre: 'Une piste invisible', mot: 'Suivez les miettes…' },
-] as const;
-export type SecretId = typeof SECRETS[number]['id'];
-
-export function graineSecret(texte: string): number {
-  let n = 2166136261;
-  for (const c of texte) n = Math.imul(n ^ c.charCodeAt(0), 16777619);
-  return n >>> 0;
-}
-
-/** Les chiens accompagnent chaque double page, les surprises varient à droite. */
-export function numeroSecret(page: string, cote: 'gauche' | 'droite'): number {
-  const n = graineSecret(page);
-  return cote === 'gauche' ? n % 4 : 4 + n % (SECRETS.length - 4);
-}
-
 export function zoneLibreSecret(alpha: Uint8ClampedArray, largeur: number, hauteur: number, zones: RectSecret[]): RectSecret | null {
   if (largeur < 1 || hauteur < 1 || alpha.length !== largeur * hauteur * 4) return null;
   const pas = largeur + 1;
@@ -65,7 +36,7 @@ export function zoneLibreSecret(alpha: Uint8ClampedArray, largeur: number, haute
   }
   const candidats: RectSecret[] = [];
   // Le pied de page d'abord ; aucun trajet ne passe au-dessus d'une recette.
-  for (const [w, h] of [[0.39, 0.22], [0.36, 0.20], [0.33, 0.18], [0.30, 0.17], [0.27, 0.16]]) {
+  for (const [w, h] of [[0.39, 0.22], [0.36, 0.20], [0.33, 0.18], [0.30, 0.17], [0.27, 0.16], [0.24, 0.14], [0.20, 0.12], [0.16, 0.10]]) {
     for (const y of [0.755, 0.715, 0.065, 0.11, 0.52, 0.34]) {
       for (const x of [0.055, 0.945 - w, (1 - w) / 2, 0.15, 0.85 - w]) candidats.push([x, y, w, h]);
     }

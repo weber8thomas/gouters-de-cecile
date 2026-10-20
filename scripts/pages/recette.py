@@ -168,7 +168,24 @@ def atomes(rec: dict, alias: dict | None = None, cadre: bool | None = None) -> l
                 n += 1
 
     for i, grp in enumerate(rec.get("ingredients") or []):
+        if rec.get("style", {}).get("police") and not grp.get("lignes") and grp.get("paragraphes"):
+            # L'introduction reçue de Lise reste une citation, distincte de sa liste d'ingrédients.
+            for p, par in enumerate(grp["paragraphes"]):
+                paragraphe(f"« {par} »", f"ingredients-{i + 1}/paragraphe-{p + 1}")
+            continue
+        if rec.get("style", {}).get("police") and not any(a.id == "section-ingredients" for a in A):
+            A.append(Atome("section-ingredients", "section", "Ingrédients", g("section-ingredients"), colle=True))
+        if rec.get("style", {}).get("police"):
+            # Les lignes regroupées de Clémence/Pierrette deviennent une vraie liste. Les virgules
+            # dans une parenthèse restent intactes ; les textes reçus ne sont jamais modifiés.
+            lignes = []
+            for l in grp.get("lignes") or []:
+                morceaux = re.split(r",\s*(?![^()]*\))", l["texte"])
+                lignes += [dict(l, texte=t.strip(), puce="point") for t in morceaux if t.strip()]
+            grp = dict(grp, lignes=lignes)
         groupe(grp, f"ingredients-{i + 1}")
+    if rec.get("style", {}).get("police") and rec.get("etapes"):
+        A.append(Atome("section-preparation", "section", "Préparation", g("section-preparation"), colle=True))
     for n, e in enumerate(rec.get("etapes") or [], 1):
         eid = f"etape-{n}"
         t = {"texte": e["titre"], "graine": g(f"{eid}/titre")} if e.get("titre") else None
@@ -398,6 +415,8 @@ def gabarits(rec: dict, plan: dict, papiers: dict, roster: dict | None = None) -
     f0, f1 = plan["folios"]
     roster = charger_roster() if roster is None else roster
     commun = dict(double=double, main=main, encre=encre, recette=slug, serrage_max=int(plan.get("serrage_max", 1)))
+    if st.get("police"):
+        commun["police"] = st["police"]
     ctx = contexte_recette(rec)
     if ctx:
         commun["contexte_importants"] = ctx
@@ -493,6 +512,9 @@ def assembler(gab: Gabarits, base: dict, A: list[Atome], tete: list | None = Non
         elif a.genre == "groupe-titre":
             blocs.append({"type": "paragraphe", "id": a.id, "segments": [_seg(a)], "alinea": 0.0,
                           "avant": 0.0 if premier else 0.65})
+        elif a.genre == "section":
+            blocs.append({"type": "paragraphe", "id": a.id, "segments": [_seg(a)], "alinea": 0.0,
+                          "avant": 0.0 if premier else 0.65, "echelle": 1.1})
         elif a.genre == "ligne":
             if prec is not None and prec.genre == "ligne" and prec.bloc == a.bloc and blocs and blocs[-1]["type"] == "ingredients":
                 blocs[-1]["lignes"].append({"texte": a.texte, "graine": a.graine, "puce": a.puce, "atome": a.id})
@@ -835,7 +857,7 @@ def paginer(rec: dict, plan: dict, papiers: dict, roster: dict | None = None) ->
         SURCHARGES[(rec["slug"], aid)] = int(gr)
     gab = gabarits(rec, plan, papiers, roster)
     A = atomes(rec, (plan.get("croquis") or {}).get("alias"))
-    mode = plan.get("etapes", "auto")
+    mode = "tete" if rec.get("style", {}).get("police") else plan.get("etapes", "auto")
     essais = ["ligne", "tete"] if mode == "auto" else [mode]
     err = None
     for disp in essais:

@@ -307,10 +307,10 @@ const BOUTONS_COURT: Option<boolean>[] = [{ v: false, texte: 's’effacent' }, {
 const ANIMATIONS_TEXTE: Option<Animations>[] = [{ v: 'systeme', texte: 'comme l’appareil' }, { v: 'completes', texte: 'complètes' }, { v: 'reduites', texte: 'réduites' }];
 /** Feuille du téléphone : « auto », pour que les trois choix tiennent sur une ligne. */
 const ANIMATIONS_COURT: Option<Animations>[] = [{ v: 'systeme', texte: 'auto' }, { v: 'completes', texte: 'complètes' }, { v: 'reduites', texte: 'réduites' }];
-/** Musique de fond (src/lib/musique.ts) : « aucune », « toutes (rotation) », puis chaque morceau de la banque par son titre. */
+/** Musique de fond : aucune, tous les morceaux à la suite, ou un morceau choisi par son titre. */
 const OPTIONS_MUSIQUE: Option<string>[] = [
   { v: 'aucune', texte: 'aucune' },
-  { v: 'toutes', texte: 'toutes (rotation)' },
+  { v: 'toutes', texte: 'tous les morceaux' },
   ...MORCEAUX.map((m) => ({ v: m.id, texte: m.titre })),
 ];
 
@@ -792,7 +792,7 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                       aria-controls={musiqueId}
                       onClick={() => setListeMusique((x) => !x)}
                     >
-                      {OPTIONS_MUSIQUE.find((o) => o.v === (r.musiqueActive ? r.musique : 'aucune'))?.texte ?? 'toutes (rotation)'}
+                      {OPTIONS_MUSIQUE.find((o) => o.v === (r.musiqueActive ? r.musique : 'aucune'))?.texte ?? 'tous les morceaux'}
                       <Chevron />
                     </button>
                   </Ligne>

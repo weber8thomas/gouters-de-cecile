@@ -7,7 +7,8 @@
   "style": {
     "main": "ado",
     "encre": "bille-bleue",
-    "graine": 2611
+    "graine": 2611,
+    "police": "kalam"
   },
   "titre": "Carrot cake",
   "titreSouligne": "double",

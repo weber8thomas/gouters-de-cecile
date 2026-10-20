@@ -238,10 +238,10 @@
           "page": "droite",
           "nom": "aq-clemence-1",
           "rect": [
-            0.36,
-            0.7,
-            0.38,
-            0.24
+            0.16,
+            0.56,
+            0.68,
+            0.38
           ],
           "aquarelle": "framboises-speculoos",
           "angle": 0
@@ -324,27 +324,14 @@
           "page": "droite",
           "nom": "aq-pierrette-1",
           "rect": [
-            0.48,
-            0.68,
-            0.27,
-            0.29
+            0.2,
+            0.5,
+            0.58,
+            0.383
           ],
           "aquarelle": "citron",
           "anime": "fleurit",
-          "angle": 5
-        },
-        {
-          "page": "droite",
-          "nom": "aq-pierrette-2",
-          "rect": [
-            0.13,
-            0.74,
-            0.22,
-            0.2
-          ],
-          "aquarelle": "citron-2",
-          "anime": "fleurit",
-          "angle": -5
+          "angle": 0
         }
       ],
       "bandeau": {

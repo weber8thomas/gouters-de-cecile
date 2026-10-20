@@ -1,0 +1,106 @@
+{
+  "acteurs/bol": {
+    "sujet": "bol",
+    "fichier": "acteurs/bol.png",
+    "source": "design-system/sources/illustrations/v12/acteurs.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  },
+  "acteurs/oeuf": {
+    "sujet": "oeuf",
+    "fichier": "acteurs/oeuf.png",
+    "source": "design-system/sources/illustrations/v12/acteurs.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  },
+  "acteurs/coquille-gauche": {
+    "sujet": "coquille-gauche",
+    "fichier": "acteurs/coquille-gauche.png",
+    "source": "design-system/sources/illustrations/v12/acteurs.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  },
+  "acteurs/coquille-droite": {
+    "sujet": "coquille-droite",
+    "fichier": "acteurs/coquille-droite.png",
+    "source": "design-system/sources/illustrations/v12/acteurs.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  },
+  "acteurs/jaune": {
+    "sujet": "jaune",
+    "fichier": "acteurs/jaune.png",
+    "source": "design-system/sources/illustrations/v12/acteurs.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  },
+  "acteurs/fouet": {
+    "sujet": "fouet",
+    "fichier": "acteurs/fouet.png",
+    "source": "design-system/sources/illustrations/v12/acteurs.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  },
+  "acteurs/fleur-vanille": {
+    "sujet": "fleur-vanille",
+    "fichier": "acteurs/fleur-vanille.png",
+    "source": "design-system/sources/illustrations/v12/acteurs.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  },
+  "acteurs/gousse": {
+    "sujet": "gousse",
+    "fichier": "acteurs/gousse.png",
+    "source": "design-system/sources/illustrations/v12/acteurs.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  },
+  "acteurs/framboise": {
+    "sujet": "framboise",
+    "fichier": "acteurs/framboise.png",
+    "source": "design-system/sources/illustrations/v12/acteurs.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  },
+  "acteurs/speculoos": {
+    "sujet": "speculoos",
+    "fichier": "acteurs/speculoos.png",
+    "source": "design-system/sources/illustrations/v12/acteurs.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  },
+  "acteurs/speculoos-gauche": {
+    "sujet": "speculoos-gauche",
+    "fichier": "acteurs/speculoos-gauche.png",
+    "source": "design-system/sources/illustrations/v12/acteurs.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  },
+  "acteurs/speculoos-droite": {
+    "sujet": "speculoos-droite",
+    "fichier": "acteurs/speculoos-droite.png",
+    "source": "design-system/sources/illustrations/v12/acteurs.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  },
+  "jack-russell-guide": {
+    "sujet": "Compagnon assis regardant le lecteur",
+    "fichier": "jack-russell-guide.png",
+    "source": "design-system/sources/illustrations/v12/chien-guide.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v12"
+  }
+}

@@ -7,7 +7,8 @@
   "style": {
     "main": "soignee",
     "encre": "bic",
-    "graine": 8573
+    "graine": 8573,
+    "police": "kalam"
   },
   "titre": "Tarte aux pommes de ma maman",
   "titreSouligne": "double",

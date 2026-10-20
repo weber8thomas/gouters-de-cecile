@@ -7,7 +7,8 @@
   "style": {
     "main": "mamie",
     "encre": "brune",
-    "graine": 6343
+    "graine": 6343,
+    "police": "kalam"
   },
   "titre": "Le cake au citron d'antan",
   "titreSouligne": "double",

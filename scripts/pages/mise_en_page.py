@@ -311,6 +311,7 @@ class Trace:
     diam: float  # largeur du trait à pression 1 (px de page) : largeur = diam × (0,42 + 0,78 p)
     encre: dict  # id, outil, charge, clair
     sans_saut: bool = False  # glyphe d'un mot important (drapeau du lot E) : jamais de blanc de bille
+    glyphe: dict | None = None  # mot en fonte manuscrite, posé avec les mêmes coordonnées que ses métriques
 
 
 @dataclass
@@ -351,6 +352,8 @@ def _copie_collee(m: ECR.Mot) -> ECR.Mot:
     c = ECR.Mot(texte=m.texte, traits=m.traits, largeur=m.largeur, espace_avant=0.06, hauteur_x=m.hauteur_x,
                 debord_g=m.debord_g, debord_d=m.debord_d)
     c.colle = True
+    if getattr(m, "glyphe", None):
+        c.glyphe = m.glyphe
     return c
 
 
@@ -420,6 +423,8 @@ def _insecable(prec, cur) -> bool:
     if re.search(r"[\d½¼¾⅓⅔]$", p) and (t.rstrip(",.;:)") in UNITES or t.startswith("°")):
         return True
     if p in ("c.", "th.", "c", "1/2") and len(t) <= 3:
+        return True
+    if re.fullmatch(r"\d+[.)]", p):  # numéro d'étape et premier mot restent sur la même ligne
         return True
     if p == "à" and t.rstrip(",.;:)") in ("s", "c", "s.", "c."):  # « 1 c. à s. » ne se coupe pas
         return True
@@ -557,10 +562,14 @@ class Mise:
     def ecrire(self, texte, main, graine, encre=None, outil=None):
         encre = encre_dispo(encre)
         ctx = self.desc.get("contexte_importants")
-        cle = (texte, main, graine, encre, outil, json.dumps(ctx, sort_keys=True, ensure_ascii=False) if ctx else None)
+        police = self.desc.get("police")
+        cle = (texte, main, graine, encre, outil, police, json.dumps(ctx, sort_keys=True, ensure_ascii=False) if ctx else None)
         if cle not in self._bloc_cache:
             if cle not in _BLOCS:
-                if ctx and _accepte_contexte():
+                if police:
+                    from police_lisible import ecrire_bloc
+                    _BLOCS[cle] = ecrire_bloc(texte, main, police, encre, outil)
+                elif ctx and _accepte_contexte():
                     _BLOCS[cle] = ECR.ecrire_bloc(texte, main, graine, encre=encre, outil=outil, contexte=ctx)
                 else:
                     _BLOCS[cle] = ECR.ecrire_bloc(texte, main, graine, encre=encre, outil=outil)
@@ -780,7 +789,12 @@ class Mise:
             ly = P[:, 1] * xh
             P[:, 0] = x + lx * ca - ly * sa
             P[:, 1] = y + lx * sa + ly * ca
-            self.traces.append(Trace(P[:, :5], ep * xh * self.trait, encre, sans_saut=_sans_saut(P, ss_mot, k_t)))
+            glyphe = getattr(mot, "glyphe", None)
+            if glyphe:
+                glyphe = dict(glyphe, x=x, y=y, sx=xh * ech_x / glyphe["hauteur_x"],
+                              sy=xh / glyphe["hauteur_x"], angle=ang)
+            self.traces.append(Trace(P[:, :5], ep * xh * self.trait, encre,
+                                     sans_saut=_sans_saut(P, ss_mot, k_t), glyphe=glyphe))
             tous.append(P[:, :2])
         if tous:
             A = np.vstack(tous)
@@ -1214,7 +1228,7 @@ class Mise:
             brut, marques, mots, bloc = self.ecrire_segments([{"texte": l["texte"], "graine": g}], main, enc_id, outil)
             encre = dict(bloc.encre)
             interligne = float(b.get("interligne", bloc.interligne))
-            t = TAILLE_PUCE * xh * float(np.clip(r.normal(1.0, 0.05), 0.92, 1.1))
+            t = (0.28 if puce == "point" else TAILLE_PUCE) * xh * float(np.clip(r.normal(1.0, 0.05), 0.92, 1.1))
             ecart = 0.5 * xh * float(np.clip(r.normal(1, 0.12), 0.75, 1.3))
             x_txt = x_puce0 + r.normal(0, 0.05) * xh + ((t + ecart) if puce else 0.0)
             spans = _spans(brut, [mots])
@@ -1225,8 +1239,12 @@ class Mise:
                 L = lignes[0]
                 xp = L.x0 - t - ecart + r.normal(0, 0.06) * xh
                 yb = L.y(xp) + r.normal(0.08, 0.05) * xh
-                self.demander_croquis(puce, (xp, yb - t, t, t), encre, g + 5, role="puce", ep=bloc.epaisseur * xh * 0.9,
-                                      main=main, xh=xh, liste=int(b.get("graine_puces", graine)))
+                if puce == "point":
+                    self.traces.append(Trace(np.array([[xp + t / 2, yb - .45 * xh, 1., 1., .95]]),
+                                             t, encre, sans_saut=True))
+                else:
+                    self.demander_croquis(puce, (xp, yb - t, t, t), encre, g + 5, role="puce", ep=bloc.epaisseur * xh * 0.9,
+                                          main=main, xh=xh, liste=int(b.get("graine_puces", graine)))
             self._marquer(b, brut, marques, poses, spans, xh, encre, bloc, main, g)
             self.texte.append(self._texte_lisible(brut, marques))
             toutes += lignes

@@ -201,7 +201,6 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   // Délai initial court (2,5 à 5 s) pour la démo télé, puis répétition toutes les 7 à 13 s
   let prochainsPas = 2.5 + Math.random() * 2.5;
   // Dessins secrets autonomes dans les marges toutes les 6 à 11 s
-  let prochainSecret = 3.6 + Math.random() * 2.4;
   let compteurSecret = 0;
   let reflet: Reflet | null = null;
   const aFaire: { t: number; f: () => void }[] = [];
@@ -700,7 +699,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     for (const v of ordonnees) {
       if (!v.carte) continue;
       const e = etatDe(v.id);
-      if (!e.grille) continue;
+      if (!e.grille || promenades.some((p) => p.page === v.id)) continue;
       const pas = promenade(e.grille, Math.random, depart);
       if (!pas) continue;
       compte.pas += pas.length;
@@ -774,23 +773,8 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       lancerParaphe(ti.v, ti.t);
       return;
     }
-    // Clic / toucher dans une cachette, une marge, un coin, un folio ou un en-tête : révèle un clin d'œil !
-    if (v && v.carte && v.ecrite) {
-      const e = etatDe(v.id);
-      const px = (x - v.x) / v.s;
-      const py = (y - v.y) / v.s;
-      const cachetteProche = e.cachettes.find((c) => Math.hypot(c.x - px, c.y - py) < 95);
-      if (cachetteProche && ouvrirCachette(v, cachetteProche)) return;
-      if (e.grille) {
-        const genre = genreSecretSuivant();
-        const sec = secretSousPoint(v.carte, e.grille, px, py, genre, e.ornements ?? []);
-        if (sec && activerSecret(v, sec, `${v.id}|tap|${Math.round(horloge * 10)}`)) {
-          const [sx, sy] = sceneDe(v, sec.x, sec.y);
-          gerbeCachette(sx, sy);
-          lancerPromenade(v, { x: sec.x, y: sec.y, pattesSeules: Math.random() < 0.5 });
-        }
-      }
-    }
+    // Les découvertes appartiennent à la quête guidée : toucher le papier ne crée plus de motifs aléatoires.
+
   };
   const ecoutes: (() => void)[] = [];
   if (livre) {
@@ -969,8 +953,8 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     opPose = mouvement ? Math.max(0, opPose - dt * 9) : Math.min(1, opPose + dt * 2.2);
 
     // 1. Le maraudeur & les petites pattes : calme > 1,2 s, départ en 2,5–5 s, puis toutes les 7–13 s
-    if (!mouvement && !lent && calme > 1.2 && !plume && !plumeOccupee() && horloge > prochainsPas && promenades.length < 2) {
-      prochainsPas = horloge + 7 + Math.random() * 6;
+    if (!mouvement && !lent && calme > 1.2 && !plume && !plumeOccupee() && horloge > prochainsPas && promenades.length === 0) {
+      prochainsPas = horloge + 16 + Math.random() * 8;
       lancerPromenade();
     }
     promenades = promenades.filter((pr) => {
@@ -992,40 +976,6 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
         if (e.eclatOrnement && horloge > e.eclatOrnement.t0 + e.eclatOrnement.duree) {
           e.eclatOrnement = null;
         }
-        // Scintillement subtil (étoile d'indice) sur chaque cachette de la page
-        for (const c of e.cachettes) {
-          const [sx, sy] = sceneDe(v, c.x, c.y);
-          const proche = ptr && ptr.frais > 0 && Math.hypot(ptr.x - sx, ptr.y - sy) < 110;
-          if (horloge >= c.prochainIndice || (proche && horloge >= c.prochainIndice - 1.1)) {
-            c.prochainIndice = horloge + (proche ? 0.9 + Math.random() * 0.6 : 1.9 + Math.random() * 1.4);
-            grains.ajouter({
-              x: sx + (Math.random() - 0.5) * 10,
-              y: sy + (Math.random() - 0.5) * 8,
-              vie: 0.85 + Math.random() * 0.5,
-              taille: (proche ? 18 : 14) + Math.random() * 7,
-              etoile: true,
-              enveloppe: 1,
-              couleur: ORS[2],
-              frein: 0,
-              lum: proche ? 1.0 : 0.88,
-            });
-            grains.ajouter({
-              x: sx + (Math.random() - 0.5) * 14,
-              y: sy + (Math.random() - 0.5) * 10,
-              vx: (Math.random() - 0.5) * 14,
-              vy: -12 - Math.random() * 18,
-              vie: 0.7 + Math.random() * 0.5,
-              taille: 3 + Math.random() * 2.5,
-              frein: 1.8,
-              ondule: 8,
-              lum: 0.82,
-            });
-          }
-        }
-      }
-      if (horloge >= prochainSecret && secrets.length < 2) {
-        prochainSecret = horloge + 6 + Math.random() * 5;
-        lancerSecretAutonome();
       }
     }
 

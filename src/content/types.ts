@@ -97,7 +97,7 @@ export interface RecetteRecue {
   source: string;
   /** Ce qui a été adapté pour le carnet, et pourquoi. */
   adaptations?: string[];
-  style: { main: MainId; encre: EncreId; graine: number };
+  style: { main: MainId; encre: EncreId; graine: number; police?: 'kalam' };
   /** Identifiant dans src/content/videos.json. */
   video?: string;
   titre: string;

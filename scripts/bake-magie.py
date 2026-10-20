@@ -88,6 +88,12 @@ def libre(mise, W: int, H: int) -> list:
     im = Image.new("L", (W, H), 0)
     d = ImageDraw.Draw(im)
     for t in mise.traces:
+        if getattr(t, "glyphe", None):
+            from police_lisible import rasteriser
+            x, y, alpha = rasteriser(t.glyphe, 1.)
+            masque = Image.fromarray(((alpha > .01) * 255).astype(np.uint8))
+            im.paste(255, (x, y, x + masque.width, y + masque.height), masque)
+            continue
         p = np.asarray(t.pts, float)[:, :2]
         lw = max(2, int(round(t.diam * 1.3 + 2)))
         if len(p) == 1:
@@ -114,18 +120,26 @@ def libre(mise, W: int, H: int) -> list:
 
 
 def plume(mise) -> list:
-    traces = [np.asarray(t.pts, float)[:, :2] for t in mise.traces if len(t.pts) >= 1]
+    traces = [t for t in mise.traces if len(t.pts) >= 1]
     if not traces:
         return []
     # temps cumulé de chaque point, comme la carte des temps : longueur écrite + un levé par trait
     xs, ts = [], []
     debut = 0.0
-    for p in traces:
+    for trace in traces:
+        p = np.asarray(trace.pts, float)[:, :2]
         seg = np.hypot(*np.diff(p, axis=0).T) if len(p) > 1 else np.zeros(0)
         cum = np.concatenate([[0.0], np.cumsum(seg)])
+        longueur = float(seg.sum())
+        if getattr(trace, "glyphe", None):
+            # Même durée que la carte des temps, sur l'écriture elle-même : la plume ne fait
+            # pas le tour du rectangle servant aux métriques de la fonte.
+            y = float(p[:, 1].mean())
+            p = np.array([[p[:, 0].min(), y], [p[:, 0].max(), y]])
+            cum = np.array([0., longueur])
         xs.append(p)
         ts.append(debut + cum)
-        debut += float(seg.sum()) + LEVE
+        debut += longueur + LEVE
     total = debut or 1.0
     P = np.concatenate(xs)
     T = np.concatenate(ts) / total

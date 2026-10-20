@@ -97,3 +97,6 @@
 }
 .gc-tableau-bouton:disabled { pointer-events: none; }
 .gc-tableau-bouton:focus-visible { outline: 2px dashed #816244; outline-offset: 5px; }
+
+/* Le repli emploie les mêmes acteurs, et se cache avec son image quand la toile les prend en charge. */
+.gc-aquarelle[data-gc-aq="cachee"] > svg, .gc-aquarelle[data-gc-aq="toile"] > svg { visibility:hidden; }

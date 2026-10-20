@@ -4,16 +4,22 @@ import { assetInfo } from '../../lib/assets';
 import { cloche, lisse, trajet } from './scenes';
 import type { DessinPage } from './vivante';
 
-export type TableauNom = 'levitation' | 'service-the' | 'coupe-citron' | 'carotte-grignote' | 'gateau-enchante';
+export type TableauNom = 'levitation' | 'service-the' | 'coupe-citron' | 'carotte-grignote' | 'gateau-enchante' | 'oeuf-au-bol' | 'vanille-au-bol' | 'framboise-biscuit';
 export const TABLEAUX: Record<TableauNom, { duree: number; libelle: string; assets: string[] }> = {
-  levitation: { duree: 10, libelle: 'Les tasses se mettent à léviter', assets: ['tasse-vide'] },
-  'service-the': { duree: 11, libelle: 'La théière sert le thé toute seule', assets: ['theiere-seule', 'tasse-vide'] },
+  levitation: { duree: 10, libelle: 'La tasse se soulève puis se repose', assets: ['tasse-vide'] },
+  'service-the': { duree: 16, libelle: 'La théière sert le thé toute seule', assets: ['theiere-seule', 'tasse-vide'] },
   'coupe-citron': { duree: 11, libelle: 'Le citron se coupe en deux', assets: ['citron-entier', 'citron-gauche', 'citron-droite', 'couteau'] },
   'carotte-grignote': { duree: 11, libelle: 'La carotte se grignote puis repousse', assets: [ 'carotte-0', 'carotte-1', 'carotte-2', 'carotte-3'] },
+  'oeuf-au-bol': { duree: 14, libelle: 'L’œuf se casse dans le bol et le fouet mélange', assets: ['aquarelles/acteurs/bol', 'aquarelles/acteurs/oeuf', 'aquarelles/acteurs/coquille-gauche', 'aquarelles/acteurs/coquille-droite', 'aquarelles/acteurs/jaune', 'aquarelles/acteurs/fouet'] },
+  'vanille-au-bol': { duree: 12, libelle: 'La gousse de vanille parfume le bol', assets: ['aquarelles/acteurs/bol', 'aquarelles/acteurs/gousse', 'aquarelles/acteurs/fleur-vanille'] },
+  'framboise-biscuit': { duree: 13, libelle: 'Les spéculoos se cassent et les framboises rejoignent le bol', assets: ['aquarelles/acteurs/bol', 'aquarelles/acteurs/framboise', 'aquarelles/acteurs/speculoos', 'aquarelles/acteurs/speculoos-gauche', 'aquarelles/acteurs/speculoos-droite'] },
   'gateau-enchante': { duree: 10, libelle: 'Les gâteaux prennent leur envol', assets: ['aquarelles/gateau-bougies', 'aquarelles/gateau', 'aquarelles/cupcake', 'aquarelles/cupcake-bougie'] },
 };
 export const estTableau = (n: string): n is TableauNom => n in TABLEAUX;
 export function tableauDe(nom: string): TableauNom | undefined {
+  if (nom === 'oeufs') return 'oeuf-au-bol';
+  if (nom === 'vanille') return 'vanille-au-bol';
+  if (nom === 'framboises-speculoos') return 'framboise-biscuit';
   if (nom === 'theiere') return 'service-the';
   if (nom === 'tasse-2' || nom === 'tasse-coeur') return 'levitation';
   if (nom === 'citron' || nom === 'citron-2') return 'coupe-citron';
@@ -48,15 +54,13 @@ export function pointActeur(a: Acteur, p: [number, number], aspects: Record<stri
   return [a.x + dx * Math.cos(an) - dy * Math.sin(an), a.y + dx * Math.sin(an) + dy * Math.cos(an)];
 }
 
-const transition = (s: number, a: number, b: number) => lisse((s - a) / (b - a));
+const transition = (s: number, a: number, b: number) => Math.max(0, Math.min(1, lisse((s - a) / (b - a))));
 export const presenceTableau = (type: TableauNom, temps: number) => transition(temps, 0, .65) * (1 - transition(temps, TABLEAUX[type].duree - .8, TABLEAUX[type].duree));
 
 /** Cadres réservés aux dessins : aucune extension générale sur les textes ou les photos. */
 export function cadreTableau(page: string, nom: string, zone: [number, number, number, number]): [number, number, number, number] {
   if (['julie-droite', 'pierrette-droite'].includes(page) && ['citron', 'citron-2'].includes(nom)) return [.2, .5, .58, .383];
   if (page === 'titre' && nom === 'gateau-bougies') return [.2, .62, .6, .31];
-  if (page === 'gateaux-gauche' && nom === 'tasse-coeur') return [.05, .64, .48, .24];
-  if (page.startsWith('gateaux-') && ['gateau', 'cupcake-bougie'].includes(nom)) return [.23, zone[1], .54, zone[3]];
   return zone;
 }
 
@@ -66,24 +70,25 @@ export function etatTableau(nom: TableauNom, s: number, aspects: Record<string, 
   if (nom === 'levitation') {
     const monte = transition(s, 0.8, 3), descend = transition(s, 7, 9.2), envol = monte * (1 - descend);
     e.phase = s < 3 ? 'envol' : s < 7 ? 'levitation' : 'retour';
-    for (let k = 0; k < 3; k++) {
+    for (let k = 0; k < 1; k++) {
       const vague = cloche(s, 2.2, 8) * Math.sin(s * 1.9 + k * 1.8);
-      e.acteurs.push(acteur('tasse-vide', 250 + k * 250 + 28 * vague, 505 - envol * (200 + (k === 1 ? 65 : 0)) + 13 * vague, 215, envol * (7 * Math.sin(s * 1.3 + k))));
+      e.acteurs.push(acteur('tasse-vide', 500 + 18 * vague, 460 - envol * 175 + 8 * vague, 440, envol * (7 * Math.sin(s * 1.3 + k))));
     }
   } else if (nom === 'service-the') {
     const x = trajet(s, [[0, 690], [1.7, 425], [4, 425], [5.5, 765], [8, 765], [10.2, 690], [11, 690]]);
     const y = trajet(s, [[0, 270], [1.7, 235], [4, 235], [5.5, 235], [8, 235], [10.2, 270], [11, 270]]);
     const angle = trajet(s, [[0, 0], [1.7, -28], [3.7, -28], [4.6, 0], [5.5, -28], [7.8, -28], [8.6, 0], [11, 0]]);
-    e.phase = s < 1.7 ? 'approche' : s < 4 ? 'verse-premiere-tasse' : s < 5.5 ? 'change-de-tasse' : s < 8 ? 'verse-seconde-tasse' : 'retour';
-    e.liquide = [transition(s, 1.9, 3.7), transition(s, 5.7, 7.8)];
+    e.phase = s < 1.7 ? 'approche' : s < 4 ? 'verse-premiere-tasse' : s < 5.5 ? 'change-de-tasse' : s < 8 ? 'verse-seconde-tasse' : s < 9.2 ? 'retour-theiere' : s < 13.5 ? 'tasses-degustent' : 'tasses-se-posent';
+    const boit = transition(s, 10, 13.5), leve = transition(s, 9.2, 10.5) * (1-transition(s, 13.5, 15.4));
+    e.liquide = [transition(s, 1.9, 3.7)*(1-boit), transition(s, 5.7, 7.8)*(1-boit)];
     e.tasseVisee = s < 4.7 ? 0 : 1;
     e.jet = e.tasseVisee === 0 ? cloche(s, 1.8, 3.9) : cloche(s, 5.6, 7.95);
-    e.acteurs = [acteur('theiere-seule', x, y, 360, angle), acteur('tasse-vide', 265, 500, 225), acteur('tasse-vide', 605, 500, 225)];
+    e.acteurs = [acteur('theiere-seule', x, y, 360, angle), acteur('tasse-vide', 265, 500-100*leve, 225, -12*leve), acteur('tasse-vide', 605, 500-100*leve, 225, 12*leve)];
   } else if (nom === 'coupe-citron') {
     const coupe = transition(s, 3, 3.5), rejoint = transition(s, 8, 9.2), ouvert = coupe * (1 - rejoint);
     const ecart = trajet(s, [[0, 0], [3.3, 0], [4.8, 140], [7.5, 140], [9.2, 0], [11, 0]]);
     const lameY = trajet(s, [[0, -170], [1.8, 100], [2.5, 100], [3.5, 360], [4.4, 100], [6.2, -170], [11, -170]]);
-    const lameX = trajet(s, [[0, 710], [1.8, 555], [4.4, 555], [6.2, 820], [11, 820]]);
+    const lameX = trajet(s, [[0, 710], [1.8, 555], [4.4, 555], [6.2, 820], [9, 820], [11, 710]]);
     e.phase = s < 2.5 ? 'couteau-arrive' : s < 3.5 ? 'coupe' : s < 8 ? 'deux-moities' : 'reunion-magique';
     e.acteurs = [acteur('citron-entier', 500, 405, 385, 0, 1 - ouvert), acteur('citron-gauche', 500 - ecart, 422, 230, -ouvert * 5, ouvert), acteur('citron-droite', 500 + ecart, 422, 230, ouvert * 5, ouvert), acteur('couteau', lameX, lameY, 340, -24)];
   } else if (nom === 'carotte-grignote') {
@@ -109,16 +114,40 @@ export function etatTableau(nom: TableauNom, s: number, aspects: Record<string, 
         return { x: p[0] + (j - 2) * 15 * d, y: p[1] - (22 + j * 2) * Math.sin(Math.PI * d) + 40 * d * d, rayon: 2 + (j % 2), alpha: .72 * cloche(age, 0, .7) };
       });
     });
+  } else if (nom === 'oeuf-au-bol') {
+    // Objets distincts : approche, fracture, gravité du jaune, fouet dans le bol, retour au repos.
+    const avance = transition(s, .7, 2.4) * (1 - transition(s, 11.2, 13.5));
+    const casse = transition(s, 2.6, 3.1) * (1 - transition(s, 10.8, 11.2));
+    const tombe = transition(s, 3.2, 4.25), bat = cloche(s, 4.5, 10.7);
+    const x = 185 + 315 * avance, y = 260 - 75 * avance;
+    const fouette = transition(s, 4.5, 5.5) * (1-transition(s,10.7,12.3));
+    e.phase = s < 2.6 ? 'approche-du-bol' : s < 3.2 ? 'coquille-separee' : s < 4.5 ? 'jaune-tombe' : s < 10.7 ? 'fouet-melange' : 'retour';
+    e.acteurs = [acteur('aquarelles/acteurs/oeuf', x, y, 150, 0, 1-casse),
+      acteur('aquarelles/acteurs/coquille-gauche', x-70*casse, y-10*casse, 125, -35*casse, casse),
+      acteur('aquarelles/acteurs/coquille-droite', x+70*casse, y-10*casse, 125, 35*casse, casse),
+      acteur('aquarelles/acteurs/jaune', 500, 230+205*tombe*tombe, 115, 0, casse*(1-transition(s,4.1,4.45))),
+      acteur('aquarelles/acteurs/fouet', 785-265*fouette+bat*30*Math.sin(s*9), 285+80*bat+10*bat*Math.sin(s*18), 285, -40*fouette+bat*8*Math.sin(s*9)),
+      acteur('aquarelles/acteurs/bol', 500, 470, 480)];
+    e.miettes = Array.from({length:8},(_,k)=>({x:500+Math.cos(k*2.4)*80*bat,y:355-Math.abs(Math.sin(s*7+k))*70*bat,rayon:2.5,alpha:bat*.55}));
+  } else if (nom === 'vanille-au-bol') {
+    const leve=transition(s,.8,2.6)*(1-transition(s,9,11.7)), gratte=cloche(s,3,8.5);
+    e.phase=s<3?'gousse-approche':s<8.5?'graines-tombent':'retour';
+    e.acteurs=[acteur('aquarelles/acteurs/gousse',220+280*leve+gratte*12*Math.sin(s*9),225-45*leve,300,-20*leve),acteur('aquarelles/acteurs/fleur-vanille',800,450,180),acteur('aquarelles/acteurs/bol',500,470,460)];
+    e.miettes=Array.from({length:15},(_,k)=>{const t=(s*.9+k/15)%1;return{x:475+Math.sin(k*5)*55,y:220+t*t*185,rayon:1.8,alpha:gratte*.8*Math.sin(t*Math.PI)}});
+  } else if (nom === 'framboise-biscuit') {
+    const leve=transition(s,.7,2.5)*(1-transition(s,10.2,12.8)), casse=transition(s,2.8,3.4)*(1-transition(s,9.8,10.2));
+    const x=220+280*leve,y=370-185*leve;
+    const baie=transition(s,5,7.2)*(1-transition(s,8.8,10.5));
+    e.phase=s<2.8?'biscuit-approche':s<4.5?'biscuit-casse':s<8.8?'framboises-dans-le-bol':'retour';
+    e.acteurs=[acteur('aquarelles/acteurs/speculoos',x,y,275,0,1-casse),acteur('aquarelles/acteurs/speculoos-gauche',x-65*casse,y,170,-18*casse,casse),acteur('aquarelles/acteurs/speculoos-droite',x+65*casse,y,170,18*casse,casse),acteur('aquarelles/acteurs/framboise',790-290*baie,390-200*Math.sin(Math.PI*baie),135,-120*baie),acteur('aquarelles/acteurs/framboise',860-350*baie,470-160*Math.sin(Math.PI*baie),105,90*baie),acteur('aquarelles/acteurs/bol',500,480,410)];
+    const emiette=cloche(s,3,6.5);
+    e.miettes=Array.from({length:15},(_,k)=>{const t=(s*.8+k/15)%1;return{x:500+Math.sin(k*7)*85,y:225+200*t*t,rayon:2+k%3,alpha:emiette*.8*Math.sin(t*Math.PI)}});
   } else {
     const envol = transition(s, .7, 2.7) * (1 - transition(s, 7.6, 9.3));
     const vol = cloche(s, 1.5, 8.8), phase = s * 1.25;
     const patisserie = acteur(`aquarelles/${principal}`, 500 + 35 * vol * Math.sin(phase), 440 - 190 * envol + 18 * vol * Math.sin(phase * .8), 375, 5 * vol * Math.sin(phase));
     e.phase = s < 2.7 ? 'gateaux-decollent' : s < 7.6 ? 'ronde-des-gateaux' : 'gateaux-se-posent';
     e.acteurs = [patisserie];
-    for (let k = 0; k < 2; k++) {
-      const signe = k ? 1 : -1;
-      e.acteurs.push(acteur('aquarelles/cupcake', 500 + signe * (285 + 45 * vol * Math.sin(phase)), 485 - 140 * envol + signe * 65 * vol * Math.cos(phase), 150, signe * 10 * vol * Math.sin(phase + 1), transition(s, .5, 1.3) * (1 - transition(s, 8.8, 9.5))));
-    }
     const reperes: [number, number][] = principal === 'gateau-bougies' ? [[.2676, .2228], [.3525, .185], [.4926, .1472], [.6328, .1904], [.7287, .2228]] : principal === 'cupcake-bougie' ? [[.4624, .0946]] : [];
     e.flammes = reperes.map((p, k) => { const [x, y] = pointActeur(patisserie, p, aspects); return { x, y, rayon: principal === 'gateau-bougies' ? 7 : 10, angle: patisserie.angle + 8 * Math.sin(s * 4 + k), force: .86 + .14 * Math.sin(s * 8 + k) }; });
   }
@@ -149,7 +178,7 @@ export class Theatre {
       const [x, y, largeur, hauteur] = cadreTableau(page, d.nom, d.zone);
       Object.assign(svg.style, { left: `${x * 100}%`, top: `${y * 100}%`, width: `${largeur * 100}%`, height: `${hauteur * 100}%`, opacity: '0' });
       const acteurs: SVGImageElement[] = [];
-      for (let k = 0; k < 5; k++) { const im = svgEl('image'); im.setAttribute('preserveAspectRatio', 'xMidYMid meet'); svg.append(im); acteurs.push(im); }
+      for (let k = 0; k < 8; k++) { const im = svgEl('image'); im.setAttribute('preserveAspectRatio', 'xMidYMid meet'); svg.append(im); acteurs.push(im); }
       const liquides = [svgEl('ellipse'), svgEl('ellipse')], fronts = [svgEl('image'), svgEl('image')];
       const defs = svgEl('defs'); svg.append(defs);
       for (let k = 0; k < 2; k++) {
@@ -172,6 +201,7 @@ export class Theatre {
   }
 
   disponible(nom: string, type: TableauNom) { const s = this.scenes.get(nom); return !!s?.pret && s.type === type; }
+  prepare(nom: string) { return this.scenes.has(nom); }
   cacher(nom: string) { const s = this.scenes.get(nom); if (s) { s.svg.style.opacity = '0'; s.svg.removeAttribute('data-gc-tableau'); s.etat = undefined; } }
   etat(nom: string) { const s = this.scenes.get(nom); return s?.etat ? { nom: s.type, ...s.etat } : null; }
   private poserImage(im: SVGImageElement, a: Acteur) {
@@ -180,9 +210,9 @@ export class Theatre {
     return h;
   }
 
-  rendre(nom: string, type: TableauNom, temps: number): number {
+  rendre(nom: string, type: TableauNom, temps: number, peinture = 1): number {
     const s = this.scenes.get(nom); if (!s?.pret || s.type !== type) return 0;
-    const e = etatTableau(type, temps, this.aspects, s.d.nom), alpha = presenceTableau(type, temps);
+    const e = etatTableau(type, temps, this.aspects, s.d.nom), alpha = Math.min(1, Math.max(0, peinture));
     s.etat = e; s.svg.style.opacity = String(alpha); s.svg.setAttribute('data-gc-tableau', type); s.svg.setAttribute('data-gc-phase', e.phase);
     s.acteurs.forEach((im, k) => { const a = e.acteurs[k]; if (a) this.poserImage(im, a); else im.setAttribute('opacity', '0'); });
     s.liquides.forEach((el) => el.setAttribute('opacity', '0')); s.fronts.forEach((el) => el.setAttribute('opacity', '0'));
@@ -211,7 +241,7 @@ export class Theatre {
       const cible = e.acteurs[e.tasseVisee + 1], ci = assetInfo(logique(cible.asset)), ch = cible.w / (ci ? ci.w / ci.h : 1), tx = cible.x - cible.w * .017, ty = cible.y - ch * .31;
       attributs(s.jet, { d: `M ${sx} ${sy} C ${sx + 8} ${sy + 90}, ${tx - 10} ${ty - 75}, ${tx} ${ty}`, opacity: e.jet * 0.85 });
     }
-    return alpha;
+    return 1;
   }
   detruire() { this.scenes.clear(); this.couche.replaceChildren(); }
 }

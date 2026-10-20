@@ -1,0 +1,67 @@
+"""Les glyphes des recettes restent entiers dans la loupe et dans leur révélation d'encre."""
+import importlib.util
+from pathlib import Path
+import sys
+import unittest
+
+import numpy as np
+
+PAGES = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PAGES))
+import mise_en_page as MEP
+import rendu_encre as R
+import recette as RC
+
+
+class PoliceLisible(unittest.TestCase):
+    def setUp(self):
+        self.mise = MEP.mettre_en_page({
+            "id": "lecture", "graine": 23, "police": "kalam", "main": "soignee", "encre": "bic",
+            "blocs": [{"type": "paragraphe", "texte": "Emeline Clémence Pierrette : 160 g, 150 °C, 90 g, 2 œufs."}],
+        }, dessins=False)
+        self.traces = [t for t in self.mise.traces if t.glyphe]
+
+    def test_loupe_tuiles_reproduisent_les_glyphes_entiers(self):
+        self.assertFalse(self.mise.deborde)
+        self.assertEqual([m.texte for m in self.mise.mots],
+                         "Emeline Clémence Pierrette : 160 g, 150 °C, 90 g, 2 œufs.".split())
+        larg, haut, ech = 1700, 350, 2.
+        plein = R.rasteriser(self.traces, larg, haut, ech, np.zeros((haut, larg)))
+        reconstitue = np.zeros((haut, larg), np.float32)
+        for x0, x1 in [(0, 477), (477, larg)]:
+            tuile = R.rasteriser(self.traces, x1-x0, haut, ech, np.zeros((haut, x1-x0)), (x0, 0))
+            for _, (alpha, _, _) in tuile.items():
+                reconstitue[:, x0:x1] = np.maximum(reconstitue[:, x0:x1], alpha)
+        alpha = next(iter(plein.values()))[0]
+        self.assertGreater(np.count_nonzero(alpha), 100)
+        np.testing.assert_allclose(reconstitue, alpha, atol=1/255)
+
+    def test_revelation_couvre_aussi_interieur_des_lettres(self):
+        spec = importlib.util.spec_from_file_location("temps_encre", PAGES.parent / "bake-temps-encre.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        temps = module.carte(self.mise, 850, 180)
+        rendu = R.rasteriser(self.traces, 850, 180, 1., np.zeros((180, 850)))
+        alpha = next(iter(rendu.values()))[0]
+        self.assertTrue(np.all(temps[alpha > .1] < 65535), "des pixels de lettres attendent la fin du lavis")
+        self.assertGreater(np.ptp(temps[alpha > .1]), 10000, "la phrase doit s'écrire progressivement")
+        debut = R.rasteriser(self.traces[:1], 850, 180, 1., np.zeros((180, 850)))
+        premier_mot = next(iter(debut.values()))[0] > .1
+        self.assertGreater(np.ptp(temps[premier_mot]), 1000, "un mot ne doit pas apparaître d'un seul bloc")
+
+    def test_huit_recettes_integrales_restent_dans_le_paginateur(self):
+        plan, papiers = RC.charger_plan()
+        for slug, configuration in plan["recettes"].items():
+            with self.subTest(recette=slug):
+                recette = RC.charger_recette(slug, configuration)
+                resultat = RC.paginer(recette, configuration, papiers)
+                attendus = {a.id for a in RC.atomes(recette)}
+                places = {a for ids in resultat.repartition.values() for a in ids}
+                self.assertEqual(places, attendus, "un ingrédient ou une phrase a quitté la pagination")
+                etapes = [b for p in resultat.pages.values() for b in p["blocs"] if b["type"] == "etape"]
+                self.assertEqual(len(etapes), len(recette["etapes"]))
+                self.assertTrue(all(b["disposition"] == "tete" for b in etapes))
+
+
+if __name__ == "__main__":
+    unittest.main()

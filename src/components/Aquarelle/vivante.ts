@@ -21,7 +21,7 @@ import { EFFETS, SCENES_PAGE, type Effets } from './effets';
 import { REPOS, SCENES, poseNeutre, type Ctx, type Fx } from './scenes';
 import { essaimDe, PAROLES, type Essaim } from './creatures';
 import partiesJson from './parties.json';
-import { Theatre, TABLEAUX, estTableau, tableauDe, presenceTableau } from './tableaux';
+import { Theatre, TABLEAUX, estTableau, tableauDe } from './tableaux';
 
 export type { Effets } from './effets';
 
@@ -591,7 +591,8 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     const [x, y, w, h] = d.zone;
     // les scènes propres à cette page, s'il y en a, remplacent celles de l'aquarelle
     const sp = SCENES_PAGE[opts.page]?.[d.nom];
-    const e: Effets = { ...(EFFETS[d.nom] ?? {}), ...(sp ? { scenes: sp } : {}) };
+    const type = tableauDe(d.nom);
+    const e: Effets = { ...(EFFETS[d.nom] ?? {}), ...(sp ? { scenes: sp } : {}), ...(type ? { scenes: [type] } : {}) };
     const [dg, dh, dd] = DEBORD;
     // des confettis retombent sous l'aquarelle : la boîte descend plus bas
     const db = e.confettis ? 0.5 : DEBORD[3];
@@ -783,14 +784,17 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
 
   const dessinerSprite = (s: Sprite, t: number) => {
     if (!gl || !s.img) return;
+    const type = tableauDe(s.d.nom);
+    // Attendre les acteurs ensemble évite de montrer brièvement l'ancienne image composite.
+    if (type && theatre?.prepare(s.d.nom) && !theatre.disponible(s.d.nom, type)) return;
     const g = gl;
     const peint = avancement(s);
     const { corps, poses, fx } = poser(s, peint >= 1 ? t : 0);
-    const tableau = s.scene && estTableau(s.scene.nom) ? theatre?.rendre(s.d.nom, s.scene.nom, (horloge - s.scene.debut) / 1000) ?? 0 : 0;
-    if (!tableau) theatre?.cacher(s.d.nom);
-    // Le théâtre du citron utilise l'espace réservé aux deux dessins : aucun fruit en triple.
-    const coupe = ['citron', 'citron-2'].includes(s.d.nom) ? sprites.find((a) => a.scene?.nom === 'coupe-citron')?.scene : null;
-    const presence = coupe ? presenceTableau('coupe-citron', (horloge - coupe.debut) / 1000) : tableau;
+    // Une seule distribution au repos et en action. Aucun fondu vers une autre illustration.
+    const tableau = type && theatre?.disponible(s.d.nom, type)
+      ? theatre.rendre(s.d.nom, type, s.scene?.nom === type ? (horloge - s.scene.debut) / 1000 : 0, peint)
+      : 0;
+    const presence = tableau;
 
     g.uniform4f(ud.boite, ...s.boite);
     g.uniform4f(ud.rot, s.cx, s.cy, s.cos, s.sin);

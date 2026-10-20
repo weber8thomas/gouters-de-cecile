@@ -1,54 +1,82 @@
-// Vrais MP3/WebAudio avec politique autoplay : tampons raccourcis à8s, rotation injectée à2s uniquement
-// dans le bundle de test (la production reste à25s). La fin naturelle en fondu serait à5s : un changement
-// avant4s prouve bien la rotation. Le test pur vérifie le vrai seuil25s sans attente via l'horloge simulée.
+// Moteur de production inchangé, WebAudio réel et petit WAV local de 30,25 s.
+// Le dernier thème commence à 27,25 s : il doit rester audible jusqu'à la fin naturelle.
 import { build } from 'esbuild';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import { serve } from './lib/serve.mjs';
 import { lancer } from './lib/verif.mjs';
-const dir = 'verification/out/musique-v10'; mkdirSync(dir, { recursive: true });
-const sourceMusique = readFileSync('src/lib/musique.ts', 'utf8');
-const rotationProduction = 'const DUREE_EXTRAIT_ROTATION = 25;';
-assert.equal(sourceMusique.split(rotationProduction).length, 2, 'le moteur de production conserve un seul seuil de25s');
-await build({ stdin: { contents: `import { etatMusique, changerMorceau, MORCEAUX } from './src/lib/musique'; import { getReglages, setReglages } from './src/lib/reglages'; import { marquerVideo, contexteAudio } from './src/lib/son'; window.banc = { etatMusique, changerMorceau, MORCEAUX, getReglages, setReglages, marquerVideo, contexteAudio };`, resolveDir: process.cwd(), loader: 'ts' }, outfile: `${dir}/banc.js`, bundle: true, format: 'iife', define: { 'process.env.NODE_ENV': '"production"' }, plugins: [{ name: 'rotation-courte-test', setup(p) { p.onLoad({ filter: /[/\\]src[/\\]lib[/\\]musique\.ts$/ }, () => ({ contents: sourceMusique.replace(rotationProduction, 'const DUREE_EXTRAIT_ROTATION = 2;'), loader: 'ts', resolveDir: resolve('src/lib') })); } }, { name: 'assets-audio', setup(p) { p.onResolve({ filter: /^\.\/assets$/ }, a => ({ path: a.path, namespace: 'audio-assets' })); p.onLoad({ filter: /.*/, namespace: 'audio-assets' }, () => ({ contents: `export const assetInfo=n=>({u:'/design-system/baked/'+n+'.mp3'}); export const assetUrl=n=>'/design-system/baked/'+n+'.mp3'; export const assetNames=()=>[];` })); } }] });
-writeFileSync(`${dir}/index.html`, '<!doctype html><meta charset="utf-8"><button>Ouvrir le carnet</button><script src="banc.js"></script>');
-const srv = await serve(); const browser = await lancer({ args: ['--disable-webgl'] });
-const context = await browser.newContext(); const page = await context.newPage(); const errors=[]; page.on('pageerror', e => errors.push(e.message));
-await page.addInitScript(() => {
-  window.audioTest = { decodes:0, starts:[] };
-  const original=BaseAudioContext.prototype.decodeAudioData;
-  BaseAudioContext.prototype.decodeAudioData=function(ab,ok,ko) {
-    const short=b=>{ window.audioTest.decodes++;const n=Math.min(b.length,Math.round(8*b.sampleRate)); const out=this.createBuffer(b.numberOfChannels,n,b.sampleRate); for(let ch=0;ch<b.numberOfChannels;ch++)out.copyToChannel(b.getChannelData(ch).subarray(0,n),ch);return out; };
-    return original.call(this,ab).then(b=>{const out=short(b); ok?.(out);return out;},e=>{ko?.(e);throw e;});
-  };
-  const start=AudioBufferSourceNode.prototype.start;
-  AudioBufferSourceNode.prototype.start=function(...args) {if(this.buffer?.duration>.01)window.audioTest.starts.push({duration:this.buffer.duration,offset:args[1]??0,loop:this.loop}); return start.apply(this,args);};
+const dir='verification/out/musique-entiers';mkdirSync(dir,{recursive:true});
+const sr=8000,duree=30.25,n=Math.round(sr*duree),wav=Buffer.alloc(44+n*2);
+wav.write('RIFF');wav.writeUInt32LE(wav.length-8,4);wav.write('WAVEfmt ',8);wav.writeUInt32LE(16,16);
+wav.writeUInt16LE(1,20);wav.writeUInt16LE(1,22);wav.writeUInt32LE(sr,24);wav.writeUInt32LE(sr*2,28);
+wav.writeUInt16LE(2,32);wav.writeUInt16LE(16,34);wav.write('data',36);wav.writeUInt32LE(n*2,40);
+for(let i=0;i<n;i++){const t=i/sr,hz=t<duree-3?220:660;wav.writeInt16LE(Math.round(Math.sin(t*hz*2*Math.PI)*.12*32767),44+i*2);}
+writeFileSync(`${dir}/fixture.wav`,wav);
+await build({stdin:{contents:`import {etatMusique,changerMorceau,MORCEAUX} from './src/lib/musique';import {getReglages,setReglages} from './src/lib/reglages';import {marquerVideo,contexteAudio} from './src/lib/son';window.banc={etatMusique,changerMorceau,MORCEAUX,getReglages,setReglages,marquerVideo,contexteAudio};`,resolveDir:process.cwd(),loader:'ts'},outfile:`${dir}/banc.js`,bundle:true,format:'iife',define:{'process.env.NODE_ENV':'"production"'},plugins:[{name:'fixture-audio-seulement',setup(p){
+ p.onResolve({filter:/^\.\/assets$/},a=>({path:a.path,namespace:'audio-assets'}));
+ p.onLoad({filter:/.*/,namespace:'audio-assets'},()=>({contents:`export const assetInfo=n=>n.startsWith('musique/')?{u:'/${dir}/fixture.wav'}:null;export const assetUrl=n=>'/${dir}/fixture.wav';export const assetNames=()=>[];`}));
+}}]});
+writeFileSync(`${dir}/index.html`,'<!doctype html><meta charset="utf-8"><button>Écouter</button><script src="banc.js"></script>');
+const srv=await serve(),browser=await lancer({args:['--disable-webgl']}),context=await browser.newContext(),page=await context.newPage();
+const errors=[],checks=[];page.on('pageerror',e=>errors.push(e.message));
+const ok=(nom,condition,detail)=>{assert.ok(condition,`${nom} : ${JSON.stringify(detail)}`);checks.push({nom,detail});console.log(`OK ${nom}`);};
+await page.addInitScript(()=>{
+ localStorage.setItem('gc:reglages:v4',JSON.stringify({v:1,musique:'toutes',musiqueActive:true,musiqueEnchaine:true,volumeMusique:1,muet:false,sonsLivre:false,ambiance:false}));
+ window.audioTest={starts:[],stops:[],ends:[],courbes:[],analyses:[]};
+ const connecter=AudioNode.prototype.connect;
+ AudioNode.prototype.connect=function(...args){
+  if(this instanceof AudioBufferSourceNode)this.__gainTest=args[0]?.gain;
+  if(this instanceof GainNode&&args[0]===this.context.destination){
+   const a=this.context.createAnalyser();a.fftSize=1024;window.audioTest.analyses.push(a);
+   connecter.call(this,a);connecter.call(a,args[0]);return args[0];
+  }
+  return connecter.apply(this,args);
+ };
+ const courbe=AudioParam.prototype.setValueCurveAtTime;
+ AudioParam.prototype.setValueCurveAtTime=function(xs,t,d){window.audioTest.courbes.push({param:this,t,d,premier:xs[0],milieu:xs[31],dernier:xs[xs.length-1]});return courbe.call(this,xs,t,d);};
+ const start=AudioBufferSourceNode.prototype.start,stop=AudioBufferSourceNode.prototype.stop;
+ AudioBufferSourceNode.prototype.start=function(...args){
+  if(this.buffer?.duration>1){
+   this.__idTest=window.audioTest.starts.length;
+   window.audioTest.starts.push({id:this.__idTest,duration:this.buffer.duration,offset:args[1]??0,when:args[0]??0,appel:this.context.currentTime,loop:this.loop,gain:this.__gainTest});
+   this.addEventListener('ended',()=>window.audioTest.ends.push({id:this.__idTest,t:this.context.currentTime}));
+  }
+  return start.apply(this,args);
+ };
+ AudioBufferSourceNode.prototype.stop=function(...args){if(this.__idTest!==undefined)window.audioTest.stops.push({id:this.__idTest,when:args[0],appel:this.context.currentTime});return stop.apply(this,args);};
 });
-try {
-  await page.goto(`${srv.url}/${dir}/`); await page.waitForFunction(()=>!!window.banc); await page.waitForTimeout(250);
-  assert.equal(await page.evaluate(()=>window.banc.contexteAudio()), null, 'aucun contexte créé avant geste');
-  await page.locator('button').focus(); await page.keyboard.press('Enter');
-  await page.waitForFunction(()=>window.banc.etatMusique().joue, null, {timeout:15000});
-  assert.equal(await page.evaluate(()=>window.banc.getReglages().musique),'toutes');
-  const premiere=await page.evaluate(()=>window.banc.etatMusique().morceau);
-  const debutAudio=await page.evaluate(()=>window.banc.contexteAudio().currentTime);
-  await page.waitForFunction(x=>window.banc.etatMusique().morceau!==x, premiere, {timeout:12000});
-  await page.waitForFunction(()=>window.banc.etatMusique().joue);
-  const delaiRotation=await page.evaluate(()=>window.banc.contexteAudio().currentTime)-debutAudio;
-  assert.ok(delaiRotation<4,'la rotation injectée à2s arrive avant la fin naturelle en fondu à5s');
-  const suivante=await page.evaluate(()=>window.banc.etatMusique().morceau);
-  assert.equal(await page.evaluate(()=>window.banc.getReglages().musique),'toutes','tourner ne remplace pas le mode toutes');
-  assert.ok((await page.evaluate(()=>window.audioTest.starts)).every(x=>!x.loop));
-  await page.waitForTimeout(500); await page.evaluate(()=>window.banc.marquerVideo(true));
-  assert.equal(await page.evaluate(()=>window.banc.etatMusique().statut),'pause-video');
-  await page.waitForTimeout(200); await page.evaluate(()=>window.banc.marquerVideo(false));
-  await page.waitForFunction(()=>window.banc.etatMusique().joue);
-  assert.ok(await page.evaluate(()=>window.audioTest.starts.at(-1).offset>.1),'reprise à la position avant vidéo');
-  await page.evaluate(()=>window.banc.setReglages({musiqueActive:false})); assert.equal(await page.evaluate(()=>window.banc.etatMusique().joue),false);
-  const decoded=await page.evaluate(async()=>{const c=window.banc.contexteAudio();const results=[];for(const m of window.banc.MORCEAUX){const r=await fetch('/design-system/baked/'+m.f+'.mp3');const b=await c.decodeAudioData(await r.arrayBuffer());results.push({id:m.id,canal:b.numberOfChannels,sampleRate:b.sampleRate});}return results;});
-  assert.equal(decoded.length,7); assert.equal(new Set(decoded.map(x=>x.id)).size,7);
-  assert.ok(decoded.every(x=>x.canal===2)); assert.deepEqual(errors,[]);
-  writeFileSync(`${dir}/rapport.json`,JSON.stringify({ok:true,decoded,rotation:{productionSecondes:25,testSecondes:2,tamponSecondes:8,premiere,suivante,delaiRotation},etat:await page.evaluate(()=>window.banc.etatMusique()),starts:await page.evaluate(()=>window.audioTest.starts)},null,2)+'\n');
-  console.log('WebAudio Chromium : autoplay respecté, vrai décodage7MP3, rotation toutes accélérée2s (25s en production), démarrage clavier, fondu, pause vidéo/reprise et pause utilisateur : OK');
-} finally {await context.close();await browser.close();await srv.close();}
+const instant=()=>page.evaluate(()=>({musique:window.banc.etatMusique(),reglages:window.banc.getReglages(),t:window.banc.contexteAudio().currentTime,starts:window.audioTest.starts.map(({gain,...s})=>s),stops:window.audioTest.stops,ends:window.audioTest.ends}));
+const attendreTemps=secondes=>page.waitForFunction(s=>window.banc.contexteAudio().currentTime>=window.audioTest.starts[0].when+s,secondes,{timeout:35000});
+const energie=()=>page.evaluate(()=>Math.max(...window.audioTest.analyses.map(a=>{const x=new Float32Array(a.fftSize);a.getFloatTimeDomainData(x);return Math.sqrt(x.reduce((s,v)=>s+v*v,0)/x.length);})));
+try{
+ await page.goto(`${srv.url}/${dir}/`);await page.waitForFunction(()=>!!window.banc);
+ ok('autoplay attend un geste',await page.evaluate(()=>window.banc.contexteAudio()===null));
+ await page.locator('button').focus();await page.keyboard.press('Enter');
+ await page.waitForFunction(()=>window.banc.etatMusique().joue,null,{timeout:15000});
+ const initial=await instant();
+ await attendreTemps(25.25);const a25=await instant();
+ ok('25,25 secondes réelles : même morceau, aucune voix arrêtée',a25.musique.morceau===initial.musique.morceau&&a25.starts.length===1&&a25.stops.length===0,a25.t);
+ await attendreTemps(27.5);const rms27=await energie(),a27=await instant();
+ ok('les trois dernières secondes commencent sans fondu sortant',a27.starts.length===1&&a27.stops.length===0&&rms27>.005,{rms:rms27,t:a27.t});
+ await attendreTemps(29.5);const rms29=await energie();
+ ok('la dernière seconde est encore audible',rms29>.005,rms29);
+ await page.waitForFunction(()=>window.audioTest.starts.length===2,null,{timeout:6000});
+ const fin=await instant(),s0=fin.starts[0],s1=fin.starts[1],e0=fin.ends.find(e=>e.id===0),respiration=s1.when-e0.t;
+ ok('progression uniquement après ended naturel',s1.when>=s0.when+s0.duration&&fin.stops.length===0&&fin.musique.morceau!==initial.musique.morceau,fin);
+ ok('respiration de 350 ms puis entrée de 1,6 s',respiration>.34&&respiration<.42&&await page.evaluate(()=>window.audioTest.courbes.find(c=>c.param===window.audioTest.starts[1].gain)?.d===1.6),respiration);
+ ok('la playlist garde son choix tous les morceaux',fin.reglages.musique==='toutes'&&fin.starts.every(s=>!s.loop));
+ await page.evaluate(()=>window.banc.changerMorceau(1));await page.waitForFunction(()=>window.audioTest.starts.length===3);
+ const manuel=await page.evaluate(()=>{const a=window.audioTest,entree=a.courbes.find(c=>c.param===a.starts[2].gain),sortie=a.courbes.filter(c=>c.param===a.starts[1].gain).at(-1);return {entree:entree.d,sortie:sortie.d,puissance:entree.milieu**2+sortie.milieu**2};});
+ // Le courant sort ici avant d'avoir fini son entrée naturelle : sa puissance est tenue, sans saut.
+ ok('changement manuel : deux courbes douces de trois secondes',manuel.entree===3&&manuel.sortie===3,manuel);
+ await page.waitForTimeout(450);const avantVideo=await instant();
+ await page.evaluate(()=>window.banc.marquerVideo(true));ok('pause pendant la vidéo',await page.evaluate(()=>window.banc.etatMusique().statut==='pause-video'));
+ await page.waitForTimeout(250);await page.evaluate(()=>window.banc.marquerVideo(false));await page.waitForFunction(()=>window.audioTest.starts.length===4);
+ const reprise=await instant(),offsetAttendu=avantVideo.t-avantVideo.starts[2].when;
+ ok('reprise vidéo au même offset',Math.abs(reprise.starts[3].offset-offsetAttendu)<.12,{offset:reprise.starts[3].offset,attendu:offsetAttendu});
+ ok('cache de deux tampons au maximum',reprise.musique.decodes<=2,reprise.musique.decodes);
+ await page.evaluate(()=>window.banc.setReglages({musiqueActive:false}));ok('pause utilisateur',await page.evaluate(()=>!window.banc.etatMusique().joue));
+ ok('aucune erreur WebAudio',errors.length===0,errors);
+ writeFileSync(`${dir}/rapport.json`,JSON.stringify({ok:true,fixture:{secondes:duree,octets:wav.length,sampleRate:sr},checks,initial,fin,manuel,reprise},null,2)+'\n');
+ console.log(`WebAudio réel : ${checks.length} contrôles OK, morceau entier et outro audible, fin naturelle, transitions et pause vidéo.`);
+}finally{await context.close();await browser.close();await srv.close();}

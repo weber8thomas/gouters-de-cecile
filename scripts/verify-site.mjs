@@ -25,7 +25,7 @@ import { inventory, siteSeulement } from './assets.mjs';
 import { spawnSync } from 'node:child_process';
 import {
   ROOT, lireArgs, ecrans, lancer, serveSite, Rapport, etatLivre, rectDe, existe, capture, surveiller, attendrePret,
-  instrumenterGeste, contexte, atomesMp4, planche, rel, tactile, toucher, attendreAttr, plays,
+  instrumenterGeste, contexte, atomesMp4, planche, rel, tactile, toucher, attendreAttr, plays, initReglages,
 } from './lib/verif.mjs';
 
 const { opt, drapeau, liste } = lireArgs();
@@ -49,6 +49,7 @@ if (drapeau('build')) {
 }
 R.meta.site = rel(dossier);
 R.meta.base = base;
+R.meta.statique = drapeau('statique');
 console.log(`■ Site ${rel(dossier)} (base ${base})`);
 
 // ---- Le dossier ------------------------------------------------------------------------------------
@@ -133,6 +134,11 @@ for (const e of ecrans(liste('only', 'iphone13-paysage,ordi-1440,tv-1080'))) {
   for (const l of liens) {
     const ctx = await contexte(browser, e);
     await instrumenterGeste(ctx);
+    // Contrôles de structure et du repli sans animation ; les scènes ont leur suite dédiée.
+    if (drapeau('statique')) {
+      const init = initReglages({ animations: 'reduites', feu: false, musiqueActive: false, lectureAuto: false });
+      await ctx.addInitScript(init.fn, init.arg);
+    }
     const page = await ctx.newPage();
     const surv = surveiller(page);
     try {
