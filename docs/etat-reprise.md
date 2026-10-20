@@ -28,6 +28,12 @@
   les audits redondants et les navigateurs concurrents pour économiser le quota.
 - Aucun redémarrage automatique après expiration du quota. La reprise nécessite un message utilisateur.
 
+## Revue v12
+
+Voir [la livraison v12](reprise-v12.md) et [les recettes lisibles](lisibilite-recettes-v12.md).
+Branche `codex/reprise-v8`, aperçu `essais/coherence-v12/`, build final `20261020T143044`.
+Les contrôles du carnet animé, du contenu, des huit liens TV, du mobile et du guide borné passent ; les détails et limites sont dans le rapport.
+
 ## Sources et actifs
 
 Branche distante : `codex/reprise-v8` ; le checkout cloud peut être sur `work` au même historique.

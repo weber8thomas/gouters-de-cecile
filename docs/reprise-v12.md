@@ -42,3 +42,33 @@ Les vrais portraits et clips des invités ne sont toujours pas fournis. Les mono
 Le navigateur de test est Chromium Linux ; pas de mesure de cadence sur la TV HDMI ni Safari/Mac physique.
 
 Le sommaire utilise aussi Kalam ; titres courts pour la table des matières, titres complets conservés dans les recettes. Vérification finale : huit vignettes, lien Laura et lien de fin présents ; aucun débordement dans les 34 pages du manifeste. Les petits fruits du frontispice gâteaux évitent désormais les traits du cadre.
+
+## Livraison et intégration
+
+Première reprise poussée : `2a153998b93f67254b4d9c68f3d42c07d2b33c9a` sur `codex/reprise-v8`.
+Aperçu : https://weber8thomas.github.io/gouters-de-cecile/essais/coherence-v12/
+Première publication : build `20261020T140905`, commit `fffb204652fd47d8a6a9506fbfecadfddcc27aed` ; arbre de la racine et anciens essais préservés.
+
+- Les cinq scènes contrôlées dans le livre donnent **18 contrôles OK, aucun KO** : départ autonome,
+  action au clavier, stabilité de l’horloge et captures. `verification/out/coherence-v12/livre/dessins.json`.
+- Les huit liens de recettes TV sous le préfixe exact donnent **38 contrôles OK, aucun KO**,
+  742 requêtes, aucune 404 ni exception. L’attente concerne seulement les clips non fournis.
+  `verification/out/coherence-v12/site-tv/site.json`.
+- Les huit JSON de recettes ne changent que de choix de fonte ; comparaison des mots avec le manifeste
+  cuisiné : **aucun mot ni quantité manquant**, notes et messages compris. `transcriptions.json`.
+- Trois tests nouveaux passent pour les huit paginations, les glyphes entiers en tuiles et leur
+  révélation progressive. Construction TypeScript/Vite réussie. Quête : huit preuves ciblées réussies.
+
+La publication est vérifiée par Git, mais la lecture HTTP publique reste bloquée ici par le proxy
+`CONNECT 403`. Ne pas présenter ce refus comme une erreur HTTP du site lui-même.
+
+
+Le passage mobile animé donne **14 contrôles OK, aucun KO**, 204 requêtes sans 404 ni exception.
+Le repli sans animations donne **10 contrôles OK, aucun KO**. Les huit vignettes du sommaire sont visibles.
+
+L’inspection des captures a ensuite repéré un cartouche « Secrets » trop grand sur mobile : sa fonte
+est maintenant bornée par la largeur du compagnon, ainsi que celle du guide. Contrôle ciblé après
+correction sur mobile et TV : cartouche dans l’écran, hors du papier ; guide sans débord horizontal,
+huit vignettes présentes. `scripts/verify-quete-affichage-v12.mjs`, rapport dans
+`verification/out/coherence-v12/guide-affichage/rapport.json`. Build final `20261020T143044`.
+La dernière référence de publication est dans `verification/out/previews/coherence-v12/preview-publication.json`.
