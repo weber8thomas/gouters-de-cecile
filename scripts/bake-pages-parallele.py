@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Cuisson CPU isolée, qualité inchangée, avec reprise des sorties validées.
 
-Trois workers maximum utilisent le moteur Cuisine, chacun dans son dossier et
+Huit workers maximum (trois par défaut) utilisent le moteur Cuisine, chacun dans son dossier et
 son cache. Une page valide est recuite pour prouver l'identité des six WebP ; les
 papiers dupliqués sont comparés aussi. Le moteur normal écrit le manifeste final.
 Un lot interrompu se reprend avec --repair N, puis --resume réunit les résultats.
+Sans aucune page encore valide (moteur modifié), la preuve exacte est remplacée
+par la comparaison des papiers dupliqués et la validation normale finale.
+--sans-4x saute la passe de la loupe, comme `bake-pages.mjs --sans-4x`.
 """
 from __future__ import annotations
 import argparse
@@ -29,11 +32,14 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+X4 = True
+
+
 def preparer():
     pages, papers, plan = C.charger_descriptions()
     carnet, roster = C.RC.charger_carnet(), C.RC.charger_roster()
     pages = C.appliquer_carnet(pages, carnet, roster, [])
-    cuisine = C.Cuisine(pages, papers, apercus=True)
+    cuisine = C.Cuisine(pages, papers, apercus=True, x4=X4)
     generated, errors = C.paginer_recettes(plan, papers, cuisine.cache, cuisine.moteur, cuisine.outil,
                                           carnet=carnet, roster=roster)
     if errors:
@@ -48,7 +54,7 @@ def preparer():
     return pages, papers, cuisine
 
 
-def worker(number, ids, pages, papers, snapshot, out):
+def worker(number, ids, pages, papers, snapshot, out, x4=True):
     folder = Path(out) / f'worker-{number}'
     if folder.exists():
         raise RuntimeError(f'Dossier worker déjà présent : {folder}')
@@ -56,7 +62,7 @@ def worker(number, ids, pages, papers, snapshot, out):
     cache = folder / 'cache.json'
     cache.write_text(json.dumps(snapshot, ensure_ascii=False))
     cuisine = C.Cuisine(pages, papers, apercus=True, sortie=folder / 'pages',
-                        apercus_dir=folder / 'apercus', cache=cache)
+                        apercus_dir=folder / 'apercus', cache=cache, x4=x4)
     invalides = []
     for index, pid in enumerate(ids):
         t = time.monotonic()
@@ -89,7 +95,7 @@ def candidats(out, pages, papers, cuisine):
             cache = json.loads((folder / 'cache.json').read_text())
         except (FileNotFoundError, json.JSONDecodeError):
             continue  # un worker peut être en train d'écrire son cache
-        c = C.Cuisine(pages, papers, sortie=folder / 'pages', cache=folder / 'cache.json')
+        c = C.Cuisine(pages, papers, sortie=folder / 'pages', cache=folder / 'cache.json', x4=X4)
         for pid in pages:
             entry = cache.get(f'page/{pid}')
             if (entry and entry.get('cle') == fingerprints[pid]
@@ -116,16 +122,18 @@ def reunir(out, pages, papers, cuisine, attente=False):
         print(f'Reprise : attente de {len(missing)} faces valides : {sorted(missing)}', flush=True)
         time.sleep(30)
     proof = plan['preuve']
-    if proof not in valid or proof not in candidates:
-        raise RuntimeError('La preuve doit être conservée ET recuite')
     checks = []
-    proof_folder = candidates[proof][0][0] / 'pages'
-    proof_files = [Path(f'{proof}.webp'), Path(f'1x/{proof}.webp')]
-    proof_files += [Path(f'4x/{proof}-{r}{c}.webp') for r in range(2) for c in range(2)]
-    for rel in proof_files:
-        if digest(C.SORTIE / rel) != digest(proof_folder / rel):
-            raise RuntimeError(f'Restitution différente : {rel}')
-        checks.append(str(rel))
+    if proof is not None:
+        if proof not in valid or proof not in candidates:
+            raise RuntimeError('La preuve doit être conservée ET recuite')
+        proof_folder = candidates[proof][0][0] / 'pages'
+        proof_files = [Path(f'{proof}.webp'), Path(f'1x/{proof}.webp')]
+        if X4:
+            proof_files += [Path(f'4x/{proof}-{r}{c}.webp') for r in range(2) for c in range(2)]
+        for rel in proof_files:
+            if digest(C.SORTIE / rel) != digest(proof_folder / rel):
+                raise RuntimeError(f'Restitution différente : {rel}')
+            checks.append(str(rel))
     seen = {}; sources = {}; apercus = {}; merged = dict(snapshot)
     for pid, entries in sorted(candidates.items()):
         for folder, cache, entry in entries:
@@ -154,7 +162,7 @@ def reunir(out, pages, papers, cuisine, attente=False):
         C.APERCUS.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, C.APERCUS / f'{pid}.png')
     cuisine.cache = merged; cuisine.ecrire_cache()
-    status = C.main(['--apercus'])
+    status = C.main(['--apercus'] + ([] if X4 else ['--sans-4x']))
     if status:
         raise RuntimeError(f'Validation normale : code {status}')
     manifest = json.loads((C.DESCRIPTIONS / 'manifeste.json').read_text())
@@ -169,11 +177,14 @@ def reunir(out, pages, papers, cuisine, attente=False):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--jobs', type=int, default=3, choices=(1, 2, 3))
-    ap.add_argument('--out', default='verification/out/v16-parallel')
+    ap.add_argument('--jobs', type=int, default=3, choices=range(1, 9))
+    ap.add_argument('--out', default='verification/out/parallele')
+    ap.add_argument('--sans-4x', action='store_true', help="sans la passe d'encre ×4 (loupe)")
     ap.add_argument('--resume', action='store_true')
     ap.add_argument('--repair', type=int)
     args = ap.parse_args()
+    global X4
+    X4 = not args.sans_4x
     out = ROOT / args.out
     if out.exists() and not (args.resume or args.repair is not None):
         raise SystemExit(f'Dossier déjà présent : {out}. Utiliser --resume ou choisir un autre --out.')
@@ -182,7 +193,7 @@ def main():
     if args.repair is not None:
         plan = json.loads((out / 'plan.json').read_text())
         ids = plan['batches'][args.repair]
-        worker(f'repair-{args.repair}', ids, pages, papers, dict(cuisine.cache), out)
+        worker(f'repair-{args.repair}', ids, pages, papers, dict(cuisine.cache), out, X4)
         return
     if args.resume:
         reunir(out, pages, papers, cuisine, attente=True)
@@ -194,19 +205,20 @@ def main():
             valid.append(pid)
         else:
             pending.append(pid)
-    if not valid:
-        raise RuntimeError('Une page valide est nécessaire à la comparaison exacte')
-    proof = valid[0]
+    proof = valid[0] if valid else None
+    if proof is None:
+        print('Aucune page valide en cache : pas de preuve exacte, papiers dupliqués et validation finale seulement.', flush=True)
     batches = [[] for _ in range(args.jobs)]
     for i in range(0, len(pending), 2):
         batches[(i // 2) % args.jobs].extend(pending[i:i+2])
-    batches[0].append(proof)
+    if proof is not None:
+        batches[0].append(proof)
     plan = {'valides': valid, 'a_cuire': pending, 'preuve': proof, 'batches': batches, 'jobs': args.jobs}
     (out / 'plan.json').write_text(json.dumps(plan, indent=2, ensure_ascii=False))
-    print(f'{len(pages)} faces : {len(valid)} en cache, {len(pending)} à cuire, preuve exacte {proof}, {args.jobs} workers isolés.', flush=True)
+    print(f'{len(pages)} faces : {len(valid)} en cache, {len(pending)} à cuire, preuve exacte {proof}, {args.jobs} workers isolés, 4× {"oui" if X4 else "non"}.', flush=True)
     context = multiprocessing.get_context('spawn')
     with ProcessPoolExecutor(max_workers=args.jobs, mp_context=context) as pool:
-        futures = [pool.submit(worker, i, ids, pages, papers, dict(cuisine.cache), out) for i, ids in enumerate(batches)]
+        futures = [pool.submit(worker, i, ids, pages, papers, dict(cuisine.cache), out, X4) for i, ids in enumerate(batches)]
         for future in as_completed(futures):
             number, ids = future.result()
             print(f'worker {number} terminé : {len(ids)} faces.', flush=True)
