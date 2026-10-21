@@ -23,9 +23,11 @@ Le four possède une cavité, un corps et une porte distincts, avec charnière ;
 
 Les quatre nouveaux desserts et leurs outils sont dans les sources d’illustrations v16, avec un manifeste d’export reproductible. Le paginateur garde les corps d’écriture et les textes ; Lisa De Paris, Sarah et Elise utilisent une feuille de suite native.
 
-## Aperçu prioritaire
+## Aperçu livré
 
-Thomas a demandé le 21 octobre de recevoir un rendu avant d’épuiser son usage. La cuisson haute définition a donc été interrompue ; cet aperçu utilise les pages standard disponibles, sans superposer d’anciennes tuiles de zoom. La génération des 62 faces et de leur manifeste reste à terminer : les nouvelles recettes sont présentes dans les sources et les animations, mais leur texte cuit et leur index de recherche ne sont pas encore tous disponibles. La haute définition est reportée. Aucun aperçu v16 complet n’est publié à ce point de sauvegarde. Ce choix concerne les fichiers des pages, pas les réglages GPU ni les effets du carnet.
+À la demande de Thomas, les 62 faces ont été générées en définition standard (pages 1×/2×) ; les tuiles de loupe 4× restent différées. Le manifeste couvre les 18 recettes, zéro débordement. Les cartes de tracé d’encre et de magie portent les nouveaux textes : 56 pages principales, 36 pages de recettes, 18/18 titres retracés. Aucun réglage GPU n’a changé.
+
+Le push source est sur `codex/reprise-v8` ; l’aperçu public est publié sous `essais/coherence-v16/`. La page racine, `main` et les autres essais restent inchangés.
 
 ## Vérification et reprise
 
@@ -35,6 +37,8 @@ Les preuves sont conservées sous `verification/out/` (non versionné). `verify-
 
 Les contrôles Chromium et écrans émulés ne mesurent pas la fluidité sur la TV physique ou Safari. Les portraits et clips réels restent absents. Utiliser le checkout existant et les actifs cuits ; ne pas refaire une cuisson complète pour une simple modification d’interface.
 
-## Point de sauvegarde urgent
+## Point de sauvegarde et limites
 
-À la demande « commit et push », les sources sont sauvegardées avant la fin des pages. TypeScript, les contrats des 18 recettes et les cinq scènes à risque passent. Le contrôle `node scripts/verify-navigation-v16.mjs --final --index-seul` échoue encore car les nouveaux textes cuits attendent le manifeste final ; ne pas présenter la v16 comme finalisée. Reprise rapide : `OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python3 scripts/bake-pages-rapide.py` (sorties intermédiaires sous `verification/out/v16-rapide`, non versionnées). Vérifier le support de reprise du script avant de relancer dans un dossier déjà présent. Après génération : `node scripts/assets.mjs`, `npm run build:site`, contrôle de l’index puis publication via `python3 scripts/publish-preview.py --prefix essais/coherence-v16/`. L’aperçu public précédent reste `essais/coherence-v15/`.
+Le premier commit `7f67fa8` a sauvegardé les nouvelles fonctions avant les pages ; le commit final documente les pages, les cartes et l’aperçu. Contrôles effectués : TypeScript et build de production, index de recherche des 18 recettes, contrats recette, cinq cadrages, rendu du mode cuisine TV et index magique strict des 56 pages principales. La publication est un aperçu sous Pages, pas une fusion dans `main`. Le passage à 4× reste à faire si la loupe haute définition est souhaitée.
+
+Les contrôles Chromium n’établissent pas encore la fluidité sur la TV réelle ou Safari. Les portraits et vidéos réels restent absents. Pour reprendre, utiliser le checkout existant ; le script rapide `scripts/bake-pages-rapide.py` produit des pages sans 4×, tandis que `scripts/bake-temps-encre.py` et `scripts/bake-magie.py` reconstruisent les cartes à partir des textes. Éviter une cuisson globale pour une modification de mise en page limitée.

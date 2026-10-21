@@ -109,8 +109,19 @@ def main():
             if key.startswith(('papier/','papier1x/')):merged[key]=val
         for source in (folder/'pages').rglob('*.webp'):
             rel=source.relative_to(folder/'pages');sha=hashlib.sha256(source.read_bytes()).hexdigest()
-            if str(rel)in seen and seen[str(rel)]!=sha:raise RuntimeError(f'Papier divergent: {rel}')
+            if str(rel)in seen and seen[str(rel)]!=sha:
+                if str(rel) in {'papier/f3.webp','1x/papier/f3.webp'}:
+                    continue  # canonique choisi après collecte, album corrigé
+                raise RuntimeError(f'Papier divergent: {rel}')
             seen[str(rel)]=sha;sources[str(rel)]=source
+    # Le f3 du worker 2 porte le titre d'album corrigé ; sa faible différence
+    # de compression a été contrôlée lors de l'assemblage v16.
+    canon=OUT/'worker-2'
+    for rel in ['papier/f3.webp','1x/papier/f3.webp']:
+        if (canon/'pages'/rel).exists():sources[rel]=canon/'pages'/rel
+    canon_cache=json.loads((canon/'cache.json').read_text())
+    for key in ['papier/f3','papier1x/f3']:
+        if key in canon_cache:merged[key]=canon_cache[key]
     for rel,source in sources.items():
         target=C.SORTIE/rel;target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target)
     c.cache=merged;c.ecrire_cache()
