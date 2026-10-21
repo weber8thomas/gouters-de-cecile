@@ -25,7 +25,7 @@ Les quatre nouveaux desserts et leurs outils sont dans les sources d’illustrat
 
 ## Aperçu prioritaire
 
-Thomas a demandé le 21 octobre de recevoir un rendu avant d’épuiser son usage. La cuisson haute définition a donc été interrompue ; cet aperçu utilise les pages standard disponibles, sans superposer d’anciennes tuiles de zoom. La haute définition reste à terminer dans une prochaine passe. Ce choix concerne les fichiers des pages, pas les réglages GPU ni les effets du carnet.
+Thomas a demandé le 21 octobre de recevoir un rendu avant d’épuiser son usage. La cuisson haute définition a donc été interrompue ; cet aperçu utilise les pages standard disponibles, sans superposer d’anciennes tuiles de zoom. La génération des 62 faces et de leur manifeste reste à terminer : les nouvelles recettes sont présentes dans les sources et les animations, mais leur texte cuit et leur index de recherche ne sont pas encore tous disponibles. La haute définition est reportée. Aucun aperçu v16 complet n’est publié à ce point de sauvegarde. Ce choix concerne les fichiers des pages, pas les réglages GPU ni les effets du carnet.
 
 ## Vérification et reprise
 
@@ -34,3 +34,7 @@ Les preuves sont conservées sous `verification/out/` (non versionné). `verify-
 `src/components/SecretsDuCarnet/verify-reset-v16.mjs` couvre le vrai reset, y compris un frottage partiel sans note validée. `verify-navigation-v16.mjs --final` couvre la navigation et la recherche ; pour isoler le moteur Livre, son banc remplace seulement Bougie et Magie par des composants vides. Le produit conserve ces effets. `verify-magie-v16.mjs --carte-finale` échantillonne quarante routes par page et contrôle les exports de soulignements, sans prétendre couvrir toutes les routes possibles.
 
 Les contrôles Chromium et écrans émulés ne mesurent pas la fluidité sur la TV physique ou Safari. Les portraits et clips réels restent absents. Utiliser le checkout existant et les actifs cuits ; ne pas refaire une cuisson complète pour une simple modification d’interface.
+
+## Point de sauvegarde urgent
+
+À la demande « commit et push », les sources sont sauvegardées avant la fin des pages. TypeScript, les contrats des 18 recettes et les cinq scènes à risque passent. Le contrôle `node scripts/verify-navigation-v16.mjs --final --index-seul` échoue encore car les nouveaux textes cuits attendent le manifeste final ; ne pas présenter la v16 comme finalisée. Reprise rapide : `OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python3 scripts/bake-pages-rapide.py` (sorties intermédiaires sous `verification/out/v16-rapide`, non versionnées). Vérifier le support de reprise du script avant de relancer dans un dossier déjà présent. Après génération : `node scripts/assets.mjs`, `npm run build:site`, contrôle de l’index puis publication via `python3 scripts/publish-preview.py --prefix essais/coherence-v16/`. L’aperçu public précédent reste `essais/coherence-v15/`.
