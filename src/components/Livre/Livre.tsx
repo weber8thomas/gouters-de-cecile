@@ -195,6 +195,8 @@ interface Doigt {
   /** Feuillet monté par ce doigt et pas encore lâché. */
   amorce: Tour | null;
   coteDepart: CotePage;
+  /** Dernière navigation demandée pendant que ce doigt (ou la main clavier) mène. */
+  apres?: { i: number; c: CotePage };
   pts: Echantillon[];
   /** La loupe est zoomée : aucun glisser ne tourne la page (les touchers d'objets restent). */
   zoome: boolean;
@@ -718,9 +720,11 @@ export function Livre({
   /** Va à la double page i, page c (cadrage « page »). */
   const allerA = React.useCallback((i: number, c: CotePage) => {
     const d = doigtRef.current;
-    if (d && d.etat !== 'attente' && d.etat !== 'ignore') return; // pas de clavier sous le doigt
     cibleRef.current = borne(i);
     coteCibleRef.current = c;
+    // Le geste garde sa feuille ; la dernière demande reste en attente au lieu d'être perdue.
+    // La cible est déjà mise à jour pour que plusieurs flèches successives s'additionnent.
+    if (d && d.etat !== 'ignore') { d.apres = { i: cibleRef.current, c }; return; }
     pousser();
   }, [borne, pousser]);
 
@@ -1628,8 +1632,8 @@ export function Livre({
       T0.but = but;
       T0.doigt = false;
       T0.lance = true;
-      cibleRef.current = but ? T0.hi : T0.lo;
-      coteCibleRef.current = but ? T0.coteHi : T0.coteLo;
+      cibleRef.current = d.apres?.i ?? (but ? T0.hi : T0.lo);
+      coteCibleRef.current = d.apres?.c ?? (but ? T0.coteHi : T0.coteLo);
       // Le son du papier suit la vitesse du geste.
       jouerSon('page', { vitesse: clamp(Math.abs(vp_) / 3, 0, 1) });
       actions.current.lancer(T0, vp_);
@@ -1647,8 +1651,8 @@ export function Livre({
       else if (d.reprise) c = f >= 0.5 ? 'droite' : 'gauche';
       else if (d.coteDepart === 'gauche') c = f >= SEUIL_P ? 'droite' : 'gauche';
       else c = f <= 1 - SEUIL_P ? 'gauche' : 'droite';
-      cibleRef.current = a;
-      coteCibleRef.current = c;
+      cibleRef.current = d.apres?.i ?? a;
+      coteCibleRef.current = d.apres?.c ?? c;
       actions.current.glisser(c, vg, false);
     };
 
@@ -1801,6 +1805,7 @@ export function Livre({
       const d = doigtRef.current;
       if (!d || e.pointerId !== d.id) return;
       doigtRef.current = null;
+      if (d.apres) queueMicrotask(() => pousserRef.current());
       const annule = e.type === 'pointercancel';
       try { if (surface.hasPointerCapture(d.id)) surface.releasePointerCapture(d.id); } catch { /* rien */ }
       if (dernierType === 'mouse' && !annule) {
@@ -1860,7 +1865,7 @@ export function Livre({
     // « page », mouvement réduit, bout du livre…) : le clavier fait alors un pas ordinaire.
     let main = 0;
     const mainInvisible = (dir: 1 | -1): boolean => {
-      if (main) return true; // une main tourne déjà la page : la touche est bue
+      if (main) return false; // la touche suivante rejoint la cible en attente
       if (doigtRef.current || tourRef.current || glisseAnim.current || enArrivee() || getLoupe().zoome) return false;
       if (!COIN_2D || vivant.current.reduced || modePageRef.current || ferme(afficheRef.current)) return false;
       const c: CotePage = dir > 0 ? 'droite' : 'gauche';
@@ -1881,6 +1886,8 @@ export function Livre({
       doigtRef.current = d;
       saisirCoin(d, c, 'bas');
       if (!d.coin) { annulerAmorce(d); doigtRef.current = null; return false; }
+      cibleRef.current = vers;
+      coteCibleRef.current = 'gauche';
       const LEVER = 170; // ms : le coin se soulève sous la main
       const TIRER = 520; // ms : la main tire le coin en arc
       const D = 0.8 * L; // course de la main vers le dos du livre

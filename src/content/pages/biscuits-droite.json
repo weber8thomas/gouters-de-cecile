@@ -1,48 +1,51 @@
 {
- "main": "soignee",
- "encre": "plume",
- "gabarit": "carnet",
- "id": "biscuits-droite",
- "double": "biscuits",
- "cote": "droite",
- "graine": 1202,
- "marges": {
-  "haut": 0.27
- },
- "blocs": [
-  {
-   "id": "chapitre",
-   "type": "chapitre",
-   "chapitre": "biscuits",
-   "taille": 1.75,
-   "graine": 43,
-   "encre": "terracotta"
-  }
- ],
- "vivants": [
-  {
-   "nom": "aq-sables",
-   "rect": [
-    0.27,
-    0.4,
-    0.17,
-    0.224
-   ],
-   "aquarelle": "sables-etoiles",
-   "anime": "balance",
-   "angle": -6
+  "main": "soignee",
+  "encre": "plume",
+  "gabarit": "carnet",
+  "id": "biscuits-droite",
+  "double": "biscuits",
+  "cote": "droite",
+  "graine": 1202,
+  "marges": {
+    "haut": 0.27
   },
-  {
-   "nom": "aq-cookies",
-   "rect": [
-    0.46,
-    0.41,
-    0.3,
-    0.244
-   ],
-   "aquarelle": "cookies",
-   "anime": "balance",
-   "angle": 4
-  }
- ]
+  "blocs": [
+    {
+      "id": "chapitre",
+      "type": "chapitre",
+      "chapitre": "biscuits",
+      "taille": 1.75,
+      "graine": 43,
+      "encre": "terracotta",
+      "invites_police": "kalam",
+      "invites_taille": 1.35,
+      "invites_par_ligne": 3
+    }
+  ],
+  "vivants": [
+    {
+      "nom": "aq-sables",
+      "rect": [
+        0.27,
+        0.4,
+        0.17,
+        0.224
+      ],
+      "aquarelle": "sables-etoiles",
+      "anime": "balance",
+      "angle": -6
+    },
+    {
+      "nom": "aq-cookies",
+      "rect": [
+        0.46,
+        0.41,
+        0.3,
+        0.244
+      ],
+      "aquarelle": "cookies",
+      "anime": "balance",
+      "angle": 4
+    }
+  ]
 }

@@ -21,6 +21,7 @@ import { EFFETS, SCENES_PAGE, type Effets } from './effets';
 import { REPOS, SCENES, poseNeutre, type Ctx, type Fx } from './scenes';
 import { essaimDe, PAROLES, type Essaim } from './creatures';
 import partiesJson from './parties.json';
+import { REPERES_RECETTES, type RecetteTableau } from './recettesAnimees';
 import { Theatre, TABLEAUX, ETAPES_TABLEAUX, estTableau, tableauDe, type CommandeTableau } from './tableaux';
 
 export type { Effets } from './effets';
@@ -497,6 +498,8 @@ export interface DessinPage {
   ordre: number;
   /** À peindre à cette visite (sinon : déjà peinte). */
   peindre: boolean;
+  /** Vignette du sommaire : tracé à l'arrivée puis pose fixe, sans scène agrandie. */
+  fixe?: boolean;
 }
 
 export interface OptionsToile {
@@ -655,7 +658,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
   const texBulles = new Map<string, WebGLTexture>();
 
   const lancerScene = (s: Sprite, nom?: string, explicite = false) => {
-    if (opts.douce) return false;
+    if (opts.douce || s.d.fixe) return false;
     const disponible = (n: string) => estTableau(n) ? !!theatre?.disponible(s.d.nom, n) : !!SCENES[n];
     const liste = (s.e.scenes ?? []).filter(disponible);
     if (!liste.length && !nom) return false;
@@ -695,9 +698,10 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       return;
     }
     const temps=s.pilotage?.temps ?? (s.scene?.nom===type?(horloge-s.scene.debut)/1000:s.tempsRepos??0);
-    const courant=s.pilotage?Math.max(0,etapes.findIndex(t=>t>=s.pilotage!.cible-.01)):Math.min(etapes.length-1,Math.max(0,type.startsWith('recette-')?Math.floor(temps/8):Math.max(0,etapes.findIndex(t=>t>=temps))));
+    const reperes=type.startsWith('recette-')?REPERES_RECETTES[type as RecetteTableau]:undefined;
+    const courant=s.pilotage?Math.max(0,etapes.findIndex(t=>t>=s.pilotage!.cible-.01)):reperes?Math.max(0,reperes.findIndex((r,k)=>temps<r.fin||k===reperes.length-1)):Math.max(0,etapes.findIndex(t=>t>=temps));
     const index=Math.max(0,Math.min(etapes.length-1,courant+(commande==='suivant'?1:commande==='precedent'?-1:0)));
-    const debut=index===0?0:etapes[index-1]+(type.startsWith('recette-')?1.2:0);
+    const debut=reperes?.[index].debut??(index===0?0:etapes[index-1]);
     if (!s.scene || s.scene.nom!==type) { if(!lancerScene(s,type,true))return; }
     delete s.tempsRepos;
     // Les commandes rejouent le geste choisi en avant : jamais de lecture à l’envers ni de retour implicite à la première étape.
@@ -750,8 +754,8 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       h: 0.5,
     };
     // Rigidité des nouvelles aquarelles : aucun changement d'échelle. Les fruits restent sans rotation.
-    if (!s.e.rigide) corps.a += micro * 0.003 * Math.sin(t * 0.45 + s.d.ordre);
-    if (!opts.douce && s.e.repos && REPOS[s.e.repos]) REPOS[s.e.repos](ctx);
+    if (!s.d.fixe && !s.e.rigide) corps.a += micro * 0.003 * Math.sin(t * 0.45 + s.d.ordre);
+    if (!s.d.fixe && !opts.douce && s.e.repos && REPOS[s.e.repos]) REPOS[s.e.repos](ctx);
     // la scène en cours
     if (s.scene) {
       const sc = SCENES[s.scene.nom];

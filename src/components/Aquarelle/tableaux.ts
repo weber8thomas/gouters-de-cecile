@@ -1,8 +1,12 @@
 // Petits tableaux du carnet. Même horloge que les aquarelles : aucune animation CSS ou boucle parallèle.
 // Les dessins restent des sprites rigides ; seul le thé est un trait SVG entre le bec et la tasse.
 import { assetInfo } from '../../lib/assets';
+import { iconeCuisine } from './iconesCuisine';
+import contours from './contours.json';
+const CONTOURS:Record<string,string[]>=contours;
 import { cloche, lisse, trajet } from './scenes';
 import { RECETTES_TABLEAUX, ETAPES_RECETTES, recetteDe, etatRecette, type RecetteTableau } from './recettesAnimees';
+export { REPERES_RECETTES } from './recettesAnimees';
 import type { DessinPage } from './vivante';
 import { acteur, transition, casserOeuf, fouetter, fruitAuBol, verser } from './gestesCuisine';
 
@@ -33,7 +37,7 @@ export function tableauDe(nom: string, page = ''): TableauNom | undefined {
   return undefined;
 }
 
-export interface Acteur { asset: string; x: number; y: number; w: number; angle: number; alpha: number; clip?:[number,number,number,number]; sy?:number }
+export interface Acteur { asset: string; x: number; y: number; w: number; angle: number; alpha: number; clip?:[number,number,number,number]; sy?:number; pivot?:[number,number] }
 // Repères des nouveaux sprites v10, mesurés dans leur canevas commun. La deuxième morsure était
 // décalée à gauche : on aligne les attaches des fanes avant de composer les étapes.
 export const ANCRES_CAROTTE: { attache: [number, number]; bout: [number, number] }[] = [
@@ -70,9 +74,10 @@ export const presenceTableau = (type: TableauNom, temps: number) => transition(t
 /** Cadres réservés aux dessins : aucune extension générale sur les textes ou les photos. */
 export function cadreTableau(_page: string, _nom: string, zone: [number, number, number, number]): [number, number, number, number] { return zone; }
 export function vueTableau(type: TableauNom) {
-  if(type.startsWith('recette-'))return '0 0 1000 760';
+  if(type.startsWith('recette-'))return '70 -5 860 760';
   return type === 'carotte-grignote' || type === 'levitation' ? '230 0 540 650' : type === 'gateau-enchante' ? '190 0 620 650' : type === 'coupe-citron' ? '180 0 640 650' : '0 0 1000 650';
 }
+export const CUISINE_EVENT='gc:demarrer-recette';
 export type CommandeTableau = 'rejouer' | 'auto' | 'etapes' | 'suivant' | 'precedent';
 export const ETAPES_TABLEAUX: Partial<Record<TableauNom, number[]>> = {
   ...ETAPES_RECETTES,
@@ -176,7 +181,7 @@ export function etatTableau(nom: TableauNom, s: number, aspects: Record<string, 
   return e;
 }
 
-type SceneDOM = { d: Omit<DessinPage, 'peindre'>; type: TableauNom; bouton: HTMLButtonElement; svg: SVGSVGElement; acteurs: SVGImageElement[]; liquides: SVGEllipseElement[]; fronts: SVGImageElement[]; jet: SVGPathElement; miettes: SVGCircleElement[]; flammes: SVGPathElement[]; surface: SVGImageElement; surfaceEllipse:SVGEllipseElement; legende?:HTMLParagraphElement; commandes?: HTMLDivElement; compteur?: HTMLOutputElement; pret: boolean; etat?: EtatTableau };
+type SceneDOM = { d: Omit<DessinPage, 'peindre'>; type: TableauNom; bouton: HTMLButtonElement; svg: SVGSVGElement; acteurs: SVGImageElement[]; liquides: SVGEllipseElement[]; fronts: SVGImageElement[]; jet: SVGPathElement; miettes: SVGCircleElement[]; flammes: SVGPathElement[]; surface: SVGImageElement; surfaceEllipse:SVGEllipseElement; legende?:HTMLParagraphElement; commandes?: HTMLDivElement; compteur?: HTMLOutputElement; pilotageEl?:HTMLDivElement; observer?:ResizeObserver; mesurer?:()=>void; traces:SVGGElement[]; pret: boolean; etat?: EtatTableau };
 const NS = 'http://www.w3.org/2000/svg';
 const svgEl = <K extends keyof SVGElementTagNameMap>(nom: K): SVGElementTagNameMap[K] => document.createElementNS(NS, nom);
 const attributs = (el: Element, a: Record<string, string | number>) => { for (const [k, v] of Object.entries(a)) el.setAttribute(k, String(v)); };
@@ -187,7 +192,7 @@ export class Theatre {
   private aspects: Record<string, number> = {};
   constructor(private couche: HTMLElement, dessins: Omit<DessinPage, 'peindre'>[], private url: (nom: string) => string | undefined, declencher: (nom: string, type: TableauNom, commande: CommandeTableau) => void, _aspect: number, page = '') {
     for (const d of dessins) {
-      const type = tableauDe(d.nom,page); if (!type || d.zone[2] < .24 || d.zone[3] < .15) continue;
+      const type = tableauDe(d.nom,page); if (d.fixe || !type || d.zone[2] < .24 || d.zone[3] < .15) continue;
       const def = TABLEAUX[type];
       for (const a of def.assets) { const info = assetInfo(logique(a)); if (info) this.aspects[a] = info.w / info.h; }
       if (!def.assets.every((a) => url(logique(a)))) continue;
@@ -195,10 +200,11 @@ export class Theatre {
       bouton.setAttribute('data-gc-tableau-cible', d.nom);
       bouton.setAttribute('aria-label', def.libelle);
       Object.assign(bouton.style, { left: `${d.zone[0] * 100}%`, top: `${d.zone[1] * 100}%`, width: `${d.zone[2] * 100}%`, height: `${d.zone[3] * 100}%` });
-      bouton.addEventListener('pointerdown', (e) => e.stopPropagation()); bouton.addEventListener('click', (e) => { e.stopPropagation(); declencher(d.nom, type, 'rejouer'); });
+      bouton.addEventListener('pointerdown', (e) => e.stopPropagation()); bouton.addEventListener('click', (e) => { e.stopPropagation(); if(type.startsWith('recette-'))window.dispatchEvent(new CustomEvent(CUISINE_EVENT,{detail:{page,nom:d.nom,type}}));else declencher(d.nom, type, 'rejouer'); });
+      if(type.startsWith('recette-'))bouton.setAttribute('aria-label',`Ouvrir le mode cuisine : ${def.libelle}`);
       const svg = svgEl('svg'); svg.classList.add('gc-tableau'); svg.setAttribute('aria-hidden', 'true'); attributs(svg, { viewBox: vueTableau(type), preserveAspectRatio: 'xMidYMid meet' });
       const [x, y, largeur, hauteur] = cadreTableau(page, d.nom, d.zone);
-      Object.assign(svg.style, { left: `${x * 100}%`, top: `${y * 100}%`, width: `${largeur * 100}%`, height: `${hauteur * 100}%`, opacity: '0' });
+      Object.assign(svg.style, { left: `${x * 100}%`, top: `${y * 100}%`, width: `${largeur * 100}%`, height: type.startsWith('recette-')?`calc(${hauteur * 100}% - 135px)`:`${hauteur * 100}%`, opacity: '0' });
       const acteurs: SVGImageElement[] = [];
       const decoupes=svgEl('defs');svg.append(decoupes);
       for (let k = 0; k < 24; k++) { const im = svgEl('image'); im.setAttribute('preserveAspectRatio', 'xMidYMid meet'); const clip=svgEl('clipPath'),r=svgEl('rect');clip.id=`gc-acteur-${Math.random().toString(36).slice(2)}`;clip.setAttribute('clipPathUnits','userSpaceOnUse');clip.append(r);decoupes.append(clip);im.dataset.decoupe=clip.id;svg.append(im); acteurs.push(im); }
@@ -224,15 +230,30 @@ export class Theatre {
         Object.assign(commandes.style,{left:`${d.zone[0]*100}%`,top:`${(d.zone[1]+d.zone[3]) *100}%`,width:`${d.zone[2]*100}%`});
         commandes.setAttribute('role','group');commandes.setAttribute('aria-label','Animation de cuisine');
         for(const [label,commande] of [['Précédente','precedent'],['Suivante','suivant'],['Pas à pas','etapes'],['Rejouer','rejouer']] as const){
-          const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.commande=commande;
+          const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',label);b.innerHTML=iconeCuisine(commande);b.dataset.commande=commande;
           b.addEventListener('pointerdown',e=>e.stopPropagation());b.addEventListener('click',e=>{e.stopPropagation();declencher(d.nom,type,commande==='etapes'&&commandes?.dataset.mode==='etapes'?'auto':commande)});commandes.append(b);
+        }
+        if(type.startsWith('recette-')){
+          const demarrer=document.createElement('button');demarrer.type='button';demarrer.className='gc-recette-demarrer';demarrer.textContent='Démarrer la recette';demarrer.dataset.commande='cuisine';
+          demarrer.addEventListener('pointerdown',e=>e.stopPropagation());demarrer.addEventListener('click',e=>{e.stopPropagation();window.dispatchEvent(new CustomEvent(CUISINE_EVENT,{detail:{page,nom:d.nom,type}}));});commandes.append(demarrer);
         }
         compteur=document.createElement('output');compteur.className='gc-recette-commandes__etape';compteur.setAttribute('aria-label','Étape de la recette');commandes.append(compteur);
       }
       let legende:HTMLParagraphElement|undefined;if(type.startsWith('recette-')){legende=document.createElement('p');legende.className='gc-recette-legende';Object.assign(legende.style,{left:`${d.zone[0]*100}%`,top:`${(d.zone[1]+d.zone[3])*100}%`,width:`${d.zone[2]*100}%`});}
-      this.couche.append(svg, bouton);if(commandes)this.couche.append(commandes);if(legende)this.couche.append(legende);
-      const scene: SceneDOM = { d, type, bouton, svg, acteurs, liquides, fronts, jet, miettes, flammes, surface, surfaceEllipse, legende, commandes, compteur, pret: false }; this.scenes.set(d.nom, scene);
-      Promise.all(def.assets.map(async (a) => { const im = new Image(); im.src = url(logique(a))!; await im.decode(); })).then(() => { scene.pret = true; bouton.disabled = false; }).catch(() => { bouton.remove(); svg.remove();commandes?.remove();legende?.remove(); this.scenes.delete(d.nom); });
+      this.couche.append(svg,bouton);
+      let pilotageEl:HTMLDivElement|undefined,observer:ResizeObserver|undefined,mesurer:(()=>void)|undefined;
+      if(commandes){
+        pilotageEl=document.createElement('div');pilotageEl.className='gc-recette-pilotage';
+        Object.assign(pilotageEl.style,{left:`${d.zone[0]*100}%`,top:`${(d.zone[1]+d.zone[3])*100}%`,width:`${d.zone[2]*100}%`});
+        if(legende)pilotageEl.append(legende);pilotageEl.append(commandes);this.couche.append(pilotageEl);
+        if(type.startsWith('recette-')){
+          mesurer=()=>{const reserve=(pilotageEl?.offsetHeight??117)+18;svg.style.height=`max(40px, calc(${hauteur*100}% - ${reserve}px))`;};
+          observer=new ResizeObserver(mesurer);observer.observe(pilotageEl);mesurer();
+        }
+      }else if(legende)this.couche.append(legende);
+      const traces:SVGGElement[]=type.startsWith('recette-')?acteurs.map(im=>{const g=svgEl('g');g.classList.add('gc-cuisine-contours');im.after(g);return g;}):[];
+      const scene: SceneDOM = { traces, pilotageEl, observer, mesurer, d, type, bouton, svg, acteurs, liquides, fronts, jet, miettes, flammes, surface, surfaceEllipse, legende, commandes, compteur, pret: false }; this.scenes.set(d.nom, scene);
+      Promise.all(def.assets.map(async (a) => { const im = new Image(); im.src = url(logique(a))!; await im.decode(); })).then(() => { scene.pret = true; bouton.disabled = false; }).catch(() => { bouton.remove(); svg.remove();commandes?.remove();legende?.remove();observer?.disconnect();pilotageEl?.remove(); this.scenes.delete(d.nom); });
     }
   }
 
@@ -242,7 +263,8 @@ export class Theatre {
   etat(nom: string) { const s = this.scenes.get(nom); return s?.etat ? { nom: s.type, ...s.etat } : null; }
   private poserImage(im: SVGImageElement, a: Acteur) {
     const u = this.url(logique(a.asset))!, info = assetInfo(logique(a.asset)), h = a.w / (info ? info.w / info.h : 1);
-    attributs(im, { href: u, x: -a.w / 2, y: -h / 2, width: a.w, height: h, transform: `translate(${a.x} ${a.y}) rotate(${a.angle}) scale(1 ${a.sy??1})`, opacity: a.alpha });
+    const px=((a.pivot?.[0]??.5)-.5)*a.w,py=((a.pivot?.[1]??.5)-.5)*h;
+    attributs(im, { href: u, x: -a.w / 2, y: -h / 2, width: a.w, height: h, transform: `translate(${a.x} ${a.y}) rotate(${a.angle}) translate(${px} ${py}) scale(1 ${a.sy??1}) translate(${-px} ${-py})`, opacity: a.alpha });
     const id=im.dataset.decoupe;if(id&&a.clip){const rect=im.ownerSVGElement?.querySelector(`#${id} rect`);if(rect)attributs(rect,{x:-a.w/2+a.clip[0]*a.w,y:-h/2+a.clip[1]*h,width:a.clip[2]*a.w,height:a.clip[3]*h});im.setAttribute('clip-path',`url(#${id})`);}else if(id)im.removeAttribute('clip-path');
     return h;
   }
@@ -258,16 +280,29 @@ export class Theatre {
       for(const b of s.commandes.querySelectorAll<HTMLButtonElement>('button')){
         const c=b.dataset.commande;
         b.disabled=!s.pret||(c==='precedent'&&index===0)||(c==='suivant'&&index===rep.length-1);
-        if(c==='etapes'){const label=pilotage?'Lecture auto':'Pas à pas';if(b.textContent!==label)b.textContent=label;}
+        if(c==='etapes'){const label=pilotage?'Lecture auto':'Pas à pas';if(b.getAttribute('aria-label')!==label){b.setAttribute('aria-label',label);b.innerHTML=iconeCuisine(pilotage?'auto':'etapes');}b.setAttribute('aria-pressed',String(!!pilotage));}
       }
     }
-    if(s.legende){const texte=e.legende?`${e.legende.etape}. ${e.legende.texte}`:'';if(s.legende.textContent!==texte)s.legende.textContent=texte;s.legende.style.visibility=peinture>=1?'visible':'hidden';}
-    s.etat = e; s.svg.style.opacity = String(alpha); s.svg.setAttribute('data-gc-tableau', type); s.svg.setAttribute('data-gc-phase', e.phase);
-    s.acteurs.forEach((im, k) => { const a = e.acteurs[k]; if (a) this.poserImage(im, a); else im.setAttribute('opacity', '0'); });
+    if(s.legende){const texte=e.legende?`${e.legende.etape}. ${e.legende.texte}`:'';if(s.legende.textContent!==texte){s.legende.textContent=texte;s.mesurer?.();}s.legende.style.visibility=peinture>=1?'visible':'hidden';}
+    const couleur=s.traces.length?transition(alpha,.5,1):1;
+    s.etat = e; s.svg.style.opacity = String(s.traces.length?1:alpha); s.svg.setAttribute('data-gc-tableau', type); s.svg.setAttribute('data-gc-phase', e.phase);
+    s.acteurs.forEach((im, k) => {
+      const a=e.acteurs[k],trace=s.traces[k];
+      if(!a){im.setAttribute('opacity','0');trace?.setAttribute('display','none');return;}
+      const h=this.poserImage(im,{...a,alpha:a.alpha*couleur});
+      if(!trace)return;
+      trace.setAttribute('display',alpha<1&&a.alpha>0?'inline':'none');
+      if(alpha>=1||a.alpha<=0)return;
+      const key=logique(a.asset),lignes=CONTOURS[key]??[];
+      if(trace.dataset.asset!==key){trace.replaceChildren(...lignes.map(d=>{const p=svgEl('path');attributs(p,{d,fill:'none',stroke:'#66523e','stroke-width':.0025,'stroke-linecap':'round','stroke-linejoin':'round',pathLength:1,'stroke-dasharray':1});return p;}));trace.dataset.asset=key;}
+      attributs(trace,{transform:`${im.getAttribute('transform')} translate(${-a.w/2} ${-h/2}) scale(${a.w} ${h})`,opacity:a.alpha*(1-transition(alpha,.75,1))});
+      const avance=Math.min(1,alpha/.75)*lignes.length;
+      [...trace.children].forEach((p,j)=>p.setAttribute('stroke-dashoffset',String(1-Math.max(0,Math.min(1,avance-j)))));
+    });
     const surface=e.surface,puree=surface?.asset?.endsWith('/puree-orange'),facteur=puree?4:2.2;
     attributs(s.surface,{href:this.url(surface?.asset??'aquarelles/acteurs/pate')??''});
     attributs(s.surfaceEllipse,{cx:surface?.cx??0,cy:surface?.cy??0,rx:surface?.rx??0,ry:surface?.ry??0});
-    attributs(s.surface,{x:surface?(surface.cx-surface.rx*facteur):0,y:surface?(surface.cy-surface.ry*2*facteur*(puree?.35:.5)):0,width:(surface?.rx??0)*2*facteur,height:(surface?.ry??0)*2*facteur,opacity:surface?.alpha??0});
+    attributs(s.surface,{x:surface?(surface.cx-surface.rx*facteur):0,y:surface?(surface.cy-surface.ry*2*facteur*(puree?.35:.5)):0,width:(surface?.rx??0)*2*facteur,height:(surface?.ry??0)*2*facteur,opacity:(surface?.alpha??0)*couleur});
     s.liquides.forEach((el) => el.setAttribute('opacity', '0')); s.fronts.forEach((el) => el.setAttribute('opacity', '0'));
     s.jet.setAttribute('opacity', '0');
     s.miettes.forEach((c, k) => {
@@ -280,7 +315,7 @@ export class Theatre {
       else f.setAttribute('opacity', '0');
     });
     if(e.recipient){
-      const a=e.acteurs[e.recipient.index],h=this.poserImage(s.fronts[0],a);
+      const a=e.acteurs[e.recipient.index],h=this.poserImage(s.fronts[0],{...a,alpha:a.alpha*couleur});
       const clipId=s.fronts[0].getAttribute('clip-path')?.slice(4,-1),clip=clipId?s.svg.querySelector(clipId):null;
       const r=clip?.querySelector('rect');if(r)r.setAttribute('display','none');
       let path=clip?.querySelector('path');if(!path&&clip){path=svgEl('path');clip.append(path);}
@@ -313,5 +348,5 @@ export class Theatre {
     }
     return 1;
   }
-  detruire() { this.scenes.clear(); this.couche.replaceChildren(); }
+  detruire() { this.scenes.forEach(s=>s.observer?.disconnect());this.scenes.clear(); this.couche.replaceChildren(); }
 }

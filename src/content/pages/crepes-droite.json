@@ -16,7 +16,10 @@
       "chapitre": "crepes",
       "taille": 1.75,
       "graine": 2008,
-      "encre": "terracotta"
+      "encre": "terracotta",
+      "invites_police": "kalam",
+      "invites_taille": 1.35,
+      "invites_par_ligne": 3
     }
   ],
   "vivants": [

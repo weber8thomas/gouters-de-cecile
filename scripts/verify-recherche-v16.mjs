@@ -1,0 +1,23 @@
+/** Vraie interface de recherche, isolée du coût de composition du livre 3D. */
+import {build} from 'esbuild';
+import assert from 'node:assert/strict';
+import {readFileSync,mkdirSync,writeFileSync} from 'node:fs';
+import {lancer} from './lib/verif.mjs';
+const base=process.env.GC_TEST_URL??'http://127.0.0.1:5173',out='verification/out/navigation-v16';mkdirSync(out,{recursive:true});
+const carnet=JSON.parse(readFileSync('src/content/carnet.json'));
+const spreads=carnet.doubles.map((d,i)=>({id:d.id,kind:d.type,titre:d.titre,invites:d.invites,folios:[i*2+2,i*2+3]}));
+const b=await build({stdin:{contents:`import React from 'react';import {createRoot} from 'react-dom/client';import {NavigationCarnet} from './src/components/NavigationCarnet';window.creer=()=>{window.choix=[];const spreads=${JSON.stringify(spreads)};createRoot(document.getElementById('app')).render(React.createElement(NavigationCarnet,{spreads,onAller:i=>window.choix.push(i)}));};`,resolveDir:process.cwd()},bundle:true,loader:{'.css':'empty'},platform:'browser',format:'iife',write:false});
+const browser=await lancer({media:false}),checks=[],erreurs=[];
+const ok=(nom,v)=>{assert(v,nom);checks.push(nom);};
+try{for(const [nom,viewport]of [['tv',{width:1920,height:1080}],['mobile',{width:844,height:390}]]){
+ const p=await browser.newPage({viewport,deviceScaleFactor:1,hasTouch:nom==='mobile',isMobile:nom==='mobile'});p.on('pageerror',e=>erreurs.push(String(e)));
+ await p.route('**/__recherche__',r=>r.fulfill({contentType:'text/html',body:'<html lang="fr"><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;background:#59412a"><div id="app"></div></body></html>'}));await p.goto(base+'/__recherche__');
+ for(const f of ['design-system/tokens.css','src/components/NavigationCarnet/NavigationCarnet.css'])await p.addStyleTag({content:readFileSync(f,'utf8').replaceAll('url("fonts/',`url("${base}/design-system/fonts/`)});
+ await p.addScriptTag({content:b.outputFiles[0].text});await p.evaluate(()=>window.creer());const bouton=p.getByRole('button',{name:'Rechercher une recette',exact:true});await bouton.waitFor();await bouton.focus();await p.keyboard.press('Enter');const input=p.getByLabel('Un nom, une recette ou un ingrédient');await input.waitFor();ok(nom+' focus initial',await input.evaluate(e=>e===document.activeElement));
+ await input.fill('cannelle Lisa');ok(nom+' auteur et ingrédient',await p.locator('[data-gc-resultat="lisa"]').count()===1&&await p.locator('[data-gc-resultat]').count()===1);await p.keyboard.press('ArrowDown');ok(nom+' résultat au clavier',await p.locator('[data-gc-resultat="lisa"]').evaluate(e=>e===document.activeElement));
+ await p.keyboard.press('Enter');await p.locator('[data-gc-recherche]').waitFor({state:'detached'});ok(nom+' demande de navigation',await p.evaluate(i=>window.choix.at(-1)===i,spreads.findIndex(s=>s.id==='lisa')));ok(nom+' focus restauré',await bouton.evaluate(e=>e===document.activeElement));
+ await bouton.click();await input.fill('zzzintrouvable');ok(nom+' absence de résultat',await p.getByText('Aucune recette trouvée. Essayez un autre mot.').isVisible());await p.keyboard.press('Escape');await p.locator('[data-gc-recherche]').waitFor({state:'detached'});ok(nom+' Échap rend le focus',await bouton.evaluate(e=>e===document.activeElement));
+ await p.keyboard.press('/');await input.fill('Laura amandes');const cible=p.locator('[data-gc-resultat="laura-geyer"]');await cible.waitFor();const cadre=await p.locator('[data-gc-recherche]').boundingBox(),r=await cible.boundingBox();ok(nom+' fiche et cible tactile',r.height>=44&&cadre.x>=0&&cadre.y>=0&&cadre.x+cadre.width<=viewport.width+1&&cadre.y+cadre.height<=viewport.height+1);await p.evaluate(()=>document.fonts.ready);await p.screenshot({path:`${out}/recherche-${nom}.png`});if(nom==='mobile')await cible.tap();else await cible.click();await p.locator('[data-gc-recherche]').waitFor({state:'detached'});ok(nom+' recette ciblée',await p.evaluate(i=>window.choix.at(-1)===i,spreads.findIndex(s=>s.id==='laura-geyer')));
+ await p.getByRole('button',{name:'Aller au sommaire',exact:true}).click();ok(nom+' sommaire',await p.evaluate(i=>window.choix.at(-1)===i,spreads.findIndex(s=>s.id==='sommaire')));await p.close();
+ }assert.deepEqual(erreurs,[]);writeFileSync(out+'/interface.json',JSON.stringify({checks,erreurs,environnement:'Vrais composants React, TV 1920×1080 et mobile 844×390 DPR1 ; scène Livre absente de cette fixture UI'},null,2));console.log(`${checks.length} contrôles interface OK, clavier/toucher, focus et navigation demandée.`);
+}finally{await browser.close();}

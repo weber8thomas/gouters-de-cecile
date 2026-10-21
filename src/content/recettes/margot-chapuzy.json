@@ -1,0 +1,90 @@
+{
+  "slug": "margot-chapuzy",
+  "source": "src/content/recettes/margot-chapuzy.txt",
+  "adaptations": [
+    "Source reçue le 21 octobre conservée dans le TXT, marqueurs de mise en forme séparés du texte affiché.",
+    "Message provisoire explicitement demandé ; aucun petit mot personnel généré."
+  ],
+  "style": {
+    "main": "soignee",
+    "encre": "chocolat",
+    "police": "kalam",
+    "graine": 21919
+  },
+  "titre": "Banana Bread de Margot 🥰",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "2 bananes bien mûres",
+          "puce": "point"
+        },
+        {
+          "texte": "125 g de poudre d’amande",
+          "puce": "point"
+        },
+        {
+          "texte": "80 g de farine",
+          "puce": "point"
+        },
+        {
+          "texte": "50 g de sucre de canne",
+          "puce": "point"
+        },
+        {
+          "texte": "50 g de beurre",
+          "puce": "point"
+        },
+        {
+          "texte": "2 œufs",
+          "puce": "point"
+        },
+        {
+          "texte": "1 sachet de levure chimique",
+          "puce": "point"
+        },
+        {
+          "texte": "1 pincée de sel",
+          "puce": "point"
+        },
+        {
+          "texte": "100 g de pépites de chocolat",
+          "puce": "point"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Préchauffe le four à 180 °C."
+    },
+    {
+      "titre": "2.",
+      "texte": "Écrase les bananes dans un saladier."
+    },
+    {
+      "titre": "3.",
+      "texte": "Ajoute les œufs et le beurre fondu, puis mélange."
+    },
+    {
+      "titre": "4.",
+      "texte": "Incorpore le sucre, la poudre d’amande, la farine, la levure et le sel."
+    },
+    {
+      "titre": "5.",
+      "texte": "Verse la pâte dans un moule à cake beurré. Petite astuce rajoute un peu de sucre de canne avant de l’enfourner pour avoir une croûte caramélisée au dessus 😍"
+    },
+    {
+      "titre": "6.",
+      "texte": "Enfourne pendant environ 50 minutes à 180 °C. Vérifie la cuisson avec la pointe d’un couteau."
+    }
+  ],
+  "mot": "Lorem ipsum — message à venir",
+  "signature": "Margot Chapuzy",
+  "nom": "Margot Chapuzy",
+  "apres": [
+    "Laisse refroidir un peu avant de déguster 😋🍌"
+  ]
+}

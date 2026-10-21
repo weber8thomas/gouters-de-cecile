@@ -2,7 +2,8 @@
   "slug": "emeline",
   "source": "src/content/recettes/emeline.txt",
   "adaptations": [
-    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé."
+    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé.",
+    "Le petit mot du plan antérieur n’est pas un message authentique fourni par un invité : remplacé à la demande de Thomas par le placeholder explicite."
   ],
   "style": {
     "main": "soignee",
@@ -58,7 +59,7 @@
       "texte": "L'astuce d'Emeline : Attendre 15 minutes qu'il tiédisse pour que le cœur devienne incroyablement fondant."
     }
   ],
-  "mot": "30 ans ça se fête avec du chocolat et beaucoup d'amour ! Une recette réconfortante à savourer sans modération. Joyeux anniversaire Cécile !",
+  "mot": "Lorem ipsum — message à venir",
   "signature": "Emeline",
   "nom": "Emeline",
   "notesMarge": [

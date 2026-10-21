@@ -863,6 +863,20 @@ export interface Pas {
   dt?: number;
 }
 
+/** Les recettes gardent leurs pas dans la bordure libre, hors du cœur de la page et de tout texte.
+ * La grille d'origine conserve toutes ses exclusions ; ce filtre ne libère aucune case occupée. */
+export function grilleMaraudeurRecette(g: Grille): Grille {
+  const bord = clonerGrille(g);
+  for (let j = 0; j < bord.ny; j++) for (let i = 0; i < bord.nx; i++) {
+    const x = (i + .5) * bord.c, y = (j + .5) * bord.c;
+    if (x > 180 && x < PAGE_W - 180 && y > 150 && y < PAGE_H - 150) bord.occ[j * bord.nx + i] = 1;
+  }
+  return bord;
+}
+
+/** Sur les recettes, un nouveau passage arrive peu après le précédent ; les foulées restent espacées. */
+export const delaiMaraudeur = (recette: boolean, alea = Math.random) => recette ? 6 + 3 * alea() : 16 + 8 * alea();
+
 /**
  * Une promenade dans le papier libre : marche de case libre en case libre (en partant éventuellement
  * près de la position demandée), lissée, avec une seule piste de chaussures humaines.

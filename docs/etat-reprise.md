@@ -1,12 +1,13 @@
-# Reprise — état au 20 octobre 2026
+# Reprise — état au 21 octobre 2026
 
 ## Décisions
 
 - Démo vendredi 23 octobre : ordinateur HDMI, TV 1920 × 1080, navigation clavier.
 - Plan courant : [mission du 19 octobre](mission-finalisation-2026-10-19.md). Les bilans précédents
   restent dans [le bilan Claude](bilan-claude-2026-10-18.md) et [le plan v8](plan-v8.md).
-- Treize recettes reçues : Lisa, Emeline, Clémence, Pierrette, Laura Geyer, Marie, Léa, Coralie,
-  Anatole, Lise, Julien, Sarah et Laura Gramegna ; cinq chapitres.
+- Dix-huit recettes reçues : Lisa Allienne, Emeline, Clémence, Pierrette, Laura Geyer, Marie, Léa,
+  Coralie, Antoine, Suzanne, Margot Chapuzy, Anatole, Lise, Julien, Lisa De Paris, Sarah,
+  Laura Gramegna et Elise ; cinq chapitres.
   Conserver tous les textes, quantités, mots et notes. Utiliser la pagination existante, sans réduire
   l’écriture pour faire tenir une recette. Voir [audit des sources](audit-recettes-v11.md).
 - Illustrations anglaises anciennes au crayon fin et à l’aquarelle mate, beaucoup d’animations et de
@@ -28,6 +29,15 @@
 - Git, sous-agents nécessaires et publication d’aperçus autorisés. Réutiliser les spécialistes ; éviter
   les audits redondants et les navigateurs concurrents pour économiser le quota.
 - Aucun redémarrage automatique après expiration du quota. La reprise nécessite un message utilisateur.
+
+## Revue v16
+
+Voir [la passe v16](reprise-v16.md) : mode cuisine sur toute la fenêtre, ingrédients cochables,
+107 étapes et commandes à l’encre, recherche (/), sommaire dès la page 8 (T), remise à zéro des
+découvertes dans les notes (S). Cinq nouvelles recettes, Lisa Allienne distinguée de Lisa De Paris,
+quatorze petits mots provisoires et quatre authentiques. Numéro personnel masqué partout.
+Porte de four articulée, apports des amandes successifs, contours avant couleur, traits retracés
+et chaussures humaines dans les marges. Aucune optimisation GPU demandée ni appliquée.
 
 ## Revue v15
 
@@ -74,7 +84,7 @@ et `pages/recettes.json` fixent l’ordre, les mains et les réserves. Les notes
 voisinage du titre peuvent se poser intégralement en marge basse ; le paginateur reporte le texte suivant.
 
 Les illustrations originales et leurs manifestes reproductibles sont dans
-`design-system/sources/illustrations/v9`, `v10`, `v11`, `v12`, `v13`, `v14`, `v15`. V11 ajoute les desserts ; v12 des acteurs séparés et un chien frontal ; v13 le pichet, la farine et une texture de pâte.
+`design-system/sources/illustrations/v9`, `v10`, `v11`, `v12`, `v13`, `v14`, `v15`, `v16`. V11 ajoute les desserts ; v12 des acteurs séparés et un chien frontal ; v13 le pichet, la farine et une texture de pâte.
 Le site emploie uniquement les images cuites ; aucune génération ni modèle distant au runtime.
 Les scènes partagent une horloge. Même distribution au repos, pendant l’action et dans les feuilles
 qui tournent : pas de tasse qui devient trois, pas de changement de taille de carotte. Nouveaux tableaux :

@@ -1,0 +1,30 @@
+.gc-cuisine{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;padding:0;background:#e9dcc1;color:#4d3527;z-index:10000;box-sizing:border-box;font:22px/1.5 'Kalam',cursive}
+.gc-cuisine::backdrop{background:#21190eea}
+.gc-cuisine__papier{box-sizing:border-box;min-height:100%;height:100%;display:flex;flex-direction:column;padding:clamp(12px,2vw,36px);background:radial-gradient(ellipse at 30% 20%,#fff9e8aa,transparent 65%),linear-gradient(110deg,#c2a5741a,transparent 20%,#bca0740d 70%,#aa885c1a)}
+.gc-cuisine__entete{display:flex;align-items:center;justify-content:space-between;font-size:clamp(16px,1.8vw,28px);gap:12px}
+.gc-cuisine__entete>div{display:flex;gap:14px}
+.gc-cuisine button{appearance:none;background:transparent;color:inherit;border:0;cursor:pointer;font:inherit;border-radius:35% 45% 30% 40%;padding:5px;min-width:46px;min-height:46px}
+.gc-cuisine button:hover{background:#8a622426}
+.gc-cuisine button:disabled{opacity:.3;cursor:default}
+.gc-cuisine button:focus-visible,.gc-cuisine input:focus-visible{outline:2px dashed #85592d;outline-offset:4px}
+.gc-cuisine button svg{width:42px;height:42px;display:block}
+.gc-cuisine h1{font:600 clamp(26px,3vw,52px)/1.2 'Caveat',cursive;margin:8px 0 12px;border-bottom:1px solid #8d724255;padding-bottom:12px}
+.gc-cuisine__contenu{display:grid;grid-template-columns:minmax(300px,1fr) minmax(0,1.4fr);gap:2vw;flex:1;min-height:0}
+.gc-cuisine__texte{overflow-y:auto;overscroll-behavior:contain;padding:8px 14px 20px 2px;scrollbar-color:#95714c transparent;font-size:clamp(18px,2vw,30px)}
+.gc-cuisine h2{font:500 clamp(24px,2.6vw,40px)/1.25 'Caveat',cursive;margin:0 0 16px;color:#75482e;outline:none}
+.gc-cuisine h3{font:inherit;font-weight:600;margin:14px 0 6px}
+.gc-cuisine p{margin:12px 0}
+.gc-cuisine__instruction{font-size:clamp(23px,2.7vw,44px);line-height:1.5}
+.gc-cuisine__ingredients label{display:flex;align-items:flex-start;gap:14px;padding:7px 0;cursor:pointer}
+.gc-cuisine__ingredients input{width:22px;height:22px;margin:7px 0;flex-shrink:0;accent-color:#7e593c}
+.gc-cuisine__ingredients label:has(:checked) span{text-decoration:line-through;text-decoration-color:#84694b66;color:#84694b}
+.gc-cuisine__dessin{position:relative;min-height:0;width:100%;align-self:stretch}
+.gc-cuisine__dessin .gc-tableau{inset:0!important;width:100%!important;height:100%!important}
+.gc-cuisine .gc-recette-commandes,.gc-cuisine .gc-recette-legende,.gc-cuisine .gc-tableau-bouton{display:none}
+.gc-cuisine__pied{padding-top:12px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;border-top:1px solid #8d724255}
+.gc-cuisine__pied nav{display:flex;gap:clamp(5px,1.4vw,26px);align-items:center}
+.gc-cuisine__pied output{min-width:90px;text-align:center}
+.gc-cuisine__pied .gc-cuisine__commencer{display:flex;align-items:center;gap:14px;border-bottom:1px solid #76512c;border-radius:0}
+.gc-cuisine__pied>p{width:100%;font-size:clamp(12px,1vw,17px);color:#785f47;margin:2px 0}
+@media(max-width:700px){.gc-cuisine__papier{padding:12px}.gc-cuisine__contenu{display:flex;flex-direction:column;gap:0;overflow-y:auto}.gc-cuisine__texte{overflow:visible;padding:6px 8px}.gc-cuisine__dessin{min-height:260px;height:35dvh;flex-shrink:0}.gc-cuisine__contenu[data-phase='ingredients'] .gc-cuisine__dessin{display:none}.gc-cuisine__pied{gap:4px}.gc-cuisine__pied nav{width:100%;justify-content:space-between}.gc-cuisine__pied output{min-width:65px;font-size:17px}.gc-cuisine button svg{width:34px;height:34px}.gc-cuisine__instruction{font-size:24px}}
+.gc-cuisine .gc-recette-pilotage{display:none}

@@ -7,8 +7,18 @@
  "cote": "gauche",
  "folio": 8,
  "graine": 401,
- "_": "Dédicace intégrale en tête et première moitié du sommaire : huit recettes de Gâteaux & cakes. Même corps lisible que la page droite, sans compression des noms ni perte de lien.",
+ "_": "Sommaire dès le folio 8 : titre, dédicace intégrale compacte et onze gâteaux/cakes ; vignettes fixes agrandies, espacées sans réduire la police.",
  "blocs": [
+  {
+   "id": "titre-sommaire",
+   "type": "titre",
+   "texte": "Sommaire",
+   "echelle": 1.9,
+   "position": "centre",
+   "souligne": "trait",
+   "encre": "terracotta",
+   "graine": 44
+  },
   {
    "id": "dedicace",
    "type": "etiquette",
@@ -16,13 +26,13 @@
    "main": "soignee",
    "encre": "bille-bleue",
    "role": "mot",
-   "echelle": 1.25,
+   "echelle": 1.05,
    "interligne": 1.05,
    "rect": [
     0.05,
-    0.035,
+    0.115,
     0.9,
-    0.17
+    0.135
    ],
    "pente": -1.2,
    "graine": 35697,
@@ -35,11 +45,11 @@
    "main": "soignee",
    "encre": "bille-bleue",
    "role": "mot",
-   "echelle": 1.25,
+   "echelle": 1.05,
    "interligne": 1.05,
    "rect": [
     0.05,
-    0.18,
+    0.245,
     0.9,
     0.05
    ],
@@ -51,10 +61,10 @@
    "id": "sommaire-gateaux",
    "type": "sommaire",
    "fin": false,
-   "retrait": 0.19,
-   "avant": 0.18,
-   "vignette": 0.04,
-   "vignette_largeur": 0.12,
+   "retrait": 0.22,
+   "avant": 0.06,
+   "vignette": 0.05,
+   "vignette_largeur": 0.16,
    "graine": 23457,
    "vignettes": {
     "lisa": "vignette-lisa",
@@ -64,10 +74,13 @@
     "laura-geyer": "vignette-laura-geyer",
     "marie": "vignette-marie",
     "lea": "vignette-lea",
-    "coralie": "vignette-coralie"
+    "coralie": "vignette-coralie",
+    "antoine": "vignette-antoine",
+    "suzanne": "vignette-suzanne",
+    "margot-chapuzy": "vignette-margot-chapuzy"
    },
    "titres": {
-    "lisa": "Lisa — Carrot cake",
+    "lisa": "Lisa Allienne — Carrot cake",
     "emeline": "Emeline — Fondant au chocolat",
     "clemence": "Clémence — Cheesecake framboises",
     "pierrette": "Pierrette — Cake au citron",
@@ -78,25 +91,18 @@
     "laura-geyer": "Laura Geyer — Orange & amandes",
     "marie": "Marie — Fondant au chocolat",
     "lea": "Léa — Gâteau aux pommes",
-    "coralie": "Coralie — Fondant au chocolat"
+    "coralie": "Coralie — Fondant au chocolat",
+    "antoine": "Antoine — Flaugnarde aux poires",
+    "suzanne": "Suzanne — Gâteau aux pommes",
+    "margot-chapuzy": "Margot — Banana bread"
    },
    "chapitres": [
     "gateaux"
-   ]
+   ],
+   "interligne": 5.4
   }
  ],
  "vivants": [
-  {
-   "nom": "aq-cupcake",
-   "aquarelle": "cupcake",
-   "rect": [
-    0.83,
-    0.045,
-    0.13,
-    0.12
-   ],
-   "angle": 3
-  },
   {
    "nom": "vignette-lisa",
    "aquarelle": "carotte",
@@ -119,7 +125,7 @@
   },
   {
    "nom": "vignette-laura-geyer",
-   "aquarelle": "citron",
+   "aquarelle": "orange",
    "anime": "fixe"
   },
   {
@@ -129,14 +135,32 @@
   },
   {
    "nom": "vignette-lea",
-   "aquarelle": "pomme",
+   "aquarelle": "gateau-pommes",
    "anime": "fixe"
   },
   {
    "nom": "vignette-coralie",
    "aquarelle": "fondant-chocolat",
    "anime": "fixe"
+  },
+  {
+   "nom": "vignette-antoine",
+   "aquarelle": "flaugnarde-poires",
+   "anime": "fixe"
+  },
+  {
+   "nom": "vignette-suzanne",
+   "aquarelle": "gateau-pommes",
+   "anime": "fixe"
+  },
+  {
+   "nom": "vignette-margot-chapuzy",
+   "aquarelle": "banana-bread",
+   "anime": "fixe"
   }
  ],
- "police": "kalam"
+ "police": "kalam",
+ "marges": {
+  "haut": 0.035
+ }
 }

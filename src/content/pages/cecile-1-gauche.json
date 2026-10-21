@@ -9,7 +9,7 @@
   "marges": {
     "haut": 0.1
   },
-  "_": "Album « Cécile en cuisine », 1re double page (gauche) : titre manuscrit en haut, trois photos collées (photo-1 à photo-3) de tailles et d'inclinaisons variées ; une légende au crayon sous chaque photo (« Cécile, … ans », l'âge en pointillés).",
+  "_": "Album « Cécile en cuisine », 1re double page (gauche) : titre manuscrit en haut, trois photos collées (photo-1 à photo-3) de tailles et d'inclinaisons variées ; une légende au crayon sous chaque photo (« Cécile, … ans », l'âge en pointillés). Titre ajusté à 1,8× pour tenir sur une ligne, au-dessus des photos, après dégagement du soulignement.",
   "vivants": [
     {
       "nom": "photo-1",
@@ -46,7 +46,7 @@
       "texte": "Le goût des bonnes choses",
       "main": "cecile",
       "encre": "chocolat",
-      "echelle": 2.0,
+      "echelle": 1.8,
       "position": "centre",
       "souligne": "trait",
       "graine": 4021

@@ -12,6 +12,7 @@ import { Ecran } from '../../components/Ecran';
 import { InvitationOuvrir } from '../../components/Invitation';
 import { Livre, type LivreApi, type LivreProps } from '../../components/Livre';
 import { Reglages, CREDITS_REGLAGES } from '../../components/Reglages';
+import { NavigationCarnet } from '../../components/NavigationCarnet';
 import { CompagnonDuCarnet } from '../../components/SecretsDuCarnet';
 import { SoulevementProvider, souleverObjet, useSoulevement } from '../../components/Soulever';
 import { CAMERA_DEFAULT, CameraProvider } from '../../lib/camera';
@@ -166,7 +167,13 @@ function CarnetLivre({ index, setIndex, coteInitial, arrivee, apiRef }: CarnetLi
 
   const invites = React.useMemo(() => spreads.map((s, i) => ({ index: i, titre: s.titre ?? s.id })), [spreads]);
   const invitation = React.useCallback((o: MotionValue<number>) => <InvitationOuvrir opacite={o} />, []);
-  const aller = React.useCallback((i: number) => { reposer(); setIndex(i); }, [reposer, setIndex]);
+  const aller = React.useCallback((i: number) => {
+    reposer();
+    // L'index du parent décrit la page posée : une nouvelle demande peut viser cette même page
+    // pendant qu'une feuille part ailleurs. L'API transmet aussi cette demande sans changement d'état.
+    if (apiRef.current) apiRef.current.aller(i);
+    else setIndex(i);
+  }, [reposer, setIndex, apiRef]);
 
   return (
     <>
@@ -186,6 +193,7 @@ function CarnetLivre({ index, setIndex, coteInitial, arrivee, apiRef }: CarnetLi
         invitation={invitation}
       />
       <CompagnonDuCarnet />
+      <NavigationCarnet spreads={spreads} onAller={aller} />
       <Reglages invites={invites} onAller={aller} credits={CREDITS} />
     </>
   );

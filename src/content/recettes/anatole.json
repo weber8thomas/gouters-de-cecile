@@ -2,7 +2,8 @@
   "slug": "anatole",
   "source": "src/content/recettes/anatole.txt",
   "adaptations": [
-    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé."
+    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé.",
+    "Le petit mot du plan antérieur n’est pas un message authentique fourni par un invité : remplacé à la demande de Thomas par le placeholder explicite."
   ],
   "style": {
     "main": "papa",
@@ -58,7 +59,7 @@
       "texte": "La touche d'Anatole : Laisser refroidir complètement avant de servir avec une cuillère de crème fraîche épaisse."
     }
   ],
-  "mot": "Joyeux 30 ans Cécile ! Une vraie tarte des sous-bois pour fêter ça. Promis, les doigts bleus ça part au lavage ! Plein de gros bisous.",
+  "mot": "Lorem ipsum — message à venir",
   "signature": "Anatole",
   "nom": "Anatole",
   "notesMarge": [

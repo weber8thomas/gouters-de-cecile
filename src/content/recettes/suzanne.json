@@ -1,0 +1,82 @@
+{
+  "slug": "suzanne",
+  "source": "src/content/recettes/suzanne.txt",
+  "adaptations": [
+    "Source reçue le 21 octobre conservée dans le TXT, marqueurs de mise en forme séparés du texte affiché."
+  ],
+  "style": {
+    "main": "soignee",
+    "encre": "bille-bleue",
+    "police": "shantell",
+    "graine": 20897
+  },
+  "titre": "Gâteau aux pommes 🍎",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "3 œufs",
+          "puce": "point"
+        },
+        {
+          "texte": "160 g de sucre en poudre",
+          "puce": "point"
+        },
+        {
+          "texte": "1 c. à café d'extrait de vanille liquide",
+          "puce": "point"
+        },
+        {
+          "texte": "80 g de beurre fondu, et un peu pour le moule",
+          "puce": "point"
+        },
+        {
+          "texte": "1 yaourt nature",
+          "puce": "point"
+        },
+        {
+          "texte": "200 g de farine",
+          "puce": "point"
+        },
+        {
+          "texte": "2 c. à café de levure chimique (1 sachet)",
+          "puce": "point"
+        },
+        {
+          "texte": "2 pommes de belle taille, dont 1 coupée en dés d'1 cm de côté environ et 1 coupée en tranches",
+          "puce": "point"
+        },
+        {
+          "texte": "cassonade pour la finition",
+          "puce": "point"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Préchauffer le four à 180 °C."
+    },
+    {
+      "titre": "2.",
+      "texte": "Mettre les œufs, le sucre et l’extrait de vanille dans le bol. Mélanger"
+    },
+    {
+      "titre": "3.",
+      "texte": "Ajouter le beurre fondu et le yaourt. Mélanger"
+    },
+    {
+      "titre": "4.",
+      "texte": "Ajouter la farine et la levure. Mélanger"
+    },
+    {
+      "titre": "5.",
+      "texte": "Ajouter 1 pomme coupée en dés de 1 cm de côté environ et mélanger. Finir de mélanger à la spatule si besoin. Transvaser la pâte dans le moule beurré et disposer par-dessus une pomme coupée en tranches. Saupoudrer de cassonade. Enfourner pour 50 min pour un grand moule et 13 min pour des petits moules individuels. Laisser refroidir."
+    }
+  ],
+  "mot": "Bienvenue au club des trentenaires ! Une décennie de plus qu'est ce que c'est par rapport aux années a venir, profite de la vie, de tes amis et des personnes que tu adores, des milliers d'aventures et de beaux souvenirs t'attendent ! Je sais que tu as validé cette recette maintenant à ton tour de régaler ta famille et tes amis 😊 Mon ingrédient secret c'est le beurre demi sel pour encore plus de goût ! Suzanne",
+  "signature": "Suzanne",
+  "nom": "Suzanne"
+}

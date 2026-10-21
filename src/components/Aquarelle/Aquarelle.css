@@ -128,3 +128,21 @@
   color:var(--gc-ink-brune); font:500 18px/1.15 var(--font-hand)!important;
   pointer-events:none;
 }
+
+/* Commandes à l'encre : les symboles gardent un nom accessible. */
+.gc-recette-commandes{grid-template-columns:repeat(5,minmax(0,1fr));gap:2px 5px;padding:0 3px 3px}
+.gc-recette-commandes button{border:0;border-radius:45% 48% 43% 46%;background:transparent;color:#684729;padding:2px;min-height:29px;font:500 clamp(11px,4cqi,17px)/1.2 Kalam,cursive!important}
+.gc-recette-commandes button:hover{background:#ad86482b;color:#3d2819}
+.gc-recette-commandes button svg{display:block;width:clamp(25px,10cqi,38px);height:clamp(25px,10cqi,38px);margin:auto}
+.gc-recette-commandes [data-commande='precedent']{grid-area:1/1}
+.gc-recette-commandes__etape{grid-area:1/2;font-size:clamp(11px,4cqi,17px)!important}
+.gc-recette-commandes [data-commande='suivant']{grid-area:1/3}
+.gc-recette-commandes [data-commande='etapes']{grid-area:1/4}
+.gc-recette-commandes [data-commande='rejouer']{grid-area:1/5}
+.gc-recette-commandes .gc-recette-demarrer{grid-area:2/1/3/6;width:max-content;max-width:100%;justify-self:center;border-bottom:1px solid #886638;padding:3px 10px;border-radius:0;letter-spacing:.02em}
+.gc-recette-legende{transform:translateY(calc(-100% - 72px));font-size:20px!important}
+.gc-recette-demarrer-repli{position:absolute;bottom:0;left:15%;width:70%;appearance:none;border:0;border-bottom:1px solid #886638;background:transparent;color:#684729;font:500 18px/1.3 Kalam,cursive;cursor:pointer;pointer-events:auto;padding:5px}
+.gc-recette-demarrer-repli:focus-visible{outline:2px dashed #816244;outline-offset:3px}
+/* La légende et les commandes se suivent dans le flux : leur hauteur réelle réserve le dessin. */
+.gc-recette-pilotage{position:absolute;transform:translateY(-100%);display:flex;flex-direction:column;gap:7px;pointer-events:none}
+.gc-recette-pilotage>.gc-recette-legende,.gc-recette-pilotage>.gc-recette-commandes{position:static!important;width:100%!important;transform:none}

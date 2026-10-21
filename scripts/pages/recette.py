@@ -182,7 +182,9 @@ def atomes(rec: dict, alias: dict | None = None, cadre: bool | None = None) -> l
             # dans une parenthèse restent intactes ; les textes reçus ne sont jamais modifiés.
             lignes = []
             for l in grp.get("lignes") or []:
-                morceaux = re.split(r",\s*(?![^()]*\))", l["texte"])
+                # Une puce explicite est déjà une vraie ligne reçue ; ses virgules descriptives
+                # (poires pelées, beurre pour le moule…) ne créent pas d'ingrédients artificiels.
+                morceaux = [l["texte"]] if l.get("puce") == "point" else re.split(r",\s*(?![^()]*\))", l["texte"])
                 lignes += [dict(l, texte=t.strip(), puce="point") for t in morceaux if t.strip()]
             grp = dict(grp, lignes=lignes)
         groupe(grp, f"ingredients-{i + 1}")

@@ -44,7 +44,7 @@ export const CACHETTES = [
     appel: 'Tout au bout du carnet, une bougie t’attend sur la page « À suivre… ».',
     indice: 'Il faut bien garder un vœu pour la fin.',
     amorce: 'Trente ans… et la suite ?',
-    revelation: '30 ans, treize recettes, et encore beaucoup de goûters à partager.',
+    revelation: '30 ans, tant de recettes, et encore beaucoup de goûters à partager.',
     suite: 'Les cinq cachettes sont retrouvées. Joyeux anniversaire, Cécile !',
   },
 ] as const;
@@ -74,6 +74,9 @@ export function avancerQuete(etat: EtatQuete, action: ActionQuete): EtatQuete {
 }
 
 let etat: EtatQuete | undefined;
+// Les frottages partiels vivent dans le canvas : un rejeu doit les remonter même à 0 découverte.
+let reprise = 0;
+export const repriseQuete = (): number => reprise;
 const abonnes = new Set<() => void>();
 export function etatQuete(): EtatQuete {
   if (!etat) {
@@ -93,12 +96,15 @@ export function abonnerQuete(f: () => void): () => void {
 function stockage(e: StorageEvent) {
   if (e.key !== CLE_QUETE && e.key !== null) return;
   etat = lireEtatQuete(e.key === null ? null : e.newValue);
+  if (etat.trouves === 0 && !etat.revele) reprise++;
   abonnes.forEach((f) => f());
 }
 export function agirQuete(action: ActionQuete): void {
   const suivant = avancerQuete(etatQuete(), action);
-  if (suivant === etat) return;
-  etat = suivant;
+  const recommence = action.type === 'rejouer';
+  if (suivant === etat && !recommence) return;
+  if (recommence) reprise++;
+  etat = recommence ? { ...suivant } : suivant;
   try { localStorage.setItem(CLE_QUETE, JSON.stringify(etat)); }
   catch { /* La quête reste jouable en mémoire sans stockage. */ }
   abonnes.forEach((f) => f());

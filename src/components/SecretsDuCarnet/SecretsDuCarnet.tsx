@@ -7,7 +7,7 @@ import { useReducedMotion } from '../../lib/motion';
 import { useRenderMode } from '../../lib/spread';
 import { LOUPE_EVENT, loupeOccupee } from '../../lib/loupe';
 import { placerCompagnon, zoneLibreSecret, type RectSecret } from '../../lib/secrets';
-import { abonnerQuete, agirQuete, CACHETTES, etatQuete, QUETE_INITIALE, QUETE_OUVRIR_EVENT } from '../../lib/quete';
+import { abonnerQuete, agirQuete, CACHETTES, etatQuete, repriseQuete, QUETE_INITIALE, QUETE_OUVRIR_EVENT } from '../../lib/quete';
 import { useEcran } from '../Ecran/contexte';
 import { GESTE_EVENT } from '../Livre/evenements';
 import { pageCuite, PAGES_CUITES } from '../PageCuite/PageCuite';
@@ -110,7 +110,7 @@ export function SecretsDuCarnet({ page }: SecretsDuCarnetProps) {
       {cachette.matiere !== 'farine' && <span className={`gc-secrets__papier gc-secrets__papier--${cachette.matiere}`} aria-hidden="true"/>}
       <img className={`gc-secrets__dessin gc-secrets__dessin--${cachette.id}`} src={assetUrl(`aquarelles/${cachette.dessin}`)} alt="" draggable={false}/>
       {index === 0 && <span className="gc-secrets__murmure" aria-hidden="true">{handText('Intentions gourmandes…', 'cecile')}</span>}
-      {poudre && <FarineCachette ref={farine} actif={actif} decouvrir={decouvrir}/>}
+      {poudre && <FarineCachette key={repriseQuete()} ref={farine} actif={actif} decouvrir={decouvrir}/>}
     </button>
   </div>;
 }
@@ -151,6 +151,7 @@ export function CompagnonDuCarnet() {
   const [selection, setSelection] = React.useState<number | null>(null);
   const [reaction, setReaction] = React.useState(0);
   const [aide, setAide] = React.useState(0);
+  const [recommence, setRecommence] = React.useState(false);
   const pages = placement?.pages ?? PAGES_VIDES;
   const fini = quete.trouves === CACHETTES.length;
   const index = selection != null && selection < quete.trouves ? selection : Math.min(quete.trouves, CACHETTES.length - 1);
@@ -191,6 +192,7 @@ export function CompagnonDuCarnet() {
     const voulu = n ?? Math.min(quete.trouves, CACHETTES.length - 1);
     setSelection(n == null && quete.trouves === CACHETTES.length ? null : voulu);
     setAide(0);
+    setRecommence(false);
     setOuvert(true);
   }, [quete.trouves]);
   React.useEffect(() => {
@@ -213,10 +215,10 @@ export function CompagnonDuCarnet() {
   }, [actif, montrer, ouvert]);
 
   React.useEffect(() => {
-    if (!ouvert || !actif) return;
+    if (!ouvert || !actif || recommence) return;
     const image = requestAnimationFrame(() => (panneau.current?.querySelector<HTMLElement>('[data-gc-quete-principal]') ?? panneau.current?.querySelector<HTMLButtonElement>('.gc-quete__fermer'))?.focus({ preventScroll: true }));
     return () => cancelAnimationFrame(image);
-  }, [ouvert, actif, index, revele, fini, aide]);
+  }, [ouvert, actif, index, revele, fini, aide, recommence]);
 
   if (!ecran?.controles) return null;
   const zone = placement?.chien;
@@ -232,6 +234,7 @@ export function CompagnonDuCarnet() {
     {ouvert && actif && placement && <section ref={panneau} id="gc-guide-quete" className="gc-quete__guide" style={{ ...placement.guide, '--gc-quete-papier': `url("${assetUrl(pageCuite(cachette.page)?.papier1x ?? pageCuite(cachette.page)!.papier)}")`, ...handStyle('cecile', 'meta', 'brune') } as React.CSSProperties} data-gc-quete-etape={cachette.id} data-gc-quete-revele={revele ? 'oui' : 'non'} data-gc-quete-reduit={reduit ? 'oui' : 'non'} role="region" aria-label="Notes en marge" data-gc-quete-lateral="oui" onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); }}>
       <button type="button" className="gc-quete__fermer" aria-label="Replier les notes en marge" onClick={() => setOuvert(false)}>×</button>
       <h2>{texte('Notes en marge')}</h2>
+      <div className="gc-quete__contenu">
       {fini && selection == null ? <>
         <p>{texte('Le carnet a confié toutes ses petites notes.')}</p>
         <p>{texte(CACHETTES[CACHETTES.length - 1].suite)}</p>
@@ -246,7 +249,7 @@ export function CompagnonDuCarnet() {
       </> : <>
         {aide === 0 && <p>{texte('Il reste peut-être quelque chose entre ces pages. Rien ne presse…')}</p>}
         {aide >= 1 && <p className="gc-quete__indice-doux">{texte(cachette.indice)}</p>}
-        {aide < 2 && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => setAide((n) => n + 1)}>{texte(aide === 0 ? 'Souffle-moi une piste' : 'Un peu plus d’aide')}</button>}
+        {aide < 2 && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => { setRecommence(false); setAide((n) => n + 1); }}>{texte(aide === 0 ? 'Souffle-moi une piste' : 'Un peu plus d’aide')}</button>}
         {aide === 2 && <>
           <p className="gc-quete__destination">{texte(`${reperePage} · « ${cachette.pageTitre} »`)}</p>
           <p>{texte(`Cherche ${cachette.chercher}.${index === 0 ? ' Un peu de farine la recouvre : balaie-la du doigt, ou répète les petits coups de brosse avec Entrée.' : ''}`)}</p>
@@ -259,8 +262,15 @@ export function CompagnonDuCarnet() {
         <summary>{texte('Notes retrouvées')}</summary>
         <ul>{CACHETTES.slice(0, quete.trouves).map((c, n) => <li key={c.id}><button type="button" onClick={() => { setSelection(n); setAide(0); }}>{texte(c.titre)}</button></li>)}</ul>
       </details>}
-      {fini && selection == null && <button type="button" className="gc-quete__recommencer" onClick={() => { agirQuete({ type: 'rejouer' }); setSelection(null); setAide(0); }}>{texte('Retrouver les notes une autre fois')}</button>}
       <p className="gc-quete__touches">{texte('S : notes · Échap : replier')}</p>
+      </div>
+      <div className="gc-quete__reprise">
+        <button type="button" className="gc-quete__recommencer" onClick={() => {
+          agirQuete({ type: 'rejouer' }); setSelection(null); setAide(0); setRecommence(true);
+          requestAnimationFrame(() => panneau.current?.querySelector<HTMLButtonElement>('.gc-quete__recommencer')?.focus({ preventScroll: true }));
+        }}>{texte('Recommencer les découvertes')}</button>
+        <p className="gc-quete__retour" role="status" aria-live="polite">{recommence ? texte('Tout est à redécouvrir.') : ''}</p>
+      </div>
       <span className="gc-quete__annonce" role="status" aria-live="polite">{fini && selection == null ? 'Toutes les notes sont gardées. Tu peux les relire.' : revele ? 'Une note se dévoile. Tu peux la lire puis la garder.' : aide === 0 ? 'Notes en marge ouvertes. Un indice est disponible si tu le souhaites.' : aide === 1 ? cachette.indice : `${reperePage}. ${cachette.pageTitre}. Cherche ${cachette.chercher}.`}</span>
     </section>}
   </>, ecran.controles);

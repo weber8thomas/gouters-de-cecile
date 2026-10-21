@@ -1,0 +1,116 @@
+{
+  "slug": "lisa-de-paris",
+  "source": "src/content/recettes/lisa-de-paris.txt",
+  "adaptations": [
+    "Source reçue le 21 octobre conservée dans le TXT, marqueurs de mise en forme séparés du texte affiché.",
+    "Message provisoire explicitement demandé ; aucun petit mot personnel généré.",
+    "Numéro de la hotline masqué à la demande de Thomas, y compris dans la source publique ; reste de la phrase intact."
+  ],
+  "style": {
+    "main": "soignee",
+    "encre": "brune",
+    "police": "caveat",
+    "graine": 18671
+  },
+  "titre": "« Spitzbuben » (ou « Terrassenbrödle »)",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "300 g de farine",
+          "puce": "point"
+        },
+        {
+          "texte": "200 g de beurre",
+          "puce": "point"
+        },
+        {
+          "texte": "150 g de sucre",
+          "puce": "point"
+        },
+        {
+          "texte": "1 sachet de sucre vanillé",
+          "puce": "point"
+        },
+        {
+          "texte": "Confiture d’églantine (ou toute autre confiture selon tes goûts...)",
+          "puce": "point"
+        },
+        {
+          "texte": "Sucre glace",
+          "puce": "point"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Sur ton plan de travail, verse la farine."
+    },
+    {
+      "titre": "2.",
+      "texte": "Creuse un puits au centre et ajoute le sucre et le sucre vanillé."
+    },
+    {
+      "titre": "3.",
+      "texte": "Coupe le beurre en petits morceaux et répartis-les tout autour du puits, sur la farine."
+    },
+    {
+      "titre": "4.",
+      "texte": "Munis-toi d'un large couteau et hache les ingrédients ensemble jusqu'à obtenir une texture sablonneuse."
+    },
+    {
+      "titre": "5.",
+      "texte": "Lorsque la pâte commence à s’agglomérer, pétris rapidement à la main pour obtenir une pâte uniforme."
+    },
+    {
+      "titre": "6.",
+      "texte": "Laisse reposer la pâte au frais pendant 1 heure."
+    },
+    {
+      "titre": "7.",
+      "texte": "Après repos, farine légèrement ton plan de travail et étale la pâte à l’aide d’un rouleau à pâtisserie sur environ 3 mm d’épaisseur."
+    },
+    {
+      "titre": "8.",
+      "texte": "À l’aide d’emporte-pièces, découpe autant de formes que possible dans chacune des trois tailles, afin de pouvoir assembler tes biscuits par groupes de trois."
+    },
+    {
+      "titre": "9.",
+      "texte": "Dépose délicatement les formes découpées sur une plaque de cuisson non graissée."
+    },
+    {
+      "titre": "10.",
+      "texte": "Fais cuire 8 à 10 minutes, jusqu'à ce que les biscuits soient jaune pâle."
+    },
+    {
+      "titre": "11.",
+      "texte": "Laisse les biscuits tiédir quelques instants avant de les décoller délicatement de la plaque, afin d’éviter qu’ils ne se cassent."
+    },
+    {
+      "titre": "12.",
+      "texte": "Assemble-les ensuite tant qu’ils sont encore tièdes. Pour l’assemblage :\n- Dépose une petite quantité de confiture au centre du plus grand biscuit,\n- Place un biscuit de taille moyenne par-dessus, sur lequel tu ajoutes également un peu de confiture (cf. photo),\n- Termine en plaçant le plus petit biscuit sur le dessus."
+    },
+    {
+      "titre": "13.",
+      "texte": "Saupoudre légèrement de sucre glace et laisse reposer."
+    }
+  ],
+  "mot": "Lorem ipsum — message à venir",
+  "signature": "Lisa De Paris",
+  "nom": "Lisa De Paris",
+  "details": [
+    "Des petits biscuits de Noël pour un goûter réussi",
+    "Attention : ces petits gâteaux de Noël, aussi délicieux soient-ils, te demanderont un peu de temps !",
+    "Ingrédients pour environ 50 petits gâteaux :"
+  ],
+  "apres": [
+    "Un doute, une pâte trop collante, une urgence confiture ? Ma hotline spéciale « Spitzbuben » est ouverte 24h/24 (ou presque) : [numéro masqué à la demande de Thomas]."
+  ],
+  "cuisson": {
+    "titre": "Cuisson",
+    "texte": "Température : 200°C\nTemps : 8 à 10 minutes (pas plus, sous peine de transformer tes gâteaux en galets !)"
+  }
+}

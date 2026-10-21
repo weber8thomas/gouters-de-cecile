@@ -2,7 +2,8 @@
   "slug": "clemence",
   "source": "src/content/recettes/clemence.txt",
   "adaptations": [
-    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé."
+    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé.",
+    "Le petit mot du plan antérieur n’est pas un message authentique fourni par un invité : remplacé à la demande de Thomas par le placeholder explicite."
   ],
   "style": {
     "main": "ecole",
@@ -60,7 +61,7 @@
       "texte": "Le dressage de Clémence : Recouvrir de framboises fraîches et d'un coulis au moment de servir."
     }
   ],
-  "mot": "Pour la reine du jour ! L'alliance du croustillant du spéculoos et de l'acidulé de la framboise. Très bel anniversaire Cécile, régale-toi !",
+  "mot": "Lorem ipsum — message à venir",
   "signature": "Clémence",
   "nom": "Clémence",
   "notesMarge": [

@@ -2,7 +2,8 @@
   "slug": "lisa",
   "source": "src/content/recettes/lisa.txt",
   "adaptations": [
-    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé."
+    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé.",
+    "Le petit mot du plan antérieur n’est pas un message authentique fourni par un invité : remplacé à la demande de Thomas par le placeholder explicite."
   ],
   "style": {
     "main": "ado",
@@ -74,9 +75,9 @@
       "texte": "Enfourner 40 à 45 minutes à 175 °C (th. 5/6). Laisser refroidir dans le moule."
     }
   ],
-  "mot": "Joyeux anniversaire Cécile ! YUMMY après c'est la régalade 😎",
+  "mot": "Lorem ipsum — message à venir",
   "signature": "Lisa",
-  "nom": "Lisa",
+  "nom": "Lisa Allienne",
   "notesMarge": [
     {
       "texte": "Tiptop pour la saison !",

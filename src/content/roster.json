@@ -24,7 +24,7 @@
   "guests": [
     {
       "slug": "lisa",
-      "firstName": "Lisa",
+      "firstName": "Lisa Allienne",
       "city": "",
       "chapter": "gateaux",
       "recette": "src/content/recettes/lisa.json"
@@ -112,6 +112,41 @@
       "city": "",
       "chapter": "gateaux",
       "recette": "src/content/recettes/coralie.json"
+    },
+    {
+      "slug": "lisa-de-paris",
+      "firstName": "Lisa De Paris",
+      "city": "",
+      "chapter": "biscuits",
+      "recette": "src/content/recettes/lisa-de-paris.json"
+    },
+    {
+      "slug": "antoine",
+      "firstName": "Antoine",
+      "city": "",
+      "chapter": "gateaux",
+      "recette": "src/content/recettes/antoine.json"
+    },
+    {
+      "slug": "suzanne",
+      "firstName": "Suzanne",
+      "city": "",
+      "chapter": "gateaux",
+      "recette": "src/content/recettes/suzanne.json"
+    },
+    {
+      "slug": "margot-chapuzy",
+      "firstName": "Margot Chapuzy",
+      "city": "",
+      "chapter": "gateaux",
+      "recette": "src/content/recettes/margot-chapuzy.json"
+    },
+    {
+      "slug": "elise",
+      "firstName": "Elise",
+      "city": "",
+      "chapter": "crepes",
+      "recette": "src/content/recettes/elise.json"
     }
   ]
 }

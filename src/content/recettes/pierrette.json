@@ -2,7 +2,8 @@
   "slug": "pierrette",
   "source": "src/content/recettes/pierrette.txt",
   "adaptations": [
-    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé."
+    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé.",
+    "Le petit mot du plan antérieur n’est pas un message authentique fourni par un invité : remplacé à la demande de Thomas par le placeholder explicite."
   ],
   "style": {
     "main": "mamie",
@@ -52,7 +53,7 @@
       "texte": "Le secret de Pierrette : Dès la sortie du four, imbiber le cake encore très chaud avec le sirop tiède au pinceau jusqu'à complète absorption."
     }
   ],
-  "mot": "Trente bougies pour notre Cécile chérie ! Voici le secret de mon cake au citron bien imbibé qui ne sèche jamais. Gros bisous tendres.",
+  "mot": "Lorem ipsum — message à venir",
   "signature": "Pierrette",
   "nom": "Pierrette",
   "notesMarge": [

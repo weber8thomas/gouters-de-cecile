@@ -92,8 +92,10 @@ ICONE = re.compile(r"^:([a-z][a-z0-9-]*):$")
 _COUPE_ICONES = re.compile(r"(:[a-z][a-z0-9-]*:)")
 # Les deux emojis reçus restent dans les sources et le texte accessible. La main les dessine comme
 # les pictogrammes existants, au lieu de demander au réseau d'écrire des glyphes qu'il ne connaît pas.
-EMOJIS_RECUS = {"😎": "sourire-lunettes", "😋": "sourire", "🤍": "coeur"}
-_COUPE_EMOJIS = re.compile(r"(:[a-z][a-z0-9-]*:|😎|😋|🤍)")
+EMOJIS_RECUS = {"😎": "sourire-lunettes", "😋": "sourire", "🤍": "coeur", "💛": "coeur", "🧡": "coeur",
+                "😊": "sourire", "🥰": "sourire", "😍": "sourire", "🤭": "sourire", "😂": "sourire",
+                "🍐": "poire", "🍎": "pomme", "🍌": "banane", "🧇": "gaufre"}
+_COUPE_EMOJIS = re.compile(r"(:[a-z][a-z0-9-]*:|" + "|".join(map(re.escape, EMOJIS_RECUS)) + ")")
 
 
 def _norm(s: str) -> str:
@@ -778,6 +780,14 @@ class Mise:
                 # Le cœur blanc reçu reste un cœur au trait, sans glyphe manquant ni aplat coloré.
                 self.tracer(TR.coeur(bx + t / 2, by + t / 2, t * .8, r, xh), xh, encre, ep,
                             int(self.graine * 7 + len(self.mots) * 31), self.main)
+            elif ic.group(1) == "gaufre":
+                # Petit quadrillage au trait pour l'emoji de gaufre, sans carré de remplacement.
+                chemins = []
+                for f in (0., .25, .5, .75, 1.):
+                    for a, z in [([bx + f * t, by], [bx + f * t, by + t]),
+                                 ([bx, by + f * t], [bx + t, by + f * t])]:
+                        chemins.append(TR.geste(TR.trait_courbe(a, z, r, xh, .008), r, xh, appui=.75))
+                self.tracer(chemins, xh, encre, ep * .7, int(self.graine * 7 + len(self.mots) * 31), self.main)
             else:
                 self.demander_croquis(ic.group(1), (bx, by, t, t), encre, int(self.graine * 7 + len(self.croquis) * 31),
                                       role="icone", ep=ep * xh, xh=xh)
@@ -1102,7 +1112,11 @@ class Mise:
         x = float(np.clip(x, self.ml, max(self.ml, self.xr - largeur)))
         sauter = float(b.get("avant", 0.0))
         ep = self._ep(bloc.epaisseur, b)
-        poses, lignes = self.couler(mots, xh, float(b.get("interligne", bloc.interligne * 0.92)), dict(bloc.encre),
+        interligne = float(b.get("interligne", bloc.interligne * 0.92))
+        if b.get("souligne", "aucun") != "aucun":
+            _, asc, desc = self._mesure(mots, xh, espace)
+            interligne = max(interligne, (asc + desc) / xh + 1.1 + (0.4 if b.get("souligne") == "double" else 0.))
+        poses, lignes = self.couler(mots, xh, interligne, dict(bloc.encre),
                                     ep, b.get("id", "titre"), espace=espace, x0=x, derive=False,
                                     sauter=sauter, premier_haut=b.get("premier_haut", 1.7))
         self.blocs_lignes[b.get("id", "titre")] = lignes
@@ -1117,19 +1131,38 @@ class Mise:
                 for k, p in enumerate(ok):
                     if PONCT.match(p.texte.strip()):
                         continue
+                    avant_trait = len(self.traces)
                     self.tracer(TR.souligne(*p.base, r, xh, dy=0.5), xh, enc, ep * 0.9, graine + 10 + k, main)
+                    self._degager_souligne(self.traces[avant_trait:], [p])
             else:
                 for n_l in sorted({p.ligne for p in ok}):
                     part = [p for p in ok if p.ligne == n_l and not PONCT.match(p.texte.strip())]
                     if not part:
                         continue
                     a, z = part[0].base, part[-1].base
+                    avant_trait = len(self.traces)
                     self.tracer(TR.souligne(a[0], a[1], z[2], z[3], r, xh, double=(sl == "double"), dy=0.55),
                                 xh, enc, ep * 0.9, graine + 10, main)
+                    self._degager_souligne(self.traces[avant_trait:], part)
         for t in self.traces[debut_souligne:]:
             t.decor = b.get("id", "titre")
+        if len(self.traces) > debut_souligne and self.base is not None:
+            bas_trait = max(float(t.pts[:, 1].max()) + t.diam * .6 for t in self.traces[debut_souligne:])
+            self.base = max(self.base, bas_trait - .75 * xh)
         self.texte.append(self._texte_lisible(brut, marques))
         return lignes
+
+    @staticmethod
+    def _degager_souligne(traces, mots):
+        """Un même déplacement garde les doubles traits espacés et dégage tous les descendants."""
+        if not traces or not mots:
+            return
+        bas_lettres = max(m.boite[3] for m in mots)
+        marge = max(t.diam * 1.1 + 3. for t in traces)
+        haut_trait = min(float(t.pts[:, 1].min()) for t in traces)
+        dy = max(0., bas_lettres + marge - haut_trait)
+        for t in traces:
+            t.pts[:, 1] += dy
 
     def ingredients(self, b, idx):
         disp = b.get("disposition", "texte")
@@ -2133,7 +2166,11 @@ class Mise:
         if titre_mots:
             A = np.array([m.boite for m in titre_mots], float)
             cx = float((A[:, 0].min() + A[:, 2].max()) / 2)
-            haut_noms = float(A[:, 3].max()) + 1.15 * ls[-1].xh * 0.6
+            bas_titre = float(A[:, 3].max())
+            soulignes = [t for t in self.traces if t.decor == bid]
+            if soulignes:
+                bas_titre = max(bas_titre, max(float(t.pts[:, 1].max()) + t.diam for t in soulignes))
+            haut_noms = bas_titre + 1.15 * ls[-1].xh * 0.6
         else:
             cx, haut_noms = self.W / 2, (self.base or self.haut) + 2 * xh
         for i, groupe in enumerate(groupes):

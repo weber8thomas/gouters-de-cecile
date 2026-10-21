@@ -9,7 +9,8 @@ import { toile, webglOk, type DessinPage, type Toile } from './vivante';
 import { CREATURES } from './effets';
 import './Aquarelle.css';
 import { TableauFixe } from './TableauFixe';
-import { tableauDe, type CommandeTableau } from './tableaux';
+import { ModeCuisine } from './ModeCuisine';
+import { CUISINE_EVENT, tableauDe, type CommandeTableau } from './tableaux';
 
 export interface AquarelleProps {
   /** Nom de l'aquarelle cuite (design-system/baked/aquarelles/<nom>.webp). */
@@ -79,7 +80,7 @@ function dessinsDe(page: string): Omit<DessinPage, 'peindre'>[] {
   if (!info?.aquarelles) return [];
   return Object.entries(info.aquarelles).flatMap(([zone, a], ordre) => {
     const r = info.vivants[zone];
-    return r ? [{ nom: a.aquarelle, zone: r, angle: a.angle ?? 0, ordre }] : [];
+    return r ? [{ nom: a.aquarelle, zone: r, angle: a.angle ?? 0, ordre, fixe: info.double==='sommaire'&&a.anime==='fixe' }] : [];
   });
 }
 
@@ -108,6 +109,7 @@ export function Aquarelle({ nom, anime = 'fleurit', angle = 0, ordre = 0, page }
   const cls = ['gc-aquarelle', `gc-aquarelle--${animCss}`].join(' ');
   const vue = parToile ? 'toile' : aPeindre ? 'cachee' : undefined;
   return (
+    <>
     <div className={cls} style={style} aria-hidden="true" data-gc-aquarelle={nom} data-gc-aq={vue}>
       {tableau && page && zone ? <TableauFixe nom={nom} page={page} zone={zone}/> : <img src={src} alt="" draggable={false} decoding="async" />}
       {animCss === 'vapeur' && (
@@ -117,6 +119,8 @@ export function Aquarelle({ nom, anime = 'fleurit', angle = 0, ordre = 0, page }
         </>
       )}
     </div>
+    {mode==='live'&&page&&tableau&&(reduit||!gl||echouees.has(page))&&tableauDe(nom,page)?.startsWith('recette-')&&<button className="gc-recette-demarrer-repli" onPointerDown={e=>e.stopPropagation()} onClick={e=>{e.stopPropagation();window.dispatchEvent(new CustomEvent(CUISINE_EVENT,{detail:{page,nom,type:tableauDe(nom,page)}}));}}>Démarrer la recette</button>}
+    </>
   );
 }
 
@@ -210,10 +214,13 @@ export function ToileAquarelles({ page }: { page: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actif, page, reduit]);
 
-  return actif ? <>
+  return <>
+    {mode==='live'&&<ModeCuisine page={page}/>}
+    {actif&&<>
     <canvas ref={ref} className="gc-aquarelles-toile" aria-hidden="true" />
     <div ref={refTableaux} className="gc-tableaux" />
-  </> : null;
+    </>}
+  </>;
 }
 
 export default Aquarelle;

@@ -1,0 +1,102 @@
+{
+  "slug": "elise",
+  "source": "src/content/recettes/elise.txt",
+  "adaptations": [
+    "Source reçue le 21 octobre conservée dans le TXT, marqueurs de mise en forme séparés du texte affiché."
+  ],
+  "style": {
+    "main": "ecole",
+    "encre": "brune",
+    "police": "playwrite-moderne",
+    "graine": 22031
+  },
+  "titre": "Gaufres de Liège",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "375 g de farine",
+          "puce": "point"
+        },
+        {
+          "texte": "21 g de levure fraîche de boulanger",
+          "puce": "point"
+        },
+        {
+          "texte": "135 g de lait tiède",
+          "puce": "point"
+        },
+        {
+          "texte": "2 œufs",
+          "puce": "point"
+        },
+        {
+          "texte": "25 g de sucre roux",
+          "puce": "point"
+        },
+        {
+          "texte": "5 g de sel",
+          "puce": "point"
+        },
+        {
+          "texte": "200 g de beurre doux ramolli",
+          "puce": "point"
+        },
+        {
+          "texte": "150 à 200 g de sucre perlé",
+          "puce": "point"
+        },
+        {
+          "texte": "1 c. à café d’extrait de vanille (facultatif)",
+          "puce": "point"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Délayer la levure dans le lait tiède (pas chaud) et laisser reposer 5 à 10 minutes."
+    },
+    {
+      "titre": "2.",
+      "texte": "Mélanger la farine, le sucre roux et le sel."
+    },
+    {
+      "titre": "3.",
+      "texte": "Ajouter les œufs et le mélange lait-levure, puis pétrir 5 minutes."
+    },
+    {
+      "titre": "4.",
+      "texte": "Incorporer progressivement le beurre ramolli et pétrir 10 minutes, jusqu’à obtenir une pâte souple."
+    },
+    {
+      "titre": "5.",
+      "texte": "Couvrir et laisser lever environ 1 h 30, jusqu’à ce que la pâte double de volume."
+    },
+    {
+      "titre": "6.",
+      "texte": "Incorporer le sucre perlé."
+    },
+    {
+      "titre": "7.",
+      "texte": "Former 10 à 12 boules et laisser reposer 20 à 30 minutes."
+    },
+    {
+      "titre": "8.",
+      "texte": "Faire chauffer le gaufrier et cuire environ 3 minutes par gaufre, jusqu’à ce qu’elles soient dorées et caramélisées."
+    },
+    {
+      "titre": "9.",
+      "texte": "Laisser tiédir… si on arrive à attendre ! 🤭"
+    }
+  ],
+  "mot": "Joyeux anniversaire Cécile ! 🥰 Ça y est, 30 ans, une nouvelle décennie qui commence ! Je te souhaite plein de belles choses et j’espère que ces petites gaufres régaleront toute ta petite famille. Attention avec Thomas, elles risquent de ne pas faire long feu ! 😂💛",
+  "signature": "Elise",
+  "nom": "Elise",
+  "details": [
+    "De ma part 🧇💛",
+    "Ingrédients (pour environ 10 à 12 gaufres) :"
+  ]
+}

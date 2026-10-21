@@ -35,17 +35,29 @@ export const deuxImages = (): Promise<void> =>
 export function cadenceStable(maxMs = 3000): Promise<void> {
   return new Promise((resolve) => {
     const t0 = performance.now();
+    let image = 0;
+    let fini = false;
+    const terminer = () => {
+      if (fini) return;
+      fini = true;
+      clearTimeout(limite);
+      cancelAnimationFrame(image);
+      resolve();
+    };
+    // Le délai est réel : une frame suspendue ou très retardée ne doit pas retenir la navigation.
+    const limite = setTimeout(terminer, maxMs);
     let prev = 0;
     let n = 0;
     let bons = 0;
     const tick = (t: number) => {
+      if (fini) return;
       if (prev) bons = t - prev < 34 ? bons + 1 : 0;
       prev = t;
       n++;
-      if ((n >= 5 && bons >= 3) || t - t0 > maxMs) resolve();
-      else requestAnimationFrame(tick);
+      if ((n >= 5 && bons >= 3) || t - t0 > maxMs) terminer();
+      else image = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    image = requestAnimationFrame(tick);
   });
 }
 

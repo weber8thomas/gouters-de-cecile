@@ -2,7 +2,8 @@
   "slug": "lise",
   "source": "src/content/recettes/lise.txt",
   "adaptations": [
-    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé."
+    "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé.",
+    "Le petit mot du plan antérieur n’est pas un message authentique fourni par un invité : remplacé à la demande de Thomas par le placeholder explicite."
   ],
   "style": {
     "main": "soignee",
@@ -59,7 +60,7 @@
       "texte": "Et hop au four à 180 degrés et régale-toi !!"
     }
   ],
-  "mot": "Joyeux anniversaire ma Cécile ! Une valeur sûre partagée avec le cœur. Gros bisous !",
+  "mot": "Lorem ipsum — message à venir",
   "signature": "Lise",
   "nom": "Lise"
 }

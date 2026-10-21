@@ -10,12 +10,12 @@
   "marges": {
     "haut": 0.075
   },
-  "_": "Seconde moitié du sommaire : tartes, biscuits, brioche, crêpes et finale. La page gauche conserve la dédicace puis les huit gâteaux/cakes ; tous les folios viennent du carnet.",
+  "_": "Suite du sommaire au folio 9 : sept recettes et finale, vignettes fixes agrandies. Tous les liens et folios dérivent du carnet.",
   "blocs": [
     {
       "id": "titre",
       "type": "titre",
-      "texte": "Sommaire",
+      "texte": "Sommaire (suite)",
       "echelle": 1.9,
       "graine": 44,
       "position": "centre",
@@ -39,17 +39,19 @@
       "id": "sommaire",
       "type": "sommaire",
       "fin": true,
-      "retrait": 0.19,
-      "avant": 0.3,
-      "vignette": 0.04,
-      "vignette_largeur": 0.12,
+      "retrait": 0.22,
+      "avant": 0.06,
+      "vignette": 0.05,
+      "vignette_largeur": 0.16,
       "graine": 23457,
       "vignettes": {
         "anatole": "vignette-anatole",
         "lise": "vignette-lise",
         "julien": "vignette-julien",
         "laura": "vignette-laura",
-        "sarah": "vignette-sarah"
+        "sarah": "vignette-sarah",
+        "lisa-de-paris": "vignette-lisa-de-paris",
+        "elise": "vignette-elise"
       },
       "titres": {
         "lisa": "Lisa — Carrot cake",
@@ -60,14 +62,17 @@
         "lise": "Lise — Tarte aux pommes",
         "julien": "Julien — Cookies & noisettes",
         "laura": "Laura Gramegna — Crêpes",
-        "sarah": "Sarah — Brioche"
+        "sarah": "Sarah — Brioche",
+        "lisa-de-paris": "Lisa De Paris — Spitzbuben",
+        "elise": "Elise — Gaufres de Liège"
       },
       "chapitres": [
         "tartes",
         "biscuits",
         "brioches",
         "crepes"
-      ]
+      ],
+      "interligne": 5.4
     }
   ],
   "vivants": [
@@ -105,7 +110,17 @@
     },
     {
       "nom": "vignette-sarah",
-      "aquarelle": "gateau",
+      "aquarelle": "brioche",
+      "anime": "fixe"
+    },
+    {
+      "nom": "vignette-lisa-de-paris",
+      "aquarelle": "spitzbuben",
+      "anime": "fixe"
+    },
+    {
+      "nom": "vignette-elise",
+      "aquarelle": "gaufres-liege",
       "anime": "fixe"
     }
   ],

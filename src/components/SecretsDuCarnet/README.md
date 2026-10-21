@@ -1,4 +1,4 @@
-# Notes en marge — v15
+# Notes en marge — v16
 
 Le carnet garde cinq cachettes dans son ordre de lecture : clé de garde, premier album,
 second album, cuisine et dernière page. Le Jack Russell reste sur la table, les pattes fixes.
@@ -26,6 +26,14 @@ quand le livre ou le document est caché. Le mouvement réduit conserve tout le 
 L’aide précise du rabat propose aussi « Lire la note sans balayer », un choix explicite qui
 évite de bloquer la lecture. Les autres cachettes mêlent enveloppe, papier plié et tache d’encre.
 
+Pour tout remettre au départ : **S** (ou « Psst… »), puis **Recommencer les découvertes**.
+Cette commande reste visible en bas du rabat à chaque étape, même avant la première note.
+Elle efface les notes gardées, referme les cachettes et remet toute la farine, y compris après
+un frottage partiel qui n’avait encore rien révélé. Le retour « Tout est à redécouvrir. »
+confirme l’action et le focus reste sur le bouton. Les réglages audio et de lumière sont conservés.
+Une révision interne force le remontage du canvas ; revenir seulement à zéro dans le stockage
+ne suffirait pas à restaurer une surface déjà frottée.
+
 Le dessin trouvé affiche sa citation dans le rabat. « Garder cette note » replie le papier et
 débloque la prochaine cachette. Les notes déjà gardées restent relisibles dans « Notes
 retrouvées ». Le stockage `gc:quete:v1` conserve cette progression ; les sauvegardes v12/v13
@@ -48,3 +56,17 @@ latéral sur TV et téléphone couché, les indices choisis, un vrai balayage, l
 progressives au toucher et au clavier, les cinq citations, l’archivage et l’absence d’infobulles. Preuves dans
 `verification/out/notes-v15/`. Les scripts v12 et v14 documentent les anciennes présentations ou l’ancienne
 alternative au toucher immédiate ; ils ne décrivent plus ce geste progressif.
+
+Vérification ciblée du reset, sans build :
+
+```sh
+GC_CHROME=/usr/bin/chromium node src/components/SecretsDuCarnet/verify-reset-v16.mjs --url http://127.0.0.1:5173 --fixture
+```
+
+La fixture charge les vrais composants de découverte dans une page vide, sans démarrer le livre 3D.
+Le contrôle compare la quantité de farine avant/après frottage et après reset, sur TV et mobile,
+puis vérifie le retour au départ après ouverture de l’enveloppe et archivage de deux notes.
+Il compare aussi les réglages avant/après et vérifie que le premier geste reste progressif.
+Preuves : `verification/out/notes-reset-v16/`.
+
+Sans `--fixture`, le même parcours peut viser le livre complet ; `--captures` active alors les captures.

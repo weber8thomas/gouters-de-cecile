@@ -7,6 +7,22 @@
     "bytes": 78878,
     "type": "image/webp"
   },
+  "aquarelles/acteurs/banana-bread": {
+    "file": "baked/aquarelles/acteurs/banana-bread.webp",
+    "sha": "4c7e134622652008516dea55a06e5703689cd38cee1cfed4fbf9f8a9f90f81b3",
+    "w": 600,
+    "h": 600,
+    "bytes": 117320,
+    "type": "image/webp"
+  },
+  "aquarelles/acteurs/banane-ecrasee": {
+    "file": "baked/aquarelles/acteurs/banane-ecrasee.webp",
+    "sha": "b61dc2d09f247df4b425288e1f6ff4df4ff629beec5cc73b92e9b21e190504ad",
+    "w": 600,
+    "h": 600,
+    "bytes": 75440,
+    "type": "image/webp"
+  },
   "aquarelles/acteurs/banane-rondelles": {
     "file": "baked/aquarelles/acteurs/banane-rondelles.webp",
     "sha": "eaadac959feb6dde00e074a723885449bc11fe3868296d642fc18d2ddaf57fc7",
@@ -37,6 +53,14 @@
     "w": 600,
     "h": 600,
     "bytes": 59906,
+    "type": "image/webp"
+  },
+  "aquarelles/acteurs/biscuit-sable": {
+    "file": "baked/aquarelles/acteurs/biscuit-sable.webp",
+    "sha": "e2801e21afdb1e8b0ee8cd79d480a6eefd89a885b23b7036eb7fdec0807f8ea0",
+    "w": 600,
+    "h": 600,
+    "bytes": 81364,
     "type": "image/webp"
   },
   "aquarelles/acteurs/bol": {
@@ -119,6 +143,14 @@
     "bytes": 52500,
     "type": "image/webp"
   },
+  "aquarelles/acteurs/confiture": {
+    "file": "baked/aquarelles/acteurs/confiture.webp",
+    "sha": "d76e433c9572687fc598126285199843bc587e75e5fb9420fd407fcdb0feb474",
+    "w": 600,
+    "h": 600,
+    "bytes": 109600,
+    "type": "image/webp"
+  },
   "aquarelles/acteurs/coquille-droite": {
     "file": "baked/aquarelles/acteurs/coquille-droite.webp",
     "sha": "b8c56d463078312e8ae9b5be112913498522dded5ad5051b1e8321d239b83267",
@@ -143,12 +175,28 @@
     "bytes": 102140,
     "type": "image/webp"
   },
+  "aquarelles/acteurs/emporte-piece": {
+    "file": "baked/aquarelles/acteurs/emporte-piece.webp",
+    "sha": "5e668a1a0da67f1a0e7174999fdc0ad8b66b994e00fcab76bfb1304384a24c6c",
+    "w": 600,
+    "h": 600,
+    "bytes": 84954,
+    "type": "image/webp"
+  },
   "aquarelles/acteurs/farine": {
     "file": "baked/aquarelles/acteurs/farine.webp",
     "sha": "c7a359654562cfe72ed80e94b7a38c968dfe8c37f3f381755608b74a190e623a",
     "w": 600,
     "h": 600,
     "bytes": 74520,
+    "type": "image/webp"
+  },
+  "aquarelles/acteurs/flaugnarde-poires": {
+    "file": "baked/aquarelles/acteurs/flaugnarde-poires.webp",
+    "sha": "ee5a6c5a0d66658497f0c0fd1d6d1584daaa60d429f874a83764316f9f73a20f",
+    "w": 600,
+    "h": 600,
+    "bytes": 95960,
     "type": "image/webp"
   },
   "aquarelles/acteurs/fleur-vanille": {
@@ -165,6 +213,30 @@
     "w": 600,
     "h": 600,
     "bytes": 70370,
+    "type": "image/webp"
+  },
+  "aquarelles/acteurs/four-cavite": {
+    "file": "baked/aquarelles/acteurs/four-cavite.webp",
+    "sha": "150e3ac061cab09a6da7b99ec305f77dce37d413cfaea0e63a43681911d68742",
+    "w": 600,
+    "h": 600,
+    "bytes": 16546,
+    "type": "image/webp"
+  },
+  "aquarelles/acteurs/four-corps": {
+    "file": "baked/aquarelles/acteurs/four-corps.webp",
+    "sha": "fc398c9534c5367b005d223bf7bcfaeced184e5144260c3ebe8e96843c186f01",
+    "w": 600,
+    "h": 600,
+    "bytes": 84978,
+    "type": "image/webp"
+  },
+  "aquarelles/acteurs/four-porte": {
+    "file": "baked/aquarelles/acteurs/four-porte.webp",
+    "sha": "d430d98f7f173c4f8ff5215bc0890f02368b363ff0e72916c10313b24f559cb7",
+    "w": 600,
+    "h": 600,
+    "bytes": 71350,
     "type": "image/webp"
   },
   "aquarelles/acteurs/four": {
@@ -205,6 +277,30 @@
     "w": 600,
     "h": 600,
     "bytes": 109832,
+    "type": "image/webp"
+  },
+  "aquarelles/acteurs/gaufres-liege": {
+    "file": "baked/aquarelles/acteurs/gaufres-liege.webp",
+    "sha": "70eb5c9568451280d800da7ae90fcae9ee46b08512d43b17ab706e030adf56bd",
+    "w": 600,
+    "h": 600,
+    "bytes": 110348,
+    "type": "image/webp"
+  },
+  "aquarelles/acteurs/gaufrier-base": {
+    "file": "baked/aquarelles/acteurs/gaufrier-base.webp",
+    "sha": "ac1c424964d9f72a59aa5e278c7b3c76a1abb8a75a4991ea6e90def32386e565",
+    "w": 600,
+    "h": 600,
+    "bytes": 87856,
+    "type": "image/webp"
+  },
+  "aquarelles/acteurs/gaufrier-couvercle": {
+    "file": "baked/aquarelles/acteurs/gaufrier-couvercle.webp",
+    "sha": "a416c74550cc70d82e632abf0668e585f97c78c8f12b1474eb2e254e73880dc1",
+    "w": 600,
+    "h": 600,
+    "bytes": 91400,
     "type": "image/webp"
   },
   "aquarelles/acteurs/gousse": {
@@ -367,6 +463,14 @@
     "bytes": 52292,
     "type": "image/webp"
   },
+  "aquarelles/acteurs/poires-tranches": {
+    "file": "baked/aquarelles/acteurs/poires-tranches.webp",
+    "sha": "a51cd56e16143343551decdf2bc8256e68db9f0c05605cf5b02a2f5dabc0ecf2",
+    "w": 600,
+    "h": 600,
+    "bytes": 76390,
+    "type": "image/webp"
+  },
   "aquarelles/acteurs/pomme-coupee": {
     "file": "baked/aquarelles/acteurs/pomme-coupee.webp",
     "sha": "6b7b4172038e17015f7fbbd4383c3ec341850543e53f4fc01c77277568bdeafa",
@@ -431,6 +535,22 @@
     "bytes": 75170,
     "type": "image/webp"
   },
+  "aquarelles/acteurs/spitzbuben": {
+    "file": "baked/aquarelles/acteurs/spitzbuben.webp",
+    "sha": "2098b8fc04f376a23c69e263665d7cbeacc0807156346d4d814bd3909bb19513",
+    "w": 600,
+    "h": 600,
+    "bytes": 111636,
+    "type": "image/webp"
+  },
+  "aquarelles/acteurs/sucre-perle": {
+    "file": "baked/aquarelles/acteurs/sucre-perle.webp",
+    "sha": "efcb73ca2f546d7de1bd56e5449985082500e303b93b4bd69b69a3c482f9099d",
+    "w": 600,
+    "h": 600,
+    "bytes": 88690,
+    "type": "image/webp"
+  },
   "aquarelles/acteurs/sucre": {
     "file": "baked/aquarelles/acteurs/sucre.webp",
     "sha": "4e29e0d0268443baa32c3b4dfd68763f1342bd205e29357e9f819fb299bb5d92",
@@ -453,6 +573,14 @@
     "w": 600,
     "h": 600,
     "bytes": 72700,
+    "type": "image/webp"
+  },
+  "aquarelles/banana-bread": {
+    "file": "baked/aquarelles/banana-bread.webp",
+    "sha": "4c7e134622652008516dea55a06e5703689cd38cee1cfed4fbf9f8a9f90f81b3",
+    "w": 600,
+    "h": 600,
+    "bytes": 117320,
     "type": "image/webp"
   },
   "aquarelles/ble": {
@@ -605,6 +733,14 @@
     "w": 500,
     "h": 650,
     "bytes": 87064,
+    "type": "image/webp"
+  },
+  "aquarelles/flaugnarde-poires": {
+    "file": "baked/aquarelles/flaugnarde-poires.webp",
+    "sha": "ee5a6c5a0d66658497f0c0fd1d6d1584daaa60d429f874a83764316f9f73a20f",
+    "w": 600,
+    "h": 600,
+    "bytes": 95960,
     "type": "image/webp"
   },
   "aquarelles/fond/carotte": {
@@ -773,6 +909,14 @@
     "w": 684,
     "h": 800,
     "bytes": 108300,
+    "type": "image/webp"
+  },
+  "aquarelles/gaufres-liege": {
+    "file": "baked/aquarelles/gaufres-liege.webp",
+    "sha": "70eb5c9568451280d800da7ae90fcae9ee46b08512d43b17ab706e030adf56bd",
+    "w": 600,
+    "h": 600,
+    "bytes": 110348,
     "type": "image/webp"
   },
   "aquarelles/guirlande": {
@@ -1125,6 +1269,14 @@
     "w": 700,
     "h": 650,
     "bytes": 106598,
+    "type": "image/webp"
+  },
+  "aquarelles/spitzbuben": {
+    "file": "baked/aquarelles/spitzbuben.webp",
+    "sha": "2098b8fc04f376a23c69e263665d7cbeacc0807156346d4d814bd3909bb19513",
+    "w": 600,
+    "h": 600,
+    "bytes": 111636,
     "type": "image/webp"
   },
   "aquarelles/tarte-myrtilles": {

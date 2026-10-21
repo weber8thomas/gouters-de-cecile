@@ -5,7 +5,8 @@ export interface RedessinCarte { bloc: string; traits: TraitRedessin[] }
 export interface PageRedessin { id: string; el: HTMLElement; ecrite: boolean }
 
 const NS = 'http://www.w3.org/2000/svg';
-const EFFACE = .85, PAUSE = .15, TRACE = 2.6;
+const EFFACE = .85, PAUSE = .2, TRACE = 3.1;
+const PREMIER_REDESSIN = 2, REPOS_REDESSIN = 5.5;
 export const DUREE_REDESSIN = EFFACE + PAUSE + TRACE;
 const borne = (n: number) => Math.max(0, Math.min(1, n));
 
@@ -73,12 +74,12 @@ export class Redessins {
       const dessins = this.pages[page.id]?.redessins;
       if (!dessins?.length) continue;
       let e = this.etats.get(page.id);
-      if (!e) { e = { idx: 0, attente: 3.5, temps: null, page, phase: 'repos' }; this.etats.set(page.id, e); }
+      if (!e) { e = { idx: 0, attente: PREMIER_REDESSIN, temps: null, page, phase: 'repos' }; this.etats.set(page.id, e); }
       if (e.page.el !== page.el) this.retirer(e);
       e.page = page;
       if (!options.repos || options.reduit || !page.ecrite || page.el.dataset.gcEncre4x === 'oui') {
         this.retirer(e);
-        if (options.reduit) { e.temps = null; e.attente = 3.5; e.phase = 'repos'; }
+        if (options.reduit) { e.temps = null; e.attente = PREMIER_REDESSIN; e.phase = 'repos'; }
         continue;
       }
       if (e.temps == null) {
@@ -87,7 +88,7 @@ export class Redessins {
         e.temps = 0;
       } else e.temps += Math.max(0, dt);
       if (e.temps >= DUREE_REDESSIN) {
-        this.retirer(e); e.temps = null; e.phase = 'repos'; e.attente = 8.5; e.idx = (e.idx + 1) % dessins.length; continue;
+        this.retirer(e); e.temps = null; e.phase = 'repos'; e.attente = REPOS_REDESSIN; e.idx = (e.idx + 1) % dessins.length; continue;
       }
       const dessin = dessins[e.idx];
       if (!e.masque) e.masque = this.creer(e, dessin);

@@ -97,6 +97,26 @@ class PoliceLisible(unittest.TestCase):
                 self.assertEqual(len(etapes), len(recette["etapes"]))
                 self.assertTrue(all(b["disposition"] == "tete" for b in etapes))
 
+    def test_soulignements_degagent_les_descendants_et_le_paragraphe_suivant(self):
+        for nom in POL.POLICES:
+            with self.subTest(police=nom):
+                m = MEP.mettre_en_page({
+                    "id": "titres", "graine": 8, "police": nom, "main": "soignee",
+                    "blocs": [{"type": "titre", "id": "recette", "texte": "Gaufres gourmandes et gâteaux pour le goûter",
+                               "echelle": 1.8, "souligne": "double"},
+                              {"type": "paragraphe", "texte": "Préparation : verser les ingrédients dans le saladier."}],
+                }, dessins=False)
+                self.assertFalse(m.deborde)
+                soulignes = [t for t in m.traces if t.decor == "recette"]
+                self.assertTrue(soulignes)
+                for t in soulignes:
+                    marge = t.diam * 1.1 + 2.
+                    for mot in m.mots:
+                        x0, y0, x1, y1 = mot.boite
+                        touche = ((t.pts[:, 0] >= x0 - marge) & (t.pts[:, 0] <= x1 + marge)
+                                  & (t.pts[:, 1] >= y0 - marge) & (t.pts[:, 1] <= y1 + marge))
+                        self.assertFalse(np.any(touche), f"trait sur {mot.texte}")
+
 
 if __name__ == "__main__":
     unittest.main()

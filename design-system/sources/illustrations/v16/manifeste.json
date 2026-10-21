@@ -1,0 +1,278 @@
+{
+  "serie": "anglaise-v16",
+  "reference": "design-system/sources/illustrations/v14/patisserie.png",
+  "direction": "Douze sujets en deux planches transparentes, crayon brun fin et aquarelle mate anglaise. Quatre desserts sont exportés aussi à la racine ; Suzanne réutilise gateau-pommes. Four articulé dérivé séparément du PNG existant, sans dessin GPU.",
+  "planches": [
+    {
+      "fichier": "desserts.png",
+      "sujets": [
+        {
+          "nom": "acteurs/spitzbuben",
+          "sujet": "spitzbuben",
+          "cellule": [
+            0,
+            0,
+            450,
+            520
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "spitzbuben",
+          "sujet": "spitzbuben",
+          "cellule": [
+            0,
+            0,
+            450,
+            520
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/flaugnarde-poires",
+          "sujet": "flaugnarde-poires",
+          "cellule": [
+            450,
+            0,
+            1055,
+            520
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "flaugnarde-poires",
+          "sujet": "flaugnarde-poires",
+          "cellule": [
+            450,
+            0,
+            1055,
+            520
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/banana-bread",
+          "sujet": "banana-bread",
+          "cellule": [
+            1055,
+            0,
+            1536,
+            520
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "banana-bread",
+          "sujet": "banana-bread",
+          "cellule": [
+            1055,
+            0,
+            1536,
+            520
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/gaufres-liege",
+          "sujet": "gaufres-liege",
+          "cellule": [
+            0,
+            520,
+            520,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "gaufres-liege",
+          "sujet": "gaufres-liege",
+          "cellule": [
+            0,
+            520,
+            520,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/poires-tranches",
+          "sujet": "poires-tranches",
+          "cellule": [
+            530,
+            520,
+            1040,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/banane-ecrasee",
+          "sujet": "banane-ecrasee",
+          "cellule": [
+            1045,
+            520,
+            1536,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "outils.png",
+      "sujets": [
+        {
+          "nom": "acteurs/biscuit-sable",
+          "sujet": "biscuit-sable",
+          "cellule": [
+            0,
+            0,
+            530,
+            500
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/emporte-piece",
+          "sujet": "emporte-piece",
+          "cellule": [
+            540,
+            0,
+            1030,
+            500
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/confiture",
+          "sujet": "confiture",
+          "cellule": [
+            1040,
+            0,
+            1536,
+            500
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/gaufrier-base",
+          "sujet": "gaufrier-base",
+          "cellule": [
+            0,
+            510,
+            535,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/gaufrier-couvercle",
+          "sujet": "gaufrier-couvercle",
+          "cellule": [
+            540,
+            510,
+            1035,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/sucre-perle",
+          "sujet": "sucre-perle",
+          "cellule": [
+            1040,
+            510,
+            1536,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        }
+      ]
+    }
+  ],
+  "derivation_four": {
+    "source": "four-original.png",
+    "porte_polygone": [
+      [
+        44,
+        193
+      ],
+      [
+        445,
+        202
+      ],
+      [
+        443,
+        484
+      ],
+      [
+        43,
+        456
+      ]
+    ],
+    "cavite_source": [
+      125,
+      272,
+      371,
+      396
+    ],
+    "charniere": [
+      0.406,
+      0.785
+    ],
+    "sorties": [
+      "four-corps",
+      "four-cavite",
+      "four-porte"
+    ],
+    "description": "Découpage technique de la façade peinte et agrandissement du rack déjà peint dans la vitre. Même canevas600×600, restitution fermée identique, aucune texture GPU."
+  }
+}

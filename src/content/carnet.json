@@ -1,5 +1,5 @@
 {
-  "_": "Carnet des treize recettes reçues ; ordre unique des doubles pages et des folios. Textes intégraux et éventuelles feuilles de suite préservés.",
+  "_": "Dix-huit recettes reçues ; ordre unique des doubles pages, sommaire au folio 8, sources et quantités conservées.",
   "doubles": [
     {
       "id": "titre",
@@ -44,7 +44,7 @@
       "invites": [
         "lisa"
       ],
-      "titre": "Lisa — Carrot cake"
+      "titre": "Lisa Allienne — Carrot cake"
     },
     {
       "id": "emeline",
@@ -110,6 +110,33 @@
       "titre": "Coralie — Recette de fondant au chocolat"
     },
     {
+      "id": "antoine",
+      "graine": 19783,
+      "type": "recette",
+      "invites": [
+        "antoine"
+      ],
+      "titre": "Antoine — Flaugnarde aux poires 🍐"
+    },
+    {
+      "id": "suzanne",
+      "graine": 20897,
+      "type": "recette",
+      "invites": [
+        "suzanne"
+      ],
+      "titre": "Suzanne — Gâteau aux pommes 🍎"
+    },
+    {
+      "id": "margot-chapuzy",
+      "graine": 21919,
+      "type": "recette",
+      "invites": [
+        "margot-chapuzy"
+      ],
+      "titre": "Margot Chapuzy — Banana Bread de Margot 🥰"
+    },
+    {
       "id": "tartes",
       "type": "intercalaire",
       "chapitre": "tartes",
@@ -151,6 +178,15 @@
       "titre": "Julien — Cookies moelleux pépites & noisettes"
     },
     {
+      "id": "lisa-de-paris",
+      "graine": 18671,
+      "type": "recette",
+      "invites": [
+        "lisa-de-paris"
+      ],
+      "titre": "Lisa De Paris — « Spitzbuben » (ou « Terrassenbrödle »)"
+    },
+    {
       "id": "brioches",
       "type": "intercalaire",
       "chapitre": "brioches",
@@ -181,6 +217,15 @@
         "laura"
       ],
       "titre": "Laura Gramegna — Crêpes gourmandes Nutella-banane-chantilly"
+    },
+    {
+      "id": "elise",
+      "graine": 22031,
+      "type": "recette",
+      "invites": [
+        "elise"
+      ],
+      "titre": "Elise — Gaufres de Liège"
     },
     {
       "id": "fin",

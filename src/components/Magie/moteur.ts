@@ -43,6 +43,8 @@ import {
   cachettesDe,
   encreDe,
   grille,
+  grilleMaraudeurRecette,
+  delaiMaraudeur,
   ornementsDe,
   paraphe,
   pointes,
@@ -202,6 +204,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   let promenades: Promenade[] = [];
   // Délai initial court (2,5 à 5 s) pour la démo télé, puis répétition toutes les 7 à 13 s
   let prochainsPas = 2.5 + Math.random() * 2.5;
+  let pagesDesPas = '';
   // Dessins secrets autonomes dans les marges toutes les 6 à 11 s
   let compteurSecret = 0;
   let reflet: Reflet | null = null;
@@ -273,6 +276,12 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       });
     });
     pages = vues;
+    const pagesActuelles = vues.map((v) => v.id).join('|');
+    if (pagesActuelles !== pagesDesPas) {
+      pagesDesPas = pagesActuelles;
+      // Chaque nouvelle recette accueille sa propre promenade, sans attendre le délai de la précédente.
+      prochainsPas = horloge + 2.5 + Math.random() * 1.5;
+    }
     for (const v of vues) preparerPage(v);
     const vivantes: Vivante[] = [];
     livre.querySelectorAll<HTMLElement>('.gc-livre__emplacement .gc-livre__page--visible [data-gc-objet="tirage"], .gc-livre__emplacement .gc-livre__page--visible [data-gc-objet="photo"]').forEach((el) => {
@@ -702,7 +711,8 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       if (!v.carte) continue;
       const e = etatDe(v.id);
       if (!e.grille || promenades.some((p) => p.page === v.id)) continue;
-      const pas = promenade(e.grille, Math.random, depart);
+      const papier = PAGES_CUITES.pages[v.id]?.recette ? grilleMaraudeurRecette(e.grille) : e.grille;
+      const pas = promenade(papier, Math.random, depart);
       if (!pas) continue;
       compte.pas += pas.length;
       promenades.push({
@@ -957,9 +967,9 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     // ce qui est posé sur les pages s'efface pendant un geste, revient au repos
     opPose = mouvement ? Math.max(0, opPose - dt * 9) : Math.min(1, opPose + dt * 2.2);
 
-    // 1. Le maraudeur & les petites pattes : calme > 1,2 s, départ en 2,5–5 s, puis toutes les 7–13 s
+    // 1. Une piste humaine à la fois, plus régulière dans les marges des recettes.
     if (!mouvement && !lent && calme > 1.2 && !plume && !plumeOccupee() && horloge > prochainsPas && promenades.length === 0) {
-      prochainsPas = horloge + 16 + Math.random() * 8;
+      prochainsPas = horloge + delaiMaraudeur(pages.some((v) => !!PAGES_CUITES.pages[v.id]?.recette));
       lancerPromenade();
     }
     promenades = promenades.filter((pr) => {

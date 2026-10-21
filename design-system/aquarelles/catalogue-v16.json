@@ -1,0 +1,157 @@
+{
+  "acteurs/spitzbuben": {
+    "sujet": "spitzbuben",
+    "fichier": "acteurs/spitzbuben.png",
+    "source": "design-system/sources/illustrations/v16/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "spitzbuben": {
+    "sujet": "spitzbuben",
+    "fichier": "spitzbuben.png",
+    "source": "design-system/sources/illustrations/v16/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "acteurs/flaugnarde-poires": {
+    "sujet": "flaugnarde-poires",
+    "fichier": "acteurs/flaugnarde-poires.png",
+    "source": "design-system/sources/illustrations/v16/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "flaugnarde-poires": {
+    "sujet": "flaugnarde-poires",
+    "fichier": "flaugnarde-poires.png",
+    "source": "design-system/sources/illustrations/v16/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "acteurs/banana-bread": {
+    "sujet": "banana-bread",
+    "fichier": "acteurs/banana-bread.png",
+    "source": "design-system/sources/illustrations/v16/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "banana-bread": {
+    "sujet": "banana-bread",
+    "fichier": "banana-bread.png",
+    "source": "design-system/sources/illustrations/v16/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "acteurs/gaufres-liege": {
+    "sujet": "gaufres-liege",
+    "fichier": "acteurs/gaufres-liege.png",
+    "source": "design-system/sources/illustrations/v16/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "gaufres-liege": {
+    "sujet": "gaufres-liege",
+    "fichier": "gaufres-liege.png",
+    "source": "design-system/sources/illustrations/v16/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "acteurs/poires-tranches": {
+    "sujet": "poires-tranches",
+    "fichier": "acteurs/poires-tranches.png",
+    "source": "design-system/sources/illustrations/v16/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "acteurs/banane-ecrasee": {
+    "sujet": "banane-ecrasee",
+    "fichier": "acteurs/banane-ecrasee.png",
+    "source": "design-system/sources/illustrations/v16/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "acteurs/biscuit-sable": {
+    "sujet": "biscuit-sable",
+    "fichier": "acteurs/biscuit-sable.png",
+    "source": "design-system/sources/illustrations/v16/outils.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "acteurs/emporte-piece": {
+    "sujet": "emporte-piece",
+    "fichier": "acteurs/emporte-piece.png",
+    "source": "design-system/sources/illustrations/v16/outils.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "acteurs/confiture": {
+    "sujet": "confiture",
+    "fichier": "acteurs/confiture.png",
+    "source": "design-system/sources/illustrations/v16/outils.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "acteurs/gaufrier-base": {
+    "sujet": "gaufrier-base",
+    "fichier": "acteurs/gaufrier-base.png",
+    "source": "design-system/sources/illustrations/v16/outils.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "acteurs/gaufrier-couvercle": {
+    "sujet": "gaufrier-couvercle",
+    "fichier": "acteurs/gaufrier-couvercle.png",
+    "source": "design-system/sources/illustrations/v16/outils.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "acteurs/sucre-perle": {
+    "sujet": "sucre-perle",
+    "fichier": "acteurs/sucre-perle.png",
+    "source": "design-system/sources/illustrations/v16/outils.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v16"
+  },
+  "acteurs/four-corps": {
+    "sujet": "four-corps",
+    "fichier": "acteurs/four-corps.png",
+    "source": "design-system/sources/illustrations/v16/four-original.png",
+    "auteur": "Dérivation technique du four anglais v14",
+    "licence": "Création pour ce projet ; provenance dans le manifeste v14",
+    "serie": "anglaise-v16",
+    "reproduction": "design-system/sources/illustrations/v16/exporter-four.py"
+  },
+  "acteurs/four-cavite": {
+    "sujet": "four-cavite",
+    "fichier": "acteurs/four-cavite.png",
+    "source": "design-system/sources/illustrations/v16/four-original.png",
+    "auteur": "Dérivation technique du four anglais v14",
+    "licence": "Création pour ce projet ; provenance dans le manifeste v14",
+    "serie": "anglaise-v16",
+    "reproduction": "design-system/sources/illustrations/v16/exporter-four.py"
+  },
+  "acteurs/four-porte": {
+    "sujet": "four-porte",
+    "fichier": "acteurs/four-porte.png",
+    "source": "design-system/sources/illustrations/v16/four-original.png",
+    "auteur": "Dérivation technique du four anglais v14",
+    "licence": "Création pour ce projet ; provenance dans le manifeste v14",
+    "serie": "anglaise-v16",
+    "reproduction": "design-system/sources/illustrations/v16/exporter-four.py"
+  }
+}
