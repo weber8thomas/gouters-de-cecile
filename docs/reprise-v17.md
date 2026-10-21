@@ -1,0 +1,9 @@
+# Revue v17 — navigation, sommaire et cuisine
+
+Corrections de cette passe : préparation des tours bornée, tour clavier direct conservant la feuille animée ; accès Sommaire et Rechercher en tête du menu latéral et signets visibles. Le mode cuisine s’ouvre en pas à pas et le montre explicitement ; passer au plein écran arrête la lecture automatique. Ses trois acteurs principaux (bol, casserole, chocolat) ont des sources restaurées natives de 1254 × 1254, distinctes des petites images du livre.
+
+Les récipients gardent leur échelle en versant. Les morceaux de chocolat tombent dans la casserole ; la porte du four suit sa charnière oblique. Margot utilise la scène à gauche et toute la préparation à droite.
+
+Mises en page demandées : sommaire sur 8–10, familles de fondants et gâteaux aux pommes, vignettes agrandies et finale mieux placée ; noms réagencés dans les chapitres, Lisa Allienne en une ligne, ingrédients de Margot en deux colonnes et étapes réunies page 33 ; scène d’Antoine agrandie. Génération des 14 faces ciblées en cours au premier point de sauvegarde, sans refaire les 62 pages ni les tuiles 4×.
+
+Validations déjà effectuées : mode cuisine TV/mobile, étapes manuelles sans passage automatique, commandes et focus ; 18 contrats de recettes ; captures ciblées Emeline/Marie et four inspectées ; préflight des pages ciblées sans débordement. Le build et la publication définitifs attendent la fin des faces et cartes actualisées. Rapports locaux non versionnés sous verification/out/v17-*.log et verification/out/coherence-v17/.

@@ -81,9 +81,9 @@
         "places": [
           "dessous"
         ],
-        "taille": 2.2,
-        "texte": "Lisa",
-        "sous": "Allienne"
+        "taille": 2.15,
+        "texte": "Lisa Allienne",
+        "pente": -0.3
       },
       "cadre": {
         "largeur": 0.84,
@@ -1295,10 +1295,10 @@
           "page": "droite",
           "nom": "aq-antoine-1",
           "rect": [
-            0.13,
-            0.55,
-            0.67,
-            0.29
+            0.08,
+            0.51,
+            0.84,
+            0.42
           ],
           "bande": true,
           "aquarelle": "flaugnarde-poires",
@@ -1411,7 +1411,7 @@
       ],
       "graine": 21919,
       "photo": {
-        "largeur": 0.42,
+        "largeur": 0.32,
         "ratio": 0.75,
         "x": 0.06,
         "y": 0.035,
@@ -1463,13 +1463,13 @@
       "graines": {},
       "aquarelles": [
         {
-          "page": "droite",
+          "page": "gauche",
           "nom": "aq-margot-chapuzy-1",
           "rect": [
-            0.13,
-            0.55,
-            0.67,
-            0.29
+            0.08,
+            0.54,
+            0.84,
+            0.41
           ],
           "bande": true,
           "aquarelle": "banana-bread",
@@ -1478,17 +1478,20 @@
       ],
       "bandeau": {
         "places": [
+          "cote",
           "dessous"
         ],
-        "taille": 2.2,
-        "texte": "Margot",
-        "sous": "Chapuzy"
+        "taille": 1.95,
+        "texte": "Margot Chapuzy",
+        "pente": -0.3
       },
       "cadre": {
         "largeur": 0.84,
         "style": "ondule",
         "titre": "Pour Cécile — message provisoire"
-      }
+      },
+      "preparation_droite": true,
+      "ingredients_colonnes": 2
     },
     "elise": {
       "source": "src/content/recettes/elise.json",

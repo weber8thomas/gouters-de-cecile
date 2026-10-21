@@ -1,0 +1,9 @@
+{
+  "serie": "anglaise-v17-hd",
+  "description": "Restaurations natives1254×1254 des trois principaux acteurs du mode cuisine, références600×600. Même composition et marge, canal alpha transparent. Les PNG originaux des résultats sont versionnés dans aquarelles/hd/acteurs ; aucun agrandissement par interpolation au build.",
+  "acteurs": [
+    "hd/acteurs/casserole",
+    "hd/acteurs/bol",
+    "hd/acteurs/chocolat"
+  ]
+}

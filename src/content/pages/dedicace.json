@@ -1,166 +1,157 @@
 {
- "main": "soignee",
- "encre": "plume",
- "gabarit": "carnet",
- "id": "dedicace",
- "double": "sommaire",
- "cote": "gauche",
- "folio": 8,
- "graine": 401,
- "_": "Sommaire dès le folio 8 : titre, dédicace intégrale compacte et onze gâteaux/cakes ; vignettes fixes agrandies, espacées sans réduire la police.",
- "blocs": [
-  {
-   "id": "titre-sommaire",
-   "type": "titre",
-   "texte": "Sommaire",
-   "echelle": 1.9,
-   "position": "centre",
-   "souligne": "trait",
-   "encre": "terracotta",
-   "graine": 44
-  },
-  {
-   "id": "dedicace",
-   "type": "etiquette",
-   "texte": "Joyeux anniversaire, Cécile !\nPour tes trente ans,\nun goûter par page,",
-   "main": "soignee",
-   "encre": "bille-bleue",
-   "role": "mot",
-   "echelle": 1.05,
-   "interligne": 1.05,
-   "rect": [
-    0.05,
-    0.115,
-    0.9,
-    0.135
-   ],
-   "pente": -1.2,
-   "graine": 35697,
-   "police": "caveat-appuye"
-  },
-  {
-   "id": "dedicace-fin",
-   "type": "etiquette",
-   "texte": "de la part de ceux qui t'aiment.",
-   "main": "soignee",
-   "encre": "bille-bleue",
-   "role": "mot",
-   "echelle": 1.05,
-   "interligne": 1.05,
-   "rect": [
-    0.05,
-    0.245,
-    0.9,
-    0.05
-   ],
-   "pente": -1.2,
-   "graine": 4021,
-   "police": "caveat-appuye"
-  },
-  {
-   "id": "sommaire-gateaux",
-   "type": "sommaire",
-   "fin": false,
-   "retrait": 0.22,
-   "avant": 0.06,
-   "vignette": 0.05,
-   "vignette_largeur": 0.16,
-   "graine": 23457,
-   "vignettes": {
-    "lisa": "vignette-lisa",
-    "emeline": "vignette-emeline",
-    "clemence": "vignette-clemence",
-    "pierrette": "vignette-pierrette",
-    "laura-geyer": "vignette-laura-geyer",
-    "marie": "vignette-marie",
-    "lea": "vignette-lea",
-    "coralie": "vignette-coralie",
-    "antoine": "vignette-antoine",
-    "suzanne": "vignette-suzanne",
-    "margot-chapuzy": "vignette-margot-chapuzy"
-   },
-   "titres": {
-    "lisa": "Lisa Allienne — Carrot cake",
-    "emeline": "Emeline — Fondant au chocolat",
-    "clemence": "Clémence — Cheesecake framboises",
-    "pierrette": "Pierrette — Cake au citron",
-    "anatole": "Anatole — Tarte aux myrtilles",
-    "lise": "Lise — Tarte aux pommes",
-    "julien": "Julien — Cookies & noisettes",
-    "laura": "Laura — Crêpes gourmandes",
-    "laura-geyer": "Laura Geyer — Orange & amandes",
-    "marie": "Marie — Fondant au chocolat",
-    "lea": "Léa — Gâteau aux pommes",
-    "coralie": "Coralie — Fondant au chocolat",
-    "antoine": "Antoine — Flaugnarde aux poires",
-    "suzanne": "Suzanne — Gâteau aux pommes",
-    "margot-chapuzy": "Margot — Banana bread"
-   },
-   "chapitres": [
-    "gateaux"
-   ],
-   "interligne": 5.4
+  "main": "soignee",
+  "encre": "plume",
+  "gabarit": "carnet",
+  "id": "dedicace",
+  "double": "sommaire",
+  "cote": "gauche",
+  "folio": 8,
+  "graine": 401,
+  "_": "Sommaire sur les folios 8–10, familles et variantes regroupées sans modifier les destinations.",
+  "blocs": [
+    {
+      "id": "titre-sommaire",
+      "type": "titre",
+      "texte": "Sommaire",
+      "echelle": 1.9,
+      "position": "centre",
+      "souligne": "trait",
+      "encre": "terracotta",
+      "graine": 44
+    },
+    {
+      "id": "dedicace",
+      "type": "etiquette",
+      "texte": "Joyeux anniversaire, Cécile !",
+      "main": "soignee",
+      "encre": "bille-bleue",
+      "role": "mot",
+      "echelle": 1.45,
+      "interligne": 1.05,
+      "rect": [
+        0.065,
+        0.115,
+        0.87,
+        0.07
+      ],
+      "pente": -0.35,
+      "graine": 35697,
+      "police": "caveat-appuye"
+    },
+    {
+      "id": "dedicace-fin",
+      "type": "etiquette",
+      "texte": "Pour tes trente ans, un goûter par page,\nde la part de ceux qui t'aiment.",
+      "main": "soignee",
+      "encre": "bille-bleue",
+      "role": "mot",
+      "echelle": 1.12,
+      "interligne": 1.05,
+      "rect": [
+        0.065,
+        0.19,
+        0.87,
+        0.085
+      ],
+      "pente": -0.35,
+      "graine": 4021,
+      "police": "caveat-appuye"
+    },
+    {
+      "id": "sommaire-gateaux",
+      "type": "sommaire",
+      "fin": false,
+      "retrait": 0.22,
+      "avant": 0.06,
+      "vignette": 0.065,
+      "vignette_largeur": 0.19,
+      "graine": 23457,
+      "vignettes": {
+        "lisa": "vignette-lisa",
+        "emeline": "vignette-emeline",
+        "clemence": "vignette-clemence",
+        "pierrette": {
+          "zone": "vignette-pierrette",
+          "hauteur": 0.08
+        },
+        "laura-geyer": "vignette-laura-geyer"
+      },
+      "titres": {
+        "lisa": "Lisa Allienne — Carrot cake",
+        "emeline": "Emeline — Fondant au chocolat",
+        "clemence": "Clémence — Cheesecake framboises",
+        "pierrette": "Pierrette — Cake au citron",
+        "anatole": "Anatole — Tarte aux myrtilles",
+        "lise": "Lise — Tarte aux pommes",
+        "julien": "Julien — Cookies & noisettes",
+        "laura": "Laura — Crêpes gourmandes",
+        "laura-geyer": "Laura Geyer — Orange & amandes",
+        "marie": "Marie — Fondant au chocolat",
+        "lea": "Léa — Gâteau aux pommes",
+        "coralie": "Coralie — Fondant au chocolat",
+        "antoine": "Antoine — Flaugnarde aux poires",
+        "suzanne": "Suzanne — Gâteau aux pommes",
+        "margot-chapuzy": "Margot — Banana bread"
+      },
+      "chapitres": [
+        "gateaux"
+      ],
+      "interligne": 5.8,
+      "invites": [
+        "lisa",
+        "emeline",
+        "marie",
+        "coralie",
+        "clemence",
+        "pierrette",
+        "laura-geyer"
+      ],
+      "groupes": [
+        {
+          "titre": "Fondants au chocolat — 3 variantes",
+          "invites": [
+            "emeline",
+            "marie",
+            "coralie"
+          ],
+          "noms": {
+            "emeline": "Emeline",
+            "marie": "Marie",
+            "coralie": "Coralie"
+          }
+        }
+      ]
+    }
+  ],
+  "vivants": [
+    {
+      "nom": "vignette-lisa",
+      "aquarelle": "carotte",
+      "anime": "fixe"
+    },
+    {
+      "nom": "vignette-emeline",
+      "aquarelle": "fondant-chocolat",
+      "anime": "fixe"
+    },
+    {
+      "nom": "vignette-clemence",
+      "aquarelle": "framboises-speculoos",
+      "anime": "fixe"
+    },
+    {
+      "nom": "vignette-pierrette",
+      "aquarelle": "citron",
+      "anime": "fixe"
+    },
+    {
+      "nom": "vignette-laura-geyer",
+      "aquarelle": "orange",
+      "anime": "fixe"
+    }
+  ],
+  "police": "kalam",
+  "marges": {
+    "haut": 0.035
   }
- ],
- "vivants": [
-  {
-   "nom": "vignette-lisa",
-   "aquarelle": "carotte",
-   "anime": "fixe"
-  },
-  {
-   "nom": "vignette-emeline",
-   "aquarelle": "fondant-chocolat",
-   "anime": "fixe"
-  },
-  {
-   "nom": "vignette-clemence",
-   "aquarelle": "framboises-speculoos",
-   "anime": "fixe"
-  },
-  {
-   "nom": "vignette-pierrette",
-   "aquarelle": "citron",
-   "anime": "fixe"
-  },
-  {
-   "nom": "vignette-laura-geyer",
-   "aquarelle": "orange",
-   "anime": "fixe"
-  },
-  {
-   "nom": "vignette-marie",
-   "aquarelle": "fondant-chocolat",
-   "anime": "fixe"
-  },
-  {
-   "nom": "vignette-lea",
-   "aquarelle": "gateau-pommes",
-   "anime": "fixe"
-  },
-  {
-   "nom": "vignette-coralie",
-   "aquarelle": "fondant-chocolat",
-   "anime": "fixe"
-  },
-  {
-   "nom": "vignette-antoine",
-   "aquarelle": "flaugnarde-poires",
-   "anime": "fixe"
-  },
-  {
-   "nom": "vignette-suzanne",
-   "aquarelle": "gateau-pommes",
-   "anime": "fixe"
-  },
-  {
-   "nom": "vignette-margot-chapuzy",
-   "aquarelle": "banana-bread",
-   "anime": "fixe"
-  }
- ],
- "police": "kalam",
- "marges": {
-  "haut": 0.035
- }
 }

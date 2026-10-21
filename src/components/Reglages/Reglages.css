@@ -672,3 +672,9 @@
 .gc-reglages__lecture { flex-basis: 100%; opacity: 0.8; }
 
 .gc-reglages__credit-musique { display: block; white-space: pre-line; overflow-wrap: anywhere; opacity: 0.8; margin-top: 0.3em; }
+
+/* Premières actions de la fiche : on retrouve une page avant de régler l'ambiance. */
+.gc-reglages__navigation { display:flex;flex-wrap:wrap;gap:.35em .7em;width:100%;padding:.1em 0 .55em;border-bottom:1px solid color-mix(in srgb,var(--gc-chocolate) 25%,transparent); }
+.gc-reglages__navigation-action { display:flex;align-items:center;gap:.35em;min-height:44px;padding:.15em .45em;border:1px solid color-mix(in srgb,var(--gc-chocolate) 32%,transparent);border-radius:4px 7px 3px 5px;background:transparent;color:inherit;font:inherit;cursor:pointer;touch-action:manipulation; }
+.gc-reglages__navigation-action svg { width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round; }
+.gc-reglages__navigation-action small { margin-left:.2em;font-size:.65em;opacity:.65; }

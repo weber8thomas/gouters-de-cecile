@@ -2,7 +2,7 @@
   "note": "Ressorts du carnet : source unique. Motion les lit (src/lib/motion.ts) ; scripts/gen-springs.mjs en tire des easings CSS linear() dans tokens.json (famille timing).",
   "springs": {
     "paper": {
-      "visualDuration": 0.9,
+      "visualDuration": 0.58,
       "bounce": 0.08,
       "usage": "Tourner une page : papier souple, presque sans rebond."
     },

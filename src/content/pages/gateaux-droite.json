@@ -7,7 +7,7 @@
   "cote": "droite",
   "graine": 602,
   "marges": {
-    "haut": 0.22
+    "haut": 0.12
   },
   "blocs": [
     {
@@ -17,20 +17,24 @@
       "taille": 1.75,
       "graine": 43,
       "encre": "terracotta",
-      "invites_taille": 1.35,
+      "invites_taille": 1.4,
       "invites_police": "kalam",
       "invites_encre": "chocolat",
-      "invites_par_ligne": 3
+      "invites_par_ligne": 3,
+      "invites_disposition": "colonnes",
+      "invites_colonnes": 2,
+      "invites_interligne": 3.15,
+      "invites_pente": -0.3
     }
   ],
   "vivants": [
     {
       "nom": "aq-gateau",
       "rect": [
-        0.14,
-        0.43,
-        0.72,
-        0.45
+        0.16,
+        0.6,
+        0.68,
+        0.3
       ],
       "aquarelle": "gateau",
       "anime": "fleurit",

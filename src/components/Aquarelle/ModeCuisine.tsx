@@ -12,6 +12,11 @@ import './ModeCuisine.css';
 
 type Demande={page:string;nom:string;type:RecetteTableau};
 const texte=(s:string)=>s.replace(/~~[^~]*~~>\{([^}]+)\}/g,'$1').replace(/__([^_]+)__/g,'$1').replace(/\^\{([^}]+)\}/g,'$1');
+/** Les grands acteurs ont une source dédiée ; les petits ingrédients gardent leur fichier natif. */
+function dessinCuisine(nom:string){
+ const hd=nom.replace(/^aquarelles\//,'aquarelles/hd/');
+ return assetInfo(hd)?assetUrl(hd):assetInfo(nom)?assetUrl(nom):undefined;
+}
 function Icone({nom}:{nom:IconeCuisine}){return <span aria-hidden="true" dangerouslySetInnerHTML={{__html:iconeCuisine(nom)}}/>;}
 
 /** Une seule recette active. Le dialogue natif isole le clavier et conserve la page du carnet. */
@@ -48,7 +53,7 @@ function Cuisine({demande,fermer}:{demande:Demande;fermer:()=>void}){
  React.useEffect(()=>{if(!mode.current) titre.current?.focus({preventScroll:true});const section=dialog.current?.querySelector('.gc-cuisine__texte');if(section)section.scrollTop=0;const contenu=dialog.current?.querySelector('.gc-cuisine__contenu');if(contenu)contenu.scrollTop=0;},[etape]);
  React.useEffect(()=>{
   const host=couche.current;if(!host)return;
-  const t=new Theatre(host,[{nom:demande.nom,zone:[0,0,1,1],angle:0,ordre:0}],n=>assetInfo(n)?assetUrl(n):undefined,()=>{},1000/760,demande.page);
+  const t=new Theatre(host,[{nom:demande.nom,zone:[0,0,1,1],angle:0,ordre:0}],dessinCuisine,()=>{},1000/760,demande.page);
   theatre.current=t;let raf=0;
   const attendre=()=>{if(t.disponible(demande.nom,demande.type)){setPret(true);t.rendre(demande.nom,demande.type,0,1);}else raf=requestAnimationFrame(attendre);};attendre();
   return()=>{cancelAnimationFrame(raf);t.detruire();theatre.current=null;};
@@ -70,9 +75,9 @@ function Cuisine({demande,fermer}:{demande:Demande;fermer:()=>void}){
   };raf=requestAnimationFrame(image);return()=>cancelAnimationFrame(raf);
   // Chaque changement d'étape relance uniquement son geste ; la sélection auto conserve l'ordre.
  },[pret,etape,reprise,demande,nb,reduit,reperes]);
- const fullscreen=()=>{const d=dialog.current;if(document.fullscreenElement)void document.exitFullscreen();else if(d?.requestFullscreen)void d.requestFullscreen().catch(()=>{});};
+ const fullscreen=()=>{setAuto(false);const d=dialog.current;if(document.fullscreenElement)void document.exitFullscreen();else if(d?.requestFullscreen)void d.requestFullscreen().catch(()=>{});};
  const groupes=[...recette.ingredients,...(recette.extras??[])];
- return <dialog ref={dialog} className="gc-cuisine" aria-labelledby="gc-cuisine-titre" data-gc-cuisine="" onCancel={e=>{e.preventDefault();fermer();}} onClick={e=>{if(e.target===e.currentTarget)fermer();}}>
+ return <dialog ref={dialog} className="gc-cuisine" aria-labelledby="gc-cuisine-titre" data-gc-cuisine="" data-mode={auto?'auto':'etapes'} onCancel={e=>{e.preventDefault();fermer();}} onClick={e=>{if(e.target===e.currentTarget)fermer();}}>
   <div className="gc-cuisine__papier">
    <header className="gc-cuisine__entete"><span>En cuisine avec {recette.nom}{recette.sousTitre?` ${recette.sousTitre}`:''}</span><div>
     <button aria-label="Plein écran" hidden={!document.fullscreenEnabled} onClick={fullscreen}><Icone nom="agrandir"/></button>
@@ -96,12 +101,13 @@ function Cuisine({demande,fermer}:{demande:Demande;fermer:()=>void}){
      <button aria-label="Précédente" disabled={etape<0} onClick={()=>naviguer(etape-1)}><Icone nom="precedent"/></button>
      <button aria-label="Voir les ingrédients" aria-pressed={etape<0} onClick={()=>naviguer(-1)}><Icone nom="ingredients"/></button>
      <output aria-live="polite">{etape<0?'Ingrédients':`${etape+1} / ${nb}`}</output>
-     <button aria-label={auto?'Pas à pas':'Lecture auto'} aria-pressed={auto} disabled={reduit||!pret} onClick={()=>{if(etape<0)setEtape(0);setFini(false);setAuto(v=>!v);}}><Icone nom={auto?'etapes':'auto'}/></button>
+     <button aria-label="Mode pas à pas" aria-pressed={!auto} data-mode="etapes" onClick={()=>setAuto(false)}><Icone nom="etapes"/></button>
+     <button aria-label="Lecture auto" aria-pressed={auto} data-mode="auto" disabled={reduit||!pret} onClick={()=>{if(etape<0)setEtape(0);setFini(false);setAuto(v=>!v);}}><Icone nom="auto"/></button>
      <button aria-label="Rejouer cette étape" disabled={etape<0} onClick={()=>{setFini(false);setReprise(v=>v+1);}}><Icone nom="rejouer"/></button>
      <button aria-label="Suivante" disabled={etape===nb-1} onClick={()=>naviguer(etape+1)}><Icone nom="suivant"/></button>
     </nav>
     {etape<0&&<button className="gc-cuisine__commencer" onClick={()=>naviguer(0)}>Commencer la préparation <Icone nom="suivant"/></button>}
-    <p>Les gestes sont accélérés. Respecte les temps de cuisson et de repos de la recette.</p>
+    <p><span className="gc-cuisine__mode">{auto?'Lecture automatique':'Pas à pas'}</span> · Les gestes sont accélérés. Respecte les temps de cuisson et de repos de la recette.</p>
    </footer>
   </div>
  </dialog>;

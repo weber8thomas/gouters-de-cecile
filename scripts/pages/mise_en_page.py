@@ -1252,6 +1252,25 @@ class Mise:
         return toutes
 
     def ingredients_puces(self, b, idx):
+        if int(b.get("colonnes", 1)) == 2 and len(b.get("lignes", [])) > 1:
+            milieu = (self.ml + self.xr) / 2
+            marge = 0.022 * self.W
+            ancienne = (self.ml, self.xr, self.base, self.pas_prec)
+            coupure = (len(b["lignes"]) + 1) // 2
+            toutes, bas = [], []
+            try:
+                for c, items in enumerate((b["lignes"][:coupure], b["lignes"][coupure:])):
+                    self.ml = ancienne[0] if c == 0 else milieu + marge
+                    self.xr = milieu - marge if c == 0 else ancienne[1]
+                    self.base, self.pas_prec = ancienne[2], ancienne[3]
+                    col = dict(b, colonnes=1, lignes=items, id=b.get("id", f"b{idx}") + f"-col{c+1}")
+                    toutes += self.ingredients_puces(col, idx * 10 + c)
+                    bas.append(self.base or 0)
+            finally:
+                self.ml, self.xr = ancienne[0], ancienne[1]
+                self.base = max(bas, default=ancienne[2] or 0)
+            self.blocs_lignes[b.get("id", f"b{idx}")] = toutes
+            return toutes
         """Liste à puces-croquis : une ligne par ingrédient (atome écrit avec sa propre graine), le
         croquis à la place du tiret (≈ 1,1 hauteur d'x, posé sur la ligne de base, un peu de
         travers), les lignes qui continuent rentrées sous le texte. Une ligne sans puce
@@ -2034,7 +2053,9 @@ class Mise:
         graine = int(b.get("graine", self.graine * 31 + idx * 7))
         interligne = float(b.get("interligne", info["interligne"] * 1.08))
         x_folio = self.xr - float(b.get("marge_folio", r.uniform(0.025, 0.045))) * self.W
+        xh_base = xh
         for k, l in enumerate(b.get("lignes", [])):
+            xh = xh_base * float(l.get("echelle", 1.0))
             g = int(l.get("graine", graine + 37 * k))
             lid = f"{bid}-{k + 1}"
             n_m = len(self.mots)
@@ -2173,6 +2194,19 @@ class Mise:
             haut_noms = bas_titre + 1.15 * ls[-1].xh * 0.6
         else:
             cx, haut_noms = self.W / 2, (self.base or self.haut) + 2 * xh
+        if b.get("invites_disposition") == "colonnes" and not isinstance(noms, str):
+            colonnes = min(int(b.get("invites_colonnes", 2)), len(noms))
+            espace = float(b.get("invites_interligne", 3.05)) * xh
+            centres = [self.W / 2] if colonnes == 1 else [self.ml + (j + 0.5) * (self.xr - self.ml) / colonnes for j in range(colonnes)]
+            for i, nom in enumerate(noms):
+                brut, marques, mots, bloc = self.ecrire_segments([{"texte": nom, "graine": g + i * 13, "police": b.get("invites_police")}], main, enc_id, b.get("outil"))
+                larg, asc, desc = self._mesure(mots, xh, info["espace"])
+                yb = haut_noms + asc + (i // colonnes) * espace
+                x = centres[i % colonnes] - larg / 2
+                self._ligne_libre(mots, x, yb, xh, float(b.get("invites_pente", -0.4)), dict(bloc.encre), bloc.epaisseur, bid + "-invites", info["espace"])
+                self.base = max(self.base or 0, yb)
+                self.texte.append(self._texte_lisible(brut, marques))
+            return
         for i, groupe in enumerate(groupes):
             texte = groupe if isinstance(groupe, str) else (", ".join(groupe[:-1]) + " et " + groupe[-1] if len(groupe) > 1 else groupe[0])
             brut, marques, mots, bloc = self.ecrire_segments([{"texte": texte, "graine": g + i * 13, "police": b.get("invites_police")}], main, enc_id, b.get("outil"))

@@ -8,20 +8,10 @@
   "folio": 5,
   "graine": 501,
   "marges": {
-    "haut": 0.075
+    "haut": 0.085
   },
-  "_": "Suite du sommaire au folio 9 : sept recettes et finale, vignettes fixes agrandies. Tous les liens et folios dérivent du carnet.",
+  "_": "Page droite du sommaire ouvert : pas de titre « suite » sur la même double page.",
   "blocs": [
-    {
-      "id": "titre",
-      "type": "titre",
-      "texte": "Sommaire (suite)",
-      "echelle": 1.9,
-      "graine": 44,
-      "position": "centre",
-      "souligne": "trait",
-      "encre": "terracotta"
-    },
     {
       "id": "frise",
       "type": "ornement",
@@ -38,20 +28,26 @@
     {
       "id": "sommaire",
       "type": "sommaire",
-      "fin": true,
+      "fin": false,
       "retrait": 0.22,
       "avant": 0.06,
-      "vignette": 0.05,
-      "vignette_largeur": 0.16,
+      "vignette": 0.068,
+      "vignette_largeur": 0.19,
       "graine": 23457,
       "vignettes": {
+        "lea": {
+          "zone": "vignette-lea",
+          "hauteur": 0.08
+        },
+        "antoine": "vignette-antoine",
+        "margot-chapuzy": "vignette-margot-chapuzy",
         "anatole": "vignette-anatole",
-        "lise": "vignette-lise",
+        "lise": {
+          "zone": "vignette-lise",
+          "hauteur": 0.08
+        },
         "julien": "vignette-julien",
-        "laura": "vignette-laura",
-        "sarah": "vignette-sarah",
-        "lisa-de-paris": "vignette-lisa-de-paris",
-        "elise": "vignette-elise"
+        "lisa-de-paris": "vignette-lisa-de-paris"
       },
       "titres": {
         "lisa": "Lisa — Carrot cake",
@@ -64,29 +60,61 @@
         "laura": "Laura Gramegna — Crêpes",
         "sarah": "Sarah — Brioche",
         "lisa-de-paris": "Lisa De Paris — Spitzbuben",
-        "elise": "Elise — Gaufres de Liège"
+        "elise": "Elise — Gaufres de Liège",
+        "lea": "Léa — Gâteau aux pommes",
+        "suzanne": "Suzanne — Gâteau aux pommes",
+        "antoine": "Antoine — Flaugnarde aux poires",
+        "margot-chapuzy": "Margot — Banana bread"
       },
       "chapitres": [
+        "gateaux",
         "tartes",
-        "biscuits",
-        "brioches",
-        "crepes"
+        "biscuits"
       ],
-      "interligne": 5.4
+      "interligne": 6.1,
+      "invites": [
+        "lea",
+        "suzanne",
+        "antoine",
+        "margot-chapuzy",
+        "anatole",
+        "lise",
+        "julien",
+        "lisa-de-paris"
+      ],
+      "chapitres_sans_titre": [
+        "gateaux"
+      ],
+      "groupes": [
+        {
+          "titre": "Gâteaux aux pommes — 2 variantes",
+          "invites": [
+            "lea",
+            "suzanne"
+          ],
+          "noms": {
+            "lea": "Léa",
+            "suzanne": "Suzanne"
+          }
+        }
+      ]
     }
   ],
   "vivants": [
     {
-      "nom": "aq-tasse",
-      "rect": [
-        0.75,
-        0.045,
-        0.17,
-        0.117
-      ],
-      "aquarelle": "tasse-2",
-      "anime": "vapeur",
-      "angle": -4
+      "nom": "vignette-lea",
+      "aquarelle": "pomme",
+      "anime": "fixe"
+    },
+    {
+      "nom": "vignette-antoine",
+      "aquarelle": "flaugnarde-poires",
+      "anime": "fixe"
+    },
+    {
+      "nom": "vignette-margot-chapuzy",
+      "aquarelle": "banana-bread",
+      "anime": "fixe"
     },
     {
       "nom": "vignette-anatole",
@@ -104,23 +132,8 @@
       "anime": "fixe"
     },
     {
-      "nom": "vignette-laura",
-      "aquarelle": "crepes-banane",
-      "anime": "fixe"
-    },
-    {
-      "nom": "vignette-sarah",
-      "aquarelle": "brioche",
-      "anime": "fixe"
-    },
-    {
       "nom": "vignette-lisa-de-paris",
       "aquarelle": "spitzbuben",
-      "anime": "fixe"
-    },
-    {
-      "nom": "vignette-elise",
-      "aquarelle": "gaufres-liege",
       "anime": "fixe"
     }
   ],

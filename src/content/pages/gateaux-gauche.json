@@ -6,67 +6,75 @@
   "double": "gateaux",
   "cote": "gauche",
   "graine": 601,
-  "_": "Un seul plateau de pâtisseries du chapitre : chocolat, carotte, citron ; pas de répétitions de tasses ni mélange de fruits sans rapport.",
+  "_": "Suite du sommaire au folio 10, avant le chapitre Gâteaux & cakes à droite11. Les folios de recettes restent inchangés.",
   "blocs": [
     {
-      "id": "cadre",
-      "type": "ornement",
-      "forme": "cadre",
-      "rect": [
-        0.075,
-        0.055,
-        0.85,
-        0.87
-      ],
+      "id": "titre-sommaire-suite",
+      "type": "titre",
+      "texte": "Sommaire (suite)",
+      "echelle": 1.75,
+      "position": "centre",
+      "souligne": "trait",
       "encre": "terracotta",
-      "graine": 6011
+      "graine": 45
+    },
+    {
+      "id": "sommaire-suite",
+      "type": "sommaire",
+      "chapitres": [
+        "brioches",
+        "crepes"
+      ],
+      "fin": true,
+      "retrait": 0.23,
+      "avant": 0.13,
+      "vignette": 0.082,
+      "vignette_largeur": 0.2,
+      "interligne": 7.3,
+      "graine": 23519,
+      "vignettes": {
+        "sarah": "vignette-sarah",
+        "laura": "vignette-laura",
+        "elise": "vignette-elise"
+      },
+      "titres": {
+        "sarah": "Sarah — Brioche",
+        "laura": "Laura Gramegna — Crêpes",
+        "elise": "Elise — Gaufres de Liège"
+      },
+      "finale_titre": "Joyeux anniversaire, Cécile !"
     }
   ],
   "vivants": [
     {
-      "nom": "aq-guirlande",
-      "rect": [
-        0.12,
-        0.15,
-        0.76,
-        0.12
-      ],
-      "aquarelle": "guirlande",
-      "anime": "balance",
-      "angle": 0
+      "nom": "vignette-sarah",
+      "aquarelle": "brioche",
+      "anime": "fixe"
     },
     {
-      "nom": "aq-fondant",
-      "rect": [
-        0.17,
-        0.31,
-        0.66,
-        0.29
-      ],
-      "aquarelle": "fondant-chocolat",
-      "angle": 0
+      "nom": "vignette-laura",
+      "aquarelle": "crepes-banane",
+      "anime": "fixe"
     },
     {
-      "nom": "aq-carotte",
-      "rect": [
-        0.19,
-        0.62,
-        0.29,
-        0.21
-      ],
-      "aquarelle": "carotte",
-      "angle": 0
+      "nom": "vignette-elise",
+      "aquarelle": "gaufres-liege",
+      "anime": "fixe"
     },
     {
-      "nom": "aq-citron",
+      "nom": "aq-tasse",
       "rect": [
-        0.53,
-        0.62,
-        0.29,
-        0.21
+        0.32,
+        0.77,
+        0.36,
+        0.18
       ],
-      "aquarelle": "citron",
-      "angle": 0
+      "aquarelle": "tasse-2",
+      "anime": "vapeur",
+      "angle": -3
     }
-  ]
+  ],
+  "marges": {
+    "haut": 0.075
+  }
 }

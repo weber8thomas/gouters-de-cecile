@@ -12,7 +12,7 @@ import { Ecran } from '../../components/Ecran';
 import { InvitationOuvrir } from '../../components/Invitation';
 import { Livre, type LivreApi, type LivreProps } from '../../components/Livre';
 import { Reglages, CREDITS_REGLAGES } from '../../components/Reglages';
-import { NavigationCarnet } from '../../components/NavigationCarnet';
+import { NavigationCarnet, type NavigationCarnetApi } from '../../components/NavigationCarnet';
 import { CompagnonDuCarnet } from '../../components/SecretsDuCarnet';
 import { SoulevementProvider, souleverObjet, useSoulevement } from '../../components/Soulever';
 import { CAMERA_DEFAULT, CameraProvider } from '../../lib/camera';
@@ -120,6 +120,8 @@ interface CarnetLivreProps {
 /** Le livre, ses touches (Entrée : vidéo, ↑ : feuillet), la vidéo préparée à chaque page, le menu. */
 function CarnetLivre({ index, setIndex, coteInitial, arrivee, apiRef }: CarnetLivreProps) {
   const spreads = SPREADS_DEMO;
+  const navigationRef = React.useRef<NavigationCarnetApi | null>(null);
+  const sommaire = spreads.findIndex(s => s.kind === 'sommaire' || s.id === 'sommaire');
   // Couverture cuite (lot C) : images posées par variables CSS sur le livre, étiquette en <img>.
   const couverture = React.useMemo(() => couvertureVars(), []);
   // Fin du livre : la dernière double page fait butée (le livre résiste au doigt), sans plat arrière.
@@ -193,8 +195,8 @@ function CarnetLivre({ index, setIndex, coteInitial, arrivee, apiRef }: CarnetLi
         invitation={invitation}
       />
       <CompagnonDuCarnet />
-      <NavigationCarnet spreads={spreads} onAller={aller} />
-      <Reglages invites={invites} onAller={aller} credits={CREDITS} />
+      <NavigationCarnet spreads={spreads} onAller={aller} apiRef={navigationRef} />
+      <Reglages invites={invites} onAller={aller} onSommaire={sommaire >= 0 ? () => aller(sommaire) : undefined} onRechercher={() => navigationRef.current?.rechercher()} credits={CREDITS} />
     </>
   );
 }

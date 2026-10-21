@@ -29,8 +29,9 @@ const fini:Record<RecetteSlug,string>={lisa:'carotte',emeline:'fondant-chocolat'
 export { fini as ILLUSTRATIONS_RECETTES };
 const dessert=Object.fromEntries(Object.entries(fini).map(([k,v])=>[k,`aquarelles/${v}`])) as Record<RecetteSlug,string>;dessert.lisa=art('carrot-cake');dessert.pierrette=art('cake-citron');
 export function recetteDe(page:string,nom:string):RecetteTableau|undefined{
-  const slug=page.replace(/-droite$/,'') as RecetteSlug;
-  return page.endsWith('-droite')&&slug in fini&&fini[slug]===nom?`recette-${slug}`:undefined;
+  const slug=page.replace(/-(?:gauche|droite)$/,'') as RecetteSlug;
+  const cote=slug==='margot-chapuzy'?'gauche':'droite';
+  return page===`${slug}-${cote}`&&slug in fini&&fini[slug]===nom?`recette-${slug}`:undefined;
 }
 const GESTES:Record<RecetteSlug,string[]>={
  lisa:['Fouetter les œufs et le sucre','Ajouter huile, vanille et épices','Fouetter progressivement la pâte','Incorporer carottes et noix','Verser dans le moule','Cuire puis laisser refroidir'],
@@ -91,11 +92,17 @@ export function etatRecette(type:RecetteTableau,temps:number):EtatTableau {
  const sucre=(debut=3.6)=>{const v=verser(art('sucre'),s,debut,debut+1.8,[810,190],200,-65);v.acteur.alpha=transition(s,debut-.2,debut)*(1-transition(s,debut+2.2,debut+2.7));e.acteurs.push(v.acteur);poudre(debut+1.5,debut+2.2);};
  const oeufs=(debut=0)=>e.acteurs.push(...casserOeuf(s-debut).map(x=>({...x,alpha:x.alpha*transition(s,debut-.2,debut)*(1-transition(s,debut+4.5,debut+5))})));
  const farine=(debut=3)=>{const v=verser(art('sac-farine'),s,debut,debut+1.8,[800,170],200,-70);v.acteur.alpha=transition(s,debut-.2,debut)*(1-transition(s,debut+2.2,debut+2.8));e.acteurs.push(v.acteur);poudre(debut+1.5,debut+2.2);};
- const verse=(nom='pichet-lait',couleur='#eee0bd',debut=0)=>{
-  const vitesse=Math.max(1,4.2/Math.max(1.5,duree-.4-debut)),t=(s-debut)*vitesse,v=verser(art(nom),t,0,2.9,[790,210],230,-48);
+ const verse=(nom='pichet-lait',couleur='#eee0bd',debut=0,horloge=s)=>{
+  // Le bol et la casserole gardent leur taille de travail quand ils versent.
+  // Le bord réel du récipient incliné détermine le départ du filet.
+  const recipient=nom==='bol'||nom==='casserole',w=nom==='bol'?580:nom==='casserole'?590:230;
+  const vitesse=Math.max(1,4.2/Math.max(1.5,duree-.4-debut)),t=(horloge-debut)*vitesse,v=verser(art(nom),t,0,2.9,[790,210],w,-48);
+  if(recipient){v.acteur.x=320;v.acteur.y=250;v.acteur.angle=25*transition(t,1,1.7)*(1-transition(t,2.9,3.6));}
   v.acteur.alpha=transition(t,-.2,0)*(1-transition(t,3.4,4.2));e.acteurs.push(v.acteur);
   // Un apport inactif ne peut plus effacer le jet d'un apport précédent encore visible.
-  if(v.debit>0)e.versement={origine:[v.acteur.x-65,v.acteur.y+12],cible:[500,330],alpha:v.debit,couleur};
+  const bouche=nom==='bol'?[.45*w,-.13*w]:nom==='casserole'?[.17*w,-.067*w]:[-65,12],angle=v.acteur.angle*Math.PI/180;
+  const origine:[number,number]=recipient?[v.acteur.x+bouche[0]*Math.cos(angle)-bouche[1]*Math.sin(angle),v.acteur.y+bouche[0]*Math.sin(angle)+bouche[1]*Math.cos(angle)]:[v.acteur.x-65,v.acteur.y+12];
+  if(v.debit>0)e.versement={origine,cible:cibleRecipient(),alpha:v.debit,couleur};
   return v;
  };
  const moule=()=>{const index=e.acteurs.length,rect=slug==='sarah'||slug==='margot-chapuzy';e.acteurs.push(a(rect?'moule-brioche':'moule',500,440,640));e.recipient={index,coupe:.47,forme:rect?'rectangle':'moule'};};
@@ -109,19 +116,26 @@ export function etatRecette(type:RecetteTableau,temps:number):EtatTableau {
   if(slug==='lisa-de-paris')pat.sy=.45;
   e.acteurs.push(pat);
   if(st>=5.05)e.acteurs.push(acteur(sortieAsset,607-107*sortie,360+30*sortie,180+530*sortie,0,transition(st,5.05,5.45)));
-  e.acteurs.push(a('four-corps',...four,0,alpha),{...a('four-porte',...four,0,alpha),pivot:[.406,.785],sy:1-1.3*Math.min(1,ouvre)});
+  // La charnière suit le bas oblique de la porte dans le dessin en perspective.
+  e.acteurs.push(a('four-corps',...four,0,alpha),{...a('four-porte',...four,0,alpha),pivot:[.406,.785],charniere:4.1,sy:1-1.3*Math.min(1,ouvre)});
  };
  const fruit=(nom:string,k:number,w=170)=>{const p=fruitAuBol(art(nom),s,.5+k*.7,2.7+k*.7,20,21,[220+560*k,150],[440+120*k,e.recipient?.forme==='moule'?425:310],w,(k?1:-1)*25);e.acteurs.push(p);};
  const etaler=()=>{moule();e.acteurs.push({...a('pate-sablee',500,435,500),sy:.34});const q=Math.sin(s*2.1)*cloche(s,.5,6);e.acteurs.push(a('rouleau',500+140*q,200,420,-12));};
  const patons=(pousse=0,faconnage=false)=>{for(let k=0;k<6;k++){const rang=Math.floor(k/2),cote=k%2,debut=.4+k*.7,q=faconnage?transition(s,debut,debut+1.1):1,x=390+rang*110+(cote?35:-35),y=435-rang*55+(cote?20:-25);e.acteurs.push(a('paton-brioche',170+(x-170)*q,120+(y-120)*q*q,145+30*pousse,-8+8*q,faconnage?transition(s,debut-.2,debut):1));}};
  const fondre=()=>{
   e.acteurs=[a('casserole',500,440,590)];e.recipient={index:0,coupe:.55,forme:'casserole'};
-  const casse=transition(s,.6,1.2),tombe=transition(s,1.5,3),fondu=transition(s,3,5.5);
-  e.acteurs.push(a('chocolat',450,180,300,0,1-casse));
-  for(let k=0;k<2;k++)e.acteurs.push({...a('chocolat',450+(k?65:-65)*casse,180+235*tombe*tombe,300,(k?15:-15)*casse,casse*(1-fondu)),clip:[k*.5,0,.5,1]});
+  const casse=transition(s,.6,1.2),tombe=transition(s,1.5,3),fondu=transition(s,3,5.5),largeur=300;
+  e.acteurs.push(a('chocolat',420,180,largeur,0,1-casse));
+  for(let k=0;k<2;k++){
+   const signe=k?1:-1,angle=signe*12*casse*(1-tombe),rad=angle*Math.PI/180;
+   const centre=420+signe*((largeur/4+12*casse)*(1-tombe)+28*tombe),hauteur=180+245*tombe*tombe;
+   // Le clip conserve son décalage dans la tablette : on le compense pour
+   // faire tomber le centre de chaque moitié dans la cuve, pas à côté.
+   e.acteurs.push({...a('chocolat',centre-signe*largeur/4*Math.cos(rad),hauteur-signe*largeur/4*Math.sin(rad),largeur,angle,casse*(1-fondu)),clip:[k*.5,0,.5,1]});
+  }
   e.surface={cx:420,cy:425,rx:156,ry:62,alpha:fondu,asset:art('chocolat-fondu')};
  };
- const remplir=(chocolat=false,st=s)=>{moule();surface(chocolat,transition(st,2,5));const v=verser(art('bol'),st,0,4,[800,180],320,-65);e.acteurs.push(v.acteur);e.versement={origine:[v.acteur.x-100,v.acteur.y+80],cible:[500,430],alpha:v.debit,couleur:chocolat?'#603523':'#e7d09a'};};
+ const remplir=(chocolat=false,st=s)=>{moule();surface(chocolat,transition(st,2,5));verse('bol',chocolat?'#603523':'#e7d09a',0,st);};
  const pommes=()=>{const q=transition(s,1.8,3.4);e.acteurs.push(acteur('aquarelles/pomme',330,200,270,0,1-q),a('pommes-cubes',330,200+130*q,300,0,q),acteur('aquarelles/scenes/couteau',500,110+110*Math.sin(Math.PI*transition(s,.8,3.2)),240,-30,1-transition(s,3.4,4)));};
  // Les nouvelles recettes partagent les mêmes gestes, mais gardent l'ordre de leur source.
  const biscuits=(surPlaque=false)=>{
@@ -229,13 +243,8 @@ export function etatRecette(type:RecetteTableau,temps:number):EtatTableau {
   const q=transition(s,3.5,4.5);e.acteurs.forEach(a=>a.alpha*=1-q);const debut=e.acteurs.length;cuire();e.acteurs.slice(debut).forEach(a=>a.alpha*=q);
  }else if(slug==='sarah'&&i===6){resultat();}
  else if(slug==='emeline'&&i===0){
-  e.acteurs=[a('casserole',500,440,590)];e.recipient={index:0,coupe:.55,forme:'casserole'};
-  const casse=transition(s,.6,1.2),tombe=transition(s,1.5,3),fondu=transition(s,3,6);
-  e.acteurs.push(a('chocolat',450,180,330,0,1-casse));
-  e.acteurs.push({...a('chocolat',450-70*casse,180+240*tombe*tombe,330,-15*casse,casse*(1-fondu)),clip:[0,0,.5,1]});
-  e.acteurs.push({...a('chocolat',450+70*casse,180+240*tombe*tombe,330,15*casse,casse*(1-fondu)),clip:[.5,0,.5,1]});
-  e.acteurs.push(a('beurre',740-200*tombe,200+220*tombe*tombe,180*(1-.5*fondu),0,1-fondu));
-  e.surface={cx:420,cy:425,rx:156,ry:62,alpha:fondu,asset:art('chocolat-fondu')};
+  fondre();const tombe=transition(s,1.5,3),fondu=transition(s,3,5.5);
+  e.acteurs.push(a('beurre',680-250*tombe,200+225*tombe*tombe,180*(1-.5*fondu),0,1-fondu));
  }else if((slug==='emeline'&&i===1)||(slug==='lisa'&&i===0)||(slug==='pierrette'&&i===1)||(slug==='julien'&&i===0)){
   battre();oeufs();sucre();if(slug==='julien')ajouter('beurre',0,160,.1);
  }else if((slug==='emeline'&&i===2)||(slug==='lisa'&&i===1)||(slug==='pierrette'&&i===2)){
@@ -243,7 +252,7 @@ export function etatRecette(type:RecetteTableau,temps:number):EtatTableau {
  }else if(slug==='lisa'&&i===2){battre();
  }else if(slug==='lisa'&&i===3){battre();ajouter('carottes-rapees');ajouter('noix',1);
  }else if((slug==='lisa'&&i===4)||(slug==='emeline'&&i===3)){
-  moule();surface(slug==='emeline',transition(s,1,4));const v=verser(art('bol'),s,0,4,[780,210],320,-65);e.acteurs.push(v.acteur);e.versement={origine:[570,220],cible:[500,430],alpha:v.debit,couleur:slug==='emeline'?'#603523':'#e7d09a'};
+  remplir(slug==='emeline');
   if(slug==='emeline'){const q=transition(s,3.5,4.5);e.acteurs.forEach(a=>a.alpha*=1-q);if(e.surface)e.surface.alpha*=1-q;const n=e.acteurs.length;cuire();e.acteurs.slice(n).forEach(a=>a.alpha*=q);}
 
  }else if(slug==='clemence'&&i===0){

@@ -9,7 +9,7 @@ const noms={lisa:'carotte',emeline:'fondant-chocolat',clemence:'framboises-specu
 if(process.env.GC_RECETTE)for(const slug of Object.keys(noms))if(!process.env.GC_RECETTE.split(',').includes(slug))delete noms[slug];
 const preuves=[];
 for(const [slug,nom]of Object.entries(noms)){
- const type=`recette-${slug}`,def=TABLEAUX[type];assert.equal(tableauDe(nom,`${slug}-droite`),type);assert.notEqual(tableauDe(nom,'gateaux-gauche'),type);
+ const type=`recette-${slug}`,def=TABLEAUX[type],cote=slug==='margot-chapuzy'?'gauche':'droite';assert.equal(tableauDe(nom,`${slug}-${cote}`),type);assert.notEqual(tableauDe(nom,'gateaux-gauche'),type);
  for(const a of def.assets)assert(existsSync(`design-system/baked/${a}.webp`),a);
  const bornes=ETAPES_TABLEAUX[type];assert(bornes.length>=4&&bornes.length<=15);assert.equal(bornes.at(-1),def.duree);
  for(const {debut:t} of REPERES_RECETTES[type].slice(1)){assert(etatTableau(type,t-.001).acteurs.every(a=>a.alpha<.01));assert(etatTableau(type,t+.001).acteurs.every(a=>a.alpha<.01));}
@@ -31,7 +31,7 @@ writeFileSync(out+'/contrats.json',JSON.stringify({preuves,chocolatCasse:true,be
 if(process.argv.includes('--contrats')){console.log(`${preuves.length} contrats recettes validés, acteurs tous déclarés`);process.exit(0);}
 const base=process.env.GC_TEST_URL??'http://127.0.0.1:5173';
 const code=await build({stdin:{contents:`import {Theatre} from './src/components/Aquarelle/tableaux';import {assetInfo,assetUrl} from './src/lib/assets';
-window.creer=async(slug,nom,type)=>{window.t?.detruire();document.body.replaceChildren();const host=document.createElement('div');Object.assign(host.style,{position:'relative',width:'1000px',height:'760px'});document.body.append(host);window.t=new Theatre(host,[{nom,zone:[0,0,1,1],angle:0,ordre:0}],n=>assetInfo(n)?new URL(assetUrl(n),'${base}/').href:undefined,()=>{},1000/760,slug+'-droite');const limite=Date.now()+20000;while(!window.t.disponible(nom,type)){if(Date.now()>limite)throw new Error('acteurs absents '+type);await new Promise(r=>setTimeout(r,30));}};`,resolveDir:process.cwd()},bundle:true,platform:'browser',format:'iife',write:false});
+window.creer=async(slug,nom,type)=>{window.t?.detruire();document.body.replaceChildren();const host=document.createElement('div');Object.assign(host.style,{position:'relative',width:'1000px',height:'760px'});document.body.append(host);window.t=new Theatre(host,[{nom,zone:[0,0,1,1],angle:0,ordre:0}],n=>assetInfo(n)?new URL(assetUrl(n),'${base}/').href:undefined,()=>{},1000/760,slug+(slug==='margot-chapuzy'?'-gauche':'-droite'));const limite=Date.now()+20000;while(!window.t.disponible(nom,type)){if(Date.now()>limite)throw new Error('acteurs absents '+type);await new Promise(r=>setTimeout(r,30));}};`,resolveDir:process.cwd()},bundle:true,platform:'browser',format:'iife',write:false});
 const browser=await lancer({media:false});const p=await browser.newPage({viewport:{width:1000,height:760}}),erreurs=[];p.on('pageerror',e=>erreurs.push(String(e)));
 try{await p.routeWebSocket('**/*',ws=>ws.close());await p.route('**/__recettes_fixture__',r=>r.fulfill({contentType:'text/html',body:'<html><body></body></html>'}));await p.goto(base+'/__recettes_fixture__');await p.setContent('<html><body style="margin:0;background:#f4ecd9"></body></html>');await p.addStyleTag({url:`${base}/src/components/Aquarelle/Aquarelle.css`});await p.addStyleTag({url:`${base}/design-system/tokens.css`});await p.addScriptTag({content:code.outputFiles[0].text});
  for(const [slug,nom]of Object.entries(noms)){

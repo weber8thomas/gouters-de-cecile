@@ -10,7 +10,9 @@ import './NavigationCarnet.css';
 export interface NavigationCarnetProps {
   spreads: SpreadSpec[];
   onAller: (index: number) => void;
+  apiRef?: React.Ref<NavigationCarnetApi>;
 }
+export interface NavigationCarnetApi { rechercher: () => void }
 function Icone({ recherche = false }: { recherche?: boolean }) {
   return <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     {recherche ? <><path d="M21 20 28 27M23 13a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/><path d="M8 12c.4-2.5 2.4-4.3 5-4.5"/></>
@@ -18,7 +20,7 @@ function Icone({ recherche = false }: { recherche?: boolean }) {
   </svg>;
 }
 /** Deux signets toujours accessibles au clavier ; la recherche reste hors de la loupe du livre. */
-export function NavigationCarnet({ spreads, onAller }: NavigationCarnetProps) {
+export function NavigationCarnet({ spreads, onAller, apiRef }: NavigationCarnetProps) {
   const ecran = useEcran();
   const [ouvert, setOuvert] = React.useState(false);
   const [requete, setRequete] = React.useState('');
@@ -38,6 +40,7 @@ export function NavigationCarnet({ spreads, onAller }: NavigationCarnetProps) {
     retour.current = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : bouton.current;
     setOuvert(true);
   }, []);
+  React.useImperativeHandle(apiRef, () => ({ rechercher: ouvrir }), [ouvrir]);
   const choisir = (i: number) => { fermer(); onAller(i); };
   React.useLayoutEffect(() => {
     if (ouvert) champ.current?.focus({ preventScroll: true });
@@ -79,7 +82,7 @@ export function NavigationCarnet({ spreads, onAller }: NavigationCarnetProps) {
   });
   const style = assetInfo('paper/base') ? { '--gc-recherche-papier': cssUrl('paper/base') } as React.CSSProperties : undefined;
   const contenu = <div className="gc-navigation-carnet">
-    <nav className="gc-navigation-carnet__signets" aria-label="Retrouver une page" data-gc-effacable>
+    <nav className="gc-navigation-carnet__signets" aria-label="Retrouver une page">
       {sommaire >= 0 && <button type="button" data-gc-controle="sommaire" aria-label="Aller au sommaire" aria-keyshortcuts="T" title="Sommaire (T)" onClick={() => onAller(sommaire)}><Icone/><span>Sommaire</span></button>}
       <button ref={bouton} type="button" data-gc-controle="recherche" aria-label="Rechercher une recette" aria-keyshortcuts="/" aria-haspopup="dialog" aria-expanded={ouvert} aria-controls={id} title="Rechercher (/)" onClick={ouvrir}><Icone recherche/><span>Rechercher</span></button>
     </nav>

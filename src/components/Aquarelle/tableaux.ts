@@ -37,7 +37,7 @@ export function tableauDe(nom: string, page = ''): TableauNom | undefined {
   return undefined;
 }
 
-export interface Acteur { asset: string; x: number; y: number; w: number; angle: number; alpha: number; clip?:[number,number,number,number]; sy?:number; pivot?:[number,number] }
+export interface Acteur { asset: string; x: number; y: number; w: number; angle: number; alpha: number; clip?:[number,number,number,number]; sy?:number; pivot?:[number,number]; charniere?:number }
 // Repères des nouveaux sprites v10, mesurés dans leur canevas commun. La deuxième morsure était
 // décalée à gauche : on aligne les attaches des fanes avant de composer les étapes.
 export const ANCRES_CAROTTE: { attache: [number, number]; bout: [number, number] }[] = [
@@ -264,7 +264,8 @@ export class Theatre {
   private poserImage(im: SVGImageElement, a: Acteur) {
     const u = this.url(logique(a.asset))!, info = assetInfo(logique(a.asset)), h = a.w / (info ? info.w / info.h : 1);
     const px=((a.pivot?.[0]??.5)-.5)*a.w,py=((a.pivot?.[1]??.5)-.5)*h;
-    attributs(im, { href: u, x: -a.w / 2, y: -h / 2, width: a.w, height: h, transform: `translate(${a.x} ${a.y}) rotate(${a.angle}) translate(${px} ${py}) scale(1 ${a.sy??1}) translate(${-px} ${-py})`, opacity: a.alpha });
+    const ouverture = a.charniere ? `skewY(${a.charniere}) scale(1 ${a.sy??1}) skewY(${-a.charniere})` : `scale(1 ${a.sy??1})`;
+    attributs(im, { href: u, x: -a.w / 2, y: -h / 2, width: a.w, height: h, transform: `translate(${a.x} ${a.y}) rotate(${a.angle}) translate(${px} ${py}) ${ouverture} translate(${-px} ${-py})`, opacity: a.alpha });
     const id=im.dataset.decoupe;if(id&&a.clip){const rect=im.ownerSVGElement?.querySelector(`#${id} rect`);if(rect)attributs(rect,{x:-a.w/2+a.clip[0]*a.w,y:-h/2+a.clip[1]*h,width:a.clip[2]*a.w,height:a.clip[3]*h});im.setAttribute('clip-path',`url(#${id})`);}else if(id)im.removeAttribute('clip-path');
     return h;
   }

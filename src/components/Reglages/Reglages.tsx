@@ -41,6 +41,9 @@ export interface ReglagesProps {
   invites?: ReglagesInvite[];
   /** Aller à la double page d'un invité (le menu se referme). */
   onAller?: (index: number) => void;
+  /** Accès directs, affichés au début de la fiche. */
+  onSommaire?: () => void;
+  onRechercher?: () => void;
   /** Texte des crédits (remplace CREDITS_REGLAGES, le texte par défaut). */
   credits?: React.ReactNode;
   /**
@@ -347,7 +350,7 @@ interface MenuProps extends ReglagesProps {
   enPlace: boolean;
 }
 
-function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: cameraFixeImpose, ouvertAuDepart = false }: MenuProps) {
+function Menu({ vp, cible, enPlace, invites = [], onAller, onSommaire, onRechercher, credits, cameraFixe: cameraFixeImpose, ouvertAuDepart = false }: MenuProps) {
   const camera = useCamera();
   const [r, setR] = useReglages();
   const reduit = useNiveauMouvement() !== 'complet';
@@ -567,6 +570,12 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
     onAller?.(index);
     fermer();
   };
+  const retrouver = (action: () => void) => {
+    // La fiche libère immédiatement le clavier et le focus pour la recherche ou le livre.
+    t.set(0);
+    setEtat('ferme');
+    action();
+  };
 
   // ---- Rendu ----
   const ouvert = etat !== 'ferme';
@@ -617,6 +626,18 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, credits, cameraFixe: 
                 </div>
 
                 <div className="gc-reglages__corps">
+                  {(onSommaire || onRechercher) && <Ligne id="navigation" large>
+                    <nav className="gc-reglages__navigation" aria-label="Retrouver une page du carnet">
+                      {onSommaire && <button type="button" className="gc-reglages__navigation-action" onClick={() => retrouver(onSommaire)}>
+                        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 5.5c4-1 7-.4 11 2 4-2.4 7-3 11-2v20c-4-1-7-.3-11 2-4-2.3-7-3-11-2Z M16 7.5v20 M8 11l5 1m-5 4 5 1m6-5 5-1m-5 6 5-1"/></svg>
+                        Sommaire <small>T</small>
+                      </button>}
+                      {onRechercher && <button type="button" className="gc-reglages__navigation-action" onClick={() => retrouver(onRechercher)}>
+                        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M21 20 28 27M23 13a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z M8 12c.4-2.5 2.4-4.3 5-4.5"/></svg>
+                        Rechercher <small>/</small>
+                      </button>}
+                    </nav>
+                  </Ligne>}
                   {!cameraFixe && (
                     <Ligne id="taille" libelle="Taille du livre" role="radiogroup">
                       <Choix options={TAILLES} valeur={camera.distance} onChoisir={camera.setDistance} graine={g()} />

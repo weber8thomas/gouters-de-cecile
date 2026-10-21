@@ -18,8 +18,12 @@
       "graine": 2008,
       "encre": "terracotta",
       "invites_police": "kalam",
-      "invites_taille": 1.35,
-      "invites_par_ligne": 3
+      "invites_taille": 1.4,
+      "invites_par_ligne": 3,
+      "invites_disposition": "colonnes",
+      "invites_colonnes": 2,
+      "invites_interligne": 3.15,
+      "invites_pente": -0.3
     }
   ],
   "vivants": [

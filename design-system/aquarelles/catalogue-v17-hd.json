@@ -1,0 +1,35 @@
+{
+  "hd/acteurs/casserole": {
+    "fichier": "hd/acteurs/casserole.png",
+    "sujet": "casserole",
+    "source": "design-system/aquarelles/hd/acteurs/casserole.png",
+    "reference": "design-system/aquarelles/acteurs/casserole.png",
+    "auteur": "Restauration haute définition assistée, fidèle à la série anglaise du carnet",
+    "licence": "Création pour ce projet",
+    "serie": "anglaise-v17-hd",
+    "cote_max": 2048,
+    "qualite": 95
+  },
+  "hd/acteurs/bol": {
+    "fichier": "hd/acteurs/bol.png",
+    "sujet": "bol",
+    "source": "design-system/aquarelles/hd/acteurs/bol.png",
+    "reference": "design-system/aquarelles/acteurs/bol.png",
+    "auteur": "Restauration haute définition assistée, fidèle à la série anglaise du carnet",
+    "licence": "Création pour ce projet",
+    "serie": "anglaise-v17-hd",
+    "cote_max": 2048,
+    "qualite": 95
+  },
+  "hd/acteurs/chocolat": {
+    "fichier": "hd/acteurs/chocolat.png",
+    "sujet": "chocolat",
+    "source": "design-system/aquarelles/hd/acteurs/chocolat.png",
+    "reference": "design-system/aquarelles/acteurs/chocolat.png",
+    "auteur": "Restauration haute définition assistée, fidèle à la série anglaise du carnet",
+    "licence": "Création pour ce projet",
+    "serie": "anglaise-v17-hd",
+    "cote_max": 2048,
+    "qualite": 95
+  }
+}

@@ -64,16 +64,16 @@ def main() -> None:
         for nom, e in json.loads(cat.read_text()).items():
             f = SOURCE / e.get("fichier", f"{nom}.png")
             if f.exists():
-                noms[nom] = f
-    for nom, f in sorted(noms.items()):
+                noms[nom] = (f, int(e.get('cote_max', COTE_MAX)), int(e.get('qualite', 88)))
+    for nom, (f, cote_max, qualite) in sorted(noms.items()):
         if selection is not None and nom not in selection:
             continue
         im = Image.open(f).convert("RGBA")
-        im.thumbnail((COTE_MAX, COTE_MAX), Image.LANCZOS)
+        im.thumbnail((cote_max, cote_max), Image.LANCZOS)
         im = teinter(saturer(im))
         out = SORTIE / f"{nom}.webp"
         out.parent.mkdir(parents=True, exist_ok=True)
-        im.save(out, "WEBP", quality=88, method=6, exact=True)
+        im.save(out, "WEBP", quality=qualite, method=6, exact=True)
         print(f"{nom:22s} {im.size[0]}×{im.size[1]}  {out.stat().st_size // 1024} Ko")
     for vieux in ([] if selection is not None else SORTIE.glob("*.webp")):
         if vieux.stem not in noms:

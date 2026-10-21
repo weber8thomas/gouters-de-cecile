@@ -927,6 +927,30 @@
     "bytes": 23936,
     "type": "image/webp"
   },
+  "aquarelles/hd/acteurs/bol": {
+    "file": "baked/aquarelles/hd/acteurs/bol.webp",
+    "sha": "c59561fd1ffd0d83b30b1a7940c533a564c53967f26da8056f6121d0bfb695b1",
+    "w": 1254,
+    "h": 1254,
+    "bytes": 254556,
+    "type": "image/webp"
+  },
+  "aquarelles/hd/acteurs/casserole": {
+    "file": "baked/aquarelles/hd/acteurs/casserole.webp",
+    "sha": "a17f2a690c6bf0f3c1a631a2f664e09f7e9f93052520fb15ac2bd7daeafd36e6",
+    "w": 1254,
+    "h": 1254,
+    "bytes": 307324,
+    "type": "image/webp"
+  },
+  "aquarelles/hd/acteurs/chocolat": {
+    "file": "baked/aquarelles/hd/acteurs/chocolat.webp",
+    "sha": "729d501ce940c028f8c1b0765f9635b3a5ab0e07db2a55b9c8bea6ba0af5870d",
+    "w": 1254,
+    "h": 1254,
+    "bytes": 253140,
+    "type": "image/webp"
+  },
   "aquarelles/jack-russell-assis": {
     "file": "baked/aquarelles/jack-russell-assis.webp",
     "sha": "c6db9736a4b0c1504e981f11003affbef93fc69340045def0dd76e79867401ba",

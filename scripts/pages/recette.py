@@ -380,6 +380,48 @@ def invites_chapitre(carnet: dict, roster: dict, chapitre: str) -> list[str]:
     return noms
 
 
+def organiser_sommaire(lignes: list, bloc: dict) -> list:
+    """Répartit le même index sur plusieurs faces et rassemble les variantes.
+
+    Les destinations et les folios restent ceux du carnet ; aucun numéro n'est
+    recopié dans les descriptions de sommaire.
+    """
+    selection = set(bloc.get("invites") or [])
+    if selection:
+        filtres, chapitre, ajoute = [], None, False
+        for ligne in lignes:
+            if ligne.get("chapitre"):
+                chapitre, ajoute = ligne, False
+                continue
+            if ligne.get("invite") in selection or (not ligne.get("invite") and bloc.get("fin")):
+                if chapitre and not ajoute and chapitre.get("id_chapitre") not in bloc.get("chapitres_sans_titre", []):
+                    filtres.append(chapitre)
+                ajoute = True
+                filtres.append(ligne)
+        lignes = filtres
+    par_invite = {ligne.get("invite"): ligne for ligne in lignes if ligne.get("invite")}
+    familles = bloc.get("groupes") or []
+    groupes = {invite: groupe for groupe in familles for invite in groupe["invites"]}
+    deja, resultat = set(), []
+    for ligne in lignes:
+        invite = ligne.get("invite")
+        groupe = groupes.get(invite)
+        if not groupe:
+            if ligne.get("cible") == "fin" and bloc.get("finale_titre"):
+                ligne = dict(ligne, texte=bloc["finale_titre"], echelle=1.15, avant=0.8)
+            resultat.append(ligne)
+            continue
+        cle = groupe["titre"]
+        if cle in deja:
+            continue
+        deja.add(cle)
+        resultat.append(dict(texte=cle, chapitre=True, souligne="aucun", echelle=1.03, avant=0.35))
+        for slug in groupe["invites"]:
+            if slug in par_invite:
+                resultat.append(dict(par_invite[slug], texte=groupe.get("noms", {}).get(slug, par_invite[slug]["texte"].split(" — ")[0]), retrait=0.29))
+    return resultat
+
+
 def resoudre_generes(desc: dict, carnet: dict, roster: dict) -> dict:
     """Blocs générés depuis le carnet : `sommaire` (`lignes` absentes → depuis carnet.json, filtrées
     par `chapitres`), `chapitre` (`titre`, `invites` absents → depuis le carnet et le roster)."""
@@ -387,7 +429,7 @@ def resoudre_generes(desc: dict, carnet: dict, roster: dict) -> dict:
     change = False
     for b in desc.get("blocs", []):
         if b.get("type") == "sommaire" and "lignes" not in b:
-            b = dict(b, lignes=lignes_sommaire(carnet, roster, b.get("chapitres"), b.get("fin", True), b.get("titres")))
+            b = dict(b, lignes=organiser_sommaire(lignes_sommaire(carnet, roster, b.get("chapitres"), b.get("fin", True), b.get("titres")), b))
             change = True
         elif b.get("type") == "chapitre" and b.get("chapitre"):
             dd = next((d for d in carnet.get("doubles", []) if d.get("chapitre") == b["chapitre"]), {})
@@ -526,6 +568,7 @@ def assembler(gab: Gabarits, base: dict, A: list[Atome], tete: list | None = Non
                 avant = 0.0 if premier or (prec is not None and prec.genre == "groupe-titre") else (0.3 if prec and prec.genre == "titre" else 0.4)
                 blocs.append({"type": "ingredients", "id": f"{a.bloc}@{a.id.split('/')[-1]}", "disposition": "puces",
                               "graine_puces": graine_atome(gab.slug, f"{a.bloc}/puces"),
+                              "colonnes": int(gab.plan.get("ingredients_colonnes", 1)),
                               "avant": avant, "lignes": [{"texte": a.texte, "graine": a.graine, "puce": a.puce, "atome": a.id}]})
         elif a.genre == "phrase":
             if prec is not None and prec.genre == "phrase" and prec.bloc == a.bloc and blocs and blocs[-1]["type"] in ("etape", "paragraphe") \
@@ -762,7 +805,16 @@ class Paginateur:
         gab = self.gab
         rep = {}
         note = _note_marge(gab)
-        bg, j = self.remplir(gab.gauche, 0, fin=note)
+        if gab.plan.get("preparation_droite"):
+            # Une recette qui choisit cette disposition garde la liste d'ingrédients
+            # entière à gauche et commence la préparation sur une page neuve.
+            debut_preparation = next((i for i, a in enumerate(self.A) if a.id == "section-preparation"), len(self.A))
+            j = min(debut_preparation, self.plus_long(gab.gauche, 0, fin=note))
+            while j > 0 and not coupure_ok(self.A, 0, j):
+                j -= 1
+            bg = gab.gauche
+        else:
+            bg, j = self.remplir(gab.gauche, 0, fin=note)
         if j == 0:
             raise Deborde(f"{gab.slug} : rien ne tient sur la page de gauche")
         rep[gab.gauche["id"]] = (bg, 0, j, None, note)

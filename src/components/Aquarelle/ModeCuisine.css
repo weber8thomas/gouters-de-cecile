@@ -6,6 +6,8 @@
 .gc-cuisine button{appearance:none;background:transparent;color:inherit;border:0;cursor:pointer;font:inherit;border-radius:35% 45% 30% 40%;padding:5px;min-width:46px;min-height:46px}
 .gc-cuisine button:hover{background:#8a622426}
 .gc-cuisine button:disabled{opacity:.3;cursor:default}
+.gc-cuisine button[data-mode][aria-pressed='true']{background:#8a622422;outline:1px solid #805b3e88;outline-offset:2px}
+.gc-cuisine__mode{color:#593e2a;font-weight:600}
 .gc-cuisine button:focus-visible,.gc-cuisine input:focus-visible{outline:2px dashed #85592d;outline-offset:4px}
 .gc-cuisine button svg{width:42px;height:42px;display:block}
 .gc-cuisine h1{font:600 clamp(26px,3vw,52px)/1.2 'Caveat',cursive;margin:8px 0 12px;border-bottom:1px solid #8d724255;padding-bottom:12px}

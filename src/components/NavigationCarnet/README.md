@@ -11,3 +11,5 @@ Dans la fiche : `↑` / `↓` choisissent un résultat, `Entrée` l’ouvre, `Ta
 ```
 
 `onAller` reçoit l’index dans `spreads`. Le sommaire est identifié par son type ou son id, sans numéro de folio imposé.
+
+Depuis la v17, les signets restent visibles et conservent leur libellé sur mobile. Le menu Réglages propose également Sommaire et Rechercher dès sa première ligne. `apiRef.rechercher()` ouvre la fiche depuis ce menu, avec le focus dans le champ.
