@@ -1,7 +1,7 @@
 /** Une quête courte, dans l'ordre du carnet. Aucun récit biographique n'est inventé. */
 export const CACHETTES = [
   {
-    id: 'serment', page: 'garde', double: 'titre', dessin: 'cle-ancienne',
+    id: 'serment', page: 'garde', double: 'titre', dessin: 'cle-ancienne', matiere: 'farine',
     titre: 'Le serment gourmand', pageTitre: 'Ce carnet appartient à Cécile', chercher: 'la petite clé', lieu: 'la page « Ce carnet appartient à Cécile »',
     appel: 'Ouvre le début du carnet. Une petite clé t’attend sur la page qui appartient à Cécile.',
     indice: 'Certains mots n’apparaissent qu’une fois la poussière écartée…',
@@ -10,7 +10,7 @@ export const CACHETTES = [
     suite: 'Premier indice : tourne vers le premier album « Le goût des bonnes choses ». Cherche une enveloppe entre les photos.',
   },
   {
-    id: 'album', page: 'cecile-1-droite', double: 'cecile-1', dessin: 'enveloppe',
+    id: 'album', page: 'cecile-1-droite', double: 'cecile-1', dessin: 'enveloppe', matiere: 'enveloppe',
     titre: 'Terrible Cécile ?', pageTitre: 'Le goût des bonnes choses', chercher: 'la petite enveloppe', lieu: 'le premier album « Le goût des bonnes choses »',
     appel: 'Dans le premier album, cherche la petite enveloppe entre les photos.',
     indice: 'Les souvenirs se glissent parfois entre deux images.',
@@ -20,7 +20,7 @@ export const CACHETTES = [
     suite: 'La piste continue dans l’album « Cécile, côté cuisine ». Une carte des étoiles t’y attend.',
   },
   {
-    id: 'douce', page: 'cecile-2-droite', double: 'cecile-2', dessin: 'carte-etoiles',
+    id: 'douce', page: 'cecile-2-droite', double: 'cecile-2', dessin: 'carte-etoiles', matiere: 'pli',
     titre: 'Douce Cécile…', pageTitre: 'Cécile, côté cuisine', chercher: 'la carte des étoiles', lieu: 'l’album « Cécile, côté cuisine »',
     appel: 'Dans la suite de l’album, cherche la carte des étoiles entre les photos.',
     indice: 'Une apparence paisible… les étoiles auraient-elles autre chose à dire ?',
@@ -30,21 +30,21 @@ export const CACHETTES = [
     suite: 'Prochaine escale : « Gâteaux & cakes », après le sommaire. Cordon bleu a laissé une petite surprise près du gâteau.',
   },
   {
-    id: 'cordon-bleu', page: 'gateaux-droite', double: 'gateaux', dessin: 'oeufs',
+    id: 'cordon-bleu', page: 'gateaux-droite', double: 'gateaux', dessin: 'oeufs', matiere: 'tache',
     titre: 'Le tour de main de Cordon bleu', pageTitre: 'Gâteaux & cakes', chercher: 'les petits œufs', lieu: 'l’intercalaire « Gâteaux & cakes »',
     appel: 'Va à « Gâteaux & cakes », après le sommaire. Cherche les petits œufs près du gâteau.',
     indice: 'Il reste peut-être un petit quelque chose sur le plan de travail.',
     amorce: 'Fée du logis ou Cordon bleu ? L’indice est en cuisine.',
-    revelation: 'Le secret est dans les recettes : huit proches ont confié les leurs à ce carnet.',
+    revelation: 'Le secret est dans les recettes : des proches ont confié les leurs à ce carnet.',
     suite: 'À toi de les feuilleter. La dernière cachette est tout au bout, sur la page « À suivre… ». Cherche la bougie.',
   },
   {
-    id: 'anniversaire', page: 'fin-gauche', double: 'fin', dessin: 'cupcake-bougie',
+    id: 'anniversaire', page: 'fin-gauche', double: 'fin', dessin: 'cupcake-bougie', matiere: 'pli',
     titre: 'Encore un petit vœu ?', pageTitre: 'À suivre…', chercher: 'la petite bougie', lieu: 'la dernière double page « À suivre… »',
     appel: 'Tout au bout du carnet, une bougie t’attend sur la page « À suivre… ».',
     indice: 'Il faut bien garder un vœu pour la fin.',
     amorce: 'Trente ans… et la suite ?',
-    revelation: '30 ans, huit recettes, et encore beaucoup de goûters à partager.',
+    revelation: '30 ans, treize recettes, et encore beaucoup de goûters à partager.',
     suite: 'Les cinq cachettes sont retrouvées. Joyeux anniversaire, Cécile !',
   },
 ] as const;

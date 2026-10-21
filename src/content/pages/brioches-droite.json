@@ -1,0 +1,37 @@
+{
+  "main": "soignee",
+  "encre": "plume",
+  "gabarit": "carnet",
+  "id": "brioches-droite",
+  "double": "brioches",
+  "cote": "droite",
+  "graine": 2102,
+  "marges": {
+    "haut": 0.27
+  },
+  "blocs": [
+    {
+      "id": "chapitre",
+      "type": "chapitre",
+      "chapitre": "brioches",
+      "taille": 1.75,
+      "graine": 2008,
+      "encre": "terracotta",
+      "invites_police": "kalam",
+      "invites_taille": 1.35
+    }
+  ],
+  "vivants": [
+    {
+      "nom": "aq-plume",
+      "aquarelle": "plume",
+      "rect": [
+        0.38,
+        0.54,
+        0.24,
+        0.23
+      ],
+      "angle": -8
+    }
+  ]
+}

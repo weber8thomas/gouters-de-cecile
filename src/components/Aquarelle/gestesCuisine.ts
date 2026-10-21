@@ -17,7 +17,7 @@ export function casserOeuf(s:number):Acteur[] {
 }
 export function fouetter(s:number,debut:number,fin:number):Acteur {
   const approche=transition(s,debut,debut+1)*(1-transition(s,fin,fin+1.6)),bat=cloche(s,debut+.5,fin);
-  return acteur(art('fouet'),785-265*approche+bat*30*Math.sin(s*9),285+80*bat+10*bat*Math.sin(s*18),285,-40*approche+bat*8*Math.sin(s*9));
+  return acteur(art('fouet'),785-265*approche+bat*30*Math.sin(s*9),210+125*bat+10*bat*Math.sin(s*18),250,-40*approche+bat*8*Math.sin(s*9),transition(s,debut,debut+.5)*(1-transition(s,fin+.6,fin+1.1)));
 }
 /** Un récipient approche, s'incline au-dessus du bol, puis revient à sa place. */
 export function verser(asset:string,s:number,debut:number,fin:number,repos:[number,number],w:number,angle:number) {

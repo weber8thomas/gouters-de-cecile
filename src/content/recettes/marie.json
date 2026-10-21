@@ -1,0 +1,62 @@
+{
+  "slug": "marie",
+  "source": "src/content/recettes/marie.txt",
+  "adaptations": [
+    "Texte reçu conservé intégralement dans le fichier TXT ; seuls les marqueurs de liste sont retirés pour la mise en page.",
+    "Petit mot provisoire demandé par Thomas : Lorem ipsum — message à venir ; aucun message authentique inventé."
+  ],
+  "style": {
+    "main": "soignee",
+    "encre": "chocolat",
+    "police": "caveat",
+    "graine": 14231
+  },
+  "titre": "FONDANT CHOCOLAT de Maman Sylvie Cattelin",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "300 grammes de chocolat noir"
+        },
+        {
+          "texte": "250 grammes de beurre"
+        },
+        {
+          "texte": "250 grammes de sucre"
+        },
+        {
+          "texte": "5 oeufs"
+        },
+        {
+          "texte": "2 cuillères à soupe rases de farine"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Faire fondre doucement le beurre, le chocolat puis, le sucre."
+    },
+    {
+      "titre": "2.",
+      "texte": "Battre les oeufs entiers et les insérer au mélange de chocolat"
+    },
+    {
+      "titre": "3.",
+      "texte": "Ajouter la farine et bien mélanger"
+    },
+    {
+      "titre": "4.",
+      "texte": "Verser dans un moule beurré"
+    },
+    {
+      "titre": "5.",
+      "texte": "Cuire à 160 degrés pendant environ 30 minutes"
+    }
+  ],
+  "mot": "Lorem ipsum — message à venir",
+  "signature": "Marie",
+  "nom": "Marie"
+}

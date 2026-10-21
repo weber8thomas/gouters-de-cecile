@@ -687,19 +687,21 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
   const commander = (s: Sprite, commande: CommandeTableau, type = tableauDe(s.d.nom,opts.page)) => {
     if (!type || !joue || arrete) return;
     const etapes = ETAPES_TABLEAUX[type];
-    if (commande === 'auto' || commande === 'rejouer' || !etapes?.length) {
+    if (commande==='auto'&&s.pilotage&&s.scene?.nom===type){
+      s.scene.debut=horloge-s.pilotage.temps*1000;delete s.pilotage;return;
+    }
+    if (commande === 'auto' || !etapes?.length || (commande === 'rejouer' && !s.pilotage)) {
       lancerScene(s, type, true);
       return;
     }
-    if (commande === 'etapes' || !s.pilotage || s.scene?.nom !== type) {
-      if (lancerScene(s, type, true)) s.pilotage = { temps: 0, cible: etapes[0], horloge };
-      return;
-    }
-    const suivant = etapes.find((t) => t > s.pilotage!.temps + .01);
-    // Le dernier geste reste visible jusqu'à la commande suivante ; un nouveau tour repart au repos.
-    if (suivant === undefined) s.pilotage.temps = 0;
-    s.pilotage.cible = suivant ?? etapes[0];
-    s.pilotage.horloge = horloge;
+    const temps=s.pilotage?.temps ?? (s.scene?.nom===type?(horloge-s.scene.debut)/1000:s.tempsRepos??0);
+    const courant=s.pilotage?Math.max(0,etapes.findIndex(t=>t>=s.pilotage!.cible-.01)):Math.min(etapes.length-1,Math.max(0,type.startsWith('recette-')?Math.floor(temps/8):Math.max(0,etapes.findIndex(t=>t>=temps))));
+    const index=Math.max(0,Math.min(etapes.length-1,courant+(commande==='suivant'?1:commande==='precedent'?-1:0)));
+    const debut=index===0?0:etapes[index-1]+(type.startsWith('recette-')?1.2:0);
+    if (!s.scene || s.scene.nom!==type) { if(!lancerScene(s,type,true))return; }
+    delete s.tempsRepos;
+    // Les commandes rejouent le geste choisi en avant : jamais de lecture à l’envers ni de retour implicite à la première étape.
+    s.pilotage={temps:debut,cible:etapes[index],horloge};
   };
 
   const fxNeutre = (s: Sprite): Fx => ({

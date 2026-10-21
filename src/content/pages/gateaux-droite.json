@@ -7,7 +7,7 @@
   "cote": "droite",
   "graine": 602,
   "marges": {
-    "haut": 0.27
+    "haut": 0.22
   },
   "blocs": [
     {
@@ -19,7 +19,8 @@
       "encre": "terracotta",
       "invites_taille": 1.35,
       "invites_police": "kalam",
-      "invites_encre": "chocolat"
+      "invites_encre": "chocolat",
+      "invites_par_ligne": 3
     }
   ],
   "vivants": [

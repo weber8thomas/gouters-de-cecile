@@ -1,5 +1,5 @@
 {
- "papier/f13": "7f498f3a59c636d8234f93918ec4be3b8e4248554a4795dbcf1da2cfcbc0a304",
+ "papier/f13": "952f6d593677103f16511d9c7fd0295ac0aac6a1df44046f98428f04967fe071",
  "page/julie-droite": {
   "cle": "1213305177583ac21e879c7475232589751bc8f92bec1936e3a4ae522bdaedad",
   "manifeste": {
@@ -114,17 +114,17 @@
    "relu": true
   }
  },
- "papier/f19": "e6a92b0bfc7c27cb5618268e21bdf28f29f11e09b5f10f220822a181a7db59a0",
+ "papier/f19": "9c5ff1262b268f6a4ceb9985505db264744d841c4f4edd149959dfd237517312",
  "page/fin-droite": {
-  "cle": "8e90bca8a8e82cdf3d199ec64784b2a9c7044258dfee6a6ac00a67c8fc25f097",
+  "cle": "b8ddae37e658235c506079dc6ad94fc6a5b5ed6faa6576a6ccce0f764adc8488",
   "manifeste": {
    "double": "fin",
    "cote": "droite",
-   "folio": 35,
-   "papier": "pages/papier/f35",
+   "folio": 47,
+   "papier": "pages/papier/f47",
    "miroir": false,
    "encre": "pages/fin-droite",
-   "papier1x": "pages/1x/papier/f35",
+   "papier1x": "pages/1x/papier/f47",
    "encre1x": "pages/1x/fin-droite",
    "encre4x": {
     "base": "pages/4x/fin-droite",
@@ -223,17 +223,17 @@
    "relu": true
   }
  },
- "papier/f17": "84b1c72797aa536edbaad1cfa1f30b588dcb559892f8c75e5dfb758067825108",
+ "papier/f17": "9be453d765dcd35ddcf42208cc9b03faa112ceffe75299a92b05fa56a559e899",
  "page/fin-gauche": {
-  "cle": "994678aaaaa8e00ce2f43b4bc53415db3affeb743e018fd216a699934f35ddbe",
+  "cle": "0537c6d11412f8b259708fe15ef3061001df0d9672bcd9077c17862e4001f8d6",
   "manifeste": {
    "double": "fin",
    "cote": "gauche",
-   "folio": 34,
-   "papier": "pages/papier/f33",
+   "folio": 46,
+   "papier": "pages/papier/f45",
    "miroir": true,
    "encre": "pages/fin-gauche",
-   "papier1x": "pages/1x/papier/f33",
+   "papier1x": "pages/1x/papier/f45",
    "encre1x": "pages/1x/fin-gauche",
    "encre4x": {
     "base": "pages/4x/fin-gauche",
@@ -285,7 +285,7 @@
    "relu": true
   }
  },
- "papier/f11": "181e24ff7a203606ebd979b15d210096ad894147889c41c30644d34d541988e8",
+ "papier/f11": "111d3f7b20a685be016ba394496f8089c1103eb999a2d66f10cdb67401094bd9",
  "page/julie-gauche": {
   "cle": "e602da1cc3a3d24d711f6103e7281fc6aa802a28b2fcfce14d97e6066c9ad1aa",
   "manifeste": {
@@ -490,7 +490,7 @@
    "relu": true
   }
  },
- "papier/f15": "619ad1764d4bb9a15048a69a3673a074ebc4b630981ca49bf7e9a1516682dc47",
+ "papier/f15": "4afd4ba5c858bf41e82e6aa02eecfc6875acca94ba49fb2e32a97779b25e3f6a",
  "page/mathis-gauche": {
   "cle": "84f4073b6e95100b7168e633ffdd9bc597ba12f89bd9f72e89a8c72f22241c2e",
   "manifeste": {
@@ -799,13 +799,13 @@
    "relu": true
   }
  },
- "papier1x/f19": "e6a92b0bfc7c27cb5618268e21bdf28f29f11e09b5f10f220822a181a7db59a0",
- "papier1x/f17": "84b1c72797aa536edbaad1cfa1f30b588dcb559892f8c75e5dfb758067825108",
- "papier1x/f13": "7f498f3a59c636d8234f93918ec4be3b8e4248554a4795dbcf1da2cfcbc0a304",
- "papier1x/f11": "181e24ff7a203606ebd979b15d210096ad894147889c41c30644d34d541988e8",
- "papier1x/f15": "619ad1764d4bb9a15048a69a3673a074ebc4b630981ca49bf7e9a1516682dc47",
+ "papier1x/f19": "9c5ff1262b268f6a4ceb9985505db264744d841c4f4edd149959dfd237517312",
+ "papier1x/f17": "9be453d765dcd35ddcf42208cc9b03faa112ceffe75299a92b05fa56a559e899",
+ "papier1x/f13": "952f6d593677103f16511d9c7fd0295ac0aac6a1df44046f98428f04967fe071",
+ "papier1x/f11": "111d3f7b20a685be016ba394496f8089c1103eb999a2d66f10cdb67401094bd9",
+ "papier1x/f15": "4afd4ba5c858bf41e82e6aa02eecfc6875acca94ba49fb2e32a97779b25e3f6a",
  "pagination/lisa": {
-  "cle": "65cc42318a082c0aa0b88ce6e466122282fb0af0abbcd6829f7a164e0099a201",
+  "cle": "c132d747076ff3bdc296a9517af855cbaa3d729824f600dcbb248b01135cecf4",
   "pages": {
    "lisa-gauche": {
     "double": "lisa",
@@ -1317,10 +1317,10 @@
    "lisa-gauche": 1.3
   }
  },
- "papier/f9": "a52f7f30f0d2b1648ad24c79cf4742f0acd439966f26cf33b75fc2fb1cb8ee80",
- "papier1x/f9": "a52f7f30f0d2b1648ad24c79cf4742f0acd439966f26cf33b75fc2fb1cb8ee80",
+ "papier/f9": "3fdbc68ff3aeca4c5e01df6c6664cf6d8883b29fd3e087edf4b9b290751d0ef9",
+ "papier1x/f9": "3fdbc68ff3aeca4c5e01df6c6664cf6d8883b29fd3e087edf4b9b290751d0ef9",
  "page/lisa-gauche": {
-  "cle": "f2a02354977c181c1108cb86760dfb129b318031512a6b363735693cf9ede915",
+  "cle": "d9817a1cfa1495f36c5949dc1ceff34f0554288f1a3f9d70aa81f737082377b0",
   "manifeste": {
    "double": "lisa",
    "cote": "gauche",
@@ -1402,7 +1402,7 @@
   }
  },
  "page/lisa-droite": {
-  "cle": "b12955e4787c679ca7545d2d959d7228ce227a20ca80b18ed9cf9ad53064d55c",
+  "cle": "58d7e8face9b171336bda68772681f8b49371aa769cee474aa0247abfd275e5e",
   "manifeste": {
    "double": "lisa",
    "cote": "droite",
@@ -1477,10 +1477,10 @@
    "relu": true
   }
  },
- "papier/c-lisa-recto": "635b7c1b58e12dd54781d74d847c2021c40707037849c87d84925b08fb4d5368",
- "papier1x/c-lisa-recto": "635b7c1b58e12dd54781d74d847c2021c40707037849c87d84925b08fb4d5368",
- "papier/c-lisa-verso": "7ea7c0c68397d1d1c61009285076752f7449fce3f2e060425acab519b21db9b2",
- "papier1x/c-lisa-verso": "7ea7c0c68397d1d1c61009285076752f7449fce3f2e060425acab519b21db9b2",
+ "papier/c-lisa-recto": "d12875f76a1070b746c6466e7325c747e95a72569b05626b291480e7baf2cfd6",
+ "papier1x/c-lisa-recto": "d12875f76a1070b746c6466e7325c747e95a72569b05626b291480e7baf2cfd6",
+ "papier/c-lisa-verso": "7f695f354bb56955131c083c8eda9ceff055ac78b51e7c9704e05f2fc06ddf19",
+ "papier1x/c-lisa-verso": "7f695f354bb56955131c083c8eda9ceff055ac78b51e7c9704e05f2fc06ddf19",
  "page/lisa-feuillet-recto": {
   "cle": "6774ed3aea50fb77c2e61da418acae52e654b545c425433ef0c79f28de7998e0",
   "manifeste": {
@@ -1645,16 +1645,16 @@
   }
  },
  "page/biscuits-droite": {
-  "cle": "a0e5210bd9bb676f1b6464d2f7e886224c451bbd38a51fb2003d8c48933bc620",
+  "cle": "91a72688b374c030cbe29e0fabd03690863c370fc17b3c0c205dd1420137dc40",
   "manifeste": {
    "double": "biscuits",
    "cote": "droite",
-   "folio": 27,
+   "folio": 35,
    "sansFolio": true,
-   "papier": "pages/papier/f27",
+   "papier": "pages/papier/f35",
    "miroir": false,
    "encre": "pages/biscuits-droite",
-   "papier1x": "pages/1x/papier/f27",
+   "papier1x": "pages/1x/papier/f35",
    "encre1x": "pages/1x/biscuits-droite",
    "encre4x": {
     "base": "pages/4x/biscuits-droite",
@@ -1732,16 +1732,16 @@
   }
  },
  "page/biscuits-gauche": {
-  "cle": "732c4ab5c40cb88c36b74b0cd502be56f282506e635a11ae2c07045dc6b57920",
+  "cle": "41b0166129d835ba6efd973a5a044250d924175cf6a02457169f972b54ceac6f",
   "manifeste": {
    "double": "biscuits",
    "cote": "gauche",
-   "folio": 26,
+   "folio": 34,
    "sansFolio": true,
-   "papier": "pages/papier/f25",
+   "papier": "pages/papier/f33",
    "miroir": true,
    "encre": "pages/biscuits-gauche",
-   "papier1x": "pages/1x/papier/f25",
+   "papier1x": "pages/1x/papier/f33",
    "encre1x": "pages/1x/biscuits-gauche",
    "encre4x": {
     "base": "pages/4x/biscuits-gauche",
@@ -1894,12 +1894,12 @@
    "relu": true
   }
  },
- "papier/f3": "1843e5a3b506b91167f3cc08286327f6d3d3629f9f376bc8d9a2c49acb47cd62",
- "papier1x/f3": "1843e5a3b506b91167f3cc08286327f6d3d3629f9f376bc8d9a2c49acb47cd62",
- "papier/f5": "658ba008b1ee8e4ef0b98defb9b0a6ac2386d6a53e8cb00ae9eb07880c1cc54c",
- "papier1x/f5": "658ba008b1ee8e4ef0b98defb9b0a6ac2386d6a53e8cb00ae9eb07880c1cc54c",
+ "papier/f3": "3d987fc05fe5c0df7a8cf65a73206e57398278a35d98a230dc10358e9d4907aa",
+ "papier1x/f3": "3d987fc05fe5c0df7a8cf65a73206e57398278a35d98a230dc10358e9d4907aa",
+ "papier/f5": "2d9bea64d90146305d05026515bca46758ff3cb3fa4b57358783077d22890832",
+ "papier1x/f5": "2d9bea64d90146305d05026515bca46758ff3cb3fa4b57358783077d22890832",
  "page/dedicace": {
-  "cle": "c2f53aa54ee48723f40efc1002eb15554bf3f21e4c601108612513b847f2ece2",
+  "cle": "d8dab409909d27be96aa78e7f7ac87488adfbf8352e9b39fe3b4140ee59dbfe0",
   "manifeste": {
    "double": "sommaire",
    "cote": "gauche",
@@ -1952,40 +1952,192 @@
      ]
     ]
    },
-   "texte": "Joyeux anniversaire, Cécile ! Pour tes trente ans, un goûter par page,\nde la part de ceux qui t'aiment.",
+   "texte": "Joyeux anniversaire, Cécile ! Pour tes trente ans, un goûter par page,\nde la part de ceux qui t'aiment.\nGâteaux & cakes\nLisa — Carrot cake, page 12\nEmeline — Fondant au chocolat, page 14\nClémence — Cheesecake framboises, page 16\nPierrette — Cake au citron, page 18\nLaura Geyer — Orange & amandes, page 20\nMarie — Fondant au chocolat, page 22\nLéa — Gâteau aux pommes, page 24\nCoralie — Fondant au chocolat, page 26",
    "vivants": {
-    "aq-theiere": [
-     0.04,
-     0.65,
-     0.44,
-     0.29
-    ],
-    "aq-gateau": [
-     0.48,
-     0.46,
-     0.46,
-     0.46
-    ],
     "aq-cupcake": [
-     0.11,
-     0.43,
-     0.2,
-     0.15
+     0.83,
+     0.045,
+     0.13,
+     0.12
+    ],
+    "vignette-lisa": [
+     0.12823,
+     0.26149,
+     0.12,
+     0.04
+    ],
+    "vignette-emeline": [
+     0.13005,
+     0.29565,
+     0.12,
+     0.04
+    ],
+    "vignette-clemence": [
+     0.12943,
+     0.32621,
+     0.12,
+     0.04
+    ],
+    "vignette-pierrette": [
+     0.12248,
+     0.37591,
+     0.12,
+     0.04
+    ],
+    "vignette-laura-geyer": [
+     0.12934,
+     0.40938,
+     0.12,
+     0.04
+    ],
+    "vignette-marie": [
+     0.13012,
+     0.44247,
+     0.12,
+     0.04
+    ],
+    "vignette-lea": [
+     0.12791,
+     0.47799,
+     0.12,
+     0.04
+    ],
+    "vignette-coralie": [
+     0.12399,
+     0.52481,
+     0.12,
+     0.04
     ]
    },
    "deborde": [],
-   "lignes": 0,
+   "lignes": 9,
+   "liens": [
+    {
+     "cible": "gateaux",
+     "rect": [
+      0.06399,
+      0.21675,
+      0.30161,
+      0.0424
+     ]
+    },
+    {
+     "cible": "lisa",
+     "invite": "lisa",
+     "rect": [
+      0.24864,
+      0.26724,
+      0.66399,
+      0.02712
+     ]
+    },
+    {
+     "cible": "emeline",
+     "invite": "emeline",
+     "rect": [
+      0.25061,
+      0.30081,
+      0.66234,
+      0.02712
+     ]
+    },
+    {
+     "cible": "clemence",
+     "invite": "clemence",
+     "rect": [
+      0.24987,
+      0.33191,
+      0.6623,
+      0.02712
+     ]
+    },
+    {
+     "cible": "pierrette",
+     "invite": "pierrette",
+     "rect": [
+      0.24299,
+      0.38058,
+      0.6715,
+      0.02712
+     ]
+    },
+    {
+     "cible": "laura-geyer",
+     "invite": "laura-geyer",
+     "rect": [
+      0.24993,
+      0.41464,
+      0.66198,
+      0.02712
+     ]
+    },
+    {
+     "cible": "marie",
+     "invite": "marie",
+     "rect": [
+      0.25065,
+      0.44907,
+      0.66288,
+      0.02712
+     ]
+    },
+    {
+     "cible": "lea",
+     "invite": "lea",
+     "rect": [
+      0.24839,
+      0.48332,
+      0.66394,
+      0.02712
+     ]
+    },
+    {
+     "cible": "coralie",
+     "invite": "coralie",
+     "rect": [
+      0.24457,
+      0.53084,
+      0.66864,
+      0.02712
+     ]
+    }
+   ],
    "aquarelles": {
-    "aq-theiere": {
-     "aquarelle": "theiere",
-     "anime": "vapeur"
-    },
-    "aq-gateau": {
-     "aquarelle": "gateau-bougies"
-    },
     "aq-cupcake": {
      "aquarelle": "cupcake",
      "angle": 3
+    },
+    "vignette-lisa": {
+     "aquarelle": "carotte",
+     "anime": "fixe"
+    },
+    "vignette-emeline": {
+     "aquarelle": "fondant-chocolat",
+     "anime": "fixe"
+    },
+    "vignette-clemence": {
+     "aquarelle": "framboises-speculoos",
+     "anime": "fixe"
+    },
+    "vignette-pierrette": {
+     "aquarelle": "citron",
+     "anime": "fixe"
+    },
+    "vignette-laura-geyer": {
+     "aquarelle": "citron",
+     "anime": "fixe"
+    },
+    "vignette-marie": {
+     "aquarelle": "fondant-chocolat",
+     "anime": "fixe"
+    },
+    "vignette-lea": {
+     "aquarelle": "pomme",
+     "anime": "fixe"
+    },
+    "vignette-coralie": {
+     "aquarelle": "fondant-chocolat",
+     "anime": "fixe"
     }
    },
    "relu": true
@@ -2013,12 +2165,12 @@
    "relu": true
   }
  },
- "papier/garde-uni": "c2d420e28a0a64051f89a56f5b46ae91353ae66231a5633b9dedd00cfdf59285",
- "papier1x/garde-uni": "c2d420e28a0a64051f89a56f5b46ae91353ae66231a5633b9dedd00cfdf59285",
- "papier/f7": "884df34077f52d890ae5a391e5aec6fcd456f4ed0f9712711569c5838ab42f2e",
- "papier1x/f7": "884df34077f52d890ae5a391e5aec6fcd456f4ed0f9712711569c5838ab42f2e",
+ "papier/garde-uni": "fdcceff725e47d0f3b4374ca43f868e7c38354c327953cdc6830d98f70734344",
+ "papier1x/garde-uni": "fdcceff725e47d0f3b4374ca43f868e7c38354c327953cdc6830d98f70734344",
+ "papier/f7": "6f38dadd638bfcaed6734badffcb59c5fdc7dbd5214a42d9785fa626254faee2",
+ "papier1x/f7": "6f38dadd638bfcaed6734badffcb59c5fdc7dbd5214a42d9785fa626254faee2",
  "page/gateaux-droite": {
-  "cle": "9a24027716f71143a0b6fa74f71cbd995029af9b5de29f5f9a868c173bf65f47",
+  "cle": "545ed2bc934608b2701f00d2327a099b173a224f9fe3f1f244ce36e4799305f7",
   "manifeste": {
    "double": "gateaux",
    "cote": "droite",
@@ -2072,7 +2224,7 @@
      ]
     ]
    },
-   "texte": "Gâteaux & cakes\nLisa, Emeline, Clémence et Pierrette",
+   "texte": "Gâteaux & cakes\nLisa, Emeline et Clémence\nPierrette, Laura Geyer et Marie\nLéa et Coralie",
    "vivants": {
     "aq-gateau": [
      0.14,
@@ -2094,7 +2246,7 @@
   }
  },
  "page/gateaux-gauche": {
-  "cle": "869285aec9fd2829c8c77464db871849d5c8d6c89510403f6f0fd67c1afff458",
+  "cle": "631f702c26fa2235405850c371803e4562bdff9158db72d49b8cce5218724168",
   "manifeste": {
    "double": "gateaux",
    "cote": "gauche",
@@ -2200,7 +2352,7 @@
   }
  },
  "page/sommaire": {
-  "cle": "e923369347ce409e914433c277cfe3cc5f354dcbe60ce3600d204ae0d1e168f5",
+  "cle": "1415e4ff40bb7930e7d29173d29eb276b44ff840845f9322d6e5549bf013316a",
   "manifeste": {
    "double": "sommaire",
    "cote": "droite",
@@ -2253,7 +2405,7 @@
      ]
     ]
    },
-   "texte": "Sommaire\nGâteaux & cakes\nLisa — Carrot cake, page 12\nEmeline — Fondant au chocolat, page 14\nClémence — Cheesecake framboises, page 16\nPierrette — Cake au citron, page 18\nTartes & confitures\nAnatole — Tarte aux myrtilles, page 22\nLise — Tarte aux pommes, page 24\nBiscuits\nJulien — Cookies & noisettes, page 28\nCrêpes & gaufres\nLaura — Crêpes gourmandes, page 32\nLe mot de la fin, page 34",
+   "texte": "Sommaire\nTartes & confitures\nAnatole — Tarte aux myrtilles, page 30\nLise — Tarte aux pommes, page 32\nBiscuits\nJulien — Cookies & noisettes, page 36\nBrioches\nSarah — Brioche, page 40\nCrêpes & gaufres\nLaura Gramegna — Crêpes, page 44\nLe mot de la fin, page 46",
    "vivants": {
     "aq-tasse": [
      0.75,
@@ -2261,113 +2413,46 @@
      0.17,
      0.117
     ],
-    "vignette-lisa": [
+    "vignette-anatole": [
      0.15545,
      0.19004,
      0.12,
      0.04
     ],
-    "vignette-emeline": [
-     0.15392,
-     0.22515,
-     0.12,
-     0.04
-    ],
-    "vignette-clemence": [
-     0.15982,
-     0.26497,
-     0.12,
-     0.04
-    ],
-    "vignette-pierrette": [
-     0.15433,
-     0.30022,
-     0.12,
-     0.04
-    ],
-    "vignette-anatole": [
-     0.15606,
-     0.40457,
-     0.12,
-     0.04
-    ],
     "vignette-lise": [
-     0.1569,
-     0.44103,
+     0.15617,
+     0.22705,
      0.12,
      0.04
     ],
     "vignette-julien": [
-     0.15927,
-     0.54718,
+     0.16186,
+     0.33005,
+     0.12,
+     0.04
+    ],
+    "vignette-sarah": [
+     0.15572,
+     0.43554,
      0.12,
      0.04
     ],
     "vignette-laura": [
-     0.15086,
-     0.64973,
+     0.15781,
+     0.54193,
      0.12,
      0.04
     ]
    },
    "deborde": [],
-   "lignes": 14,
+   "lignes": 11,
    "liens": [
-    {
-     "cible": "gateaux",
-     "rect": [
-      0.09574,
-      0.14011,
-      0.29824,
-      0.0424
-     ]
-    },
-    {
-     "cible": "lisa",
-     "invite": "lisa",
-     "rect": [
-      0.27606,
-      0.19558,
-      0.6593,
-      0.02712
-     ]
-    },
-    {
-     "cible": "emeline",
-     "invite": "emeline",
-     "rect": [
-      0.27453,
-      0.23247,
-      0.65916,
-      0.02712
-     ]
-    },
-    {
-     "cible": "clemence",
-     "invite": "clemence",
-     "rect": [
-      0.28044,
-      0.27044,
-      0.65677,
-      0.02712
-     ]
-    },
-    {
-     "cible": "pierrette",
-     "invite": "pierrette",
-     "rect": [
-      0.27495,
-      0.30661,
-      0.65947,
-      0.02712
-     ]
-    },
     {
      "cible": "tartes",
      "rect": [
-      0.09734,
-      0.3555,
-      0.35292,
+      0.09574,
+      0.14011,
+      0.34126,
       0.0424
      ]
     },
@@ -2375,9 +2460,9 @@
      "cible": "anatole",
      "invite": "anatole",
      "rect": [
-      0.27649,
-      0.41001,
-      0.65852,
+      0.27606,
+      0.19558,
+      0.65926,
       0.02712
      ]
     },
@@ -2385,18 +2470,18 @@
      "cible": "lise",
      "invite": "lise",
      "rect": [
-      0.27748,
-      0.4474,
-      0.65632,
+      0.27679,
+      0.23367,
+      0.66112,
       0.02712
      ]
     },
     {
      "cible": "biscuits",
      "rect": [
-      0.09329,
-      0.49595,
-      0.141,
+      0.08712,
+      0.28029,
+      0.14115,
       0.0424
      ]
     },
@@ -2404,18 +2489,37 @@
      "cible": "julien",
      "invite": "julien",
      "rect": [
-      0.27969,
-      0.55448,
-      0.65726,
+      0.28248,
+      0.33568,
+      0.65455,
+      0.02712
+     ]
+    },
+    {
+     "cible": "brioches",
+     "rect": [
+      0.08753,
+      0.3843,
+      0.15059,
+      0.0424
+     ]
+    },
+    {
+     "cible": "sarah",
+     "invite": "sarah",
+     "rect": [
+      0.27633,
+      0.44088,
+      0.65975,
       0.02712
      ]
     },
     {
      "cible": "crepes",
      "rect": [
-      0.09175,
-      0.60175,
-      0.30349,
+      0.08809,
+      0.49038,
+      0.31938,
       0.0424
      ]
     },
@@ -2423,18 +2527,18 @@
      "cible": "laura",
      "invite": "laura",
      "rect": [
-      0.27148,
-      0.65511,
-      0.66442,
+      0.27842,
+      0.54873,
+      0.65664,
       0.02712
      ]
     },
     {
      "cible": "fin",
      "rect": [
-      0.2767,
-      0.70942,
-      0.66115,
+      0.27149,
+      0.60275,
+      0.6638,
       0.02712
      ]
     }
@@ -2444,22 +2548,6 @@
      "aquarelle": "tasse-2",
      "anime": "vapeur",
      "angle": -4
-    },
-    "vignette-lisa": {
-     "aquarelle": "carotte",
-     "anime": "fixe"
-    },
-    "vignette-emeline": {
-     "aquarelle": "fondant-chocolat",
-     "anime": "fixe"
-    },
-    "vignette-clemence": {
-     "aquarelle": "framboises-speculoos",
-     "anime": "fixe"
-    },
-    "vignette-pierrette": {
-     "aquarelle": "citron",
-     "anime": "fixe"
     },
     "vignette-anatole": {
      "aquarelle": "tarte-myrtilles",
@@ -2476,13 +2564,17 @@
     "vignette-laura": {
      "aquarelle": "crepes-banane",
      "anime": "fixe"
+    },
+    "vignette-sarah": {
+     "aquarelle": "gateau",
+     "anime": "fixe"
     }
    },
    "relu": true
   }
  },
  "page/cecile-1-droite": {
-  "cle": "1a6981166ef3fe56ee0049ab1044f437432225e97c89c34c2387d39397507aa0",
+  "cle": "8281402c5713fbf6b79a8551d263d8483a5a739f606efb6a4a73fe86746c2c11",
   "manifeste": {
    "double": "cecile-1",
    "cote": "droite",
@@ -2556,7 +2648,7 @@
   }
  },
  "page/cecile-1-gauche": {
-  "cle": "136143aad3039ec987a690396cf173443d5416276d645c0a04190f1802e26ecb",
+  "cle": "6e749ce11a885c5796ef4cffe021c19f9a94b737dcf60a70a767a85d01e85931",
   "manifeste": {
    "double": "cecile-1",
    "cote": "gauche",
@@ -2636,7 +2728,7 @@
   }
  },
  "page/cecile-2-droite": {
-  "cle": "64b9c53bfecb2557c5f229c76f0d837b31677521136b8bf2f6ce5c6739c932b5",
+  "cle": "557d619f0b7f2d5257dc3b42ba9fe73179ed54e0e690b09e8620cd9f487e2b08",
   "manifeste": {
    "double": "cecile-2",
    "cote": "droite",
@@ -2710,7 +2802,7 @@
   }
  },
  "page/cecile-2-gauche": {
-  "cle": "177258f1ad140ede44eb7d2de9b9bce51394da997ef0c008a82dc5b7fd37c6b3",
+  "cle": "9d2abe86e3c02b682bc7d34f045890183ad4057d57dd40cec19d41b4badfe194",
   "manifeste": {
    "double": "cecile-2",
    "cote": "gauche",
@@ -2789,10 +2881,10 @@
    "relu": true
   }
  },
- "papier/f23": "14c4a31be97d26b4e023e2f59b95a94b39f943df9545d70d60e801e31f9bf8df",
- "papier1x/f23": "14c4a31be97d26b4e023e2f59b95a94b39f943df9545d70d60e801e31f9bf8df",
- "papier/f21": "013e15becefe5d0eea2d97c7e5dccfe5cd963ab15e56ec18718c35ff92210cd8",
- "papier1x/f21": "013e15becefe5d0eea2d97c7e5dccfe5cd963ab15e56ec18718c35ff92210cd8",
+ "papier/f23": "b9465aab8e9f37fc30bbe651d021736e197b495b8cdadba7effad83a6d9dadb1",
+ "papier1x/f23": "b9465aab8e9f37fc30bbe651d021736e197b495b8cdadba7effad83a6d9dadb1",
+ "papier/f21": "1e65eccc49aa2f539e7865a986f191e5dda1b0d0d601b76df241d3af49665506",
+ "papier1x/f21": "1e65eccc49aa2f539e7865a986f191e5dda1b0d0d601b76df241d3af49665506",
  "pagination/bernard": {
   "cle": "ffa0874cb04e7c1eab7b9fe585ecab1f6c30fbda9e703e29602384929739ba0a",
   "pages": {
@@ -3588,8 +3680,8 @@
    "bernard-feuillet-recto": 1.45
   }
  },
- "papier/f25": "11aae393a98ebe8fc04b7421834432d775b88f8d0411155e6e0ec6c291f1448d",
- "papier1x/f25": "11aae393a98ebe8fc04b7421834432d775b88f8d0411155e6e0ec6c291f1448d",
+ "papier/f25": "54c4f6926e1a2c1ef5622b35409603eaf06fd84aeb00af3570d1b3d82f1b3e55",
+ "papier1x/f25": "54c4f6926e1a2c1ef5622b35409603eaf06fd84aeb00af3570d1b3d82f1b3e55",
  "page/bernard-gauche": {
   "cle": "253e5fab8cd821bc49f0fb4d4a0ad68ca39e2209a3cbd28acee5646b9d0982a2",
   "manifeste": {
@@ -6883,7 +6975,7 @@
   }
  },
  "pagination/pierrette": {
-  "cle": "7aceda1f53184b4a9b2bfc6e8c06e225fad224123c4500694eaddf5ebc46af08",
+  "cle": "a037020fe527ff0c74acce1a69e4f421b3f29e1dc480742b7872e3c66cd6c6af",
   "pages": {
    "pierrette-gauche": {
     "double": "pierrette",
@@ -7343,7 +7435,7 @@
   }
  },
  "pagination/lise": {
-  "cle": "04d3c67c32e3b8d623be55c52d9506ba9645fb1fc2fc4eb625db586810b2153c",
+  "cle": "e02e89fbbdee1afbfa625c99f13e54e23fc0d1a3694e7984a91e8a28d26b65e0",
   "pages": {
    "lise-gauche": {
     "double": "lise",
@@ -7364,7 +7456,7 @@
     },
     "id": "lise-gauche",
     "cote": "gauche",
-    "folio": 24,
+    "folio": 32,
     "graine": 8574,
     "gabarit": "C",
     "vivants": [
@@ -7577,7 +7669,7 @@
     },
     "id": "lise-droite",
     "cote": "droite",
-    "folio": 25,
+    "folio": 33,
     "graine": 8575,
     "gabarit": "D",
     "vivants": [
@@ -7669,14 +7761,14 @@
   }
  },
  "pagination/laura": {
-  "cle": "5423c316596ff5207c165972f47352b5d419d613331278326e07199e3a2bb30f",
+  "cle": "964019c2b9148b30c218b1f84f3708749cff6ac651c68ca752dbd8dced11658c",
   "pages": {
    "laura-gauche": {
     "double": "laura",
     "main": "ecole",
     "encre": "bille-bleue",
     "recette": "laura",
-    "serrage_max": 2,
+    "serrage_max": 1,
     "police": "playwrite-tradition",
     "contexte_importants": {
      "ingredients": [
@@ -7689,7 +7781,7 @@
     },
     "id": "laura-gauche",
     "cote": "gauche",
-    "folio": 32,
+    "folio": 44,
     "graine": 10868,
     "gabarit": "C",
     "vivants": [
@@ -7715,7 +7807,8 @@
       "places": [
        "dessous"
       ],
-      "taille": 2.2
+      "taille": 2.2,
+      "sous": "Gramegna"
      },
      {
       "type": "cadre",
@@ -7828,39 +7921,6 @@
         "atome": "ingredients-2/ligne-3"
        }
       ]
-     },
-     {
-      "type": "paragraphe",
-      "id": "section-preparation",
-      "segments": [
-       {
-        "texte": "Préparation",
-        "graine": 8399661,
-        "atome": "section-preparation"
-       }
-      ],
-      "alinea": 0.0,
-      "avant": 0.65,
-      "echelle": 1.1
-     },
-     {
-      "type": "etape",
-      "id": "etape-1",
-      "source": "etape-1",
-      "titre": {
-       "texte": "1.",
-       "graine": 46948537
-      },
-      "segments": [
-       {
-        "texte": "Mélanger les œufs, la farine,",
-        "graine": 15306742,
-        "atome": "etape-1/phrase-1.1"
-       }
-      ],
-      "disposition": "tete",
-      "avant": 0.12,
-      "alinea": 0.0
      }
     ],
     "atomes": [
@@ -7873,9 +7933,7 @@
      "ingredients-2/titre",
      "ingredients-2/ligne-1",
      "ingredients-2/ligne-2",
-     "ingredients-2/ligne-3",
-     "section-preparation",
-     "etape-1/phrase-1.1"
+     "ingredients-2/ligne-3"
     ]
    },
    "laura-droite": {
@@ -7896,7 +7954,7 @@
     },
     "id": "laura-droite",
     "cote": "droite",
-    "folio": 33,
+    "folio": 45,
     "graine": 10869,
     "gabarit": "D",
     "vivants": [
@@ -7916,21 +7974,45 @@
      {
       "type": "courant",
       "id": "courant",
-      "texte": "Laura",
+      "texte": "Laura Gramegna",
       "graine": 45879922
      },
      {
       "type": "paragraphe",
-      "id": "etape-1@phrase-1.2",
-      "source": "etape-1",
+      "id": "section-preparation",
       "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 8399661,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.0,
+      "echelle": 1.1
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "1.",
+       "graine": 46948537
+      },
+      "segments": [
+       {
+        "texte": "Mélanger les œufs, la farine,",
+        "graine": 15306742,
+        "atome": "etape-1/phrase-1.1"
+       },
        {
         "texte": "le sucre et ajouter au fur et à mesure le lait jusqu'à obtention d'une pâte lisse.",
         "graine": 25165977,
         "atome": "etape-1/phrase-1.2"
        }
       ],
-      "avant": 0.0,
+      "disposition": "tete",
+      "avant": 0.12,
       "alinea": 0.0
      },
      {
@@ -8012,6 +8094,8 @@
      }
     ],
     "atomes": [
+     "section-preparation",
+     "etape-1/phrase-1.1",
      "etape-1/phrase-1.2",
      "etape-2/phrase-1",
      "etape-2/phrase-2.1",
@@ -8028,30 +8112,28 @@
    "laura-droite"
   ],
   "disposition": "tete",
-  "ajustements": {
-   "laura-gauche": "serrage 2"
-  },
+  "ajustements": {},
   "trous": {
-   "laura-gauche": 0.14
+   "laura-gauche": 0.62
   }
  },
- "papier/f27": "2a26f5b69836e73e04e0683eb83f163506243c1f8497a9b674871c24ad91620a",
- "papier1x/f27": "2a26f5b69836e73e04e0683eb83f163506243c1f8497a9b674871c24ad91620a",
- "papier/f31": "b7036b990a82eaa16060ea741e339e5e095871356fb7a6d7112bb6d747a45e69",
- "papier1x/f31": "b7036b990a82eaa16060ea741e339e5e095871356fb7a6d7112bb6d747a45e69",
- "papier/f29": "c649a4d6e0b54a63a9efd278838aed890c90db4deb868dfe2603657cfe5dd0ed",
- "papier1x/f29": "c649a4d6e0b54a63a9efd278838aed890c90db4deb868dfe2603657cfe5dd0ed",
+ "papier/f27": "ec20ac56d722f6c82f146808eb9a82cf20ea7d8d885a17380688a5e32b9172d8",
+ "papier1x/f27": "ec20ac56d722f6c82f146808eb9a82cf20ea7d8d885a17380688a5e32b9172d8",
+ "papier/f31": "ee31fedc0d43e50064a4f8cfc3b6f5278687d0e9890582abd436a2eb433e4b0b",
+ "papier1x/f31": "ee31fedc0d43e50064a4f8cfc3b6f5278687d0e9890582abd436a2eb433e4b0b",
+ "papier/f29": "484fab67e6b1363f8bc5965402d904e670f0f5da249c4a5d01c2de216a81c3d7",
+ "papier1x/f29": "484fab67e6b1363f8bc5965402d904e670f0f5da249c4a5d01c2de216a81c3d7",
  "page/crepes-droite": {
-  "cle": "0560f243e76f732ac555a6f40220623e844948d747d118c5517d5bb88a5d6a4e",
+  "cle": "64adcdf3842b339bc5b15912bd245c16f59c4f651774704c8b91a68cfab77756",
   "manifeste": {
    "double": "crepes",
    "cote": "droite",
-   "folio": 31,
+   "folio": 43,
    "sansFolio": true,
-   "papier": "pages/papier/f31",
+   "papier": "pages/papier/f43",
    "miroir": false,
    "encre": "pages/crepes-droite",
-   "papier1x": "pages/1x/papier/f31",
+   "papier1x": "pages/1x/papier/f43",
    "encre1x": "pages/1x/crepes-droite",
    "encre4x": {
     "base": "pages/4x/crepes-droite",
@@ -8096,7 +8178,7 @@
      ]
     ]
    },
-   "texte": "Crêpes & gaufres\nLaura",
+   "texte": "Crêpes & gaufres\nLaura Gramegna",
    "vivants": {
     "aq-vanille": [
      0.27,
@@ -8117,16 +8199,16 @@
   }
  },
  "page/crepes-gauche": {
-  "cle": "767760c44b5a1d98cff30331e0eef461840907210489f0fafe9f31aa0f773369",
+  "cle": "e4cf09a4bf0349445adc638b7058f06f7e9edc577f4bab285e22b8cc54502845",
   "manifeste": {
    "double": "crepes",
    "cote": "gauche",
-   "folio": 30,
+   "folio": 42,
    "sansFolio": true,
-   "papier": "pages/papier/f29",
+   "papier": "pages/papier/f41",
    "miroir": true,
    "encre": "pages/crepes-gauche",
-   "papier1x": "pages/1x/papier/f29",
+   "papier1x": "pages/1x/papier/f41",
    "encre1x": "pages/1x/crepes-gauche",
    "encre4x": {
     "base": "pages/4x/crepes-gauche",
@@ -8202,21 +8284,21 @@
    "relu": true
   }
  },
- "papier/f35": "acdf5e49bf5621dc9d70f6b4c0487bc85cd0b38b003e5312b3a615bb76730183",
- "papier1x/f35": "acdf5e49bf5621dc9d70f6b4c0487bc85cd0b38b003e5312b3a615bb76730183",
- "papier/f33": "72ec05db303fa9488fcbd313925f3d30da988d7f6a8cde1456199e1ade68b233",
- "papier1x/f33": "72ec05db303fa9488fcbd313925f3d30da988d7f6a8cde1456199e1ade68b233",
+ "papier/f35": "07dd9d2a223e1000898b41bfa726bc2bb61cfeb4553152de1ad9605b80bb52e0",
+ "papier1x/f35": "07dd9d2a223e1000898b41bfa726bc2bb61cfeb4553152de1ad9605b80bb52e0",
+ "papier/f33": "f7f6760254c937bec27d197ec4a4d741332025509307da3aafd303e06cbec1ad",
+ "papier1x/f33": "f7f6760254c937bec27d197ec4a4d741332025509307da3aafd303e06cbec1ad",
  "page/tartes-droite": {
-  "cle": "617e729499ba55b1759c7c3a607fc20f09da3f3fe413f1cc0cb26eeab7389bb5",
+  "cle": "160e496cddd42b4a5108216b33000708fd562a6e5e4d6a617b2bfda8a852de1a",
   "manifeste": {
    "double": "tartes",
    "cote": "droite",
-   "folio": 21,
+   "folio": 29,
    "sansFolio": true,
-   "papier": "pages/papier/f21",
+   "papier": "pages/papier/f29",
    "miroir": false,
    "encre": "pages/tartes-droite",
-   "papier1x": "pages/1x/papier/f21",
+   "papier1x": "pages/1x/papier/f29",
    "encre1x": "pages/1x/tartes-droite",
    "encre4x": {
     "base": "pages/4x/tartes-droite",
@@ -8269,16 +8351,16 @@
   }
  },
  "page/tartes-gauche": {
-  "cle": "ee031817c19d46cce31209ca3061317706401e31d789216361fd6c8d91f07e55",
+  "cle": "34367a7d3f30bc6e5bc871445b738e5e1f5c03374bb84d22b953ff7196ffc29f",
   "manifeste": {
    "double": "tartes",
    "cote": "gauche",
-   "folio": 20,
+   "folio": 28,
    "sansFolio": true,
-   "papier": "pages/papier/f19",
+   "papier": "pages/papier/f27",
    "miroir": true,
    "encre": "pages/tartes-gauche",
-   "papier1x": "pages/1x/papier/f19",
+   "papier1x": "pages/1x/papier/f27",
    "encre1x": "pages/1x/tartes-gauche",
    "encre4x": {
     "base": "pages/4x/tartes-gauche",
@@ -8378,7 +8460,7 @@
   }
  },
  "page/pierrette-gauche": {
-  "cle": "fbfc6c45c441b5a7f5319149c4dba85e767ffb0308520587149c6b34f6e4f999",
+  "cle": "0449d142da0e9b1e52382c176fc3b61462df06eeff13fe24bd81183836816cce",
   "manifeste": {
    "double": "pierrette",
    "cote": "gauche",
@@ -8447,7 +8529,7 @@
   }
  },
  "page/pierrette-droite": {
-  "cle": "5a29c85183136a7b07b5cec2dfba0ca87b3614085c1fb315ac2613c9f62ff0dc",
+  "cle": "671b696a34a9f96758b2fcbbc178d81067f2c186f8b3ef1c1ad18d9a56ba4ddb",
   "manifeste": {
    "double": "pierrette",
    "cote": "droite",
@@ -8523,15 +8605,15 @@
   }
  },
  "page/lise-gauche": {
-  "cle": "55468a9af4e706f2b86b75106b1020bedc2cb06a75ab12c9c30b97cea91d90ab",
+  "cle": "8b66a65ecb9bbf80f8be5699098d3e03e18a178287f3d890d11a8f3ee294abdb",
   "manifeste": {
    "double": "lise",
    "cote": "gauche",
-   "folio": 24,
-   "papier": "pages/papier/f23",
+   "folio": 32,
+   "papier": "pages/papier/f31",
    "miroir": true,
    "encre": "pages/lise-gauche",
-   "papier1x": "pages/1x/papier/f23",
+   "papier1x": "pages/1x/papier/f31",
    "encre1x": "pages/1x/lise-gauche",
    "encre4x": {
     "base": "pages/4x/lise-gauche",
@@ -8592,15 +8674,15 @@
   }
  },
  "page/lise-droite": {
-  "cle": "e3f08162dadc37f9d848a3854561de06bc79af30eaedc8df876f81a1592a967a",
+  "cle": "5bdcef0595ae433493ed66e852ce0901d477738c80e3683c66a2bfc3eb3ff9ad",
   "manifeste": {
    "double": "lise",
    "cote": "droite",
-   "folio": 25,
-   "papier": "pages/papier/f25",
+   "folio": 33,
+   "papier": "pages/papier/f33",
    "miroir": false,
    "encre": "pages/lise-droite",
-   "papier1x": "pages/1x/papier/f25",
+   "papier1x": "pages/1x/papier/f33",
    "encre1x": "pages/1x/lise-droite",
    "encre4x": {
     "base": "pages/4x/lise-droite",
@@ -8679,15 +8761,15 @@
   }
  },
  "page/laura-gauche": {
-  "cle": "de889d0af00b96bf2d34af6e8fe4731723ca9280a81b033161ffcd79341ae3ec",
+  "cle": "5403080b4179061cd58eac307055b4ed76d8ea26d3e537883abe7c4b933cf5a2",
   "manifeste": {
    "double": "laura",
    "cote": "gauche",
-   "folio": 32,
-   "papier": "pages/papier/f31",
+   "folio": 44,
+   "papier": "pages/papier/f43",
    "miroir": true,
    "encre": "pages/laura-gauche",
-   "papier1x": "pages/1x/papier/f31",
+   "papier1x": "pages/1x/papier/f43",
    "encre1x": "pages/1x/laura-gauche",
    "encre4x": {
     "base": "pages/4x/laura-gauche",
@@ -8732,7 +8814,7 @@
      ]
     ]
    },
-   "texte": "Laura\nPour Cécile : Joyeux 30 ans ma Cécile ! Une crêpe bien gourmande pour notre reine du goûter. Profite à fond de ta journée ! — Laura\nCrêpes gourmandes Nutella-banane-chantilly\nIngrédients\n250 g de farine\n3 œufs\n50 cl de lait\n1 cuillère à soupe de sucre\nPour la garniture :\nNutella\n1 banane coupée en rondelles\ncrème chantilly\nPréparation\n1. Mélanger les œufs, la farine,",
+   "texte": "Laura, Gramegna\nPour Cécile : Joyeux 30 ans ma Cécile ! Une crêpe bien gourmande pour notre reine du goûter. Profite à fond de ta journée ! — Laura\nCrêpes gourmandes Nutella-banane-chantilly\nIngrédients\n250 g de farine\n3 œufs\n50 cl de lait\n1 cuillère à soupe de sucre\nPour la garniture :\nNutella\n1 banane coupée en rondelles\ncrème chantilly",
    "vivants": {
     "photo": [
      0.06,
@@ -8742,21 +8824,21 @@
     ]
    },
    "deborde": [],
-   "lignes": 14,
+   "lignes": 12,
    "recette": "laura",
    "relu": true
   }
  },
  "page/laura-droite": {
-  "cle": "d17bd9f691766880ac93867471b26f4525f015fdf6386514d94de3a1554c5c1c",
+  "cle": "0ce1fb0b6b7914126b36c62dc9a1aec0457ff1ef478c96684686e322b0716d3f",
   "manifeste": {
    "double": "laura",
    "cote": "droite",
-   "folio": 33,
-   "papier": "pages/papier/f33",
+   "folio": 45,
+   "papier": "pages/papier/f45",
    "miroir": false,
    "encre": "pages/laura-droite",
-   "papier1x": "pages/1x/papier/f33",
+   "papier1x": "pages/1x/papier/f45",
    "encre1x": "pages/1x/laura-droite",
    "encre4x": {
     "base": "pages/4x/laura-droite",
@@ -8801,7 +8883,7 @@
      ]
     ]
    },
-   "texte": "Laura\nle sucre et ajouter au fur et à mesure le lait jusqu'à obtention d'une pâte lisse.\n2. Huiler la crêpière. Dès qu'elle est bien chaude, y verser une louche de pâte à crêpe.\n3. Retourner la crêpe dès que les bords se décollent. Attendre quelques secondes et retirer la crêpe.\n4. Garnir la crêpe d'une belle cuillère à soupe de Nutella, d'une banane coupée en rondelles et de crème chantilly avant de la rouler et de l'engloutir pour le goûter 😋",
+   "texte": "Laura Gramegna\nPréparation\n1. Mélanger les œufs, la farine, le sucre et ajouter au fur et à mesure le lait jusqu'à obtention d'une pâte lisse.\n2. Huiler la crêpière. Dès qu'elle est bien chaude, y verser une louche de pâte à crêpe.\n3. Retourner la crêpe dès que les bords se décollent. Attendre quelques secondes et retirer la crêpe.\n4. Garnir la crêpe d'une belle cuillère à soupe de Nutella, d'une banane coupée en rondelles et de crème chantilly avant de la rouler et de l'engloutir pour le goûter 😋",
    "vivants": {
     "aq-laura-1": [
      0.36,
@@ -8811,7 +8893,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 8,
+   "lignes": 10,
    "aquarelles": {
     "aq-laura-1": {
      "aquarelle": "crepes-banane",
@@ -8825,10 +8907,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.1646,
-      0.2991,
-      0.0207,
-      0.0147
+      0.1617,
+      0.363,
+      0.0191,
+      0.0136
      ]
     }
    ],
@@ -8836,7 +8918,7 @@
   }
  },
  "pagination/emeline": {
-  "cle": "972076873b01b48b3eeee801b43bd6915271b416a5cf23829083579121fe2148",
+  "cle": "aadcf4f3235a16453a4a8d65ca365b8a1b90abdd46d108d838390f3111ec7045",
   "pages": {
    "emeline-gauche": {
     "double": "emeline",
@@ -9273,7 +9355,7 @@
   }
  },
  "pagination/clemence": {
-  "cle": "b1416f72843ba852ac9046c81f75244af2b7abcde966214fa92160f70185bf37",
+  "cle": "681367dac673b2882407c87a14ff4d52ed198eed0fb18084642699da153dfc88",
   "pages": {
    "clemence-gauche": {
     "double": "clemence",
@@ -9758,7 +9840,7 @@
   }
  },
  "pagination/anatole": {
-  "cle": "11f99787791875f897855f9bdaead026d1fd38e6972475a8f5d33fa00c1f24ed",
+  "cle": "ec6e39b9e953bf0cccbb9ec624f4ee4faaff9d70d7683a7b94dd576e5b82e563",
   "pages": {
    "anatole-gauche": {
     "double": "anatole",
@@ -9779,7 +9861,7 @@
     },
     "id": "anatole-gauche",
     "cote": "gauche",
-    "folio": 22,
+    "folio": 30,
     "graine": 7460,
     "gabarit": "C",
     "vivants": [
@@ -10068,7 +10150,7 @@
     },
     "id": "anatole-droite",
     "cote": "droite",
-    "folio": 23,
+    "folio": 31,
     "graine": 7461,
     "gabarit": "D",
     "vivants": [
@@ -10196,7 +10278,7 @@
   }
  },
  "pagination/julien": {
-  "cle": "6806ec9e49d1d4e1fac1fbab1d6265c642ef110bf9dacebaabf3b9b6864804db",
+  "cle": "c3960d2763ae2f4b115b76a6b009960d500bbaa7b83ce208cf17cfb6568b0c90",
   "pages": {
    "julien-gauche": {
     "double": "julien",
@@ -10219,7 +10301,7 @@
     },
     "id": "julien-gauche",
     "cote": "gauche",
-    "folio": 28,
+    "folio": 36,
     "graine": 9690,
     "gabarit": "C",
     "vivants": [
@@ -10457,7 +10539,7 @@
     },
     "id": "julien-droite",
     "cote": "droite",
-    "folio": 29,
+    "folio": 37,
     "graine": 9691,
     "gabarit": "D",
     "vivants": [
@@ -10640,7 +10722,7 @@
   }
  },
  "page/emeline-gauche": {
-  "cle": "890c8e96030d83be1ea181808ef6a7f3e0b935e4d72dea8ce8da42df6f0498b6",
+  "cle": "4551f8dc37c7af0df862cef9fb69b07a8ee2f9f74336224523cb45aee644576a",
   "manifeste": {
    "double": "emeline",
    "cote": "gauche",
@@ -10709,7 +10791,7 @@
   }
  },
  "page/emeline-droite": {
-  "cle": "0c74a9d14b5858b4a182c9965e433d21f71092bd66059b089eec29dcf48621f1",
+  "cle": "9d0ada7c70dbd8cd5f504836b635181f60afb913a7f3cbdddb1ec513daad6179",
   "manifeste": {
    "double": "emeline",
    "cote": "droite",
@@ -10784,7 +10866,7 @@
   }
  },
  "page/clemence-gauche": {
-  "cle": "5f6506eaed1c5e5fe61a85187bda90581e8dbc2e274e4303fe8de73fe5af06c6",
+  "cle": "cc4f33860e621ea74d0c656f0b0fcb46a568e06ec9848c02b6e4aec9e17e3526",
   "manifeste": {
    "double": "clemence",
    "cote": "gauche",
@@ -10853,7 +10935,7 @@
   }
  },
  "page/clemence-droite": {
-  "cle": "6bff027222702247a038325a82a7acbac2bb01eafc58db64130bef7e94b463c8",
+  "cle": "98ea5c29a2134f0363c5993a94769a46a22fce7864cd62d9cb620f84e59ac2b8",
   "manifeste": {
    "double": "clemence",
    "cote": "droite",
@@ -10928,15 +11010,15 @@
   }
  },
  "page/anatole-gauche": {
-  "cle": "5e4d924a928cead19cf269aa9594cfdea1065bc22abde0a54380b29fb2207153",
+  "cle": "61b042758ebded4911793342bfc09f6a2a922ab9ad91e933a903f1dd4b30b4ee",
   "manifeste": {
    "double": "anatole",
    "cote": "gauche",
-   "folio": 22,
-   "papier": "pages/papier/f21",
+   "folio": 30,
+   "papier": "pages/papier/f29",
    "miroir": true,
    "encre": "pages/anatole-gauche",
-   "papier1x": "pages/1x/papier/f21",
+   "papier1x": "pages/1x/papier/f29",
    "encre1x": "pages/1x/anatole-gauche",
    "encre4x": {
     "base": "pages/4x/anatole-gauche",
@@ -10997,15 +11079,15 @@
   }
  },
  "page/anatole-droite": {
-  "cle": "27e521203ebf0e8ab160c1dd7426d2ca81309065e6a6ac7609575e65da4f4ca1",
+  "cle": "ad0db46dacfb387d755a4c90202267ec45b5cb3851a33ed62db1db2727441f8b",
   "manifeste": {
    "double": "anatole",
    "cote": "droite",
-   "folio": 23,
-   "papier": "pages/papier/f23",
+   "folio": 31,
+   "papier": "pages/papier/f31",
    "miroir": false,
    "encre": "pages/anatole-droite",
-   "papier1x": "pages/1x/papier/f23",
+   "papier1x": "pages/1x/papier/f31",
    "encre1x": "pages/1x/anatole-droite",
    "encre4x": {
     "base": "pages/4x/anatole-droite",
@@ -11072,15 +11154,15 @@
   }
  },
  "page/julien-gauche": {
-  "cle": "1d420226014e25130baffd179afbfd42359abacfc65c6ecd6666f71beed9b2a3",
+  "cle": "7f8d149f67b95704154108eaaadceee38dfbf12dc4942931564378c74ba6d8c8",
   "manifeste": {
    "double": "julien",
    "cote": "gauche",
-   "folio": 28,
-   "papier": "pages/papier/f27",
+   "folio": 36,
+   "papier": "pages/papier/f35",
    "miroir": true,
    "encre": "pages/julien-gauche",
-   "papier1x": "pages/1x/papier/f27",
+   "papier1x": "pages/1x/papier/f35",
    "encre1x": "pages/1x/julien-gauche",
    "encre4x": {
     "base": "pages/4x/julien-gauche",
@@ -11141,15 +11223,15 @@
   }
  },
  "page/julien-droite": {
-  "cle": "5067c608a12046fc9b94e0a09b8da446ee16b841117452a840eee9c4e955bb55",
+  "cle": "852ee81578408bcd2b2cffefa4ba961bff886b9b5ae0680c48381efa6619c4a9",
   "manifeste": {
    "double": "julien",
    "cote": "droite",
-   "folio": 29,
-   "papier": "pages/papier/f29",
+   "folio": 37,
+   "papier": "pages/papier/f37",
    "miroir": false,
    "encre": "pages/julien-droite",
-   "papier1x": "pages/1x/papier/f29",
+   "papier1x": "pages/1x/papier/f37",
    "encre1x": "pages/1x/julien-droite",
    "encre4x": {
     "base": "pages/4x/julien-droite",
@@ -11217,7 +11299,7 @@
   }
  },
  "page/garde": {
-  "cle": "8be4ab750f45755a546c093c443350da2d470de1bbc4beb1fe4a4b1b70e432ad",
+  "cle": "1a71298da36c1aa1a21e9fb6293291268d2194b7af64044e63a0e28780476964",
   "manifeste": {
    "double": "titre",
    "cote": "gauche",
@@ -11302,7 +11384,7 @@
   }
  },
  "page/titre": {
-  "cle": "b3b6e0f40816778bff15222218b32d6703afda68f4fb905d134354f188bdbe0d",
+  "cle": "9cf5aa71a931cdd222a9534fe0e6fb4c459e062bbc00e139e117721af6ef7c96",
   "manifeste": {
    "double": "titre",
    "cote": "droite",
@@ -11381,6 +11463,3204 @@
      "aquarelle": "gateau-bougies"
     }
    },
+   "relu": true
+  }
+ },
+ "pagination/laura-geyer": {
+  "cle": "349b6273f14c8bd4d19e775ffa17843197a7969dc5a32b34210c7d1f51521da8",
+  "pages": {
+   "laura-geyer-gauche": {
+    "double": "laura-geyer",
+    "main": "soignee",
+    "encre": "brune",
+    "recette": "laura-geyer",
+    "serrage_max": 1,
+    "police": "kalam",
+    "contexte_importants": {
+     "ingredients": [
+      "1 cuillère à thé de levure chimique (poudre à pâte)",
+      "1 orange moyenne sans pépins (de préférence non traitée ou biologique)",
+      "160 g d’amandes en poudre",
+      "200 g de sucre",
+      "3 œufs",
+      "4 cuillères à soupe de farine (blanche ou complète)"
+     ]
+    },
+    "id": "laura-geyer-gauche",
+    "cote": "gauche",
+    "folio": 20,
+    "graine": 13112,
+    "gabarit": "C",
+    "vivants": [
+     {
+      "nom": "photo",
+      "rect": [
+       0.06,
+       0.035,
+       0.48569,
+       0.27203
+      ]
+     }
+    ],
+    "marges": {
+     "haut": 0.31703
+    },
+    "blocs": [
+     {
+      "type": "bandeau",
+      "id": "bandeau",
+      "texte": "Laura Geyer",
+      "graine": 10102673,
+      "places": [
+       "dessous"
+      ],
+      "taille": 2.2
+     },
+     {
+      "type": "cadre",
+      "id": "cadre",
+      "texte": "Lorem ipsum — message à venir",
+      "signature": "Laura Geyer",
+      "graine": 27933229,
+      "signature_graine": 57881020,
+      "largeur": 0.84,
+      "style": "ondule",
+      "titre": "Pour Cécile — message provisoire",
+      "position": "bandeau"
+     },
+     {
+      "type": "titre",
+      "id": "titre",
+      "segments": [
+       {
+        "texte": "Gâteau à l’orange et aux amandes",
+        "graine": 18096767,
+        "atome": "titre"
+       }
+      ],
+      "position": "fer",
+      "souligne": "double",
+      "avant": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 68796675,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 27970473,
+      "avant": 0.4,
+      "lignes": [
+       {
+        "texte": "1 orange moyenne sans pépins (de préférence non traitée ou biologique)",
+        "graine": 19553658,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-1"
+       },
+       {
+        "texte": "160 g d’amandes en poudre",
+        "graine": 42399623,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-2"
+       },
+       {
+        "texte": "3 œufs",
+        "graine": 28560303,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-3"
+       },
+       {
+        "texte": "200 g de sucre",
+        "graine": 71909477,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-4"
+       },
+       {
+        "texte": "1 cuillère à thé de levure chimique (poudre à pâte)",
+        "graine": 62475787,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-5"
+       },
+       {
+        "texte": "4 cuillères à soupe de farine (blanche ou complète)",
+        "graine": 44342441,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-6"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 34625083,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "1.",
+       "graine": 52823288
+      },
+      "segments": [
+       {
+        "texte": "Préparer l’orange : Laver l’orange et la mettre dans une casserole.",
+        "graine": 46776706,
+        "atome": "etape-1/phrase-1"
+       },
+       {
+        "texte": "Recouvrir d’eau chaude, porter à ébullition,",
+        "graine": 64599004,
+        "atome": "etape-1/phrase-2.1"
+       },
+       {
+        "texte": "couvrir et laisser frémir pendant 1 heure.",
+        "graine": 90237020,
+        "atome": "etape-1/phrase-2.2"
+       },
+       {
+        "texte": "Égoutter et laisser refroidir.",
+        "graine": 60125049,
+        "atome": "etape-1/phrase-3"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "2.",
+       "graine": 42777697
+      },
+      "segments": [
+       {
+        "texte": "Préchauffer le four à 180 °C (350 °F).",
+        "graine": 41942927,
+        "atome": "etape-2/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-3",
+      "source": "etape-3",
+      "titre": {
+       "texte": "3.",
+       "graine": 85252345
+      },
+      "segments": [
+       {
+        "texte": "Préparer le moule : Tapisser de papier sulfurisé un moule à gâteau rond de 20 à 23 cm de diamètre.",
+        "graine": 82735959,
+        "atome": "etape-3/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     }
+    ],
+    "atomes": [
+     "titre",
+     "section-ingredients",
+     "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
+     "ingredients-1/ligne-3",
+     "ingredients-1/ligne-4",
+     "ingredients-1/ligne-5",
+     "ingredients-1/ligne-6",
+     "section-preparation",
+     "etape-1/phrase-1",
+     "etape-1/phrase-2.1",
+     "etape-1/phrase-2.2",
+     "etape-1/phrase-3",
+     "etape-2/phrase-1",
+     "etape-3/phrase-1"
+    ]
+   },
+   "laura-geyer-droite": {
+    "double": "laura-geyer",
+    "main": "soignee",
+    "encre": "brune",
+    "recette": "laura-geyer",
+    "serrage_max": 1,
+    "police": "kalam",
+    "contexte_importants": {
+     "ingredients": [
+      "1 cuillère à thé de levure chimique (poudre à pâte)",
+      "1 orange moyenne sans pépins (de préférence non traitée ou biologique)",
+      "160 g d’amandes en poudre",
+      "200 g de sucre",
+      "3 œufs",
+      "4 cuillères à soupe de farine (blanche ou complète)"
+     ]
+    },
+    "id": "laura-geyer-droite",
+    "cote": "droite",
+    "folio": 21,
+    "graine": 13113,
+    "gabarit": "D",
+    "vivants": [
+     {
+      "nom": "aq-laura-geyer-1",
+      "rect": [
+       0.13,
+       0.43,
+       0.74,
+       0.51
+      ],
+      "aquarelle": "gateau-orange-amandes",
+      "angle": 0
+     },
+     {
+      "nom": "aq-laura-geyer-1-bande",
+      "rect": [
+       0.0,
+       0.43,
+       1.0,
+       0.57
+      ],
+      "vivant": false
+     }
+    ],
+    "blocs": [
+     {
+      "type": "courant",
+      "id": "courant",
+      "texte": "Laura Geyer",
+      "graine": 56551673
+     },
+     {
+      "type": "etape",
+      "id": "etape-4",
+      "source": "etape-4",
+      "titre": {
+       "texte": "4.",
+       "graine": 75743215
+      },
+      "segments": [
+       {
+        "texte": "Mixer l’orange : Mettre l’orange entière (avec sa peau) dans un mixeur et la réduire en une purée lisse.",
+        "graine": 53658474,
+        "atome": "etape-4/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-5",
+      "source": "etape-5",
+      "titre": {
+       "texte": "5.",
+       "graine": 55103545
+      },
+      "segments": [
+       {
+        "texte": "Préparer la pâte : Dans un grand bol,",
+        "graine": 68821799,
+        "atome": "etape-5/phrase-1.1"
+       },
+       {
+        "texte": "fouetter les œufs et le sucre.",
+        "graine": 4755502,
+        "atome": "etape-5/phrase-1.2"
+       },
+       {
+        "texte": "Ajouter la farine, la levure et les amandes en poudre,",
+        "graine": 80860092,
+        "atome": "etape-5/phrase-2.1"
+       },
+       {
+        "texte": "puis incorporer la purée d’orange.",
+        "graine": 86901425,
+        "atome": "etape-5/phrase-2.2"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-6",
+      "source": "etape-6",
+      "titre": {
+       "texte": "6.",
+       "graine": 94072004
+      },
+      "segments": [
+       {
+        "texte": "Cuisson : Verser la préparation dans le moule,",
+        "graine": 52133384,
+        "atome": "etape-6/phrase-1.1"
+       },
+       {
+        "texte": "égaliser la surface et cuire environ 40 à 45 minutes,",
+        "graine": 83912144,
+        "atome": "etape-6/phrase-1.2"
+       },
+       {
+        "texte": "ou jusqu’à ce que le gâteau commence à dorer sur le dessus.",
+        "graine": 94793505,
+        "atome": "etape-6/phrase-1.3"
+       },
+       {
+        "texte": "À la sortie du four, le gâteau sera encore plutôt souple sur le dessus,",
+        "graine": 67878716,
+        "atome": "etape-6/phrase-2.1"
+       },
+       {
+        "texte": "mais se raffermira en refroidissant.",
+        "graine": 74031110,
+        "atome": "etape-6/phrase-2.2"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-7",
+      "source": "etape-7",
+      "titre": {
+       "texte": "7.",
+       "graine": 28015973
+      },
+      "segments": [
+       {
+        "texte": "Refroidissement : Laisser tiédir une quinzaine de minutes avant de démouler.",
+        "graine": 14830920,
+        "atome": "etape-7/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     }
+    ],
+    "atomes": [
+     "etape-4/phrase-1",
+     "etape-5/phrase-1.1",
+     "etape-5/phrase-1.2",
+     "etape-5/phrase-2.1",
+     "etape-5/phrase-2.2",
+     "etape-6/phrase-1.1",
+     "etape-6/phrase-1.2",
+     "etape-6/phrase-1.3",
+     "etape-6/phrase-2.1",
+     "etape-6/phrase-2.2",
+     "etape-7/phrase-1"
+    ]
+   }
+  },
+  "ordre": [
+   "laura-geyer-gauche",
+   "laura-geyer-droite"
+  ],
+  "disposition": "tete",
+  "ajustements": {},
+  "trous": {
+   "laura-geyer-gauche": 1.23
+  }
+ },
+ "pagination/marie": {
+  "cle": "2f6457a17ec143f98086845125e0c8c9817826c2f4844f9d377951d80f9a646b",
+  "pages": {
+   "marie-gauche": {
+    "double": "marie",
+    "main": "soignee",
+    "encre": "chocolat",
+    "recette": "marie",
+    "serrage_max": 1,
+    "police": "caveat",
+    "contexte_importants": {
+     "ingredients": [
+      "2 cuillères à soupe rases de farine",
+      "250 grammes de beurre",
+      "250 grammes de sucre",
+      "300 grammes de chocolat noir",
+      "5 oeufs"
+     ]
+    },
+    "id": "marie-gauche",
+    "cote": "gauche",
+    "folio": 22,
+    "graine": 14232,
+    "gabarit": "C",
+    "vivants": [
+     {
+      "nom": "photo",
+      "rect": [
+       0.06,
+       0.035,
+       0.48569,
+       0.27203
+      ]
+     }
+    ],
+    "marges": {
+     "haut": 0.31703
+    },
+    "blocs": [
+     {
+      "type": "bandeau",
+      "id": "bandeau",
+      "texte": "Marie",
+      "graine": 52956897,
+      "places": [
+       "dessous"
+      ],
+      "taille": 2.2
+     },
+     {
+      "type": "cadre",
+      "id": "cadre",
+      "texte": "Lorem ipsum — message à venir",
+      "signature": "Marie",
+      "graine": 94254092,
+      "signature_graine": 17368997,
+      "largeur": 0.84,
+      "style": "ondule",
+      "titre": "Pour Cécile — message provisoire",
+      "position": "bandeau"
+     },
+     {
+      "type": "titre",
+      "id": "titre",
+      "segments": [
+       {
+        "texte": "FONDANT CHOCOLAT de Maman Sylvie Cattelin",
+        "graine": 63566416,
+        "atome": "titre"
+       }
+      ],
+      "position": "fer",
+      "souligne": "double",
+      "avant": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 47918217,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 75071176,
+      "avant": 0.4,
+      "lignes": [
+       {
+        "texte": "300 grammes de chocolat noir",
+        "graine": 57742555,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-1"
+       },
+       {
+        "texte": "250 grammes de beurre",
+        "graine": 3929693,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-2"
+       },
+       {
+        "texte": "250 grammes de sucre",
+        "graine": 31555767,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-3"
+       },
+       {
+        "texte": "5 oeufs",
+        "graine": 13273536,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-4"
+       },
+       {
+        "texte": "2 cuillères à soupe rases de farine",
+        "graine": 51530418,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-5"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 64811651,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "1.",
+       "graine": 24400766
+      },
+      "segments": [
+       {
+        "texte": "Faire fondre doucement le beurre, le chocolat puis, le sucre.",
+        "graine": 43756095,
+        "atome": "etape-1/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "2.",
+       "graine": 83299302
+      },
+      "segments": [
+       {
+        "texte": "Battre les oeufs entiers et les insérer au mélange de chocolat",
+        "graine": 87693180,
+        "atome": "etape-2/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-3",
+      "source": "etape-3",
+      "titre": {
+       "texte": "3.",
+       "graine": 20040650
+      },
+      "segments": [
+       {
+        "texte": "Ajouter la farine et bien mélanger",
+        "graine": 37619218,
+        "atome": "etape-3/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-4",
+      "source": "etape-4",
+      "titre": {
+       "texte": "4.",
+       "graine": 83979055
+      },
+      "segments": [
+       {
+        "texte": "Verser dans un moule beurré",
+        "graine": 37140278,
+        "atome": "etape-4/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-5",
+      "source": "etape-5",
+      "titre": {
+       "texte": "5.",
+       "graine": 66108290
+      },
+      "segments": [
+       {
+        "texte": "Cuire à 160 degrés pendant environ 30 minutes",
+        "graine": 71314666,
+        "atome": "etape-5/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     }
+    ],
+    "atomes": [
+     "titre",
+     "section-ingredients",
+     "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
+     "ingredients-1/ligne-3",
+     "ingredients-1/ligne-4",
+     "ingredients-1/ligne-5",
+     "section-preparation",
+     "etape-1/phrase-1",
+     "etape-2/phrase-1",
+     "etape-3/phrase-1",
+     "etape-4/phrase-1",
+     "etape-5/phrase-1"
+    ]
+   },
+   "marie-droite": {
+    "double": "marie",
+    "main": "soignee",
+    "encre": "chocolat",
+    "recette": "marie",
+    "serrage_max": 1,
+    "police": "caveat",
+    "contexte_importants": {
+     "ingredients": [
+      "2 cuillères à soupe rases de farine",
+      "250 grammes de beurre",
+      "250 grammes de sucre",
+      "300 grammes de chocolat noir",
+      "5 oeufs"
+     ]
+    },
+    "id": "marie-droite",
+    "cote": "droite",
+    "folio": 23,
+    "graine": 14233,
+    "gabarit": "D",
+    "vivants": [
+     {
+      "nom": "aq-marie-1",
+      "rect": [
+       0.13,
+       0.25,
+       0.74,
+       0.65
+      ],
+      "aquarelle": "fondant-chocolat",
+      "angle": 0
+     },
+     {
+      "nom": "aq-marie-1-bande",
+      "rect": [
+       0.0,
+       0.25,
+       1.0,
+       0.75
+      ],
+      "vivant": false
+     }
+    ],
+    "blocs": [
+     {
+      "type": "courant",
+      "id": "courant",
+      "texte": "Marie",
+      "graine": 63076733
+     }
+    ],
+    "atomes": []
+   }
+  },
+  "ordre": [
+   "marie-gauche",
+   "marie-droite"
+  ],
+  "disposition": "tete",
+  "ajustements": {},
+  "trous": {}
+ },
+ "pagination/sarah": {
+  "cle": "3ff32d330b1874c7990ca9ce2efc020dfd09e0e81cee84cfb74a6286367b1627",
+  "pages": {
+   "sarah-gauche": {
+    "double": "sarah",
+    "main": "ado",
+    "encre": "noire",
+    "recette": "sarah",
+    "serrage_max": 1,
+    "police": "caveat-appuye",
+    "contexte_importants": {
+     "ingredients": [
+      "1 c. à café de sel",
+      "1 jaune d’œuf + un peu de lait ou de crème pour la dorure",
+      "1 œuf",
+      "10 g de levure boulangère sèche ou 25 g de levure fraîche",
+      "125 g de beurre mou",
+      "260 g de lait",
+      "500 g de farine",
+      "70 g de sucre"
+     ]
+    },
+    "id": "sarah-gauche",
+    "cote": "gauche",
+    "folio": 40,
+    "graine": 15348,
+    "gabarit": "C",
+    "vivants": [
+     {
+      "nom": "photo",
+      "rect": [
+       0.06,
+       0.035,
+       0.48569,
+       0.27203
+      ]
+     }
+    ],
+    "marges": {
+     "haut": 0.31703
+    },
+    "blocs": [
+     {
+      "type": "bandeau",
+      "id": "bandeau",
+      "texte": "Sarah",
+      "graine": 72611878,
+      "places": [
+       "dessous"
+      ],
+      "taille": 2.2
+     },
+     {
+      "type": "cadre",
+      "id": "cadre",
+      "texte": "Lorem ipsum — message à venir",
+      "signature": "Sarah",
+      "graine": 36457830,
+      "signature_graine": 45051707,
+      "largeur": 0.84,
+      "style": "ondule",
+      "titre": "Pour Cécile — message provisoire",
+      "position": "bandeau"
+     },
+     {
+      "type": "titre",
+      "id": "titre",
+      "segments": [
+       {
+        "texte": "Brioche à la mie filante",
+        "graine": 91328234,
+        "atome": "titre"
+       }
+      ],
+      "position": "fer",
+      "souligne": "double",
+      "avant": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "detail-1",
+      "segments": [
+       {
+        "texte": "(avec option Nutella ou tout autre ajout à tartiner pour un rendu plus gourmand)",
+        "graine": 35721082,
+        "atome": "detail-1"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "paragraphe",
+      "id": "detail-2",
+      "segments": [
+       {
+        "texte": "Préparation : 20 min · Repos : une nuit + 30 min · Cuisson : 40 min",
+        "graine": 33855941,
+        "atome": "detail-2"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 89119344,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 84575264,
+      "avant": 0.4,
+      "lignes": [
+       {
+        "texte": "260 g de lait",
+        "graine": 948363,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-1"
+       },
+       {
+        "texte": "10 g de levure boulangère sèche ou 25 g de levure fraîche",
+        "graine": 7407358,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-2"
+       },
+       {
+        "texte": "70 g de sucre",
+        "graine": 38974391,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-3"
+       },
+       {
+        "texte": "125 g de beurre mou",
+        "graine": 97689525,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-4"
+       },
+       {
+        "texte": "1 œuf",
+        "graine": 80938561,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-5"
+       },
+       {
+        "texte": "500 g de farine",
+        "graine": 7982791,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-6"
+       }
+      ]
+     }
+    ],
+    "atomes": [
+     "titre",
+     "detail-1",
+     "detail-2",
+     "section-ingredients",
+     "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
+     "ingredients-1/ligne-3",
+     "ingredients-1/ligne-4",
+     "ingredients-1/ligne-5",
+     "ingredients-1/ligne-6"
+    ]
+   },
+   "sarah-droite": {
+    "double": "sarah",
+    "main": "ado",
+    "encre": "noire",
+    "recette": "sarah",
+    "serrage_max": 1,
+    "police": "caveat-appuye",
+    "contexte_importants": {
+     "ingredients": [
+      "1 c. à café de sel",
+      "1 jaune d’œuf + un peu de lait ou de crème pour la dorure",
+      "1 œuf",
+      "10 g de levure boulangère sèche ou 25 g de levure fraîche",
+      "125 g de beurre mou",
+      "260 g de lait",
+      "500 g de farine",
+      "70 g de sucre"
+     ]
+    },
+    "id": "sarah-droite",
+    "cote": "droite",
+    "folio": 41,
+    "graine": 15349,
+    "gabarit": "D",
+    "vivants": [
+     {
+      "nom": "volant",
+      "rect": [
+       0.83,
+       0.66,
+       0.17,
+       0.215
+      ]
+     },
+     {
+      "nom": "suite",
+      "rect": [
+       0.08,
+       0.895,
+       0.7,
+       0.06
+      ],
+      "vivant": false
+     },
+     {
+      "nom": "aq-sarah-1",
+      "rect": [
+       0.13,
+       0.49,
+       0.67,
+       0.35
+      ],
+      "aquarelle": "brioche",
+      "angle": 0
+     },
+     {
+      "nom": "aq-sarah-1-bande",
+      "rect": [
+       0.0,
+       0.49,
+       1.0,
+       0.4
+      ],
+      "vivant": false
+     }
+    ],
+    "volant": {
+     "recto": "sarah-feuillet-recto",
+     "verso": "sarah-feuillet-verso",
+     "angle": -7.0,
+     "rect": [
+      0.85,
+      0.685,
+      0.82,
+      0.88
+     ]
+    },
+    "suite": "sarah-feuillet-recto",
+    "blocs": [
+     {
+      "type": "courant",
+      "id": "courant",
+      "texte": "Sarah",
+      "graine": 64867397
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-1@ligne-7",
+      "disposition": "puces",
+      "graine_puces": 84575264,
+      "avant": 0.0,
+      "lignes": [
+       {
+        "texte": "1 c. à café de sel",
+        "graine": 27071870,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-7"
+       },
+       {
+        "texte": "1 jaune d’œuf + un peu de lait ou de crème pour la dorure",
+        "graine": 60524866,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-8"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 11671902,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "1.",
+       "graine": 10845809
+      },
+      "segments": [
+       {
+        "texte": "Activer la levure : faire tiédir le lait (35–37 °C),",
+        "graine": 42585363,
+        "atome": "etape-1/phrase-1.1"
+       },
+       {
+        "texte": "puis mélanger avec la levure et le sucre.",
+        "graine": 91191814,
+        "atome": "etape-1/phrase-1.2"
+       },
+       {
+        "texte": "Laisser reposer 5 à 10 min.",
+        "graine": 93703263,
+        "atome": "etape-1/phrase-2"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "2.",
+       "graine": 93834195
+      },
+      "segments": [
+       {
+        "texte": "Préparer la pâte : ajouter l’œuf et le beurre mou,",
+        "graine": 51505088,
+        "atome": "etape-2/phrase-1.1"
+       },
+       {
+        "texte": "puis incorporer la farine et le sel.",
+        "graine": 97418633,
+        "atome": "etape-2/phrase-1.2"
+       },
+       {
+        "texte": "Pétrir 10 à 15 min à la main ou 8 à 10 min au robot,",
+        "graine": 37281658,
+        "atome": "etape-2/phrase-2.1"
+       },
+       {
+        "texte": "jusqu’à obtenir une pâte souple et élastique.",
+        "graine": 75018575,
+        "atome": "etape-2/phrase-2.2"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-3",
+      "source": "etape-3",
+      "titre": {
+       "texte": "3.",
+       "graine": 32638513
+      },
+      "segments": [
+       {
+        "texte": "Repos au froid : couvrir la pâte et la placer au réfrigérateur toute une nuit (8 à 12 h).",
+        "graine": 75508483,
+        "atome": "etape-3/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-4",
+      "source": "etape-4",
+      "titre": {
+       "texte": "4.",
+       "graine": 87680635
+      },
+      "segments": [
+       {
+        "texte": "Façonner : diviser la pâte en 6 boules et les placer dans un moule beurré d’environ 23 × 14 cm.",
+        "graine": 1149054,
+        "atome": "etape-4/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "annotation",
+      "id": "suite-note",
+      "texte": "suite sur la feuille",
+      "main": "cecile",
+      "encre": "crayon",
+      "role": "annotation",
+      "graine": 97539639,
+      "pente": -2.5,
+      "dans": "suite",
+      "aligne": "droite",
+      "sans_parentheses": true,
+      "fleche": {
+       "depuis": "fin",
+       "vers_zone": "volant",
+       "fx": 0.16,
+       "fy": 0.8,
+       "courbure": 0.25
+      }
+     }
+    ],
+    "atomes": [
+     "ingredients-1/ligne-7",
+     "ingredients-1/ligne-8",
+     "section-preparation",
+     "etape-1/phrase-1.1",
+     "etape-1/phrase-1.2",
+     "etape-1/phrase-2",
+     "etape-2/phrase-1.1",
+     "etape-2/phrase-1.2",
+     "etape-2/phrase-2.1",
+     "etape-2/phrase-2.2",
+     "etape-3/phrase-1",
+     "etape-4/phrase-1"
+    ]
+   },
+   "sarah-feuillet-recto": {
+    "double": "sarah",
+    "main": "ado",
+    "encre": "noire",
+    "recette": "sarah",
+    "serrage_max": 1,
+    "police": "caveat-appuye",
+    "contexte_importants": {
+     "ingredients": [
+      "1 c. à café de sel",
+      "1 jaune d’œuf + un peu de lait ou de crème pour la dorure",
+      "1 œuf",
+      "10 g de levure boulangère sèche ou 25 g de levure fraîche",
+      "125 g de beurre mou",
+      "260 g de lait",
+      "500 g de farine",
+      "70 g de sucre"
+     ]
+    },
+    "type": "feuillet",
+    "taille": [
+     697,
+     1056
+    ],
+    "papier": "c-lisa",
+    "xh_facteur": 0.83,
+    "cote": "droite",
+    "marges": {
+     "haut": 0.04,
+     "bas": 0.035
+    },
+    "id": "sarah-feuillet-recto",
+    "face": "recto",
+    "dos": "sarah-feuillet-verso",
+    "graine": 15350,
+    "suite": "sarah-feuillet-verso",
+    "grille": {
+     "carreau": 21.0,
+     "angle": 0.35,
+     "xc": 348.5,
+     "yc": 528.0,
+     "x0": 356.1994309078812,
+     "y0": 538.5789560011625,
+     "marge_x": 72.91864325266444
+    },
+    "blocs": [
+     {
+      "type": "paragraphe",
+      "id": "suite-tete",
+      "segments": [
+       {
+        "texte": "(suite)",
+        "graine": 57289680
+       }
+      ],
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-5",
+      "source": "etape-5",
+      "titre": {
+       "texte": "5.",
+       "graine": 57554289
+      },
+      "segments": [
+       {
+        "texte": "Seconde pousse : couvrir et laisser gonfler environ 30 min dans un endroit tiède, davantage si nécessaire.",
+        "graine": 3661267,
+        "atome": "etape-5/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-6",
+      "source": "etape-6",
+      "titre": {
+       "texte": "6.",
+       "graine": 83357296
+      },
+      "segments": [
+       {
+        "texte": "Dorer et cuire : badigeonner avec le jaune d’œuf mélangé à un peu de lait ou de crème.",
+        "graine": 17682957,
+        "atome": "etape-6/phrase-1"
+       },
+       {
+        "texte": "Enfourner à 160 °C (chaleur traditionnelle) pendant environ 40 min. Couvrir de papier aluminium si la brioche dore trop vite.",
+        "graine": 64303335,
+        "atome": "etape-6/phrase-2"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-7",
+      "source": "etape-7",
+      "titre": {
+       "texte": "7.",
+       "graine": 22035101
+      },
+      "segments": [
+       {
+        "texte": "Refroidir : laisser tiédir au moins 30 min avant de déguster.",
+        "graine": 45049155,
+        "atome": "etape-7/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "apres-1@phrase-1",
+      "source": "apres-1",
+      "segments": [
+       {
+        "texte": "Astuce : congeler les tranches restantes pour conserver leur moelleux.",
+        "graine": 1167984,
+        "atome": "apres-1/phrase-1"
+       }
+      ],
+      "avant": 0.3,
+      "alinea": 0.04
+     }
+    ],
+    "atomes": [
+     "etape-5/phrase-1",
+     "etape-6/phrase-1",
+     "etape-6/phrase-2",
+     "etape-7/phrase-1",
+     "apres-1/phrase-1"
+    ]
+   },
+   "sarah-feuillet-verso": {
+    "double": "sarah",
+    "main": "ado",
+    "encre": "noire",
+    "recette": "sarah",
+    "serrage_max": 1,
+    "police": "caveat-appuye",
+    "contexte_importants": {
+     "ingredients": [
+      "1 c. à café de sel",
+      "1 jaune d’œuf + un peu de lait ou de crème pour la dorure",
+      "1 œuf",
+      "10 g de levure boulangère sèche ou 25 g de levure fraîche",
+      "125 g de beurre mou",
+      "260 g de lait",
+      "500 g de farine",
+      "70 g de sucre"
+     ]
+    },
+    "type": "feuillet",
+    "taille": [
+     697,
+     1056
+    ],
+    "papier": "c-lisa",
+    "xh_facteur": 0.83,
+    "cote": "droite",
+    "marges": {
+     "haut": 0.04,
+     "bas": 0.035
+    },
+    "id": "sarah-feuillet-verso",
+    "face": "verso",
+    "dos": "sarah-feuillet-recto",
+    "graine": 15351,
+    "grille": {
+     "carreau": 21.0,
+     "angle": 0.3793075408006112,
+     "xc": 348.5,
+     "yc": 528.0,
+     "x0": 352.4377127185676,
+     "y0": 536.7782485297435,
+     "marge_x": 67.16661933272653
+    },
+    "blocs": [],
+    "atomes": []
+   }
+  },
+  "ordre": [
+   "sarah-gauche",
+   "sarah-droite",
+   "sarah-feuillet-recto",
+   "sarah-feuillet-verso"
+  ],
+  "disposition": "tete",
+  "ajustements": {},
+  "trous": {
+   "sarah-gauche": 1.02,
+   "sarah-droite": 1.0
+  }
+ },
+ "pagination/lea": {
+  "cle": "bb2c12865ff1e25954ae08c9f152929591e6c51e5d8e7f0c688848829ff8d4b1",
+  "pages": {
+   "lea-gauche": {
+    "double": "lea",
+    "main": "soignee",
+    "encre": "bille-bleue",
+    "recette": "lea",
+    "serrage_max": 1,
+    "police": "shantell",
+    "contexte_importants": {
+     "ingredients": [
+      "1 cuillère à café d’arôme vanille (indispensable!!)",
+      "1 pincée de sel",
+      "1 sachet de levure chimique",
+      "100g de sucre",
+      "250g de fromage blanc",
+      "3 pommes",
+      "3 œufs",
+      "80g de farine"
+     ]
+    },
+    "id": "lea-gauche",
+    "cote": "gauche",
+    "folio": 24,
+    "graine": 16454,
+    "gabarit": "C",
+    "vivants": [
+     {
+      "nom": "photo",
+      "rect": [
+       0.06,
+       0.035,
+       0.48569,
+       0.27203
+      ]
+     }
+    ],
+    "marges": {
+     "haut": 0.31703
+    },
+    "blocs": [
+     {
+      "type": "bandeau",
+      "id": "bandeau",
+      "texte": "Léa",
+      "graine": 61681716,
+      "places": [
+       "dessous"
+      ],
+      "taille": 2.2
+     },
+     {
+      "type": "cadre",
+      "id": "cadre",
+      "texte": "Lorem ipsum — message à venir",
+      "signature": "Léa",
+      "graine": 66956944,
+      "signature_graine": 15468009,
+      "largeur": 0.84,
+      "style": "ondule",
+      "titre": "Pour Cécile — message provisoire",
+      "position": "bandeau"
+     },
+     {
+      "type": "titre",
+      "id": "titre",
+      "segments": [
+       {
+        "texte": "Gâteau aux pommes",
+        "graine": 97560078,
+        "atome": "titre"
+       }
+      ],
+      "position": "fer",
+      "souligne": "double",
+      "avant": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 15305478,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 43249747,
+      "avant": 0.4,
+      "lignes": [
+       {
+        "texte": "3 pommes",
+        "graine": 53794266,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-1"
+       },
+       {
+        "texte": "250g de fromage blanc",
+        "graine": 80047348,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-2"
+       },
+       {
+        "texte": "100g de sucre",
+        "graine": 40716290,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-3"
+       },
+       {
+        "texte": "3 œufs",
+        "graine": 59107538,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-4"
+       },
+       {
+        "texte": "80g de farine",
+        "graine": 51708254,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-5"
+       },
+       {
+        "texte": "1 sachet de levure chimique",
+        "graine": 66165129,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-6"
+       },
+       {
+        "texte": "1 cuillère à café d’arôme vanille (indispensable!!)",
+        "graine": 1795699,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-7"
+       },
+       {
+        "texte": "1 pincée de sel",
+        "graine": 26481441,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-8"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 63676105,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "1.",
+       "graine": 18055190
+      },
+      "segments": [
+       {
+        "texte": "préchauffer le four à 180 °C",
+        "graine": 57432906,
+        "atome": "etape-1/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "2.",
+       "graine": 70060980
+      },
+      "segments": [
+       {
+        "texte": "éplucher et couper les pommes en petit cubes",
+        "graine": 54719872,
+        "atome": "etape-2/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-3",
+      "source": "etape-3",
+      "titre": {
+       "texte": "3.",
+       "graine": 83690623
+      },
+      "segments": [
+       {
+        "texte": "dans un saladier, mélanger les œufs et le sucre,",
+        "graine": 11775705,
+        "atome": "etape-3/phrase-1.1"
+       },
+       {
+        "texte": "ajouter le fromage blanc et la vanille, bien mélanger.",
+        "graine": 91241596,
+        "atome": "etape-3/phrase-1.2"
+       },
+       {
+        "texte": "Ajouter la farine, la levure chimique et la pincée de sel et mélanger jusqu’à obtenir une pâte lisse et mousseuse",
+        "graine": 92342970,
+        "atome": "etape-3/phrase-2"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     }
+    ],
+    "atomes": [
+     "titre",
+     "section-ingredients",
+     "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
+     "ingredients-1/ligne-3",
+     "ingredients-1/ligne-4",
+     "ingredients-1/ligne-5",
+     "ingredients-1/ligne-6",
+     "ingredients-1/ligne-7",
+     "ingredients-1/ligne-8",
+     "section-preparation",
+     "etape-1/phrase-1",
+     "etape-2/phrase-1",
+     "etape-3/phrase-1.1",
+     "etape-3/phrase-1.2",
+     "etape-3/phrase-2"
+    ]
+   },
+   "lea-droite": {
+    "double": "lea",
+    "main": "soignee",
+    "encre": "bille-bleue",
+    "recette": "lea",
+    "serrage_max": 1,
+    "police": "shantell",
+    "contexte_importants": {
+     "ingredients": [
+      "1 cuillère à café d’arôme vanille (indispensable!!)",
+      "1 pincée de sel",
+      "1 sachet de levure chimique",
+      "100g de sucre",
+      "250g de fromage blanc",
+      "3 pommes",
+      "3 œufs",
+      "80g de farine"
+     ]
+    },
+    "id": "lea-droite",
+    "cote": "droite",
+    "folio": 25,
+    "graine": 16455,
+    "gabarit": "D",
+    "vivants": [
+     {
+      "nom": "aq-lea-1",
+      "rect": [
+       0.13,
+       0.34,
+       0.74,
+       0.6
+      ],
+      "aquarelle": "gateau-pommes",
+      "angle": 0
+     },
+     {
+      "nom": "aq-lea-1-bande",
+      "rect": [
+       0.0,
+       0.34,
+       1.0,
+       0.66
+      ],
+      "vivant": false
+     }
+    ],
+    "blocs": [
+     {
+      "type": "courant",
+      "id": "courant",
+      "texte": "Léa",
+      "graine": 15304608
+     },
+     {
+      "type": "etape",
+      "id": "etape-4",
+      "source": "etape-4",
+      "titre": {
+       "texte": "4.",
+       "graine": 20603922
+      },
+      "segments": [
+       {
+        "texte": "Beurrer et fariner le moule à gâteau (rond et pas très haut)",
+        "graine": 20904735,
+        "atome": "etape-4/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-5",
+      "source": "etape-5",
+      "titre": {
+       "texte": "5.",
+       "graine": 66636069
+      },
+      "segments": [
+       {
+        "texte": "Ajouter les pommes et recouvrer avec la pâte",
+        "graine": 7168902,
+        "atome": "etape-5/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-6",
+      "source": "etape-6",
+      "titre": {
+       "texte": "6.",
+       "graine": 78062561
+      },
+      "segments": [
+       {
+        "texte": "Enfourner pendant 40min",
+        "graine": 56189212,
+        "atome": "etape-6/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "apres-1@phrase-1",
+      "source": "apres-1",
+      "segments": [
+       {
+        "texte": "Saupoudrer de sucre glace pour + de kiff",
+        "graine": 24676408,
+        "atome": "apres-1/phrase-1"
+       }
+      ],
+      "avant": 0.3,
+      "alinea": 0.04
+     },
+     {
+      "type": "paragraphe",
+      "id": "apres-2@phrase-1",
+      "source": "apres-2",
+      "segments": [
+       {
+        "texte": "à déguster tiède miam 😋",
+        "graine": 65376507,
+        "atome": "apres-2/phrase-1"
+       }
+      ],
+      "avant": 0.3,
+      "alinea": 0.04
+     }
+    ],
+    "atomes": [
+     "etape-4/phrase-1",
+     "etape-5/phrase-1",
+     "etape-6/phrase-1",
+     "apres-1/phrase-1",
+     "apres-2/phrase-1"
+    ]
+   }
+  },
+  "ordre": [
+   "lea-gauche",
+   "lea-droite"
+  ],
+  "disposition": "tete",
+  "ajustements": {},
+  "trous": {
+   "lea-gauche": 0.2
+  }
+ },
+ "pagination/coralie": {
+  "cle": "6715274b1978ebdf0f651e1c41b32b9d584431b3baa542e3351bbbb0256c85ca",
+  "pages": {
+   "coralie-gauche": {
+    "double": "coralie",
+    "main": "mamie",
+    "encre": "brune",
+    "recette": "coralie",
+    "serrage_max": 1,
+    "police": "belle-aurore",
+    "contexte_importants": {
+     "ingredients": [
+      "120g de chocolat noir",
+      "3 œufs",
+      "30g de farine",
+      "60g d’huile (olive ou autre)",
+      "90/100g de sucre"
+     ]
+    },
+    "id": "coralie-gauche",
+    "cote": "gauche",
+    "folio": 26,
+    "graine": 17570,
+    "gabarit": "C",
+    "vivants": [
+     {
+      "nom": "photo",
+      "rect": [
+       0.06,
+       0.035,
+       0.48569,
+       0.27203
+      ]
+     }
+    ],
+    "marges": {
+     "haut": 0.31703
+    },
+    "blocs": [
+     {
+      "type": "bandeau",
+      "id": "bandeau",
+      "texte": "Coralie",
+      "graine": 36046562,
+      "places": [
+       "dessous"
+      ],
+      "taille": 2.2
+     },
+     {
+      "type": "cadre",
+      "id": "cadre",
+      "texte": "Joyeux anniversaire ma Cec d’amour ! 🤍 30 ans et un anniversaire de plus fêté ensemble ! Je te souhaite le meilleur pour cette année et celles à venir. Je t’aime très fort 🤍",
+      "signature": "Coralie",
+      "graine": 64407443,
+      "signature_graine": 92240116,
+      "largeur": 0.84,
+      "style": "ondule",
+      "position": "bandeau"
+     },
+     {
+      "type": "titre",
+      "id": "titre",
+      "segments": [
+       {
+        "texte": "Recette de fondant au chocolat",
+        "graine": 21799532,
+        "atome": "titre"
+       }
+      ],
+      "position": "fer",
+      "souligne": "double",
+      "avant": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-ingredients",
+      "segments": [
+       {
+        "texte": "Ingrédients",
+        "graine": 34663572,
+        "atome": "section-ingredients"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "ingredients",
+      "id": "ingredients-1@ligne-1",
+      "disposition": "puces",
+      "graine_puces": 87730562,
+      "avant": 0.4,
+      "lignes": [
+       {
+        "texte": "120g de chocolat noir",
+        "graine": 16153035,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-1"
+       },
+       {
+        "texte": "60g d’huile (olive ou autre)",
+        "graine": 22074824,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-2"
+       },
+       {
+        "texte": "3 œufs",
+        "graine": 38921768,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-3"
+       },
+       {
+        "texte": "90/100g de sucre",
+        "graine": 90334017,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-4"
+       },
+       {
+        "texte": "30g de farine",
+        "graine": 30261633,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-5"
+       }
+      ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 18087731,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "1.",
+       "graine": 14275352
+      },
+      "segments": [
+       {
+        "texte": "Faire fondre le chocolat",
+        "graine": 42960524,
+        "atome": "etape-1/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-2",
+      "source": "etape-2",
+      "titre": {
+       "texte": "2.",
+       "graine": 58105696
+      },
+      "segments": [
+       {
+        "texte": "Laisser refroidir et ajouter l’huile, bien mélanger",
+        "graine": 5134094,
+        "atome": "etape-2/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-3",
+      "source": "etape-3",
+      "titre": {
+       "texte": "3.",
+       "graine": 6426337
+      },
+      "segments": [
+       {
+        "texte": "Ajouter ensuite les œufs et le sucre",
+        "graine": 70052494,
+        "atome": "etape-3/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     }
+    ],
+    "atomes": [
+     "titre",
+     "section-ingredients",
+     "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
+     "ingredients-1/ligne-3",
+     "ingredients-1/ligne-4",
+     "ingredients-1/ligne-5",
+     "section-preparation",
+     "etape-1/phrase-1",
+     "etape-2/phrase-1",
+     "etape-3/phrase-1"
+    ]
+   },
+   "coralie-droite": {
+    "double": "coralie",
+    "main": "mamie",
+    "encre": "brune",
+    "recette": "coralie",
+    "serrage_max": 1,
+    "police": "belle-aurore",
+    "contexte_importants": {
+     "ingredients": [
+      "120g de chocolat noir",
+      "3 œufs",
+      "30g de farine",
+      "60g d’huile (olive ou autre)",
+      "90/100g de sucre"
+     ]
+    },
+    "id": "coralie-droite",
+    "cote": "droite",
+    "folio": 27,
+    "graine": 17571,
+    "gabarit": "D",
+    "vivants": [
+     {
+      "nom": "aq-coralie-1",
+      "rect": [
+       0.13,
+       0.36,
+       0.74,
+       0.58
+      ],
+      "aquarelle": "fondant-chocolat",
+      "angle": 0
+     },
+     {
+      "nom": "aq-coralie-1-bande",
+      "rect": [
+       0.0,
+       0.36,
+       1.0,
+       0.64
+      ],
+      "vivant": false
+     }
+    ],
+    "blocs": [
+     {
+      "type": "courant",
+      "id": "courant",
+      "texte": "Coralie",
+      "graine": 82092635
+     },
+     {
+      "type": "etape",
+      "id": "etape-4",
+      "source": "etape-4",
+      "titre": {
+       "texte": "4.",
+       "graine": 54761273
+      },
+      "segments": [
+       {
+        "texte": "Ajouter enfin la farine",
+        "graine": 59740509,
+        "atome": "etape-4/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.0,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-5",
+      "source": "etape-5",
+      "titre": {
+       "texte": "5.",
+       "graine": 45261455
+      },
+      "segments": [
+       {
+        "texte": "Verser la préparation dans un moule à gâteau (diamètre idéal : 22cm)",
+        "graine": 87687997,
+        "atome": "etape-5/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "etape",
+      "id": "etape-6",
+      "source": "etape-6",
+      "titre": {
+       "texte": "6.",
+       "graine": 70356083
+      },
+      "segments": [
+       {
+        "texte": "Faire cuire au four pendant 35 minutes à 135 degrés",
+        "graine": 73030113,
+        "atome": "etape-6/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
+     },
+     {
+      "type": "paragraphe",
+      "id": "apres-1@phrase-1",
+      "source": "apres-1",
+      "segments": [
+       {
+        "texte": "À déguster encore un peu chaud tout seul ou accompagné de crème anglaise et de chantilly !",
+        "graine": 42451530,
+        "atome": "apres-1/phrase-1"
+       }
+      ],
+      "avant": 0.3,
+      "alinea": 0.04
+     }
+    ],
+    "atomes": [
+     "etape-4/phrase-1",
+     "etape-5/phrase-1",
+     "etape-6/phrase-1",
+     "apres-1/phrase-1"
+    ]
+   }
+  },
+  "ordre": [
+   "coralie-gauche",
+   "coralie-droite"
+  ],
+  "disposition": "tete",
+  "ajustements": {},
+  "trous": {
+   "coralie-gauche": 0.45
+  }
+ },
+ "papier/f39": "c0cc3c8d69cb4dc74b7edbf0ac15b79cf870e6805dab81c7e4d79713b37da5b2",
+ "papier1x/f39": "c0cc3c8d69cb4dc74b7edbf0ac15b79cf870e6805dab81c7e4d79713b37da5b2",
+ "papier/f37": "f3d878a616a32f40c5b855b443ab9eaacc9e77081264c5c7f1be470221e85a56",
+ "papier1x/f37": "f3d878a616a32f40c5b855b443ab9eaacc9e77081264c5c7f1be470221e85a56",
+ "page/brioches-droite": {
+  "cle": "3ab73fed4b59a2b6f3482f7c29d630a88080ee872854f798087de52823b3b443",
+  "manifeste": {
+   "double": "brioches",
+   "cote": "droite",
+   "folio": 39,
+   "sansFolio": true,
+   "papier": "pages/papier/f39",
+   "miroir": false,
+   "encre": "pages/brioches-droite",
+   "papier1x": "pages/1x/papier/f39",
+   "encre1x": "pages/1x/brioches-droite",
+   "encre4x": {
+    "base": "pages/4x/brioches-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Brioches\nSarah",
+   "vivants": {
+    "aq-plume": [
+     0.38,
+     0.54,
+     0.24,
+     0.23
+    ]
+   },
+   "deborde": [],
+   "lignes": 1,
+   "aquarelles": {
+    "aq-plume": {
+     "aquarelle": "plume",
+     "angle": -8
+    }
+   },
+   "relu": true
+  }
+ },
+ "page/brioches-gauche": {
+  "cle": "8756be4a623ba8db3a632c9960c34e5b660b981be6af73b5182a2d143b65cd79",
+  "manifeste": {
+   "double": "brioches",
+   "cote": "gauche",
+   "folio": 38,
+   "sansFolio": true,
+   "papier": "pages/papier/f37",
+   "miroir": true,
+   "encre": "pages/brioches-gauche",
+   "papier1x": "pages/1x/papier/f37",
+   "encre1x": "pages/1x/brioches-gauche",
+   "encre4x": {
+    "base": "pages/4x/brioches-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "",
+   "vivants": {
+    "aq-brioche": [
+     0.16,
+     0.31,
+     0.68,
+     0.5
+    ]
+   },
+   "deborde": [],
+   "lignes": 0,
+   "aquarelles": {
+    "aq-brioche": {
+     "aquarelle": "brioche",
+     "angle": 0
+    }
+   },
+   "relu": true
+  }
+ },
+ "papier/f43": "205b2acaaed728bbd81538291eb322ff8ff3a05bc0c1cbbfbe2126398813a53b",
+ "papier1x/f43": "205b2acaaed728bbd81538291eb322ff8ff3a05bc0c1cbbfbe2126398813a53b",
+ "papier/f41": "18bcc6be5551a039f0da98ed1ebb248af042d1e4a235851dbdda4d549ff95b68",
+ "papier1x/f41": "18bcc6be5551a039f0da98ed1ebb248af042d1e4a235851dbdda4d549ff95b68",
+ "papier/f47": "032680f4b4a62f3cda25e6acfc1bdbe09e03624a31cd7d15d93b179126e8dcad",
+ "papier1x/f47": "032680f4b4a62f3cda25e6acfc1bdbe09e03624a31cd7d15d93b179126e8dcad",
+ "papier/f45": "e7fb38daf033d5ca93489db8df236a4028a63b7cf620ec49cc40061405187475",
+ "papier1x/f45": "e7fb38daf033d5ca93489db8df236a4028a63b7cf620ec49cc40061405187475",
+ "page/laura-geyer-gauche": {
+  "cle": "6d8a6f4a6a226fbae9659d665cdb834dd93ad5889b46e86dd2dfc820b7481617",
+  "manifeste": {
+   "double": "laura-geyer",
+   "cote": "gauche",
+   "folio": 20,
+   "papier": "pages/papier/f19",
+   "miroir": true,
+   "encre": "pages/laura-geyer-gauche",
+   "papier1x": "pages/1x/papier/f19",
+   "encre1x": "pages/1x/laura-geyer-gauche",
+   "encre4x": {
+    "base": "pages/4x/laura-geyer-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Laura Geyer\nPour Cécile — message provisoire : Lorem ipsum — message à venir — Laura Geyer\nGâteau à l’orange et aux amandes\nIngrédients\n1 orange moyenne sans pépins (de préférence non traitée ou biologique)\n160 g d’amandes en poudre\n3 œufs\n200 g de sucre\n1 cuillère à thé de levure chimique (poudre à pâte)\n4 cuillères à soupe de farine (blanche ou complète)\nPréparation\n1. Préparer l’orange : Laver l’orange et la mettre dans une casserole. Recouvrir d’eau chaude, porter à ébullition, couvrir et laisser frémir pendant 1 heure. Égoutter et laisser refroidir.\n2. Préchauffer le four à 180 °C (350 °F).\n3. Préparer le moule : Tapisser de papier sulfurisé un moule à gâteau rond de 20 à 23 cm de diamètre.",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.48569,
+     0.27203
+    ]
+   },
+   "deborde": [],
+   "lignes": 16,
+   "recette": "laura-geyer",
+   "relu": true
+  }
+ },
+ "page/laura-geyer-droite": {
+  "cle": "c4f06dd6b56ba699c870dbd98a60acc47b4e63d7c1a567dd558c1171b195ea26",
+  "manifeste": {
+   "double": "laura-geyer",
+   "cote": "droite",
+   "folio": 21,
+   "papier": "pages/papier/f21",
+   "miroir": false,
+   "encre": "pages/laura-geyer-droite",
+   "papier1x": "pages/1x/papier/f21",
+   "encre1x": "pages/1x/laura-geyer-droite",
+   "encre4x": {
+    "base": "pages/4x/laura-geyer-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Laura Geyer\n4. Mixer l’orange : Mettre l’orange entière (avec sa peau) dans un mixeur et la réduire en une purée lisse.\n5. Préparer la pâte : Dans un grand bol, fouetter les œufs et le sucre. Ajouter la farine, la levure et les amandes en poudre, puis incorporer la purée d’orange.\n6. Cuisson : Verser la préparation dans le moule, égaliser la surface et cuire environ 40 à 45 minutes, ou jusqu’à ce que le gâteau commence à dorer sur le dessus. À la sortie du four, le gâteau sera encore plutôt souple sur le dessus, mais se raffermira en refroidissant.\n7. Refroidissement : Laisser tiédir une quinzaine de minutes avant de démouler.",
+   "vivants": {
+    "aq-laura-geyer-1": [
+     0.13,
+     0.43,
+     0.74,
+     0.51
+    ]
+   },
+   "deborde": [],
+   "lignes": 9,
+   "aquarelles": {
+    "aq-laura-geyer-1": {
+     "aquarelle": "gateau-orange-amandes",
+     "angle": 0
+    }
+   },
+   "recette": "laura-geyer",
+   "relu": true
+  }
+ },
+ "page/marie-gauche": {
+  "cle": "838982f50a97ec1a48ab9b1d1e25619af3ba78409039ecbc453e868948e6e908",
+  "manifeste": {
+   "double": "marie",
+   "cote": "gauche",
+   "folio": 22,
+   "papier": "pages/papier/f21",
+   "miroir": true,
+   "encre": "pages/marie-gauche",
+   "papier1x": "pages/1x/papier/f21",
+   "encre1x": "pages/1x/marie-gauche",
+   "encre4x": {
+    "base": "pages/4x/marie-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Marie\nPour Cécile — message provisoire : Lorem ipsum — message à venir — Marie\nFONDANT CHOCOLAT de Maman Sylvie Cattelin\nIngrédients\n300 grammes de chocolat noir\n250 grammes de beurre\n250 grammes de sucre\n5 oeufs\n2 cuillères à soupe rases de farine\nPréparation\n1. Faire fondre doucement le beurre, le chocolat puis, le sucre.\n2. Battre les oeufs entiers et les insérer au mélange de chocolat\n3. Ajouter la farine et bien mélanger\n4. Verser dans un moule beurré\n5. Cuire à 160 degrés pendant environ 30 minutes",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.48569,
+     0.27203
+    ]
+   },
+   "deborde": [],
+   "lignes": 14,
+   "recette": "marie",
+   "relu": true
+  }
+ },
+ "page/marie-droite": {
+  "cle": "99c0812a0bcc6529d1d60746622135b95b345031fb13b1df7b2d044394d6bcc9",
+  "manifeste": {
+   "double": "marie",
+   "cote": "droite",
+   "folio": 23,
+   "papier": "pages/papier/f23",
+   "miroir": false,
+   "encre": "pages/marie-droite",
+   "papier1x": "pages/1x/papier/f23",
+   "encre1x": "pages/1x/marie-droite",
+   "encre4x": {
+    "base": "pages/4x/marie-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Marie",
+   "vivants": {
+    "aq-marie-1": [
+     0.13,
+     0.25,
+     0.74,
+     0.65
+    ]
+   },
+   "deborde": [],
+   "lignes": 0,
+   "aquarelles": {
+    "aq-marie-1": {
+     "aquarelle": "fondant-chocolat",
+     "angle": 0
+    }
+   },
+   "recette": "marie",
+   "relu": true
+  }
+ },
+ "page/sarah-gauche": {
+  "cle": "dbd2bdda521e05a6af859acf9686938c03710fda961dc9b9467a30fffe7290bc",
+  "manifeste": {
+   "double": "sarah",
+   "cote": "gauche",
+   "folio": 40,
+   "papier": "pages/papier/f39",
+   "miroir": true,
+   "encre": "pages/sarah-gauche",
+   "papier1x": "pages/1x/papier/f39",
+   "encre1x": "pages/1x/sarah-gauche",
+   "encre4x": {
+    "base": "pages/4x/sarah-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Sarah\nPour Cécile — message provisoire : Lorem ipsum — message à venir — Sarah\nBrioche à la mie filante\n(avec option Nutella ou tout autre ajout à tartiner pour un rendu plus gourmand)\nPréparation : 20 min · Repos : une nuit + 30 min · Cuisson : 40 min\nIngrédients\n260 g de lait\n10 g de levure boulangère sèche ou 25 g de levure fraîche\n70 g de sucre\n125 g de beurre mou\n1 œuf\n500 g de farine",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.48569,
+     0.27203
+    ]
+   },
+   "deborde": [],
+   "lignes": 13,
+   "recette": "sarah",
+   "relu": true
+  }
+ },
+ "page/sarah-droite": {
+  "cle": "2205653abf3b53120dc4d3d6e7536cf1cea1ba627b2a4fedac230c6f36dc2453",
+  "manifeste": {
+   "double": "sarah",
+   "cote": "droite",
+   "folio": 41,
+   "papier": "pages/papier/f41",
+   "miroir": false,
+   "encre": "pages/sarah-droite",
+   "papier1x": "pages/1x/papier/f41",
+   "encre1x": "pages/1x/sarah-droite",
+   "encre4x": {
+    "base": "pages/4x/sarah-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Sarah\n1 c. à café de sel\n1 jaune d’œuf + un peu de lait ou de crème pour la dorure\nPréparation\n1. Activer la levure : faire tiédir le lait (35–37 °C), puis mélanger avec la levure et le sucre. Laisser reposer 5 à 10 min.\n2. Préparer la pâte : ajouter l’œuf et le beurre mou, puis incorporer la farine et le sel. Pétrir 10 à 15 min à la main ou 8 à 10 min au robot, jusqu’à obtenir une pâte souple et élastique.\n3. Repos au froid : couvrir la pâte et la placer au réfrigérateur toute une nuit (8 à 12 h).\n4. Façonner : diviser la pâte en 6 boules et les placer dans un moule beurré d’environ 23 × 14 cm.\nsuite sur la feuille",
+   "vivants": {
+    "volant": [
+     0.83,
+     0.66,
+     0.17,
+     0.215
+    ],
+    "aq-sarah-1": [
+     0.13,
+     0.49,
+     0.67,
+     0.35
+    ]
+   },
+   "deborde": [],
+   "lignes": 12,
+   "aquarelles": {
+    "aq-sarah-1": {
+     "aquarelle": "brioche",
+     "angle": 0
+    }
+   },
+   "volant": {
+    "recto": "sarah-feuillet-recto",
+    "verso": "sarah-feuillet-verso",
+    "angle": -7.0,
+    "rect": [
+     0.85,
+     0.685,
+     0.82,
+     0.88
+    ]
+   },
+   "suite": "sarah-feuillet-recto",
+   "recette": "sarah",
+   "relu": true
+  }
+ },
+ "page/sarah-feuillet-recto": {
+  "cle": "ddd8bf8dc7000d5feda6a2b1136bfb5b4191f132f7d4bd61d400088dfb7abe8e",
+  "manifeste": {
+   "double": "sarah",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-recto",
+   "miroir": false,
+   "encre": "pages/sarah-feuillet-recto",
+   "papier1x": "pages/1x/papier/c-lisa-recto",
+   "encre1x": "pages/1x/sarah-feuillet-recto",
+   "encre4x": {
+    "base": "pages/4x/sarah-feuillet-recto",
+    "echelle": 4.0,
+    "px": [
+     2788,
+     4224
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      0,
+      1,
+      0.498565,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499053,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      1,
+      0.498565,
+      0.499053,
+      0.501435,
+      0.500947
+     ]
+    ]
+   },
+   "texte": "(suite)\n5. Seconde pousse : couvrir et laisser gonfler environ 30 min dans un endroit tiède, davantage si nécessaire.\n6. Dorer et cuire : badigeonner avec le jaune d’œuf mélangé à un peu de lait ou de crème. Enfourner à 160 °C (chaleur traditionnelle) pendant environ 40 min. Couvrir de papier aluminium si la brioche dore trop vite.\n7. Refroidir : laisser tiédir au moins 30 min avant de déguster.\nAstuce : congeler les tranches restantes pour conserver leur moelleux.",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 11,
+   "type": "feuillet",
+   "taille": [
+    697,
+    1056
+   ],
+   "face": "recto",
+   "dos": "sarah-feuillet-verso",
+   "suite": "sarah-feuillet-verso",
+   "recette": "sarah",
+   "relu": true
+  }
+ },
+ "page/sarah-feuillet-verso": {
+  "cle": "29db0acba972c57f5d6a68865949fbafb64826de777421263d2160a266cb0d7d",
+  "manifeste": {
+   "double": "sarah",
+   "cote": "droite",
+   "folio": null,
+   "papier": "pages/papier/c-lisa-verso",
+   "miroir": false,
+   "encre": "pages/sarah-feuillet-verso",
+   "papier1x": "pages/1x/papier/c-lisa-verso",
+   "encre1x": "pages/1x/sarah-feuillet-verso",
+   "encre4x": {
+    "base": "pages/4x/sarah-feuillet-verso",
+    "echelle": 4.0,
+    "px": [
+     2788,
+     4224
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      0,
+      1,
+      0.498565,
+      0.0,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499053,
+      0.501435,
+      0.500947
+     ],
+     [
+      1,
+      1,
+      0.498565,
+      0.499053,
+      0.501435,
+      0.500947
+     ]
+    ]
+   },
+   "texte": "",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 0,
+   "type": "feuillet",
+   "taille": [
+    697,
+    1056
+   ],
+   "face": "verso",
+   "dos": "sarah-feuillet-recto",
+   "recette": "sarah",
+   "relu": true
+  }
+ },
+ "page/lea-gauche": {
+  "cle": "2052bbe233558420097d15d8126a9974784413f514ca9f850a3c02bd3374293e",
+  "manifeste": {
+   "double": "lea",
+   "cote": "gauche",
+   "folio": 24,
+   "papier": "pages/papier/f23",
+   "miroir": true,
+   "encre": "pages/lea-gauche",
+   "papier1x": "pages/1x/papier/f23",
+   "encre1x": "pages/1x/lea-gauche",
+   "encre4x": {
+    "base": "pages/4x/lea-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Léa\nPour Cécile — message provisoire : Lorem ipsum — message à venir — Léa\nGâteau aux pommes\nIngrédients\n3 pommes\n250g de fromage blanc\n100g de sucre\n3 œufs\n80g de farine\n1 sachet de levure chimique\n1 cuillère à café d’arôme vanille (indispensable!!)\n1 pincée de sel\nPréparation\n1. préchauffer le four à 180 °C\n2. éplucher et couper les pommes en petit cubes\n3. dans un saladier, mélanger les œufs et le sucre, ajouter le fromage blanc et la vanille, bien mélanger. Ajouter la farine, la levure chimique et la pincée de sel et mélanger jusqu’à obtenir une pâte lisse et mousseuse",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.48569,
+     0.27203
+    ]
+   },
+   "deborde": [],
+   "lignes": 17,
+   "recette": "lea",
+   "relu": true
+  }
+ },
+ "page/lea-droite": {
+  "cle": "d4d6f5579df812037ac0217dec4b130159d740ff05971faecbb72d0136888ce5",
+  "manifeste": {
+   "double": "lea",
+   "cote": "droite",
+   "folio": 25,
+   "papier": "pages/papier/f25",
+   "miroir": false,
+   "encre": "pages/lea-droite",
+   "papier1x": "pages/1x/papier/f25",
+   "encre1x": "pages/1x/lea-droite",
+   "encre4x": {
+    "base": "pages/4x/lea-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Léa\n4. Beurrer et fariner le moule à gâteau (rond et pas très haut)\n5. Ajouter les pommes et recouvrer avec la pâte\n6. Enfourner pendant 40min\nSaupoudrer de sucre glace pour + de kiff\nà déguster tiède miam 😋",
+   "vivants": {
+    "aq-lea-1": [
+     0.13,
+     0.34,
+     0.74,
+     0.6
+    ]
+   },
+   "deborde": [],
+   "lignes": 5,
+   "aquarelles": {
+    "aq-lea-1": {
+     "aquarelle": "gateau-pommes",
+     "angle": 0
+    }
+   },
+   "recette": "lea",
+   "croquis": [
+    {
+     "nom": "sourire",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.3971,
+      0.206,
+      0.0182,
+      0.0129
+     ]
+    }
+   ],
+   "relu": true
+  }
+ },
+ "page/coralie-gauche": {
+  "cle": "bbcb7f44e666ced548694965e4111ff31a13c1fb09d5858522334b30efa4879c",
+  "manifeste": {
+   "double": "coralie",
+   "cote": "gauche",
+   "folio": 26,
+   "papier": "pages/papier/f25",
+   "miroir": true,
+   "encre": "pages/coralie-gauche",
+   "papier1x": "pages/1x/papier/f25",
+   "encre1x": "pages/1x/coralie-gauche",
+   "encre4x": {
+    "base": "pages/4x/coralie-gauche",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Coralie\nPour Cécile : Joyeux anniversaire ma Cec d’amour ! 🤍 30 ans et un anniversaire de plus fêté ensemble ! Je te souhaite le meilleur pour cette année et celles à venir. Je t’aime très fort 🤍 — Coralie\nRecette de fondant au chocolat\nIngrédients\n120g de chocolat noir\n60g d’huile (olive ou autre)\n3 œufs\n90/100g de sucre\n30g de farine\nPréparation\n1. Faire fondre le chocolat\n2. Laisser refroidir et ajouter l’huile, bien mélanger\n3. Ajouter ensuite les œufs et le sucre",
+   "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.48569,
+     0.27203
+    ]
+   },
+   "deborde": [],
+   "lignes": 14,
+   "recette": "coralie",
+   "relu": true
+  }
+ },
+ "page/coralie-droite": {
+  "cle": "774011df6b4489ac406603930619e2739eced9eae943facf83885fded13bf5ec",
+  "manifeste": {
+   "double": "coralie",
+   "cote": "droite",
+   "folio": 27,
+   "papier": "pages/papier/f27",
+   "miroir": false,
+   "encre": "pages/coralie-droite",
+   "papier1x": "pages/1x/papier/f27",
+   "encre1x": "pages/1x/coralie-droite",
+   "encre4x": {
+    "base": "pages/4x/coralie-droite",
+    "echelle": 4.0,
+    "px": [
+     3400,
+     4800
+    ],
+    "recouvrement": 4,
+    "tuiles": [
+     [
+      0,
+      0,
+      0.0,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      0,
+      1,
+      0.498824,
+      0.0,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      0,
+      0.0,
+      0.499167,
+      0.501176,
+      0.500833
+     ],
+     [
+      1,
+      1,
+      0.498824,
+      0.499167,
+      0.501176,
+      0.500833
+     ]
+    ]
+   },
+   "texte": "Coralie\n4. Ajouter enfin la farine\n5. Verser la préparation dans un moule à gâteau (diamètre idéal : 22cm)\n6. Faire cuire au four pendant 35 minutes à 135 degrés\nÀ déguster encore un peu chaud tout seul ou accompagné de crème anglaise et de chantilly !",
+   "vivants": {
+    "aq-coralie-1": [
+     0.13,
+     0.36,
+     0.74,
+     0.58
+    ]
+   },
+   "deborde": [],
+   "lignes": 5,
+   "aquarelles": {
+    "aq-coralie-1": {
+     "aquarelle": "fondant-chocolat",
+     "angle": 0
+    }
+   },
+   "recette": "coralie",
    "relu": true
   }
  }

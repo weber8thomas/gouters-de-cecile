@@ -1,0 +1,69 @@
+{
+  "slug": "coralie",
+  "source": "src/content/recettes/coralie.txt",
+  "adaptations": [
+    "Texte reçu conservé intégralement dans le fichier TXT ; seuls les marqueurs de liste sont retirés pour la mise en page.",
+    "« Coucou Thomas » est une introduction de provenance, pas le mot à Cécile. Les deux cœurs blancs du vrai message sont conservés et dessinés au trait."
+  ],
+  "style": {
+    "main": "mamie",
+    "encre": "brune",
+    "police": "belle-aurore",
+    "graine": 17569
+  },
+  "titre": "Recette de fondant au chocolat",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "120g de chocolat noir"
+        },
+        {
+          "texte": "60g d’huile (olive ou autre)"
+        },
+        {
+          "texte": "3 œufs"
+        },
+        {
+          "texte": "90/100g de sucre"
+        },
+        {
+          "texte": "30g de farine"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Faire fondre le chocolat"
+    },
+    {
+      "titre": "2.",
+      "texte": "Laisser refroidir et ajouter l’huile, bien mélanger"
+    },
+    {
+      "titre": "3.",
+      "texte": "Ajouter ensuite les œufs et le sucre"
+    },
+    {
+      "titre": "4.",
+      "texte": "Ajouter enfin la farine"
+    },
+    {
+      "titre": "5.",
+      "texte": "Verser la préparation dans un moule à gâteau (diamètre idéal : 22cm)"
+    },
+    {
+      "titre": "6.",
+      "texte": "Faire cuire au four pendant 35 minutes à 135 degrés"
+    }
+  ],
+  "mot": "Joyeux anniversaire ma Cec d’amour ! 🤍 30 ans et un anniversaire de plus fêté ensemble ! Je te souhaite le meilleur pour cette année et celles à venir. Je t’aime très fort 🤍",
+  "signature": "Coralie",
+  "nom": "Coralie",
+  "apres": [
+    "À déguster encore un peu chaud tout seul ou accompagné de crème anglaise et de chantilly !"
+  ]
+}

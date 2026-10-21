@@ -1,0 +1,162 @@
+{
+  "acteurs/orange": {
+    "sujet": "orange",
+    "fichier": "acteurs/orange.png",
+    "source": "design-system/sources/illustrations/v15/ingredients.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/puree-orange": {
+    "sujet": "puree-orange",
+    "fichier": "acteurs/puree-orange.png",
+    "source": "design-system/sources/illustrations/v15/ingredients.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/amandes": {
+    "sujet": "amandes",
+    "fichier": "acteurs/amandes.png",
+    "source": "design-system/sources/illustrations/v15/ingredients.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/mixeur": {
+    "sujet": "mixeur",
+    "fichier": "acteurs/mixeur.png",
+    "source": "design-system/sources/illustrations/v15/ingredients.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/pommes-cubes": {
+    "sujet": "pommes-cubes",
+    "fichier": "acteurs/pommes-cubes.png",
+    "source": "design-system/sources/illustrations/v15/ingredients.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/fromage-blanc": {
+    "sujet": "fromage-blanc",
+    "fichier": "acteurs/fromage-blanc.png",
+    "source": "design-system/sources/illustrations/v15/ingredients.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/gateau-orange-amandes": {
+    "sujet": "gateau-orange-amandes",
+    "fichier": "acteurs/gateau-orange-amandes.png",
+    "source": "design-system/sources/illustrations/v15/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/brioche": {
+    "sujet": "brioche",
+    "fichier": "acteurs/brioche.png",
+    "source": "design-system/sources/illustrations/v15/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/pate-brioche": {
+    "sujet": "pate-brioche",
+    "fichier": "acteurs/pate-brioche.png",
+    "source": "design-system/sources/illustrations/v15/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/patons-brioche": {
+    "sujet": "patons-brioche",
+    "fichier": "acteurs/patons-brioche.png",
+    "source": "design-system/sources/illustrations/v15/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/gateau-pommes": {
+    "sujet": "gateau-pommes",
+    "fichier": "acteurs/gateau-pommes.png",
+    "source": "design-system/sources/illustrations/v15/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/pinceau": {
+    "sujet": "pinceau",
+    "fichier": "acteurs/pinceau.png",
+    "source": "design-system/sources/illustrations/v15/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/paton-brioche": {
+    "sujet": "paton-brioche",
+    "fichier": "acteurs/paton-brioche.png",
+    "source": "design-system/sources/illustrations/v15/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "gateau-orange-amandes": {
+    "sujet": "gateau-orange-amandes",
+    "fichier": "gateau-orange-amandes.png",
+    "source": "design-system/sources/illustrations/v15/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "brioche": {
+    "sujet": "brioche",
+    "fichier": "brioche.png",
+    "source": "design-system/sources/illustrations/v15/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "gateau-pommes": {
+    "sujet": "gateau-pommes",
+    "fichier": "gateau-pommes.png",
+    "source": "design-system/sources/illustrations/v15/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/huile": {
+    "sujet": "huile",
+    "fichier": "acteurs/huile.png",
+    "source": "design-system/sources/illustrations/v15/huile.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/moule-brioche": {
+    "sujet": "moule-brioche",
+    "fichier": "acteurs/moule-brioche.png",
+    "source": "design-system/sources/illustrations/v15/ustensiles.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/torchon": {
+    "sujet": "torchon",
+    "fichier": "acteurs/torchon.png",
+    "source": "design-system/sources/illustrations/v15/ustensiles.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  },
+  "acteurs/papier-sulfurise": {
+    "sujet": "papier-sulfurise",
+    "fichier": "acteurs/papier-sulfurise.png",
+    "source": "design-system/sources/illustrations/v15/ustensiles.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v15"
+  }
+}

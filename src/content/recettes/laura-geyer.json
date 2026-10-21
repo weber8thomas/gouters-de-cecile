@@ -1,0 +1,73 @@
+{
+  "slug": "laura-geyer",
+  "source": "src/content/recettes/laura-geyer.txt",
+  "adaptations": [
+    "Texte reçu conservé intégralement dans le fichier TXT ; seuls les marqueurs de liste sont retirés pour la mise en page.",
+    "Petit mot provisoire demandé par Thomas : Lorem ipsum — message à venir ; aucun message authentique inventé."
+  ],
+  "style": {
+    "main": "soignee",
+    "encre": "brune",
+    "police": "kalam",
+    "graine": 13111
+  },
+  "titre": "Gâteau à l’orange et aux amandes",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "1 orange moyenne sans pépins (de préférence non traitée ou biologique)"
+        },
+        {
+          "texte": "160 g d’amandes en poudre"
+        },
+        {
+          "texte": "3 œufs"
+        },
+        {
+          "texte": "200 g de sucre"
+        },
+        {
+          "texte": "1 cuillère à thé de levure chimique (poudre à pâte)"
+        },
+        {
+          "texte": "4 cuillères à soupe de farine (blanche ou complète)"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Préparer l’orange : Laver l’orange et la mettre dans une casserole. Recouvrir d’eau chaude, porter à ébullition, couvrir et laisser frémir pendant 1 heure. Égoutter et laisser refroidir."
+    },
+    {
+      "titre": "2.",
+      "texte": "Préchauffer le four à 180 °C (350 °F)."
+    },
+    {
+      "titre": "3.",
+      "texte": "Préparer le moule : Tapisser de papier sulfurisé un moule à gâteau rond de 20 à 23 cm de diamètre."
+    },
+    {
+      "titre": "4.",
+      "texte": "Mixer l’orange : Mettre l’orange entière (avec sa peau) dans un mixeur et la réduire en une purée lisse."
+    },
+    {
+      "titre": "5.",
+      "texte": "Préparer la pâte : Dans un grand bol, fouetter les œufs et le sucre. Ajouter la farine, la levure et les amandes en poudre, puis incorporer la purée d’orange."
+    },
+    {
+      "titre": "6.",
+      "texte": "Cuisson : Verser la préparation dans le moule, égaliser la surface et cuire environ 40 à 45 minutes, ou jusqu’à ce que le gâteau commence à dorer sur le dessus. À la sortie du four, le gâteau sera encore plutôt souple sur le dessus, mais se raffermira en refroidissant."
+    },
+    {
+      "titre": "7.",
+      "texte": "Refroidissement : Laisser tiédir une quinzaine de minutes avant de démouler."
+    }
+  ],
+  "mot": "Lorem ipsum — message à venir",
+  "signature": "Laura Geyer",
+  "nom": "Laura Geyer"
+}

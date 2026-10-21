@@ -1,6 +1,6 @@
 // Types du contenu du carnet. Toute donnée affichée passe par ces types.
 
-export type ChapterId = 'gateaux' | 'biscuits' | 'tartes' | 'boissons' | 'crepes';
+export type ChapterId = 'gateaux' | 'biscuits' | 'tartes' | 'boissons' | 'crepes' | 'brioches';
 
 // Une main par invité (voir design-system/tokens.json, familles « mains » et type.families)
 export type HandId = 'cecile' | 'mamie' | 'ecole' | 'soignee' | 'feutre' | 'capitales' | 'pressee';
@@ -97,10 +97,12 @@ export interface RecetteRecue {
   source: string;
   /** Ce qui a été adapté pour le carnet, et pourquoi. */
   adaptations?: string[];
-  style: { main: MainId; encre: EncreId; graine: number; police?: 'kalam' };
+  style: { main: MainId; encre: EncreId; graine: number; police?: 'kalam' | 'caveat' | 'caveat-appuye' | 'playwrite-moderne' | 'playwrite-tradition' | 'belle-aurore' | 'patrick' | 'shantell' };
   /** Identifiant dans src/content/videos.json. */
   video?: string;
   titre: string;
+  /** Sous-titre et durées reçus, conservés sans réduction. */
+  details?: string[];
   titreSouligne?: 'trait' | 'double' | 'aucun';
   notesMarge?: { texte: string; pres?: string; main?: MainId; encre?: EncreId }[];
   ingredients: GroupeRecette[];

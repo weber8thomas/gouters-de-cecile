@@ -7,7 +7,7 @@
  "cote": "gauche",
  "folio": 8,
  "graine": 401,
- "_": "Dédicace d'anniversaire : `texte` des blocs « dedicace » (une ligne par retour à la ligne, \\n) et « dedicace-fin » (la dernière ligne, posée juste dessous, une ligne plus bas : sa propre graine, pour que « qui t'aiment » se lise bien). Centrée en haut de la page, à l'encre bille bleue (plus dense que la plume, qui se vide) ; echelle 1,8 (mot × 1,8). Dessous, un goûter d'anniversaire à l'aquarelle qui remplit la page : une frise posée sur la même ligne de table : la théière et ses tasses à gauche, le gâteau rose aux bougies, un petit cupcake à droite (zones vivantes, rectangles aux proportions des aquarelles ; la frise s'arrête à 6 % du pli). Quand le sommaire ne tient plus sur sa page (une vingtaine d'invités), il reprend en haut de cette page et la dédicace remonte au-dessus de lui (scripts/pages/mise_en_page.py, bloc « sommaire »).",
+ "_": "Dédicace intégrale en tête et première moitié du sommaire : huit recettes de Gâteaux & cakes. Même corps lisible que la page droite, sans compression des noms ni perte de lien.",
  "blocs": [
   {
    "id": "dedicace",
@@ -16,16 +16,17 @@
    "main": "soignee",
    "encre": "bille-bleue",
    "role": "mot",
-   "echelle": 1.8,
+   "echelle": 1.25,
    "interligne": 1.05,
    "rect": [
-    0.08,
-    0.14,
-    0.84,
-    0.2
+    0.05,
+    0.035,
+    0.9,
+    0.17
    ],
    "pente": -1.2,
-   "graine": 35697
+   "graine": 35697,
+   "police": "caveat-appuye"
   },
   {
    "id": "dedicace-fin",
@@ -34,50 +35,108 @@
    "main": "soignee",
    "encre": "bille-bleue",
    "role": "mot",
-   "echelle": 1.8,
+   "echelle": 1.25,
    "interligne": 1.05,
    "rect": [
-    0.08,
-    0.292,
-    0.84,
-    0.08
+    0.05,
+    0.18,
+    0.9,
+    0.05
    ],
    "pente": -1.2,
-   "graine": 4021
+   "graine": 4021,
+   "police": "caveat-appuye"
+  },
+  {
+   "id": "sommaire-gateaux",
+   "type": "sommaire",
+   "fin": false,
+   "retrait": 0.19,
+   "avant": 0.18,
+   "vignette": 0.04,
+   "vignette_largeur": 0.12,
+   "graine": 23457,
+   "vignettes": {
+    "lisa": "vignette-lisa",
+    "emeline": "vignette-emeline",
+    "clemence": "vignette-clemence",
+    "pierrette": "vignette-pierrette",
+    "laura-geyer": "vignette-laura-geyer",
+    "marie": "vignette-marie",
+    "lea": "vignette-lea",
+    "coralie": "vignette-coralie"
+   },
+   "titres": {
+    "lisa": "Lisa — Carrot cake",
+    "emeline": "Emeline — Fondant au chocolat",
+    "clemence": "Clémence — Cheesecake framboises",
+    "pierrette": "Pierrette — Cake au citron",
+    "anatole": "Anatole — Tarte aux myrtilles",
+    "lise": "Lise — Tarte aux pommes",
+    "julien": "Julien — Cookies & noisettes",
+    "laura": "Laura — Crêpes gourmandes",
+    "laura-geyer": "Laura Geyer — Orange & amandes",
+    "marie": "Marie — Fondant au chocolat",
+    "lea": "Léa — Gâteau aux pommes",
+    "coralie": "Coralie — Fondant au chocolat"
+   },
+   "chapitres": [
+    "gateaux"
+   ]
   }
  ],
  "vivants": [
   {
-   "nom": "aq-theiere",
-   "rect": [
-    0.04,
-    0.65,
-    0.44,
-    0.29
-   ],
-   "aquarelle": "theiere",
-   "anime": "vapeur"
-  },
-  {
-   "nom": "aq-gateau",
-   "rect": [
-    0.48,
-    0.46,
-    0.46,
-    0.46
-   ],
-   "aquarelle": "gateau-bougies"
-  },
-  {
    "nom": "aq-cupcake",
-   "rect": [
-    0.11,
-    0.43,
-    0.2,
-    0.15
-   ],
    "aquarelle": "cupcake",
+   "rect": [
+    0.83,
+    0.045,
+    0.13,
+    0.12
+   ],
    "angle": 3
+  },
+  {
+   "nom": "vignette-lisa",
+   "aquarelle": "carotte",
+   "anime": "fixe"
+  },
+  {
+   "nom": "vignette-emeline",
+   "aquarelle": "fondant-chocolat",
+   "anime": "fixe"
+  },
+  {
+   "nom": "vignette-clemence",
+   "aquarelle": "framboises-speculoos",
+   "anime": "fixe"
+  },
+  {
+   "nom": "vignette-pierrette",
+   "aquarelle": "citron",
+   "anime": "fixe"
+  },
+  {
+   "nom": "vignette-laura-geyer",
+   "aquarelle": "citron",
+   "anime": "fixe"
+  },
+  {
+   "nom": "vignette-marie",
+   "aquarelle": "fondant-chocolat",
+   "anime": "fixe"
+  },
+  {
+   "nom": "vignette-lea",
+   "aquarelle": "pomme",
+   "anime": "fixe"
+  },
+  {
+   "nom": "vignette-coralie",
+   "aquarelle": "fondant-chocolat",
+   "anime": "fixe"
   }
- ]
+ ],
+ "police": "kalam"
 }

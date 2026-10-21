@@ -1,0 +1,38 @@
+{
+  "main": "soignee",
+  "encre": "plume",
+  "gabarit": "carnet",
+  "id": "brioches-gauche",
+  "double": "brioches",
+  "cote": "gauche",
+  "graine": 2101,
+  "_": "Brioche et pâte levée, chapitre réservé à la recette de Sarah.",
+  "blocs": [
+    {
+      "id": "cadre",
+      "type": "ornement",
+      "forme": "cadre",
+      "rect": [
+        0.075,
+        0.055,
+        0.85,
+        0.87
+      ],
+      "encre": "terracotta",
+      "graine": 20011
+    }
+  ],
+  "vivants": [
+    {
+      "nom": "aq-brioche",
+      "rect": [
+        0.16,
+        0.31,
+        0.68,
+        0.5
+      ],
+      "aquarelle": "brioche",
+      "angle": 0
+    }
+  ]
+}

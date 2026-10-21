@@ -68,7 +68,7 @@ class PoliceLisible(unittest.TestCase):
                 empreintes.append(bytes(POL.masque("Cécile", nom)[0].tobytes()))
         self.assertEqual(len(set(empreintes)), len(POL.POLICES), "les mains doivent réellement différer")
 
-    def test_huit_recettes_integrales_restent_dans_le_paginateur(self):
+    def test_recettes_integrales_restent_dans_le_paginateur(self):
         plan, papiers = RC.charger_plan()
         for slug, configuration in plan["recettes"].items():
             with self.subTest(recette=slug):
@@ -85,7 +85,11 @@ class PoliceLisible(unittest.TestCase):
                                 aid = s["atome"].split("~")[0]
                                 places.setdefault(aid, []).extend(s["texte"].split())
                 self.assertEqual(places, attendus, "le texte intégral doit survivre aux coupures")
-                self.assertFalse(resultat.feuillet, "ces huit recettes tiennent sur leurs deux pages")
+                for pid in resultat.ordre:
+                    mise = MEP.mettre_en_page(resultat.pages[pid], dessins=False)
+                    self.assertFalse(mise.deborde + mise.non_places, f"{pid} : collision ou bloc sans place")
+                if slug in {"lisa", "emeline", "clemence", "pierrette", "anatole", "lise", "julien", "laura"}:
+                    self.assertFalse(resultat.feuillet, "les huit premières recettes tiennent sur leurs deux pages")
                 notes = [b["texte"] for p in resultat.pages.values() for b in p["blocs"]
                          if b.get("id", "").startswith("note-")]
                 self.assertEqual(notes, [f'« {n["texte"]} »' for n in recette.get("notesMarge", [])])

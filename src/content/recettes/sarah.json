@@ -1,0 +1,86 @@
+{
+  "slug": "sarah",
+  "source": "src/content/recettes/sarah.txt",
+  "adaptations": [
+    "Texte reçu conservé intégralement dans le fichier TXT ; seuls les marqueurs de liste sont retirés pour la mise en page.",
+    "Petit mot provisoire demandé par Thomas : Lorem ipsum — message à venir ; aucun message authentique inventé."
+  ],
+  "style": {
+    "main": "ado",
+    "encre": "noire",
+    "police": "caveat-appuye",
+    "graine": 15347
+  },
+  "titre": "Brioche à la mie filante",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "260 g de lait"
+        },
+        {
+          "texte": "10 g de levure boulangère sèche ou 25 g de levure fraîche"
+        },
+        {
+          "texte": "70 g de sucre"
+        },
+        {
+          "texte": "125 g de beurre mou"
+        },
+        {
+          "texte": "1 œuf"
+        },
+        {
+          "texte": "500 g de farine"
+        },
+        {
+          "texte": "1 c. à café de sel"
+        },
+        {
+          "texte": "1 jaune d’œuf + un peu de lait ou de crème pour la dorure"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Activer la levure : faire tiédir le lait (35–37 °C), puis mélanger avec la levure et le sucre. Laisser reposer 5 à 10 min."
+    },
+    {
+      "titre": "2.",
+      "texte": "Préparer la pâte : ajouter l’œuf et le beurre mou, puis incorporer la farine et le sel. Pétrir 10 à 15 min à la main ou 8 à 10 min au robot, jusqu’à obtenir une pâte souple et élastique."
+    },
+    {
+      "titre": "3.",
+      "texte": "Repos au froid : couvrir la pâte et la placer au réfrigérateur toute une nuit (8 à 12 h)."
+    },
+    {
+      "titre": "4.",
+      "texte": "Façonner : diviser la pâte en 6 boules et les placer dans un moule beurré d’environ 23 × 14 cm."
+    },
+    {
+      "titre": "5.",
+      "texte": "Seconde pousse : couvrir et laisser gonfler environ 30 min dans un endroit tiède, davantage si nécessaire."
+    },
+    {
+      "titre": "6.",
+      "texte": "Dorer et cuire : badigeonner avec le jaune d’œuf mélangé à un peu de lait ou de crème. Enfourner à 160 °C (chaleur traditionnelle) pendant environ 40 min. Couvrir de papier aluminium si la brioche dore trop vite."
+    },
+    {
+      "titre": "7.",
+      "texte": "Refroidir : laisser tiédir au moins 30 min avant de déguster."
+    }
+  ],
+  "mot": "Lorem ipsum — message à venir",
+  "signature": "Sarah",
+  "nom": "Sarah",
+  "details": [
+    "(avec option Nutella ou tout autre ajout à tartiner pour un rendu plus gourmand)",
+    "Préparation : 20 min · Repos : une nuit + 30 min · Cuisson : 40 min"
+  ],
+  "apres": [
+    "Astuce : congeler les tranches restantes pour conserver leur moelleux."
+  ]
+}

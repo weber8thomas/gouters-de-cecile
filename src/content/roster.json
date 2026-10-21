@@ -13,6 +13,10 @@
       "title": "Biscuits"
     },
     {
+      "id": "brioches",
+      "title": "Brioches"
+    },
+    {
       "id": "crepes",
       "title": "Crêpes & gaufres"
     }
@@ -69,10 +73,45 @@
     },
     {
       "slug": "laura",
-      "firstName": "Laura",
+      "firstName": "Laura Gramegna",
       "city": "",
       "chapter": "crepes",
       "recette": "src/content/recettes/laura.json"
+    },
+    {
+      "slug": "laura-geyer",
+      "firstName": "Laura Geyer",
+      "city": "",
+      "chapter": "gateaux",
+      "recette": "src/content/recettes/laura-geyer.json"
+    },
+    {
+      "slug": "marie",
+      "firstName": "Marie",
+      "city": "",
+      "chapter": "gateaux",
+      "recette": "src/content/recettes/marie.json"
+    },
+    {
+      "slug": "sarah",
+      "firstName": "Sarah",
+      "city": "",
+      "chapter": "brioches",
+      "recette": "src/content/recettes/sarah.json"
+    },
+    {
+      "slug": "lea",
+      "firstName": "Léa",
+      "city": "",
+      "chapter": "gateaux",
+      "recette": "src/content/recettes/lea.json"
+    },
+    {
+      "slug": "coralie",
+      "firstName": "Coralie",
+      "city": "",
+      "chapter": "gateaux",
+      "recette": "src/content/recettes/coralie.json"
     }
   ]
 }

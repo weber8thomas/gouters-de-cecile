@@ -45,7 +45,7 @@ export const ANCRES_CAROTTE: { attache: [number, number]; bout: [number, number]
 export interface EtatTableau {
   phase: string;
   legende?:{etape:number;total:number;texte:string};
-  recipient?:{index:number;coupe:number;forme?:'bol'|'moule'|'casserole'};
+  recipient?:{index:number;coupe:number;forme?:'bol'|'moule'|'casserole'|'rectangle'};
   acteurs: Acteur[];
   liquide: [number, number];
   jet: number;
@@ -73,7 +73,7 @@ export function vueTableau(type: TableauNom) {
   if(type.startsWith('recette-'))return '0 0 1000 760';
   return type === 'carotte-grignote' || type === 'levitation' ? '230 0 540 650' : type === 'gateau-enchante' ? '190 0 620 650' : type === 'coupe-citron' ? '180 0 640 650' : '0 0 1000 650';
 }
-export type CommandeTableau = 'rejouer' | 'auto' | 'etapes' | 'suivant';
+export type CommandeTableau = 'rejouer' | 'auto' | 'etapes' | 'suivant' | 'precedent';
 export const ETAPES_TABLEAUX: Partial<Record<TableauNom, number[]>> = {
   ...ETAPES_RECETTES,
   'oeuf-au-bol': [2.5,3.15,4.45,9,14],
@@ -223,11 +223,11 @@ export class Theatre {
         commandes=document.createElement('div'); commandes.className='gc-recette-commandes';
         Object.assign(commandes.style,{left:`${d.zone[0]*100}%`,top:`${(d.zone[1]+d.zone[3]) *100}%`,width:`${d.zone[2]*100}%`});
         commandes.setAttribute('role','group');commandes.setAttribute('aria-label','Animation de cuisine');
-        for(const [label,commande] of [['Rejouer','rejouer'],['Pas à pas','etapes'],['Suivant','suivant'],['Auto','auto']] as const){
+        for(const [label,commande] of [['Précédente','precedent'],['Suivante','suivant'],['Pas à pas','etapes'],['Rejouer','rejouer']] as const){
           const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.commande=commande;
-          b.addEventListener('pointerdown',e=>e.stopPropagation());b.addEventListener('click',e=>{e.stopPropagation();declencher(d.nom,type,commande)});commandes.append(b);
+          b.addEventListener('pointerdown',e=>e.stopPropagation());b.addEventListener('click',e=>{e.stopPropagation();declencher(d.nom,type,commande==='etapes'&&commandes?.dataset.mode==='etapes'?'auto':commande)});commandes.append(b);
         }
-        compteur=document.createElement('output');compteur.className='gc-recette-commandes__etape';commandes.append(compteur);
+        compteur=document.createElement('output');compteur.className='gc-recette-commandes__etape';compteur.setAttribute('aria-label','Étape de la recette');commandes.append(compteur);
       }
       let legende:HTMLParagraphElement|undefined;if(type.startsWith('recette-')){legende=document.createElement('p');legende.className='gc-recette-legende';Object.assign(legende.style,{left:`${d.zone[0]*100}%`,top:`${(d.zone[1]+d.zone[3])*100}%`,width:`${d.zone[2]*100}%`});}
       this.couche.append(svg, bouton);if(commandes)this.couche.append(commandes);if(legende)this.couche.append(legende);
@@ -253,13 +253,21 @@ export class Theatre {
     if(s.commandes){
       s.commandes.dataset.mode=pilotage?'etapes':'auto';s.commandes.style.visibility=peinture>=1?'visible':'hidden';
       const rep=ETAPES_TABLEAUX[type]??[];
-      if(s.compteur)s.compteur.textContent=pilotage?`${Math.max(1,rep.findIndex(t=>t>=pilotage.cible-.01)+1)}/${rep.length}`:'';
-      for(const b of s.commandes.querySelectorAll<HTMLButtonElement>('button'))b.disabled=!s.pret||(b.dataset.commande==='suivant'&&!!pilotage&&pilotage.temps<pilotage.cible-.01);
+      const index=pilotage?Math.max(0,rep.findIndex(t=>t>=pilotage.cible-.01)):(e.legende?.etape??Math.max(1,rep.findIndex(t=>t>=temps)+1))-1;
+      const compte=`${index+1} / ${rep.length}`;if(s.compteur&&s.compteur.textContent!==compte)s.compteur.textContent=compte;
+      for(const b of s.commandes.querySelectorAll<HTMLButtonElement>('button')){
+        const c=b.dataset.commande;
+        b.disabled=!s.pret||(c==='precedent'&&index===0)||(c==='suivant'&&index===rep.length-1);
+        if(c==='etapes'){const label=pilotage?'Lecture auto':'Pas à pas';if(b.textContent!==label)b.textContent=label;}
+      }
     }
-    if(s.legende){s.legende.textContent=e.legende?`${e.legende.etape}. ${e.legende.texte}`:'';s.legende.style.visibility=peinture>=1?'visible':'hidden';}
+    if(s.legende){const texte=e.legende?`${e.legende.etape}. ${e.legende.texte}`:'';if(s.legende.textContent!==texte)s.legende.textContent=texte;s.legende.style.visibility=peinture>=1?'visible':'hidden';}
     s.etat = e; s.svg.style.opacity = String(alpha); s.svg.setAttribute('data-gc-tableau', type); s.svg.setAttribute('data-gc-phase', e.phase);
     s.acteurs.forEach((im, k) => { const a = e.acteurs[k]; if (a) this.poserImage(im, a); else im.setAttribute('opacity', '0'); });
-    const surface=e.surface;attributs(s.surface,{href:this.url(surface?.asset??'aquarelles/acteurs/pate')??''});attributs(s.surfaceEllipse,{cx:surface?.cx??0,cy:surface?.cy??0,rx:surface?.rx??0,ry:surface?.ry??0});attributs(s.surface,{x:surface?(surface.cx-surface.rx):0,y:surface?(surface.cy-surface.ry):0,width:(surface?.rx??0)*2,height:(surface?.ry??0)*2,opacity:surface?.alpha??0});
+    const surface=e.surface,puree=surface?.asset?.endsWith('/puree-orange'),facteur=puree?4:2.2;
+    attributs(s.surface,{href:this.url(surface?.asset??'aquarelles/acteurs/pate')??''});
+    attributs(s.surfaceEllipse,{cx:surface?.cx??0,cy:surface?.cy??0,rx:surface?.rx??0,ry:surface?.ry??0});
+    attributs(s.surface,{x:surface?(surface.cx-surface.rx*facteur):0,y:surface?(surface.cy-surface.ry*2*facteur*(puree?.35:.5)):0,width:(surface?.rx??0)*2*facteur,height:(surface?.ry??0)*2*facteur,opacity:surface?.alpha??0});
     s.liquides.forEach((el) => el.setAttribute('opacity', '0')); s.fronts.forEach((el) => el.setAttribute('opacity', '0'));
     s.jet.setAttribute('opacity', '0');
     s.miettes.forEach((c, k) => {
@@ -277,8 +285,8 @@ export class Theatre {
       const r=clip?.querySelector('rect');if(r)r.setAttribute('display','none');
       let path=clip?.querySelector('path');if(!path&&clip){path=svgEl('path');clip.append(path);}
       const f=e.recipient.forme??'bol';
-      const q=f==='moule'?[-.46,-.04,0,.38,.46,-.04]:f==='casserole'?[-.45,-.067,-.14,.24,.17,-.067]:[-.47,-.13,0,.08,.47,-.13];
-      if(path)attributs(path,{display:'inline',d:`M${q[0]*a.w} ${q[1]*h} Q${q[2]*a.w} ${q[3]*h} ${q[4]*a.w} ${q[5]*h} L${a.w} ${h} L${-a.w} ${h}Z`});
+      const q=f==='moule'?[-.46,-.04,0,.38,.46,-.04]:f==='casserole'?[-.45,-.067,-.14,.24,.17,-.067]:[-.45,-.14,0,.04,.45,-.14];
+      if(path)attributs(path,{display:'inline',d:f==='rectangle'?`M${-.46*a.w} ${-.053*h} L${-.14*a.w} ${.092*h} L${.455*a.w} ${-.20*h} L${a.w} ${h} L${-a.w} ${h}Z`:`M${q[0]*a.w} ${q[1]*h} Q${q[2]*a.w} ${q[3]*h} ${q[4]*a.w} ${q[5]*h} L${a.w} ${h} L${-a.w} ${h}Z`});
     }
     if(['oeuf-au-bol','vanille-au-bol','framboise-biscuit','pate-crepes'].includes(type)){
       const bol=e.acteurs.find(a=>a.asset==='aquarelles/acteurs/bol');if(bol){

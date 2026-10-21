@@ -11,7 +11,7 @@ import { abonnerQuete, agirQuete, CACHETTES, etatQuete, QUETE_INITIALE, QUETE_OU
 import { useEcran } from '../Ecran/contexte';
 import { GESTE_EVENT } from '../Livre/evenements';
 import { pageCuite, PAGES_CUITES } from '../PageCuite/PageCuite';
-import { FarineCachette } from './FarineCachette';
+import { FarineCachette, type FarineCachetteRef } from './FarineCachette';
 import './SecretsDuCarnet.css';
 
 export interface SecretsDuCarnetProps { page: string }
@@ -83,6 +83,7 @@ export function SecretsDuCarnet({ page }: SecretsDuCarnetProps) {
   const index = CACHETTES.findIndex((c) => c.page === page);
   const cachette = CACHETTES[index];
   const racine = React.useRef<HTMLDivElement>(null);
+  const farine = React.useRef<FarineCachetteRef>(null);
   const [zone, setZone] = React.useState<RectSecret | null>(null);
   const [actif, setActif] = React.useState(false);
   const accessible = index >= 0 && index <= quete.trouves;
@@ -101,13 +102,15 @@ export function SecretsDuCarnet({ page }: SecretsDuCarnetProps) {
   const style = { left: `${zone[0] * 100}%`, top: `${zone[1] * 100}%`, width: `${zone[2] * 100}%`, height: `${zone[3] * 100}%`, ...handStyle('cecile', 'meta', 'crayon') } as React.CSSProperties;
   const decouvrir = () => { agirQuete({ type: 'reveler', index }); window.dispatchEvent(new CustomEvent(QUETE_OUVRIR_EVENT, { detail: index })); };
   const poudre = index === 0 && !trouve && !quete.revele;
-  return <div ref={racine} className="gc-secrets" style={style} data-gc-secrets={page} data-gc-secret={cachette.id} data-gc-secret-actif={actif ? 'oui' : 'non'} data-gc-secret-reduit={reduit ? 'oui' : 'non'} data-gc-secret-trouve={trouve ? 'oui' : 'non'} data-gc-secret-revele={index === quete.trouves && quete.revele ? 'oui' : 'non'} aria-hidden={!actif || undefined}>
-    <button type="button" className="gc-secrets__bouton" data-gc-controle="" tabIndex={actif ? 0 : -1} aria-label={poudre ? 'Écarter la farine : balayer, cliquer ou appuyer sur Entrée' : `${trouve ? 'Relire' : 'Découvrir'} une note cachée`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); }} onPointerDown={(e) => e.stopPropagation()} onClick={(e) => {
+  return <div ref={racine} className="gc-secrets" style={style} data-gc-secrets={page} data-gc-secret={cachette.id} data-gc-secret-matiere={cachette.matiere} data-gc-secret-actif={actif ? 'oui' : 'non'} data-gc-secret-reduit={reduit ? 'oui' : 'non'} data-gc-secret-trouve={trouve ? 'oui' : 'non'} data-gc-secret-revele={index === quete.trouves && quete.revele ? 'oui' : 'non'} aria-hidden={!actif || undefined}>
+    <button type="button" className="gc-secrets__bouton" data-gc-controle="" tabIndex={actif ? 0 : -1} aria-label={poudre ? 'Balayer la farine. Balayer du doigt ou répéter les clics, Entrée ou Espace'  : `${trouve ? 'Relire' : 'Découvrir'} une note cachée`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); }} onPointerDown={(e) => e.stopPropagation()} onClick={(e) => {
       e.stopPropagation();
-      decouvrir();
+      if (poudre) farine.current?.balayer(); else decouvrir();
     }}>
+      {cachette.matiere !== 'farine' && <span className={`gc-secrets__papier gc-secrets__papier--${cachette.matiere}`} aria-hidden="true"/>}
       <img className={`gc-secrets__dessin gc-secrets__dessin--${cachette.id}`} src={assetUrl(`aquarelles/${cachette.dessin}`)} alt="" draggable={false}/>
-      {poudre && <FarineCachette actif={actif} decouvrir={decouvrir}/>}
+      {index === 0 && <span className="gc-secrets__murmure" aria-hidden="true">{handText('Intentions gourmandes…', 'cecile')}</span>}
+      {poudre && <FarineCachette ref={farine} actif={actif} decouvrir={decouvrir}/>}
     </button>
   </div>;
 }
@@ -246,10 +249,10 @@ export function CompagnonDuCarnet() {
         {aide < 2 && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => setAide((n) => n + 1)}>{texte(aide === 0 ? 'Souffle-moi une piste' : 'Un peu plus d’aide')}</button>}
         {aide === 2 && <>
           <p className="gc-quete__destination">{texte(`${reperePage} · « ${cachette.pageTitre} »`)}</p>
-          <p>{texte(`Cherche ${cachette.chercher}.${index === 0 ? ' Un peu de farine la recouvre : écarte-la du doigt, ou d’un clic.' : ''}`)}</p>
+          <p>{texte(`Cherche ${cachette.chercher}.${index === 0 ? ' Un peu de farine la recouvre : balaie-la du doigt, ou répète les petits coups de brosse avec Entrée.' : ''}`)}</p>
           {!ici && !doubleIci && <a className="gc-quete__action" data-gc-quete-principal="" href={`#${encodeURIComponent(cachette.double)}`} onClick={() => setOuvert(false)}>{texte('Feuilleter jusque-là')}</a>}
           {!ici && doubleIci && <p>{texte(`La note est sur la page de ${infoPage?.cote}. Les flèches du carnet permettent d’y aller.`)}</p>}
-          {ici && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => { agirQuete({ type: 'reveler', index }); setReaction((n) => n + 1); }}>{texte(index === 0 ? 'Écarter la farine' : 'Lire la note')}</button>}
+          {ici && <button type="button" className="gc-quete__action" data-gc-quete-principal="" onClick={() => { agirQuete({ type: 'reveler', index }); setReaction((n) => n + 1); }}>{texte(index === 0 ? 'Lire la note sans balayer' : 'Lire la note')}</button>}
         </>}
       </>}
       {quete.trouves > 0 && <details className="gc-quete__archives">
@@ -258,7 +261,7 @@ export function CompagnonDuCarnet() {
       </details>}
       {fini && selection == null && <button type="button" className="gc-quete__recommencer" onClick={() => { agirQuete({ type: 'rejouer' }); setSelection(null); setAide(0); }}>{texte('Retrouver les notes une autre fois')}</button>}
       <p className="gc-quete__touches">{texte('S : notes · Échap : replier')}</p>
-      <span className="gc-quete__annonce" role="status" aria-live="polite">{revele ? 'Une note se dévoile. Tu peux la lire puis la garder.' : aide === 0 ? 'Notes en marge ouvertes. Un indice est disponible si tu le souhaites.' : aide === 1 ? cachette.indice : `${reperePage}. ${cachette.pageTitre}. Cherche ${cachette.chercher}.`}</span>
+      <span className="gc-quete__annonce" role="status" aria-live="polite">{fini && selection == null ? 'Toutes les notes sont gardées. Tu peux les relire.' : revele ? 'Une note se dévoile. Tu peux la lire puis la garder.' : aide === 0 ? 'Notes en marge ouvertes. Un indice est disponible si tu le souhaites.' : aide === 1 ? cachette.indice : `${reperePage}. ${cachette.pageTitre}. Cherche ${cachette.chercher}.`}</span>
     </section>}
   </>, ecran.controles);
 }

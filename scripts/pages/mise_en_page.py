@@ -92,8 +92,8 @@ ICONE = re.compile(r"^:([a-z][a-z0-9-]*):$")
 _COUPE_ICONES = re.compile(r"(:[a-z][a-z0-9-]*:)")
 # Les deux emojis reçus restent dans les sources et le texte accessible. La main les dessine comme
 # les pictogrammes existants, au lieu de demander au réseau d'écrire des glyphes qu'il ne connaît pas.
-EMOJIS_RECUS = {"😎": "sourire-lunettes", "😋": "sourire"}
-_COUPE_EMOJIS = re.compile(r"(:[a-z][a-z0-9-]*:|😎|😋)")
+EMOJIS_RECUS = {"😎": "sourire-lunettes", "😋": "sourire", "🤍": "coeur"}
+_COUPE_EMOJIS = re.compile(r"(:[a-z][a-z0-9-]*:|😎|😋|🤍)")
 
 
 def _norm(s: str) -> str:
@@ -774,8 +774,13 @@ class Mise:
             bx = x + (w - t) / 2 + r.normal(0, 0.05) * xh
             by = y - t + r.normal(0.06, 0.05) * xh
             boite = (bx, by, bx + t, by + t)
-            self.demander_croquis(ic.group(1), (bx, by, t, t), encre, int(self.graine * 7 + len(self.croquis) * 31),
-                                  role="icone", ep=ep * xh, xh=xh)
+            if ic.group(1) == "coeur":
+                # Le cœur blanc reçu reste un cœur au trait, sans glyphe manquant ni aplat coloré.
+                self.tracer(TR.coeur(bx + t / 2, by + t / 2, t * .8, r, xh), xh, encre, ep,
+                            int(self.graine * 7 + len(self.mots) * 31), self.main)
+            else:
+                self.demander_croquis(ic.group(1), (bx, by, t, t), encre, int(self.graine * 7 + len(self.croquis) * 31),
+                                      role="icone", ep=ep * xh, xh=xh)
             mp = MotPose(mot.texte, b, xh, boite, bloc, ligne.n)
             self.mots.append(mp)
             ligne.mots.append(mp)
@@ -2117,26 +2122,30 @@ class Mise:
         if not ls or not b.get("invites"):
             return
         noms = b["invites"]
-        texte = noms if isinstance(noms, str) else (", ".join(noms[:-1]) + " et " + noms[-1] if len(noms) > 1 else noms[0])
+        par_ligne = int(b.get("invites_par_ligne", len(noms))) if not isinstance(noms, str) else 1
+        groupes = [noms] if isinstance(noms, str) else [noms[i:i + max(1, par_ligne)] for i in range(0, len(noms), max(1, par_ligne))]
         main = b.get("invites_main", b.get("main", self.main))
         enc_id = encre_dispo(b.get("invites_encre", b.get("encre", self.encre)))
         info = ECR.main_info(main)
         xh = max(self.xh_min, self.xh_de("annotation", main) * float(b.get("invites_taille", 1.0)))
         g = int(b.get("invites_graine", self.graine * 31 + idx * 7 + 5))
-        brut, marques, mots, bloc = self.ecrire_segments([{"texte": texte, "graine": g, "police": b.get("invites_police")}], main, enc_id, b.get("outil"))
-        larg, asc, desc = self._mesure(mots, xh, info["espace"])
         titre_mots = [m for L in ls for m in L.mots]
         if titre_mots:
             A = np.array([m.boite for m in titre_mots], float)
             cx = float((A[:, 0].min() + A[:, 2].max()) / 2)
-            yb = float(A[:, 3].max()) + 1.15 * ls[-1].xh * 0.6 + asc
+            haut_noms = float(A[:, 3].max()) + 1.15 * ls[-1].xh * 0.6
         else:
-            cx, yb = self.W / 2, (self.base or self.haut) + 2 * xh
-        x = cx - larg / 2 + r.normal(0.02, 0.02) * self.W
-        poses, L = self._ligne_libre(mots, x, yb, xh, r.uniform(-1.8, 0.6), dict(bloc.encre), bloc.epaisseur, bid + "-invites",
-                                     info["espace"])
-        self.base = yb
-        self.texte.append(self._texte_lisible(brut, marques))
+            cx, haut_noms = self.W / 2, (self.base or self.haut) + 2 * xh
+        for i, groupe in enumerate(groupes):
+            texte = groupe if isinstance(groupe, str) else (", ".join(groupe[:-1]) + " et " + groupe[-1] if len(groupe) > 1 else groupe[0])
+            brut, marques, mots, bloc = self.ecrire_segments([{"texte": texte, "graine": g + i * 13, "police": b.get("invites_police")}], main, enc_id, b.get("outil"))
+            larg, asc, desc = self._mesure(mots, xh, info["espace"])
+            yb = haut_noms + asc + i * float(b.get("invites_interligne", 2.7)) * xh
+            x = cx - larg / 2 + r.normal(0.02, 0.02) * self.W
+            self._ligne_libre(mots, x, yb, xh, r.uniform(-1.8, 0.6), dict(bloc.encre), bloc.epaisseur, bid + "-invites",
+                              info["espace"])
+            self.base = yb
+            self.texte.append(self._texte_lisible(brut, marques))
 
     # ---- contrôle : rien sous une zone vivante -------------------------------------------------
     def _verifier_zones(self):

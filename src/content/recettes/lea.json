@@ -1,0 +1,80 @@
+{
+  "slug": "lea",
+  "source": "src/content/recettes/lea.txt",
+  "adaptations": [
+    "Texte reçu conservé intégralement dans le fichier TXT ; seuls les marqueurs de liste sont retirés pour la mise en page.",
+    "Petit mot provisoire demandé par Thomas : Lorem ipsum — message à venir ; aucun message authentique inventé.",
+    "Température corrigée à 180 °C sur confirmation de Thomas ; la source initiale 280 degrés est conservée dans le TXT et le document de provenance."
+  ],
+  "style": {
+    "main": "soignee",
+    "encre": "bille-bleue",
+    "police": "shantell",
+    "graine": 16453
+  },
+  "titre": "Gâteau aux pommes",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "3 pommes"
+        },
+        {
+          "texte": "250g de fromage blanc"
+        },
+        {
+          "texte": "100g de sucre"
+        },
+        {
+          "texte": "3 œufs"
+        },
+        {
+          "texte": "80g de farine"
+        },
+        {
+          "texte": "1 sachet de levure chimique"
+        },
+        {
+          "texte": "1 cuillère à café d’arôme vanille (indispensable!!)"
+        },
+        {
+          "texte": "1 pincée de sel"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "préchauffer le four à 180 °C"
+    },
+    {
+      "titre": "2.",
+      "texte": "éplucher et couper les pommes en petit cubes"
+    },
+    {
+      "titre": "3.",
+      "texte": "dans un saladier, mélanger les œufs et le sucre, ajouter le fromage blanc et la vanille, bien mélanger. Ajouter la farine, la levure chimique et la pincée de sel et mélanger jusqu’à obtenir une pâte lisse et mousseuse"
+    },
+    {
+      "titre": "4.",
+      "texte": "Beurrer et fariner le moule à gâteau (rond et pas très haut)"
+    },
+    {
+      "titre": "5.",
+      "texte": "Ajouter les pommes et recouvrer avec la pâte"
+    },
+    {
+      "titre": "6.",
+      "texte": "Enfourner pendant 40min"
+    }
+  ],
+  "mot": "Lorem ipsum — message à venir",
+  "signature": "Léa",
+  "nom": "Léa",
+  "apres": [
+    "Saupoudrer de sucre glace pour + de kiff",
+    "à déguster tiède miam 😋"
+  ]
+}

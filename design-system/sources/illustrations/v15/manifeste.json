@@ -1,0 +1,311 @@
+{
+  "serie": "anglaise-v15",
+  "direction": "Acteurs originaux anglais au crayon brun fin et aquarelle mate, en continuité avec la vaisselle v14. Deux planches de six sujets; huile séparée. Transparence originale conservée. Desserts exportés aussi à la racine pour les pages. Un pâton isolé permet six animations indépendantes.",
+  "reference": "design-system/sources/illustrations/v14/patisserie.png",
+  "planches": [
+    {
+      "fichier": "ingredients.png",
+      "sujets": [
+        {
+          "nom": "acteurs/orange",
+          "sujet": "orange",
+          "cellule": [
+            0,
+            0,
+            535,
+            435
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/puree-orange",
+          "sujet": "puree-orange",
+          "cellule": [
+            540,
+            0,
+            1030,
+            440
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/amandes",
+          "sujet": "amandes",
+          "cellule": [
+            1050,
+            0,
+            1536,
+            465
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/mixeur",
+          "sujet": "mixeur",
+          "cellule": [
+            0,
+            435,
+            535,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/pommes-cubes",
+          "sujet": "pommes-cubes",
+          "cellule": [
+            550,
+            500,
+            1025,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/fromage-blanc",
+          "sujet": "fromage-blanc",
+          "cellule": [
+            1040,
+            510,
+            1536,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "desserts.png",
+      "sujets": [
+        {
+          "nom": "acteurs/gateau-orange-amandes",
+          "sujet": "gateau-orange-amandes",
+          "cellule": [
+            0,
+            0,
+            530,
+            510
+          ],
+          "taille": [
+            600,
+            600
+          ],
+          "composante_principale": true
+        },
+        {
+          "nom": "acteurs/brioche",
+          "sujet": "brioche",
+          "cellule": [
+            510,
+            0,
+            1115,
+            510
+          ],
+          "taille": [
+            600,
+            600
+          ],
+          "composante_principale": true
+        },
+        {
+          "nom": "acteurs/pate-brioche",
+          "sujet": "pate-brioche",
+          "cellule": [
+            1120,
+            0,
+            1536,
+            510
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/patons-brioche",
+          "sujet": "patons-brioche",
+          "cellule": [
+            0,
+            530,
+            520,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/gateau-pommes",
+          "sujet": "gateau-pommes",
+          "cellule": [
+            525,
+            510,
+            1105,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/pinceau",
+          "sujet": "pinceau",
+          "cellule": [
+            1105,
+            510,
+            1536,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/paton-brioche",
+          "sujet": "paton-brioche",
+          "cellule": [
+            1120,
+            0,
+            1536,
+            510
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "gateau-orange-amandes",
+          "sujet": "gateau-orange-amandes",
+          "cellule": [
+            0,
+            0,
+            530,
+            510
+          ],
+          "taille": [
+            600,
+            600
+          ],
+          "composante_principale": true
+        },
+        {
+          "nom": "brioche",
+          "sujet": "brioche",
+          "cellule": [
+            510,
+            0,
+            1115,
+            510
+          ],
+          "taille": [
+            600,
+            600
+          ],
+          "composante_principale": true
+        },
+        {
+          "nom": "gateau-pommes",
+          "sujet": "gateau-pommes",
+          "cellule": [
+            525,
+            510,
+            1105,
+            1024
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "huile.png",
+      "sujets": [
+        {
+          "nom": "acteurs/huile",
+          "sujet": "huile",
+          "cellule": [
+            0,
+            0,
+            1254,
+            1254
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "ustensiles.png",
+      "sujets": [
+        {
+          "nom": "acteurs/moule-brioche",
+          "sujet": "moule-brioche",
+          "cellule": [
+            0,
+            0,
+            724,
+            724
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/torchon",
+          "sujet": "torchon",
+          "cellule": [
+            724,
+            0,
+            1448,
+            724
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/papier-sulfurise",
+          "sujet": "papier-sulfurise",
+          "cellule": [
+            1448,
+            0,
+            2172,
+            724
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        }
+      ]
+    }
+  ]
+}

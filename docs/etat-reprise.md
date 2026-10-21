@@ -5,7 +5,8 @@
 - Démo vendredi 23 octobre : ordinateur HDMI, TV 1920 × 1080, navigation clavier.
 - Plan courant : [mission du 19 octobre](mission-finalisation-2026-10-19.md). Les bilans précédents
   restent dans [le bilan Claude](bilan-claude-2026-10-18.md) et [le plan v8](plan-v8.md).
-- Huit vrais proches : Lisa, Emeline, Clémence, Pierrette, Anatole, Lise, Julien, Laura ; quatre chapitres.
+- Treize recettes reçues : Lisa, Emeline, Clémence, Pierrette, Laura Geyer, Marie, Léa, Coralie,
+  Anatole, Lise, Julien, Sarah et Laura Gramegna ; cinq chapitres.
   Conserver tous les textes, quantités, mots et notes. Utiliser la pagination existante, sans réduire
   l’écriture pour faire tenir une recette. Voir [audit des sources](audit-recettes-v11.md).
 - Illustrations anglaises anciennes au crayon fin et à l’aquarelle mate, beaucoup d’animations et de
@@ -27,6 +28,17 @@
 - Git, sous-agents nécessaires et publication d’aperçus autorisés. Réutiliser les spécialistes ; éviter
   les audits redondants et les navigateurs concurrents pour économiser le quota.
 - Aucun redémarrage automatique après expiration du quota. La reprise nécessite un message utilisateur.
+
+## Revue v15
+
+Voir [la livraison v15](reprise-v15.md) et la [source du nouveau lot](sources/recettes-recueillies-2026-10-20-v15.md).
+Cinq recettes ajoutées, crêpes attribuées à Laura Gramegna, cuisson de Léa corrigée à 180 °C sur confirmation.
+Quatre petits mots sont explicitement marqués « Lorem ipsum — message à venir » ; celui de Coralie est authentique.
+Treize recettes et 70 étapes, sommaire sur deux pages, feuillet de suite natif pour Sarah. Commandes fixes
+Précédente/compteur/Suivante, mode et rejeu ; les gestes sélectionnés avancent sans lecture inversée.
+Farine granuleuse dégagée par petits gestes successifs, cachettes en enveloppe, pli et tache.
+Aperçu de cette passe : `essais/coherence-v15/`. Tests : `verify-recettes-v15.mjs`,
+`verify-recette-horloge-v15.mjs`, `verify-recette-livre-v15.mjs`, `verify-notes-v15.mjs`, pagination et glyphes des treize recettes.
 
 ## Revue v14
 
@@ -62,7 +74,7 @@ et `pages/recettes.json` fixent l’ordre, les mains et les réserves. Les notes
 voisinage du titre peuvent se poser intégralement en marge basse ; le paginateur reporte le texte suivant.
 
 Les illustrations originales et leurs manifestes reproductibles sont dans
-`design-system/sources/illustrations/v9`, `v10`, `v11`, `v12`, `v13`, `v14`. V11 ajoute les desserts ; v12 des acteurs séparés et un chien frontal ; v13 le pichet, la farine et une texture de pâte.
+`design-system/sources/illustrations/v9`, `v10`, `v11`, `v12`, `v13`, `v14`, `v15`. V11 ajoute les desserts ; v12 des acteurs séparés et un chien frontal ; v13 le pichet, la farine et une texture de pâte.
 Le site emploie uniquement les images cuites ; aucune génération ni modèle distant au runtime.
 Les scènes partagent une horloge. Même distribution au repos, pendant l’action et dans les feuilles
 qui tournent : pas de tasse qui devient trois, pas de changement de taille de carotte. Nouveaux tableaux :

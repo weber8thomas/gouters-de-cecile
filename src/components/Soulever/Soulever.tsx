@@ -795,6 +795,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
           <m.div
             ref={carteFeuilletRef}
             className="gc-soulever__carte gc-soulever__carte--feuillet"
+            data-gc-actif=""
             data-gc-face={face}
             style={{ ...boite, transform: carteT, opacity: carteO, willChange: wc }}
             onClick={toucherFeuillet}

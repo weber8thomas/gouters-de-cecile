@@ -1,5 +1,5 @@
 {
-  "_": "Huit recettes intégrales ; pagination gauche/droite/feuillet recto/verso existante. Zones photo réservées sans portraits ni vidéos en attendant les vrais médias ; message complet sous la zone photo par bandeau.places=dessous. Validation géométrique à faire lors de la cuisson.",
+  "_": "Treize recettes intégrales. Folios dérivés du carnet ; aucune durée, quantité ou phrase abrégée. Les quatre mots Lorem ipsum sont provisoires, le mot de Coralie est authentique.",
   "recettes": {
     "lisa": {
       "source": "src/content/recettes/lisa.json",
@@ -350,8 +350,8 @@
       "source": "src/content/recettes/anatole.json",
       "double": "anatole",
       "folios": [
-        22,
-        23
+        30,
+        31
       ],
       "graine": 7459,
       "photo": {
@@ -436,8 +436,8 @@
       "source": "src/content/recettes/lise.json",
       "double": "lise",
       "folios": [
-        24,
-        25
+        32,
+        33
       ],
       "graine": 8573,
       "photo": {
@@ -534,8 +534,8 @@
       "source": "src/content/recettes/julien.json",
       "double": "julien",
       "folios": [
-        28,
-        29
+        36,
+        37
       ],
       "graine": 9689,
       "photo": {
@@ -620,8 +620,8 @@
       "source": "src/content/recettes/laura.json",
       "double": "laura",
       "folios": [
-        32,
-        33
+        44,
+        45
       ],
       "graine": 10867,
       "photo": {
@@ -689,6 +689,437 @@
           ],
           "aquarelle": "crepes-banane",
           "angle": 0
+        }
+      ],
+      "bandeau": {
+        "places": [
+          "dessous"
+        ],
+        "taille": 2.2,
+        "texte": "Laura",
+        "sous": "Gramegna"
+      },
+      "cadre": {
+        "largeur": 0.84,
+        "style": "ondule"
+      }
+    },
+    "laura-geyer": {
+      "source": "src/content/recettes/laura-geyer.json",
+      "double": "laura-geyer",
+      "folios": [
+        20,
+        21
+      ],
+      "graine": 13111,
+      "photo": {
+        "largeur": 0.42,
+        "ratio": 0.75,
+        "x": 0.06,
+        "y": 0.035,
+        "angle": 1.8,
+        "marge": 0.028,
+        "blanc": 0.01
+      },
+      "volant": {
+        "zone": [
+          0.83,
+          0.66,
+          0.17,
+          0.215
+        ],
+        "note": [
+          0.08,
+          0.895,
+          0.7,
+          0.06
+        ],
+        "angle": -7
+      },
+      "feuillet": {
+        "papier": "c-lisa",
+        "taille": [
+          0.82,
+          0.88
+        ],
+        "xh": 0.83,
+        "haut": 0.04,
+        "bas": 0.035
+      },
+      "etapes": "auto",
+      "suite": {
+        "texte": "suite sur la feuille",
+        "main": "cecile",
+        "encre": "crayon"
+      },
+      "croquis": {
+        "pages": [
+          "fin"
+        ],
+        "taille": [
+          0.16,
+          0.16
+        ]
+      },
+      "serrage_max": 1,
+      "graines": {},
+      "aquarelles": [
+        {
+          "page": "droite",
+          "nom": "aq-laura-geyer-1",
+          "rect": [
+            0.13,
+            0.43,
+            0.74,
+            0.51
+          ],
+          "aquarelle": "gateau-orange-amandes",
+          "angle": 0,
+          "bande": true
+        }
+      ],
+      "bandeau": {
+        "places": [
+          "dessous"
+        ],
+        "taille": 2.2
+      },
+      "cadre": {
+        "largeur": 0.84,
+        "style": "ondule",
+        "titre": "Pour Cécile — message provisoire"
+      }
+    },
+    "marie": {
+      "source": "src/content/recettes/marie.json",
+      "double": "marie",
+      "folios": [
+        22,
+        23
+      ],
+      "graine": 14231,
+      "photo": {
+        "largeur": 0.42,
+        "ratio": 0.75,
+        "x": 0.06,
+        "y": 0.035,
+        "angle": 1.8,
+        "marge": 0.028,
+        "blanc": 0.01
+      },
+      "volant": {
+        "zone": [
+          0.83,
+          0.66,
+          0.17,
+          0.215
+        ],
+        "note": [
+          0.08,
+          0.895,
+          0.7,
+          0.06
+        ],
+        "angle": -7
+      },
+      "feuillet": {
+        "papier": "c-lisa",
+        "taille": [
+          0.82,
+          0.88
+        ],
+        "xh": 0.83,
+        "haut": 0.04,
+        "bas": 0.035
+      },
+      "etapes": "auto",
+      "suite": {
+        "texte": "suite sur la feuille",
+        "main": "cecile",
+        "encre": "crayon"
+      },
+      "croquis": {
+        "pages": [
+          "fin"
+        ],
+        "taille": [
+          0.16,
+          0.16
+        ]
+      },
+      "serrage_max": 1,
+      "graines": {},
+      "aquarelles": [
+        {
+          "page": "droite",
+          "nom": "aq-marie-1",
+          "rect": [
+            0.13,
+            0.25,
+            0.74,
+            0.65
+          ],
+          "aquarelle": "fondant-chocolat",
+          "angle": 0,
+          "bande": true
+        }
+      ],
+      "bandeau": {
+        "places": [
+          "dessous"
+        ],
+        "taille": 2.2
+      },
+      "cadre": {
+        "largeur": 0.84,
+        "style": "ondule",
+        "titre": "Pour Cécile — message provisoire"
+      }
+    },
+    "sarah": {
+      "source": "src/content/recettes/sarah.json",
+      "double": "sarah",
+      "folios": [
+        40,
+        41
+      ],
+      "graine": 15347,
+      "photo": {
+        "largeur": 0.42,
+        "ratio": 0.75,
+        "x": 0.06,
+        "y": 0.035,
+        "angle": 1.8,
+        "marge": 0.028,
+        "blanc": 0.01
+      },
+      "volant": {
+        "zone": [
+          0.83,
+          0.66,
+          0.17,
+          0.215
+        ],
+        "note": [
+          0.08,
+          0.895,
+          0.7,
+          0.06
+        ],
+        "angle": -7
+      },
+      "feuillet": {
+        "papier": "c-lisa",
+        "taille": [
+          0.82,
+          0.88
+        ],
+        "xh": 0.83,
+        "haut": 0.04,
+        "bas": 0.035
+      },
+      "etapes": "auto",
+      "suite": {
+        "texte": "suite sur la feuille",
+        "main": "cecile",
+        "encre": "crayon"
+      },
+      "croquis": {
+        "pages": [
+          "fin"
+        ],
+        "taille": [
+          0.16,
+          0.16
+        ]
+      },
+      "serrage_max": 1,
+      "graines": {},
+      "aquarelles": [
+        {
+          "page": "droite",
+          "nom": "aq-sarah-1",
+          "rect": [
+            0.13,
+            0.49,
+            0.67,
+            0.35
+          ],
+          "aquarelle": "brioche",
+          "angle": 0,
+          "bande": true
+        }
+      ],
+      "bandeau": {
+        "places": [
+          "dessous"
+        ],
+        "taille": 2.2
+      },
+      "cadre": {
+        "largeur": 0.84,
+        "style": "ondule",
+        "titre": "Pour Cécile — message provisoire"
+      }
+    },
+    "lea": {
+      "source": "src/content/recettes/lea.json",
+      "double": "lea",
+      "folios": [
+        24,
+        25
+      ],
+      "graine": 16453,
+      "photo": {
+        "largeur": 0.42,
+        "ratio": 0.75,
+        "x": 0.06,
+        "y": 0.035,
+        "angle": 1.8,
+        "marge": 0.028,
+        "blanc": 0.01
+      },
+      "volant": {
+        "zone": [
+          0.83,
+          0.66,
+          0.17,
+          0.215
+        ],
+        "note": [
+          0.08,
+          0.895,
+          0.7,
+          0.06
+        ],
+        "angle": -7
+      },
+      "feuillet": {
+        "papier": "c-lisa",
+        "taille": [
+          0.82,
+          0.88
+        ],
+        "xh": 0.83,
+        "haut": 0.04,
+        "bas": 0.035
+      },
+      "etapes": "auto",
+      "suite": {
+        "texte": "suite sur la feuille",
+        "main": "cecile",
+        "encre": "crayon"
+      },
+      "croquis": {
+        "pages": [
+          "fin"
+        ],
+        "taille": [
+          0.16,
+          0.16
+        ]
+      },
+      "serrage_max": 1,
+      "graines": {},
+      "aquarelles": [
+        {
+          "page": "droite",
+          "nom": "aq-lea-1",
+          "rect": [
+            0.13,
+            0.34,
+            0.74,
+            0.6
+          ],
+          "aquarelle": "gateau-pommes",
+          "angle": 0,
+          "bande": true
+        }
+      ],
+      "bandeau": {
+        "places": [
+          "dessous"
+        ],
+        "taille": 2.2
+      },
+      "cadre": {
+        "largeur": 0.84,
+        "style": "ondule",
+        "titre": "Pour Cécile — message provisoire"
+      }
+    },
+    "coralie": {
+      "source": "src/content/recettes/coralie.json",
+      "double": "coralie",
+      "folios": [
+        26,
+        27
+      ],
+      "graine": 17569,
+      "photo": {
+        "largeur": 0.42,
+        "ratio": 0.75,
+        "x": 0.06,
+        "y": 0.035,
+        "angle": 1.8,
+        "marge": 0.028,
+        "blanc": 0.01
+      },
+      "volant": {
+        "zone": [
+          0.83,
+          0.66,
+          0.17,
+          0.215
+        ],
+        "note": [
+          0.08,
+          0.895,
+          0.7,
+          0.06
+        ],
+        "angle": -7
+      },
+      "feuillet": {
+        "papier": "c-lisa",
+        "taille": [
+          0.82,
+          0.88
+        ],
+        "xh": 0.83,
+        "haut": 0.04,
+        "bas": 0.035
+      },
+      "etapes": "auto",
+      "suite": {
+        "texte": "suite sur la feuille",
+        "main": "cecile",
+        "encre": "crayon"
+      },
+      "croquis": {
+        "pages": [
+          "fin"
+        ],
+        "taille": [
+          0.16,
+          0.16
+        ]
+      },
+      "serrage_max": 1,
+      "graines": {},
+      "aquarelles": [
+        {
+          "page": "droite",
+          "nom": "aq-coralie-1",
+          "rect": [
+            0.13,
+            0.36,
+            0.74,
+            0.58
+          ],
+          "aquarelle": "fondant-chocolat",
+          "angle": 0,
+          "bande": true
         }
       ],
       "bandeau": {

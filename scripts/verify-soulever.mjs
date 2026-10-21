@@ -101,10 +101,10 @@ const rectSouleve = (page) => page.evaluate(() => {
 });
 
 /**
- * Fin de l'envol : data-gc-phase (lot S, banc : envol → ouvert) quitte « envol », puis 3 images ; sans
+ * Fin de l'envol : data-gc-phase atteint « ouvert », puis 3 images ; sans
  * phase, l'objet soulevé ne bouge plus pendant 6 images.
  */
-const finEnvol = (page) => page.evaluate(() => new Promise((resolve) => {
+const finEnvol = (page) => page.evaluate(() => new Promise((resolve, reject) => {
   const t0 = performance.now();
   let prec = '';
   let n = 0;
@@ -115,10 +115,10 @@ const finEnvol = (page) => page.evaluate(() => new Promise((resolve) => {
     return [...c.querySelectorAll('*')].slice(0, 60).map((el) => { const r = el.getBoundingClientRect(); return `${r.left | 0},${r.top | 0},${r.width | 0}`; }).join(';');
   };
   const tick = () => {
-    if (performance.now() - t0 > 8000) return resolve();
+    if (performance.now() - t0 > 45000) return reject(new Error('Le vol ne termine pas : capture refusée avant la pose.'));
     const ph = phase();
     if (ph != null) {
-      n = ph === 'envol' ? 0 : n + 1;
+      n = ph === 'ouvert' ? n + 1 : 0;
       if (n >= 3) return resolve();
     } else {
       const v = lire();
@@ -152,7 +152,18 @@ async function verifierRetour(page, e, sel, avant, comment, fermer) {
   return f;
 }
 
-/** Capture d'une zone, répétée jusqu'à deux images identiques (fin d'animation). */
+/** La feuille doit avoir fini son retournement, y compris en rendu logiciel lent. */
+async function attendreFace(page, face) {
+  await page.waitForFunction(face => {
+    const carte=document.querySelector('.gc-soulever__carte--feuillet'), retour=carte?.querySelector('.gc-soulever__retourne');
+    if(!carte||!retour||carte.getAttribute('data-gc-face')!==face||retour.style.willChange==='transform')return false;
+    if(carte.closest('[data-gc-reduit]'))return Number(getComputedStyle(carte.querySelector('.gc-soulever__face--'+face)).opacity)>.999;
+    const m=new DOMMatrixReadOnly(getComputedStyle(retour).transform);
+    return Math.abs(m.m11-(face==='verso'?-1:1))<.0001&&Math.abs(m.m13)<.0001;
+  },face,{timeout:45000});
+}
+
+/** Capture de la zone posée, répétée jusqu’à deux images identiques. */
 async function captureStable(page, clip, ms = 5000) {
   const t0 = Date.now();
   let prec = await page.screenshot({ clip, timeout: 60000 });
@@ -330,17 +341,21 @@ async function suiteFeuillet(e) {
     if (await essai('haut')) {
       const rs = await rectSouleve(page);
       const clip = clipDe(rs, vp);
+      await attendreFace(page,'recto');
       const recto = await captureStable(page, clip);
       await page.keyboard.press('ArrowRight');
+      await attendreFace(page,'verso');
       const verso = await captureStable(page, clip);
       const dV = pixelsDifferents(recto, verso);
       R.ok(e.nom, 'feuillet : → montre le verso', dV > 0.03, `${(dV * 100).toFixed(1)} % de pixels changés`);
       R.capturer(await capture(page, `${e.nom}-feuillet-verso`, out), `${e.titre} — feuillet, verso`);
       await page.keyboard.press('ArrowLeft');
+      await attendreFace(page,'recto');
       const recto2 = await captureStable(page, clip);
       const dR = pixelsDifferents(recto, recto2);
       R.ok(e.nom, 'feuillet : ← revient au recto', dR < 0.02 && pixelsDifferents(verso, recto2) > 0.03, `écart au recto ${(dR * 100).toFixed(1)} %`);
       await taper(page, e, rs.cx, rs.cy);
+      await attendreFace(page,'verso');
       const tape = await captureStable(page, clip);
       const encore = (await etatCalque(page)) === 'ouvert';
       R.ok(e.nom, 'feuillet : toucher le feuillet soulevé le retourne', encore && pixelsDifferents(recto2, tape) > 0.03, encore ? `${(pixelsDifferents(recto2, tape) * 100).toFixed(1)} % changés` : 'le toucher a reposé le feuillet');

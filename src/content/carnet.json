@@ -1,5 +1,5 @@
 {
-  "_": "Ordre du carnet des huit proches, selon le plan reçu le 19 octobre 2026. Les folios dérivent de cet ordre ; garder les textes intégraux et utiliser les feuillets volants existants pour les recettes longues.",
+  "_": "Carnet des treize recettes reçues ; ordre unique des doubles pages et des folios. Textes intégraux et éventuelles feuilles de suite préservés.",
   "doubles": [
     {
       "id": "titre",
@@ -74,6 +74,42 @@
       "titre": "Pierrette — Le cake au citron d'antan"
     },
     {
+      "id": "laura-geyer",
+      "graine": 13111,
+      "type": "recette",
+      "invites": [
+        "laura-geyer"
+      ],
+      "titre": "Laura Geyer — Gâteau à l’orange et aux amandes"
+    },
+    {
+      "id": "marie",
+      "graine": 14231,
+      "type": "recette",
+      "invites": [
+        "marie"
+      ],
+      "titre": "Marie — FONDANT CHOCOLAT de Maman Sylvie Cattelin"
+    },
+    {
+      "id": "lea",
+      "graine": 16453,
+      "type": "recette",
+      "invites": [
+        "lea"
+      ],
+      "titre": "Léa — Gâteau aux pommes"
+    },
+    {
+      "id": "coralie",
+      "graine": 17569,
+      "type": "recette",
+      "invites": [
+        "coralie"
+      ],
+      "titre": "Coralie — Recette de fondant au chocolat"
+    },
+    {
       "id": "tartes",
       "type": "intercalaire",
       "chapitre": "tartes",
@@ -115,6 +151,22 @@
       "titre": "Julien — Cookies moelleux pépites & noisettes"
     },
     {
+      "id": "brioches",
+      "type": "intercalaire",
+      "chapitre": "brioches",
+      "titre": "Brioches",
+      "sansFolio": true
+    },
+    {
+      "id": "sarah",
+      "graine": 15347,
+      "type": "recette",
+      "invites": [
+        "sarah"
+      ],
+      "titre": "Sarah — Brioche à la mie filante"
+    },
+    {
       "id": "crepes",
       "type": "intercalaire",
       "chapitre": "crepes",
@@ -128,7 +180,7 @@
       "invites": [
         "laura"
       ],
-      "titre": "Laura — Crêpes gourmandes Nutella-banane-chantilly"
+      "titre": "Laura Gramegna — Crêpes gourmandes Nutella-banane-chantilly"
     },
     {
       "id": "fin",

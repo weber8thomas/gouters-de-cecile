@@ -148,6 +148,8 @@ def atomes(rec: dict, alias: dict | None = None, cadre: bool | None = None) -> l
     g = lambda aid: graine_atome(slug, aid)  # noqa: E731
     A: list[Atome] = []
     A.append(Atome("titre", "titre", rec["titre"], g("titre"), bloc="titre", colle=True))
+    for i, texte in enumerate(rec.get("details") or [], 1):
+        A.append(Atome(f"detail-{i}", "groupe-titre", texte, g(f"detail-{i}"), bloc="details", colle=True))
 
     def groupe(grp, gid):
         if grp.get("titre"):
