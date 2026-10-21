@@ -2041,12 +2041,9 @@ class Mise:
         donne un lien (manifeste `liens`, rect en fractions de page). Les lignes viennent du carnet
         (recette.lignes_sommaire : `chapitres`, `fin`, `titres`) quand la description n'en donne pas.
 
-        Débordement (une vingtaine d'invités, ≈ 30 lignes) — prévu, pas encore fait : le sommaire
-        commencerait alors en haut de la page GAUCHE de sa double page (la dédicace remonte en tête de
-        cette page, plus petite, et le sommaire suit dessous), puis continuerait sur la page droite
-        (`sommaire`), coupé entre deux chapitres de préférence, jamais entre un titre de chapitre et sa
-        première ligne. Aujourd'hui, un sommaire trop long pour sa page est un débordement (cuisson en
-        code 1) : jamais une ligne perdue."""
+        Le sommaire est réparti à la main entre plusieurs blocs, chacun avec ses `chapitres` : la
+        dédicace (folio 8), `sommaire` (folio 9) et sa suite sur `gateaux-gauche` (folio 10). Un bloc
+        trop long pour sa page reste un débordement (cuisson en code 1) : jamais une ligne perdue."""
         bid = b.get("id", "sommaire")
         main, enc_id, outil, info, xh = self._style_bloc(b, "corps")
         r = self.rng
