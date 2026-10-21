@@ -37,16 +37,23 @@
       "vignettes": {
         "lea": {
           "zone": "vignette-lea",
-          "hauteur": 0.08
+          "hauteur": 0.08,
+          "decalage_y": 0.022
         },
         "antoine": "vignette-antoine",
         "margot-chapuzy": "vignette-margot-chapuzy",
-        "anatole": "vignette-anatole",
+        "anatole": {
+          "zone": "vignette-anatole",
+          "decalage_y": 0.015
+        },
         "lise": {
           "zone": "vignette-lise",
           "hauteur": 0.08
         },
-        "julien": "vignette-julien",
+        "julien": {
+          "zone": "vignette-julien",
+          "decalage_y": 0.015
+        },
         "lisa-de-paris": "vignette-lisa-de-paris"
       },
       "titres": {

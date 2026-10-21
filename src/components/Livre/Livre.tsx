@@ -429,6 +429,7 @@ export function Livre({
   const coteCibleRef = React.useRef<CotePage>(cote);
   const tourRef = React.useRef<Tour | null>(null);
   const animRef = React.useRef<{ stop(): void } | null>(null);
+  const finPapierRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const animSeq = React.useRef(0);
   const riffleAnim = React.useRef<ReturnType<typeof animate> | null>(null);
   const tassement = React.useRef<Promise<void> | null>(null);
@@ -454,6 +455,7 @@ export function Livre({
 
   React.useLayoutEffect(() => { afficheRef.current = affiche; }, [affiche]);
   React.useEffect(() => () => {
+    if (finPapierRef.current) clearTimeout(finPapierRef.current);
     animSeq.current++; animRef.current?.stop(); riffleAnim.current?.stop(); glisseSeq.current++; glisseAnim.current?.stop();
     const A = arriveeRef.current;
     if (A) { A.timers.forEach((t) => clearTimeout(t)); A.anims.forEach((a) => a.stop()); }
@@ -499,6 +501,8 @@ export function Livre({
   // ---- Fin d'un geste : la double page atteinte devient la double page affichée -------------
   const atterrir = React.useCallback((T: Tour) => {
     if (tourRef.current !== T) return;
+    if (finPapierRef.current) clearTimeout(finPapierRef.current);
+    finPapierRef.current = null;
     animRef.current = null;
     tourRef.current = null;
     const nouvel = T.but === 1 ? T.hi : T.lo;
@@ -571,6 +575,8 @@ export function Livre({
   }, [r]);
   // ---- Ressort : lancé, ou relancé vers une nouvelle cible (vitesse conservée) --------------
   const lancer = React.useCallback((T: Tour, velocity?: number, delai?: number) => {
+    if (finPapierRef.current) clearTimeout(finPapierRef.current);
+    finPapierRef.current = null;
     animRef.current?.stop();
     const id = ++animSeq.current;
     const lien = !!(T.couverture && T.feuilles);
@@ -613,6 +619,17 @@ export function Livre({
         else atterrir(T);
       },
     });
+    // Un ressort suspendu par le navigateur ne doit jamais garder le livre verrouillé.
+    // La cible est posée après sa durée normale, même sans nouvelle frame de Motion.
+    if (!carton(T) && !T.feuilles) {
+      finPapierRef.current = setTimeout(() => {
+        if (animSeq.current !== id || tourRef.current !== T || T.doigt) return;
+        animSeq.current++;
+        animRef.current?.stop();
+        p.set(T.but);
+        atterrir(T);
+      }, Math.max(650, (ressort.visualDuration * 1.6 + (delai ?? 0)) * 1000));
+    }
   }, [p, r, atterrir, poser, lancerRiffle]);
 
   const pousserRef = React.useRef<() => void>(() => {});
@@ -755,7 +772,7 @@ export function Livre({
   }, [allerA, max, min]);
 
   // Pré-rendu bref : ne pas attendre une cadence de 30 fps que les animations permanentes
-  // peuvent empêcher d'atteindre. Le décodage et deux passages de peinture suffisent ;
+  // peuvent empêcher d'atteindre. On laisse brièvement décoder et peindre les faces ;
   // le tour part après 200 ms au plus. Un feuillet tenu au doigt n'attend pas : le doigt
   // pilote p tout de suite, le ressort ne partira qu'au lâcher. Un tour différé attend sa séquence.
   React.useLayoutEffect(() => {

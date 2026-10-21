@@ -2141,6 +2141,8 @@ class Mise:
         x1 = L.x0 - 0.45 * xh
         x0 = max(0.03 * self.W, x1 - float(b.get("vignette_largeur", 0.1)) * self.W)
         yc = L.y(x1) - 0.55 * xh
+        if isinstance(v, dict):
+            yc += float(v.get("decalage_y", 0.0)) * self.H
         rect = (x0, yc - hv / 2, x1, yc + hv / 2)
         self.vivants[nom] = rect
         self.zones[nom] = rect

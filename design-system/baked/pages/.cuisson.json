@@ -717,14 +717,14 @@
  "papier1x/f11": "111d3f7b20a685be016ba394496f8089c1103eb999a2d66f10cdb67401094bd9",
  "papier1x/f15": "cc402494af97663a7a8d2f2654d35a0ae4c99b81e794dcc88550c24ba9f90410",
  "pagination/lisa": {
-  "cle": "d04c2334be9c616aa708d9c413cf3c9389cdc84d949d9604eac0d980e50a213a",
+  "cle": "06b011f874a0b34fa669a37014e34e3ab7fcef791940240c1f87b2595154b9c1",
   "pages": {
    "lisa-gauche": {
     "double": "lisa",
     "main": "ado",
     "encre": "bille-bleue",
     "recette": "lisa",
-    "serrage_max": 1,
+    "serrage_max": 2,
     "police": "caveat-appuye",
     "contexte_importants": {
      "ingredients": [
@@ -759,17 +759,18 @@
     "marges": {
      "haut": 0.32056
     },
+    "pas_local": 0.96,
     "blocs": [
      {
       "type": "bandeau",
       "id": "bandeau",
-      "texte": "Lisa",
+      "texte": "Lisa Allienne",
       "graine": 47186952,
       "places": [
        "dessous"
       ],
-      "taille": 2.2,
-      "sous": "Allienne"
+      "taille": 2.15,
+      "pente": -0.3
      },
      {
       "type": "cadre",
@@ -816,6 +817,7 @@
       "id": "ingredients-1@ligne-1",
       "disposition": "puces",
       "graine_puces": 56996669,
+      "colonnes": 1,
       "avant": 0.4,
       "lignes": [
        {
@@ -879,6 +881,39 @@
         "atome": "ingredients-1/ligne-10"
        }
       ]
+     },
+     {
+      "type": "paragraphe",
+      "id": "section-preparation",
+      "segments": [
+       {
+        "texte": "Préparation",
+        "graine": 19520326,
+        "atome": "section-preparation"
+       }
+      ],
+      "alinea": 0.0,
+      "avant": 0.65,
+      "echelle": 1.1
+     },
+     {
+      "type": "etape",
+      "id": "etape-1",
+      "source": "etape-1",
+      "titre": {
+       "texte": "1.",
+       "graine": 55698702
+      },
+      "segments": [
+       {
+        "texte": "Mélanger au fouet électrique les 4 œufs et le sucre.",
+        "graine": 30436127,
+        "atome": "etape-1/phrase-1"
+       }
+      ],
+      "disposition": "tete",
+      "avant": 0.12,
+      "alinea": 0.0
      },
      {
       "type": "annotation",
@@ -972,7 +1007,9 @@
      "ingredients-1/ligne-7",
      "ingredients-1/ligne-8",
      "ingredients-1/ligne-9",
-     "ingredients-1/ligne-10"
+     "ingredients-1/ligne-10",
+     "section-preparation",
+     "etape-1/phrase-1"
     ]
    },
    "lisa-droite": {
@@ -1023,39 +1060,6 @@
       "graine": 78291561
      },
      {
-      "type": "paragraphe",
-      "id": "section-preparation",
-      "segments": [
-       {
-        "texte": "Préparation",
-        "graine": 19520326,
-        "atome": "section-preparation"
-       }
-      ],
-      "alinea": 0.0,
-      "avant": 0.0,
-      "echelle": 1.1
-     },
-     {
-      "type": "etape",
-      "id": "etape-1",
-      "source": "etape-1",
-      "titre": {
-       "texte": "1.",
-       "graine": 55698702
-      },
-      "segments": [
-       {
-        "texte": "Mélanger au fouet électrique les 4 œufs et le sucre.",
-        "graine": 30436127,
-        "atome": "etape-1/phrase-1"
-       }
-      ],
-      "disposition": "tete",
-      "avant": 0.12,
-      "alinea": 0.0
-     },
-     {
       "type": "etape",
       "id": "etape-2",
       "source": "etape-2",
@@ -1081,7 +1085,7 @@
        }
       ],
       "disposition": "tete",
-      "avant": 0.12,
+      "avant": 0.0,
       "alinea": 0.0
      },
      {
@@ -1204,8 +1208,6 @@
      }
     ],
     "atomes": [
-     "section-preparation",
-     "etape-1/phrase-1",
      "etape-2/phrase-1.1",
      "etape-2/phrase-1.2",
      "etape-2/phrase-1.3",
@@ -1226,9 +1228,11 @@
    "lisa-droite"
   ],
   "disposition": "tete",
-  "ajustements": {},
+  "ajustements": {
+   "lisa-gauche": "interligne −4 %"
+  },
   "trous": {
-   "lisa-gauche": 0.69
+   "lisa-gauche": 0.15
   }
  },
  "papier/f9": "5db9b6f5245b53085d1ea5c7113d68db46631545037c8d972706fd7de300023e",
@@ -1458,7 +1462,7 @@
   }
  },
  "page/biscuits-droite": {
-  "cle": "deda5eefcdb6bb88ca57c3f796ea167451159596b65f3d4c60da50b0c66f4167",
+  "cle": "4a4252b0b1d2d03ebd5d69a7ee0e4998a3dc1792c9093b09319c1567df7805b8",
   "manifeste": {
    "double": "biscuits",
    "cote": "droite",
@@ -1469,7 +1473,7 @@
    "encre": "pages/biscuits-droite",
    "papier1x": "pages/1x/papier/f41",
    "encre1x": "pages/1x/biscuits-droite",
-   "texte": "Biscuits\nJulien et Lisa De Paris",
+   "texte": "Biscuits\nJulien\nLisa De Paris",
    "vivants": {
     "aq-sables": [
      0.27,
@@ -1497,7 +1501,8 @@
      "anime": "balance",
      "angle": 4
     }
-   }
+   },
+   "relu": true
   }
  },
  "page/biscuits-gauche": {
@@ -12228,8 +12233,8 @@
    "coralie-gauche": 0.2
   }
  },
- "papier/f39": "0c608294b19ad79a6de3e2d9c964d81215c2a03c9ed82e0cdced2f157da467d9",
- "papier1x/f39": "0c608294b19ad79a6de3e2d9c964d81215c2a03c9ed82e0cdced2f157da467d9",
+ "papier/f39": "8f220b5c1b68b4d5b0fb1478b526fb71c1821d1aff361552d0d30e116287e3d6",
+ "papier1x/f39": "8f220b5c1b68b4d5b0fb1478b526fb71c1821d1aff361552d0d30e116287e3d6",
  "papier/f37": "e005b2919394ea8fae0a3276109ffbbcea1acb2414aeca1691da028f0b5709ba",
  "papier1x/f37": "e005b2919394ea8fae0a3276109ffbbcea1acb2414aeca1691da028f0b5709ba",
  "page/brioches-droite": {
@@ -12296,8 +12301,8 @@
  },
  "papier/f43": "205b2acaaed728bbd81538291eb322ff8ff3a05bc0c1cbbfbe2126398813a53b",
  "papier1x/f43": "205b2acaaed728bbd81538291eb322ff8ff3a05bc0c1cbbfbe2126398813a53b",
- "papier/f41": "bf6ccd06799c7a71c8b2894bb719297d4be3e0aa3c24a0768f49194b283eb824",
- "papier1x/f41": "bf6ccd06799c7a71c8b2894bb719297d4be3e0aa3c24a0768f49194b283eb824",
+ "papier/f41": "78648b78902150cabb1b8dd8252620537c164f76f883b662c2629268735e09da",
+ "papier1x/f41": "78648b78902150cabb1b8dd8252620537c164f76f883b662c2629268735e09da",
  "papier/f47": "2b152f4e5f4287465de7d8ab2398d576d2181fc9a27e7afda4bb256a3844d115",
  "papier1x/f47": "2b152f4e5f4287465de7d8ab2398d576d2181fc9a27e7afda4bb256a3844d115",
  "papier/f45": "b08140c142ed087952a42845a3eb8c57c95c0a80488dd4cb0af5c3d7f3deeca3",
@@ -13468,7 +13473,7 @@
   }
  },
  "pagination/antoine": {
-  "cle": "410a2925b94e93e14548fa6a22ef996a638b1003cce2580fe18863b527d67612",
+  "cle": "394075e058657f4d57d1177f8c73c6e5c4c5b3c118d4cc027b8e5a675e14d647",
   "pages": {
    "antoine-gauche": {
     "double": "antoine",
@@ -13564,6 +13569,7 @@
       "id": "ingredients-1@ligne-1",
       "disposition": "puces",
       "graine_puces": 64267349,
+      "colonnes": 1,
       "avant": 0.4,
       "lignes": [
        {
@@ -13658,10 +13664,10 @@
      {
       "nom": "aq-antoine-1",
       "rect": [
-       0.13,
-       0.55,
-       0.67,
-       0.29
+       0.08,
+       0.51,
+       0.84,
+       0.42
       ],
       "aquarelle": "flaugnarde-poires",
       "angle": 0
@@ -13670,9 +13676,9 @@
       "nom": "aq-antoine-1-bande",
       "rect": [
        0.0,
-       0.55,
+       0.51,
        1.0,
-       0.45
+       0.49
       ],
       "vivant": false
      }
@@ -14231,7 +14237,7 @@
   }
  },
  "pagination/margot-chapuzy": {
-  "cle": "cc6a7734378ba363065ddcfef3de1931efa1476de20b045080f8e4eb64921477",
+  "cle": "c04e901319d6c09b3f6452238e9ed49c6b5bf5d11af8514296b3ffe2e1d305c9",
   "pages": {
    "margot-chapuzy-gauche": {
     "double": "margot-chapuzy",
@@ -14264,25 +14270,47 @@
       "rect": [
        0.06,
        0.035,
-       0.48569,
-       0.27203
+       0.38338,
+       0.2167
       ]
+     },
+     {
+      "nom": "aq-margot-chapuzy-1",
+      "rect": [
+       0.08,
+       0.54,
+       0.84,
+       0.41
+      ],
+      "aquarelle": "banana-bread",
+      "angle": 0
+     },
+     {
+      "nom": "aq-margot-chapuzy-1-bande",
+      "rect": [
+       0.0,
+       0.54,
+       1.0,
+       0.46
+      ],
+      "vivant": false
      }
     ],
     "marges": {
-     "haut": 0.31703
+     "haut": 0.2617
     },
     "blocs": [
      {
       "type": "bandeau",
       "id": "bandeau",
-      "texte": "Margot",
+      "texte": "Margot Chapuzy",
       "graine": 9844835,
       "places": [
+       "cote",
        "dessous"
       ],
-      "taille": 2.2,
-      "sous": "Chapuzy"
+      "taille": 1.95,
+      "pente": -0.3
      },
      {
       "type": "cadre",
@@ -14329,6 +14357,7 @@
       "id": "ingredients-1@ligne-1",
       "disposition": "puces",
       "graine_puces": 2499660,
+      "colonnes": 2,
       "avant": 0.4,
       "lignes": [
        {
@@ -14386,6 +14415,53 @@
         "atome": "ingredients-1/ligne-9"
        }
       ]
+     }
+    ],
+    "atomes": [
+     "titre",
+     "section-ingredients",
+     "ingredients-1/ligne-1",
+     "ingredients-1/ligne-2",
+     "ingredients-1/ligne-3",
+     "ingredients-1/ligne-4",
+     "ingredients-1/ligne-5",
+     "ingredients-1/ligne-6",
+     "ingredients-1/ligne-7",
+     "ingredients-1/ligne-8",
+     "ingredients-1/ligne-9"
+    ]
+   },
+   "margot-chapuzy-droite": {
+    "double": "margot-chapuzy",
+    "main": "soignee",
+    "encre": "chocolat",
+    "recette": "margot-chapuzy",
+    "serrage_max": 1,
+    "police": "kalam",
+    "contexte_importants": {
+     "ingredients": [
+      "1 pincée de sel",
+      "1 sachet de levure chimique",
+      "100 g de pépites de chocolat",
+      "125 g de poudre d’amande",
+      "2 bananes bien mûres",
+      "2 œufs",
+      "50 g de beurre",
+      "50 g de sucre de canne",
+      "80 g de farine"
+     ]
+    },
+    "id": "margot-chapuzy-droite",
+    "cote": "droite",
+    "folio": 33,
+    "graine": 21921,
+    "gabarit": "D",
+    "blocs": [
+     {
+      "type": "courant",
+      "id": "courant",
+      "texte": "Margot Chapuzy",
+      "graine": 93698761
      },
      {
       "type": "paragraphe",
@@ -14398,7 +14474,7 @@
        }
       ],
       "alinea": 0.0,
-      "avant": 0.65,
+      "avant": 0.0,
       "echelle": 1.1
      },
      {
@@ -14438,79 +14514,6 @@
       "disposition": "tete",
       "avant": 0.12,
       "alinea": 0.0
-     }
-    ],
-    "atomes": [
-     "titre",
-     "section-ingredients",
-     "ingredients-1/ligne-1",
-     "ingredients-1/ligne-2",
-     "ingredients-1/ligne-3",
-     "ingredients-1/ligne-4",
-     "ingredients-1/ligne-5",
-     "ingredients-1/ligne-6",
-     "ingredients-1/ligne-7",
-     "ingredients-1/ligne-8",
-     "ingredients-1/ligne-9",
-     "section-preparation",
-     "etape-1/phrase-1",
-     "etape-2/phrase-1"
-    ]
-   },
-   "margot-chapuzy-droite": {
-    "double": "margot-chapuzy",
-    "main": "soignee",
-    "encre": "chocolat",
-    "recette": "margot-chapuzy",
-    "serrage_max": 1,
-    "police": "kalam",
-    "contexte_importants": {
-     "ingredients": [
-      "1 pincée de sel",
-      "1 sachet de levure chimique",
-      "100 g de pépites de chocolat",
-      "125 g de poudre d’amande",
-      "2 bananes bien mûres",
-      "2 œufs",
-      "50 g de beurre",
-      "50 g de sucre de canne",
-      "80 g de farine"
-     ]
-    },
-    "id": "margot-chapuzy-droite",
-    "cote": "droite",
-    "folio": 33,
-    "graine": 21921,
-    "gabarit": "D",
-    "vivants": [
-     {
-      "nom": "aq-margot-chapuzy-1",
-      "rect": [
-       0.13,
-       0.55,
-       0.67,
-       0.29
-      ],
-      "aquarelle": "banana-bread",
-      "angle": 0
-     },
-     {
-      "nom": "aq-margot-chapuzy-1-bande",
-      "rect": [
-       0.0,
-       0.55,
-       1.0,
-       0.45
-      ],
-      "vivant": false
-     }
-    ],
-    "blocs": [
-     {
-      "type": "courant",
-      "id": "courant",
-      "texte": "Margot Chapuzy",
-      "graine": 93698761
      },
      {
       "type": "etape",
@@ -14528,7 +14531,7 @@
        }
       ],
       "disposition": "tete",
-      "avant": 0.0,
+      "avant": 0.12,
       "alinea": 0.0
      },
      {
@@ -14619,6 +14622,9 @@
      }
     ],
     "atomes": [
+     "section-preparation",
+     "etape-1/phrase-1",
+     "etape-2/phrase-1",
      "etape-3/phrase-1",
      "etape-4/phrase-1.1",
      "etape-4/phrase-1.2",
@@ -14636,9 +14642,7 @@
   ],
   "disposition": "tete",
   "ajustements": {},
-  "trous": {
-   "margot-chapuzy-gauche": 0.46
-  }
+  "trous": {}
  },
  "pagination/elise": {
   "cle": "ee034a1e65fbe8ce7d8919167f65c853587b7e50003c5eb0009658231d1d31b2",

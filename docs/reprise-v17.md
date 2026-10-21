@@ -7,3 +7,9 @@ Les récipients gardent leur échelle en versant. Les morceaux de chocolat tombe
 Mises en page demandées : sommaire sur 8–10, familles de fondants et gâteaux aux pommes, vignettes agrandies et finale mieux placée ; noms réagencés dans les chapitres, Lisa Allienne en une ligne, ingrédients de Margot en deux colonnes et étapes réunies page 33 ; scène d’Antoine agrandie. Génération des 14 faces ciblées en cours au premier point de sauvegarde, sans refaire les 62 pages ni les tuiles 4×.
 
 Validations déjà effectuées : mode cuisine TV/mobile, étapes manuelles sans passage automatique, commandes et focus ; 18 contrats de recettes ; captures ciblées Emeline/Marie et four inspectées ; préflight des pages ciblées sans débordement. Le build et la publication définitifs attendent la fin des faces et cartes actualisées. Rapports locaux non versionnés sous verification/out/v17-*.log et verification/out/coherence-v17/.
+
+## Sauvegarde immédiate demandée
+
+À la demande « push tout mtn », le travail est sauvegardé avant la fin de la génération ciblée des pages. Ne pas présenter les nouvelles mises en page comme publiées : certaines faces et leurs cartes attendent encore l’assemblage. Les sources, les dessins HD et les correctifs de navigation/cuisine sont versionnés. Le dernier aperçu public complet reste `essais/coherence-v16/` tant qu’un nouvel aperçu n’a pas été publié. Éviter de recuire toutes les pages pour reprendre ; cibler les 14 faces modifiées et leur contexte. Les sorties de calcul temporaires sous `verification/out/` ne remplacent pas les sources versionnées.
+
+TypeScript final et le contrôle d’attente de navigation passent. Le mode cuisine TV/mobile a passé son contrôle de fonctionnement avant le dernier export HD ; la seconde passe a vérifié la source native HD et produit la capture TV, puis a été interrompue pour libérer le processeur aux pages. Ne pas annoncer une mesure de fluidité sur TV physique.
