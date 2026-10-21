@@ -54,6 +54,18 @@
    "deborde": [],
    "lignes": 15,
    "recette": "anatole",
+   "douteux": [
+    "beurre (encre rendue lue « bcurre »)",
+    "d'amandes (encre rendue lue « d'A-A.M.D.D.S. »)",
+    "sucre (encre rendue lue « sucre »)",
+    "d'amandes. (encre rendue lue « d'Amandes . »)"
+   ],
+   "douteux_importants": [
+    "beurre",
+    "d'amandes",
+    "d'amandes.",
+    "sucre"
+   ],
    "relu": true
   },
   "antoine-droite": {
@@ -68,10 +80,10 @@
    "texte": "Antoine\nPréparation\n1. Préchauffer le four à 210°C (Th. 7). Beurrer une tourtière (Ø 28 cm) assez haute et réserver.\n2. Mettre les poires et le jus de citron dans un récipient, puis mélanger. Disposer les poires citronnées dans la tourtière préparée et réserver.\n3. Mettre les œufs et le sucre dans le bol, puis mélanger.\n4. Ajouter la farine, le lait et le sucre vanillé, puis mélanger. Napper les poires de cette préparation et parsemer de petits morceaux de beurre. Enfourner et cuire 40 minutes à 210°C. Laisser refroidir avant de mouler et servir frais.",
    "vivants": {
     "aq-antoine-1": [
-     0.13,
-     0.55,
-     0.67,
-     0.29
+     0.08,
+     0.51,
+     0.84,
+     0.42
     ]
    },
    "deborde": [],
@@ -83,6 +95,14 @@
     }
    },
    "recette": "antoine",
+   "douteux": [
+    "poires (encre rendue lue « poires »)",
+    "œufs (encre rendue lue « ceufs »)"
+   ],
+   "douteux_importants": [
+    "poires",
+    "œufs"
+   ],
    "relu": true
   },
   "antoine-gauche": {
@@ -112,7 +132,7 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.8547,
+      0.8597,
       0.4368,
       0.0218,
       0.0154
@@ -123,12 +143,33 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.429,
+      0.4292,
       0.5563,
       0.0284,
       0.0201
      ]
     }
+   ],
+   "douteux": [
+    "poires (encre rendue lue « pairs »)",
+    "beurre (encre rendue lue « bcurre »)",
+    "pelées (encre rendue lue « Pelees »)",
+    "émincées (encre rendue lue « ENCE INCED »)",
+    "œufs (encre rendue lue « ceufs »)",
+    "sucre (encre rendue lue « sucre »)",
+    "blé (encre rendue lue « BLE »)",
+    "bombée (encre rendue lue « Bomber »)",
+    "sucre (encre rendue lue « sucre »)"
+   ],
+   "douteux_importants": [
+    "beurre",
+    "blé",
+    "bombée",
+    "pelées",
+    "poires",
+    "sucre",
+    "émincées",
+    "œufs"
    ],
    "relu": true
   },
@@ -142,7 +183,7 @@
    "encre": "pages/biscuits-droite",
    "papier1x": "pages/1x/papier/f41",
    "encre1x": "pages/1x/biscuits-droite",
-   "texte": "Biscuits\nJulien et Lisa De Paris",
+   "texte": "Biscuits\nJulien\nLisa De Paris",
    "vivants": {
     "aq-sables": [
      0.27,
@@ -170,7 +211,8 @@
      "anime": "balance",
      "angle": 4
     }
-   }
+   },
+   "relu": true
   },
   "biscuits-gauche": {
    "double": "biscuits",
@@ -254,7 +296,8 @@
      "anime": "fleurit",
      "angle": 3
     }
-   }
+   },
+   "relu": true
   },
   "brioches-droite": {
    "double": "brioches",
@@ -282,7 +325,8 @@
      "aquarelle": "plume",
      "angle": -8
     }
-   }
+   },
+   "relu": true
   },
   "brioches-gauche": {
    "double": "brioches",
@@ -310,7 +354,8 @@
      "aquarelle": "brioche",
      "angle": 0
     }
-   }
+   },
+   "relu": true
   },
   "cecile-1-droite": {
    "double": "cecile-1",
@@ -337,7 +382,15 @@
     ]
    },
    "deborde": [],
-   "lignes": 0
+   "lignes": 0,
+   "douteux": [
+    "Cécile, (encre rendue lue « Cecile »)",
+    "Cécile, (encre rendue lue « Cecile »)"
+   ],
+   "douteux_importants": [
+    "Cécile,"
+   ],
+   "relu": true
   },
   "cecile-1-gauche": {
    "double": "cecile-1",
@@ -370,7 +423,15 @@
     ]
    },
    "deborde": [],
-   "lignes": 1
+   "lignes": 1,
+   "douteux": [
+    "Cécile, (encre rendue lue « Cecile . »)",
+    "Cécile, (encre rendue lue « Cecile »)"
+   ],
+   "douteux_importants": [
+    "Cécile,"
+   ],
+   "relu": true
   },
   "cecile-2-droite": {
    "double": "cecile-2",
@@ -397,7 +458,14 @@
     ]
    },
    "deborde": [],
-   "lignes": 0
+   "lignes": 0,
+   "douteux": [
+    "Cécile, (encre rendue lue « Cecile »)"
+   ],
+   "douteux_importants": [
+    "Cécile,"
+   ],
+   "relu": true
   },
   "cecile-2-gauche": {
    "double": "cecile-2",
@@ -430,7 +498,16 @@
     ]
    },
    "deborde": [],
-   "lignes": 0
+   "lignes": 0,
+   "douteux": [
+    "Cécile, (encre rendue lue « Cecile . »)",
+    "Cécile, (encre rendue lue « Cecile »)",
+    "Cécile, (encre rendue lue « Cecile . »)"
+   ],
+   "douteux_importants": [
+    "Cécile,"
+   ],
+   "relu": true
   },
   "clemence-droite": {
    "double": "clemence",
@@ -459,6 +536,12 @@
     }
    },
    "recette": "clemence",
+   "douteux": [
+    "crème. (encre rendue lue « crime . »)"
+   ],
+   "douteux_importants": [
+    "crème."
+   ],
    "relu": true
   },
   "clemence-gauche": {
@@ -482,6 +565,14 @@
    "deborde": [],
    "lignes": 11,
    "recette": "clemence",
+   "douteux": [
+    "200 g (encre rendue lue « 2 00 g »)",
+    "épaisse (encre rendue lue « episse »)"
+   ],
+   "douteux_importants": [
+    "200 g",
+    "épaisse"
+   ],
    "relu": true
   },
   "coralie-droite": {
@@ -511,6 +602,12 @@
     }
    },
    "recette": "coralie",
+   "douteux": [
+    "œufs (encre rendue lue « ceufs »)"
+   ],
+   "douteux_importants": [
+    "œufs"
+   ],
    "relu": true
   },
   "coralie-gauche": {
@@ -534,6 +631,22 @@
    "deborde": [],
    "lignes": 13,
    "recette": "coralie",
+   "douteux": [
+    "120g (encre rendue lue « 1209 »)",
+    "60g (encre rendue lue « lolg . »)",
+    "d’huile (encre rendue lue « d'huile »)",
+    "(olive (encre rendue lue « lolive »)",
+    "œufs (encre rendue lue « ceufs . »)",
+    "l’huile, (encre rendue lue « l'huile , »)"
+   ],
+   "douteux_importants": [
+    "(olive",
+    "120g",
+    "60g",
+    "d’huile",
+    "l’huile,",
+    "œufs"
+   ],
    "relu": true
   },
   "crepes-droite": {
@@ -546,7 +659,7 @@
    "encre": "pages/crepes-droite",
    "papier1x": "pages/1x/papier/f51",
    "encre1x": "pages/1x/crepes-droite",
-   "texte": "Crêpes & gaufres\nLaura Gramegna et Elise",
+   "texte": "Crêpes & gaufres\nLaura Gramegna\nElise",
    "vivants": {
     "aq-vanille": [
      0.27,
@@ -562,7 +675,14 @@
      "aquarelle": "vanille",
      "angle": 0
     }
-   }
+   },
+   "douteux": [
+    "Elise (encre rendue lue « Elise »)"
+   ],
+   "douteux_importants": [
+    "Elise"
+   ],
+   "relu": true
   },
   "crepes-gauche": {
    "double": "crepes",
@@ -601,7 +721,8 @@
      "aquarelle": "oeufs",
      "angle": 0
     }
-   }
+   },
+   "relu": true
   },
   "dedicace": {
    "double": "sommaire",
@@ -612,84 +733,48 @@
    "encre": "pages/dedicace",
    "papier1x": "pages/1x/papier/f7",
    "encre1x": "pages/1x/dedicace",
-   "texte": "Joyeux anniversaire, Cécile ! Pour tes trente ans, un goûter par page,\nde la part de ceux qui t'aiment.\nSommaire\nGâteaux & cakes\nLisa Allienne — Carrot cake, page 12\nEmeline — Fondant au chocolat, page 14\nClémence — Cheesecake framboises, page 16\nPierrette — Cake au citron, page 18\nLaura Geyer — Orange & amandes, page 20\nMarie — Fondant au chocolat, page 22\nLéa — Gâteau aux pommes, page 24\nCoralie — Fondant au chocolat, page 26\nAntoine — Flaugnarde aux poires, page 28\nSuzanne — Gâteau aux pommes, page 30\nMargot — Banana bread, page 32",
+   "texte": "Joyeux anniversaire, Cécile !\nPour tes trente ans, un goûter par page, de la part de ceux qui t'aiment.\nSommaire\nGâteaux & cakes\nLisa Allienne — Carrot cake, page 12\nFondants au chocolat — 3 variantes\nEmeline, page 14\nMarie, page 22\nCoralie, page 26\nClémence — Cheesecake framboises, page 16\nPierrette — Cake au citron, page 18\nLaura Geyer — Orange & amandes, page 20",
    "vivants": {
     "vignette-lisa": [
-     0.11591,
-     0.33487,
-     0.16,
-     0.05
+     0.0824,
+     0.28664,
+     0.19,
+     0.065
     ],
     "vignette-emeline": [
-     0.12533,
-     0.38239,
-     0.16,
-     0.05
+     0.15635,
+     0.39318,
+     0.19,
+     0.065
     ],
     "vignette-clemence": [
-     0.11552,
-     0.43247,
-     0.16,
-     0.05
+     0.08959,
+     0.54999,
+     0.19,
+     0.065
     ],
     "vignette-pierrette": [
-     0.11544,
-     0.48318,
-     0.16,
-     0.05
+     0.07962,
+     0.59831,
+     0.19,
+     0.08
     ],
     "vignette-laura-geyer": [
-     0.12435,
-     0.53607,
-     0.16,
-     0.05
-    ],
-    "vignette-marie": [
-     0.12457,
-     0.58492,
-     0.16,
-     0.05
-    ],
-    "vignette-lea": [
-     0.1133,
-     0.63541,
-     0.16,
-     0.05
-    ],
-    "vignette-coralie": [
-     0.12626,
-     0.68758,
-     0.16,
-     0.05
-    ],
-    "vignette-antoine": [
-     0.11981,
-     0.73554,
-     0.16,
-     0.05
-    ],
-    "vignette-suzanne": [
-     0.10996,
-     0.78515,
-     0.16,
-     0.05
-    ],
-    "vignette-margot-chapuzy": [
-     0.11706,
-     0.83319,
-     0.16,
-     0.05
+     0.0872,
+     0.65839,
+     0.19,
+     0.065
     ]
    },
    "deborde": [],
-   "lignes": 13,
+   "lignes": 10,
    "liens": [
     {
      "cible": "gateaux",
      "rect": [
-      0.06291,
-      0.28522,
-      0.31264,
+      0.06039,
+      0.24726,
+      0.29979,
       0.0424
      ]
     },
@@ -697,9 +782,9 @@
      "cible": "lisa",
      "invite": "lisa",
      "rect": [
-      0.27641,
-      0.3455,
-      0.62547,
+      0.27288,
+      0.30524,
+      0.62911,
       0.02712
      ]
     },
@@ -707,39 +792,9 @@
      "cible": "emeline",
      "invite": "emeline",
      "rect": [
-      0.28589,
-      0.39206,
-      0.61544,
-      0.02712
-     ]
-    },
-    {
-     "cible": "clemence",
-     "invite": "clemence",
-     "rect": [
-      0.27613,
-      0.44254,
-      0.62385,
-      0.02712
-     ]
-    },
-    {
-     "cible": "pierrette",
-     "invite": "pierrette",
-     "rect": [
-      0.27591,
-      0.49499,
-      0.62662,
-      0.02712
-     ]
-    },
-    {
-     "cible": "laura-geyer",
-     "invite": "laura-geyer",
-     "rect": [
-      0.28485,
-      0.54711,
-      0.61847,
+      0.34689,
+      0.41069,
+      0.55579,
       0.02712
      ]
     },
@@ -747,19 +802,9 @@
      "cible": "marie",
      "invite": "marie",
      "rect": [
-      0.28506,
-      0.59721,
-      0.61619,
-      0.02712
-     ]
-    },
-    {
-     "cible": "lea",
-     "invite": "lea",
-     "rect": [
-      0.27385,
-      0.64689,
-      0.62689,
+      0.34854,
+      0.46281,
+      0.55266,
       0.02712
      ]
     },
@@ -767,39 +812,39 @@
      "cible": "coralie",
      "invite": "coralie",
      "rect": [
-      0.28669,
-      0.69725,
-      0.6131,
+      0.35339,
+      0.51524,
+      0.54713,
       0.02712
      ]
     },
     {
-     "cible": "antoine",
-     "invite": "antoine",
+     "cible": "clemence",
+     "invite": "clemence",
      "rect": [
-      0.28039,
-      0.74664,
-      0.61986,
+      0.28003,
+      0.56865,
+      0.62036,
       0.02712
      ]
     },
     {
-     "cible": "suzanne",
-     "invite": "suzanne",
+     "cible": "pierrette",
+     "invite": "pierrette",
      "rect": [
-      0.27054,
-      0.79538,
-      0.63172,
+      0.26992,
+      0.62374,
+      0.63147,
       0.02712
      ]
     },
     {
-     "cible": "margot-chapuzy",
-     "invite": "margot-chapuzy",
+     "cible": "laura-geyer",
+     "invite": "laura-geyer",
      "rect": [
-      0.27756,
-      0.84548,
-      0.62243,
+      0.27772,
+      0.67692,
+      0.62338,
       0.02712
      ]
     }
@@ -824,32 +869,19 @@
     "vignette-laura-geyer": {
      "aquarelle": "orange",
      "anime": "fixe"
-    },
-    "vignette-marie": {
-     "aquarelle": "fondant-chocolat",
-     "anime": "fixe"
-    },
-    "vignette-lea": {
-     "aquarelle": "gateau-pommes",
-     "anime": "fixe"
-    },
-    "vignette-coralie": {
-     "aquarelle": "fondant-chocolat",
-     "anime": "fixe"
-    },
-    "vignette-antoine": {
-     "aquarelle": "flaugnarde-poires",
-     "anime": "fixe"
-    },
-    "vignette-suzanne": {
-     "aquarelle": "gateau-pommes",
-     "anime": "fixe"
-    },
-    "vignette-margot-chapuzy": {
-     "aquarelle": "banana-bread",
-     "anime": "fixe"
     }
-   }
+   },
+   "douteux": [
+    "14 (encre rendue lue « 1 4 »)",
+    "16 (encre rendue lue « 1 »)",
+    "amandes (encre rendue lue « a mandes . »)"
+   ],
+   "douteux_importants": [
+    "14",
+    "16",
+    "amandes"
+   ],
+   "relu": true
   },
   "elise-droite": {
    "double": "elise",
@@ -896,6 +928,24 @@
    },
    "suite": "elise-feuillet-recto",
    "recette": "elise",
+   "douteux": [
+    "Elise (encre rendue lue « Elise »)",
+    "sel (encre rendue lue « selves »)",
+    "doux (encre rendue lue « doux »)",
+    "200 g (encre rendue lue « 2009 »)",
+    "(facultatif) (encre rendue lue « ( faculty ) »)",
+    "4. (encre rendue lue « 4 . »)",
+    "30, (encre rendue lue « 30 , »)"
+   ],
+   "douteux_importants": [
+    "(facultatif)",
+    "200 g",
+    "30,",
+    "4.",
+    "Elise",
+    "doux",
+    "sel"
+   ],
    "relu": true
   },
   "elise-feuillet-recto": {
@@ -926,12 +976,22 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.7001,
-      0.2357,
+      0.6948,
+      0.2358,
       0.0244,
       0.0161
      ]
     }
+   ],
+   "douteux": [
+    "30 (encre rendue lue « 30 »)",
+    "8. (encre rendue lue « 8 . »)",
+    "9. (encre rendue lue « 9 . »)"
+   ],
+   "douteux_importants": [
+    "30",
+    "8.",
+    "9."
    ],
    "relu": true
   },
@@ -985,10 +1045,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.4825,
-      0.3992,
-      0.0223,
-      0.0158
+      0.4772,
+      0.3974,
+      0.0203,
+      0.0144
      ]
     },
     {
@@ -996,12 +1056,22 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.2598,
-      0.5207,
-      0.0222,
-      0.0157
+      0.1952,
+      0.5191,
+      0.0227,
+      0.0161
      ]
     }
+   ],
+   "douteux": [
+    "30 (encre rendue lue « . 30 »)",
+    "Elise (encre rendue lue « Elise »)",
+    "levure (encre rendue lue « leisure »)"
+   ],
+   "douteux_importants": [
+    "30",
+    "Elise",
+    "levure"
    ],
    "relu": true
   },
@@ -1032,6 +1102,14 @@
     }
    },
    "recette": "emeline",
+   "douteux": [
+    "5. (encre rendue lue « 5 , »)",
+    "15 (encre rendue lue « 1 5 »)"
+   ],
+   "douteux_importants": [
+    "15",
+    "5."
+   ],
    "relu": true
   },
   "emeline-gauche": {
@@ -1055,6 +1133,21 @@
    "deborde": [],
    "lignes": 16,
    "recette": "emeline",
+   "douteux": [
+    "œufs (encre rendue lue « ceufs . »)",
+    "tamisée (encre rendue lue « tamisee »)",
+    "1. (encre rendue lue « 1' »)",
+    "doux. (encre rendue lue « doux . »)",
+    "œufs (encre rendue lue « ceufs . »)",
+    "Chocolat (encre rendue lue « chocolat »)"
+   ],
+   "douteux_importants": [
+    "1.",
+    "Chocolat",
+    "doux.",
+    "tamisée",
+    "œufs"
+   ],
    "relu": true
   },
   "fin-droite": {
@@ -1116,7 +1209,14 @@
      "anime": "fleurit",
      "angle": 10
     }
-   }
+   },
+   "douteux": [
+    "2026. (encre rendue lue « 2026 »)"
+   ],
+   "douteux_importants": [
+    "2026."
+   ],
+   "relu": true
   },
   "fin-gauche": {
    "double": "fin",
@@ -1130,7 +1230,14 @@
    "texte": "À suivre…\nLa version papier arrive bientôt…\nMerci à tous pour vos recettes et vos petits mots.\nCécile",
    "vivants": {},
    "deborde": [],
-   "lignes": 4
+   "lignes": 4,
+   "douteux": [
+    "Cécile (encre rendue lue « Cecil »)"
+   ],
+   "douteux_importants": [
+    "Cécile"
+   ],
+   "relu": true
   },
   "garde": {
    "double": "titre",
@@ -1168,7 +1275,8 @@
      "aquarelle": "plume",
      "angle": -8
     }
-   }
+   },
+   "relu": true
   },
   "gateaux-droite": {
    "double": "gateaux",
@@ -1180,13 +1288,13 @@
    "encre": "pages/gateaux-droite",
    "papier1x": "pages/1x/papier/f11",
    "encre1x": "pages/1x/gateaux-droite",
-   "texte": "Gâteaux & cakes\nLisa Allienne, Emeline et Clémence\nPierrette, Laura Geyer et Marie\nLéa, Coralie et Antoine\nSuzanne et Margot Chapuzy",
+   "texte": "Gâteaux & cakes\nLisa Allienne\nEmeline\nClémence\nPierrette\nLaura Geyer\nMarie\nLéa\nCoralie\nAntoine\nSuzanne\nMargot Chapuzy",
    "vivants": {
     "aq-gateau": [
-     0.14,
-     0.43,
-     0.72,
-     0.45
+     0.16,
+     0.6,
+     0.68,
+     0.3
     ]
    },
    "deborde": [],
@@ -1197,7 +1305,8 @@
      "anime": "fleurit",
      "angle": -3
     }
-   }
+   },
+   "relu": true
   },
   "gateaux-gauche": {
    "double": "gateaux",
@@ -1209,54 +1318,122 @@
    "encre": "pages/gateaux-gauche",
    "papier1x": "pages/1x/papier/f9",
    "encre1x": "pages/1x/gateaux-gauche",
-   "texte": "",
+   "texte": "Sommaire (suite)\nBrioches\nSarah — Brioche, page 48\nCrêpes & gaufres\nLaura Gramegna — Crêpes, page 52\nElise — Gaufres de Liège, page 54\nJoyeux anniversaire, Cécile !, page 56",
    "vivants": {
-    "aq-guirlande": [
-     0.12,
-     0.15,
-     0.76,
-     0.12
+    "aq-tasse": [
+     0.32,
+     0.77,
+     0.36,
+     0.18
     ],
-    "aq-fondant": [
-     0.17,
-     0.31,
-     0.66,
-     0.29
+    "vignette-sarah": [
+     0.08386,
+     0.18858,
+     0.2,
+     0.082
     ],
-    "aq-carotte": [
-     0.19,
-     0.62,
-     0.29,
-     0.21
+    "vignette-laura": [
+     0.08771,
+     0.35713,
+     0.2,
+     0.082
     ],
-    "aq-citron": [
-     0.53,
-     0.62,
-     0.29,
-     0.21
+    "vignette-elise": [
+     0.09043,
+     0.4314,
+     0.2,
+     0.082
     ]
    },
    "deborde": [],
-   "lignes": 0,
-   "aquarelles": {
-    "aq-guirlande": {
-     "aquarelle": "guirlande",
-     "anime": "balance",
-     "angle": 0
+   "lignes": 7,
+   "liens": [
+    {
+     "cible": "brioches",
+     "rect": [
+      0.07038,
+      0.14473,
+      0.15047,
+      0.0424
+     ]
     },
-    "aq-fondant": {
-     "aquarelle": "fondant-chocolat",
-     "angle": 0
+    {
+     "cible": "sarah",
+     "invite": "sarah",
+     "rect": [
+      0.28448,
+      0.2169,
+      0.63693,
+      0.02712
+     ]
     },
-    "aq-carotte": {
-     "aquarelle": "carotte",
-     "angle": 0
+    {
+     "cible": "crepes",
+     "rect": [
+      0.06685,
+      0.30142,
+      0.31078,
+      0.0424
+     ]
     },
-    "aq-citron": {
-     "aquarelle": "citron",
-     "angle": 0
+    {
+     "cible": "laura",
+     "invite": "laura",
+     "rect": [
+      0.28833,
+      0.38465,
+      0.6341,
+      0.02712
+     ]
+    },
+    {
+     "cible": "elise",
+     "invite": "elise",
+     "rect": [
+      0.29095,
+      0.45787,
+      0.63023,
+      0.02712
+     ]
+    },
+    {
+     "cible": "fin",
+     "rect": [
+      0.28569,
+      0.57866,
+      0.63632,
+      0.03119
+     ]
     }
-   }
+   ],
+   "aquarelles": {
+    "vignette-sarah": {
+     "aquarelle": "brioche",
+     "anime": "fixe"
+    },
+    "vignette-laura": {
+     "aquarelle": "crepes-banane",
+     "anime": "fixe"
+    },
+    "vignette-elise": {
+     "aquarelle": "gaufres-liege",
+     "anime": "fixe"
+    },
+    "aq-tasse": {
+     "aquarelle": "tasse-2",
+     "anime": "vapeur",
+     "angle": -3
+    }
+   },
+   "douteux": [
+    "Elise (encre rendue lue « Elise »)",
+    "56 (encre rendue lue « . 56 »)"
+   ],
+   "douteux_importants": [
+    "56",
+    "Elise"
+   ],
+   "relu": true
   },
   "julien-droite": {
    "double": "julien",
@@ -1286,6 +1463,12 @@
     }
    },
    "recette": "julien",
+   "douteux": [
+    "2. (encre rendue lue « 2 , »)"
+   ],
+   "douteux_importants": [
+    "2."
+   ],
    "relu": true
   },
   "julien-gauche": {
@@ -1309,6 +1492,16 @@
    "deborde": [],
    "lignes": 13,
    "recette": "julien",
+   "douteux": [
+    "1 (encre rendue lue « 1 »)",
+    "levure) (encre rendue lue « levure ) »)",
+    "1. (encre rendue lue « 7 . »)"
+   ],
+   "douteux_importants": [
+    "1",
+    "1.",
+    "levure)"
+   ],
    "relu": true
   },
   "laura-droite": {
@@ -1344,12 +1537,22 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.1617,
+      0.1608,
       0.363,
       0.0191,
       0.0136
      ]
     }
+   ],
+   "douteux": [
+    "œufs, (encre rendue lue « cents , »)",
+    "farine, (encre rendue lue « famine , »)",
+    "sucre (encre rendue lue « sucre »)"
+   ],
+   "douteux_importants": [
+    "farine,",
+    "sucre",
+    "œufs,"
    ],
    "relu": true
   },
@@ -1374,6 +1577,16 @@
    "deborde": [],
    "lignes": 11,
    "recette": "laura",
+   "douteux": [
+    "Nutella-banane-chantilly (encre rendue lue « Nutella-bamme-chantly »)",
+    "œufs (encre rendue lue « cents . »)",
+    "50 cl (encre rendue lue « 50 d »)"
+   ],
+   "douteux_importants": [
+    "50 cl",
+    "Nutella-banane-chantilly",
+    "œufs"
+   ],
    "relu": true
   },
   "laura-geyer-droite": {
@@ -1403,6 +1616,18 @@
     }
    },
    "recette": "laura-geyer",
+   "douteux": [
+    "5. (encre rendue lue « 5 , »)",
+    "amandes (encre rendue lue « a mandes . »)",
+    "6. (encre rendue lue « 6 , »)",
+    "7. (encre rendue lue « \" \" ' »)"
+   ],
+   "douteux_importants": [
+    "5.",
+    "6.",
+    "7.",
+    "amandes"
+   ],
    "relu": true
   },
   "laura-geyer-gauche": {
@@ -1426,6 +1651,12 @@
    "deborde": [],
    "lignes": 16,
    "recette": "laura-geyer",
+   "douteux": [
+    "amandes (encre rendue lue « a mandes . »)"
+   ],
+   "douteux_importants": [
+    "amandes"
+   ],
    "relu": true
   },
   "lea-droite": {
@@ -1461,7 +1692,7 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.3872,
+      0.392,
       0.2612,
       0.0195,
       0.0138
@@ -1491,6 +1722,20 @@
    "deborde": [],
    "lignes": 16,
    "recette": "lea",
+   "douteux": [
+    "100g (encre rendue lue « 1009 »)",
+    "80g (encre rendue lue « 809 »)",
+    "1 (encre rendue lue « \" 1 »)",
+    "1 (encre rendue lue « \" 1 »)",
+    "1 (encre rendue lue « 1 »)",
+    "sel (encre rendue lue « sel »)"
+   ],
+   "douteux_importants": [
+    "1",
+    "100g",
+    "80g",
+    "sel"
+   ],
    "relu": true
   },
   "lisa-de-paris-droite": {
@@ -1538,6 +1783,16 @@
    },
    "suite": "lisa-de-paris-feuillet-recto",
    "recette": "lisa-de-paris",
+   "douteux": [
+    "3. (encre rendue lue « 3 , »)",
+    "1 (encre rendue lue « \" I »)",
+    "9. (encre rendue lue « \" \" »)"
+   ],
+   "douteux_importants": [
+    "1",
+    "3.",
+    "9."
+   ],
    "relu": true
   },
   "lisa-de-paris-feuillet-recto": {
@@ -1562,6 +1817,12 @@
    "dos": "lisa-de-paris-feuillet-verso",
    "suite": "lisa-de-paris-feuillet-verso",
    "recette": "lisa-de-paris",
+   "douteux": [
+    "24h/24 (encre rendue lue « 24h/24 »)"
+   ],
+   "douteux_importants": [
+    "24h/24"
+   ],
    "relu": true
   },
   "lisa-de-paris-feuillet-verso": {
@@ -1608,6 +1869,12 @@
    "deborde": [],
    "lignes": 13,
    "recette": "lisa-de-paris",
+   "douteux": [
+    "goûts...) (encre rendue lue « goats ... ) »)"
+   ],
+   "douteux_importants": [
+    "goûts...)"
+   ],
    "relu": true
   },
   "lisa-droite": {
@@ -1637,7 +1904,18 @@
      "angle": -20
     }
    },
-   "recette": "lisa"
+   "recette": "lisa",
+   "douteux": [
+    "4 (encre rendue lue « . 4 »)",
+    "2. (encre rendue lue « 2 , »)",
+    "l'huile, (encre rendue lue « ' ' huile , »)"
+   ],
+   "douteux_importants": [
+    "2.",
+    "4",
+    "l'huile,"
+   ],
+   "relu": true
   },
   "lisa-gauche": {
    "double": "lisa",
@@ -1648,7 +1926,7 @@
    "encre": "pages/lisa-gauche",
    "papier1x": "pages/1x/papier/f11",
    "encre1x": "pages/1x/lisa-gauche",
-   "texte": "Lisa, Allienne\nPour Cécile — message provisoire : Lorem ipsum — message à venir — Lisa\nCarrot cake\nIngrédients\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\n« Tiptop pour la saison ! »",
+   "texte": "Lisa Allienne\nPour Cécile — message provisoire : Lorem ipsum — message à venir — Lisa\nCarrot cake\nIngrédients\n250 g de sucre\n180 g d’huile de coco (ou autre huile végétale)\n1 sachet de levure chimique\n300 g de carottes (3 à 4 grosses carottes râpées)\n250 g de farine fluide\n2 c. à café d’extrait de vanille\n2 c. à café de muscade\n2 à 3 c. à café de cannelle (selon les goûts)\n4 œufs\n120 g de noix concassées\n« Tiptop pour la saison ! »",
    "vivants": {
     "photo": [
      0.06,
@@ -1659,7 +1937,19 @@
    },
    "deborde": [],
    "lignes": 13,
-   "recette": "lisa"
+   "recette": "lisa",
+   "douteux": [
+    "1 (encre rendue lue « \" I »)",
+    "4 (encre rendue lue « . 4 »)",
+    "goûts) (encre rendue lue « goats ) »)",
+    "4 (encre rendue lue « \" A »)"
+   ],
+   "douteux_importants": [
+    "1",
+    "4",
+    "goûts)"
+   ],
+   "relu": true
   },
   "lise-droite": {
    "double": "lise",
@@ -1723,6 +2013,19 @@
    "deborde": [],
    "lignes": 16,
    "recette": "lise",
+   "douteux": [
+    "1 (encre rendue lue « \" I »)",
+    "sablée (encre rendue lue « sable »)",
+    "3 (encre rendue lue « 3 »)",
+    "4 (encre rendue lue « \" 4 »)",
+    "3 (encre rendue lue « 3 »)"
+   ],
+   "douteux_importants": [
+    "1",
+    "3",
+    "4",
+    "sablée"
+   ],
    "relu": true
   },
   "margot-chapuzy-droite": {
@@ -1734,17 +2037,82 @@
    "encre": "pages/margot-chapuzy-droite",
    "papier1x": "pages/1x/papier/f33",
    "encre1x": "pages/1x/margot-chapuzy-droite",
-   "texte": "Margot Chapuzy\n3. Ajoute les œufs et le beurre fondu, puis mélange.\n4. Incorpore le sucre, la poudre d’amande, la farine, la levure et le sel.\n5. Verse la pâte dans un moule à cake beurré. Petite astuce rajoute un peu de sucre de canne avant de l’enfourner pour avoir une croûte caramélisée au dessus 😍\n6. Enfourne pendant environ 50 minutes à 180 °C. Vérifie la cuisson avec la pointe d’un couteau.\nLaisse refroidir un peu avant de déguster 😋 🍌",
+   "texte": "Margot Chapuzy\nPréparation\n1. Préchauffe le four à 180 °C.\n2. Écrase les bananes dans un saladier.\n3. Ajoute les œufs et le beurre fondu, puis mélange.\n4. Incorpore le sucre, la poudre d’amande, la farine, la levure et le sel.\n5. Verse la pâte dans un moule à cake beurré. Petite astuce rajoute un peu de sucre de canne avant de l’enfourner pour avoir une croûte caramélisée au dessus 😍\n6. Enfourne pendant environ 50 minutes à 180 °C. Vérifie la cuisson avec la pointe d’un couteau.\nLaisse refroidir un peu avant de déguster 😋 🍌",
+   "vivants": {},
+   "deborde": [],
+   "lignes": 10,
+   "recette": "margot-chapuzy",
+   "croquis": [
+    {
+     "nom": "sourire",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.9527,
+      0.2578,
+      0.0196,
+      0.0139
+     ]
+    },
+    {
+     "nom": "sourire",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.5699,
+      0.3476,
+      0.0199,
+      0.0141
+     ]
+    },
+    {
+     "nom": "banane",
+     "role": "icone",
+     "dessine": true,
+     "boite": [
+      0.5914,
+      0.3474,
+      0.0187,
+      0.0132
+     ]
+    }
+   ],
+   "douteux": [
+    "1. (encre rendue lue « 1 . »)",
+    "6. (encre rendue lue « 6 , »)"
+   ],
+   "douteux_importants": [
+    "1.",
+    "6."
+   ],
+   "relu": true
+  },
+  "margot-chapuzy-gauche": {
+   "double": "margot-chapuzy",
+   "cote": "gauche",
+   "folio": 32,
+   "papier": "pages/papier/f31",
+   "miroir": true,
+   "encre": "pages/margot-chapuzy-gauche",
+   "papier1x": "pages/1x/papier/f31",
+   "encre1x": "pages/1x/margot-chapuzy-gauche",
+   "texte": "Margot Chapuzy\nPour Cécile — message provisoire : Lorem ipsum — message à venir — Margot Chapuzy\nBanana Bread de Margot 🥰\nIngrédients\n2 bananes bien mûres\n125 g de poudre d’amande\n80 g de farine\n50 g de sucre de canne\n50 g de beurre\n2 œufs\n1 sachet de levure chimique\n1 pincée de sel\n100 g de pépites de chocolat",
    "vivants": {
+    "photo": [
+     0.06,
+     0.035,
+     0.38338,
+     0.2167
+    ],
     "aq-margot-chapuzy-1": [
-     0.13,
-     0.55,
-     0.67,
-     0.29
+     0.08,
+     0.54,
+     0.84,
+     0.41
     ]
    },
    "deborde": [],
-   "lignes": 7,
+   "lignes": 12,
    "aquarelles": {
     "aq-margot-chapuzy-1": {
      "aquarelle": "banana-bread",
@@ -1758,70 +2126,18 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.9459,
-      0.1627,
-      0.0197,
-      0.014
-     ]
-    },
-    {
-     "nom": "sourire",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.5751,
-      0.2509,
-      0.0217,
-      0.0154
-     ]
-    },
-    {
-     "nom": "banane",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.5983,
-      0.2531,
-      0.0184,
-      0.0131
+      0.43,
+      0.2604,
+      0.0278,
+      0.0197
      ]
     }
    ],
-   "relu": true
-  },
-  "margot-chapuzy-gauche": {
-   "double": "margot-chapuzy",
-   "cote": "gauche",
-   "folio": 32,
-   "papier": "pages/papier/f31",
-   "miroir": true,
-   "encre": "pages/margot-chapuzy-gauche",
-   "papier1x": "pages/1x/papier/f31",
-   "encre1x": "pages/1x/margot-chapuzy-gauche",
-   "texte": "Margot, Chapuzy\nPour Cécile — message provisoire : Lorem ipsum — message à venir — Margot Chapuzy\nBanana Bread de Margot 🥰\nIngrédients\n2 bananes bien mûres\n125 g de poudre d’amande\n80 g de farine\n50 g de sucre de canne\n50 g de beurre\n2 œufs\n1 sachet de levure chimique\n1 pincée de sel\n100 g de pépites de chocolat\nPréparation\n1. Préchauffe le four à 180 °C.\n2. Écrase les bananes dans un saladier.",
-   "vivants": {
-    "photo": [
-     0.06,
-     0.035,
-     0.48569,
-     0.27203
-    ]
-   },
-   "deborde": [],
-   "lignes": 15,
-   "recette": "margot-chapuzy",
-   "croquis": [
-    {
-     "nom": "sourire",
-     "role": "icone",
-     "dessine": true,
-     "boite": [
-      0.4248,
-      0.4762,
-      0.026,
-      0.0184
-     ]
-    }
+   "douteux": [
+    "125 g (encre rendue lue « 125 9 »)"
+   ],
+   "douteux_importants": [
+    "125 g"
    ],
    "relu": true
   },
@@ -1875,6 +2191,14 @@
    "deborde": [],
    "lignes": 14,
    "recette": "marie",
+   "douteux": [
+    "2. (encre rendue lue « 2 , »)",
+    "5. (encre rendue lue « . . 5 , »)"
+   ],
+   "douteux_importants": [
+    "2.",
+    "5."
+   ],
    "relu": true
   },
   "pierrette-droite": {
@@ -1905,6 +2229,20 @@
     }
    },
    "recette": "pierrette",
+   "douteux": [
+    "huiles (encre rendue lue « huiles »)",
+    "2. (encre rendue lue « 2 , »)",
+    "œufs (encre rendue lue « ceufs »)",
+    "crème, (encre rendue lue « crime , »)",
+    "levure, (encre rendue lue « levure , »)"
+   ],
+   "douteux_importants": [
+    "2.",
+    "crème,",
+    "huiles",
+    "levure,",
+    "œufs"
+   ],
    "relu": true
   },
   "pierrette-gauche": {
@@ -1928,6 +2266,18 @@
    "deborde": [],
    "lignes": 14,
    "recette": "pierrette",
+   "douteux": [
+    "œufs (encre rendue lue « aufs . »)",
+    "zeste (encre rendue lue « 2este »)",
+    "160 g (encre rendue lue « 160 g »)",
+    "1 c. (encre rendue lue « I C. »)"
+   ],
+   "douteux_importants": [
+    "1 c.",
+    "160 g",
+    "zeste",
+    "œufs"
+   ],
    "relu": true
   },
   "sarah-droite": {
@@ -1975,6 +2325,18 @@
    },
    "suite": "sarah-feuillet-recto",
    "recette": "sarah",
+   "douteux": [
+    "1 (encre rendue lue « \" 1 »)",
+    "2. (encre rendue lue « 2 , »)",
+    "l’œuf (encre rendue lue « I'veuf »)",
+    "12 (encre rendue lue « \" 12 »)"
+   ],
+   "douteux_importants": [
+    "1",
+    "12",
+    "2.",
+    "l’œuf"
+   ],
    "relu": true
   },
   "sarah-feuillet-recto": {
@@ -2045,6 +2407,14 @@
    "deborde": [],
    "lignes": 13,
    "recette": "sarah",
+   "douteux": [
+    "sèche (encre rendue lue « siche »)",
+    "125 g (encre rendue lue « 125 9 »)"
+   ],
+   "douteux_importants": [
+    "125 g",
+    "sèche"
+   ],
    "relu": true
   },
   "sommaire": {
@@ -2056,66 +2426,100 @@
    "encre": "pages/sommaire",
    "papier1x": "pages/1x/papier/f9",
    "encre1x": "pages/1x/sommaire",
-   "texte": "Sommaire (suite)\nTartes & confitures\nAnatole — Tarte aux myrtilles, page 36\nLise — Tarte aux pommes, page 38\nBiscuits\nJulien — Cookies & noisettes, page 42\nLisa De Paris — Spitzbuben, page 44\nBrioches\nSarah — Brioche, page 48\nCrêpes & gaufres\nLaura Gramegna — Crêpes, page 52\nElise — Gaufres de Liège, page 54\nLe mot de la fin, page 56",
+   "texte": "Gâteaux aux pommes — 2 variantes\nLéa, page 24\nSuzanne, page 30\nAntoine — Flaugnarde aux poires, page 28\nMargot — Banana bread, page 32\nTartes & confitures\nAnatole — Tarte aux myrtilles, page 36\nLise — Tarte aux pommes, page 38\nBiscuits\nJulien — Cookies & noisettes, page 42\nLisa De Paris — Spitzbuben, page 44",
    "vivants": {
-    "aq-tasse": [
-     0.75,
-     0.045,
-     0.17,
-     0.117
+    "vignette-lea": [
+     0.18438,
+     0.12778,
+     0.19,
+     0.08
+    ],
+    "vignette-antoine": [
+     0.11396,
+     0.22243,
+     0.19,
+     0.068
+    ],
+    "vignette-margot-chapuzy": [
+     0.11372,
+     0.2798,
+     0.19,
+     0.068
     ],
     "vignette-anatole": [
-     0.1458,
-     0.19215,
-     0.16,
-     0.05
+     0.11792,
+     0.42107,
+     0.19,
+     0.068
     ],
     "vignette-lise": [
-     0.15027,
-     0.24056,
-     0.16,
-     0.05
+     0.11863,
+     0.45762,
+     0.19,
+     0.08
     ],
     "vignette-julien": [
-     0.14612,
-     0.36264,
-     0.16,
-     0.05
+     0.11905,
+     0.61272,
+     0.19,
+     0.068
     ],
     "vignette-lisa-de-paris": [
-     0.1488,
-     0.41329,
-     0.16,
-     0.05
-    ],
-    "vignette-sarah": [
-     0.14936,
-     0.5388,
-     0.16,
-     0.05
-    ],
-    "vignette-laura": [
-     0.14608,
-     0.67459,
-     0.16,
-     0.05
-    ],
-    "vignette-elise": [
-     0.14466,
-     0.72427,
-     0.16,
-     0.05
+     0.11373,
+     0.68031,
+     0.19,
+     0.068
     ]
    },
    "deborde": [],
-   "lignes": 13,
+   "lignes": 11,
    "liens": [
+    {
+     "cible": "lea",
+     "invite": "lea",
+     "rect": [
+      0.37491,
+      0.13058,
+      0.55746,
+      0.02712
+     ]
+    },
+    {
+     "cible": "suzanne",
+     "invite": "suzanne",
+     "rect": [
+      0.37614,
+      0.18727,
+      0.55743,
+      0.02712
+     ]
+    },
+    {
+     "cible": "antoine",
+     "invite": "antoine",
+     "rect": [
+      0.30458,
+      0.24188,
+      0.62758,
+      0.02712
+     ]
+    },
+    {
+     "cible": "margot-chapuzy",
+     "invite": "margot-chapuzy",
+     "rect": [
+      0.30433,
+      0.30001,
+      0.62891,
+      0.02712
+     ]
+    },
     {
      "cible": "tartes",
      "rect": [
-      0.08913,
-      0.14537,
-      0.34403,
+      0.0958,
+      0.36534,
+      0.34683,
       0.0424
      ]
     },
@@ -2123,9 +2527,9 @@
      "cible": "anatole",
      "invite": "anatole",
      "rect": [
-      0.30642,
-      0.20264,
-      0.64286,
+      0.30853,
+      0.42739,
+      0.62579,
       0.02712
      ]
     },
@@ -2133,18 +2537,18 @@
      "cible": "lise",
      "invite": "lise",
      "rect": [
-      0.31089,
-      0.25103,
-      0.63652,
+      0.30921,
+      0.4838,
+      0.6237,
       0.02712
      ]
     },
     {
      "cible": "biscuits",
      "rect": [
-      0.09292,
-      0.31511,
-      0.14099,
+      0.09508,
+      0.55611,
+      0.14105,
       0.0424
      ]
     },
@@ -2152,9 +2556,9 @@
      "cible": "julien",
      "invite": "julien",
      "rect": [
-      0.30674,
-      0.37338,
-      0.64074,
+      0.30962,
+      0.61665,
+      0.62037,
       0.02712
      ]
     },
@@ -2162,75 +2566,25 @@
      "cible": "lisa-de-paris",
      "invite": "lisa-de-paris",
      "rect": [
-      0.30938,
-      0.42446,
-      0.63818,
-      0.02712
-     ]
-    },
-    {
-     "cible": "brioches",
-     "rect": [
-      0.09022,
-      0.49136,
-      0.15038,
-      0.0424
-     ]
-    },
-    {
-     "cible": "sarah",
-     "invite": "sarah",
-     "rect": [
-      0.30985,
-      0.54964,
-      0.63922,
-      0.02712
-     ]
-    },
-    {
-     "cible": "crepes",
-     "rect": [
-      0.09037,
-      0.62098,
-      0.30935,
-      0.0424
-     ]
-    },
-    {
-     "cible": "laura",
-     "invite": "laura",
-     "rect": [
-      0.30669,
-      0.6856,
-      0.64266,
-      0.02712
-     ]
-    },
-    {
-     "cible": "elise",
-     "invite": "elise",
-     "rect": [
-      0.30522,
-      0.73519,
-      0.64385,
-      0.02712
-     ]
-    },
-    {
-     "cible": "fin",
-     "rect": [
-      0.31018,
-      0.82471,
-      0.63984,
+      0.30434,
+      0.70116,
+      0.62865,
       0.02712
      ]
     }
    ],
    "aquarelles": {
-    "aq-tasse": {
-     "aquarelle": "tasse-2",
-     "anime": "vapeur",
-     "angle": -4
+    "vignette-lea": {
+     "aquarelle": "pomme",
+     "anime": "fixe"
+    },
+    "vignette-antoine": {
+     "aquarelle": "flaugnarde-poires",
+     "anime": "fixe"
+    },
+    "vignette-margot-chapuzy": {
+     "aquarelle": "banana-bread",
+     "anime": "fixe"
     },
     "vignette-anatole": {
      "aquarelle": "tarte-myrtilles",
@@ -2244,23 +2598,19 @@
      "aquarelle": "cookies",
      "anime": "fixe"
     },
-    "vignette-laura": {
-     "aquarelle": "crepes-banane",
-     "anime": "fixe"
-    },
-    "vignette-sarah": {
-     "aquarelle": "brioche",
-     "anime": "fixe"
-    },
     "vignette-lisa-de-paris": {
      "aquarelle": "spitzbuben",
      "anime": "fixe"
-    },
-    "vignette-elise": {
-     "aquarelle": "gaufres-liege",
-     "anime": "fixe"
     }
    },
+   "douteux": [
+    "poires (encre rendue lue « poires . »)",
+    "44 (encre rendue lue « 44 »)"
+   ],
+   "douteux_importants": [
+    "44",
+    "poires"
+   ],
    "relu": true
   },
   "suzanne-droite": {
@@ -2290,6 +2640,14 @@
     }
    },
    "recette": "suzanne",
+   "douteux": [
+    "yaourt. (encre rendue lue « yaourt . »)",
+    "1 (encre rendue lue « \" I »)"
+   ],
+   "douteux_importants": [
+    "1",
+    "yaourt."
+   ],
    "relu": true
   },
   "suzanne-gauche": {
@@ -2319,9 +2677,9 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.7607,
-      0.4716,
-      0.02,
+      0.8704,
+      0.4738,
+      0.0201,
       0.0142
      ]
     },
@@ -2330,12 +2688,22 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.3886,
-      0.5999,
-      0.0259,
-      0.0183
+      0.3867,
+      0.5989,
+      0.0268,
+      0.019
      ]
     }
+   ],
+   "douteux": [
+    "1 (encre rendue lue « 1 »)",
+    "1 (encre rendue lue « 1 »)",
+    "d'1 cm (encre rendue lue « d\"I'cm »)",
+    "1 (encre rendue lue « 1 »)"
+   ],
+   "douteux_importants": [
+    "1",
+    "d'1 cm"
    ],
    "relu": true
   },
@@ -2349,7 +2717,7 @@
    "encre": "pages/tartes-droite",
    "papier1x": "pages/1x/papier/f35",
    "encre1x": "pages/1x/tartes-droite",
-   "texte": "Tartes & confitures\nAnatole et Lise",
+   "texte": "Tartes & confitures\nAnatole\nLise",
    "vivants": {},
    "deborde": [],
    "lignes": 1,
@@ -2415,7 +2783,8 @@
      "anime": "fleurit",
      "angle": 3
     }
-   }
+   },
+   "relu": true
   },
   "titre": {
    "double": "titre",
@@ -2451,7 +2820,8 @@
     "aq-gateau-bougies": {
      "aquarelle": "gateau-bougies"
     }
-   }
+   },
+   "relu": true
   }
  }
 }
