@@ -40,23 +40,12 @@ try{
   await page.screenshot({path:resolve(out,`${nom}-rabat.png`)});ok(`${nom} : rabat latéral borné, aide choisie en deux temps`,{geometrie});
   await page.keyboard.press('Escape');
   if(nom==='tv-1080'){
-   const canvas=page.locator('.gc-livre__page--visible .gc-secrets__farine');await canvas.waitFor();const r=await canvas.boundingBox();assert(r);
-   await page.screenshot({path:resolve(out,'farine-avant.png')});
-   // Un petit geste ne doit pas valider la découverte au relâchement ni via le clic synthétique.
-   await page.mouse.move(r.x+r.width*.45,r.y+r.height*.45);await page.mouse.down();await page.mouse.move(r.x+r.width*.51,r.y+r.height*.47,{steps:4});await page.mouse.up();
-   assert.equal(await canvas.count(),1);assert.equal(await page.locator('#gc-guide-quete').count(),0);
-   const pixelsApresPetitGeste=await canvas.evaluate(el=>Array.from(el.getContext('2d').getImageData(0,0,el.width,el.height).data).filter((_,i)=>i%4===3).reduce((s,a)=>s+a,0));
-   await page.mouse.move(r.x+r.width*.1,r.y+r.height*.9);await page.mouse.down();await page.mouse.up();
-   assert.equal(await canvas.count(),1);assert.equal(await page.locator('#gc-guide-quete').count(),0);
-   const pixelsApresClic=await canvas.evaluate(el=>Array.from(el.getContext('2d').getImageData(0,0,el.width,el.height).data).filter((_,i)=>i%4===3).reduce((s,a)=>s+a,0));
-   assert(pixelsApresClic<pixelsApresPetitGeste,'la farine garde et prolonge les traces');
-   await page.screenshot({path:resolve(out,'farine-partielle.png')});ok('Petit geste et premier clic conservent la farine, révélation réellement progressive');
-   for(const y of [.3,.6,.8,.45,.15,.7,.5]){
-    if(!await canvas.count())break;
-    await page.mouse.move(r.x+r.width*.18,r.y+r.height*y);await page.mouse.down();await page.mouse.move(r.x+r.width*.82,r.y+r.height*y,{steps:14});await page.mouse.up();
-   }
-   await page.waitForSelector('[data-gc-quete-etape="serment"][data-gc-quete-revele="oui"]');assert.equal(await canvas.count(),0);
-   assert((await page.locator('#gc-guide-quete blockquote').innerText()).includes(q.CACHETTES[0].revelation));ok('Balayer la farine révèle la clé et le serment, sans compteur ni saut de page');
+   // La farine n'existe plus (FarineCachette supprimée) : la première clé s'ouvre d'un clic.
+   const cle=page.locator('.gc-livre__page--visible [data-gc-secret="serment"] button');await cle.waitFor();
+   await page.screenshot({path:resolve(out,'cle-avant.png')});
+   await cle.click();
+   await page.waitForSelector('[data-gc-quete-etape="serment"][data-gc-quete-revele="oui"]');
+   assert((await page.locator('#gc-guide-quete blockquote').innerText()).includes(q.CACHETTES[0].revelation));ok('Un clic sur la clé révèle le serment, sans compteur ni saut de page');
    await page.locator('[data-gc-quete-principal]').click();assert.equal(await page.locator('#gc-guide-quete').count(),0);
    for(let index=1;index<q.CACHETTES.length;index++){
     const c=q.CACHETTES[index];await page.evaluate(hash=>location.hash=hash,c.double);
@@ -70,14 +59,10 @@ try{
    await page.locator('.gc-quete__recommencer').click();await page.keyboard.press('Escape');await page.evaluate(()=>location.hash='titre');await actif();
    await page.waitForSelector('.gc-livre__page--visible [data-gc-secret="serment"] button');
    const brosse=page.locator('.gc-livre__page--visible [data-gc-secret="serment"] button');await brosse.focus();await page.keyboard.press('Enter');
-   assert.equal(await page.locator('.gc-livre__page--visible .gc-secrets__farine').count(),1);
-   for(let n=0;n<12&&await page.locator('.gc-livre__page--visible .gc-secrets__farine').count();n++)await page.keyboard.press('Enter');
-   await page.waitForSelector('[data-gc-quete-etape="serment"][data-gc-quete-revele="oui"]');ok('Cinq découvertes naturelles au clavier, citations intactes, archivage et alternative clavier à la farine');
+   await page.waitForSelector('[data-gc-quete-etape="serment"][data-gc-quete-revele="oui"]');ok('Cinq découvertes naturelles au clavier, citations intactes, archivage et clé ouverte au clavier');
   }else{
-   await page.evaluate(()=>location.hash='titre');await page.waitForSelector('.gc-livre__page--visible [data-gc-secret="serment"][data-gc-secret-actif="oui"] .gc-secrets__farine');await actif();const canvas=page.locator('.gc-livre__page--visible .gc-secrets__farine');await canvas.waitFor();
-   await canvas.tap();assert.equal(await canvas.count(),1);assert.equal(await page.locator('#gc-guide-quete').count(),0);
-   for(let n=0;n<12&&await canvas.count();n++)await canvas.tap();
-   await page.waitForSelector('[data-gc-quete-etape="serment"][data-gc-quete-revele="oui"]');await borne();ok('Mobile : premier toucher partiel, petits coups suivants aboutissent à la même note');
+   await page.evaluate(()=>location.hash='titre');await page.waitForSelector('.gc-livre__page--visible [data-gc-secret="serment"][data-gc-secret-actif="oui"] button');await actif();
+   await page.locator('.gc-livre__page--visible [data-gc-secret="serment"] button').tap();await page.waitForSelector('[data-gc-quete-etape="serment"][data-gc-quete-revele="oui"]');await borne();ok('Mobile : un toucher sur la clé ouvre la note');
   }
   assert.equal(await page.locator('.gc-secrets [title], .gc-quete__compagnon [title], #gc-guide-quete [title]').count(),0);
   await ctx.close();

@@ -14,6 +14,7 @@ import { Livre, type LivreApi, type LivreProps } from '../../components/Livre';
 import { Reglages, CREDITS_REGLAGES } from '../../components/Reglages';
 import { NavigationCarnet, type NavigationCarnetApi } from '../../components/NavigationCarnet';
 import { CompagnonDuCarnet } from '../../components/SecretsDuCarnet';
+import { ScorpionsDeTable } from '../../components/Scorpions';
 import { SoulevementProvider, souleverObjet, useSoulevement } from '../../components/Soulever';
 import { CAMERA_DEFAULT, CameraProvider } from '../../lib/camera';
 import { MotionConfig, useNiveauMouvement, type MotionValue } from '../../lib/motion';
@@ -195,6 +196,7 @@ function CarnetLivre({ index, setIndex, coteInitial, arrivee, apiRef }: CarnetLi
         invitation={invitation}
       />
       <CompagnonDuCarnet />
+      <ScorpionsDeTable />
       <NavigationCarnet spreads={spreads} onAller={aller} apiRef={navigationRef} />
       <Reglages invites={invites} onAller={aller} onSommaire={sommaire >= 0 ? () => aller(sommaire) : undefined} onRechercher={() => navigationRef.current?.rechercher()} credits={CREDITS} />
     </>

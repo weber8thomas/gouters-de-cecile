@@ -1,7 +1,7 @@
 """Cuisson des pages du carnet (appelé par `node scripts/bake-pages.mjs`).
 
     tools/ecriture/.venv/bin/python scripts/pages/cuire.py [--only lisa,julie] [--force] [--apercus]
-                                                          [--format ecran|a5] [--sans-4x]
+                                                          [--format ecran|a5] [--sans-4x] [--relire] [--simuler]
 
 Pages cuites :
   - les descriptions écrites à la main : `src/content/pages/<id>.json` (pages d'invités, page de
@@ -26,35 +26,40 @@ Pour chaque page :
      et la lumière ;
   4. calque d'encre → design-system/baked/pages/<id>.webp (RGBA, 2×), pages/1x/<id>.webp (1×) et la
      passe ×4 de la loupe en tuiles 2 × 2 (4 px de recouvrement) : pages/4x/<id>-<r><c>.webp ;
-  5. relecture de l'encre rendue (lot E : ecriture.relire_rendu) ;
-  6. manifeste → src/content/pages/manifeste.json (lu par <PageCuite>).
+  5. manifeste → src/content/pages/manifeste.json (lu par <PageCuite>).
 
 Format A5 (`--format a5`) : chaque invité est repaginé pour une feuille A5 recto-verso (148 × 210 mm
 + 3 mm de fond perdu, 300 dpi ; recette.pages_a5) ; images composées (papier + encre, JPEG) dans
 design-system/baked/a5/, manifeste design-system/baked/a5/manifeste.json (lu par le lot Pr).
 
 Code de sortie 1 si un mot ne tient pas (débordement, annotation non placée, recette trop longue
-même avec le feuillet), si un contenu met une correction dans un mot important, ou si un mot
-important se relit mal sur l'encre rendue : aucun mot n'est jamais perdu ni faux en silence.
+même avec le feuillet) ou si un contenu met une correction dans un mot important : aucun mot n'est
+jamais perdu ni faux en silence. Un mot DOUTEUX (écriture ou OCR) n'est qu'un avertissement, jamais un échec.
+
+Relecture OCR de l'encre rendue : plus pendant la cuisson, à la demande (relecture.py, `npm run pages:relire`
+sur les pages déjà cuites, ou `--relire` à la fin d'une cuisson) → rapport verification/out/relecture.md.
 
 Déterministe ; cache par empreinte (description, page au dos, papier, croquis utilisés, version de
-l'outil d'écriture et du moteur) dans design-system/baked/pages/.cuisson.json. La passe ×4 a sa propre
-entrée (`x4/<id>`, clé = empreinte de la page + qualités ×4) : une cuisson sans ×4 garde les tuiles encore
+l'outil d'écriture et du moteur ; l'empreinte du moteur ignore commentaires, docstrings et relecture.py)
+dans design-system/baked/pages/.cuisson.json. La passe ×4 a sa propre entrée (`x4/<id>`, clé = empreinte de la page + qualités ×4) : une cuisson sans ×4 garde les tuiles encore
 valides, et une cuisson avec ×4 ne fait la passe que pour les pages dont l'encre a changé.
 
 Modes (`--mode`) :
-  complet  (défaut) écran 2× + variante 1× + passe ×4 + relecture de l'encre rendue → design-system/baked/pages/ ;
-  rapide   aperçu : composition papier + encre à 1× en JPEG, ni 1×, ni ×4, ni relecture de l'encre rendue
+  complet  (défaut) écran 2× + variante 1× + passe ×4 → design-system/baked/pages/ (+ `--relire` : relecture OCR
+           des pages choisies une fois cuites) ;
+  rapide   aperçu : composition papier + encre à 1× en JPEG, ni 1×, ni ×4
            (la mise en page, les débordements et les mots douteux de l'écriture sont les mêmes) →
            verification/out/cuisson-rapide/ (son propre cache et son propre manifeste ; le site n'y lit rien).
 Parallèle (`--jobs N`, défaut : cœurs − 2, au plus 8) : les pages à cuire, dans l'ordre du carnet, sont
 réparties par paquets de pages voisines (même feuillet, même double page : les rectos se partagent) entre
 des processus séparés (OMP_NUM_THREADS=1 chacun) ; le processus principal réunit le cache et le manifeste.
 Mêmes octets qu'en séquentiel : chaque page ne dépend que de sa description, de son dos et de son vis-à-vis.
+`--simuler` : annonce les pages à cuire et s'arrête, sans rien cuire.
 """
 from __future__ import annotations
 
 import argparse
+import ast
 import os
 import hashlib
 import inspect
@@ -105,7 +110,7 @@ NON_PAGES = {"manifeste.json", "papiers.json", "recettes.json"}
 RAPIDE = F.Format("rapide", F.ECRAN.W, F.ECRAN.H, 1.0)
 # Scripts lancés à la main, jamais importés par la cuisson (vérifié sur sys.modules après une cuisson
 # complète) : hors empreinte, les modifier ne recuit plus tout le carnet. tests/ n'est pas lu (glob *.py).
-HORS_EMPREINTE = {"apercu.py", "reparer.py", "planche_graines.py", "couverture.py"}
+HORS_EMPREINTE = {"apercu.py", "reparer.py", "planche_graines.py", "couverture.py", "relecture.py"}
 OUTIL_HORS_EMPREINTE = {"banc.py", "specimen.py", "convertir_poids.py", "amorces_maison.py", "rendu.py"}
 UNITES_IMPORTANTES = re.compile(r"^(\d|½|¼|¾|°|th\.?$|(g|kg|cl|ml|l|dl|min|h|cm|mm)[.,;:)]*$)")
 
@@ -114,16 +119,42 @@ def h(obj) -> str:
     return hashlib.sha256(json.dumps(obj, sort_keys=True, ensure_ascii=False, default=MEP._json_defaut).encode()).hexdigest()
 
 
+EQUIVALENCES = ICI / "empreintes_equivalentes.json"
+
+
+def _source_sans_commentaires(f: Path) -> bytes:
+    """Le programme d'un script, sans commentaires ni docstrings (arbre syntaxique) : seul ce qui change le
+    rendu entre dans l'empreinte du moteur. Texte brut si le fichier ne se lit pas."""
+    brut = f.read_bytes()
+    try:
+        arbre = ast.parse(brut)
+    except (SyntaxError, ValueError):
+        return brut
+    for n in ast.walk(arbre):
+        corps = getattr(n, "body", None)
+        if isinstance(n, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)) and corps \
+                and isinstance(corps[0], ast.Expr) and isinstance(getattr(corps[0], "value", None), ast.Constant) \
+                and isinstance(corps[0].value.value, str):
+            n.body = corps[1:] or [ast.Pass()]
+    return ast.dump(arbre).encode()
+
+
 def empreinte_moteur() -> str:
     m = hashlib.sha256(str(VERSION_MOTEUR).encode())
     for f in sorted(ICI.glob("*.py")):
         if f.name not in HORS_EMPREINTE:
-            m.update(f.read_bytes())
+            m.update(_source_sans_commentaires(f))
     # réglage de l'écriture (taille, épaisseur) : le changer recuit tout le carnet
     reglage = ICI.parents[1] / "src/content/ecriture.json"
     if reglage.exists():
         m.update(reglage.read_bytes())
-    return m.hexdigest()[:16]
+    cle = m.hexdigest()[:16]
+    # empreintes_equivalentes.json : « cet état du moteur rend les mêmes octets que celui-là » (déclaré à la main,
+    # après vérification) → les pages cuites avec l'ancien état restent valides. Absent ou sans entrée : l'empreinte telle quelle.
+    try:
+        return json.loads(EQUIVALENCES.read_text())["equivalences"].get(cle, cle)
+    except (OSError, ValueError, KeyError):
+        return cle
 
 
 def empreinte_outil() -> str:
@@ -297,7 +328,7 @@ def folio_dos(folio: int) -> int:
 
 class Cuisine:
     def __init__(self, pages, papiers, force=False, apercus=False, sortie: Path | None = None, apercus_dir: Path | None = None,
-                 cache: Path | None = None, fmt: F.Format = F.ECRAN, x4: bool | None = None, relecture: bool = True):
+                 cache: Path | None = None, fmt: F.Format = F.ECRAN, x4: bool | None = None):
         self.pages = pages
         self.papiers = papiers
         self.force = force
@@ -305,7 +336,6 @@ class Cuisine:
         self.fmt = fmt
         self.ech = float(fmt.echelle)
         self.x4 = fmt.tuiles_4x if x4 is None else (x4 and fmt.tuiles_4x)
-        self.relecture = relecture
         sortie = sortie or SORTIE
         self.sortie = sortie
         self.apercus_dir = apercus_dir or APERCUS
@@ -670,8 +700,6 @@ class Cuisine:
             if self.apercus:
                 self.apercus_dir.mkdir(parents=True, exist_ok=True)
                 Image.fromarray(img).save(self.apercus_dir / f"{pid}.png")
-        # relecture de l'encre rendue (lot E)
-        relu = self.relire(pid, mise, rgba) if self.relecture else None
         W_, H_ = mise.W, mise.H
         fr = lambda r: [round(r[0] / W_, 5), round(r[1] / H_, 5), round((r[2] - r[0]) / W_, 5), round((r[3] - r[1]) / H_, 5)]  # noqa: E731
         base = {
@@ -729,14 +757,12 @@ class Cuisine:
                               for c in mise.croquis]
         if mise.croquis_non_places:
             man["croquis_non_places"] = mise.croquis_non_places
-        douteux = list(mise.douteux) + [d for d in (relu or []) if d not in mise.douteux]
+        douteux = list(mise.douteux)
         if douteux:
             man["douteux"] = douteux
         imp = sorted({jeton_douteux(d) for d in douteux if self._important_douteux(d, mise)})
         if imp:
             man["douteux_importants"] = imp
-        if relu is not None:
-            man["relu"] = True
         self.cache[f"page/{pid}"] = {"cle": cle, "manifeste": man}
         man = self._avec_4x(pid, cle, man)
         self._V.pop(pid, None)
@@ -783,7 +809,7 @@ class Cuisine:
         self.journal.append(f"{pid} : encre ×4 en 4 tuiles, {poids // 1024} Ko ({time.time() - t:.1f} s)")
         return {"base": f"pages/4x/{pid}", "echelle": round(ech4, 4), "px": [W4, H4], "recouvrement": 4, "tuiles": out}
 
-    # ---- relecture de l'encre rendue (lot E) ------------------------------------------------------
+    # ---- mots posés (pour la relecture à la demande : relecture.py) -------------------------------
     def mots_places(self, mise) -> list:
         """Mots écrits (boîte en px de l'image, drapeau important) : ni icônes ni mots barrés."""
         par_ligne: dict = {}
@@ -801,36 +827,11 @@ class Cuisine:
                         "important": est_important(t, ctx), "bloc": m.bloc, "ligne": m.ligne})
         return out
 
-    def relire(self, pid: str, mise, rgba):
-        f = getattr(ECR, "relire_rendu", None)
-        if f is None:
-            return None
-        mots = self.mots_places(mise)
-        try:
-            if _accepte(f, "contexte"):
-                res = f(rgba, mots, contexte=mise.desc.get("contexte_importants"))
-            else:
-                res = f(rgba, mots)
-        except Exception as e:
-            self.journal.append(f"{pid} : relire_rendu a échoué ({type(e).__name__}: {e})")
-            return None
-        out = []
-        for d in res or []:
-            if isinstance(d, dict):
-                txt = jeton_douteux(d)
-                lu = d.get("lu")
-                out.append(f"{txt} (encre rendue lue « {lu} »)" if lu else f"{txt} (encre rendue)")
-            else:
-                out.append(str(d))
-        if out:
-            self.journal.append(f"{pid} : relecture de l'encre rendue, douteux : {out}")
-        return out
-
     def _important_douteux(self, d, mise) -> bool:
         if isinstance(d, dict) and "important" in d:
             return bool(d["important"])
         if isinstance(d, str) and "(encre rendue" in d:
-            return True  # relire_rendu (lot E) ne relit que les mots importants
+            return True  # ancienne relecture de la cuisson (restée dans le cache) : mots importants seulement
         return est_important(jeton_douteux(d), mise.desc.get("contexte_importants"))
 
     def ecrire_cache(self):
@@ -927,8 +928,7 @@ def _travail(ids, pages, papiers, cache, options):
         ECR._sauver_cache = lambda nom: None
     fmt = F.FORMATS.get(options["format"]) or RAPIDE
     cu = Cuisine(pages, papiers, force=options["force"], apercus=options["apercus"], sortie=Path(options["sortie"]),
-                 apercus_dir=Path(options["apercus_dir"]), cache=Path(options["cache"]), fmt=fmt, x4=options["x4"],
-                 relecture=options["relecture"])
+                 apercus_dir=Path(options["apercus_dir"]), cache=Path(options["cache"]), fmt=fmt, x4=options["x4"])
     cu.cache = cache
     avant = dict(cache)
     out = {}
@@ -944,8 +944,7 @@ def _travail(ids, pages, papiers, cache, options):
 def cuire_en_parallele(cuisine: Cuisine, ids: list, jobs: int, entrees: dict):
     sauver = getattr(ECR, "_sauver_cache", None)
     options = {"format": cuisine.fmt.nom, "force": cuisine.force, "apercus": cuisine.apercus, "sortie": str(cuisine.sortie),
-               "apercus_dir": str(cuisine.apercus_dir), "cache": str(cuisine.cache_f), "x4": cuisine.x4,
-               "relecture": cuisine.relecture}
+               "apercus_dir": str(cuisine.apercus_dir), "cache": str(cuisine.cache_f), "x4": cuisine.x4}
     lots = paquets(ordre_carnet(cuisine.pages, ids), jobs)
     print(f"  {len(ids)} pages à cuire en {len(lots)} paquets sur {jobs} processus", flush=True)
     import multiprocessing
@@ -973,6 +972,8 @@ def main(argv=None):
     ap.add_argument("--format", default="ecran", choices=sorted(F.FORMATS))
     ap.add_argument("--mode", default="complet", choices=["complet", "rapide"])
     ap.add_argument("--sans-4x", action="store_true", help="sans la passe d'encre ×4 (loupe)")
+    ap.add_argument("--relire", action="store_true", help="relecture OCR des pages choisies une fois cuites (rapport, jamais d'échec)")
+    ap.add_argument("--simuler", action="store_true", help="annonce les pages à cuire et s'arrête, sans rien cuire")
     ap.add_argument("--jobs", type=int, default=jobs_defaut(), help="processus de cuisson (1 : séquentiel)")
     ap.add_argument("--sortie", default="", help="dossier de sortie (cache et manifeste compris) au lieu du défaut")
     a = ap.parse_args(argv)
@@ -980,6 +981,8 @@ def main(argv=None):
     rapide = a.mode == "rapide"
     if rapide and a.format != "ecran":
         ap.error("--mode rapide : format écran seulement")
+    if a.relire and (rapide or a.format != "ecran"):
+        ap.error("--relire : mode complet, format écran seulement")
     sortie = Path(a.sortie).resolve() if a.sortie else (SORTIE_RAPIDE if rapide else None)
     pages, papiers, plan = charger_descriptions()
     carnet, roster = RC.charger_carnet(), RC.charger_roster()
@@ -994,7 +997,7 @@ def main(argv=None):
         cache_f.write_text(json.dumps({k: v for k, v in base.items() if k.startswith("pagination/")}, ensure_ascii=False))
     cuisine = Cuisine(pages, papiers, force=a.force, apercus=a.apercus, x4=not a.sans_4x and not rapide,
                       sortie=sortie, cache=cache_f, apercus_dir=(sortie / "apercus") if sortie else None,
-                      fmt=RAPIDE if rapide else F.ECRAN, relecture=not rapide)
+                      fmt=RAPIDE if rapide else F.ECRAN)
     generees, erreurs = paginer_recettes(plan, papiers, cuisine.cache, cuisine.moteur, cuisine.outil, a.force, seul, journal,
                                          carnet, roster)
     cuisine.ecrire_cache()  # la pagination est longue : gardée tout de suite
@@ -1022,6 +1025,9 @@ def main(argv=None):
     a_cuire = [pid for pid in choisies if cuisine.a_cuire(pid)]
     print(f"  mode {a.mode} : {len(choisies)} pages, {len(a_cuire)} à cuire"
           + ("" if cuisine.x4 or rapide else " (sans ×4 : tuiles valides gardées)"), flush=True)
+    if a.simuler:
+        print(f"  --simuler : rien n'est cuit. À cuire : {a_cuire or 'aucune'}", flush=True)
+        return 0
     paralleles = set(a_cuire) if a.jobs > 1 and len(a_cuire) > 1 else set()
     if paralleles:
         cuire_en_parallele(cuisine, a_cuire, a.jobs, entrees)
@@ -1049,7 +1055,11 @@ def main(argv=None):
         ap_dir.mkdir(parents=True, exist_ok=True)
         for pid in choisies:
             (ap_dir / f"{pid}.json").write_text(json.dumps(pages[pid], indent=1, ensure_ascii=False, default=MEP._json_defaut) + "\n")
-    return bilan(entrees, choisies, erreurs, contenus, t0)
+    code = bilan(entrees, choisies, erreurs, contenus, t0)
+    if a.relire:  # à la demande seulement ; le rapport ne change jamais le code de sortie
+        import relecture
+        relecture.relire_cuisine(cuisine, choisies)
+    return code
 
 
 def bilan(entrees: dict, choisies: list, erreurs: list, contenus: dict, t0: float) -> int:
@@ -1062,10 +1072,11 @@ def bilan(entrees: dict, choisies: list, erreurs: list, contenus: dict, t0: floa
         print(f"croquis en attente (place réservée) : {res}")
     if dou:
         print(f"mots douteux restants : {dou}")
-    if imp:
-        print(f"✗ mots IMPORTANTS douteux (nombres, unités, noms, ingrédients) : {imp}")
+    if imp:  # avertissement seulement : le détail à jour, nombres en tête, vient de `npm run pages:relire`
+        print(f"⚠ mots importants douteux sur {len(imp)} pages (nombres, unités, noms, ingrédients) : {imp}\n"
+              "  → rapport à jour : npm run pages:relire (verification/out/relecture.md)")
     print(f"pages cuites : {len(choisies)} en {time.time() - t0:.1f} s" + (f" — débordements : {deb}" if deb else ""))
-    return 1 if (deb or erreurs or imp or contenus) else 0
+    return 1 if (deb or erreurs or contenus) else 0
 
 
 # =============================================================================================

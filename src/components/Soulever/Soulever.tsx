@@ -63,6 +63,12 @@ const REPOSER = { duration: 0.33, ease: [0.4, 0, 0.2, 1] } as const;
 /** Légende d'un tirage : la main de Cécile, en encre claire (elle est posée sur le voile de bois, pas sur le papier). */
 const LEGENDE: React.CSSProperties = { ...handStyle('cecile', 'annotation'), color: 'var(--gc-paper-lace)' };
 
+/** Lignes de légende écrites sous une photo fixe (légende, date) : la pose d'arrivée leur garde la place. */
+const lignesLegende = (o: { type: string; legende?: string | null; date?: string | null; video?: { video?: string; date?: string } } | null): number =>
+  !o ? 0
+    : o.type === 'tirage' ? (o.legende ? 1 : 0) + (o.date ? 1 : 0)
+      : o.type === 'photo' && o.video && !o.video.video && o.video.date ? 1 : 0;
+
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const pc = (v: number) => `${+(v * 100).toFixed(4)}%`;
 
@@ -380,7 +386,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     jouerSon(o.type === 'feuillet' ? 'feuillet' : 'photo-lever', { vitesse: 0.55 });
     const v0 = vpRef.current ?? { w: window.innerWidth, h: window.innerHeight, insets: AUCUNE_MARGE as Insets, tactile: false };
     const S = poseDepart(o, calque);
-    const T = poseCible(v0, S.w / (S.h || 1));
+    const T = poseCible(v0, S.w / (S.h || 1), lignesLegende(o));
     geoRef.current = { S, T, fondu: false };
     objetRef.current = o;
     seqRef.current++;
@@ -649,7 +655,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     const v = vpRef.current;
     if (!v || phaseRef.current !== 'ouvert' || !objetRef.current) return;
     const T0 = geoRef.current.T;
-    const T = poseCible(v, T0.w / (T0.h || 1));
+    const T = poseCible(v, T0.w / (T0.h || 1), lignesLegende(objetRef.current));
     geoRef.current = { ...geoRef.current, T };
     setCible({ T, bouton: placeBouton(T, v, tailleBouton(v)) });
   }, [tailleVp]);

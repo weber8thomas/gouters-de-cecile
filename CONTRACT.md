@@ -360,6 +360,7 @@ Les **crans de distance** (taille du livre) ne se règlent plus que dans le menu
 - **Écriture fiable** (lot E) :
   - `scripts/pages/importants.py` fournit `important(jeton, contexte) -> bool` et `verifier_contenu(texte) -> [erreurs]` (aucune correction dans un mot important) ;
   - `scripts/pages/ecriture.py` fournit `relire_rendu(encre_rgba, mots_places) -> [douteux]`.
+  - La relecture de l'encre rendue ne tourne plus à chaque cuisson : à la demande (`npm run pages:relire [-- --only coralie,lise]`, ou `--relire` après une cuisson complète), sur les pages déjà cuites, rapport `verification/out/relecture.md` (nombres et quantités en tête). Un mot douteux ne fait jamais échouer la cuisson.
   - La nouvelle encre `bille-bleue` vit dans `tools/ecriture/encre.py`.
 - **Mise en page** (lot P1), blocs des pages `src/content/pages/*.json` :
   - `bandeau` : `{ texte, sous?, main?, encre? }` ;

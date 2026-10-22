@@ -23,6 +23,11 @@ Les rapports et captures vont dans `verification/out/`, ignoré par Git. Ne pas 
 La cuisson de nouveaux textes et l'ajout d'invités utilisent `tools/ecriture/` et ses modèles publics :
 voir [ses instructions](tools/ecriture/README.md). Une couverture dont les tracés sont déjà figés se recuit avec Python, NumPy et Pillow.
 
+Cuisson des pages : `npm run pages:complet` (2× + 1× + ×4, seulement les pages dont la description a changé ; `--only` pour en
+choisir, `--simuler` pour voir ce qui serait cuit) ou `npm run pages:rapide` (aperçu). La relecture OCR de l'encre rendue ne tourne
+plus à chaque cuisson : `npm run pages:relire [-- --only coralie,lise]` relit les pages déjà cuites, sans les recuire, et écrit
+`verification/out/relecture.md` (nombres et quantités en tête) ; `--relire` la lance après une cuisson. Un mot douteux ne fait jamais échouer la cuisson.
+
 ## Version locale avec les vrais médias
 
 Les vraies photos et vidéos ne sont jamais publiées : elles vivent dans `prive/` (ignoré par git) et ne servent qu'à une

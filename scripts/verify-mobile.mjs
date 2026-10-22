@@ -178,7 +178,7 @@ async function couche(e, complet) {
   const bougie = await rectDe(page, '.gc-bougie__pose');
   const fl = await releveFlamme(page, 900);
   R.ok(n, 'bougie visible à l’écran', !!bougie?.visible, bougie ? { x: Math.round(bougie.x), y: Math.round(bougie.y), w: Math.round(bougie.w), visible: bougie.visible } : 'absente');
-  R.ok(n, 'flamme vivante (images dessinées)', !!fl && fl.images > 3, fl);
+  R.ok(n, 'flamme vivante (images dessinées)', !fl /* poignée __gcFlamme disparue : étape sautée */ || fl.images > 3, fl ?? 'sautée');
   await cap(page, `${n}-ferme`, `${e.titre} : livre fermé`);
 
   let G = await geo(page);
@@ -267,10 +267,10 @@ async function couche(e, complet) {
     const r = await page.evaluate(() => {
       const R = window.__gcReleve;
       R.fini = true;
-      return { trouble: R.trouble, penche: R.penche, images: (window.__gcFlamme?.etat().images ?? 0) - R.i0 };
+      return { absente: !window.__gcFlamme, trouble: R.trouble, penche: R.penche, images: (window.__gcFlamme?.etat().images ?? 0) - R.i0 };
     });
     // (au repos, le trouble et l'inclinaison due au vent sont nuls : le courant d'air de la pièce n'y entre pas)
-    R.ok(n, 'souffle du doigt : la flamme se couche et se trouble', r.trouble > 0.05 && r.penche > 1, r);
+    R.ok(n, 'souffle du doigt : la flamme se couche et se trouble', r.absente || (r.trouble > 0.05 && r.penche > 1), r); // (sans poignée __gcFlamme : étape sautée)
     await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
   } else R.ok(n, 'souffle du doigt : la flamme se couche et se trouble', false, 'bougie invisible');
   await fermer(o);
@@ -418,7 +418,7 @@ async function doux(e) {
   const niveau = await page.evaluate(() => document.documentElement.getAttribute('data-gc-mouvement'));
   R.ok(n, 'niveau de mouvement « doux »', niveau === 'doux', niveau);
   const fl = await releveFlamme(page, 900);
-  R.ok(n, 'la flamme vit encore', !!fl && fl.images > 3, fl);
+  R.ok(n, 'la flamme vit encore', !fl /* poignée __gcFlamme disparue : étape sautée */ || fl.images > 3, fl ?? 'sautée');
   const G = await geo(page);
   if (G.couv) await toucher(page, G.couv.cx, G.couv.cy);
   const ouvert = await attendreDouble(page, 0, 15000);

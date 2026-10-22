@@ -185,7 +185,8 @@ function Page({ id, graine }: { id: string; graine: number }) {
     if (!n) continue;
     const t = PHOTOS_CECILE.get(`cecile-${n[1]}`);
     const zone = proportionDeZone(info.vivants[nom] as number[] | undefined);
-    const film = t ? videoInfo(t.video) : null;
+    // Emplacement vidéo de l'album : la légende et la date viennent du tirage (photos-cecile.json), comme pour les photos fixes.
+    const film = t ? (() => { const v = videoInfo(t.video); return v && { ...v, ...(t.legende && { legende: t.legende }), ...(t.date && { date: t.date }) }; })() : null;
     // Proportion du tirage tel qu'il est cuit (image entière, marge comprise) ; la zone est sa boîte maximale.
     const proportion = !t ? null : film?.geometrie ? film.geometrie.taille[0] / film.geometrie.taille[1] : film ? geometrieDe(film).proportion : proportionImage(t.tirage);
     // Pas de tirage, ou de forme différente de la zone : carte papier vide (jamais de photo déformée ni minuscule).

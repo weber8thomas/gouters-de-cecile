@@ -182,7 +182,7 @@
  },
  "papier/f17": "3c02cdf70c2b2ce9d52897a742f4fa7ea68bc1d0e602595ca238fe1fe9feca6f",
  "page/fin-gauche": {
-  "cle": "d7995169496930792b1aaab89cfa71619ab39245487356bc16cb2b99d21c0d78",
+  "cle": "279bf7ec241cc1144980526bbd0ba14ea765d46e040f62f585c268124ac00788",
   "manifeste": {
    "double": "fin",
    "cote": "gauche",
@@ -195,8 +195,7 @@
    "texte": "À suivre…\nLa version papier arrive bientôt…\nMerci à tous pour vos recettes et vos petits mots.\nCécile",
    "vivants": {},
    "deborde": [],
-   "lignes": 4,
-   "relu": true
+   "lignes": 4
   }
  },
  "papier/f11": "490079d4b8d8b0f14adf7df30a1fb8f20f73b4b73f12f8fb89587cab2e9a4ac4",
@@ -404,7 +403,7 @@
    "relu": true
   }
  },
- "papier/f15": "ad534e327ddd32ce579bda3b87edb16d64841424dc9aaf1a65f8277b86021432",
+ "papier/f15": "49bb144400a4b51b6425a0b323e079a942de88eb43d9f4fe6566cd2d7f75e600",
  "page/mathis-gauche": {
   "cle": "84f4073b6e95100b7168e633ffdd9bc597ba12f89bd9f72e89a8c72f22241c2e",
   "manifeste": {
@@ -717,7 +716,7 @@
  "papier1x/f17": "3c02cdf70c2b2ce9d52897a742f4fa7ea68bc1d0e602595ca238fe1fe9feca6f",
  "papier1x/f13": "cb2aaf90149c16b8bfcd348465b26e9d6e934ca32e4930fcfb230142765b9416",
  "papier1x/f11": "490079d4b8d8b0f14adf7df30a1fb8f20f73b4b73f12f8fb89587cab2e9a4ac4",
- "papier1x/f15": "ad534e327ddd32ce579bda3b87edb16d64841424dc9aaf1a65f8277b86021432",
+ "papier1x/f15": "49bb144400a4b51b6425a0b323e079a942de88eb43d9f4fe6566cd2d7f75e600",
  "pagination/lisa": {
   "cle": "243861c86dbd67abe381f7e2a96a0ee3f4e5638d4ab76f05bb50dce3fbdd49b7",
   "pages": {
@@ -1237,7 +1236,7 @@
  "papier/f9": "866e5278a28e31ca5e2465d034e29f1e41007ad8770da07269b1563f17541f84",
  "papier1x/f9": "866e5278a28e31ca5e2465d034e29f1e41007ad8770da07269b1563f17541f84",
  "page/lisa-gauche": {
-  "cle": "53951af8000e427b779b2fefcbfb8fcb9ce991bedbbbf36c8f6958d7615d1e42",
+  "cle": "c46791000c77b00d0c5a7f4bd85e063d3f6dbd1095ac165372cc31721c735899",
   "manifeste": {
    "double": "lisa",
    "cote": "gauche",
@@ -1258,16 +1257,7 @@
    },
    "deborde": [],
    "lignes": 13,
-   "recette": "lisa",
-   "douteux": [
-    "goûts) (encre rendue lue « goats ) »)",
-    "4 (encre rendue lue « \" A »)"
-   ],
-   "douteux_importants": [
-    "4",
-    "goûts)"
-   ],
-   "relu": true
+   "recette": "lisa"
   }
  },
  "page/lisa-droite": {
@@ -1477,7 +1467,7 @@
   }
  },
  "page/biscuits-droite": {
-  "cle": "1da4655d049dc8a13c5d6ef87e052fe7a4bfa9cbeebd7b22b0df74031cce9582",
+  "cle": "3337c0f09d32d34e5ce2baa3f516d2df2a0929a928b399a2abe139a7e95e5500",
   "manifeste": {
    "double": "biscuits",
    "cote": "droite",
@@ -1516,8 +1506,7 @@
      "anime": "balance",
      "angle": 4
     }
-   },
-   "relu": true
+   }
   }
  },
  "page/biscuits-gauche": {
@@ -2309,7 +2298,7 @@
   }
  },
  "page/cecile-2-droite": {
-  "cle": "062ec4a8da4b7dc73aea1b5bbd99b75b0f4a1f6e3f4a64af7ceb49e0cd13aace",
+  "cle": "beceef326548c28e8d662c266d34395ed1ed09241b465a693b2ea37bd9dc1ad4",
   "manifeste": {
    "double": "cecile-2",
    "cote": "droite",
@@ -2341,8 +2330,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 0,
-   "relu": true
+   "lignes": 0
   }
  },
  "page/cecile-2-gauche": {
@@ -2382,8 +2370,8 @@
    "relu": true
   }
  },
- "papier/f23": "bf3b7f5ec7955536d81ae2e10aabba6d6d22ebc6776881d7ea563089adc9b100",
- "papier1x/f23": "bf3b7f5ec7955536d81ae2e10aabba6d6d22ebc6776881d7ea563089adc9b100",
+ "papier/f23": "642112b02a1501335c3934be1213a2912d4555b54739f805b6ca9f93ebbc49cb",
+ "papier1x/f23": "642112b02a1501335c3934be1213a2912d4555b54739f805b6ca9f93ebbc49cb",
  "papier/f21": "8403537c49004eadb456c5876600e595e9b043dac913c8c672f744d0ca8b0468",
  "papier1x/f21": "8403537c49004eadb456c5876600e595e9b043dac913c8c672f744d0ca8b0468",
  "pagination/bernard": {
@@ -6939,7 +6927,7 @@
   }
  },
  "pagination/lise": {
-  "cle": "acad0cae8026739ed5942550cbe9717ce9f19b7ecfe8c18a460d68155c1cbe2b",
+  "cle": "f257093c41d18cd0b648532a12d3eff2a1d66c809c20c396c866fd20ec6193df",
   "pages": {
    "lise-gauche": {
     "double": "lise",
@@ -7128,7 +7116,7 @@
       "nom": "aq-lise-1",
       "rect": [
        0.35,
-       0.7,
+       0.459,
        0.4,
        0.2
       ],
@@ -7140,7 +7128,7 @@
       "nom": "aq-lise-2",
       "rect": [
        0.12,
-       0.73,
+       0.489,
        0.19,
        0.23
       ],
@@ -7267,7 +7255,7 @@
   }
  },
  "pagination/laura": {
-  "cle": "90e87b96138c9d87066e40545eb4fc133deea5e5eca6e7f1f497e76e601b181a",
+  "cle": "0d8eaf607731670ad61eb8ccff9ced44a114e8dbb9d210f93de41425b802ffc5",
   "pages": {
    "laura-gauche": {
     "double": "laura",
@@ -7471,7 +7459,7 @@
       "nom": "aq-laura-1",
       "rect": [
        0.36,
-       0.7,
+       0.543,
        0.38,
        0.24
       ],
@@ -7626,12 +7614,12 @@
    "laura-gauche": 0.44
   }
  },
- "papier/f27": "fd6739b4eb1e716719c4eed9c99257c67808897f0ef61fd3903581be472c5e6b",
- "papier1x/f27": "fd6739b4eb1e716719c4eed9c99257c67808897f0ef61fd3903581be472c5e6b",
- "papier/f31": "90032e44cd7836e2bb91b3cc0e2482740d692eb1141dbb9230239e531873befd",
- "papier1x/f31": "90032e44cd7836e2bb91b3cc0e2482740d692eb1141dbb9230239e531873befd",
- "papier/f29": "4d19e4a0d3805adaed894b7cb04f617486907b13f2d0c6212c34e369e17d7951",
- "papier1x/f29": "4d19e4a0d3805adaed894b7cb04f617486907b13f2d0c6212c34e369e17d7951",
+ "papier/f27": "ca72009b90c1ed25aeff3181b0b6dcb699df9b9eb8db7bbb1f0a01c3c4fc76e9",
+ "papier1x/f27": "ca72009b90c1ed25aeff3181b0b6dcb699df9b9eb8db7bbb1f0a01c3c4fc76e9",
+ "papier/f31": "019e8a701ac6a80f3e3705c2909bdfb73f621485fa736c7b932be7dbc2f1b28f",
+ "papier1x/f31": "019e8a701ac6a80f3e3705c2909bdfb73f621485fa736c7b932be7dbc2f1b28f",
+ "papier/f29": "478713ce530ae564c77c4c3efd15b36a510848d8d52c25394be410c961cfff47",
+ "papier1x/f29": "478713ce530ae564c77c4c3efd15b36a510848d8d52c25394be410c961cfff47",
  "page/crepes-droite": {
   "cle": "cfb50e8431b1b1fb17137066ffa14a1819646e2ca1a442fad2956f906a9f3544",
   "manifeste": {
@@ -7665,7 +7653,7 @@
   }
  },
  "page/crepes-gauche": {
-  "cle": "fd301a654a41d2d241b4fe34c173116de11b5a68e7ed3f94ec5c252e230bbb6c",
+  "cle": "573b3f3b4a5edd49d38e7a47b014c13a710b7b3724e8cff83c586b2ae208f7ef",
   "manifeste": {
    "double": "crepes",
    "cote": "gauche",
@@ -7703,14 +7691,13 @@
      "aquarelle": "oeufs",
      "angle": 0
     }
-   },
-   "relu": true
+   }
   }
  },
  "papier/f35": "674a1db14c8a43e3e2f643d64e70e67d4a4cea0c765d8a1b08d1905e6d0487d2",
  "papier1x/f35": "674a1db14c8a43e3e2f643d64e70e67d4a4cea0c765d8a1b08d1905e6d0487d2",
- "papier/f33": "7e58c3996c3d99c42fe3500eaabe9339f9220a115c8e7eab63f8c1de697b2b26",
- "papier1x/f33": "7e58c3996c3d99c42fe3500eaabe9339f9220a115c8e7eab63f8c1de697b2b26",
+ "papier/f33": "78d9d94c1759abf331c42e030ec6324f4c3679fd3e846d771835d2e88854f903",
+ "papier1x/f33": "78d9d94c1759abf331c42e030ec6324f4c3679fd3e846d771835d2e88854f903",
  "page/tartes-droite": {
   "cle": "26a02687410a818013b24af22339e27b347892be9338472d9e69fc1cb8c20e49",
   "manifeste": {
@@ -7797,7 +7784,7 @@
   }
  },
  "page/pierrette-gauche": {
-  "cle": "2888334458c0d1c1a0367dfeced5707b8eb4ef064488ae1be226a0e39b194477",
+  "cle": "f4657d1bee2613bbfd01866bf279ca3a91b34254f9f2723ecebadf6e8fa78c97",
   "manifeste": {
    "double": "pierrette",
    "cote": "gauche",
@@ -7818,16 +7805,7 @@
    },
    "deborde": [],
    "lignes": 14,
-   "recette": "pierrette",
-   "douteux": [
-    "œufs (encre rendue lue « aufs . »)",
-    "zeste (encre rendue lue « 2este »)"
-   ],
-   "douteux_importants": [
-    "zeste",
-    "œufs"
-   ],
-   "relu": true
+   "recette": "pierrette"
   }
  },
  "page/pierrette-droite": {
@@ -7864,7 +7842,7 @@
   }
  },
  "page/lise-gauche": {
-  "cle": "7c5398fa1a4d591136e2efeb6cfc94e3f3b923110f874070147e147ca637c989",
+  "cle": "cdb53fa84024e759293810a8f7cc41a168d18571c3d2932670033c9b97f7a6e3",
   "manifeste": {
    "double": "lise",
    "cote": "gauche",
@@ -7896,7 +7874,7 @@
   }
  },
  "page/lise-droite": {
-  "cle": "28075e3213082d887cdc3ec30dc254b4beaf99092b7729f7bf0c9deac6198605",
+  "cle": "70279d9bf537e1d7c3c97a040e6790eecafd72324f9479da2a66b35037ae66c6",
   "manifeste": {
    "double": "lise",
    "cote": "droite",
@@ -7910,13 +7888,13 @@
    "vivants": {
     "aq-lise-1": [
      0.35,
-     0.7,
+     0.459,
      0.4,
      0.2
     ],
     "aq-lise-2": [
      0.12,
-     0.73,
+     0.489,
      0.19,
      0.23
     ]
@@ -7940,7 +7918,7 @@
   }
  },
  "page/laura-gauche": {
-  "cle": "f38dc88ceb7fb270962916803208aafac464b8c0ee73ccbf4d7ea26d9b7012c3",
+  "cle": "fd456a50f023ee7f6ca6dd6243a9f9ee86376fffa61da74262561e010886ef43",
   "manifeste": {
    "double": "laura",
    "cote": "gauche",
@@ -7976,7 +7954,7 @@
   }
  },
  "page/laura-droite": {
-  "cle": "8384fabc016785cc2d9543579a8c1faf9ddac25d739d447d4bd4420c7883b8ee",
+  "cle": "f520f3399315f17b68d0ba9c6f053d41e2414f683d3547adfb0003ffc2d19bf5",
   "manifeste": {
    "double": "laura",
    "cote": "droite",
@@ -7990,7 +7968,7 @@
    "vivants": {
     "aq-laura-1": [
      0.36,
-     0.7,
+     0.543,
      0.38,
      0.24
     ]
@@ -8029,7 +8007,7 @@
   }
  },
  "pagination/emeline": {
-  "cle": "f1752e312654bfbdd123ae903eaf463637b54510e002f4a29b801913f94887a5",
+  "cle": "80b3f91295e8268f88b2e832983f855e88aa0da7da6f7442bf8aab32be2ca505",
   "pages": {
    "emeline-gauche": {
     "double": "emeline",
@@ -8364,7 +8342,7 @@
       "nom": "aq-emeline-1",
       "rect": [
        0.13,
-       0.35,
+       0.284,
        0.74,
        0.55
       ],
@@ -8375,9 +8353,9 @@
       "nom": "aq-emeline-1-bande",
       "rect": [
        0.0,
-       0.35,
+       0.284,
        1.0,
-       0.65
+       0.716
       ],
       "vivant": false
      }
@@ -8902,7 +8880,7 @@
   }
  },
  "pagination/anatole": {
-  "cle": "b1968987dc5e6631f0a4d308e638b15a2319ef0a71134a7da3ed8c52847256d8",
+  "cle": "c54c94738d120b9cf50e1d0f4139cdbea93e6644209e5c16f12899f45aab3352",
   "pages": {
    "anatole-gauche": {
     "double": "anatole",
@@ -9249,7 +9227,7 @@
       "nom": "aq-anatole-1",
       "rect": [
        0.36,
-       0.7,
+       0.476,
        0.38,
        0.24
       ],
@@ -9830,7 +9808,7 @@
   }
  },
  "page/emeline-gauche": {
-  "cle": "8c7ff64757162e657c39a64ba124d784d9d1a35a3366ac309098ba80a69d2e51",
+  "cle": "ce0a55e1f3737693d714eb1e17530c33843bfa545291a0077f9f221ab7d741f5",
   "manifeste": {
    "double": "emeline",
    "cote": "gauche",
@@ -9856,7 +9834,7 @@
   }
  },
  "page/emeline-droite": {
-  "cle": "20c2a3c0a45e8992de14b576a661b39b2b3ac5b24c53a044a2904faffa4343e0",
+  "cle": "f164c626bd8f947eccdea32466c82146162dbc006d0aa0d02b60b284a02cc19f",
   "manifeste": {
    "double": "emeline",
    "cote": "droite",
@@ -9870,7 +9848,7 @@
    "vivants": {
     "aq-emeline-1": [
      0.13,
-     0.35,
+     0.284,
      0.74,
      0.55
     ]
@@ -9953,7 +9931,7 @@
   }
  },
  "page/anatole-gauche": {
-  "cle": "6899a4b17e846fb70d5ad22b100f922327f156098e34a829d5d4247b82c690ef",
+  "cle": "12642c433c1c04d2d9b50c9327d629e1219462889a9c81cd8369ec9d010b95de",
   "manifeste": {
    "double": "anatole",
    "cote": "gauche",
@@ -9989,7 +9967,7 @@
   }
  },
  "page/anatole-droite": {
-  "cle": "5787ca4a75db163b5fb2083cd6a3877688f6952c9aa93cc6a07b79a68c8887e7",
+  "cle": "fec19d032b7030ce73de705ffd95c7a600f70c707674477f89b6831400959755",
   "manifeste": {
    "double": "anatole",
    "cote": "droite",
@@ -10003,7 +9981,7 @@
    "vivants": {
     "aq-anatole-1": [
      0.36,
-     0.7,
+     0.476,
      0.38,
      0.24
     ]
@@ -10021,7 +9999,7 @@
   }
  },
  "page/julien-gauche": {
-  "cle": "1f5dae6582b57720350b1966ce78df1449322bdd5205198cf4e80a74a265e6f2",
+  "cle": "302b75bcafce49b8e1ed4dc7d7f340d5f1a122f79ba118cad2d99cc7d67f0d53",
   "manifeste": {
    "double": "julien",
    "cote": "gauche",
@@ -10042,8 +10020,7 @@
    },
    "deborde": [],
    "lignes": 12,
-   "recette": "julien",
-   "relu": true
+   "recette": "julien"
   }
  },
  "page/julien-droite": {
@@ -10121,7 +10098,7 @@
   }
  },
  "page/titre": {
-  "cle": "61f2294f54354eac5603b670540fce581fb4658df331d8a84fda2cf85366ff78",
+  "cle": "72da8808d2902c1ce093e1c812f049ceec3320f78f8367f0c32b0a058f136e06",
   "manifeste": {
    "double": "titre",
    "cote": "droite",
@@ -10156,8 +10133,7 @@
     "aq-gateau-bougies": {
      "aquarelle": "gateau-bougies"
     }
-   },
-   "relu": true
+   }
   }
  },
  "pagination/laura-geyer": {
@@ -10590,7 +10566,7 @@
   }
  },
  "pagination/marie": {
-  "cle": "4ff08662ece371838e906689742a8d77c0c661aa6ce7d74e0c0fee4837df1291",
+  "cle": "b832463e0471432e45d35d42cff366d3f52e9a0e1c9d68fb62924abb3d467d93",
   "pages": {
    "marie-gauche": {
     "double": "marie",
@@ -10870,7 +10846,7 @@
       "nom": "aq-marie-1",
       "rect": [
        0.13,
-       0.25,
+       0.172,
        0.74,
        0.65
       ],
@@ -10881,9 +10857,9 @@
       "nom": "aq-marie-1-bande",
       "rect": [
        0.0,
-       0.25,
+       0.172,
        1.0,
-       0.75
+       0.828
       ],
       "vivant": false
      }
@@ -12137,7 +12113,7 @@
   }
  },
  "pagination/coralie": {
-  "cle": "5edc6b1be35a9a3f1bd6ed096c545e7e3951afa8a17b10d277265ebd960f62c6",
+  "cle": "441de2583149c4bcee8ffbb90d67cb9a9f0c7caee0ccb83afd0d5a2ab67131bf",
   "pages": {
    "coralie-gauche": {
     "double": "coralie",
@@ -12356,7 +12332,7 @@
       "nom": "aq-coralie-1",
       "rect": [
        0.13,
-       0.36,
+       0.317,
        0.74,
        0.58
       ],
@@ -12367,9 +12343,9 @@
       "nom": "aq-coralie-1-bande",
       "rect": [
        0.0,
-       0.36,
+       0.317,
        1.0,
-       0.64
+       0.683
       ],
       "vivant": false
      }
@@ -12491,8 +12467,8 @@
    "coralie-gauche": 0.14
   }
  },
- "papier/f39": "3828aedd2d27a4c61326f34145e12777e77c913a5d2af6645cb54b01793cbcef",
- "papier1x/f39": "3828aedd2d27a4c61326f34145e12777e77c913a5d2af6645cb54b01793cbcef",
+ "papier/f39": "8f6bea85b1bc33a02cc4f3c76a504737ced8335dcc136fffb78e9d21e103bab6",
+ "papier1x/f39": "8f6bea85b1bc33a02cc4f3c76a504737ced8335dcc136fffb78e9d21e103bab6",
  "papier/f37": "ec44c73d1272cdcf517383f93316cf341672531fcc1e0b615176dc396fc715d5",
  "papier1x/f37": "ec44c73d1272cdcf517383f93316cf341672531fcc1e0b615176dc396fc715d5",
  "page/brioches-droite": {
@@ -12559,10 +12535,10 @@
    "relu": true
   }
  },
- "papier/f43": "2c8a3c114e3455c784e480a9a3783dad3f05e7b343a9c1d56ae352f7c86053d5",
- "papier1x/f43": "2c8a3c114e3455c784e480a9a3783dad3f05e7b343a9c1d56ae352f7c86053d5",
- "papier/f41": "fdd9647dde9721f6846be4ff5a741bb4fbde3eda6ec2f70eed89d4155ea77041",
- "papier1x/f41": "fdd9647dde9721f6846be4ff5a741bb4fbde3eda6ec2f70eed89d4155ea77041",
+ "papier/f43": "b419743731c636b8f845f231eb7bd518e83c6ce3b702c524225dca0f80794018",
+ "papier1x/f43": "b419743731c636b8f845f231eb7bd518e83c6ce3b702c524225dca0f80794018",
+ "papier/f41": "146a386855a79b4ca760c456222eb37aedb12055f22520dd4618bc0eb26f7ae1",
+ "papier1x/f41": "146a386855a79b4ca760c456222eb37aedb12055f22520dd4618bc0eb26f7ae1",
  "papier/f47": "83205f3703541269c51286d0d025d8686bfd78d6b78939bbe73299d0139b7254",
  "papier1x/f47": "83205f3703541269c51286d0d025d8686bfd78d6b78939bbe73299d0139b7254",
  "papier/f45": "e1041d27173ec53a5dfc5e7b2a83a5b855c74e0f0d68d85b4e4209f35fcd4ec4",
@@ -12632,7 +12608,7 @@
   }
  },
  "page/marie-gauche": {
-  "cle": "060243fc09a30b6095aa46b5ab20cb67d63737c11db155957c55d26e0e9ed87a",
+  "cle": "906f212cdb5b199cd110e8d2e146f2a85adc70e35d8e49d4db0c40d32664da01",
   "manifeste": {
    "double": "marie",
    "cote": "gauche",
@@ -12658,7 +12634,7 @@
   }
  },
  "page/marie-droite": {
-  "cle": "22231498e88eb885289be761875aac7a691890eabf7b63aeed5870c0093ab5d8",
+  "cle": "62d15c61934dbcd4fd90b029ade410cbe8bedb70161668551b14190e7c65e575",
   "manifeste": {
    "double": "marie",
    "cote": "droite",
@@ -12672,7 +12648,7 @@
    "vivants": {
     "aq-marie-1": [
      0.13,
-     0.25,
+     0.172,
      0.74,
      0.65
     ]
@@ -12825,7 +12801,7 @@
   }
  },
  "page/lea-gauche": {
-  "cle": "196d3d85e885471a2030b5babddbcd37a15f032b780aab404dc1e5e784239c3a",
+  "cle": "41088ba2d5c1011930d99851f8def5b2ac3a2a9951cb34e7aec74fa0a07e6f6b",
   "manifeste": {
    "double": "lea",
    "cote": "gauche",
@@ -12859,8 +12835,7 @@
       0.0143
      ]
     }
-   ],
-   "relu": true
+   ]
   }
  },
  "page/lea-droite": {
@@ -12914,7 +12889,7 @@
   }
  },
  "page/coralie-gauche": {
-  "cle": "1ce9ba7a93d9aed8381859d3a12d4e9152806871cda68863ff0c92d246856aad",
+  "cle": "7cc60f9063c781042ee6e96d7a6d11b6eea444d211232387dd4fef622cae67ae",
   "manifeste": {
    "double": "coralie",
    "cote": "gauche",
@@ -12948,7 +12923,7 @@
   }
  },
  "page/coralie-droite": {
-  "cle": "71dac5b0f5ec0373068bc8cfa91adaa69ddfc9a0bba23b43de0603ac1fc6ccbd",
+  "cle": "463c48cf0a7640ebb335fb474a8df6c59a83b975f0823d91f271077fb942c7dc",
   "manifeste": {
    "double": "coralie",
    "cote": "droite",
@@ -12962,7 +12937,7 @@
    "vivants": {
     "aq-coralie-1": [
      0.13,
-     0.36,
+     0.317,
      0.74,
      0.58
     ]
@@ -13810,7 +13785,7 @@
   }
  },
  "pagination/antoine": {
-  "cle": "cb1952790450ab42d0411a82bc10db6a6d5fee2d9d06e6a98f8da0fb3b36a332",
+  "cle": "6a96f35be1cfd9d09644adbc135978e5f9f1aa7c167eff1645394eae5fc42b43",
   "pages": {
    "antoine-gauche": {
     "double": "antoine",
@@ -14002,7 +13977,7 @@
       "nom": "aq-antoine-1",
       "rect": [
        0.08,
-       0.51,
+       0.443,
        0.84,
        0.42
       ],
@@ -14013,9 +13988,9 @@
       "nom": "aq-antoine-1-bande",
       "rect": [
        0.0,
-       0.51,
+       0.443,
        1.0,
-       0.49
+       0.557
       ],
       "vivant": false
      }
@@ -14168,7 +14143,7 @@
   }
  },
  "pagination/suzanne": {
-  "cle": "45e71a6f2dbddd948edb6cf8ce276012c75f062976b8a17e94fb0e30389ca8bd",
+  "cle": "a8f9c51723ffd5d2a091c080244aa9bc4277a47beab82c49712c2d2d98dd9700",
   "pages": {
    "suzanne-gauche": {
     "double": "suzanne",
@@ -14369,7 +14344,7 @@
       "nom": "aq-suzanne-1",
       "rect": [
        0.13,
-       0.55,
+       0.498,
        0.67,
        0.29
       ],
@@ -14380,9 +14355,9 @@
       "nom": "aq-suzanne-1-bande",
       "rect": [
        0.0,
-       0.55,
+       0.498,
        1.0,
-       0.45
+       0.502
       ],
       "vivant": false
      }
@@ -14575,7 +14550,7 @@
   }
  },
  "pagination/margot-chapuzy": {
-  "cle": "9e227a12ac593f2bb9341f09c7757c3d376d37ad8120a6ff2d688c7a46f8c8f5",
+  "cle": "44fe95b0862db9ffde515427a0df8c3b0055b77346db9495d2dc7956e067fc9e",
   "pages": {
    "margot-chapuzy-gauche": {
     "double": "margot-chapuzy",
@@ -14653,7 +14628,7 @@
      {
       "type": "cadre",
       "id": "cadre",
-      "texte": "Ma chère Cécile,\nPour tes 30 ans, je suis heureuse de partager avec toi la recette de mon banana bread. C'est mon petit brin de réconfort, et j'espère qu'il t'apportera autant de douceur que tu en diffuses autour de toi. 🥰\nBienvenue au club des trentenaires 🤩.Tu verras, c'est une merveilleuse décennie qui commence, pleine de sérénité et de beaux moments.\nJe te souhaite un très joyeux anniversaire ! Profite de chaque instant de ta journée ! Gros bisous 🥰 Margot",
+      "texte": "Ma chère Cécile,\nPour tes 30 ans, je suis heureuse de partager avec toi la recette de mon banana bread. C'est mon petit brin de réconfort, et j'espère qu'il t'apportera autant de douceur que tu en diffuses autour de toi. 🥰\nBienvenue au club des trentenaires 🤩.Tu verras, c'est une merveilleuse décennie qui commence, pleine de sérénité et de beaux moments.\nJe te souhaite un très joyeux anniversaire ! Profite de chaque instant de ta journée ! Gros bisous 🥰",
       "signature": "Margot & Flo",
       "graine": 53429369,
       "signature_graine": 10562902,
@@ -14732,6 +14707,12 @@
         "graine": 14088225,
         "puce": "point",
         "atome": "ingredients-1/ligne-6"
+       },
+       {
+        "texte": "1 sachet de levure chimique",
+        "graine": 90350023,
+        "puce": "point",
+        "atome": "ingredients-1/ligne-7"
        }
       ]
      }
@@ -14744,7 +14725,8 @@
      "ingredients-1/ligne-3",
      "ingredients-1/ligne-4",
      "ingredients-1/ligne-5",
-     "ingredients-1/ligne-6"
+     "ingredients-1/ligne-6",
+     "ingredients-1/ligne-7"
     ]
    },
    "margot-chapuzy-droite": {
@@ -14781,18 +14763,12 @@
      },
      {
       "type": "ingredients",
-      "id": "ingredients-1@ligne-7",
+      "id": "ingredients-1@ligne-8",
       "disposition": "puces",
       "graine_puces": 2499660,
       "colonnes": 2,
       "avant": 0.0,
       "lignes": [
-       {
-        "texte": "1 sachet de levure chimique",
-        "graine": 90350023,
-        "puce": "point",
-        "atome": "ingredients-1/ligne-7"
-       },
        {
         "texte": "1 pincée de sel",
         "graine": 75890978,
@@ -14966,7 +14942,6 @@
      }
     ],
     "atomes": [
-     "ingredients-1/ligne-7",
      "ingredients-1/ligne-8",
      "ingredients-1/ligne-9",
      "section-preparation",
@@ -15658,7 +15633,7 @@
   }
  },
  "page/lisa-de-paris-gauche": {
-  "cle": "702b51ecaa014f002fbfd55c13241bc37bd2f99a3de8b3b176d3969dc68b639b",
+  "cle": "dd7c2dbbf88b74cec04abc134f7bbeb0dd2c8b3b5ec3d318dcbc836099a29035",
   "manifeste": {
    "double": "lisa-de-paris",
    "cote": "gauche",
@@ -15692,8 +15667,7 @@
       0.0141
      ]
     }
-   ],
-   "relu": true
+   ]
   }
  },
  "page/lisa-de-paris-droite": {
@@ -15753,7 +15727,7 @@
   }
  },
  "page/suzanne-gauche": {
-  "cle": "e630df1da004cabd9f1e4b2782e9bc85c8ca40c3aa2e8f36b54f20798b95c520",
+  "cle": "f8b4c4dab1a7f6066cf7ab3fc404d354dc519d79797f59fe638f49d48c25d217",
   "manifeste": {
    "double": "suzanne",
    "cote": "gauche",
@@ -15803,7 +15777,7 @@
   }
  },
  "page/suzanne-droite": {
-  "cle": "7912034b9b08e06b88e24ceb477854bb1a3575c84370c298121d43c941bc0002",
+  "cle": "43fd933f352b12343167b30473584699251cdf8760c9fce47e7731b5baf1a839",
   "manifeste": {
    "double": "suzanne",
    "cote": "droite",
@@ -15817,7 +15791,7 @@
    "vivants": {
     "aq-suzanne-1": [
      0.13,
-     0.55,
+     0.498,
      0.67,
      0.29
     ]
@@ -15956,7 +15930,7 @@
   }
  },
  "page/margot-chapuzy-gauche": {
-  "cle": "76d58445885ee6e7def243c9d8b0a89755430de928cfb0a13cb75f46c38316d4",
+  "cle": "71e19f7c452e1a2e3119d94088320a400282430bbaa3af753a8b7f1c3ea5c2bf",
   "manifeste": {
    "double": "margot-chapuzy",
    "cote": "gauche",
@@ -15966,7 +15940,7 @@
    "encre": "pages/margot-chapuzy-gauche",
    "papier1x": "pages/1x/papier/f31",
    "encre1x": "pages/1x/margot-chapuzy-gauche",
-   "texte": "Margot & Flo\nPour Cécile : Ma chère Cécile, Pour tes 30 ans, je suis heureuse de partager avec toi la recette de mon banana bread. C'est mon petit brin de réconfort, et j'espère qu'il t'apportera autant de douceur que tu en diffuses autour de toi. 🥰 Bienvenue au club des trentenaires 🤩 .Tu verras, c'est une merveilleuse décennie qui commence, pleine de sérénité et de beaux moments. Je te souhaite un très joyeux anniversaire ! Profite de chaque instant de ta journée ! Gros bisous 🥰 Margot — Margot & Flo\nBanana Bread de Margot 🥰\nIngrédients\n2 bananes bien mûres\n125 g de poudre d’amande\n80 g de farine\n50 g de sucre de canne\n50 g de beurre\n2 œufs",
+   "texte": "Margot & Flo\nPour Cécile : Ma chère Cécile, Pour tes 30 ans, je suis heureuse de partager avec toi la recette de mon banana bread. C'est mon petit brin de réconfort, et j'espère qu'il t'apportera autant de douceur que tu en diffuses autour de toi. 🥰 Bienvenue au club des trentenaires 🤩 .Tu verras, c'est une merveilleuse décennie qui commence, pleine de sérénité et de beaux moments. Je te souhaite un très joyeux anniversaire ! Profite de chaque instant de ta journée ! Gros bisous 🥰 — Margot & Flo\nBanana Bread de Margot 🥰\nIngrédients\n2 bananes bien mûres\n125 g de poudre d’amande\n80 g de farine\n50 g de sucre de canne\n50 g de beurre\n2 œufs\n1 sachet de levure chimique",
    "vivants": {
     "photo": [
      0.06,
@@ -15982,7 +15956,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 22,
+   "lignes": 23,
    "aquarelles": {
     "aq-margot-chapuzy-1": {
      "aquarelle": "banana-bread",
@@ -15996,10 +15970,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.6825,
-      0.2805,
-      0.0202,
-      0.0143
+      0.6812,
+      0.2794,
+      0.0209,
+      0.0148
      ]
     },
     {
@@ -16007,10 +15981,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.7034,
-      0.3087,
-      0.0195,
-      0.0138
+      0.7083,
+      0.3055,
+      0.0207,
+      0.0147
      ]
     },
     {
@@ -16018,10 +15992,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.6562,
-      0.46,
-      0.021,
-      0.0149
+      0.6015,
+      0.4588,
+      0.0215,
+      0.0152
      ]
     },
     {
@@ -16029,10 +16003,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.4324,
-      0.5468,
-      0.0276,
-      0.0195
+      0.442,
+      0.5221,
+      0.0282,
+      0.02
      ]
     }
    ],
@@ -16040,7 +16014,7 @@
   }
  },
  "page/margot-chapuzy-droite": {
-  "cle": "063e686dbe61d0079b1fe72bea35adb49c8e9c976529ea67215300da2e9ca0b5",
+  "cle": "359fba2fc74e831fcfa8c98b82969ae8ff932b1cacdefa4689cdffc8f5d7627e",
   "manifeste": {
    "double": "margot-chapuzy",
    "cote": "droite",
@@ -16050,10 +16024,10 @@
    "encre": "pages/margot-chapuzy-droite",
    "papier1x": "pages/1x/papier/f33",
    "encre1x": "pages/1x/margot-chapuzy-droite",
-   "texte": "Margot & Flo\n1 sachet de levure chimique\n1 pincée de sel\n100 g de pépites de chocolat\nPréparation\n1. Préchauffe le four à 180 °C.\n2. Écrase les bananes dans un saladier.\n3. Ajoute les œufs et le beurre fondu, puis mélange.\n4. Incorpore le sucre, la poudre d’amande, la farine, la levure et le sel.\n5. Verse la pâte dans un moule à cake beurré. Petite astuce rajoute un peu de sucre de canne avant de l’enfourner pour avoir une croûte caramélisée au dessus 😍\n6. Enfourne pendant environ 50 minutes à 180 °C. Vérifie la cuisson avec la pointe d’un couteau.\nLaisse refroidir un peu avant de déguster 😋 🍌",
+   "texte": "Margot & Flo\n1 pincée de sel\n100 g de pépites de chocolat\nPréparation\n1. Préchauffe le four à 180 °C.\n2. Écrase les bananes dans un saladier.\n3. Ajoute les œufs et le beurre fondu, puis mélange.\n4. Incorpore le sucre, la poudre d’amande, la farine, la levure et le sel.\n5. Verse la pâte dans un moule à cake beurré. Petite astuce rajoute un peu de sucre de canne avant de l’enfourner pour avoir une croûte caramélisée au dessus 😍\n6. Enfourne pendant environ 50 minutes à 180 °C. Vérifie la cuisson avec la pointe d’un couteau.\nLaisse refroidir un peu avant de déguster 😋 🍌",
    "vivants": {},
    "deborde": [],
-   "lignes": 13,
+   "lignes": 12,
    "recette": "margot-chapuzy",
    "croquis": [
     {
@@ -16061,10 +16035,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.9547,
-      0.3279,
-      0.0188,
-      0.0133
+      0.9536,
+      0.3015,
+      0.0185,
+      0.0131
      ]
     },
     {
@@ -16072,10 +16046,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.5734,
-      0.4186,
-      0.0182,
-      0.0129
+      0.5729,
+      0.3881,
+      0.0215,
+      0.0152
      ]
     },
     {
@@ -16083,10 +16057,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.5943,
-      0.4164,
-      0.0202,
-      0.0143
+      0.5962,
+      0.3894,
+      0.0193,
+      0.0136
      ]
     }
    ],
@@ -16098,7 +16072,7 @@
  "papier/f49": "78c5c1c864fcab256263c6b57526cd38a6c6d2ad62fc21388130e84d5100737c",
  "papier1x/f49": "78c5c1c864fcab256263c6b57526cd38a6c6d2ad62fc21388130e84d5100737c",
  "page/antoine-gauche": {
-  "cle": "7e06438f2c2ff5a62ebd1e4389ee784702272a9aa33e46982e9f45247dfe5241",
+  "cle": "f306d4a803994446f1223adfc20c8cfdee5b8e41c872642b5331033f8e9acb16",
   "manifeste": {
    "double": "antoine",
    "cote": "gauche",
@@ -16160,7 +16134,7 @@
   }
  },
  "page/antoine-droite": {
-  "cle": "f3a1e6a3cacc50d0a04e1acf39eb3f758b8b983821ca7e8934c436d0196d5c03",
+  "cle": "b3e4a9e650598e55e827a453efb1da8c2f4df3e949b12c010ca7df72f119799d",
   "manifeste": {
    "double": "antoine",
    "cote": "droite",
@@ -16174,7 +16148,7 @@
    "vivants": {
     "aq-antoine-1": [
      0.08,
-     0.51,
+     0.443,
      0.84,
      0.42
     ]
@@ -16192,7 +16166,7 @@
   }
  },
  "page/elise-gauche": {
-  "cle": "64a98dda2b0e4b7ef165cf35c0c8c313e2945c0d2055be20e82ee9093b5d7ce9",
+  "cle": "defe6f5c3c065dbe157bfd1e63972ec4527f24740c08200560b2583d987383c0",
   "manifeste": {
    "double": "elise",
    "cote": "gauche",
@@ -16237,8 +16211,7 @@
       0.0147
      ]
     }
-   ],
-   "relu": true
+   ]
   }
  },
  "page/elise-droite": {
@@ -16291,12 +16264,12 @@
    "relu": true
   }
  },
- "papier/f57": "96bb97c37b2552ef12cc25f1a58b717a357d07420e4763ce9b0ad3b037afe4fa",
- "papier1x/f57": "96bb97c37b2552ef12cc25f1a58b717a357d07420e4763ce9b0ad3b037afe4fa",
+ "papier/f57": "d56874485263b783ce1a8f4a2dadfc6b844e34bce87727c6bc6061e3cf84eaac",
+ "papier1x/f57": "d56874485263b783ce1a8f4a2dadfc6b844e34bce87727c6bc6061e3cf84eaac",
  "papier/f53": "b8387796b4507a50720479315dfee3284ae19ad4470afaa955f8d46feefafdf1",
  "papier1x/f53": "b8387796b4507a50720479315dfee3284ae19ad4470afaa955f8d46feefafdf1",
  "pagination/alba": {
-  "cle": "2e9af1cfdddb8938695866e438435bee747b9c3d282c97d0ecfe221587f1517e",
+  "cle": "502a77882ba448dd4b195a55041701b4ab65ed6e263dc6a920b9fcc64cd2b0a0",
   "pages": {
    "alba-gauche": {
     "double": "alba",
@@ -16547,7 +16520,7 @@
       "nom": "aq-alba-1",
       "rect": [
        0.35,
-       0.7,
+       0.454,
        0.4,
        0.2
       ],
@@ -16559,7 +16532,7 @@
       "nom": "aq-alba-2",
       "rect": [
        0.12,
-       0.73,
+       0.484,
        0.19,
        0.23
       ],
@@ -17046,7 +17019,7 @@
   }
  },
  "pagination/lily": {
-  "cle": "e2a2292c323f78fb1185060f36926e09d0474e48d1c6f4c69865d01c04840163",
+  "cle": "758b2b37806d6d8989cf4bff43cb50dad090f7034563552e702f5e7b97f4dfb9",
   "pages": {
    "lily-gauche": {
     "double": "lily",
@@ -17316,14 +17289,24 @@
      {
       "nom": "aq-lily-1",
       "rect": [
-       0.36,
-       0.7,
-       0.36,
-       0.2
+       0.37,
+       0.75,
+       0.26,
+       0.138
       ],
-      "aquarelle": "cannelle",
+      "aquarelle": "roules-cannelle",
       "anime": "fleurit",
       "angle": -8
+     },
+     {
+      "nom": "aq-lily-1-bande",
+      "rect": [
+       0.0,
+       0.75,
+       1.0,
+       0.14
+      ],
+      "vivant": false
      }
     ],
     "volant": {
@@ -17773,11 +17756,11 @@
   },
   "trous": {
    "lily-gauche": 0.16,
-   "lily-droite": 3.61
+   "lily-droite": 0.64
   }
  },
  "x4/coralie-droite": {
-  "cle": "79c2594ceeb86f67f326a8becf204cd7a82a58c7feaac5f9ead1c4ab93c0e6d9",
+  "cle": "c69224bf300e96d3f687173517b4ebaa46e566844a019d9a8ff93370d86b1e13",
   "encre4x": {
    "base": "pages/4x/coralie-droite",
    "echelle": 4.0,
@@ -17823,7 +17806,7 @@
   }
  },
  "x4/antoine-gauche": {
-  "cle": "4ccd151d4f245616f589202bcf02b8804c10f0fc43131c96c8732d7c49ba7296",
+  "cle": "d95937e9cb63dac92c3035911ae04c61dbe123678618bcd957191a223894a8b3",
   "encre4x": {
    "base": "pages/4x/antoine-gauche",
    "echelle": 4.0,
@@ -17869,7 +17852,7 @@
   }
  },
  "x4/antoine-droite": {
-  "cle": "8a985cff9976f3d110431a4fb3ae7973aaa19269882957113e0540d468b59408",
+  "cle": "8d6205a516700deb67419878aa5612a2a3dffce6225181261507e658dd65ec06",
   "encre4x": {
    "base": "pages/4x/antoine-droite",
    "echelle": 4.0,
@@ -17915,7 +17898,7 @@
   }
  },
  "x4/suzanne-gauche": {
-  "cle": "a52fa268ab153f1ccd83c202c98c2bd6c0a6a4d5315d0feca42f6274e8a1fa55",
+  "cle": "3bdac9d43e2608e2a9f5f8ef51e0d476d32286177670d68ae408c748d9929768",
   "encre4x": {
    "base": "pages/4x/suzanne-gauche",
    "echelle": 4.0,
@@ -17961,7 +17944,7 @@
   }
  },
  "x4/suzanne-droite": {
-  "cle": "e741b3e4db5148a1b45fb1828098a18236ec2fd94be031b0bbc5f48dad9204f0",
+  "cle": "8986a51afaefa30fb6e274a042691cb77a554f6b923869381c088b95c861c0b9",
   "encre4x": {
    "base": "pages/4x/suzanne-droite",
    "echelle": 4.0,
@@ -18007,7 +17990,7 @@
   }
  },
  "x4/margot-chapuzy-gauche": {
-  "cle": "6772eed18485e2d232d8be66062deaa500ebfff377677d1f39dccf15955aaeae",
+  "cle": "86002b8dced006c9caeeb31c68f210aedf6f5367bb34eb163581fde903d35255",
   "encre4x": {
    "base": "pages/4x/margot-chapuzy-gauche",
    "echelle": 4.0,
@@ -18053,7 +18036,7 @@
   }
  },
  "x4/margot-chapuzy-droite": {
-  "cle": "8b2d314cc394a5baee77c3b21d3297a4e132b899f72d7e63ab796e98b360678f",
+  "cle": "46510328b86d9f495a197a0ed80aee611e630231ec490f70d5ecb4fbf514e0bc",
   "encre4x": {
    "base": "pages/4x/margot-chapuzy-droite",
    "echelle": 4.0,
@@ -18283,7 +18266,7 @@
   }
  },
  "x4/marie-gauche": {
-  "cle": "7d07713088e613ea7dd79ba49e263f5affa50c469de3c06e6ccbac7fbdf61bd9",
+  "cle": "102ab90a5a92049f9e782b284db002c5f4f82964d4ca681135f676bfcc876d7a",
   "encre4x": {
    "base": "pages/4x/marie-gauche",
    "echelle": 4.0,
@@ -18329,7 +18312,7 @@
   }
  },
  "x4/marie-droite": {
-  "cle": "d9702c340766a49c0c0c734c615b5d9bb8344723e7e0be12af8eb8ebf8e82ce4",
+  "cle": "d239e2649ade5efdf043785d5b244ea8f1551325ea15b5525c4b667b655743ea",
   "encre4x": {
    "base": "pages/4x/marie-droite",
    "echelle": 4.0,
@@ -18375,7 +18358,7 @@
   }
  },
  "x4/lea-gauche": {
-  "cle": "f65ef67785a7557bcfa156e40f494b052a84584250104c3b34afebf49988a81d",
+  "cle": "88e94892d18c37281cf60fa3f12b027060b610c587614d1cd9417fd562aad068",
   "encre4x": {
    "base": "pages/4x/lea-gauche",
    "echelle": 4.0,
@@ -18625,7 +18608,7 @@
   }
  },
  "x4/coralie-gauche": {
-  "cle": "239bd7dac11c24b3883173c453e77acfaed2421ca532103357cbd5ce42fdb63e",
+  "cle": "cfef952d6e9a0b5429cde7052b98e0f8f4df75703553826b726598ca58b20e9e",
   "encre4x": {
    "base": "pages/4x/coralie-gauche",
    "echelle": 4.0,
@@ -18717,7 +18700,7 @@
   }
  },
  "x4/titre": {
-  "cle": "c2a10009ff7a1aa2c398fad9d1aea5e213a22f57613e9a477e50debfe31f4e44",
+  "cle": "5abf0bff3b9b9ba36220e4e59b1ed2d3f909a4d772d24dc4d03d635b25101ef8",
   "encre4x": {
    "base": "pages/4x/titre",
    "echelle": 4.0,
@@ -18901,7 +18884,7 @@
   }
  },
  "x4/cecile-2-droite": {
-  "cle": "cf3c147c5c666daa7a7559e8f0541984dc7c0215c90642928ebe13d1bccd15d2",
+  "cle": "e450119c0a4970d681530eac2b332f22e520b1fb39a6de9b362fff16cf6748ae",
   "encre4x": {
    "base": "pages/4x/cecile-2-droite",
    "echelle": 4.0,
@@ -19133,7 +19116,7 @@
  "papier/f59": "f3e3e028ee3860476fc375caba47369760a071e0ba6303ae1c75e005603ecb51",
  "papier1x/f59": "f3e3e028ee3860476fc375caba47369760a071e0ba6303ae1c75e005603ecb51",
  "x4/laura-gauche": {
-  "cle": "e0ff96107776e80319f4d8b94de42b94abdbd373fb3b1cb597ae9efc16719925",
+  "cle": "de19cb236bcf482f33e02b61010ecd0f9910956734a5cdad321e3da0e765dd9e",
   "encre4x": {
    "base": "pages/4x/laura-gauche",
    "echelle": 4.0,
@@ -19179,7 +19162,7 @@
   }
  },
  "x4/laura-droite": {
-  "cle": "aa6f61d674eaa08d953a869999d3016dd35703505b4bb539e640b1cbb7801ebb",
+  "cle": "87139878f7c4426a7e5c8513fe144f6ef38b160c1a8091c8425cf3a4b4e94f57",
   "encre4x": {
    "base": "pages/4x/laura-droite",
    "echelle": 4.0,
@@ -19224,10 +19207,10 @@
    ]
   }
  },
- "papier/f61": "5465529663e3e56c2f52474278f1f400cd1b50517b23bc51105106c974120d02",
- "papier1x/f61": "5465529663e3e56c2f52474278f1f400cd1b50517b23bc51105106c974120d02",
+ "papier/f61": "b93aa67c524e90caa31bf36d09e68e9e357d599207a341cdfba735c77099c73b",
+ "papier1x/f61": "b93aa67c524e90caa31bf36d09e68e9e357d599207a341cdfba735c77099c73b",
  "x4/elise-gauche": {
-  "cle": "ddaf6865e7b7e252be0ee04e60f830a856929ef137113f22ac3beef468b211d6",
+  "cle": "a3a7397424407891342fc7e908c10466027be7f8fc6620f6375632d1c823e63f",
   "encre4x": {
    "base": "pages/4x/elise-gauche",
    "echelle": 4.0,
@@ -19413,7 +19396,7 @@
  "papier/f63": "b33d32007524b34ebbdbc1f02b797df0e253dc921a240ebfa7bf85963223d075",
  "papier1x/f63": "b33d32007524b34ebbdbc1f02b797df0e253dc921a240ebfa7bf85963223d075",
  "x4/fin-gauche": {
-  "cle": "17165c643a308811c44f6c508ae71716d3544fc607f70b6ea1a963f6cea472f7",
+  "cle": "00b76bcc14cc49dfed86d99947d549714688420d8cf4c7f875d6f4e982b58d51",
   "encre4x": {
    "base": "pages/4x/fin-gauche",
    "echelle": 4.0,
@@ -19505,7 +19488,7 @@
   }
  },
  "x4/biscuits-droite": {
-  "cle": "44cbae5287645294e1cb3a1c0d17b1f98d938f9328299f45283a506f36e2193d",
+  "cle": "caebf2f4ec6f02c791f7fa22df81fe44f3356a5f2779f16fee6450d5c2bd3055",
   "encre4x": {
    "base": "pages/4x/biscuits-droite",
    "echelle": 4.0,
@@ -19643,7 +19626,7 @@
   }
  },
  "x4/lisa-de-paris-gauche": {
-  "cle": "a030c72567898ec4556e0e9960d1be186ed56c9b9189cce93a296f600cc5a4df",
+  "cle": "16964e030b0793fc0d13f88210c77711c26f4ae86da321d95b1d22b0c7370326",
   "encre4x": {
    "base": "pages/4x/lisa-de-paris-gauche",
    "echelle": 4.0,
@@ -20103,7 +20086,7 @@
   }
  },
  "page/lily-gauche": {
-  "cle": "e95f5daeffe1f381bc638c35880790a72ec854a22936f786bead25efd0ccc310",
+  "cle": "4f4d277faa0d5e6cf98b9732ab93db88dd64c4fcecdaea8b85e170dbfe415b92",
   "manifeste": {
    "double": "lily",
    "cote": "gauche",
@@ -20129,7 +20112,7 @@
   }
  },
  "x4/lily-gauche": {
-  "cle": "9328a8667250fc3a7f907e8e4dc59b9a4cfb141ee2ce43779f29800a0de99921",
+  "cle": "0e1484871f77596a46d1636334ccbda584a520d2e3dd0693b1c33d1329b19f40",
   "encre4x": {
    "base": "pages/4x/lily-gauche",
    "echelle": 4.0,
@@ -20175,7 +20158,7 @@
   }
  },
  "page/lily-droite": {
-  "cle": "19ea6e5cc4ef5685186a8055d0b880829896a78d822921b2e0fd2e43538a458d",
+  "cle": "44b61eecb2e75cc1dd97f44b9e87d3220a5fbc8af07e752a84fee4fc93814058",
   "manifeste": {
    "double": "lily",
    "cote": "droite",
@@ -20194,17 +20177,17 @@
      0.215
     ],
     "aq-lily-1": [
-     0.36,
-     0.7,
-     0.36,
-     0.2
+     0.37,
+     0.75,
+     0.26,
+     0.138
     ]
    },
    "deborde": [],
-   "lignes": 23,
+   "lignes": 21,
    "aquarelles": {
     "aq-lily-1": {
-     "aquarelle": "cannelle",
+     "aquarelle": "roules-cannelle",
      "anime": "fleurit",
      "angle": -8
     }
@@ -20226,7 +20209,7 @@
   }
  },
  "x4/lily-droite": {
-  "cle": "b18168a2f08da6162935629dd56fbc23ab5a793850e0ead355f26618e3f3eac8",
+  "cle": "b841af045e04b0230baaa9537d6e64d5d68155d24c88e8ffa80b257502670d71",
   "encre4x": {
    "base": "pages/4x/lily-droite",
    "echelle": 4.0,
@@ -20417,7 +20400,7 @@
   }
  },
  "x4/crepes-gauche": {
-  "cle": "629347cd1dd565f83486ddc6c49302c4351464077c41b459457c07502b2a3df2",
+  "cle": "edb20e2d05b720477f4ceaba3f2ff4f815e1c296b763418a573221df3b2c1523",
   "encre4x": {
    "base": "pages/4x/crepes-gauche",
    "echelle": 4.0,
@@ -20463,7 +20446,7 @@
   }
  },
  "x4/anatole-gauche": {
-  "cle": "a236670a0f052712f1e2e6a3567301c94089f6a3b0a672fde5e472f5f846ac5b",
+  "cle": "beef227cfe9e3685e8dd582da5a7e4bdc4e3125a4258bf4b9460d4f4b119b5ed",
   "encre4x": {
    "base": "pages/4x/anatole-gauche",
    "echelle": 4.0,
@@ -20509,7 +20492,7 @@
   }
  },
  "x4/anatole-droite": {
-  "cle": "62f9ea53dfe8409bace7f006aac30c285e55196c4f63b0f7864ee96deca11898",
+  "cle": "9403db5d12e0e64ee7029a144043c7a623686759480f0e004c6b8dcfce51284d",
   "encre4x": {
    "base": "pages/4x/anatole-droite",
    "echelle": 4.0,
@@ -20555,7 +20538,7 @@
   }
  },
  "x4/lise-gauche": {
-  "cle": "962563ca1c888f21746e4ce9da186483569b49ea73609a3ce3548747f9d91cb4",
+  "cle": "0b1c66c3cdea6b8a30615e4fea07b0e73e0bcae7e564f50399d30c08b467a049",
   "encre4x": {
    "base": "pages/4x/lise-gauche",
    "echelle": 4.0,
@@ -20601,7 +20584,7 @@
   }
  },
  "x4/lise-droite": {
-  "cle": "a6a02b7e41f18a11d49937d47c5e13caa4526960efa7a054134fa8512c94ea1c",
+  "cle": "70eea834205da62b1922f00949e04d330fc2c4ebba17a86e115a3849e424430c",
   "encre4x": {
    "base": "pages/4x/lise-droite",
    "echelle": 4.0,
@@ -20647,7 +20630,7 @@
   }
  },
  "page/alba-gauche": {
-  "cle": "f9922cd3207e45a21a39abd8468af9267630c6d6daa65222659e651157a3a530",
+  "cle": "6ed665cb30ce541050b0891ad21a039113bd2bbe92080273e708e5f2027d55f9",
   "manifeste": {
    "double": "alba",
    "cote": "gauche",
@@ -20682,7 +20665,7 @@
   }
  },
  "x4/alba-gauche": {
-  "cle": "992f32fc7ae0ac3e99ffcc8675145ce252cbcaf190b05cbb17d8464dfb53dec7",
+  "cle": "1e7125f9e3b20ee44f7223d87626b7c48ecf4bd2147694f42697806a1e6b915b",
   "encre4x": {
    "base": "pages/4x/alba-gauche",
    "echelle": 4.0,
@@ -20728,7 +20711,7 @@
   }
  },
  "page/alba-droite": {
-  "cle": "e9d101d39669bf5f2833ec715d909c0fffb31df5a7f43fd591ea9cc582efc817",
+  "cle": "839031e69af557868ea59595c8d85c6d26ee24462c314df4c42d6564630b79f5",
   "manifeste": {
    "double": "alba",
    "cote": "droite",
@@ -20742,13 +20725,13 @@
    "vivants": {
     "aq-alba-1": [
      0.35,
-     0.7,
+     0.454,
      0.4,
      0.2
     ],
     "aq-alba-2": [
      0.12,
-     0.73,
+     0.484,
      0.19,
      0.23
     ]
@@ -20778,7 +20761,7 @@
   }
  },
  "x4/alba-droite": {
-  "cle": "92d9552a1c7a5d4cc7caf4e285d9cab17b9003a8aa9c1f3c1cb79ade677846b0",
+  "cle": "f63abfd19148d205a9ceaeb53832f47e8fd89e8356709be40471ab85511d2d3c",
   "encre4x": {
    "base": "pages/4x/alba-droite",
    "echelle": 4.0,
@@ -20824,7 +20807,7 @@
   }
  },
  "page/shannen-gauche": {
-  "cle": "34ebc726dc2f1e5b41bde90dc9bdade8acf6e2f59da7607f255e7f6975b1260c",
+  "cle": "994ed5e538d278c2169dc2bffe135e16d215ae78fd816e1efed22e37fb2ce48a",
   "manifeste": {
    "double": "shannen",
    "cote": "gauche",
@@ -20858,18 +20841,11 @@
       0.0138
      ]
     }
-   ],
-   "douteux": [
-    "plaque (encre rendue lue « plague »)"
-   ],
-   "douteux_importants": [
-    "plaque"
-   ],
-   "relu": true
+   ]
   }
  },
  "x4/shannen-gauche": {
-  "cle": "b720ec183a3f644fefa510bad89aba0374e2885e3e4dcfc40d65f36c975d8d82",
+  "cle": "296d98f0b5e3b174003e92c0b3c0d044f11b95fe6024804ccbeb9692857976f9",
   "encre4x": {
    "base": "pages/4x/shannen-gauche",
    "echelle": 4.0,
@@ -21132,7 +21108,7 @@
   }
  },
  "x4/lisa-gauche": {
-  "cle": "bce9ea40b5fec3b14e06634dd05b753e77b5903d44a40e56ba9fe71eaa72e163",
+  "cle": "2dc8785d7a13f26f8ff4a2210fe6a953323c38d1c286e9e9349a4b75190694cf",
   "encre4x": {
    "base": "pages/4x/lisa-gauche",
    "echelle": 4.0,
@@ -21224,7 +21200,7 @@
   }
  },
  "x4/emeline-gauche": {
-  "cle": "58aad19c4ccb9c7632ebd9e0d1b434caa3f57f88bedb480bfc4237dcd250ed90",
+  "cle": "e4f0f756f6ecd9653c677fcea7850fbeecc58651e5bbd96bd7da1ebfcdf31184",
   "encre4x": {
    "base": "pages/4x/emeline-gauche",
    "echelle": 4.0,
@@ -21270,7 +21246,7 @@
   }
  },
  "x4/emeline-droite": {
-  "cle": "85175f20f1279447152c08970f8ac2fe64ddacba1605b3f9732b9766adfdcd4a",
+  "cle": "0ced805717357fbf20d561f28bf2a08fafb4ad615f7532ddeae2ad5f673871c3",
   "encre4x": {
    "base": "pages/4x/emeline-droite",
    "echelle": 4.0,
@@ -21316,7 +21292,7 @@
   }
  },
  "x4/julien-gauche": {
-  "cle": "cca93b64e7037728c55ef46d3bdcf04383a4360a406f42d9cb5c1f8f86bea774",
+  "cle": "e8f678ee9bb8a04c577f74eead2d68d7fa4cb733c150225e811926497a089a38",
   "encre4x": {
    "base": "pages/4x/julien-gauche",
    "echelle": 4.0,
@@ -21408,7 +21384,7 @@
   }
  },
  "x4/pierrette-gauche": {
-  "cle": "d66aba4948915c5dc5003521f4a114d3003c018d0e7b1c0d01ede819a55086d4",
+  "cle": "c026428b8728f7c5ab68b29b29c16ddb1115abcbf9ce8bd535ff211fea1dc114",
   "encre4x": {
    "base": "pages/4x/pierrette-gauche",
    "echelle": 4.0,
@@ -21500,7 +21476,7 @@
   }
  },
  "page/cecile-3-droite": {
-  "cle": "9fa11220c147a12387f0e13425bc2575132babc0f8ef904d7fbd08fe86abec03",
+  "cle": "ea32c1efd666a6234ecf3b265dbd74d75459fd4b1989c62d07388d76018bcd90",
   "manifeste": {
    "double": "cecile-3",
    "cote": "droite",
@@ -21533,12 +21509,11 @@
     ]
    },
    "deborde": [],
-   "lignes": 0,
-   "relu": true
+   "lignes": 0
   }
  },
  "x4/cecile-3-droite": {
-  "cle": "35c2e2cfa167e6f3d63052d083ac9d5c8b838ad27e1d1d6873250f0841557e7b",
+  "cle": "06507a6212de640f5a16739085c2e1c1ec6732d93b77c1d08acbedce1ab83d04",
   "encre4x": {
    "base": "pages/4x/cecile-3-droite",
    "echelle": 4.0,
@@ -21584,7 +21559,7 @@
   }
  },
  "page/cecile-3-gauche": {
-  "cle": "59512ae67585ed46e622081a49bafbcc48c8d59de97500dbd2cef03bf8fa00ce",
+  "cle": "86e153b0974ca4a26d612966abc0f6dcd71eb63dbfefc8e1629e71cd4e8d9da4",
   "manifeste": {
    "double": "cecile-3",
    "cote": "gauche",
@@ -21617,12 +21592,11 @@
     ]
    },
    "deborde": [],
-   "lignes": 0,
-   "relu": true
+   "lignes": 0
   }
  },
  "x4/cecile-3-gauche": {
-  "cle": "db55185d7548add901a9cd812b1d991e7ea289f5fbbb62248c6a114d3dcfc6dc",
+  "cle": "61581a05e2c824c1c64f3e6cfb72a187a7c08ebdce9fe501e12eed9fd09d4e68",
   "encre4x": {
    "base": "pages/4x/cecile-3-gauche",
    "echelle": 4.0,
@@ -21668,7 +21642,7 @@
   }
  },
  "page/cecile-4-droite": {
-  "cle": "8b667b6b64c1d42708c25fdf4dfa84f30c80357ecdedc00d95223ab4ff1c2d7b",
+  "cle": "16abc807ff1787a7700840d08ea893849cb118b48d8e2026da4d94089017244f",
   "manifeste": {
    "double": "cecile-4",
    "cote": "droite",
@@ -21701,12 +21675,11 @@
     ]
    },
    "deborde": [],
-   "lignes": 0,
-   "relu": true
+   "lignes": 0
   }
  },
  "x4/cecile-4-droite": {
-  "cle": "ef8c490a18552861d9de321f3c7cf502a1ad0d23a1ff5859cd643962a890afb5",
+  "cle": "3f1b0c8be3580bff747826870669b8102642293d7fffdf5be263a2112b431271",
   "encre4x": {
    "base": "pages/4x/cecile-4-droite",
    "echelle": 4.0,
@@ -21914,7 +21887,7 @@
   }
  },
  "page/cecile-5-gauche": {
-  "cle": "4f8ce3983752a6b18a5d6d976d35720a85c54b62c4860ef092c5b43f15a8648d",
+  "cle": "9aa618966c519955d3154cacc4efa84416c5a5250fd49fdc5b712c39c6458dde",
   "manifeste": {
    "double": "cecile-5",
    "cote": "gauche",
@@ -21941,12 +21914,11 @@
     ]
    },
    "deborde": [],
-   "lignes": 0,
-   "relu": true
+   "lignes": 0
   }
  },
  "x4/cecile-5-gauche": {
-  "cle": "76778fdf4fda373dc0a427f8e9912ad9230d6725fc536e283fcf070315d039bc",
+  "cle": "c7ff0b54173f246d14544727ceb599fb38f7367b57ef54ae66d75863e71a958d",
   "encre4x": {
    "base": "pages/4x/cecile-5-gauche",
    "echelle": 4.0,
@@ -22432,7 +22404,7 @@
   }
  },
  "page/marine-gauche": {
-  "cle": "7ad8394a1dfb61f6c2bef1bc5a61b601e79ee54684bdc9b8f1eabb0e7a7b4805",
+  "cle": "42a48f2e6fde6f12d1fc28c47aef7e3a7c17d525f9f425115a6260247e0a989b",
   "manifeste": {
    "double": "marine",
    "cote": "gauche",
@@ -22510,12 +22482,11 @@
       0.0148
      ]
     }
-   ],
-   "relu": true
+   ]
   }
  },
  "x4/marine-gauche": {
-  "cle": "346f07c0ed51dadd76fb635fb5decc0d5d37296f6a9e33f5ed7f308bd92b107f",
+  "cle": "2f2e3924aae99896b169c136609b37cd1a9fd92dcaca84a250b0a7b6c9f5a5e5",
   "encre4x": {
    "base": "pages/4x/marine-gauche",
    "echelle": 4.0,

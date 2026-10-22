@@ -1013,7 +1013,13 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     // (surImageVideo, sans rAF). Il ne garde la boucle d'images que pendant un geste, une animation ou un fondu.
     // `window.__gcMagieRaf = true` rend l'ancienne boucle (un rAF continu tant qu'une photo est vivante) : mesures avant / après.
     const continuer = vif || mouvement || photos.transitoire || (photosVivantes && boucleRaf());
-    if (continuer) raf = requestAnimationFrame(image);
+    // Des vidéos jouent et seul un décor s'anime (écriture des ornements, étincelles, reflets, passage du chien) : inutile
+    // de redessiner la toile et ses vidéos à 60 images/s, 30 suffisent (un rAF demandé après ~18 ms). Un geste, la plume
+    // et les fondus gardent le plein régime.
+    if (continuer && photosVivantes && !mouvement && !plume && !photos.transitoire && !boucleRaf()) {
+      clearTimeout(veille);
+      veille = window.setTimeout(() => { veille = 0; reveiller(); }, 18);
+    } else if (continuer) raf = requestAnimationFrame(image);
     else endormir(false);
   }
 

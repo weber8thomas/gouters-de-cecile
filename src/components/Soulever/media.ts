@@ -19,6 +19,8 @@ export interface VideoInfo {
   parallaxe?: string;
   /** Date de la photo, « mois année » (version locale seulement) : écrite au crayon sous la vignette. */
   date?: string;
+  /** Légende au crayon (album de Cécile, version locale seulement), au-dessus de la date. */
+  legende?: string;
   /** Première image, en couleur (« videos/<id>-affiche »). */
   affiche: string;
   /** Tirage sépia à bord blanc, droit (« photos/<id>/tirage »). */

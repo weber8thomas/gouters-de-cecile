@@ -1,0 +1,6 @@
+{
+  "_": "Empreinte du moteur (cuire.empreinte_moteur) : « nouvelle »: « ancienne » veut dire que cet état des scripts rend exactement les mêmes images que celui qui a produit l'ancienne ; les pages cuites avec l'ancienne restent donc valides. À ne déclarer qu'après vérification : une entrée fausse garde des pages périmées.",
+  "equivalences": {
+    "4acf7d3f13ed9a54": "4caf5e031c356a30"
+  }
+}

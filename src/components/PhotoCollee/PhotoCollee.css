@@ -97,3 +97,17 @@
   pointer-events: none;
   white-space: nowrap;
 }
+
+/* Légende (album de Cécile) : plus grande que la date, qui passe en dessous. */
+.gc-photo-collee__legende {
+  font-size: clamp(9px, min(10.5cqw, 5.2cqh), 30px);
+  line-height: 1.08;
+  white-space: normal;
+  text-wrap: balance;
+}
+
+.gc-photo-collee__date-ligne {
+  margin-top: 0.25em;
+  font-size: 0.8em;
+  opacity: 0.85;
+}

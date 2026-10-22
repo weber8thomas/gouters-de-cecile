@@ -54,17 +54,24 @@ export function versLocal(p: Pose, calque: HTMLElement): Pose {
   return { cx: (p.cx - r.left) / q, cy: (p.cy - r.top) / q, w: p.w / q, h: p.h / q, angle: p.angle };
 }
 
+/** Marge minimale (part de la hauteur utile) gardée au-dessus et au-dessous d'une photo qui a sa légende au crayon. */
+const MARGE_LEGENDE = 0.05;
+/** Hauteur d'une ligne de légende (part de la hauteur utile) ; la légende s'écarte aussi de 3,5 % de la hauteur de la photo. */
+const LIGNE_LEGENDE = 0.042;
+
 /**
  * Pose d'arrivée : centrée dans la zone sûre, à la proportion de l'objet, au plus 82 % de la largeur
  * et de la hauteur utiles (la hauteur, sur un écran couché) ; sur un écran debout (téléphone), presque
- * toute la largeur. Droite (angle 0).
+ * toute la largeur. Droite (angle 0). Avec `lignesSous` lignes de légende sous l'objet, l'ensemble photo + légende
+ * tient dans la hauteur utile moins 5 % de marge en haut et en bas (la photo rétrécit, l'ensemble reste centré).
  */
-export function poseCible(vp: { w: number; h: number; insets: Insets }, proportion: number): Pose {
+export function poseCible(vp: { w: number; h: number; insets: Insets }, proportion: number, lignesSous = 0): Pose {
   const z = zoneSure(vp);
   const debout = z.h > z.w;
   const gouttiere = Math.min(24, Math.max(10, z.w * 0.03));
   const maxW = debout ? z.w - 2 * gouttiere : z.w * PART_CIBLE;
-  const maxH = z.h * PART_CIBLE;
+  const sous = lignesSous * LIGNE_LEGENDE * z.h;
+  const maxH = lignesSous > 0 ? Math.min(z.h * PART_CIBLE, (z.h * (1 - 2 * MARGE_LEGENDE) - sous) / 1.035) : z.h * PART_CIBLE;
   const a = proportion > 0 ? proportion : 1;
   let w = maxW;
   let h = w / a;
@@ -72,7 +79,9 @@ export function poseCible(vp: { w: number; h: number; insets: Insets }, proporti
     h = maxH;
     w = h * a;
   }
-  return { cx: z.x + z.w / 2, cy: z.y + z.h / 2, w, h, angle: 0 };
+  // Ensemble photo + légende centré dans la zone sûre.
+  const reste = lignesSous > 0 ? h * 0.035 + sous : 0;
+  return { cx: z.x + z.w / 2, cy: z.y + (z.h - reste) / 2, w, h, angle: 0 };
 }
 
 const r2 = (v: number) => Math.round(v * 100) / 100;

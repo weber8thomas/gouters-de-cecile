@@ -16,14 +16,17 @@
 //   mouvement doux (préférence du système) : demi-amplitude.
 //
 // PALIERS (easing step-end) et non interpolation : une opacité qui change à chaque vsync fait recomposer l'écran à
-// 120 images/s (≈ 40 % de GPU mesuré, tuiles = 0 pourtant) ; en paliers de 7,5 Hz, d'écart < 2 % entre deux (invisible),
-// Chrome ne recompose que lorsque la valeur change.
+// 120 images/s (≈ 40 % de GPU mesuré, tuiles = 0 pourtant) ; en paliers de 1/12 s, d'écart < 2 % entre deux (invisible),
+// Chrome ne recompose que lorsque la valeur change. Les paliers sont ceux de l'HORLOGE COMMUNE (src/lib/horloge.ts) :
+// cycle de 288 paliers (24 s), phases en paliers entiers, même origine de temps que la flamme de la bougie → les
+// changements de toutes les lueurs et de la flamme tombent sur les mêmes images (≈ 12 images composées par seconde).
 import React from 'react';
+import { avancePaliers, caler, dureePaliers, PALIER_S } from './horloge';
 import { mouvementDoux, prefersReducedMotion } from './motion';
 import { abonnerReglages, getReglages } from './reglages';
 
 const CYCLE = 24; // s
-const PAS = 2 / 15; // s entre deux images clés : paliers de 7,5 par seconde (deux images de la flamme cuite)
+const PAS = PALIER_S; // s entre deux images clés : paliers de 12 par seconde (horloge commune)
 const COMPOSANTES: [number, number, number][] = [ // [nombre de périodes dans le cycle, amplitude, phase (tours)]
   [10, 0.35, 0.13], [7, 0.35, 0.71], [5, 0.35, 0.42], [3, 0.25, 0.9], [2, 0.2, 0.31],
 ];
@@ -61,7 +64,8 @@ export function vacillerOpacite(el: HTMLElement, base: number, amplitude: number
   COURBE ??= courbe();
   const amp = amplitude * (mouvementDoux() ? 0.5 : 1);
   const images = COURBE.map((k, i) => ({ opacity: borne(base * (1 + amp * k), 0, 1), offset: i / (COURBE!.length - 1), easing: 'step-end' }));
-  const a = el.animate(images, { duration: CYCLE * 1000, iterations: Infinity, delay: -phase * CYCLE * 1000 });
+  const n = images.length - 1; // paliers du cycle : 24 s × 12 = 288
+  const a = caler(el.animate(images, { duration: dureePaliers(n), iterations: Infinity, delay: avancePaliers(phase, n) }));
   return () => a.cancel();
 }
 

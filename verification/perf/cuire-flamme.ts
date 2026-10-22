@@ -1,13 +1,14 @@
 // Cuit la flamme de la bougie (le rendu WebGL de src/components/Bougie/flamme.ts, reflet dans le puits compris) en une
 // feuille de sprites bouclée : N images à FPS i/s, en grille COLS × LIGNES, raccord par fondu des dernières images.
+// FPS = 12 : la cadence de l'horloge commune de la lumière (src/lib/horloge.ts) ; N est un nombre entier de paliers.
 // Lancé par verification/perf/cuire-flamme.mjs (page servie par vite) ; résultat dans window.__resultat.
 import geo from '../../src/components/Bougie/geometrie.json';
 import { avancerBruit, creerRenduFlamme, etatFlamme, etatRepos } from '../../src/components/Bougie/flamme';
 import { creerRenduCire } from '../../src/components/Bougie/cire';
 
 const FLAMME = geo.flamme;
-const N = 40, FPS = 15, COLS = 8, DPR = 2, ECLAT = 0.6 + 0.4 * 2; // éclat de la bougie par défaut (réglages : 2)
-const FONDU = 14; // images du raccord
+const N = 32, FPS = 12, COLS = 8, DPR = 2, ECLAT = 0.6 + 0.4 * 2; // éclat de la bougie par défaut (réglages : 2)
+const FONDU = 11; // images du raccord (≈ 0,9 s)
 const fw = Math.round(FLAMME.w * DPR), fh = Math.round(FLAMME.h * DPR);
 const lignes = Math.ceil(N / COLS);
 const borne = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));

@@ -1,132 +1,78 @@
 # TODO — Les goûters de Cécile
 
-État au 22/10/2026. Suivi détaillé par personne : `prive/suivi-invites.xlsx` (hors git).
-Les vrais médias vont dans `prive/` (hors git, jamais publiés) : `prive/<slug>/photos|videos/`, `prive/cecile/photos/`.
+État au 22/10/2026 au soir (commits 4585046 et ba942fd, **non poussés**).
+Suivi par personne : `prive/suivi-invites.xlsx` (hors git).
+Vrais médias : `prive/` seulement (hors git, jamais publiés), visibles uniquement dans le build local
+(`npm run build:local && npm run preview:local`).
 
-## 1. Relecture (assouplie le 22/10 : 116 → 39 mots signalés sur 24 pages)
-- [x] Relecture assouplie (accents, ponctuation, 1/l, œ, g/9, mots lus à l'identique).
-- [ ] 39 restants : la plupart lisibles (« beurre » lu « bcurre », « Cécile, » lu « Cceik ») → les garder en avertissement
-      sans faire échouer la cuisson ? Vrais à vérifier : « 16 » (dédicace), « 60g » (Coralie), « 1 » (Clémence, Laura, Léa). : 116 mots signalés sur 44 pages, ~114 sont lisibles
-      (accents/ponctuation, « 1. » lu « l », « œ » lu « ce », mots lus à l'identique mais signalés).
-      Assouplir `relire_rendu` / `_lire_image` (scripts/pages/ecriture.py), puis vérifier à l'œil :
-      « 2026. » (fin-droite), « 4. » (elise-droite), « 8. » / « 9. » (elise-feuillet-recto).
+## 1. À recevoir des invités
+- [ ] **Recettes** (10 personnes) : Emma & Arthur, Julia Kieffer, Malo Scheuer-Boistelle, Manoir Chaste, Max Amr,
+      Théophile Sb, Victoria Jung, Madina Lapeyre-Nigmatullaeva, Manon Shw, Margaux Prng.
+- [ ] **Petits mots** (9 encore « Lorem ipsum ») : Lisa Allienne, Emeline, Pierrette, Anatole, Alba, Maël & Marc,
+      Laura Gramegna, Marie, Lily, Shannen, Olivia, Nathan & Martin.
+- [ ] **Photos ou vidéos** (11 sans rien) : Lisa Allienne, Emeline, Clémence & Mila, Pierrette, Julien & Mila,
+      Laura Gramegna, Marie, Coralie, Lisa De Paris, Antoine, Lily.
+      Reçues : Anatole, Elise, Laura Geyer, Léa, Margot, Marine, Sarah, Shannen, Suzanne (photos) ; Lise, Alba (vidéos).
+- [ ] **Dates (mois année)** des médias sans métadonnées → `prive/dates-photos.json` : Laura Geyer, Léa, Margot,
+      Marine, Sarah, Shannen, Suzanne, vidéos de Lise et d'Alba.
 
-## 2. Contenu à recevoir
-- [ ] **Photos de Cécile** pour l'album d'intro (doubles cecile-1 et cecile-2) : 10 photos + leur âge
-      (légendes « Cécile, … ans » encore en pointillés). Aujourd'hui : photos Pexels de remplacement.
-      Mode d'emploi : `prive/cecile/LISEZMOI.md`.
-- [ ] **Petits mots** : 9 sur 22 encore « Lorem ipsum » — Lisa Allienne, Emeline, Pierrette, Anatole, Alba, Maël & Marc,
-      Laura Gramegna, Marie, Lily, Shannen, Olivia, Nathan & Martin (reçus : Coralie, Antoine, Suzanne, Elise, Margot,
-      Sarah, Laura Geyer, Léa, Lisa De Paris, Clémence, Julien, Lise, Marine). Lise : mot intégré (🫶🏻 → 🫶) ;
-      Marine, Guillaume & Théo : mot intégré (🎂 → croquis gâteau à bougies, ♥️ → ❤️).
-- [x] **Marine, Guillaume & Théo** : recette (Tiramisu) et petit mot reçus le 22/10, intégrés.
-- [ ] **Aquarelle tiramisu** (dessert final, vignette, mode cuisine) : `fondant-chocolat` provisoire ; tasse de café et boudoirs
-      à dessiner (le mode cuisine réutilise `biscuit-sable`, `fromage-blanc`, `pichet-lait`, `torchon`, `tamis`).
-- [ ] **Photos / vidéos des invités** : aucune reçue (`src/content/videos.json` vide ; clips Pexels en démo).
-- [ ] **Noms** : confirmer « Margot & Flo » (écrit « Margo & Flo »). « Julien & Mila » confirmé le 22/10.
-- [ ] **Recettes pas encore reçues** (10 personnes du groupe) : voir le tableau Excel.
+## 2. Aquarelles à créer (provisoires aujourd'hui)
+- [ ] Tiramisu (Marine) : `fondant-chocolat` provisoire.
+- [ ] Crumble (Alba) : `tarte-pommes` provisoire.
+- [ ] Tarte poire-chocolat (Shannen) : `flaugnarde-poires` provisoire.
+- [ ] Cinnamon rolls (Lily) : `roules-cannelle`, composée par script, trop schématique → à générer comme les autres aquarelles.
 
-## 3. Vrais médias — VERSION LOCALE SEULEMENT (décision du 22/10)
-Les vraies photos/vidéos ne sont jamais publiées : le site GitHub Pages garde les placeholders.
-- [ ] *(en cours)* `npm run medias:local` (cuisson depuis `prive/` vers `prive/baked/`), `npm run medias:planche`
-      (planche contact des photos de Cécile), `npm run build:local` + `npm run preview:local` (dist/local, TV/iPad le jour J).
-- [ ] Garde-fou : `build:site` échoue si un fichier de `prive/` se retrouve dans dist/site.
-- [ ] Mode « photo seule » pour un invité sans vidéo (lent zoom de 12 s sur sa photo).
-- [ ] Choisir les photos de l'album (10, ou 15 avec une 3e double page) + leur âge → `prive/cecile/choix.json`.
+## 3. Album de Cécile et photos (version locale)
+- [x] Légendes absentes sous les vignettes vidéo (cecile-10, 17, 18).
+- [x] Légende sous la photo ouverte trop près du bord bas (~40 px).
+- [ ] Valider les 28 légendes (`prive/cecile/choix.json`) ; n° 2 et 6 déjà corrigés.
+- [x] Documenter `legende`, `date`, la parallaxe et `dates-photos.json` dans `prive/cecile/LISEZMOI.md`.
+- [ ] Brancher les dates des invités dès qu'elles sont connues (section 1).
 
-## 4. Nouvelles recettes et corrections (non commitées)
-### 22/10
-- [x] Julien ↔ Clémence : Julien = cheesecake (Gâteaux, folios 16–17), Clémence = cookies (Biscuits).
-- [x] 7 petits mots intégrés (emojis dessinés au trait : cœur, sourire) ; aquarelle de Margot réduite pour son mot.
-- [x] Mot de Lise intégré (cadre sans titre provisoire) ; à recuire : `--only lise`.
-### Shannen, Olivia, Nathan & Martin — Tarte poire « chocolat » (Tartes & crumbles, folios 44–45)
-- [x] Recette telle quelle, roster, carnet, plan, sommaire, mode cuisine (5 étapes).
-- [ ] Aquarelle tarte poire-chocolat : `flaugnarde-poires` provisoire.
+## 4. Performance
+- [ ] Horloge commune : la flamme (15 Hz) et les lueurs (7,5 Hz) changent à des instants différents → ~33 images
+      composées par seconde. Les caler sur une même horloge à ~12 Hz (environ 12 images/s), sans perte visible.
+- [ ] iPhone : pas de profil léger (Thomas veut garder les animations) ; plafonner le dpr à 2 sur les écrans 3×,
+      et surveiller la mémoire de Safari (tuiles ×4 décodées), qui pose plus de risque que la bande passante.
+- [x] Repos sur une recette : GPU 71 % → 8,5 % (lumière en paliers compositeur, flamme en sprites, Magie endormie).
+- [x] Doubles de l'album avec vidéos (`#cecile-3`) : encore ~40 % de GPU, à cause d'une boucle de ~68 rAF/s
+      (lumière / `redessins`) qui tourne en plus des vidéos → trouver avec `verification/perf/sonder.mjs`.
+- [ ] Tester sur le **vrai iPad** (Safari + Web Inspector) : fluidité, lecture automatique des vidéos (mode économie d'énergie).
+- [ ] iPhone paysage : hauteur d'x 1 % sous le seuil → viser ~5 % de marge.
 
-### Lily — Cinnamon rolls (Brioches, folios 56–57 + feuillet volant)
-- [x] Recette (texte reçu tel quel), roster, carnet, plan de pages, sommaire (suite), mode cuisine (9 étapes).
-- [ ] Aquarelle « cinnamon roll » (dessert final + vignette) : `brioche` / `cannelle` provisoires.
-- [x] Pages cuites (22/10).
+## 5. Mise en page
+- [x] Recuire `--only emeline,marie,coralie,suzanne,lily,margot-chapuzy` (illustrations recentrées, aquarelle de Lily, mention de Margot).
+- [x] Zones d'aquarelle trop basses : Antoine, Anatole, Lise, Alba, Laura (même correction que les variantes).
+- [x] Lily droite : l'étape 8 s'écrit en colonne étroite.
+- [x] Margot gauche : signature en double (« … Margot » + « Margot & Flo ») ; seulement 2 ingrédients à gauche.
+- [ ] Papiers f35 à f65 absents de `papiers.json` (repli sur f21) depuis le décalage des folios : à vérifier à l'œil.
 
-### Marine, Guillaume & Théo — Tiramisu (Gâteaux & cakes, en fin de chapitre, folios 34–35)
-- [x] Recette telle quelle (TXT brut), roster, carnet, plan de pages, sommaire, mode cuisine (6 étapes). Signature et nom « Marine, Guillaume & Théo », mot intégré.
-- [x] Insertion après Margot : tout ce qui suit est décalé de 2 folios (Tartes & crumbles dès le folio 36, Le mot de la fin 64–65).
-- [ ] À recuire : `node scripts/bake-pages.mjs --only marine,julien,gateaux,sommaire,tartes,anatole,lise,alba,shannen,biscuits,clemence,lisa-de-paris,brioches,sarah,lily,crepes,laura,elise,fin`
-      (+ `bake-temps-encre`, `bake-magie`, inventaire). Vérifier sur l'aperçu que le sommaire (page droite) tient avec la ligne en plus.
-- [ ] Aquarelle tiramisu : `fondant-chocolat` provisoire.
-- [x] Noms affichés (nom, signature, roster, carnet, sommaire) : Sarah & Maxime, Marine, Guillaume & Théo, Shannen, Olivia, Nathan & Martin,
-      Alba, Maël & Marc, Clémence & Mila, Julien & Mila. Tartes : liste des invités sur une colonne (nom de Shannen trop long pour deux) ;
-      bandeau de Shannen réduit (2,0 au lieu de 2,2) ; sommaire : « Shannen, Olivia, Nathan & Martin — Tarte poire » (titre raccourci).
-- [x] Noms (22/10, suite) : Margot & Flo, Elise & Lucas, Sarah, Gabriel & Maxime (remplace Sarah & Maxime), Lise & Maxime ; bandeaux `pente: 0.3`
-      (Sarah aussi `taille` 2,0) ; Emma & Arthur dans l'Excel seulement.
-      Pages cuites le 22/10 (margot-chapuzy, elise, sarah, lise, sommaire, gateaux, tartes, brioches, crepes), temps d'encre, magie, inventaire OK ;
-      aquarelle de Margot encore réduite ([0,16, 0,74, 0,68, 0,23]) pour que son mot tienne.
+## 6. Relecture automatique (OCR)
+- [x] Décision de Thomas (22/10) : plus de relecture à chaque cuisson, trop lourde. Faite : `--mode complet` ne relit plus
+      (`--relire` pour l'ajouter après la cuisson), `npm run pages:relire [-- --only coralie,lise]` relit les pages déjà
+      cuites sans les recuire → `verification/out/relecture.md` (nombres et quantités en tête) ; un mot douteux ne donne
+      plus jamais un code de sortie ≠ 0. Cache intact : `scripts/pages/relecture.py` est hors empreinte, l'empreinte du moteur
+      ignore commentaires et docstrings, `scripts/pages/empreintes_equivalentes.json` garde valides les pages déjà cuites.
+- [ ] 17 pages sur 80 sont périmées par rapport à leurs sources (cecile-2/3/4/5, biscuits-droite, crepes-gauche, fin-gauche,
+      titre, et les gauches de lisa, julien, pierrette, shannen, lea, lisa-de-paris, elise, marine), indépendamment de ce
+      chantier : `node scripts/bake-pages.mjs --mode complet --simuler` les liste ; à recuire avant de relire ces pages.
+- [ ] Vrais cas à vérifier à l'œil : « 60g » (Coralie), « 1 » (Clémence, Laura, Léa).
 
-### Alba, Maël & Marc — Crumble aux pommes
-- [x] Recette, roster, carnet (folios 42–43), plan de pages, sommaire, chapitre « Tartes & crumbles », mode cuisine.
-- [ ] Aquarelle « crumble » (dessert final + vignette) : `tarte-pommes` / `pomme-2` provisoires.
-- [x] Pages cuites (22/10), pages décalées et sommaire recuits.
+## 7. Nouveautés demandées
+- [x] **Scorpions cachés** : 8 scorpions dessinés à l'encre (`src/content/scorpions.json`, `src/components/Scorpions/`), fuite en zigzag avec une trace d'encre, compteur et carte finale.
+- [ ] Texte de la carte finale des scorpions (message de Thomas) → `src/content/scorpions.json` › `message`.
 
-## 5. Cuisson et publication
-- [x] 22/10 : carnet recuit complet (72 pages, ×4 compris), temps d'encre, magie, inventaire, `npm run build:site` OK.
-- [ ] Vérifier en local (`npx vite preview --host`) : TV, mobile, iPad ; puis commit + push.
-- [ ] Nettoyer les vieilles tuiles ×4 des pages qui n'existent plus dans `design-system/baked/pages/4x/`.
+## 8. Outillage
+- [~] Scripts de vérification périmés (adaptés : flamme et farine sautées ; `verify-*-v16`, `verify-devices` restent à faire) : `verify-lumiere*`, `verify-mobile`, `verify-luminosite-v10` (lisent `__gcFlamme`),
+      `verify-loupe`, `verify-reglages`, `verify-aquarelle-mobile-artefacts` (`__gcFeu.figer`), `verify-notes-v14/v15`,
+      `verify-reset-v16` (farine), `verify-*-v16` (ignorent les encarts), `verify-devices` (`#julie`, `#rose`…).
+- [ ] 10 tests unitaires en échec depuis longtemps (folios, sommaire, feuillets longs, fixtures julie).
+- [ ] Paralléliser `bake-temps-encre.py` et `bake-magie.py`.
+- [x] Supprimer `scripts/bake-pages-parallele.py` et mettre à jour `docs/reprise-v17.md`.
+- [x] Nettoyer les vieilles tuiles ×4 (aucune orpheline : 320 tuiles = 80 pages) de `design-system/baked/pages/4x/`.
+- [x] Ligne périmée à la ligne 56 du README de `SecretsDuCarnet` (farine supprimée).
 
-## 6. Qualité / appareils (tests du 22/10 : verification/out/v22/)
-- [x] Hauteur d'x iPad portrait : OK (3,007 mrad, seuil 2,917, ~3 % de marge). iPad paysage, TV : OK.
-- [ ] iPhone paysage : hauteur d'x 2,885 mrad, ~1 % sous le seuil → viser ~5 % de marge partout.
-- [ ] Scripts de test périmés : `#julie`, `#rose`, `#mathis` n'ouvrent plus le livre à froid (couverture) → faux KO en cascade
-      (photo, coin, double page). Aligner verify-devices / verify-mobile / fps sur le site actuel ; `fps.mjs` doit lire `GC_CHROME`.
-- [ ] Bouton Réglages signalé « invisible » partout (seuls Sommaire / Rechercher visibles) : vérifier à la main.
-- [ ] FPS : mesures inexploitables (Mac saturé par la cuisson, rendu logiciel). Refaire sur machine calme, idéalement sur un vrai iPad
-      (Safari + Web Inspector). Cible : p95 < 25 ms sur tourne-page, ouverture, coin.
-- [ ] GPU : ombre du livre `--gc-sh-book` (blur 64 px, tokens.css:75) → plus légère ou ombre pré-cuite (traite aussi la bande d'ombre du 18/10) ;
-      coin : 49 calques (plafond 44), `drop-shadow` double (DoublePage.css:170) ; `will-change` statiques dans Livre.css.
-- [ ] Machine : `playwright install chromium` absent ; `~/.pnp.cjs` (Yarn PnP) casse `build-bundle.mjs`.
-
-## 7. Temps de cuisson
-- [x] `npm run pages:rapide` (aperçu ~1 min) / `npm run pages:complet` (HD + ×4, 8 processus) ; cache ×4 séparé ; empreinte restreinte.
-      Carnet complet du 22/10 : 72 pages en 7 min 14 s (dont pagination des nouvelles recettes) au lieu de 17 min.
-- [ ] `bake-temps-encre.py` (2 min 38 s) et `bake-magie.py` (59 s) restent séquentiels : à paralléliser.
-- [ ] Supprimer `scripts/bake-pages-parallele.py` (simple redirection) et mettre à jour `docs/reprise-v17.md`.
-
-## 8. Mise en page à revoir (aperçus du 22/10)
-- [ ] Lily droite : l'étape 8 s'écrit en colonne étroite (« Préchauffer le / four à 180 degrés / … »).
-- [ ] Margot gauche : son mot prend la place, seuls 2 ingrédients restent à gauche ; signature en double (« Gros bisous 🥰 Margot » + « Margot & Flo »).
-- [ ] Tests unitaires : 10 échecs anciens (folios, sommaire, feuillets longs, fixtures julie).
-
-## 9. Sommaire
-- [x] « Lisa Allienne — Carrot cake » ; « Lisa De Paris — Gâteaux de Noël » (à recuire avec le sommaire).
-
-## 10. Retours du 22/10 soir (ordre : performance d'abord)
-- [ ] **Performance iPad** : GPU à 100 % au repos. Mesure en cours effet par effet (scripts dans `verification/perf/`). Ensuite, tout ce qui est coûteux devient précalculé ou fixe au repos.
-- [ ] **Réactivité** : un toucher coupe net l'animation en cours et agit tout de suite (fermer la photo, tourner la page…).
-- [ ] **Ouverture d'une photo** : trop lente, mouvement pas naturel.
-- [ ] **Photos** : supprimer le mouvement superflu et le reflet brillant toutes les 15 s, passer le tirage en mat.
-- [ ] **Sépia** : couleur à l'ouverture d'une photo, avec une option « garder le sépia » dans Réglages.
-- [ ] **Effet farine** : à supprimer.
-- [ ] **Légendes de l'album** : brouillon dans `prive/cecile/choix.json` (`legende`, `date` au mois près), à faire valider puis afficher (local seulement).
-- [ ] **Photo → vidéo** : retrouver les originaux des Motion Photos dans Google Photos (vidéo intégrée perdue à l'export), essayer « Photo en vidéo » de Google Photos, tester une parallaxe 2,5D locale.
-- [ ] **Recettes avec variantes** : centrer verticalement les illustrations.
-- [ ] **Cinnamon rolls (Lily)** : ce n'est pas la bonne illustration.
-- [ ] **Sommaire et Rechercher** : boutons visibles seulement au survol (toucher sur le bord sur iPad).
-- [ ] **Scorpions cachés** à ajouter dans le carnet.
-- [ ] **Parallaxe sur les vignettes de l'album seulement** (pas sur la photo ouverte) : visages et personnes en calques rigides, puis génération des 25 photos ; test sur une double complète après la mesure GPU.
-- [ ] **Photos des invités** (reçues le 22/10 à 16 h 27, copiées dans `prive/<slug>/photos/`) : Laura Geyer, Sarah, Léa, Marine, Shannen, Margot, Suzanne, Elise, Anatole, plus les vidéos de Lise et d'Alba. Lancer `npm run medias:local -- --sans-cecile` quand la machine est calme, puis vérifier.
-- [ ] **Date (mois année) sous chaque photo** : EXIF quand il existe (Cécile : `choix.json` ; invités : `prive/dates-photos.json`), sinon demander à Thomas. L'afficher en local.
-
-## 11. En cours au départ de Thomas (22/10 soir, commit 4585046 non poussé)
-Agents interrompus si la session se ferme : vérifier `git status` et reprendre.
-- [x] Noms (faits et recuits) : Margot & Flo (à confirmer : « Margo » ?), Elise & Lucas, Sarah, Gabriel & Maxime, Lise & Maxime, Emma & Arthur (Excel), puis recuisson de leurs pages.
-- [x] Parallaxe des 9 invités → `prive/baked/parallaxe/invites/` (faite, toutes OK).
-- [ ] Photos : parallaxe sur les vignettes (local), photos des invités (`medias:local -- --sans-cecile`), ouverture plus rapide et naturelle, sans reflet ; un toucher coupe l'animation ; sépia réglable ; légendes et dates.
-- [ ] Boutons Sommaire et Rechercher au survol, illustrations des recettes à variantes centrées, aquarelle des cinnamon rolls.
-- [ ] Dates manquantes (`prive/dates-photos.json`) : Laura Geyer, Léa, Margot, Marine, Sarah, Shannen, Suzanne, vidéos de Lise et d'Alba.
-- [ ] `git push origin claude/reprise-v18` (refusé en mode auto, à faire à la main).
-- [x] Boutons de coin visibles au survol (`src/lib/coin.ts`) ; illustrations des variantes centrées (Emeline, Marie, Coralie, Suzanne) : à recuire `--only emeline,marie,coralie,suzanne,lily`.
-- [ ] Aquarelle des cinnamon rolls : la version provisoire, composée par script (`roules-cannelle`), est trop schématique. Générer une vraie illustration avec le même prompt que les autres aquarelles. Même défaut de zone trop basse sur Antoine, Anatole, Lise, Alba et Laura.
-- [x] Photos (local) : parallaxe sur les vignettes (Cécile et invités), ouverture en 0,4 s, tirage mat sans reflet, un toucher coupe l'animation (photos et tours de page), réglage couleur/sépia, légendes et dates au crayon.
-- [ ] Légendes absentes sous les vignettes vidéo de l'album (cecile-10, 17, 18 : « On a retrouvé le vrai savane », « La farine sur la balance »…).
-- [ ] Double de l'album avec vidéos (`#cecile-3`) : encore ~40 % de GPU, à cause d'une boucle de ~68 rAF/s (lumière / `redessins`) qui tourne en plus des vidéos. À trouver avec `verification/perf/sonder.mjs`.
-- [ ] Légende sous la photo ouverte trop près du bord bas (~40 px).
-- [ ] Documenter `legende`, `date`, la parallaxe et `dates-photos.json` dans `prive/cecile/LISEZMOI.md`.
+## 9. Avant le jour J
+- [ ] `git push origin claude/reprise-v18`.
+- [ ] Recuisson complète puis `npm run build:site` (site public) et `npm run build:local` (TV/iPad).
+- [ ] Répétition générale sur la TV et l'iPad depuis le Mac (`preview:local`, adresse réseau).

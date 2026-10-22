@@ -27,7 +27,7 @@ Mots importants (CONTRACT § 13, lot E ; `importants.py`) : nombres, unités, no
   - `Mot.important` est vrai pour ces mots ; leurs traits n'ont jamais de saut de bille (l'encre
     est posée par tools/ecriture/encre.py avec le drapeau `important` de chaque mot).
   - `relire_rendu(encre_rgba, mots_places)` relit l'ENCRE RENDUE (après encre et papier) des mots
-    importants posés sur la page : la cuisson échoue s'il en reste un douteux.
+    importants posés sur la page ; à la demande seulement (relecture.py), le rapport ne fait jamais échouer la cuisson.
 """
 from __future__ import annotations
 

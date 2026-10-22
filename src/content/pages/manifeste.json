@@ -17,13 +17,13 @@
    "vivants": {
     "aq-alba-1": [
      0.35,
-     0.7,
+     0.454,
      0.4,
      0.2
     ],
     "aq-alba-2": [
      0.12,
-     0.73,
+     0.484,
      0.19,
      0.23
     ]
@@ -182,7 +182,7 @@
    "vivants": {
     "aq-anatole-1": [
      0.36,
-     0.7,
+     0.476,
      0.38,
      0.24
     ]
@@ -330,7 +330,7 @@
    "vivants": {
     "aq-antoine-1": [
      0.08,
-     0.51,
+     0.443,
      0.84,
      0.42
     ]
@@ -530,7 +530,6 @@
      "angle": 4
     }
    },
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/biscuits-droite",
     "echelle": 4.0,
@@ -1033,7 +1032,6 @@
    },
    "deborde": [],
    "lignes": 0,
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/cecile-2-droite",
     "echelle": 4.0,
@@ -1188,7 +1186,6 @@
    },
    "deborde": [],
    "lignes": 0,
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/cecile-3-droite",
     "echelle": 4.0,
@@ -1266,7 +1263,6 @@
    },
    "deborde": [],
    "lignes": 0,
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/cecile-3-gauche",
     "echelle": 4.0,
@@ -1344,7 +1340,6 @@
    },
    "deborde": [],
    "lignes": 0,
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/cecile-4-droite",
     "echelle": 4.0,
@@ -1566,7 +1561,6 @@
    },
    "deborde": [],
    "lignes": 0,
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/cecile-5-gauche",
     "echelle": 4.0,
@@ -2012,7 +2006,6 @@
      "angle": 0
     }
    },
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/crepes-gauche",
     "echelle": 4.0,
@@ -2536,7 +2529,6 @@
      ]
     }
    ],
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/elise-gauche",
     "echelle": 4.0,
@@ -2837,7 +2829,6 @@
    "vivants": {},
    "deborde": [],
    "lignes": 4,
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/fin-gauche",
     "echelle": 4.0,
@@ -3312,7 +3303,6 @@
    "deborde": [],
    "lignes": 12,
    "recette": "julien",
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/julien-gauche",
     "echelle": 4.0,
@@ -3370,7 +3360,7 @@
    "vivants": {
     "aq-laura-1": [
      0.36,
-     0.7,
+     0.543,
      0.38,
      0.24
     ]
@@ -3940,7 +3930,6 @@
      ]
     }
    ],
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/lea-gauche",
     "echelle": 4.0,
@@ -4003,14 +3992,14 @@
      0.215
     ],
     "aq-lily-1": [
-     0.36,
-     0.7,
-     0.36,
-     0.2
+     0.37,
+     0.75,
+     0.26,
+     0.138
     ]
    },
    "deborde": [],
-   "lignes": 23,
+   "lignes": 21,
    "aquarelles": {
     "aq-lily-1": {
      "aquarelle": "roules-cannelle",
@@ -4538,7 +4527,6 @@
      ]
     }
    ],
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/lisa-de-paris-gauche",
     "echelle": 4.0,
@@ -4683,15 +4671,6 @@
    "deborde": [],
    "lignes": 13,
    "recette": "lisa",
-   "douteux": [
-    "goûts) (encre rendue lue « goats ) »)",
-    "4 (encre rendue lue « \" A »)"
-   ],
-   "douteux_importants": [
-    "4",
-    "goûts)"
-   ],
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/lisa-gauche",
     "echelle": 4.0,
@@ -4749,13 +4728,13 @@
    "vivants": {
     "aq-lise-1": [
      0.35,
-     0.7,
+     0.459,
      0.4,
      0.2
     ],
     "aq-lise-2": [
      0.12,
-     0.73,
+     0.489,
      0.19,
      0.23
     ]
@@ -4901,10 +4880,10 @@
    "encre": "pages/margot-chapuzy-droite",
    "papier1x": "pages/1x/papier/f33",
    "encre1x": "pages/1x/margot-chapuzy-droite",
-   "texte": "Margot & Flo\n1 sachet de levure chimique\n1 pincée de sel\n100 g de pépites de chocolat\nPréparation\n1. Préchauffe le four à 180 °C.\n2. Écrase les bananes dans un saladier.\n3. Ajoute les œufs et le beurre fondu, puis mélange.\n4. Incorpore le sucre, la poudre d’amande, la farine, la levure et le sel.\n5. Verse la pâte dans un moule à cake beurré. Petite astuce rajoute un peu de sucre de canne avant de l’enfourner pour avoir une croûte caramélisée au dessus 😍\n6. Enfourne pendant environ 50 minutes à 180 °C. Vérifie la cuisson avec la pointe d’un couteau.\nLaisse refroidir un peu avant de déguster 😋 🍌",
+   "texte": "Margot & Flo\n1 pincée de sel\n100 g de pépites de chocolat\nPréparation\n1. Préchauffe le four à 180 °C.\n2. Écrase les bananes dans un saladier.\n3. Ajoute les œufs et le beurre fondu, puis mélange.\n4. Incorpore le sucre, la poudre d’amande, la farine, la levure et le sel.\n5. Verse la pâte dans un moule à cake beurré. Petite astuce rajoute un peu de sucre de canne avant de l’enfourner pour avoir une croûte caramélisée au dessus 😍\n6. Enfourne pendant environ 50 minutes à 180 °C. Vérifie la cuisson avec la pointe d’un couteau.\nLaisse refroidir un peu avant de déguster 😋 🍌",
    "vivants": {},
    "deborde": [],
-   "lignes": 13,
+   "lignes": 12,
    "recette": "margot-chapuzy",
    "croquis": [
     {
@@ -4912,10 +4891,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.9547,
-      0.3279,
-      0.0188,
-      0.0133
+      0.9536,
+      0.3015,
+      0.0185,
+      0.0131
      ]
     },
     {
@@ -4923,10 +4902,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.5734,
-      0.4186,
-      0.0182,
-      0.0129
+      0.5729,
+      0.3881,
+      0.0215,
+      0.0152
      ]
     },
     {
@@ -4934,10 +4913,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.5943,
-      0.4164,
-      0.0202,
-      0.0143
+      0.5962,
+      0.3894,
+      0.0193,
+      0.0136
      ]
     }
    ],
@@ -4995,7 +4974,7 @@
    "encre": "pages/margot-chapuzy-gauche",
    "papier1x": "pages/1x/papier/f31",
    "encre1x": "pages/1x/margot-chapuzy-gauche",
-   "texte": "Margot & Flo\nPour Cécile : Ma chère Cécile, Pour tes 30 ans, je suis heureuse de partager avec toi la recette de mon banana bread. C'est mon petit brin de réconfort, et j'espère qu'il t'apportera autant de douceur que tu en diffuses autour de toi. 🥰 Bienvenue au club des trentenaires 🤩 .Tu verras, c'est une merveilleuse décennie qui commence, pleine de sérénité et de beaux moments. Je te souhaite un très joyeux anniversaire ! Profite de chaque instant de ta journée ! Gros bisous 🥰 Margot — Margot & Flo\nBanana Bread de Margot 🥰\nIngrédients\n2 bananes bien mûres\n125 g de poudre d’amande\n80 g de farine\n50 g de sucre de canne\n50 g de beurre\n2 œufs",
+   "texte": "Margot & Flo\nPour Cécile : Ma chère Cécile, Pour tes 30 ans, je suis heureuse de partager avec toi la recette de mon banana bread. C'est mon petit brin de réconfort, et j'espère qu'il t'apportera autant de douceur que tu en diffuses autour de toi. 🥰 Bienvenue au club des trentenaires 🤩 .Tu verras, c'est une merveilleuse décennie qui commence, pleine de sérénité et de beaux moments. Je te souhaite un très joyeux anniversaire ! Profite de chaque instant de ta journée ! Gros bisous 🥰 — Margot & Flo\nBanana Bread de Margot 🥰\nIngrédients\n2 bananes bien mûres\n125 g de poudre d’amande\n80 g de farine\n50 g de sucre de canne\n50 g de beurre\n2 œufs\n1 sachet de levure chimique",
    "vivants": {
     "photo": [
      0.06,
@@ -5011,7 +4990,7 @@
     ]
    },
    "deborde": [],
-   "lignes": 22,
+   "lignes": 23,
    "aquarelles": {
     "aq-margot-chapuzy-1": {
      "aquarelle": "banana-bread",
@@ -5025,10 +5004,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.6825,
-      0.2805,
-      0.0202,
-      0.0143
+      0.6812,
+      0.2794,
+      0.0209,
+      0.0148
      ]
     },
     {
@@ -5036,10 +5015,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.7034,
-      0.3087,
-      0.0195,
-      0.0138
+      0.7083,
+      0.3055,
+      0.0207,
+      0.0147
      ]
     },
     {
@@ -5047,10 +5026,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.6562,
-      0.46,
-      0.021,
-      0.0149
+      0.6015,
+      0.4588,
+      0.0215,
+      0.0152
      ]
     },
     {
@@ -5058,10 +5037,10 @@
      "role": "icone",
      "dessine": true,
      "boite": [
-      0.4324,
-      0.5468,
-      0.0276,
-      0.0195
+      0.442,
+      0.5221,
+      0.0282,
+      0.02
      ]
     }
    ],
@@ -5418,7 +5397,6 @@
      ]
     }
    ],
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/marine-gauche",
     "echelle": 4.0,
@@ -5557,15 +5535,6 @@
    "deborde": [],
    "lignes": 14,
    "recette": "pierrette",
-   "douteux": [
-    "œufs (encre rendue lue « aufs . »)",
-    "zeste (encre rendue lue « 2este »)"
-   ],
-   "douteux_importants": [
-    "zeste",
-    "œufs"
-   ],
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/pierrette-gauche",
     "echelle": 4.0,
@@ -6058,13 +6027,6 @@
      ]
     }
    ],
-   "douteux": [
-    "plaque (encre rendue lue « plague »)"
-   ],
-   "douteux_importants": [
-    "plaque"
-   ],
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/shannen-gauche",
     "echelle": 4.0,
@@ -6742,7 +6704,6 @@
      "aquarelle": "gateau-bougies"
     }
    },
-   "relu": true,
    "encre4x": {
     "base": "pages/4x/titre",
     "echelle": 4.0,

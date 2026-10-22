@@ -748,26 +748,60 @@ class CuissonV4(Base):
         self.assertGreater(aire, 1.0)  # recouvrement
         self.assertLess(aire, 1.01)
 
-    def test_douteux_important_code_1(self):
-        """Un mot important mal relu sur l'encre rendue (relire_rendu du lot E) fait sortir en code 1 ;
-        un mot ordinaire douteux reste un avertissement."""
+    def test_douteux_jamais_code_1(self):
+        """Un mot douteux (écriture ou ancienne relecture) n'est qu'un avertissement : code 0. Seuls un débordement,
+        une recette trop longue ou une correction dans un mot important font sortir en code 1."""
         pages = {"essai-droite": page_test(id="essai-droite", cote="droite", folio=11,
                                            blocs=[{"id": "p", "type": "paragraphe", "texte": "Cuire 40 min, bonne dégustation."}])}
-        ancien = ECR.relire_rendu
-        try:
-            ECR.relire_rendu = lambda rgba, mots, **kw: [{"texte": "40 min", "mots": [1, 2], "lu": "4 min", "important": True}]
-            c = CU.Cuisine(pages, papiers(), sortie=self.tmp, apercus_dir=self.tmp / "ap", cache=self.tmp / ".c.json", x4=False)
-            man = c.cuire("essai-droite")
-            self.assertEqual(man["douteux_importants"], ["40 min"])
-            self.assertEqual(CU.bilan({"essai-droite": man}, ["essai-droite"], [], {}, time.time()), 1)
-            ECR.relire_rendu = lambda rgba, mots, **kw: []
-            c2 = CU.Cuisine(pages, papiers(), sortie=self.tmp / "b", apercus_dir=self.tmp / "ap", cache=self.tmp / "b.json", x4=False)
-            man2 = c2.cuire("essai-droite")
-            self.assertNotIn("douteux_importants", man2)
-            man2["douteux"] = ["dégustation"]
-            self.assertEqual(CU.bilan({"essai-droite": man2}, ["essai-droite"], [], {}, time.time()), 0)
-        finally:
-            ECR.relire_rendu = ancien
+        c = CU.Cuisine(pages, papiers(), sortie=self.tmp, apercus_dir=self.tmp / "ap", cache=self.tmp / ".c.json", x4=False)
+        man = c.cuire("essai-droite")
+        self.assertNotIn("relu", man, "la cuisson ne relit plus l'encre rendue")
+        self.assertNotIn("douteux_importants", man)
+        man["douteux"] = ["40 min (encre rendue lue « 4 min »)", "dégustation"]
+        man["douteux_importants"] = ["40 min"]
+        self.assertEqual(CU.bilan({"essai-droite": man}, ["essai-droite"], [], {}, time.time()), 0)
+        self.assertEqual(CU.bilan({"essai-droite": man}, ["essai-droite"], ["trop long"], {}, time.time()), 1)
+
+    def test_relecture_a_la_demande(self):
+        """relecture.py relit l'image déjà cuite sans recuire, met les nombres en tête du rapport et ne lève rien."""
+        import relecture as RL
+        pages = {"essai-droite": page_test(id="essai-droite", cote="droite", folio=11,
+                                           blocs=[{"id": "p", "type": "paragraphe", "texte": "Cuire 40 min, bonne dégustation."}])}
+        c = CU.Cuisine(pages, papiers(), sortie=self.tmp, apercus_dir=self.tmp / "ap", cache=self.tmp / ".c.json", x4=False)
+        c.cuire("essai-droite")
+        vu = {}
+
+        def faux(rgba, mots, **kw):
+            vu["forme"] = rgba.shape
+            t = [m["texte"] for m in mots]
+            d = next(k for k, x in enumerate(t) if x.startswith("dégustation"))
+            n = t.index("40")
+            return [{"texte": "dégustation", "mots": [d], "boite": mots[d]["boite"], "lu": "degustalion", "ecart": 0.9},
+                    {"texte": "40 min", "mots": [n, n + 1], "boite": mots[n]["boite"], "lu": "4 min", "ecart": 0.2}]
+        ECR.relire_rendu = faux
+        sortie = self.tmp / "rapport"
+        avant = (self.tmp / "essai-droite.webp").read_bytes()
+        res = RL.relire_pages(c, ["essai-droite", "absente"], ECR)
+        self.assertEqual((self.tmp / "essai-droite.webp").read_bytes(), avant, "rien n'est recuit")
+        self.assertEqual(vu["forme"][2], 4, "l'encre RGBA cuite est relue")
+        self.assertEqual([d["mot"] for d in res["essai-droite"]["douteux"]], ["40 min", "dégustation"], "nombres d'abord")
+        self.assertIn("erreur", res["absente"])
+        f = RL.ecrire_rapport(res, sortie, "relecture")
+        md = f.read_text()
+        self.assertLess(md.index("**40 min**"), md.index("**dégustation**"))
+        self.assertEqual(json.loads((sortie / "relecture.json").read_text())["nombres"][0]["mot"], "40 min")
+        self.assertTrue(RL.est_nombre("60g") and RL.est_nombre("cl") and not RL.est_nombre("beurre"))
+
+    def test_empreinte_du_moteur_ignore_commentaires(self):
+        """Commentaires et docstrings n'entrent pas dans l'empreinte du moteur ; le code, si."""
+        f = self.tmp / "x.py"
+        f.write_text('"""doc"""\nx = 1  # note\n\ndef g():\n    """a"""\n    return x\n')
+        a = CU._source_sans_commentaires(f)
+        f.write_text('"""autre doc"""\n# commentaire\nx = 1\n\ndef g():\n    """b"""\n    return x\n')
+        self.assertEqual(CU._source_sans_commentaires(f), a)
+        f.write_text('"""doc"""\nx = 2\n\ndef g():\n    return x\n')
+        self.assertNotEqual(CU._source_sans_commentaires(f), a)
+        self.assertIn("relecture.py", CU.HORS_EMPREINTE)
 
     def test_mots_places_pour_la_relecture(self):
         """Les mots passés à relire_rendu : boîte (x, y, l, h) en px de l'image, drapeau important ; ni

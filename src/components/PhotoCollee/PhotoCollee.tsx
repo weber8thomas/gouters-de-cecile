@@ -77,8 +77,9 @@ export function PhotoCollee({ video, graine = 1, onSoulever }: PhotoColleeProps)
   const largeurBoite = (1 + 2 * dx) * c + ((1 + 2 * dy) * s) / A;
   const hauteurBoite = (1 + 2 * dx) * s + ((1 + 2 * dy) * c) / A;
   const marge = 0.97;
-  // Version locale : la date écrite au crayon sous le tirage prend une bande en bas de la zone (le tirage rétrécit d'autant).
-  const reserve = video.date ? 0.88 : 1;
+  // Version locale : la légende et la date écrites au crayon sous le tirage prennent une bande en bas de la zone (le tirage
+  // rétrécit d'autant ; même réserve que TirageColle : 24 % avec légende, 11 % avec la date seule).
+  const reserve = video.legende ? 0.76 : video.date ? 0.88 : 1;
   const style: Vars = {
     '--gc-pc-angle': `${angle.toFixed(2)}deg`,
     '--gc-pc-l': `${((100 * marge) / largeurBoite).toFixed(3)}cqw`,
@@ -167,9 +168,10 @@ export function PhotoCollee({ video, graine = 1, onSoulever }: PhotoColleeProps)
           {img('gc-photo-collee__coins', urlMedia(video.coins), cadre(geo.coins))}
         </div>
       </div>
-      {video.date && (
+      {(video.legende || video.date) && (
         <div className="gc-photo-collee__date" aria-hidden="true" style={{ '--gc-pc-l': style['--gc-pc-l'], '--gc-pc-h': style['--gc-pc-h'], top: `calc(50cqh + min(var(--gc-pc-l), var(--gc-pc-h)) / ${A.toFixed(5)} / 2 + 2cqh)` } as Vars}>
-          {video.date}
+          {video.legende && <div className="gc-photo-collee__legende">{video.legende}</div>}
+          {video.date && <div className={video.legende ? 'gc-photo-collee__date-ligne' : undefined}>{video.date}</div>}
         </div>
       )}
     </div>

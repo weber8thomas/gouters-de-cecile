@@ -1,4 +1,5 @@
 import React from 'react';
+import { dprDessin } from '../../lib/dpr';
 import { useReducedMotion } from '../../lib/motion';
 import { assetInfo, assetUrl } from '../../lib/assets';
 import { useRenderMode } from '../../lib/spread';
@@ -152,7 +153,7 @@ export function ToileAquarelles({ page }: { page: string }) {
     if (!feuille || !livre || !racine) return; // hors du livre : les images fixes
     // la toile à la taille où la page est vue (livre zoomé, écran dense), sans excès
     const r = cv.getBoundingClientRect();
-    const k = r.width / Math.max(1, cv.offsetWidth) * Math.min(2, window.devicePixelRatio || 1);
+    const k = r.width / Math.max(1, cv.offsetWidth) * dprDessin();
     const s = Math.min(1, 1600 / Math.max(cv.offsetWidth * k, cv.offsetHeight * k));
     cv.width = Math.max(1, Math.round(cv.offsetWidth * k * s));
     cv.height = Math.max(1, Math.round(cv.offsetHeight * k * s));

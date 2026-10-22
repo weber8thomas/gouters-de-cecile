@@ -53,8 +53,8 @@ GC_CHROME=/usr/bin/chromium node src/components/SecretsDuCarnet/verify-reset-v16
 ```
 
 La fixture charge les vrais composants de découverte dans une page vide, sans démarrer le livre 3D.
-Le contrôle compare la quantité de farine avant/après frottage et après reset, sur TV et mobile,
-puis vérifie le retour au départ après ouverture de l’enveloppe et archivage de deux notes.
+Le contrôle vérifie, sur TV et mobile, le retour au départ après ouverture de l'enveloppe et archivage de deux notes
+(la farine n'existe plus : l'étape qui comparait son dépôt est sautée).
 Il compare aussi les réglages avant/après et vérifie que le premier geste reste progressif.
 Preuves : `verification/out/notes-reset-v16/`.
 

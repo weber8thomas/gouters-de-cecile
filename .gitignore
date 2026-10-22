@@ -11,5 +11,8 @@ __pycache__/
 
 # vrais médias des invités (photos, vidéos) : jamais publiés, ajoutés seulement à une version locale
 prive/
+# version partagée : sortie chiffrée et secret (mot de passe, clé, QR code) ; jamais dans git
+dist/partage/
+prive/partage/
 tools/parallaxe/.venv/
 tools/parallaxe/modeles/

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNiveauMouvement } from '../../lib/motion';
 import { LUMIERE_TRACEE } from '../Lumiere';
 import { useReglages } from '../../lib/reglages';
+import { caler, dureePaliers } from '../../lib/horloge';
 import { useVacille } from '../../lib/vacille';
 import { cssUrl } from '../../lib/assets';
 import geo from './geometrie.json';
@@ -24,9 +25,11 @@ export interface BougieProps {
 // la cire (flamme basse), la cire éclairée (flamme haute, fondue au rythme de la flamme), la flamme.
 //
 // La flamme n'est plus calculée à l'exécution : c'est le MÊME rendu (le volume émissif WebGL de flamme.ts, reflet dans
-// le puits compris) cuit une fois en une boucle de 40 images à 15 i/s (flamme-sprites.webp, 8 × 5 images de 380 × 312 ;
+// le puits compris) cuit une fois en une boucle de 32 images à 12 i/s (flamme-sprites.webp, 8 × 4 images de 380 × 312 ;
 // verification/perf/cuire-flamme.mjs). Elle joue par une animation de transform en marches d'escalier (steps), sur le
-// compositeur : ni JavaScript, ni WebGL, ni repeinture. La cire éclairée suit la lumière de la flamme cuite (opacité,
+// compositeur : ni JavaScript, ni WebGL, ni repeinture. Sa cadence est celle de l'horloge commune de la lumière
+// (src/lib/horloge.ts : 12 paliers par seconde, même origine de temps que les lueurs de vacille.ts), pour que tous les
+// changements tombent sur les mêmes images composées. La cire éclairée suit la lumière de la flamme cuite (opacité,
 // même cycle). Le souffle de la main sur la flamme et les coulées de cire (qui exigeaient la toile WebGL vivante) ont
 // disparu. « Animations : réduites » ou feu: false : une seule image de la flamme, immobile. Téléphone debout
 // (cadrage « tourner »), le CSS ne garde que la lueur. Rien ne capte le pointeur.
@@ -44,16 +47,16 @@ const place = (b: Boite): React.CSSProperties => ({ left: b.x, top: b.y, width: 
 /** Lance la boucle cuite : la feuille de sprites saute d'image en image (transform, steps) ; la cire vive suit la lumière. */
 function jouerFlamme(feuilleEl: HTMLElement, cireVive: HTMLElement | null): () => void {
   if (typeof feuilleEl.animate !== 'function') return () => {};
-  const { n, fps, cols, lignes, lumieres } = feuille;
-  const duree = (n / fps) * 1000;
+  const { n, cols, lignes, lumieres } = feuille; // n images à 12 i/s : n paliers de l'horloge commune
+  const duree = dureePaliers(n);
   const pos = (i: number) => `translate(${r3((-(i % cols) / cols) * 100)}%, ${r3((-Math.floor(i / cols) / lignes) * 100)}%)`;
   const images: Keyframe[] = Array.from({ length: n }, (_, i) => ({ offset: i / n, transform: pos(i), easing: 'step-end' }));
   images.push({ offset: 1, transform: pos(0) });
-  const a = [feuilleEl.animate(images, { duration: duree, iterations: Infinity })];
+  const a = [caler(feuilleEl.animate(images, { duration: duree, iterations: Infinity }))];
   if (cireVive) {
     const op: Keyframe[] = lumieres.map((l, i) => ({ offset: i / n, opacity: lueurCire(l), easing: 'step-end' })); // paliers : même cadence que la flamme
     op.push({ offset: 1, opacity: lueurCire(lumieres[0]) });
-    a.push(cireVive.animate(op, { duration: duree, iterations: Infinity }));
+    a.push(caler(cireVive.animate(op, { duration: duree, iterations: Infinity })));
   }
   return () => a.forEach((x) => x.cancel());
 }

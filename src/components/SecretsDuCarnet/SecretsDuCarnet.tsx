@@ -5,52 +5,17 @@ import { clavierModalActif } from '../../lib/clavier';
 import { handStyle, handText } from '../../lib/hands';
 import { useReducedMotion } from '../../lib/motion';
 import { useRenderMode } from '../../lib/spread';
-import { LOUPE_EVENT, loupeOccupee } from '../../lib/loupe';
 import { placerCompagnon, zoneLibreSecret, type RectSecret } from '../../lib/secrets';
 import { abonnerQuete, agirQuete, CACHETTES, etatQuete, QUETE_INITIALE, QUETE_OUVRIR_EVENT } from '../../lib/quete';
 import { useEcran } from '../Ecran/contexte';
-import { GESTE_EVENT } from '../Livre/evenements';
+import { inscrire } from './visibilite';
+import { ScorpionsCaches } from '../Scorpions/ScorpionsCaches';
+import { rejouerScorpions } from '../../lib/scorpions';
 import { pageCuite, PAGES_CUITES } from '../PageCuite/PageCuite';
 import './SecretsDuCarnet.css';
 
 export interface SecretsDuCarnetProps { page: string }
 const useQuete = () => React.useSyncExternalStore(abonnerQuete, etatQuete, () => QUETE_INITIALE);
-
-// Un observateur partagé, sans horloge : rien ne change tout seul pendant la lecture.
-type Inscription = { el: HTMLElement; actif: (oui: boolean) => void; table?: boolean; placer?: () => void };
-const inscrits = new Set<Inscription>();
-let observateur: MutationObserver | null = null;
-function verifier() {
-  for (const i of inscrits) {
-    const feuille = i.el.closest('.gc-livre__page');
-    const livre = i.el.closest('.gc-livre') ?? i.el.closest('.gc-ecran')?.querySelector('.gc-livre');
-    i.actif(!document.hidden && !loupeOccupee() && (i.table || !!feuille?.classList.contains('gc-livre__page--visible')) === true &&
-      livre?.getAttribute('data-gc-etat') === 'ouvert' && !livre.hasAttribute('data-gc-geste'));
-    i.placer?.();
-  }
-}
-function inscrire(i: Inscription): () => void {
-  inscrits.add(i);
-  if (!observateur) {
-    observateur = new MutationObserver(verifier);
-    const ecran = i.el.closest('.gc-ecran') ?? i.el.closest('.gc-livre');
-    if (ecran) observateur.observe(ecran, { attributes: true, subtree: true, attributeFilter: ['class', 'data-gc-etat', 'data-gc-geste'] });
-    document.addEventListener('visibilitychange', verifier);
-    document.addEventListener(GESTE_EVENT, verifier);
-    window.addEventListener(LOUPE_EVENT, verifier);
-    window.addEventListener('resize', verifier);
-  }
-  verifier();
-  return () => {
-    inscrits.delete(i);
-    if (inscrits.size) return;
-    observateur?.disconnect(); observateur = null;
-    document.removeEventListener('visibilitychange', verifier);
-    document.removeEventListener(GESTE_EVENT, verifier);
-    window.removeEventListener(LOUPE_EVENT, verifier);
-    window.removeEventListener('resize', verifier);
-  };
-}
 
 const cartes = new Map<string, Promise<RectSecret | null>>();
 function emplacement(page: string): Promise<RectSecret | null> {
@@ -75,7 +40,7 @@ function emplacement(page: string): Promise<RectSecret | null> {
 }
 
 /** Une seule cachette par étape, jamais de chien dans le papier. Les futures restent fermées. */
-export function SecretsDuCarnet({ page }: SecretsDuCarnetProps) {
+function NoteCachee({ page }: SecretsDuCarnetProps) {
   const mode = useRenderMode();
   const reduit = useReducedMotion();
   const quete = useQuete();
@@ -109,6 +74,11 @@ export function SecretsDuCarnet({ page }: SecretsDuCarnetProps) {
       {index === 0 && <span className="gc-secrets__murmure" aria-hidden="true">{handText('Intentions gourmandes…', 'cecile')}</span>}
     </button>
   </div>;
+}
+
+/** Les notes de la quête et les scorpions de la page, en surimpression (rien dans la page cuite). */
+export function SecretsDuCarnet({ page }: SecretsDuCarnetProps) {
+  return <><NoteCachee page={page}/><ScorpionsCaches page={page}/></>;
 }
 export default SecretsDuCarnet;
 
@@ -262,7 +232,7 @@ export function CompagnonDuCarnet() {
       </div>
       <div className="gc-quete__reprise">
         <button type="button" className="gc-quete__recommencer" onClick={() => {
-          agirQuete({ type: 'rejouer' }); setSelection(null); setAide(0); setRecommence(true);
+          agirQuete({ type: 'rejouer' }); rejouerScorpions(); setSelection(null); setAide(0); setRecommence(true);
           requestAnimationFrame(() => panneau.current?.querySelector<HTMLButtonElement>('.gc-quete__recommencer')?.focus({ preventScroll: true }));
         }}>{texte('Recommencer les découvertes')}</button>
         <p className="gc-quete__retour" role="status" aria-live="polite">{recommence ? texte('Tout est à redécouvrir.') : ''}</p>

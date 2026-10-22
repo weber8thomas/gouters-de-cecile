@@ -20,8 +20,8 @@ Constats au départ de `e2f24e5` : `design-system/baked/pages/papier/f47.webp` e
 
 ```sh
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 node scripts/bake-pages.mjs --sans-4x
-# ou, en parallèle (reprendre avec les mêmes options et --resume après une interruption) :
-tools/ecriture/.venv/bin/python scripts/bake-pages-parallele.py --jobs 6 --sans-4x --out verification/out/v18-parallele
+# ou, en parallèle (cuire.py reprend page par page : relancer la même commande après une interruption) :
+node scripts/bake-pages.mjs --sans-4x --jobs 6
 tools/ecriture/.venv/bin/python scripts/bake-temps-encre.py
 tools/ecriture/.venv/bin/python scripts/bake-magie.py
 node scripts/assets.mjs

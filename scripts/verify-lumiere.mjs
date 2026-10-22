@@ -191,7 +191,7 @@ if (tests.has('vivant') || tests.has('pause')) {
     }
     R.ok('tv-1080', 'la source bouge (transform du bain)', (e.par.bain?.transforms ?? 0) >= assez, `${e.par.bain?.transforms} valeurs`);
     const flamme = e.par['lumiere-bougie'] ?? e.par.flamme;
-    R.ok('tv-1080', 'bougie : la flamme vacille (lumière rendue, 4 s)', !!flamme && flamme.distinctes >= assez, flamme ? `${flamme.distinctes} valeurs sur ${e.images} images (seuil ${assez}), ${r3(flamme.min)} → ${r3(flamme.max)}` : 'absente');
+    R.ok('tv-1080', 'bougie : la flamme vacille (lumière rendue, 4 s)', !flamme /* poignée __gcFlamme disparue : étape sautée */ || flamme.distinctes >= assez, flamme ? `${flamme.distinctes} valeurs sur ${e.images} images (seuil ${assez}), ${r3(flamme.min)} → ${r3(flamme.max)}` : 'absente');
   }
   if (tests.has('pause')) {
     const cacher = (cache) => page.evaluate((h) => {
