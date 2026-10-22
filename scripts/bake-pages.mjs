@@ -2,7 +2,19 @@
 // l'aquarelle, l'encre cuite dans le papier (design-system/baked/pages/**), manifeste lu par <PageCuite>
 // (src/content/pages/manifeste.json), puis inventaire des images (scripts/assets.mjs).
 //
-//   node scripts/bake-pages.mjs [--only lisa,julie] [--force] [--apercus] [--format ecran|a5] [--sans-4x]
+//   node scripts/bake-pages.mjs [--mode complet|rapide] [--jobs N] [--only lisa,julie] [--force] [--apercus]
+//                               [--format ecran|a5] [--sans-4x] [--sortie <dossier>] [--relire] [--simuler]
+//
+// npm run pages:rapide   aperçu 1× (JPEG papier + encre), sans 1× ni ×4, en parallèle →
+//                        verification/out/cuisson-rapide/ (le site et baked/ ne changent pas) ;
+// npm run pages:complet  2× + 1× + ×4, en parallèle → design-system/baked/pages/, puis inventaire ;
+// npm run pages:relire   relecture OCR (TrOCR) de l'encre rendue des pages DÉJÀ cuites, sans les recuire
+//                        (--only accepté) → rapport verification/out/relecture.md, nombres et quantités en tête.
+// La relecture ne tourne plus à chaque cuisson (lourde, faux positifs) : `--relire` la lance une fois les
+// pages choisies cuites (mode complet). Un mot douteux ne donne jamais un code de sortie ≠ 0.
+// --simuler : annonce les pages à cuire (« N à cuire ») et s'arrête, sans rien cuire.
+// --jobs : processus de cuisson (défaut : cœurs − 2, au plus 8 ; 1 = séquentiel). La passe ×4 a son propre
+// cache : --sans-4x garde les tuiles encore valides, et la passe ne refait que les pages changées.
 //
 // Pages : les descriptions écrites à la main (src/content/pages/<id>.json) et les recettes reçues du plan
 // src/content/pages/recettes.json (src/content/recettes/<slug>.json → pagination automatique :
@@ -13,8 +25,9 @@
 // 300 dpi) dans design-system/baked/a5/ (manifeste design-system/baked/a5/manifeste.json) ; --sans-4x : sans la passe
 // d'encre ×4 de la loupe (tuiles design-system/baked/pages/4x/<id>-<r><c>.webp, manifeste `encre4x`).
 // Ordre, folios, sommaire et intercalaires : src/content/carnet.json.
-// Code de sortie 1 si un mot ne tient pas, si une correction tombe dans un mot important ou si un mot
-// important (nombre, unité, nom, ingrédient) se relit mal sur l'encre rendue : rien n'est perdu ni faux en silence.
+// Code de sortie 1 si un mot ne tient pas ou si une correction tombe dans un mot important : rien n'est perdu
+// ni faux en silence. Cache : l'empreinte du moteur ignore commentaires, docstrings et relecture.py
+// (scripts/pages/empreintes_equivalentes.json déclare les états des scripts qui rendent les mêmes octets).
 // Le moteur est en Python (scripts/pages/, environnement de l'outil d'écriture tools/ecriture/.venv) :
 // pagination, mise en page naturelle, croquis, rastérisation, composition encre × papier, WebP.
 // Tests : tools/ecriture/.venv/bin/python -m unittest discover -s scripts/pages/tests -v
@@ -33,9 +46,9 @@ const passe = [];
 for (let i = 0; i < args.length; i++) {
   if (args[i] === '--only') passe.push('--only', args[++i] ?? '');
   else if (args[i].startsWith('--only=')) passe.push('--only', args[i].slice(7));
-  else if (args[i] === '--force' || args[i] === '--apercus' || args[i] === '--sans-4x') passe.push(args[i]);
-  else if (args[i] === '--format') passe.push('--format', args[++i] ?? '');
-  else if (args[i].startsWith('--format=')) passe.push('--format', args[i].slice(9));
+  else if (args[i] === '--force' || args[i] === '--apercus' || args[i] === '--sans-4x' || args[i] === '--relire' || args[i] === '--simuler') passe.push(args[i]);
+  else if (['--format', '--mode', '--jobs', '--sortie'].includes(args[i])) passe.push(args[i], args[++i] ?? '');
+  else if (/^--(format|mode|jobs|sortie)=/.test(args[i])) passe.push(...args[i].split(/=(.*)/s, 2));
   else {
     console.error(`option inconnue : ${args[i]}`);
     process.exit(2);
@@ -43,5 +56,7 @@ for (let i = 0; i < args.length; i++) {
 }
 const r = spawnSync(python, [join(ROOT, 'scripts/pages/cuire.py'), ...passe], { stdio: 'inherit', cwd: ROOT, env: { ...process.env, OMP_NUM_THREADS: process.env.OMP_NUM_THREADS ?? '1' } });
 if (r.status !== 0 && r.status !== 1) process.exit(r.status ?? 2);
+// aperçu rapide ou sortie à part : rien de neuf dans design-system/baked/, pas d'inventaire
+if (passe.includes('rapide') || passe.includes('--sortie') || passe.includes('--simuler')) process.exit(r.status || 0);
 const inv = spawnSync(process.execPath, [join(ROOT, 'scripts/assets.mjs')], { stdio: 'inherit', cwd: ROOT });
 process.exit(r.status || inv.status || 0);

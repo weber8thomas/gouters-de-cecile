@@ -1,0 +1,75 @@
+{
+  "slug": "shannen",
+  "source": "src/content/recettes/shannen.txt",
+  "adaptations": [
+    "Texte reçu conservé intégralement dans le fichier TXT ; tirets de liste retirés, étapes numérotées 1. à 5. dans l’ordre reçu. Mots, fautes de frappe et emojis conservés (emojis dessinés au trait).",
+    "Petit mot provisoire : Lorem ipsum — message à venir ; aucun message authentique inventé.",
+    "Nom et signature « Shannen, Olivia, Nathan & Martin » (la recette est signée par la famille, comme « Alba, Maël & Marc »)."
+  ],
+  "style": {
+    "main": "mamie",
+    "encre": "noire",
+    "police": "caveat",
+    "graine": 25639
+  },
+  "titre": "La tarte poire « chocolat »",
+  "details": [
+    "Avec la saison, en ce moment :"
+  ],
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "1 plaque de chocolat « pralinoise » (c’est meilleur mais évidemment moins healthy qu’avec du chocolat noir 70% 😋)"
+        },
+        {
+          "texte": "2 œufs"
+        },
+        {
+          "texte": "50g de sucre"
+        },
+        {
+          "texte": "100g de poudre d’amandes"
+        },
+        {
+          "texte": "100g de beurre"
+        },
+        {
+          "texte": "quelques poires pochées à la vanille de tahiti (seule cette vanille est autorisée 🥸) ou 1 boîte de poires en boîte ca marche aussi 😉"
+        },
+        {
+          "texte": "de la pâte brisée ou feuilleté (tout dépend de ce que vous préférez) / perso avec la pâte brisé c’est plus simple pour la cuisson et aussi plus facile à faire 😙"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Faire fondre le chocolat pralinoise et l’étaler sur la pâte préalablement foncée et piquée à la fourchette dans un moule à tarte"
+    },
+    {
+      "titre": "2.",
+      "texte": "Dans un saladier, blanchir le sucre et les œufs puis y ajouter le beurre fondu et la poudre d’amandes"
+    },
+    {
+      "titre": "3.",
+      "texte": "Étaler l’appareil sur le chocolat"
+    },
+    {
+      "titre": "4.",
+      "texte": "Couper les poires en lamelles et répartir sur la tarte (personnellement je les mets légèrement soit directement comme ça ou entières ou alors je suis motivée et je vais une belle rosace) - la quantité dépend de si on aime la poire !"
+    },
+    {
+      "titre": "5.",
+      "texte": "Cuire le tout à 200 degrés (thermostat 7) pendant 25 à 30 min - il faut que la pâte soit bien cuite pour qu’elle soit croustillante !"
+    }
+  ],
+  "apres": [
+    "Et voilà !!! 🤤"
+  ],
+  "mot": "Lorem ipsum — message à venir",
+  "signature": "Shannen, Olivia, Nathan & Martin",
+  "nom": "Shannen, Olivia, Nathan & Martin"
+}

@@ -1,0 +1,18 @@
+{
+  "_": "Huit scorpions cachés (Cécile est Scorpion, ascendant Scorpion). Position : centre du dessin en fraction de la page (x, y), sauf sur la table où x et y sont des décalages à partir de la bougie, en largeurs de bougie. vue : a (de dessus, queue à droite), b (de dessus, queue à gauche), c (de profil). angle : inclinaison au repos, en degrés. fuite : direction de la course quand on le touche (0 vers la droite, 90 vers le bas, 180 vers la gauche, 270 vers le haut). taille : 1 par défaut. coupe : part du dessin cachée sous une photo ou un papier, ex. « 45% 0 0 0 » (haut droite bas gauche, comme inset).",
+  "message": {
+    "titre": "Tu as tout trouvé !",
+    "texte": "Scorpion ascendant Scorpion : tu as tout trouvé, joyeux anniversaire Cécile !",
+    "bouton": "Refermer"
+  },
+  "scorpions": [
+    { "id": "garde",     "page": "garde",          "x": 0.80, "y": 0.535, "vue": "b", "angle": 14,  "fuite": 110 },
+    { "id": "sommaire",  "page": "dedicace",       "x": 0.70, "y": 0.262, "vue": "a", "angle": -6,  "fuite": 0, "taille": 0.85 },
+    { "id": "marge",     "page": "lisa-gauche",    "x": 0.79, "y": 0.485, "vue": "c", "angle": -16, "fuite": 15 },
+    { "id": "photo",     "page": "marie-gauche",   "x": 0.49, "y": 0.2885, "vue": "a", "angle": 3,   "fuite": 20, "taille": 0.85, "coupe": "14% 0 0 0" },
+    { "id": "aquarelle", "page": "tartes-gauche",  "x": 0.50, "y": 0.80,  "vue": "b", "angle": -22, "fuite": 100 },
+    { "id": "chapitre",  "page": "biscuits-droite","x": 0.80, "y": 0.88,  "vue": "c", "angle": 24,  "fuite": 0 },
+    { "id": "fin",       "page": "fin-droite",     "x": 0.18, "y": 0.88,  "vue": "a", "angle": 4,   "fuite": 10, "taille": 0.85 },
+    { "id": "table",     "page": "table",          "x": 0.28, "y": 0.74,  "vue": "c", "angle": -35, "fuite": 160 }
+  ]
+}

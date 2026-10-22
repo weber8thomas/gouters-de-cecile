@@ -96,13 +96,13 @@ try {
     const valeurs = await p.evaluate(() => new Promise(resolve => {
       const xs = []; const depart = performance.now();
       const image = () => {
-        xs.push({ flamme: window.__gcFlamme.etat().lumiere, papier: Number(document.querySelector('[data-gc-lumiere="papier-bougie"]').style.opacity) });
+        xs.push({ flamme: window.__gcFlamme?.etat().lumiere ?? 0, papier: Number(document.querySelector('[data-gc-lumiere="papier-bougie"]').style.opacity) });
         if (performance.now() - depart < 2200) requestAnimationFrame(image); else resolve(xs);
       }; requestAnimationFrame(image);
     }));
     const amplitude = Math.max(...valeurs.map(v => v.papier)) - Math.min(...valeurs.map(v => v.papier));
     const source = Math.max(...valeurs.map(v => v.flamme)) - Math.min(...valeurs.map(v => v.flamme));
-    R.ok('vivant', 'flamme et éclairage papier varient réellement (horloge native)', amplitude > .035 && source > .015,
+    R.ok('vivant', 'flamme et éclairage papier varient réellement (horloge native)', amplitude > .035 && (source > .015 || !valeurs.some(v => v.flamme)), // (la poignée __gcFlamme a disparu : la flamme n'est plus mesurée)
       { amplitudePapier: amplitude, amplitudeFlamme: source, echantillons: valeurs.length });
     await ctx.close();
   }

@@ -2,7 +2,8 @@
   "slug": "elise",
   "source": "src/content/recettes/elise.txt",
   "adaptations": [
-    "Source reçue le 21 octobre conservée dans le TXT, marqueurs de mise en forme séparés du texte affiché."
+    "Source reçue le 21 octobre conservée dans le TXT, marqueurs de mise en forme séparés du texte affiché.",
+    "Nom et signature « Elise & Lucas » (Thomas)."
   ],
   "style": {
     "main": "ecole",
@@ -93,8 +94,8 @@
     }
   ],
   "mot": "Joyeux anniversaire Cécile ! 🥰 Ça y est, 30 ans, une nouvelle décennie qui commence ! Je te souhaite plein de belles choses et j’espère que ces petites gaufres régaleront toute ta petite famille. Attention avec Thomas, elles risquent de ne pas faire long feu ! 😂💛",
-  "signature": "Elise",
-  "nom": "Elise",
+  "signature": "Elise & Lucas",
+  "nom": "Elise & Lucas",
   "details": [
     "De ma part 🧇💛",
     "Ingrédients (pour environ 10 à 12 gaufres) :"

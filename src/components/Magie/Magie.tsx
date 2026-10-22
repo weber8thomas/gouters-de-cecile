@@ -4,7 +4,6 @@
 // le livre reste le même.
 import React from 'react';
 import { useReducedMotion } from '../../lib/motion';
-import { useFeu } from '../../lib/feu';
 import { demarrerMagie, type LiensMagie, type GeoMagie } from './moteur';
 import './Magie.css';
 
@@ -30,8 +29,6 @@ export function Magie({ p, tour, rabats, livre, zoom, geo }: MagieProps) {
   const reduit = useReducedMotion();
   const vivant = React.useRef({ geo, reduit });
   vivant.current = { geo, reduit };
-  // le feu tourne tant que quelqu'un l'écoute : la poussière d'or suit son intensité
-  useFeu();
   const [perdue, setPerdue] = React.useState(false);
 
   React.useEffect(() => {

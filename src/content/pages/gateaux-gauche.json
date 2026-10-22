@@ -35,12 +35,14 @@
       "vignettes": {
         "sarah": "vignette-sarah",
         "laura": "vignette-laura",
-        "elise": "vignette-elise"
+        "elise": "vignette-elise",
+        "lily": "vignette-lily"
       },
       "titres": {
-        "sarah": "Sarah — Brioche",
+        "sarah": "Sarah, Gabriel & Maxime — Brioche",
         "laura": "Laura Gramegna — Crêpes",
-        "elise": "Elise — Gaufres de Liège"
+        "elise": "Elise & Lucas — Gaufres de Liège",
+        "lily": "Lily — Cinnamon rolls"
       },
       "finale_titre": "Joyeux anniversaire, Cécile !"
     }
@@ -49,6 +51,11 @@
     {
       "nom": "vignette-sarah",
       "aquarelle": "brioche",
+      "anime": "fixe"
+    },
+    {
+      "nom": "vignette-lily",
+      "aquarelle": "cannelle",
       "anime": "fixe"
     },
     {
@@ -76,5 +83,6 @@
   ],
   "marges": {
     "haut": 0.075
-  }
+  },
+  "police": "kalam"
 }

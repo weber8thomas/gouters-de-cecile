@@ -50,28 +50,35 @@
           "zone": "vignette-lise",
           "hauteur": 0.08
         },
-        "julien": {
-          "zone": "vignette-julien",
+        "clemence": {
+          "zone": "vignette-clemence",
           "decalage_y": 0.015
         },
-        "lisa-de-paris": "vignette-lisa-de-paris"
+        "lisa-de-paris": "vignette-lisa-de-paris",
+        "alba": {
+          "zone": "vignette-alba",
+          "hauteur": 0.08
+        }
       },
       "titres": {
-        "lisa": "Lisa — Carrot cake",
+        "lisa": "Lisa Allienne — Carrot cake",
         "emeline": "Emeline — Fondant au chocolat",
-        "clemence": "Clémence — Cheesecake framboises",
+        "julien": "Julien & Mila — Cheesecake framboises",
         "pierrette": "Pierrette — Cake au citron",
         "anatole": "Anatole — Tarte aux myrtilles",
-        "lise": "Lise — Tarte aux pommes",
-        "julien": "Julien — Cookies & noisettes",
+        "lise": "Lise & Maxime — Tarte aux pommes",
+        "clemence": "Clémence & Mila — Cookies & noisettes",
         "laura": "Laura Gramegna — Crêpes",
-        "sarah": "Sarah — Brioche",
-        "lisa-de-paris": "Lisa De Paris — Spitzbuben",
-        "elise": "Elise — Gaufres de Liège",
+        "sarah": "Sarah, Gabriel & Maxime — Brioche",
+        "lisa-de-paris": "Lisa De Paris — Gâteaux de Noël",
+        "elise": "Elise & Lucas — Gaufres de Liège",
         "lea": "Léa — Gâteau aux pommes",
         "suzanne": "Suzanne — Gâteau aux pommes",
         "antoine": "Antoine — Flaugnarde aux poires",
-        "margot-chapuzy": "Margot — Banana bread"
+        "margot-chapuzy": "Margot & Flo — Banana bread",
+        "alba": "Alba, Maël & Marc — Crumble aux pommes",
+        "shannen": "Shannen, Olivia, Nathan & Martin — Tarte poire",
+        "marine": "Marine, Guillaume & Théo — Tiramisu"
       },
       "chapitres": [
         "gateaux",
@@ -84,9 +91,12 @@
         "suzanne",
         "antoine",
         "margot-chapuzy",
+        "marine",
         "anatole",
         "lise",
-        "julien",
+        "alba",
+        "shannen",
+        "clemence",
         "lisa-de-paris"
       ],
       "chapitres_sans_titre": [
@@ -134,7 +144,12 @@
       "anime": "fixe"
     },
     {
-      "nom": "vignette-julien",
+      "nom": "vignette-alba",
+      "aquarelle": "pomme-2",
+      "anime": "fixe"
+    },
+    {
+      "nom": "vignette-clemence",
       "aquarelle": "cookies",
       "anime": "fixe"
     },

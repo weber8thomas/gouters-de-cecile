@@ -12,9 +12,16 @@ Sorties
                                                 (couleurs atténuées, teinte chaude, grain), coins arrondis,
                                                 ombre de contact, dans une image 1400×1040 (alpha)
   design-system/baked/photos/<id>/coins.webp    coins photo noirs ou kraft, même cadre (se superposent)
-  src/content/photos-cecile.json                [{ id, age, tirage, coins, angle }]
+  src/content/photos-cecile.json                [{ id, orientation, tirage, coins, angle }]
 
-Le cadre (1400×1040, marges, bords) reprend celui des tirages des invités de bake-videos.mjs.
+Orientation (credits.json : « orientation »: « paysage » par défaut, ou « portrait »)
+  paysage   photo 3:2 de 1080×720 dans un papier de 1200×840, image 1400×1040
+  portrait  photo 2:3 de 720×1080 dans un papier de 840×1200, image 1040×1400
+  Mêmes bords du papier (58/62/56/64 px), même marge, mêmes coins et mêmes ombres dans les deux cas.
+  Les fonctions prennent une géométrie `g` (PAYSAGE par défaut) : scripts/bake-local-cecile.py les réutilise
+  pour la version locale (vraies photos de prive/, jamais publiées).
+
+Le cadre (marges, bords) reprend celui des tirages des invités de bake-videos.mjs.
 Déterministe : graines fixes. Aucun effet à l'exécution.
 """
 import hashlib
@@ -33,13 +40,27 @@ BAKED = os.path.join(ROOT, 'design-system/baked/photos')
 CONTENU = os.path.join(ROOT, 'src/content/photos-cecile.json')
 
 # Géométrie : identique aux tirages des invités (bake-videos.mjs, T)
-PW, PH = 1080, 720                    # photo 3:2
 BG, BD, BH, BB = 58, 62, 56, 64       # bords du papier : gauche, droite, haut, bas
 MARGE, RAYON = 100, 9
-PAP_W, PAP_H = PW + BG + BD, PH + BH + BB   # 1200 × 840
-CW, CH = PAP_W + 2 * MARGE, PAP_H + 2 * MARGE  # 1400 × 1040
-PX, PY = MARGE + BG, MARGE + BH       # coin haut-gauche de la photo dans l'image
 L_COIN, E_COIN = 118, 4.5             # côté du triangle de coin, débord
+
+
+class Geometrie:
+    """Dimensions d'un tirage pour une photo de pw × ph px (les bords, la marge et les coins ne changent pas)."""
+
+    def __init__(self, pw, ph):
+        self.PW, self.PH = pw, ph
+        self.PAP_W, self.PAP_H = pw + BG + BD, ph + BH + BB            # paysage 1200 × 840, portrait 840 × 1200
+        self.CW, self.CH = self.PAP_W + 2 * MARGE, self.PAP_H + 2 * MARGE  # 1400 × 1040, 1040 × 1400
+        self.PX, self.PY = MARGE + BG, MARGE + BH                     # coin haut-gauche de la photo dans l'image
+
+
+PAYSAGE = Geometrie(1080, 720)        # photo 3:2
+PORTRAIT = Geometrie(720, 1080)       # photo 2:3
+GEOMETRIES = {'paysage': PAYSAGE, 'portrait': PORTRAIT}
+# Constantes du paysage, gardées pour les scripts qui les importent
+PW, PH, PAP_W, PAP_H, CW, CH, PX, PY = (PAYSAGE.PW, PAYSAGE.PH, PAYSAGE.PAP_W, PAYSAGE.PAP_H,
+                                        PAYSAGE.CW, PAYSAGE.CH, PAYSAGE.PX, PAYSAGE.PY)
 
 SS = 4                                # sur-échantillonnage des masques (anticrénelage)
 
@@ -49,8 +70,9 @@ def sha256(path):
         return hashlib.sha256(f.read()).hexdigest()
 
 
-def cadrer(im, cx, cy, zoom=1.0):
-    """Recadre en 3:2 autour de (cx, cy) (fractions) ; zoom < 1 resserre le cadre. Réduit à 1080×720."""
+def cadrer(im, cx, cy, zoom=1.0, g=PAYSAGE):
+    """Recadre en 3:2 (2:3 en portrait) autour de (cx, cy) (fractions) ; zoom < 1 resserre le cadre. Réduit à la photo du tirage."""
+    PW, PH = g.PW, g.PH
     w, h = im.size
     cible = PW / PH
     if w / h > cible:
@@ -64,8 +86,9 @@ def cadrer(im, cx, cy, zoom=1.0):
     return im.crop((x0, y0, x0 + nw, y0 + nh)).resize((PW, PH), Image.LANCZOS)
 
 
-def virage_passe(im, graine):
+def virage_passe(im, graine, g=PAYSAGE):
     """Vieux tirage couleur passé : couleurs atténuées, teinte chaude, noirs relevés, vignetage, grain."""
+    PW, PH = g.PW, g.PH
     a = np.asarray(im, dtype=np.float32) / 255.0
     lum = a @ np.array([0.3, 0.59, 0.11], np.float32)
     a = lum[..., None] + (a - lum[..., None]) * 0.35          # couleurs passées
@@ -80,8 +103,9 @@ def virage_passe(im, graine):
     return (np.clip(a, 0, 1) * 255).astype(np.uint8)
 
 
-def papier(graine):
+def papier(graine, g=PAYSAGE):
     """Bord de papier blanc cassé, jauni vers l'extérieur, fibres."""
+    PAP_W, PAP_H = g.PAP_W, g.PAP_H
     creme = np.array([0xf1, 0xe9, 0xd8], np.float32) / 255
     jauni = np.array([0xdc, 0xca, 0xa6], np.float32) / 255
     yy, xx = np.mgrid[0:PAP_H, 0:PAP_W].astype(np.float32)
@@ -98,7 +122,8 @@ def papier(graine):
     return (np.clip(col, 0, 1) * 255).astype(np.uint8)
 
 
-def masque_papier():
+def masque_papier(g=PAYSAGE):
+    PAP_W, PAP_H, CW, CH = g.PAP_W, g.PAP_H, g.CW, g.CH
     m = Image.new('L', (PAP_W * SS, PAP_H * SS), 0)
     ImageDraw.Draw(m).rounded_rectangle((0, 0, PAP_W * SS - 1, PAP_H * SS - 1), radius=RAYON * SS, fill=255)
     m = m.resize((PAP_W, PAP_H), Image.LANCZOS)
@@ -142,16 +167,17 @@ def coin(cx, cy, quarts, papier_coin):
     return (x0, y0, m, couleur, ombre)
 
 
-def composer(id_, photo, papier_coin, graine):
+def composer(id_, photo, papier_coin, graine, g=PAYSAGE):
+    PW, PH, PAP_W, PAP_H, CW, CH, PX, PY = g.PW, g.PH, g.PAP_W, g.PAP_H, g.CW, g.CH, g.PX, g.PY
     # --- tirage : papier + photo, ombre
     fond = Image.new('RGB', (CW, CH), (0, 0, 0))
     pap = Image.new('RGB', (PAP_W, PAP_H))
-    pap.paste(Image.fromarray(papier(graine)), (0, 0))
+    pap.paste(Image.fromarray(papier(graine, g)), (0, 0))
     pap.paste(Image.fromarray(photo), (BG, BH))
     couche = Image.new('RGBA', (CW, CH), (0, 0, 0, 0))
     couche.paste(pap.convert('RGBA'), (MARGE, MARGE))
-    couche.putalpha(masque_papier())
-    ombre_m = masque_papier()
+    couche.putalpha(masque_papier(g))
+    ombre_m = masque_papier(g)
     s1 = Image.new('L', (CW, CH), 0)
     s1.paste(ombre_m, (1, 2))
     s1 = s1.filter(ImageFilter.GaussianBlur(2.6)).point(lambda v: int(v * 0.3))
@@ -190,17 +216,19 @@ def main():
         if sha256(chemin) != src['sha256']:
             sys.exit(f"{ph['id']} : sha256 inattendu pour {chemin}")
         im = ImageOps.exif_transpose(Image.open(chemin)).convert('RGB')
-        im = cadrer(im, ph['cadrage']['cx'], ph['cadrage']['cy'], ph['cadrage'].get('zoom', 1.0))
-        photo = virage_passe(im, graine=1000 + i)
-        tirage, coins = composer(ph['id'], photo, ph['coins'], graine=2000 + i)
+        orientation = ph.get('orientation', 'paysage')
+        g = GEOMETRIES[orientation]
+        im = cadrer(im, ph['cadrage']['cx'], ph['cadrage']['cy'], ph['cadrage'].get('zoom', 1.0), g)
+        photo = virage_passe(im, 1000 + i, g)
+        tirage, coins = composer(ph['id'], photo, ph['coins'], 2000 + i, g)
         dossier = os.path.join(BAKED, ph['id'])
         os.makedirs(dossier, exist_ok=True)
         tirage.save(os.path.join(dossier, 'tirage.webp'), 'WEBP', quality=86, method=6)
         coins.save(os.path.join(dossier, 'coins.webp'), 'WEBP', quality=90, method=6)
-        print(f"{ph['id']:<10} {ph['age']:<18} {src['auteur']:<20} "
+        print(f"{ph['id']:<10} {orientation:<9} {src['auteur']:<20} "
               f"{os.path.getsize(os.path.join(dossier, 'tirage.webp')) // 1024} Ko / "
               f"{os.path.getsize(os.path.join(dossier, 'coins.webp')) // 1024} Ko")
-        contenu.append({'id': ph['id'], 'age': ph['age'], 'tirage': f"photos/{ph['id']}/tirage",
+        contenu.append({'id': ph['id'], 'orientation': orientation, 'tirage': f"photos/{ph['id']}/tirage",
                         'coins': f"photos/{ph['id']}/coins", 'angle': ph['angle']})
     with open(CONTENU, 'w', encoding='utf-8') as f:
         json.dump(contenu, f, ensure_ascii=False, indent=2)

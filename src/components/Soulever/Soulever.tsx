@@ -1,5 +1,10 @@
 // Soulever : la photo d'une vidéo ou le feuillet volant se soulève de la page, grandit au-dessus du
-// livre (FLIP sur une seule MotionValue, ressort SPRINGS.lift), puis redescend à sa place.
+// livre (FLIP sur une seule MotionValue, trajet court et doux, sans rebond : un coin se décolle, l'ombre grandit, la photo
+// arrive à plat face à l'écran), puis redescend à sa place.
+//
+// Réactivité : on n'attend jamais la fin d'une animation. Un toucher (ou une touche) pendant l'ouverture la termine net
+// et l'action demandée part tout de suite ; pendant le retour, il le termine net (la photo est posée) et le geste atteint
+// le livre dessous (tourner la page, soulever une autre photo).
 //
 //   <Ecran>
 //     <SoulevementProvider>      ← calque dessiné en portail dans useEcran().controles (px d'écran)
@@ -19,7 +24,7 @@ import { createPortal } from 'react-dom';
 import { useEcran } from '../Ecran/contexte';
 import { PageCuite } from '../PageCuite';
 import { LazyMotion, SPRINGS, animate, domMax, m, useMotionValue, useNiveauMouvement, useTransform } from '../../lib/motion';
-import { getReglages } from '../../lib/reglages';
+import { getReglages, useReglages } from '../../lib/reglages';
 import { useClavierModal } from '../../lib/clavier';
 import { jouerSon, marquerVideo } from '../../lib/son';
 import { useAmbiance } from '../../lib/ambiance';
@@ -27,7 +32,7 @@ import { AUCUNE_MARGE, type Insets } from '../../lib/viewport';
 import { handStyle } from '../../lib/hands';
 import { ActionsContext, EtatContext, type EtatSoulevement, type ObjetSoulevable, type SoulevementActions } from './contexte';
 import { geometrieDe, proportionImage, urlMedia, type Fractions, type VideoInfo } from './media';
-import { lisse, mesurerPose, placeBouton, poseCible, transformDe, versLocal, type Pose } from './geometrie';
+import { decollement, lisse, mesurerPose, placeBouton, poseCible, transformDe, versLocal, type Pose } from './geometrie';
 import './Soulever.css';
 
 export interface SoulevementProviderProps {
@@ -52,8 +57,17 @@ function poseDepart(o: ObjetSoulevable, calque: HTMLElement): Pose {
 const SEUIL_FEUILLET = 0.2;
 const POSE_NULLE: Pose = { cx: 0, cy: 0, w: 0, h: 0, angle: 0 };
 const FONDU = { duration: 0.25, ease: 'linear' } as const;
+/** Ouverture : ~400 ms, une sortie douce (vite au départ, longue fin, aucun dépassement). Retour : un peu plus court. */
+const OUVRIR = { duration: 0.4, ease: [0.22, 0.61, 0.36, 1] } as const;
+const REPOSER = { duration: 0.33, ease: [0.4, 0, 0.2, 1] } as const;
 /** Légende d'un tirage : la main de Cécile, en encre claire (elle est posée sur le voile de bois, pas sur le papier). */
 const LEGENDE: React.CSSProperties = { ...handStyle('cecile', 'annotation'), color: 'var(--gc-paper-lace)' };
+
+/** Lignes de légende écrites sous une photo fixe (légende, date) : la pose d'arrivée leur garde la place. */
+const lignesLegende = (o: { type: string; legende?: string | null; date?: string | null; video?: { video?: string; date?: string } } | null): number =>
+  !o ? 0
+    : o.type === 'tirage' ? (o.legende ? 1 : 0) + (o.date ? 1 : 0)
+      : o.type === 'photo' && o.video && !o.video.video && o.video.date ? 1 : 0;
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const pc = (v: number) => `${+(v * 100).toFixed(4)}%`;
@@ -68,7 +82,7 @@ function decoder(el: Element | null, maxMs: number): Promise<void> {
   return Promise.race([Promise.all(taches).then(() => undefined), new Promise<void>((r) => setTimeout(r, maxMs))]);
 }
 
-const memeVideo = (a: VideoInfo, b: VideoInfo) => a.id === b.id && a.video === b.video && a.tirage === b.tirage && a.affiche === b.affiche;
+const memeVideo = (a: VideoInfo, b: VideoInfo) => a.id === b.id && a.video === b.video && a.tirage === b.tirage && a.affiche === b.affiche && a.date === b.date;
 
 const FOCUSABLE = 'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 /** Ce qui reste actif pendant qu'un objet est soulevé : le menu de réglages (src/components/Reglages). */
@@ -116,6 +130,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   const vp = ecran?.vp ?? null;
   // (mouvement doux ou réduit : l'objet paraît en fondu, sans vol)
   const reduit = useNiveauMouvement() !== 'complet';
+  const [reglages] = useReglages();
   useAmbiance();
 
   const [phase, setPhase] = React.useState<EtatSoulevement>('ferme');
@@ -172,13 +187,18 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     return 1;
   };
   const carteT = useTransform(p, (v) => (reduitRef.current ? 'none' : transformDe(geoRef.current.S, geoRef.current.T, v)));
+  // L'ombre grandit avec la hauteur : plus elle monte, plus elle s'écarte (un peu plus bas en plein décollement).
+  const ombreT = useTransform(p, (v) => (reduitRef.current ? 'none'
+    : `translate3d(0, ${(decollement(v) * 0.018 * geoRef.current.T.h).toFixed(2)}px, 0) ${transformDe(geoRef.current.S, geoRef.current.T, v, false)}`));
   const carteO = useTransform([p, pret], ([v, r]: number[]) => opaciteCarte(v, r));
   // L'ombre portée s'efface quand la feuille passe par la tranche (retournement) : elle ne laisse
   // jamais le contour d'une feuille qui n'est plus là.
   const ombreO = useTransform([p, pret, tourne], ([v, r, f]: number[]) =>
     (r < 0.5 ? 0.002 : Math.max(0.002, lisse(0.04, 0.85, v) * opaciteCarte(v, r) * Math.max(0, 1 - 1.6 * Math.sin(Math.PI * clamp01(f))))));
   const voileO = useTransform([p, pret], ([v, r]: number[]) => (r < 0.5 ? 0.002 : clamp01(v)));
-  const couleur = useTransform(p, (v) => lisse(0.28, 0.88, v));
+  /** 1 : la photo ouverte passe en couleurs ; 0 : elle garde son tirage sépia (réglage « Photos ouvertes »). */
+  const veutCouleur = useMotionValue(1);
+  const couleur = useTransform([p, veutCouleur], ([v, c]: number[]) => lisse(0.2, 0.75, v) * c);
   const videoO = useTransform([vu, couleur], ([a, b]: number[]) => a * b);
   const traitFenetre = useTransform(avance, (t) => `translateX(${((clamp01(t) - 1) * 100).toFixed(3)}%)`);
   const traitEncre = useTransform(avance, (t) => `translateX(${((1 - clamp01(t)) * 100).toFixed(3)}%)`);
@@ -306,9 +326,29 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     };
     const a: Arret = reduitRef.current
       ? animate(p, but, { ...FONDU, onComplete: fin })
-      : animate(p, but, { ...SPRINGS.lift, restDelta: 0.0005, restSpeed: 0.01, onComplete: fin });
+      : animate(p, but, { ...(but === 1 ? OUVRIR : REPOSER), onComplete: fin });
     if (jetonAnim.current === jeton) animRef.current = a;
   }, [p, changerPhase, finir]);
+
+  /** Ouverture en cours (ou en préparation) : elle saute à son état final, la photo est ouverte. */
+  const terminerOuverture = React.useCallback(() => {
+    if (phaseRef.current !== 'envol') return;
+    seqRef.current++; // le départ différé n'a plus lieu
+    animRef.current?.stop();
+    animRef.current = null;
+    jetonAnim.current = null;
+    p.set(1);
+    pret.set(1);
+    changerPhase('ouvert');
+  }, [p, pret, changerPhase]);
+
+  /** Retour en cours : il saute à son état final, la photo est reposée dans la page. */
+  const terminerRetour = React.useCallback(() => {
+    if (phaseRef.current !== 'retour') return;
+    seqRef.current++;
+    p.set(0);
+    finir();
+  }, [p, finir]);
 
   const fermerTout = React.useCallback(() => {
     if (phaseRef.current === 'ferme') return;
@@ -326,7 +366,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     if (ph !== 'ferme') {
       if (!cur || cur.source !== o.source) return false;
       // Le même objet : nouveau geste (relance la lecture si elle n'a pas pris), ou on le rattrape.
-      if (o.type === 'photo') {
+      if (o.type === 'photo' && o.video.video) {
         const v = videoRef.current;
         if (v && (v.paused || v.ended)) lancerVideo(o.video, ph === 'retour' || v.ended);
       }
@@ -337,7 +377,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
       return true;
     }
     // Dans le geste, avant tout rendu : son, volume, début, play().
-    if (o.type === 'photo') lancerVideo(o.video, true);
+    if (o.type === 'photo' && o.video.video) lancerVideo(o.video, true);
     const calque = calqueRef.current;
     if (!calque || !o.source.isConnected) {
       if (o.type === 'photo') videoRef.current?.pause();
@@ -346,7 +386,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     jouerSon(o.type === 'feuillet' ? 'feuillet' : 'photo-lever', { vitesse: 0.55 });
     const v0 = vpRef.current ?? { w: window.innerWidth, h: window.innerHeight, insets: AUCUNE_MARGE as Insets, tactile: false };
     const S = poseDepart(o, calque);
-    const T = poseCible(v0, S.w / (S.h || 1));
+    const T = poseCible(v0, S.w / (S.h || 1), lignesLegende(o));
     geoRef.current = { S, T, fondu: false };
     objetRef.current = o;
     seqRef.current++;
@@ -372,7 +412,9 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   }, [lancerVideo, changerPhase, lancer, p, pret, vu, avance, tourne]);
 
   const reposer = React.useCallback(() => {
-    const ph = phaseRef.current;
+    if (phaseRef.current === 'retour') { terminerRetour(); return; }
+    if (phaseRef.current === 'envol' && pret.get() > 0.5) terminerOuverture();
+    const ph = phaseRef.current as EtatSoulevement;
     const o = objetRef.current;
     if (ph === 'ferme' || ph === 'retour' || !o) return;
     if (o.type === 'photo') {
@@ -395,7 +437,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     poseSonnee.current = geoRef.current.fondu; // pas d'atterrissage pour un fondu sur place
     changerPhase('retour');
     lancer(0);
-  }, [vu, pret, finir, changerPhase, lancer]);
+  }, [vu, pret, finir, changerPhase, lancer, terminerOuverture, terminerRetour]);
 
   const preparer = React.useCallback((info: VideoInfo | null) => {
     attenteRef.current = info;
@@ -441,6 +483,10 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
 
   const reposerRef = React.useRef(reposer);
   reposerRef.current = reposer;
+
+  // Réglage « Photos ouvertes » : une photo (fixe) passe en couleurs ou garde son sépia ; une vraie vidéo est toujours en couleurs.
+  const photoFixe = (objet?.type === 'photo' && !objet.video.video) || (objet?.type === 'tirage' && !!objet.couleur);
+  React.useEffect(() => { veutCouleur.set(photoFixe && reglages.photosOuvertes === 'sepia' ? 0 : 1); }, [photoFixe, reglages.photosOuvertes, veutCouleur]);
 
   // ---- Départ du vol, deux images après le montage de la carte ------------------------------
   React.useEffect(() => {
@@ -516,7 +562,10 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   }, [videoEl, avance, vu]);
 
   // ---- Ouvert : le livre devient inert, le focus va au bouton, et revient à l'objet ensuite --
-  const ouvert = phase !== 'ferme';
+  // « Ouvert » : le livre est inerte et le calque reçoit les gestes. Pendant le retour, ni l'un ni l'autre : le livre répond
+  // tout de suite, et le geste qui l'atteint termine d'abord le retour (voir plus bas).
+  const ouvert = phase === 'envol' || phase === 'ouvert';
+  const actif = phase !== 'ferme';
   React.useEffect(() => {
     const calque = calqueRef.current;
     if (!calque) return undefined;
@@ -546,9 +595,25 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     };
   }, [ouvert, ecran?.controles]);
 
+  // ---- Retour en cours : le moindre toucher ou la moindre touche le termine net (la photo est posée), puis le geste
+  // continue vers le livre (tourner la page, soulever une autre photo) : on n'attend jamais la fin d'une animation.
+  React.useEffect(() => {
+    if (phase !== 'retour') return undefined;
+    const fin = (e: Event) => {
+      if (e instanceof KeyboardEvent && (e.repeat || ['Shift', 'Control', 'Alt', 'Meta'].includes(e.key))) return;
+      terminerRetour();
+    };
+    window.addEventListener('pointerdown', fin, true);
+    window.addEventListener('keydown', fin, true);
+    return () => {
+      window.removeEventListener('pointerdown', fin, true);
+      window.removeEventListener('keydown', fin, true);
+    };
+  }, [phase, terminerRetour]);
+
   // ---- Fermetures : URL, orientation, taille de l'écran -------------------------------------
   React.useEffect(() => {
-    if (!ouvert) return undefined;
+    if (!actif) return undefined;
     const onHash = () => reposerRef.current();
     // Seulement à une vraie rotation (couché ↔ debout, comparé à la forme de l'écran quand l'objet s'est
     // levé) : certains navigateurs signalent « orientationchange » quand la fenêtre change de hauteur
@@ -574,7 +639,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
       window.removeEventListener('orientationchange', onOrientation);
       so?.removeEventListener?.('change', onOrientation);
     };
-  }, [ouvert, fermerTout]);
+  }, [actif, fermerTout]);
   // Rotation (couché ↔ debout) ou changement de cadrage : l'objet se repose. La barre de Safari qui
   // paraît ou s'efface (la hauteur change de quelques dizaines de px, au moindre glissé) ne le ferme
   // pas : posé, il se recentre sur place.
@@ -590,7 +655,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
     const v = vpRef.current;
     if (!v || phaseRef.current !== 'ouvert' || !objetRef.current) return;
     const T0 = geoRef.current.T;
-    const T = poseCible(v, T0.w / (T0.h || 1));
+    const T = poseCible(v, T0.w / (T0.h || 1), lignesLegende(objetRef.current));
     geoRef.current = { ...geoRef.current, T };
     setCible({ T, bouton: placeBouton(T, v, tailleBouton(v)) });
   }, [tailleVp]);
@@ -655,6 +720,8 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   // soulevé l'objet ne le repose pas).
   const onAppui = (e: React.PointerEvent) => {
     if (phaseRef.current === 'ferme') return;
+    if (phaseRef.current === 'envol') terminerOuverture(); // l'ouverture saute à son état final ; le clic qui suit agit
+    if (!e.isPrimary) return;
     appui.current = e.isPrimary ? { x: e.clientX, y: e.clientY } : appui.current;
   };
   const appuiValide = (e: React.MouseEvent) => {
@@ -724,7 +791,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
   const photo = objet?.type === 'photo';
   const tirage = objet?.type === 'tirage' ? objet : null;
   const feuillet = objet?.type === 'feuillet' ? objet : null;
-  const libelle = photo && objet?.type === 'photo' ? `Vidéo : ${objet.video.titre}`
+  const libelle = photo && objet?.type === 'photo' ? `${objet.video.video ? 'Vidéo' : 'Photo'} : ${objet.video.titre}`
     : tirage ? `Photo${tirage.legende ? ` : ${tirage.legende}` : ''}`
     : feuillet ? `Feuillet volant, ${face}` : undefined;
   const conteneur = ecran?.controles ?? (typeof document !== 'undefined' ? document.body : null);
@@ -745,7 +812,7 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
         onPointerDownCapture={onAppui}
       >
         <m.div className="gc-soulever__voile" style={{ opacity: voileO, willChange: enVol ? 'opacity' : undefined }} onClick={toucherVoile} />
-        <m.div className="gc-soulever__ombre" style={{ ...boite, transform: carteT, opacity: ombreO, willChange: wc }} aria-hidden="true" />
+        <m.div className="gc-soulever__ombre" style={{ ...boite, transform: ombreT, opacity: ombreO, willChange: wc }} aria-hidden="true" />
         <m.div
           ref={cartePhotoRef}
           className="gc-soulever__carte gc-soulever__carte--photo"
@@ -766,14 +833,15 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
               style={{ ...place(geoT?.video), opacity: videoO }}
             />
           </div>
-          <div className="gc-soulever__trait" style={{ left: pc(cx + 0.02), width: pc(cw - 0.04), top: pc(basImage + marge * 0.36), height: pc(marge * 0.26) }} aria-hidden="true">
+          {videoCarte?.video && <div className="gc-soulever__trait" style={{ left: pc(cx + 0.02), width: pc(cw - 0.04), top: pc(basImage + marge * 0.36), height: pc(marge * 0.26) }} aria-hidden="true">
             <Trait guide />
             <m.div className="gc-soulever__trait-fenetre" style={{ transform: traitFenetre }}>
               <m.div className="gc-soulever__trait-encre" style={{ transform: traitEncre }}>
                 <Trait />
               </m.div>
             </m.div>
-          </div>
+          </div>}
+          {photo && !videoCarte?.video && videoCarte?.date && <div className="gc-soulever__legende" style={LEGENDE}>{videoCarte.date}</div>}
         </m.div>
         {tirage && (
           // Une photo fixe, en grand : le tirage à sa proportion (sans marge en plus), sa légende au crayon
@@ -787,8 +855,14 @@ export function SoulevementProvider({ children }: SoulevementProviderProps) {
             onClick={toucherTirage}
           >
             <img className="gc-soulever__tirage" src={urlMedia(tirage.tirage) || undefined} alt="" draggable={false} style={place([0, 0, 1, 1])} />
+            {tirage.couleur && tirage.zonePhoto && <m.img className="gc-soulever__affiche" src={urlMedia(tirage.couleur)} alt="" draggable={false} style={{ ...place(tirage.zonePhoto), opacity: couleur }} />}
             {tirage.coins && <img className="gc-soulever__coins" src={urlMedia(tirage.coins)} alt="" draggable={false} style={place([0, 0, 1, 1])} />}
-            {tirage.legende && <div className="gc-soulever__legende" style={LEGENDE}>{tirage.legende}</div>}
+            {(tirage.legende || tirage.date) && (
+              <div className="gc-soulever__legende" style={LEGENDE}>
+                {tirage.legende && <div>{tirage.legende}</div>}
+                {tirage.date && <div className="gc-soulever__legende-date">{tirage.date}</div>}
+              </div>
+            )}
           </m.div>
         )}
         {feuillet && (

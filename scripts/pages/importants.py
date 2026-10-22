@@ -17,8 +17,8 @@ Est important :
 Ce que cela change (lot E) :
   - l'écriture générée relit TOUS les jetons de ces mots, même courts, dans leur groupe (« 180 g »,
     « 4 °C », « 40 min ») et sans aucune tolérance (scripts/pages/ecriture.py) ; la bille ne saute
-    jamais sur leurs traits (tools/ecriture/encre.py) ; la cuisson relit l'encre rendue
-    (`ecriture.relire_rendu`) ;
+    jamais sur leurs traits (tools/ecriture/encre.py) ; la relecture à la demande relit l'encre
+    rendue (`ecriture.relire_rendu`, relecture.py) ;
   - `verifier_contenu` refuse toute fausse faute : correction voulue À L'INTÉRIEUR d'un mot (insertion
     `^{…}` collée, rature partielle : « 180^{g} », « farin^{e} », « fari~~m~~>{n}e »), unité ajoutée à
     une quantité (« 180 ^{g} »), coquille corrigée (rature de deux formes proches du même mot :

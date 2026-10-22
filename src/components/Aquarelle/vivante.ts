@@ -585,7 +585,8 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
   let dernierTableau = '';
   const sprites: Sprite[] = [];
   const A = opts.aspect;
-  const essaim: Essaim | null = essaimDe(opts.double);
+  const essaim: Essaim | null = essaimDe(opts.double); // (CREATURES est vide : aucune créature n'est posée)
+  const naissance = Date.now();
   let attache = false;
   const micro = opts.douce ? 0 : 1;
   const theatre = opts.coucheTableaux && !opts.douce ? new Theatre(opts.coucheTableaux, opts.dessins, opts.url, (nom, type, commande = 'rejouer') => {
@@ -684,6 +685,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     delete s.pilotage;delete s.tempsRepos;
     s.scene = { nom: n, debut: horloge, h: Math.random() };
     derniereScene = horloge;
+    reveiller();
     return true;
   };
 
@@ -706,6 +708,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     delete s.tempsRepos;
     // Les commandes rejouent le geste choisi en avant : jamais de lecture à l’envers ni de retour implicite à la première étape.
     s.pilotage={temps:debut,cible:etapes[index],horloge};
+    reveiller();
   };
 
   const fxNeutre = (s: Sprite): Fx => ({
@@ -800,7 +803,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
         const uneFois=sc&&'uneFois' in sc&&sc.uneFois;s.tempsRepos=uneFois?sc.duree:undefined;
         s.scene = null;
         delete s.pilotage;
-        s.prochaine = uneFois?Infinity:horloge + 250 + Math.random() * 350;
+        s.prochaine = Infinity; // une seule scène à l'ouverture (puis la peinture se fige) ; le toucher en rejoue une
       }
     }
     if (s.debut === -1 && horloge >= s.delai) s.debut = horloge;
@@ -813,8 +816,11 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     }
     if (peint >= 1 && !s.scene && !s.pilotage && !opts.douce && horloge >= s.prochaine) {
       // Plusieurs objets vivent ensemble ; les départs restent légèrement décalés.
-      if (horloge - derniereScene > 350) lancerScene(s);
-      else s.prochaine = derniereScene + 350 + Math.random() * 300;
+      if ((s.e.scenes ?? []).some(estTableau)) s.prochaine = Infinity; // un tableau (recette animée : plusieurs dizaines de secondes) ne démarre qu'au toucher ou à sa commande
+      else if (horloge - derniereScene > 350) {
+        // refus sans nouveau rendez-vous (aucune scène à jouer) : on n'insiste pas
+        if (!lancerScene(s) && s.prochaine <= horloge) s.prochaine = Infinity;
+      } else s.prochaine = derniereScene + 350 + Math.random() * 300;
     }
   };
 
@@ -937,7 +943,26 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     dessinerCreatures();
   };
 
+  // Au repos (peinture finie, aucune scène, aucun tableau en préparation) la toile ne dessine plus : dernière image
+  // figée, aucun rAF. Elle se réveille à l'ouverture de la double, au toucher, à une commande.
+  const inactif = (): boolean => {
+    for (const s of sprites) {
+      if (!s.img) return false;
+      if (s.debut !== Infinity || s.scene || s.pilotage) return false;
+      if (s.prochaine !== Infinity && !opts.douce && !s.d.fixe) return false;
+      const type = tableauDe(s.d.nom, opts.page);
+      if (type && theatre?.prepare(s.d.nom) && !theatre.disponible(s.d.nom, type) && Date.now() - naissance < 8000) return false;
+    }
+    return !essaim?.creatures.some((c) => c.etat !== 'attente');
+  };
+  function reveiller() {
+    if (arrete || !joue || !gl || fige || raf) return;
+    dernier = performance.now();
+    raf = requestAnimationFrame(boucle);
+  }
+
   const boucle = () => {
+    raf = 0;
     if (arrete || !joue || !gl || fige) return;
     const now = performance.now();
     if (now - dernier >= 30) {
@@ -950,6 +975,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       dernier = now;
       if (essaim?.maitre === opts.cote) essaim.avancer(dt / 1000, opts.douce);
       dessiner();
+      if (inactif()) return;
     }
     raf = requestAnimationFrame(boucle);
   };
@@ -1050,10 +1076,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       g.uniform1i(uc.tex, 0);
       dessiner();
       opts.pret();
-      if (joue) {
-        dernier = performance.now();
-        raf = requestAnimationFrame(boucle);
-      }
+      reveiller();
     })
     .catch(() => {
       if (!arrete) opts.perdu();
@@ -1065,10 +1088,8 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
       if (arrete || oui === joue) return;
       joue = oui;
       cancelAnimationFrame(raf);
-      if (oui && gl) {
-        dernier = performance.now();
-        raf = requestAnimationFrame(boucle);
-      }
+      raf = 0;
+      if (oui && gl) reveiller();
     },
     arreter() {
       theatre?.detruire();
@@ -1084,6 +1105,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     },
     toucher(x: number, y: number) {
       if (!joue) return false;
+      reveiller();
       if (essaim?.toucher(opts.cote, x, y)) return true;
       for (const s of [...sprites].reverse()) {
         const [bx, by] = versBoite(s, x, y);
@@ -1102,6 +1124,7 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     },
     scene(nom?: string, scene?: string) {
       for (const s of sprites) if (!nom || s.d.nom === nom) lancerScene(s, scene, true);
+      reveiller();
     },
     commande(nom: string, commande: CommandeTableau) {
       const s = sprites.find((s) => s.d.nom === nom);
@@ -1109,14 +1132,13 @@ export function toile(canvas: HTMLCanvasElement, opts: OptionsToile): Toile {
     },
     finir() {
       for (const s of sprites) if (s.debut !== Infinity) s.debut = -1e9;
+      reveiller();
     },
     figer(oui: boolean) {
       fige = oui;
       cancelAnimationFrame(raf);
-      if (!oui && joue && gl && !arrete) {
-        dernier = performance.now();
-        raf = requestAnimationFrame(boucle);
-      }
+      raf = 0;
+      if (!oui) reveiller();
     },
     avancer(ms: number) {
       if (!gl || arrete) return;

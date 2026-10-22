@@ -25,16 +25,25 @@
 
 .gc-bougie__ombre,
 .gc-bougie__halo,
-.gc-bougie__flamme--image,
 .gc-bougie__cire[data-gc-bougie='vive'] {
   will-change: opacity, transform;
 }
 
-/* La flamme est une petite toile WebGL (un calque à elle seule, qui ne repeint qu'elle : flamme.ts), qui
-   couvre aussi le puits (le reflet de la flamme) et les coulures (la cire qui coule, cire.ts) ; sans
-   WebGL, l'image de secours (--image) bouge par transform et opacity. */
-canvas.gc-bougie__flamme {
-  display: block;
+/* La flamme : une fenêtre (overflow hidden) sur une feuille de sprites cuite (flamme-sprites.webp), que
+   Bougie.tsx fait défiler par une animation de transform en marches d'escalier, sur le compositeur : la feuille
+   est peinte une fois (calque promu), jamais repeinte. Elle couvre aussi le puits (le reflet de la flamme). */
+.gc-bougie__flamme {
+  overflow: hidden;
+}
+
+.gc-bougie__feuille {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 /* ---- Téléphone debout (cadrage « tourner ») : le livre fermé est cadré seul, la bougie est hors champ ;

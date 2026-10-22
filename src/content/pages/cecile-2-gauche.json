@@ -1,95 +1,40 @@
 {
- "id": "cecile-2-gauche",
- "double": "cecile-2",
- "cote": "gauche",
- "folio": 6,
- "graine": 4013,
- "main": "cecile",
- "encre": "crayon",
- "_": "Album « Cécile en cuisine (suite) », 2e double page (gauche) : trois photos (photo-6 petite en haut à gauche, photo-7 haute à droite, photo-8 large en bas), légendes au crayon.",
- "vivants": [
-  {
-   "nom": "photo-6",
-   "rect": [
-    0.1,
-    0.1,
-    0.4,
-    0.211
-   ]
-  },
-  {
-   "nom": "photo-7",
-   "rect": [
-    0.5,
-    0.24,
-    0.42,
-    0.221
-   ]
-  },
-  {
-   "nom": "photo-8",
-   "rect": [
-    0.16,
-    0.58,
-    0.56,
-    0.295
-   ]
-  }
- ],
- "blocs": [
-  {
-   "id": "legende-photo-6",
-   "type": "annotation",
-   "role": "legende",
-   "main": "cecile",
-   "encre": "crayon",
-   "texte": "Cécile, ……… ans",
-   "sans_parentheses": true,
-   "pente": -2.2,
-   "places": [
+  "id": "cecile-2-gauche",
+  "double": "cecile-2",
+  "cote": "gauche",
+  "folio": 6,
+  "graine": 4013,
+  "main": "cecile",
+  "encre": "crayon",
+  "_": "Album « Le goût des bonnes choses », page 3/10 : photos 7 à 9 (zones photo-N, une par emplacement cecile-N, chacune une boîte au ratio exact du tirage, sans rognage), tailles et inclinaisons variées, sans légende ni âge.",
+  "vivants": [
     {
-     "sous": "photo-6",
-     "dx": 0.0,
-     "dy": 0.03
-    }
-   ],
-   "graine": 4051
-  },
-  {
-   "id": "legende-photo-7",
-   "type": "annotation",
-   "role": "legende",
-   "main": "cecile",
-   "encre": "crayon",
-   "texte": "Cécile, ……… ans",
-   "sans_parentheses": true,
-   "pente": -1.4,
-   "places": [
+      "nom": "photo-7",
+      "rect": [
+        0.12,
+        0.099,
+        0.32,
+        0.342
+      ]
+    },
     {
-     "sous": "photo-7",
-     "dx": 0.0,
-     "dy": 0.03
-    }
-   ],
-   "graine": 4052
-  },
-  {
-   "id": "legende-photo-8",
-   "type": "annotation",
-   "role": "legende",
-   "main": "cecile",
-   "encre": "crayon",
-   "texte": "Cécile, ……… ans",
-   "sans_parentheses": true,
-   "pente": -1.9,
-   "places": [
+      "nom": "photo-8",
+      "rect": [
+        0.45,
+        0.292,
+        0.46,
+        0.216
+      ]
+    },
     {
-     "sous": "photo-8",
-     "dx": 0.02,
-     "dy": 0.03
+      "nom": "photo-9",
+      "rect": [
+        0.23,
+        0.563,
+        0.38,
+        0.333
+      ]
     }
-   ],
-   "graine": 4053
-  }
- ]
+  ],
+  "blocs": []
 }

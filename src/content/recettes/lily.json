@@ -1,0 +1,110 @@
+{
+  "slug": "lily",
+  "source": "src/content/recettes/lily.txt",
+  "adaptations": [
+    "Texte reçu conservé intégralement dans le fichier TXT ; seuls les tirets de numérotation (« 1- ») deviennent « 1. » et les espaces en fin de ligne sont retirés. Mots et quantités tels quels.",
+    "Petit mot provisoire : Lorem ipsum — message à venir ; aucun message authentique inventé."
+  ],
+  "style": {
+    "main": "ado",
+    "encre": "brune",
+    "police": "shantell",
+    "graine": 24611
+  },
+  "titre": "Cinnamon rolls",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "titre": "Pâte :",
+      "lignes": [
+        {
+          "texte": "500g de farine"
+        },
+        {
+          "texte": "100g de beurre"
+        },
+        {
+          "texte": "25cl de lait"
+        },
+        {
+          "texte": "1 œuf"
+        },
+        {
+          "texte": "2 sachets de levure"
+        },
+        {
+          "texte": "60g de sucre"
+        },
+        {
+          "texte": "1 cac de sel"
+        }
+      ]
+    },
+    {
+      "titre": "Mélange cannelle :",
+      "lignes": [
+        {
+          "texte": "50g de beurre"
+        },
+        {
+          "texte": "3 cac de cannelle"
+        },
+        {
+          "texte": "60g de sucre roux"
+        }
+      ]
+    },
+    {
+      "titre": "Glaçage :",
+      "lignes": [
+        {
+          "texte": "120g de sucre glace"
+        },
+        {
+          "texte": "1 blanc d’œuf"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Dissoudre la levure dans le lait tiède"
+    },
+    {
+      "titre": "2.",
+      "texte": "Dans un saladier : Verser la levure et ajouter la farine, le sel, le sucre, l’œuf. Pétrir pendant 10 minutes. Ajouter le beurre en morceaux et pétrir à nouveau."
+    },
+    {
+      "titre": "3.",
+      "texte": "Mettre la pâte à lever dans un saladier couvert d’un torchon pendant 1h30 (Elle doit doubler de volume)."
+    },
+    {
+      "titre": "4.",
+      "texte": "Mélange cannelle : Mélanger le beurre fondu, le sucre roux et la cannelle."
+    },
+    {
+      "titre": "5.",
+      "texte": "Etaler la pâte sur un plan de travail fariné en formant un rectangle. Etaler le mélange à la cannelle sur toute la surface du rectangle."
+    },
+    {
+      "titre": "6.",
+      "texte": "Former un boudin avec la pâte en la roulant sur elle-même."
+    },
+    {
+      "titre": "7.",
+      "texte": "Découper le boudin en tranches. Etaler les cinnamons rolls sur une plaque allant au four et laisser lever encore 45min-1h sous un torchon propre."
+    },
+    {
+      "titre": "8.",
+      "texte": "Préchauffer le four à 180 degrés et enfourner pendant 25 minutes."
+    },
+    {
+      "titre": "9.",
+      "texte": "Glaçage : mélanger le sucre glace et le blanc d’œuf. Quand les gâteaux ont bien refroidi, verser le glaçage en filets."
+    }
+  ],
+  "mot": "Lorem ipsum — message à venir",
+  "signature": "Lily",
+  "nom": "Lily"
+}

@@ -24,6 +24,12 @@ export type ObjetSoulevable =
     coins?: string | null;
     /** Légende au crayon, sous la photo soulevée (facultative). */
     legende?: string | null;
+    /** Date (« mois année », facultative), sous la légende. */
+    date?: string | null;
+    /** La même photo en couleurs, sans bord (version locale) : elle remplace le tirage à l'ouverture (réglage « Photos ouvertes »). */
+    couleur?: string | null;
+    /** Zone de la photo dans l'image du tirage (fractions) : celle où se pose `couleur`. */
+    zonePhoto?: [number, number, number, number];
     /** Proportion (largeur / hauteur) de l'image. Défaut : celle de l'image cuite, sinon 3 / 2. */
     proportion?: number;
     /** L'élément posé dans la page (tourné ou non) : sa proportion est celle de l'image. */

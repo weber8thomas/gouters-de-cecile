@@ -663,6 +663,43 @@ export function Livre({
     });
   }, [glisse, X]);
 
+  // ---- Jamais attendre la fin d'un tour : un toucher, une touche ou une demande de navigation le termine net -------
+  /**
+   * Un tour de page (ou un feuilletage, ou un glissement de caméra) qui n'est pas tenu au doigt saute à son état final : la
+   * double page visée devient la double page affichée, tout de suite. À appeler avant de traiter le geste ou la demande qui
+   * le coupe (la suite part de la page atteinte). Sans effet pendant l'arrivée du livre (déjà ignorée au premier geste).
+   */
+  const terminerNet = React.useCallback((): boolean => {
+    if (enArrivee()) return false;
+    let coupe = false;
+    const T = tourRef.current;
+    if (T && !T.doigt && !T.differe) {
+      coupe = true;
+      if (finPapierRef.current) clearTimeout(finPapierRef.current);
+      finPapierRef.current = null;
+      animSeq.current++;
+      animRef.current?.stop();
+      animRef.current = null;
+      if (riffleAnim.current) {
+        riffleAnim.current.stop();
+        riffleAnim.current = null;
+        if (T.couverture) { emettre(livreRef.current, 'fin', 'riffle'); arriveeRef.current?.actifs.delete('riffle'); }
+      }
+      p.set(T.but);
+      atterrir(T);
+    }
+    if (glisseAnim.current) {
+      coupe = true;
+      glisseSeq.current++;
+      glisseAnim.current.stop();
+      glisseAnim.current = null;
+      setGlisseEnCours(false);
+      glisse.set(X(afficheRef.current, coteRef.current));
+      emettre(livreRef.current, 'fin', 'glisse');
+    }
+    return coupe;
+  }, [p, glisse, X, atterrir]);
+
   // ---- Moteur : rapproche la page affichée de la cible, sans jamais empiler -------------------
   const pousser = React.useCallback(() => {
     if (enArrivee()) return; // l'arrivée (et son lien profond) mène
@@ -737,13 +774,15 @@ export function Livre({
   /** Va à la double page i, page c (cadrage « page »). */
   const allerA = React.useCallback((i: number, c: CotePage) => {
     const d = doigtRef.current;
+    // Une vraie nouvelle demande pendant un tour : le tour en cours saute à sa fin, la nouvelle demande part tout de suite.
+    if (!d && (borne(i) !== cibleRef.current || c !== coteCibleRef.current)) terminerNet();
     cibleRef.current = borne(i);
     coteCibleRef.current = c;
     // Le geste garde sa feuille ; la dernière demande reste en attente au lieu d'être perdue.
     // La cible est déjà mise à jour pour que plusieurs flèches successives s'additionnent.
     if (d && d.etat !== 'ignore') { d.apres = { i: cibleRef.current, c }; return; }
     pousser();
-  }, [borne, pousser]);
+  }, [borne, pousser, terminerNet]);
 
   /** Va à la double page i (page de gauche si elle change ; le côté est gardé sinon). */
   const aller = React.useCallback((i: number) => {
@@ -1341,8 +1380,8 @@ export function Livre({
   }, [maxOuvert]);
 
   // ---- Gestes au pointeur (doigt, stylet, souris) ---------------------------------------------
-  const actions = React.useRef({ pas, glisser, lancer, reposerRabat, coteSaisissable });
-  actions.current = { pas, glisser, lancer, reposerRabat, coteSaisissable };
+  const actions = React.useRef({ pas, glisser, lancer, reposerRabat, coteSaisissable, terminerNet });
+  actions.current = { pas, glisser, lancer, reposerRabat, coteSaisissable, terminerNet };
   const coinMonte = React.useRef<{ gauche: boolean; droite: boolean }>({ gauche: false, droite: false });
   React.useEffect(() => {
     if (!gestes || pose) return;
@@ -1742,6 +1781,8 @@ export function Livre({
       if (!e.isPrimary || doigtRef.current) return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       if (surControle(e.target)) return;
+      // Un toucher pendant un tour de page (ou un glissement de caméra) le termine net : le geste part de la page atteinte.
+      actions.current.terminerNet();
       const L = pageAEcran();
       const g = geoRef.current;
       if (!(L > 0) || !g || !(g.W > 0)) return;

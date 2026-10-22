@@ -202,3 +202,16 @@
   opacity: 0;
   transition-duration: var(--gc-effacer-depart);
 }
+
+/* ---- Boutons du coin haut gauche (Réglages, Sommaire, Rechercher ; src/lib/coin.ts) : cachés au repos,
+   montrés quand la souris approche (ou après un toucher), puis effacés. Simple fondu d'opacité. Ils restent
+   visibles tant que leur panneau est ouvert (data-gc-ouvert) ou au focus clavier. Un écran simulé n'a pas
+   data-gc-coins : rien n'y est caché. ---- */
+.gc-ecran[data-gc-coins] [data-gc-coin] {
+  transition: opacity var(--gc-effacer-retour) ease-out;
+}
+
+.gc-ecran[data-gc-coins]:not([data-gc-coin-visible]) [data-gc-coin]:not([data-gc-ouvert], :focus-visible, :has(:focus-visible)) {
+  opacity: 0;
+  transition-duration: var(--gc-effacer-depart);
+}

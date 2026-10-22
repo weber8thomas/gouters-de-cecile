@@ -4,7 +4,7 @@ export const CACHETTES = [
     id: 'serment', page: 'garde', double: 'titre', dessin: 'cle-ancienne', matiere: 'farine',
     titre: 'Le serment gourmand', pageTitre: 'Ce carnet appartient à Cécile', chercher: 'la petite clé', lieu: 'la page « Ce carnet appartient à Cécile »',
     appel: 'Ouvre le début du carnet. Une petite clé t’attend sur la page qui appartient à Cécile.',
-    indice: 'Certains mots n’apparaissent qu’une fois la poussière écartée…',
+    indice: 'Certains mots se cachent au creux des premières pages…',
     amorce: 'Un carnet bien gardé…',
     revelation: 'Je jure solennellement que mes intentions sont gourmandes',
     suite: 'Premier indice : tourne vers le premier album « Le goût des bonnes choses ». Cherche une enveloppe entre les photos.',

@@ -45,32 +45,29 @@ try{
    await page.addScriptTag({content:scriptFixture});
   }else await page.goto(cible.url(ecran(nom),'titre'));
   const actif=()=>page.waitForSelector('.gc-quete__compagnon[data-gc-secret-actif="oui"]',{timeout:90000});await actif();
-  const canvas=()=>page.locator('.gc-livre__page--visible .gc-secrets__farine');await canvas().waitFor();
-  const poudre=()=>canvas().evaluate(el=>{const p=el.getContext('2d').getImageData(0,0,el.width,el.height).data;let n=0;for(let i=3;i<p.length;i+=4)n+=p[i];return n;});
-  const reglages=await page.evaluate(()=>localStorage.getItem('gc:reglages:v4'));const entier=await poudre();assert(entier>0);
-  const boutonBrosse=()=>page.locator('.gc-livre__page--visible [data-gc-secret="serment"] button');
-  if(nom==='tv-1080'){await boutonBrosse().focus();await page.keyboard.press('Enter');}else await canvas().tap();
-  assert.equal(await canvas().count(),1);const partiel=await poudre();assert(partiel<entier&&partiel>entier*.15);
+  // (la farine n'existe plus : la première clé s'ouvre d'un clic, d'un toucher ou d'Entrée)
+  const boutonBrosse=()=>page.locator('.gc-livre__page--visible [data-gc-secret="serment"] button');await boutonBrosse().waitFor();
+  const reglages=await page.evaluate(()=>localStorage.getItem('gc:reglages:v4'));
+  const ouvrirCle=async()=>{if(nom==='tv-1080'){await boutonBrosse().focus();await page.keyboard.press('Enter');}else await boutonBrosse().tap();await page.waitForSelector('[data-gc-quete-etape="serment"][data-gc-quete-revele="oui"]');};
+  await ouvrirCle();await page.locator('[data-gc-quete-principal]').click();
   await page.keyboard.press('s');await page.waitForSelector('#gc-guide-quete');
   const reset=page.getByRole('button',{name:'Recommencer les découvertes',exact:true});assert.equal(await reset.count(),1);
   const borne=await reset.evaluate(el=>{const r=el.getBoundingClientRect(),g=el.closest('#gc-guide-quete').getBoundingClientRect();return{visible:r.top>=g.top&&r.bottom<=g.bottom+1&&r.right<=innerWidth&&r.left>=0,hauteur:r.height};});assert(borne.visible&&borne.hauteur>=44,JSON.stringify(borne));
   if(nom==='tv-1080'){await reset.focus();await page.keyboard.press('Enter');}else await reset.tap();
   await page.waitForFunction(()=>document.querySelector('.gc-quete__retour')?.textContent==='Tout est à redécouvrir.');
-  await page.waitForFunction(n=>{const c=document.querySelector('.gc-livre__page--visible .gc-secrets__farine');if(!c)return false;const p=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let s=0;for(let i=3;i<p.length;i+=4)s+=p[i];return s===n;},entier);
+  await boutonBrosse().waitFor();
   assert.equal(await page.locator('.gc-quete__archives').count(),0);assert.equal(await page.evaluate(()=>localStorage.getItem('gc:reglages:v4')),reglages);
   assert.equal(await reset.evaluate(el=>el===document.activeElement),true);
-  if(fixture||process.argv.includes('--captures'))await page.screenshot({path:resolve(out,`${nom}-reset-partiel.png`)});ok(`${nom} : reset disponible après frottage partiel, farine entière restaurée, réglages intacts`,{entier,partiel,borne});
-  await page.keyboard.press('Escape');await boutonBrosse().focus();await page.keyboard.press('Enter');assert.equal(await canvas().count(),1,'un premier geste reste partiel après remise à zéro');
-  for(let n=0;n<15&&await canvas().count();n++)await page.keyboard.press('Enter');
-  await page.waitForSelector('[data-gc-quete-etape="serment"][data-gc-quete-revele="oui"]');
+  if(fixture||process.argv.includes('--captures'))await page.screenshot({path:resolve(out,`${nom}-reset-partiel.png`)});ok(`${nom} : reset disponible après une découverte, première clé restaurée, réglages intacts`,{borne});
+  await page.keyboard.press('Escape');await ouvrirCle();
   await page.locator('[data-gc-quete-principal]').click();assert.equal(await page.locator('.gc-quete__compagnon').getAttribute('data-gc-quete-progres'),'1');
   await page.evaluate(()=>location.hash='cecile-1');await page.waitForSelector('.gc-livre__page--visible [data-gc-secret="album"][data-gc-secret-actif="oui"] button');await actif();
   await page.locator('.gc-livre__page--visible [data-gc-secret="album"] button').click();await page.waitForSelector('[data-gc-quete-etape="album"][data-gc-quete-revele="oui"]');
   await page.locator('[data-gc-quete-principal]').click();await page.keyboard.press('s');await page.waitForSelector('#gc-guide-quete');assert.equal(await page.locator('.gc-quete__archives li').count(),2);
   await reset.click();assert.equal(await page.locator('.gc-quete__archives').count(),0);assert.equal(await page.locator('.gc-quete__compagnon').getAttribute('data-gc-quete-progres'),'0');assert.equal(await page.locator('.gc-secrets[data-gc-secret="album"]').count(),0);
   assert.deepEqual(await page.evaluate(()=>JSON.parse(localStorage.getItem('gc:quete:v1'))),{trouves:0,revele:false});assert.equal(await page.evaluate(()=>localStorage.getItem('gc:reglages:v4')),reglages);
-  await page.keyboard.press('Escape');await page.evaluate(()=>location.hash='titre');await page.waitForSelector('.gc-livre__page--visible [data-gc-secret="serment"][data-gc-secret-actif="oui"] .gc-secrets__farine');assert.equal(await poudre(),entier);
-  ok(`${nom} : notes archivées et enveloppe refermées ; farine restaurée après découverte`);await ctx.close();
+  await page.keyboard.press('Escape');await page.evaluate(()=>location.hash='titre');await page.waitForSelector('.gc-livre__page--visible [data-gc-secret="serment"][data-gc-secret-actif="oui"] button');
+  ok(`${nom} : notes archivées et enveloppe refermées ; première clé restaurée après découverte`);await ctx.close();
  }
  assert.deepEqual(erreurs,[]);ok('Aucune erreur navigateur ; aucun réglage audio ou lumière effacé');writeFileSync(resolve(out,'rapport.json'),JSON.stringify({cible:fixture?'fixture DOM des vrais composants':'livre complet',resultat},null,2));for(const f of ['echec.json','echec.png'])rmSync(resolve(out,f),{force:true});
 }catch(e){if(page&&(fixture||process.argv.includes('--captures')))await page.screenshot({path:resolve(out,'echec.png')}).catch(()=>{});writeFileSync(resolve(out,'echec.json'),JSON.stringify({resultat,erreur:String(e),erreurs},null,2));throw e;}finally{await browser.close();cible.close();}

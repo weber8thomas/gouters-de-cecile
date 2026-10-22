@@ -1,0 +1,10 @@
+{
+  "roules-cannelle": {
+    "sujet": "roulés à la cannelle (recette de Lily)",
+    "fichier": "roules-cannelle.png",
+    "source": "scripts/aquarelle-roules-cannelle.py",
+    "auteur": "Composé pour le carnet : le moule cannelé de la série anglaise (acteurs/moule.png) garni de sept roulés peints par script, même facture (contour au crayon brun, pâte dorée, glaçage)",
+    "licence": "Création pour ce projet ; le moule vient de la série anglaise v14-v16 (voir son manifeste)",
+    "serie": "anglaise-v22"
+  }
+}

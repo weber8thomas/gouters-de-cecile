@@ -6,17 +6,16 @@
 //                     mesure de sa vitesse, avec un trait de lumière sur le bord ; au coin saisi, sous la
 //                     main ; une bouffée quand la feuille se pose ; un petit feu d'artifice d'or quand la
 //                     couverture s'ouvre ;
-//   poussière d'or  — dans la lumière de la bougie (poussiere.ts) ;
-//   titres          — un reflet doré passe régulièrement sur l'encre des titres ; un paraphe d'or se
-//                     dessine sous le titre qu'on touche ou qu'on survole ;
-//   encre magique   — frises et ornements d'angle qui s'écrivent seuls quand la page a fini de s'écrire,
-//                     puis restent et s'illuminent d'or de temps en temps ; les pas du maraudeur et les
-//                     petites pattes de Jack Russell qui se promènent dans les marges ; les cachettes
-//                     secrètes (lunettes & éclair, tasse magique, couronne 30 ans, baguette, mots doux
-//                     cursifs) qui scintillent discrètement et s'écrivent toutes seules (encre.ts) ;
+//   titres          — un paraphe d'or se dessine sous le titre qu'on touche ou qu'on survole ;
+//   encre magique   — frises et ornements d'angle qui s'écrivent seuls quand la page a fini de s'écrire ;
+//                     les pas du maraudeur et les pattes de Jack Russell (au toucher) ;
+//   plus rien d'autonome au repos (perf iPad) : ni poussière d'or ni étincelles du feu, ni reflet périodique sur les
+//   titres, ni réveil des ornements, ni pas du maraudeur, ni redessin des soulignements, ni photo qui respire.
 //   plume           — des paillettes suivent la pointe qui écrit la page, une bouffée quand elle a fini ;
 //   photos vivantes — photos.ts.
 //
+// RENDU À LA DEMANDE : la boucle ne tourne (rAF) que pendant un geste, une transition ou la lecture d'une vidéo
+// de l'album ; au repos elle dort (une minuterie lente relit le DOM, sans rAF ni dessin). DPR plafonné à 1,5.
 // Rien ne se mesure pendant un geste (le DOM est lu au repos). En pause : onglet caché, geste de loupe. Mouvement
 // réduit : pas de trajectoires rapides (scintillements sur place, poussière lente, ornements en fondu,
 // ni pas, ni reflets, ni photos qui bougent). Contexte WebGL perdu : la toile s'efface (Magie.tsx).
@@ -24,7 +23,6 @@
 import type { MotionValue } from '../../lib/motion';
 import { loupeOccupee, abonnerLoupe, LOUPE_EVENT } from '../../lib/loupe';
 import { ecouterPointeur, lirePointeur } from '../../lib/pointeur';
-import { abonnerFlambee, feu } from '../../lib/feu';
 import { assetUrl } from '../../lib/assets';
 import { angles, bordProjete, hauteurBord, reculCouverture, clamp, CARTON, PERSPECTIVE, PERSPECTIVE_COUVERTURE } from '../Livre/geometrie';
 import { GESTE_EVENT, TOUCHER_EVENT, type GesteDetail, type ToucherPage } from '../Livre/evenements';
@@ -196,7 +194,8 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   let ouverture = false; // la couverture s'ouvre : gerbe plus généreuse
   let feuParti = false; // le feu d'artifice de cette ouverture est parti
   let opPose = 0; // opacité de ce qui est posé sur les pages (ornements, pas, paraphes, secrets)
-  let poussiereVue = true;
+  const poussiereVue = false; // plus de poussière d'or ni d'étincelles du feu (perf iPad)
+  const AUTONOME = false; // plus de pas, reflets ni réveils d'ornements autonomes au repos
   let cachee = false; // moteur en pause pendant le geste de loupe ; la toile reste visible
   let plume: (EvenementPlume & { derniere?: { x: number; y: number } }) | null = null;
   let paraphes: Paraphe[] = [];
@@ -214,6 +213,10 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   let mesureDue = 0.3;
   let vide = false;
   let endormi = false;
+  /** Cadence maximale du redessin quand seules des vidéos bougent : 30 images par seconde (les boucles sont à 30 ips). */
+  const PERIODE_VIDEO = 1000 / 30 - 4;
+  let dernierDessin = 0;
+  const boucleRaf = (): boolean => !!(window as unknown as { __gcMagieRaf?: boolean }).__gcMagieRaf;
   const bouge = new Map<string, number>(); // gestes de caméra (arrivée, zoom…) : on ne mesure pas pendant
   const compte = { etincelles: 0, bords: 0, secrets: 0, pas: 0 }; // débogage
 
@@ -234,7 +237,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     if (!(r.width > 0 && r.height > 0)) return;
     q = r.width / SCENE_W;
     cr = { left: r.left, top: r.top };
-    const dpr = Math.min(2, (window.devicePixelRatio || 1) * (window.visualViewport?.scale || 1));
+    const dpr = Math.min(1.5, (window.devicePixelRatio || 1) * (window.visualViewport?.scale || 1));
     const budget = tactile ? 1.6e6 : 2.4e6;
     k = Math.min(q * dpr, Math.sqrt(budget / (SCENE_W * SCENE_H)));
     const w = Math.max(1, Math.round(SCENE_W * k));
@@ -251,12 +254,6 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       const [fx, fy] = versScene(sr.left + (FLAMME.x * sr.width) / scene.offsetWidth, sr.top + (FLAMME.y * sr.height) / scene.offsetHeight);
       poussiere.fx = fx;
       poussiere.fy = fy;
-      // la lumière de la bougie est-elle à l'écran ?
-      const ex = sr.left + (FLAMME.x * sr.width) / scene.offsetWidth;
-      const ey = sr.top + (FLAMME.y * sr.height) / scene.offsetHeight;
-      const R = 430 * q;
-      const cadre = cadreVisible();
-      poussiereVue = ex + R > cadre.x && ex - R < cadre.x + cadre.w && ey + R > cadre.y && ey - R < cadre.y + cadre.h;
     }
     const livre = L.livre.current;
     if (!livre) return;
@@ -799,7 +796,6 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     if (cachee) return;
     const [x, y] = versScene(e.x, e.y);
     ptr = { x, y, vx: e.vx / q, vy: e.vy / q, frais: 1 };
-    if (poussiereVue) reveiller();
     // survol d'un titre (souris) : un paraphe d'or, une fois par passage
     if (e.type === 'mouse' && !enGeste && calme > 0.4) {
       const ti = titreSous(x, y);
@@ -807,25 +803,6 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       if (cle && cle !== survolTitre) { lancerParaphe(ti!.v, ti!.t); reveiller(); }
       survolTitre = cle;
     }
-  }));
-  ecoutes.push(abonnerFlambee((e) => {
-    if (cachee) return;
-    if (e.type === 'flambee') {
-      poussiere.eclat = Math.max(poussiere.eclat, 0.4 + 0.6 * e.force);
-      if (!reduit() && poussiereVue) {
-        for (let i = 0; i < (tactile ? 4 : 8) * (0.5 + e.force); i++) {
-          grains.ajouter({
-            x: poussiere.fx + (Math.random() - 0.5) * 16, y: poussiere.fy - 10, vx: (Math.random() - 0.3) * 30, vy: -60 - Math.random() * 70,
-            vie: 1.2 + Math.random() * 1.2, taille: 2.4 + Math.random() * 2.4, couleur: ORS[4], frein: 0.6, grav: -8, ondule: 22, lum: 0.9,
-          });
-        }
-      }
-    } else if (poussiereVue) {
-      for (let i = 0; i < 3; i++) {
-        grains.ajouter({ x: poussiere.fx + (Math.random() - 0.3) * 160, y: poussiere.fy - Math.random() * 200, vie: 0.5 + Math.random() * 0.4, taille: 9 + Math.random() * 7, etoile: true, enveloppe: 1, frein: 0, lum: 0.75 * (0.5 + e.force) });
-      }
-    }
-    reveiller();
   }));
   ecoutes.push(ecouterPlume((e) => {
     if (e.phase === 'debut') { plume = { ...e }; reveiller(); return; }
@@ -882,7 +859,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     raf = requestAnimationFrame(image);
   }
 
-  function image(now: number): void {
+  function image(now: number, direct = false): void {
     raf = 0;
     if (arrete || document.hidden) return;
     const T = L.tour.current;
@@ -900,8 +877,8 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       aFaire.length > 0 ||
       redessins.actif() ||
       ornementEnTrace();
-    // 60 images/s quand ça bouge, 30 au calme (poussière, photos)
-    if (!vif && brut < 1 / 31) { raf = requestAnimationFrame(image); return; }
+    // 60 images/s quand ça bouge, 30 au calme (poussière, fondus de photos)
+    if (!direct && !vif && brut < 1 / 31) { raf = requestAnimationFrame(image); return; }
     const dt = Math.min(endormi ? 0.3 : 0.05, Math.max(0, brut)) * vitesseAnimations();
     endormi = false;
     avant = now;
@@ -968,7 +945,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     opPose = mouvement ? Math.max(0, opPose - dt * 9) : Math.min(1, opPose + dt * 2.2);
 
     // 1. Une piste humaine à la fois, plus régulière dans les marges des recettes.
-    if (!mouvement && !lent && calme > 1.2 && !plume && !plumeOccupee() && horloge > prochainsPas && promenades.length === 0) {
+    if (!mouvement && !lent && calme > 1.2 && !plume && !plumeOccupee() && horloge > prochainsPas && promenades.length === 0 && AUTONOME) {
       prochainsPas = horloge + delaiMaraudeur(pages.some((v) => !!PAGES_CUITES.pages[v.id]?.recette));
       lancerPromenade();
     }
@@ -984,7 +961,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
         const e = etats.get(v.id);
         if (!e) continue;
         // Réveil doré périodique des ornements de coin (toutes les 5 à 10 s)
-        if (e.fini && e.ornements?.length && !e.eclatOrnement && horloge >= e.prochainEclatOrnement) {
+        if (AUTONOME && e.fini && e.ornements?.length && !e.eclatOrnement && horloge >= e.prochainEclatOrnement) {
           e.eclatOrnement = { idx: Math.floor(Math.random() * e.ornements.length), t0: horloge, duree: 2.0 };
           e.prochainEclatOrnement = horloge + 5 + Math.random() * 5;
         }
@@ -998,7 +975,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     if (!mouvement && !lent && calme > 1.0 && !reflet && !plume) {
       for (const v of pages) {
         const e = etats.get(v.id);
-        if (v.ecrite && e?.prochainReflet && horloge > e.prochainReflet && v.carte?.titres.length) {
+        if (AUTONOME && v.ecrite && e?.prochainReflet && horloge > e.prochainReflet && v.carte?.titres.length) {
           e.prochainReflet = horloge + 5 + Math.random() * 5;
           lancerReflet(v, e);
           break;
@@ -1019,21 +996,43 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
 
     // poussière, grains, photos
     if (ptr) ptr.frais = Math.max(0, ptr.frais - dt * 1.6);
-    if (poussiereVue) poussiere.avancer(dt, horloge, ptr, lent);
     grains.avancer(dt);
-    const photosVivantes = photos.avancer(dt, horloge, calme, lent, cachee || mouvement);
+    // une photo soulevée (calque Soulever ouvert) couvre le livre : les vignettes ne jouent plus rien derrière elle
+    const dessus = !!document.querySelector('[data-gc-soulever="ouvert"]');
+    const photosVivantes = photos.avancer(dt, horloge, calme, lent, cachee || mouvement || dessus);
 
     // ---- dessin ----
     const ornementsVus = opPose > 0 && pages.some((v) => etats.get(v.id)?.debut != null && horloge >= (etats.get(v.id)!.debut ?? 0));
-    const rien = !poussiereVue && grains.n === 0 && !photosVivantes && !ornementsVus && !paraphes.length && !secrets.length && !promenades.length && !reflet && lueur <= 0;
+    const rien = grains.n === 0 && !photosVivantes && !ornementsVus && !paraphes.length && !secrets.length && !promenades.length && !reflet && lueur <= 0;
     if (rien && vide) { endormir(mouvement); return; }
     dessiner();
     vide = rien;
+    dernierDessin = now;
 
-    const continuer = vif || poussiereVue || photosVivantes || mouvement;
-    if (continuer) raf = requestAnimationFrame(image);
+    // Au repos, seules les vidéos des vignettes bougent : le moteur dort et chaque nouvelle image vidéo le réveille
+    // (surImageVideo, sans rAF). Il ne garde la boucle d'images que pendant un geste, une animation ou un fondu.
+    // `window.__gcMagieRaf = true` rend l'ancienne boucle (un rAF continu tant qu'une photo est vivante) : mesures avant / après.
+    const continuer = vif || mouvement || photos.transitoire || (photosVivantes && boucleRaf());
+    // Des vidéos jouent et seul un décor s'anime (écriture des ornements, étincelles, reflets, passage du chien) : inutile
+    // de redessiner la toile et ses vidéos à 60 images/s, 30 suffisent (un rAF demandé après ~18 ms). Un geste, la plume
+    // et les fondus gardent le plein régime.
+    if (continuer && photosVivantes && !mouvement && !plume && !photos.transitoire && !boucleRaf()) {
+      clearTimeout(veille);
+      veille = window.setTimeout(() => { veille = 0; reveiller(); }, 18);
+    } else if (continuer) raf = requestAnimationFrame(image);
     else endormir(false);
   }
+
+  /** Une image vidéo neuve est prête : redessine tout de suite (au plus 30 fois par seconde), sans demander de rAF. */
+  function surImageVideo(): void {
+    if (arrete || document.hidden || cachee || raf || boucleRaf()) return; // un rAF en cours dessinera
+    const maintenant = performance.now();
+    if (maintenant - dernierDessin < PERIODE_VIDEO) return; // 30 images par seconde au plus : la prochaine image vidéo la prendra
+    clearTimeout(veille);
+    veille = 0;
+    image(maintenant, true);
+  }
+  photos.surImage = surImageVideo;
 
   /** Rien ne bouge : un coup d'œil tous les quarts de seconde (minuteries, mesures), sans dessiner. */
   function endormir(mouvement: boolean): void {
@@ -1041,7 +1040,8 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     endormi = true;
     clearTimeout(veille);
     veille = 0;
-    veille = window.setTimeout(() => { veille = 0; if (!raf) raf = requestAnimationFrame(image); }, 250);
+    // (appel direct, sans rAF : au repos, aucune image n'est demandée ; `image` redemande un rAF s'il y a quelque chose à animer)
+    veille = window.setTimeout(() => { veille = 0; if (!raf && !arrete && !document.hidden) image(performance.now()); }, 250);
   }
 
   function ornementEnTrace(): boolean {
@@ -1113,7 +1113,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       c.uniform1i(I.unif.u_tex1, 1);
       c.uniform1i(I.unif.u_tex2, 2);
       lier(c, I, bImage, [['a_p', 2], ['a_uv', 2]]);
-      photos.dessiner(horloge, I.unif, quad, ptr && ptr.frais > 0 ? ptr : null);
+      photos.dessiner(I.unif, quad);
       delier(c, I);
     }
 
@@ -1316,7 +1316,6 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
         }
       }
     }
-    if (poussiereVue) n = poussiere.ecrire(points, n, horloge, feu().intensite.get(), 1);
     n = grains.ecrire(points, n, horloge);
     if (n > 0) {
       const Pp = P!.points;

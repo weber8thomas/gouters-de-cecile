@@ -21,7 +21,7 @@
       "invites_taille": 1.4,
       "invites_par_ligne": 3,
       "invites_disposition": "colonnes",
-      "invites_colonnes": 2,
+      "invites_colonnes": 1,
       "invites_interligne": 3.15,
       "invites_pente": -0.3
     }

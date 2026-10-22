@@ -1,0 +1,53 @@
+/* Scorpions cachés (taille : 6,4 % de la largeur de la page, proportionnelle comme la page) : des griffonnages d'encre posés par-dessus les pages (rien dans les pages cuites).
+   Au repos aucune animation ; à la fuite, seulement transform et opacity (WAAPI) et un stroke-dashoffset court. */
+.gc-scorpions { position:absolute; inset:0; z-index:5; pointer-events:none; container-type:size; color:var(--gc-ink-plume); }
+.gc-scorpions[data-gc-scorpions-actif="non"] { visibility:hidden; }
+.gc-scorpion { position:absolute; width:calc(var(--gc-sc-base, 6.4cqi) * var(--gc-sc-k,1)); transform:translate(-50%,-50%); pointer-events:none; }
+/* La zone qui répond au doigt est plus large que le dessin (≥ 44 px), le dessin garde sa taille. */
+.gc-scorpion__bouton { position:absolute; inset:-10px; box-sizing:border-box; min-width:44px; min-height:44px; padding:10px; border:0; background:none; color:inherit; font:inherit; cursor:pointer; pointer-events:auto; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.gc-scorpion__corps { display:block; position:relative; width:100%; height:100%; opacity:.72; transition:opacity .25s; will-change:auto; user-select:none; -webkit-user-drag:none; }
+.gc-scorpion__bouton:hover .gc-scorpion__corps, .gc-scorpion__bouton:focus-visible .gc-scorpion__corps { opacity:.95; }
+.gc-scorpion__bouton:focus-visible { outline:2px solid var(--gc-honey-500); outline-offset:-4px; border-radius:6px; }
+.gc-scorpion__pose { display:block; width:100%; height:100%; overflow:visible; }
+.gc-scorpion__pose--1, .gc-scorpion__pose--2 { position:absolute; inset:0; opacity:0; }
+
+/* La course : le repos s'efface, les deux poses de course alternent (marches d'escalier, opacité seule). */
+.gc-scorpion[data-gc-scorpion-etat="fuit"] { z-index:1; }
+.gc-scorpion[data-gc-scorpion-etat="fuit"] .gc-scorpion__bouton { pointer-events:none; }
+.gc-scorpion[data-gc-scorpion-etat="fuit"] .gc-scorpion__corps { transition:none; }
+.gc-scorpion[data-gc-scorpion-etat="fuit"] .gc-scorpion__pose--0 { opacity:0; }
+.gc-scorpion__pose--1 { animation:gc-scorpion-pas-a .22s linear infinite; }
+.gc-scorpion__pose--2 { animation:gc-scorpion-pas-b .22s linear infinite; }
+@keyframes gc-scorpion-pas-a { 0%,49.9% { opacity:1; } 50%,100% { opacity:0; } }
+@keyframes gc-scorpion-pas-b { 0%,49.9% { opacity:0; } 50%,100% { opacity:1; } }
+
+/* Les pas d'encre : un SVG statique, révélé le long du trajet puis fondu en 1,5 s. */
+.gc-scorpion__trace { position:absolute; left:0; top:0; width:100%; height:100%; overflow:visible; pointer-events:none; color:var(--gc-ink-plume); opacity:0; animation:gc-scorpion-fondu 1.5s ease-in both; }
+.gc-scorpion__revele { stroke-dasharray:1; stroke-dashoffset:1; animation:gc-scorpion-revele .56s linear .04s both; }
+@keyframes gc-scorpion-revele { to { stroke-dashoffset:0; } }
+@keyframes gc-scorpion-fondu { 0% { opacity:.8; } 25% { opacity:.7; } 100% { opacity:0; } }
+
+/* Sur la table : un calque aussi grand que l'écran, le scorpion est posé près de la bougie. */
+.gc-scorpions--table { z-index:6; container-type:normal; }
+.gc-scorpions--table .gc-scorpion__trace { color:var(--gc-paper); }
+.gc-scorpions__table { position:absolute; inset:0; pointer-events:none; }
+.gc-scorpions__table .gc-scorpion__corps { color:#e9dcc2; filter:drop-shadow(0 1px 1px #2a1a0e99); }
+
+/* Le compteur : une petite ligne de la même main que « Psst… », qui n'apparaît qu'après la première trouvaille. */
+.gc-scorpions__compteur { position:absolute; left:50%; bottom:max(10px,env(safe-area-inset-bottom)); transform:translateX(-50%); margin:0; padding:3px 8px; font-size:clamp(12px,1.05vw,20px)!important; line-height:1.1; color:var(--gc-paper); text-shadow:0 1px 2px #493322; white-space:nowrap; opacity:.85; pointer-events:none; animation:gc-scorpions-apparait .5s ease-out both; }
+.gc-scorpions__compteur--bouton { min-height:44px; border:0; background:none; font:inherit; cursor:pointer; pointer-events:auto; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:4px; }
+.gc-scorpions[data-gc-scorpions-actif="non"] .gc-scorpions__compteur { visibility:hidden; }
+.gc-scorpions__compteur--bouton:focus-visible, .gc-scorpions__carte button:focus-visible { outline:2px solid var(--gc-honey-500); outline-offset:3px; }
+@keyframes gc-scorpions-apparait { from { opacity:0; } to { opacity:.85; } }
+
+/* La carte finale : un papier posé sur la table, dans le style du rabat des notes en marge. */
+.gc-scorpions__carte { position:absolute; left:50%; top:46%; z-index:10; box-sizing:border-box; width:min(330px,82%); padding:22px 20px 14px; text-align:center; pointer-events:auto; background:var(--gc-paper-lit); color:var(--gc-ink-brune); border:1px solid var(--gc-paper-edge); border-radius:2px 3px 9px 3px; box-shadow:2px 3px 10px #38231455; font-size:clamp(17px,1.2vw,22px)!important; line-height:1.25!important; transform:translate(-50%,-50%) rotate(-1.2deg); animation:gc-scorpions-carte .5s ease-out both; }
+.gc-scorpions__carte h2 { margin:.2em 0 .5em; font:inherit; font-size:1.15em; font-weight:700; color:var(--gc-ink-brune); }
+.gc-scorpions__carte p { margin:0 0 .8em; }
+.gc-scorpions__sceau { display:block; width:58px; margin:0 auto; color:var(--gc-ink-plume); transform:rotate(-8deg); }
+.gc-scorpions__fermer { position:absolute; right:0; top:0; width:44px; height:44px; padding:0; border:0; color:inherit; background:none; font:inherit; cursor:pointer; }
+.gc-scorpions__action { box-sizing:border-box; min-height:44px; padding:8px 14px; border:0; color:inherit; background:none; font:inherit; cursor:pointer; text-decoration:underline; text-decoration-color:var(--gc-honey-700); text-underline-offset:4px; }
+@keyframes gc-scorpions-carte { from { opacity:0; transform:translate(-50%,-47%) rotate(-1.2deg); } to { opacity:1; transform:translate(-50%,-50%) rotate(-1.2deg); } }
+.gc-scorpions__carte[data-gc-scorpions-reduit="oui"] { animation:gc-scorpions-fondu-carte .3s linear both; }
+@keyframes gc-scorpions-fondu-carte { from { opacity:0; } to { opacity:1; } }
+@media (prefers-reduced-motion:reduce) { .gc-scorpions__compteur, .gc-scorpions__carte { animation-duration:.01s; } }

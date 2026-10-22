@@ -2,7 +2,7 @@
 //   points  — poussière d'or, étincelles, étoiles, pas du maraudeur (sprites, une forme par genre) ;
 //   traits  — ornements à la plume (trait large, révélé dans le temps, d'abord or humide puis encre) et
 //             lueur du bord libre de la feuille qui tourne (trait de lumière) ;
-//   images  — photos vivantes (respiration, parallaxe, vidéo, reflet du papier) et reflet doré des titres.
+//   images  — vignettes qui jouent une boucle vidéo (tirage mat, sans reflet) et reflet doré des titres.
 // Positions en px de scène (1920 × 1080, repère de la caméra) ; u_k : px de toile par px de scène. Toile à
 // alpha prémultiplié : une couleur d'alpha nul est de la lumière qui s'ajoute (l'or), un alpha plein de
 // l'encre qui couvre.
@@ -69,8 +69,7 @@ void main(){vec2 c=a_p/u_scene*2.-1.;gl_Position=vec4(c.x,-c.y,0.,1.);v_uv=a_uv;
 
 // u_mode 0 : photo vivante. v_uv parcourt l'image du tirage ; dans la zone photo (u_photo), la photo
 // zoomée (u_zoom : facteur, décalage) ou la vidéo virée au ton du tirage (u_vid ; u_niv : niveaux, u_ton :
-// teinte), sous les coins (u_tex1) ; sur
-// tout le papier, le reflet (u_reflet). u_mode 1 : image simple (le ▶ par-dessus). u_mode 2 : reflet
+// teinte), sous les coins (u_tex1) ; le tirage reste mat (aucun reflet). u_mode 1 : image simple (le ▶ par-dessus). u_mode 2 : reflet
 // doré d'un titre, sur l'encre seule (u_tex0 : l'encre du titre ; halo de 5 prises).
 const FS_IMAGES = `precision mediump float;varying vec2 v_uv;
 uniform sampler2D u_tex0;uniform sampler2D u_tex1;uniform sampler2D u_tex2;
@@ -85,8 +84,6 @@ if(u_vid>0.){vec3 v=texture2D(u_tex2,u_cadre.xy+z*u_cadre.zw).rgb;float l=u_niv.
 ph.rgb=mix(ph.rgb,clamp(l*u_ton,0.,1.),u_vid);}
 vec4 co=texture2D(u_tex1,v_uv);float k=dedans*u_op;
 vec4 c=co*k+ph*k*(1.-co.a);
-float pap=smoothstep(.9,1.,texture2D(u_tex0,v_uv).a);float d=v_uv.x+v_uv.y*.42-u_reflet;
-c.rgb+=vec3(1.,.93,.8)*(exp(-d*d*110.)*.14+exp(-d*d*14.)*.04)*pap*u_op;
 gl_FragColor=c;}
 else if(u_mode<1.5){gl_FragColor=texture2D(u_tex0,v_uv)*u_op;}
 else{float a=texture2D(u_tex0,v_uv).a;

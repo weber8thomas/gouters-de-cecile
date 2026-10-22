@@ -27,7 +27,7 @@ Mots importants (CONTRACT § 13, lot E ; `importants.py`) : nombres, unités, no
   - `Mot.important` est vrai pour ces mots ; leurs traits n'ont jamais de saut de bille (l'encre
     est posée par tools/ecriture/encre.py avec le drapeau `important` de chaque mot).
   - `relire_rendu(encre_rgba, mots_places)` relit l'ENCRE RENDUE (après encre et papier) des mots
-    importants posés sur la page : la cuisson échoue s'il en reste un douteux.
+    importants posés sur la page ; à la demande seulement (relecture.py), le rapport ne fait jamais échouer la cuisson.
 """
 from __future__ import annotations
 
@@ -450,6 +450,44 @@ def _compact(t: str) -> str:
     return "".join(t.split()).lower()
 
 
+def _forme_lue(t: str) -> str:
+    """Forme comparée d'une lecture : sans accents ni ligatures (texte_lu), en minuscules, sans
+    ponctuation, guillemets ni espaces (« Cécile, » ≡ « Cecile . », « 200 g » ≡ « 2 00 g »)."""
+    return "".join(c for c in texte_lu(t).lower() if c.isalnum())
+
+
+def lecture_equivalente(cible: str, lu: str | None) -> bool:
+    """La lecture libre du lecteur redit-elle le texte voulu, aux confusions sans conséquence près ?
+
+    Accents, ponctuation, espaces et casse ignorés ; « œ » lu « ce » ou « ae » ; chiffre 1 lu « l »
+    ou « I » (numéros d'étape) ; lettre lue comme son sosie chiffré (« g » lu « 9 » : « 120g » lu
+    « 1209 », « o » lu « 0 »…) ; « e » accentué lu « i » (l'accent pris pour un point : « crème » lu
+    « crime »). Jamais un chiffre lu comme un autre chiffre ou comme une lettre
+    (« 180 » lu « 100 », « 300g » lu « 3ccg » restent faux), ni une lettre en plus ou en moins."""
+    if not lu:
+        return False
+    a, b = _forme_lue(cible), _forme_lue(lu)
+    # e portant un accent dans le texte voulu (même découpe que _forme_lue, caractère par caractère)
+    accent = [c != "".join(_forme_lue(c)) and c not in "œæ" for c in cible.lower() for _ in _forme_lue(c)]
+    if not a or len(a) != len(b) or len(accent) != len(a):
+        return False
+    b = list(b)
+    for i in range(len(a) - 1):
+        if a[i:i + 2] == "oe" and "".join(b[i:i + 2]) in ("ce", "ae"):
+            b[i] = "o"
+    for i, (x, y) in enumerate(zip(a, b)):
+        if x == y:
+            continue
+        if x == "1" and y in "li":
+            continue
+        if x == "e" and y == "i" and accent[i]:
+            continue
+        if x.isalpha() and y in SOSIES and x in SOSIES[y].lower():
+            continue
+        return False
+    return True
+
+
 _REFS_GROUPES: dict | None = None
 REFS_GROUPES = OUTIL / ".cache" / "lecteur-groupes-v2.json"
 
@@ -522,16 +560,21 @@ def lire_groupe(X: np.ndarray, textes: list[str], importants: list[bool] | None 
     if pire_marge is not None and pire_marge < 0:
         raison.append(f"« {pire} » se lit presque aussi bien (écart {pire_ecart:.2f} < {pire_seuil:.2f})")
     douteux = bool(fautifs)
+    lu = _lecture_libre(L, h) if douteux else None
+    if douteux and lecture_equivalente(" ".join(textes), lu):
+        # le lecteur redit le texte voulu (accents, ponctuation, « œ », 1/l près) : écart des notes seul
+        raison.append(f"acquitté : lu « {lu} »")
+        douteux, fautifs = False, set()
     res = dict(douteux=douteux, fautifs=sorted(fautifs), note=round(note, 3),
                ecart=None if pire_ecart is None else round(pire_ecart, 3),
                seuil=None if pire_seuil is None else round(pire_seuil, 3), variante=pire, raison=" ; ".join(raison))
-    if douteux:
-        res["lu"] = _lecture_libre(L, h)
+    if lu is not None:
+        res["lu"] = lu
     return res
 
 
 _CACHE_GROUPES: dict | None = None
-CACHE_GROUPES = OUTIL / ".cache" / "groupes-lus-v2.json"
+CACHE_GROUPES = OUTIL / ".cache" / "groupes-lus-v3.json"  # v3 : lecture libre équivalente acquittée
 
 
 def _cache_disque(nom: str):
@@ -749,7 +792,7 @@ def ecrire_bloc(texte: str, main: str, graine: int, encre: str | None = None, ou
 # Relecture de l'encre RENDUE (cuisson, lot P2) : relire_rendu(encre_rgba, mots_places)
 # =============================================================================================
 _CACHE_RENDU: dict | None = None
-CACHE_RENDU = OUTIL / ".cache" / "relire-rendu-v2.json"
+CACHE_RENDU = OUTIL / ".cache" / "relire-rendu-v3.json"  # v3 : idem
 
 
 def gris_sur_blanc(encre: np.ndarray) -> np.ndarray:

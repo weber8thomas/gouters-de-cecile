@@ -1,0 +1,42 @@
+{
+  "id": "cecile-4-gauche",
+  "double": "cecile-4",
+  "cote": "gauche",
+  "sansFolio": true,
+  "graine": 4017,
+  "papier": "f13",
+  "papier_miroir": true,
+  "main": "cecile",
+  "encre": "crayon",
+  "_": "Album « Le goût des bonnes choses », page 7/10 : photos 19 à 21 (zones photo-N, une par emplacement cecile-N, chacune une boîte au ratio exact du tirage, sans rognage), tailles et inclinaisons variées, sans légende ni âge. Encart sans folio (hors de `doubles`, voir `encarts` de carnet.json) : papier explicite.",
+  "vivants": [
+    {
+      "nom": "photo-19",
+      "rect": [
+        0.11,
+        0.131,
+        0.34,
+        0.298
+      ]
+    },
+    {
+      "nom": "photo-20",
+      "rect": [
+        0.53,
+        0.251,
+        0.34,
+        0.298
+      ]
+    },
+    {
+      "nom": "photo-21",
+      "rect": [
+        0.15,
+        0.574,
+        0.38,
+        0.333
+      ]
+    }
+  ],
+  "blocs": []
+}

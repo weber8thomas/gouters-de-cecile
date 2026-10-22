@@ -17,6 +17,7 @@
 // ni si WebGL manque ou se perd : l'encre est alors simplement là.
 
 import { assetInfo, assetUrl } from '../../lib/assets';
+import { facteurDpr } from '../../lib/dpr';
 import { prefersReducedMotion } from '../../lib/motion';
 import { facteurEcriture } from '../../lib/vitesse';
 
@@ -133,8 +134,10 @@ export function ecrire(canvas: HTMLCanvasElement, page: string, encre: string, d
   Promise.all([charger(assetUrl(encre)), charger(assetUrl(temps))])
     .then(([imE, imT]) => {
       if (arrete) return;
-      canvas.width = imE.naturalWidth;
-      canvas.height = imE.naturalHeight;
+      // la toile suit l'image cuite (2 px par px de page) ; sur un écran 3× (iPhone), ramenée à l'équivalent de 2×
+      const f = facteurDpr();
+      canvas.width = Math.round(imE.naturalWidth * f);
+      canvas.height = Math.round(imE.naturalHeight * f);
       gl = canvas.getContext('webgl', { premultipliedAlpha: true, alpha: true, antialias: false });
       if (!gl) return terminer();
       // Contexte perdu (téléphone qui reprend la mémoire, onglet en arrière-plan) : la toile se vide ; la

@@ -23,7 +23,7 @@ try {
     window.__gcDessins.figer(true); window.__gcDessins.finir(); window.__gcDessins.avancer(33);
     // Comparer la même pose de l'illustration, hors du tableau qui la remplace pendant la coupe.
     window.__gcDessins.scene(undefined, 'duo-citron'); window.__gcDessins.avancer(0);
-    window.__gcFeu?.figer({ intensite: 1 });
+    window.__gcFeu?.figer?.({ intensite: 1 });
   });
   await p.addStyleTag({ content: '.gc-magie,.gc-secrets { visibility:hidden!important; } .gc-lumiere-papier__bougie { opacity:.7!important; }' });
   const clip = await p.evaluate(() => {

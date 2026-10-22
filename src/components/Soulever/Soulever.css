@@ -129,6 +129,12 @@
   text-shadow: 0 1px 2px color-mix(in srgb, var(--gc-wood-3) 80%, transparent);
 }
 
+.gc-soulever__legende-date {
+  margin-top: 0.15em;
+  font-size: 0.78em;
+  opacity: 0.8;
+}
+
 /* Le tirage posé dans la page (TirageColle, album) : une photo qui se soulève comme PhotoCollee. */
 .gc-tirage__photo {
   position: relative;

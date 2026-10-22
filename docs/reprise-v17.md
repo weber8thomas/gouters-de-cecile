@@ -13,3 +13,17 @@ Validations déjà effectuées : mode cuisine TV/mobile, étapes manuelles sans 
 À la demande « push tout mtn », le travail est sauvegardé avant la fin de la génération ciblée des pages. Ne pas présenter les nouvelles mises en page comme publiées : certaines faces et leurs cartes attendent encore l’assemblage. Les sources, les dessins HD et les correctifs de navigation/cuisine sont versionnés. Le dernier aperçu public complet reste `essais/coherence-v16/` tant qu’un nouvel aperçu n’a pas été publié. Éviter de recuire toutes les pages pour reprendre ; cibler les 14 faces modifiées et leur contexte. Les sorties de calcul temporaires sous `verification/out/` ne remplacent pas les sources versionnées.
 
 TypeScript final et le contrôle d’attente de navigation passent. Le mode cuisine TV/mobile a passé son contrôle de fonctionnement avant le dernier export HD ; la seconde passe a vérifié la source native HD et produit la capture TV, puis a été interrompue pour libérer le processeur aux pages. Ne pas annoncer une mesure de fluidité sur TV physique.
+
+## Reprise v18 (branche `claude/reprise-v18`)
+
+Constats au départ de `e2f24e5` : `design-system/baked/pages/papier/f47.webp` est tronqué (illisible) et aucune entrée de `.cuisson.json` ne correspond aux sources actuelles. « Sommaire (suite) » (`gateaux-gauche`, folio 10) reçoit `"police": "kalam"` comme les folios 8–9, au lieu de l’écriture neuronale. La cuisson complète sans 4× se fait en local, sur l’installation qui a produit la v16 :
+
+```sh
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 node scripts/bake-pages.mjs --sans-4x
+# ou, en parallèle (cuire.py reprend page par page : relancer la même commande après une interruption) :
+node scripts/bake-pages.mjs --sans-4x --jobs 6
+tools/ecriture/.venv/bin/python scripts/bake-temps-encre.py
+tools/ecriture/.venv/bin/python scripts/bake-magie.py
+node scripts/assets.mjs
+npm run build:site
+```

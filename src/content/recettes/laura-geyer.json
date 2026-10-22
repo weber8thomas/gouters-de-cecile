@@ -3,7 +3,7 @@
   "source": "src/content/recettes/laura-geyer.txt",
   "adaptations": [
     "Texte reçu conservé intégralement dans le fichier TXT ; seuls les marqueurs de liste sont retirés pour la mise en page.",
-    "Petit mot provisoire demandé par Thomas : Lorem ipsum — message à venir ; aucun message authentique inventé."
+    "Petit mot reçu le 22 octobre, conservé tel quel (retours à la ligne compris) ; seuls l’en-tête de transmission (« Mot pour Cécile: », « Petit mot : », le prénom en tête) est retiré. Les emojis sont dessinés au trait (cœur, sourire)."
   ],
   "style": {
     "main": "soignee",
@@ -67,7 +67,7 @@
       "texte": "Refroidissement : Laisser tiédir une quinzaine de minutes avant de démouler."
     }
   ],
-  "mot": "Lorem ipsum — message à venir",
+  "mot": "Joyeux 30 ans ma Cec ❤️\nTellement heureuse de partager cette belle étape ensemble! Une nouvelle décennie de bonheur, douceur, surprises et fous rires ensemble 🫶🏼.\nAlors la recette a l’air bizarre mais promis c’est bon.\nLove you, Laura",
   "signature": "Laura Geyer",
   "nom": "Laura Geyer"
 }

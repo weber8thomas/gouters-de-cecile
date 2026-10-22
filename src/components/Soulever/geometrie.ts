@@ -54,17 +54,24 @@ export function versLocal(p: Pose, calque: HTMLElement): Pose {
   return { cx: (p.cx - r.left) / q, cy: (p.cy - r.top) / q, w: p.w / q, h: p.h / q, angle: p.angle };
 }
 
+/** Marge minimale (part de la hauteur utile) gardée au-dessus et au-dessous d'une photo qui a sa légende au crayon. */
+const MARGE_LEGENDE = 0.05;
+/** Hauteur d'une ligne de légende (part de la hauteur utile) ; la légende s'écarte aussi de 3,5 % de la hauteur de la photo. */
+const LIGNE_LEGENDE = 0.042;
+
 /**
  * Pose d'arrivée : centrée dans la zone sûre, à la proportion de l'objet, au plus 82 % de la largeur
  * et de la hauteur utiles (la hauteur, sur un écran couché) ; sur un écran debout (téléphone), presque
- * toute la largeur. Droite (angle 0).
+ * toute la largeur. Droite (angle 0). Avec `lignesSous` lignes de légende sous l'objet, l'ensemble photo + légende
+ * tient dans la hauteur utile moins 5 % de marge en haut et en bas (la photo rétrécit, l'ensemble reste centré).
  */
-export function poseCible(vp: { w: number; h: number; insets: Insets }, proportion: number): Pose {
+export function poseCible(vp: { w: number; h: number; insets: Insets }, proportion: number, lignesSous = 0): Pose {
   const z = zoneSure(vp);
   const debout = z.h > z.w;
   const gouttiere = Math.min(24, Math.max(10, z.w * 0.03));
   const maxW = debout ? z.w - 2 * gouttiere : z.w * PART_CIBLE;
-  const maxH = z.h * PART_CIBLE;
+  const sous = lignesSous * LIGNE_LEGENDE * z.h;
+  const maxH = lignesSous > 0 ? Math.min(z.h * PART_CIBLE, (z.h * (1 - 2 * MARGE_LEGENDE) - sous) / 1.035) : z.h * PART_CIBLE;
   const a = proportion > 0 ? proportion : 1;
   let w = maxW;
   let h = w / a;
@@ -72,26 +79,42 @@ export function poseCible(vp: { w: number; h: number; insets: Insets }, proporti
     h = maxH;
     w = h * a;
   }
-  return { cx: z.x + z.w / 2, cy: z.y + z.h / 2, w, h, angle: 0 };
+  // Ensemble photo + légende centré dans la zone sûre.
+  const reste = lignesSous > 0 ? h * 0.035 + sous : 0;
+  return { cx: z.x + z.w / 2, cy: z.y + (z.h - reste) / 2, w, h, angle: 0 };
 }
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
 const r4 = (v: number) => Math.round(v * 10000) / 10000;
 
+/** Inclinaison maximale (degrés) du décollement du coin, atteinte en cours de vol (nulle posé et soulevé). */
+export const DECOLLEMENT = 7;
+
+/** Élévation du décollement pour l'avancée p : 0 posé, un sommet en cours de vol, 0 à plat face à l'écran. */
+export const decollement = (p: number): number => Math.sin(Math.PI * clamp01(p));
+
 /**
- * Transformation de l'objet soulevé (mis en page à sa pose d'arrivée T) pour l'avancée p : centre,
- * taille et inclinaison interpolés depuis la pose de départ S, petit arc vers le haut à mi-course.
- * p < 0 (rebond du ressort au retour) reste posé ; p > 1 (rebond en haut) grandit à peine.
+ * Transformation de l'objet soulevé (mis en page à sa pose d'arrivée T) pour l'avancée p : centre, taille et
+ * inclinaison interpolés depuis la pose de départ S, tout droit (pas d'arc, p reste dans 0..1 : l'animation ne
+ * rebondit pas). Un coin se décolle d'abord (le bas à droite se lève, la photo pivote autour de son coin haut gauche, en
+ * perspective), puis la photo se pose à plat, face à l'écran : à p = 0 et à p = 1 il n'y a plus d'inclinaison.
  */
-export function transformDe(S: Pose, T: Pose, p: number): string {
-  const q = Math.max(0, p);
+export function transformDe(S: Pose, T: Pose, p: number, decoller = true): string {
+  const q = clamp01(p);
   const cx = S.cx + (T.cx - S.cx) * q;
-  const arc = -Math.sin(Math.PI * clamp01(q)) * 0.035 * T.h;
-  const cy = S.cy + (T.cy - S.cy) * q + arc;
+  const cy = S.cy + (T.cy - S.cy) * q;
   const sx = (S.w + (T.w - S.w) * q) / (T.w || 1);
   const sy = (S.h + (T.h - S.h) * q) / (T.h || 1);
   const a = S.angle + (T.angle - S.angle) * q;
-  return `translate3d(${r2(cx - T.cx)}px, ${r2(cy - T.cy)}px, 0) rotate(${r2(a * 100) / 100}deg) scale(${r4(sx)}, ${r4(sy)})`;
+  const base = `translate3d(${r2(cx - T.cx)}px, ${r2(cy - T.cy)}px, 0) rotate(${r2(a * 100) / 100}deg) scale(${r4(sx)}, ${r4(sy)})`;
+  const d = decollement(q);
+  if (!decoller || d < 0.005) return base;
+  // pivot : le coin haut gauche (repère de la carte à sa taille d'arrivée, centre = origine) ; axe : la diagonale qui
+  // monte vers la droite, de sorte que le coin bas droit vienne vers le regard
+  const px = -T.w / 2;
+  const py = -T.h / 2;
+  const persp = Math.round(Math.max(T.w, T.h) * 3.2);
+  return `${base} translate(${r2(px)}px, ${r2(py)}px) perspective(${persp}px) rotate3d(1, -1, 0, ${r2(DECOLLEMENT * d)}deg) translate(${r2(-px)}px, ${r2(-py)}px)`;
 }
 
 /** Bouton « Fermer » : au-dessus du coin haut droit de l'objet, sinon à sa droite, sinon dedans. */
