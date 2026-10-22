@@ -1,0 +1,185 @@
+{
+  "serie": "anglaise-v22",
+  "reference": "design-system/sources/illustrations/v16/desserts.png",
+  "direction": "Huit sujets culinaires isolés en deux planches transparentes, aquarelle anglaise mate au crayon brun fin.",
+  "planches": [
+    {
+      "fichier": "desserts.png",
+      "sujets": [
+        {
+          "nom": "acteurs/tiramisu",
+          "sujet": "acteurs/tiramisu",
+          "cellule": [
+            67,
+            26,
+            721,
+            431
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "tiramisu",
+          "sujet": "tiramisu",
+          "cellule": [
+            67,
+            26,
+            721,
+            431
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/crumble-pommes",
+          "sujet": "acteurs/crumble-pommes",
+          "cellule": [
+            855,
+            31,
+            1440,
+            446
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "crumble-pommes",
+          "sujet": "crumble-pommes",
+          "cellule": [
+            855,
+            31,
+            1440,
+            446
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/tarte-poire-chocolat",
+          "sujet": "acteurs/tarte-poire-chocolat",
+          "cellule": [
+            52,
+            466,
+            718,
+            967
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "tarte-poire-chocolat",
+          "sujet": "tarte-poire-chocolat",
+          "cellule": [
+            52,
+            466,
+            718,
+            967
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "acteurs/roules-cannelle",
+          "sujet": "acteurs/roules-cannelle",
+          "cellule": [
+            796,
+            468,
+            1498,
+            994
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "roules-cannelle",
+          "sujet": "roules-cannelle",
+          "cellule": [
+            796,
+            468,
+            1498,
+            994
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        }
+      ]
+    },
+    {
+      "fichier": "accessoires.png",
+      "sujets": [
+        {
+          "nom": "boudoirs",
+          "sujet": "boudoirs",
+          "cellule": [
+            80,
+            50,
+            671,
+            462
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "tasse-cafe",
+          "sujet": "tasse-cafe",
+          "cellule": [
+            844,
+            36,
+            1423,
+            463
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "pot-mascarpone",
+          "sujet": "pot-mascarpone",
+          "cellule": [
+            63,
+            495,
+            717,
+            969
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        },
+        {
+          "nom": "pate-roulee",
+          "sujet": "pate-roulee",
+          "cellule": [
+            787,
+            499,
+            1491,
+            944
+          ],
+          "taille": [
+            600,
+            600
+          ]
+        }
+      ]
+    }
+  ]
+}

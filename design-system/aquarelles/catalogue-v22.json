@@ -1,10 +1,98 @@
 {
+  "acteurs/tiramisu": {
+    "sujet": "acteurs/tiramisu",
+    "fichier": "acteurs/tiramisu.png",
+    "source": "design-system/sources/illustrations/v22/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v22"
+  },
+  "tiramisu": {
+    "sujet": "tiramisu",
+    "fichier": "tiramisu.png",
+    "source": "design-system/sources/illustrations/v22/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v22"
+  },
+  "acteurs/crumble-pommes": {
+    "sujet": "acteurs/crumble-pommes",
+    "fichier": "acteurs/crumble-pommes.png",
+    "source": "design-system/sources/illustrations/v22/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v22"
+  },
+  "crumble-pommes": {
+    "sujet": "crumble-pommes",
+    "fichier": "crumble-pommes.png",
+    "source": "design-system/sources/illustrations/v22/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v22"
+  },
+  "acteurs/tarte-poire-chocolat": {
+    "sujet": "acteurs/tarte-poire-chocolat",
+    "fichier": "acteurs/tarte-poire-chocolat.png",
+    "source": "design-system/sources/illustrations/v22/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v22"
+  },
+  "tarte-poire-chocolat": {
+    "sujet": "tarte-poire-chocolat",
+    "fichier": "tarte-poire-chocolat.png",
+    "source": "design-system/sources/illustrations/v22/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v22"
+  },
+  "acteurs/roules-cannelle": {
+    "sujet": "acteurs/roules-cannelle",
+    "fichier": "acteurs/roules-cannelle.png",
+    "source": "design-system/sources/illustrations/v22/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v22"
+  },
   "roules-cannelle": {
-    "sujet": "roulés à la cannelle (recette de Lily)",
+    "sujet": "roules-cannelle",
     "fichier": "roules-cannelle.png",
-    "source": "scripts/aquarelle-roules-cannelle.py",
-    "auteur": "Composé pour le carnet : le moule cannelé de la série anglaise (acteurs/moule.png) garni de sept roulés peints par script, même facture (contour au crayon brun, pâte dorée, glaçage)",
-    "licence": "Création pour ce projet ; le moule vient de la série anglaise v14-v16 (voir son manifeste)",
+    "source": "design-system/sources/illustrations/v22/desserts.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v22"
+  },
+  "boudoirs": {
+    "sujet": "boudoirs",
+    "fichier": "boudoirs.png",
+    "source": "design-system/sources/illustrations/v22/accessoires.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v22"
+  },
+  "tasse-cafe": {
+    "sujet": "tasse-cafe",
+    "fichier": "tasse-cafe.png",
+    "source": "design-system/sources/illustrations/v22/accessoires.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v22"
+  },
+  "pot-mascarpone": {
+    "sujet": "pot-mascarpone",
+    "fichier": "pot-mascarpone.png",
+    "source": "design-system/sources/illustrations/v22/accessoires.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
+    "serie": "anglaise-v22"
+  },
+  "pate-roulee": {
+    "sujet": "pate-roulee",
+    "fichier": "pate-roulee.png",
+    "source": "design-system/sources/illustrations/v22/accessoires.png",
+    "auteur": "Série anglaise créée pour le carnet, génération assistée et direction artistique commune",
+    "licence": "Création pour ce projet ; provenance et consignes dans le manifeste de la série",
     "serie": "anglaise-v22"
   }
 }
