@@ -4,6 +4,7 @@ import { LazyMotion, domMax, m, useMotionValue, useReducedMotion, useTransform }
 import { LOUPE_ZOOME, brancherLoupe, getLoupe, useLoupe } from '../../lib/loupe';
 import { clavierModalActif } from '../../lib/clavier';
 import { useControlesCaches } from '../../lib/controles';
+import { brancherCoin } from '../../lib/coin';
 import { BoutonLoupe } from '../Loupe/BoutonLoupe';
 import { BoutonHautParleur } from '../Haut-parleur/BoutonHautParleur';
 import { BoutonMusique } from '../Haut-parleur/BoutonMusique';
@@ -139,6 +140,11 @@ export function Ecran({ children, className, pleinEcran = true, loupe = true, on
   // Les boutons s'effacent seuls (src/lib/controles.ts) ; un écran simulé (carte, test) les garde.
   const controlesCaches = useControlesCaches() && !simule;
   const reduit = useReducedMotion();
+  // Boutons du coin haut gauche (Réglages, Sommaire, Rechercher) : cachés, ils suivent la souris (src/lib/coin.ts).
+  React.useEffect(() => {
+    const racine = racineRef.current;
+    return simule || !racine ? undefined : brancherCoin(racine);
+  }, [simule]);
   const [zLocal, setZLocal] = React.useState(1);
   const z = simule ? zLocal : etatGlobal.z;
 
@@ -223,6 +229,7 @@ export function Ecran({ children, className, pleinEcran = true, loupe = true, on
         data-gc-loupe={loupe ? (z > LOUPE_ZOOME ? 'zoome' : 'repos') : undefined}
         data-gc-controles={simule ? undefined : controlesCaches ? 'caches' : 'visibles'}
         data-gc-reduit={reduit ? '' : undefined}
+        data-gc-coins={simule ? undefined : ''}
         style={style}
       >
         <LazyMotion features={domMax}>

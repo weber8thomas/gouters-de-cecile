@@ -21,6 +21,8 @@ cuire — Entrées
                                   cuite par scripts/medias-local.mjs ; sans `fichier`, la 1re image de la vidéo sert de
                                   tirage (alors rien n'est cuit ici). Un emplacement absent garde le placeholder du site.
 Sorties (dans prive/baked/, jamais dans design-system/baked ni src/content)
+  photos/cecile-N/couleur.webp              la photo en couleurs, sans bord ni voile (grand côté 1600 px au plus) : la photo ouverte
+                                            y passe en fondu (réglage « Photos ouvertes : couleur / sépia »)
   photos/cecile-N/tirage.webp, coins.webp   mêmes fonctions de rendu que scripts/bake-photos-cecile.py
                                             (tirage couleur passé, coins arrondis, ombre, coins photo) ; le grand côté de la photo
                                             fait 1080 px, l'autre suit le ratio d'origine (image = photo + 320 px)
@@ -130,6 +132,7 @@ def trouver(demande, noms):
     return candidats[0] if len(candidats) == 1 else None
 
 
+COTE_COULEUR = 1600                                 # px du grand côté de la photo en couleurs (photo ouverte)
 GRAND_COTE = 1080                                   # px du grand côté de la photo d'un tirage (comme les tirages 3:2 d'origine)
 
 
@@ -183,13 +186,14 @@ def cuire(force=False):
             sys.exit(f"choix.json : {id_} : coins « {papier_coin} » (attendu : noir ou kraft)")
         dossier = os.path.join(BAKED, 'photos', id_)
         f_tirage, f_coins = os.path.join(dossier, 'tirage.webp'), os.path.join(dossier, 'coins.webp')
+        f_couleur = os.path.join(dossier, 'couleur.webp')
         sha = sha256_fichier(chemin)
         im = ouvrir(chemin)                         # ratio d'origine, orientation EXIF appliquée
         pw, ph = dimensions_photo(im.width, im.height)
         orientation = orientation_de(pw, ph)
         g = bp.Geometrie(pw, ph)
-        cle = sha256_texte({'v': 3, 'photo': sha, 'coins': papier_coin, 'dim': [pw, ph], 'i': i, 'code': code})
-        if force or cache.get(id_) != cle or not (os.path.exists(f_tirage) and os.path.exists(f_coins)):
+        cle = sha256_texte({'v': 4, 'photo': sha, 'coins': papier_coin, 'dim': [pw, ph], 'i': i, 'code': code})
+        if force or cache.get(id_) != cle or not (os.path.exists(f_tirage) and os.path.exists(f_coins) and os.path.exists(f_couleur)):
             if im.width < pw or im.height < ph:
                 print(f"  ! {nom} : {im.width}×{im.height} px, plus petite que le tirage ({pw}×{ph}) : sera agrandie")
             photo = im.resize((pw, ph), Image.LANCZOS)        # tout le cliché, rien n'est rogné
@@ -197,10 +201,13 @@ def cuire(force=False):
             os.makedirs(dossier, exist_ok=True)
             tirage.save(f_tirage, 'WEBP', quality=86, method=6)
             coins.save(f_coins, 'WEBP', quality=90, method=6)
+            couleur = im.copy()                                   # la vraie photo, sans virage : jamais agrandie au-delà de l'original
+            couleur.thumbnail((COTE_COULEUR, COTE_COULEUR), Image.LANCZOS)
+            couleur.save(f_couleur, 'WEBP', quality=88, method=6)
             cache[id_] = cle
             faits.append(id_)
         contenu.append({'id': id_, 'orientation': orientation, 'taille': [pw, ph], 'ratio': round(g.CW / g.CH, 5), 'tirage': f'local/photos/{id_}/tirage',
-                        'coins': f'local/photos/{id_}/coins', 'angle': angle})
+                        'coins': f'local/photos/{id_}/coins', 'couleur': f'local/photos/{id_}/couleur', 'angle': angle})
         print(f"{id_:<10} {nom[:44]:<44} {orientation:<9} "
               f"{'cuit' if id_ in faits else 'à jour'} — {os.path.getsize(f_tirage) // 1024} Ko / {os.path.getsize(f_coins) // 1024} Ko")
     with open(CONTENU, 'w', encoding='utf-8') as f:

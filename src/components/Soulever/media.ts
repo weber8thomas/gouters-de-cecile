@@ -10,8 +10,15 @@ export type Fractions = [number, number, number, number];
 export interface VideoInfo {
   id: string;
   titre: string;
-  /** mp4 H.264 720p (« videos/<id> »). */
-  video: string;
+  /** mp4 H.264 720p (« videos/<id> »). Absent d'une photo « fixe » (version locale : photo seule, sans vidéo). */
+  video?: string;
+  /**
+   * Boucle de parallaxe de la vignette (version locale, mp4 muet de 4 s au ratio de la photo) : elle ne joue QUE sur la
+   * vignette posée dans la page (Magie) ; la photo ouverte est la vraie photo fixe (`affiche`, en couleur).
+   */
+  parallaxe?: string;
+  /** Date de la photo, « mois année » (version locale seulement) : écrite au crayon sous la vignette. */
+  date?: string;
   /** Première image, en couleur (« videos/<id>-affiche »). */
   affiche: string;
   /** Tirage sépia à bord blanc, droit (« photos/<id>/tirage »). */

@@ -10,7 +10,7 @@
 // volumes d'une clé plus ancienne sont donc oubliés et repartent de leur défaut, le reste est repris.
 // Les champs ajoutés depuis n'ont pas de clé à part : absents, ils prennent leur défaut. C'est le cas de
 // boutonsToujoursVisibles (les boutons s'effacent seuls par défaut, src/lib/controles.ts), de
-// vitesseEcriture (200 %) et de vitesseAnimations (100 %). L'ancien choix « vive · normale · lente » (champ
+// vitesseEcriture (200 %), de vitesseAnimations (100 %) et de photosOuvertes (« couleur »). L'ancien choix « vive · normale · lente » (champ
 // `vitesse`) est converti à la lecture en vitesseAnimations (150 %, 100 %, 70 %) ; il n'est plus écrit.
 import React from 'react';
 import banqueMusique from '../../design-system/baked/musique/banque.json';
@@ -39,6 +39,10 @@ const ANCIENNES_VITESSES: Record<string, number> = { vive: 1.5, normale: 1, lent
 /** Animations du carnet : suivre la préférence du système, ou imposer complètes / réduites. */
 export type Animations = 'systeme' | 'completes' | 'reduites';
 export const ANIMATIONS: Animations[] = ['systeme', 'completes', 'reduites'];
+
+/** Photos ouvertes en grand : la photo passe en couleurs à l'ouverture, ou garde son tirage sépia. */
+export type PhotosOuvertes = 'couleur' | 'sepia';
+export const PHOTOS_OUVERTES: PhotosOuvertes[] = ['couleur', 'sepia'];
 
 export interface Reglages {
   v: 1;
@@ -123,6 +127,8 @@ export interface Reglages {
    * geste (src/lib/controles.ts).
    */
   boutonsToujoursVisibles: boolean;
+  /** Photos ouvertes : « couleur » (défaut, fondu court vers la vraie photo) ou « sepia » (le tirage reste tel quel). */
+  photosOuvertes: PhotosOuvertes;
 }
 
 /** Niveau réel des bruitages à 100 % du curseur (sons du livre et ambiance) : 50 % ≈ 15 % de l'ancienne échelle. */
@@ -152,6 +158,7 @@ export const REGLAGES_DEFAUT: Reglages = {
   musiqueEnchaine: true,
   volumeMusique: 0.5,
   boutonsToujoursVisibles: false,
+  photosOuvertes: 'couleur',
 };
 const CLE = 'gc:reglages:v4';
 const CLE_V3 = 'gc:reglages:v3';
@@ -183,6 +190,7 @@ function valider(x: unknown): Reglages {
   if (typeof o.musiqueActive === 'boolean') r.musiqueActive = o.musiqueActive;
   if (typeof o.volumeMusique === 'number' && Number.isFinite(o.volumeMusique)) r.volumeMusique = Math.min(1, Math.max(0, o.volumeMusique));
   if (typeof o.boutonsToujoursVisibles === 'boolean') r.boutonsToujoursVisibles = o.boutonsToujoursVisibles;
+  if (typeof o.photosOuvertes === 'string' && (PHOTOS_OUVERTES as string[]).includes(o.photosOuvertes)) r.photosOuvertes = o.photosOuvertes as PhotosOuvertes;
   // « aucune » ne joue pas : le bouton musique repart de la rotation complète.
   if (r.musique === 'aucune') r.musiqueActive = false;
   return r;

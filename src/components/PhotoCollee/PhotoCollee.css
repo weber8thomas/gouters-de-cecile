@@ -81,3 +81,19 @@
   outline: 3px solid var(--gc-honey-500);
   outline-offset: 4px;
 }
+
+/* Date de la photo (version locale seulement), écrite au crayon sous le tirage : discrète, centrée, dans la zone. */
+.gc-photo-collee__date {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--font-hand);
+  font-weight: 500;
+  font-size: clamp(8px, min(8cqw, 4.2cqh), 24px);
+  line-height: 1.1;
+  color: var(--gc-ink-crayon);
+  opacity: 0.78;
+  pointer-events: none;
+  white-space: nowrap;
+}

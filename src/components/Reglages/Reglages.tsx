@@ -17,7 +17,7 @@ import {
   ECLAT_BOUGIE_MAX, ECLAT_BOUGIE_MIN, ECLAT_BOUGIE_PAS,
   LUMINOSITE_MAX, LUMINOSITE_MIN, LUMINOSITE_PAS,
   VITESSE_ANIMATIONS_MAX, VITESSE_ANIMATIONS_MIN, VITESSE_ECRITURE_MAX, VITESSE_ECRITURE_MIN, VITESSE_PAS,
-  resetReglages, useReglages, type Animations, type Reglages as ReglagesValeurs,
+  resetReglages, useReglages, type Animations, type PhotosOuvertes, type Reglages as ReglagesValeurs,
 } from '../../lib/reglages';
 import * as son from '../../lib/son';
 import { MORCEAUX, changerMorceau, useEtatMusique } from '../../lib/musique';
@@ -310,6 +310,8 @@ const BOUTONS_COURT: Option<boolean>[] = [{ v: false, texte: 's’effacent' }, {
 const ANIMATIONS_TEXTE: Option<Animations>[] = [{ v: 'systeme', texte: 'comme l’appareil' }, { v: 'completes', texte: 'complètes' }, { v: 'reduites', texte: 'réduites' }];
 /** Feuille du téléphone : « auto », pour que les trois choix tiennent sur une ligne. */
 const ANIMATIONS_COURT: Option<Animations>[] = [{ v: 'systeme', texte: 'auto' }, { v: 'completes', texte: 'complètes' }, { v: 'reduites', texte: 'réduites' }];
+/** Photos ouvertes en grand : en couleurs (défaut, fondu court) ou en sépia, comme sur la page. */
+const PHOTOS_OUVERTES_TEXTE: Option<PhotosOuvertes>[] = [{ v: 'couleur', texte: 'couleur' }, { v: 'sepia', texte: 'sépia' }];
 /** Musique de fond : aucune, tous les morceaux à la suite, ou un morceau choisi par son titre. */
 const OPTIONS_MUSIQUE: Option<string>[] = [
   { v: 'aucune', texte: 'aucune' },
@@ -593,7 +595,8 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, onSommaire, onRecherc
           className="gc-reglages__bouton"
           data-gc-reglages="bouton"
           data-gc-controle="reglages"
-          data-gc-effacable={enPlace ? undefined : ''}
+          data-gc-coin={enPlace ? undefined : ''}
+          data-gc-ouvert={ouvert ? '' : undefined}
           aria-haspopup="dialog"
           aria-expanded={etat === 'ouvert'}
           aria-label="Réglages"
@@ -711,6 +714,9 @@ function Menu({ vp, cible, enPlace, invites = [], onAller, onSommaire, onRecherc
                   )}
                   <Ligne id="auto" libelle="Lancer la vidéo en arrivant sur la page" role="radiogroup">
                     <Choix options={OUI_NON} valeur={r.lectureAuto} onChoisir={(lectureAuto) => setR({ lectureAuto })} graine={g()} />
+                  </Ligne>
+                  <Ligne id="photosOuvertes" libelle="Photos ouvertes" role="radiogroup">
+                    <Choix options={PHOTOS_OUVERTES_TEXTE} valeur={r.photosOuvertes} onChoisir={(photosOuvertes) => setR({ photosOuvertes })} graine={g()} />
                   </Ligne>
                   {/* En pourcentage (200 % par défaut pour l'écriture, 100 % pour les animations, repère au crayon) :
                       l'encre qui s'écrit, puis le tour de page et les autres animations (src/lib/vitesse.ts). */}

@@ -137,7 +137,7 @@ function CarnetLivre({ index, setIndex, coteInitial, arrivee, apiRef }: CarnetLi
 
   const changer = React.useCallback((i: number) => {
     setIndex(i);
-    if (i >= 0 && lectureAuto.current && videoDe(spreads[i])) {
+    if (i >= 0 && lectureAuto.current && videoDe(spreads[i])?.video) { // (une photo fixe n'a pas de vidéo à lancer)
       // Lecture automatique : la photo se soulève une fois la page posée (sans le son si le
       // navigateur le refuse hors d'un geste ; le premier toucher le rend).
       requestAnimationFrame(() => requestAnimationFrame(() => souleverObjet('photo')));

@@ -1769,7 +1769,7 @@
    "vivants": {
     "aq-coralie-1": [
      0.13,
-     0.36,
+     0.317,
      0.74,
      0.58
     ]
@@ -2594,7 +2594,7 @@
    "vivants": {
     "aq-emeline-1": [
      0.13,
-     0.35,
+     0.284,
      0.74,
      0.55
     ]
@@ -4013,7 +4013,7 @@
    "lignes": 23,
    "aquarelles": {
     "aq-lily-1": {
-     "aquarelle": "cannelle",
+     "aquarelle": "roules-cannelle",
      "anime": "fleurit",
      "angle": -8
     }
@@ -5123,7 +5123,7 @@
    "vivants": {
     "aq-marie-1": [
      0.13,
-     0.25,
+     0.172,
      0.74,
      0.65
     ]
@@ -6393,7 +6393,7 @@
    "vivants": {
     "aq-suzanne-1": [
      0.13,
-     0.55,
+     0.498,
      0.67,
      0.29
     ]

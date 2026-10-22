@@ -78,20 +78,34 @@ export function poseCible(vp: { w: number; h: number; insets: Insets }, proporti
 const r2 = (v: number) => Math.round(v * 100) / 100;
 const r4 = (v: number) => Math.round(v * 10000) / 10000;
 
+/** Inclinaison maximale (degrés) du décollement du coin, atteinte en cours de vol (nulle posé et soulevé). */
+export const DECOLLEMENT = 7;
+
+/** Élévation du décollement pour l'avancée p : 0 posé, un sommet en cours de vol, 0 à plat face à l'écran. */
+export const decollement = (p: number): number => Math.sin(Math.PI * clamp01(p));
+
 /**
- * Transformation de l'objet soulevé (mis en page à sa pose d'arrivée T) pour l'avancée p : centre,
- * taille et inclinaison interpolés depuis la pose de départ S, petit arc vers le haut à mi-course.
- * p < 0 (rebond du ressort au retour) reste posé ; p > 1 (rebond en haut) grandit à peine.
+ * Transformation de l'objet soulevé (mis en page à sa pose d'arrivée T) pour l'avancée p : centre, taille et
+ * inclinaison interpolés depuis la pose de départ S, tout droit (pas d'arc, p reste dans 0..1 : l'animation ne
+ * rebondit pas). Un coin se décolle d'abord (le bas à droite se lève, la photo pivote autour de son coin haut gauche, en
+ * perspective), puis la photo se pose à plat, face à l'écran : à p = 0 et à p = 1 il n'y a plus d'inclinaison.
  */
-export function transformDe(S: Pose, T: Pose, p: number): string {
-  const q = Math.max(0, p);
+export function transformDe(S: Pose, T: Pose, p: number, decoller = true): string {
+  const q = clamp01(p);
   const cx = S.cx + (T.cx - S.cx) * q;
-  const arc = -Math.sin(Math.PI * clamp01(q)) * 0.035 * T.h;
-  const cy = S.cy + (T.cy - S.cy) * q + arc;
+  const cy = S.cy + (T.cy - S.cy) * q;
   const sx = (S.w + (T.w - S.w) * q) / (T.w || 1);
   const sy = (S.h + (T.h - S.h) * q) / (T.h || 1);
   const a = S.angle + (T.angle - S.angle) * q;
-  return `translate3d(${r2(cx - T.cx)}px, ${r2(cy - T.cy)}px, 0) rotate(${r2(a * 100) / 100}deg) scale(${r4(sx)}, ${r4(sy)})`;
+  const base = `translate3d(${r2(cx - T.cx)}px, ${r2(cy - T.cy)}px, 0) rotate(${r2(a * 100) / 100}deg) scale(${r4(sx)}, ${r4(sy)})`;
+  const d = decollement(q);
+  if (!decoller || d < 0.005) return base;
+  // pivot : le coin haut gauche (repère de la carte à sa taille d'arrivée, centre = origine) ; axe : la diagonale qui
+  // monte vers la droite, de sorte que le coin bas droit vienne vers le regard
+  const px = -T.w / 2;
+  const py = -T.h / 2;
+  const persp = Math.round(Math.max(T.w, T.h) * 3.2);
+  return `${base} translate(${r2(px)}px, ${r2(py)}px) perspective(${persp}px) rotate3d(1, -1, 0, ${r2(DECOLLEMENT * d)}deg) translate(${r2(-px)}px, ${r2(-py)}px)`;
 }
 
 /** Bouton « Fermer » : au-dessus du coin haut droit de l'objet, sinon à sa droite, sinon dedans. */

@@ -23,7 +23,7 @@ Les vrais médias vont dans `prive/` (hors git, jamais publiés) : `prive/<slug>
 - [ ] **Aquarelle tiramisu** (dessert final, vignette, mode cuisine) : `fondant-chocolat` provisoire ; tasse de café et boudoirs
       à dessiner (le mode cuisine réutilise `biscuit-sable`, `fromage-blanc`, `pichet-lait`, `torchon`, `tamis`).
 - [ ] **Photos / vidéos des invités** : aucune reçue (`src/content/videos.json` vide ; clips Pexels en démo).
-- [ ] **Noms** : confirmer « Julien & Mila » (écrit « Julia & Mila ») et « Margot & Flo » (écrit « Margo & Flo »).
+- [ ] **Noms** : confirmer « Margot & Flo » (écrit « Margo & Flo »). « Julien & Mila » confirmé le 22/10.
 - [ ] **Recettes pas encore reçues** (10 personnes du groupe) : voir le tableau Excel.
 
 ## 3. Vrais médias — VERSION LOCALE SEULEMENT (décision du 22/10)
@@ -59,6 +59,8 @@ Les vraies photos/vidéos ne sont jamais publiées : le site GitHub Pages garde 
       bandeau de Shannen réduit (2,0 au lieu de 2,2) ; sommaire : « Shannen, Olivia, Nathan & Martin — Tarte poire » (titre raccourci).
 - [x] Noms (22/10, suite) : Margot & Flo, Elise & Lucas, Sarah, Gabriel & Maxime (remplace Sarah & Maxime), Lise & Maxime ; bandeaux `pente: 0.3`
       (Sarah aussi `taille` 2,0) ; Emma & Arthur dans l'Excel seulement.
+      Pages cuites le 22/10 (margot-chapuzy, elise, sarah, lise, sommaire, gateaux, tartes, brioches, crepes), temps d'encre, magie, inventaire OK ;
+      aquarelle de Margot encore réduite ([0,16, 0,74, 0,68, 0,23]) pour que son mot tienne.
 
 ### Alba, Maël & Marc — Crumble aux pommes
 - [x] Recette, roster, carnet (folios 42–43), plan de pages, sommaire, chapitre « Tartes & crumbles », mode cuisine.
@@ -112,3 +114,19 @@ Les vraies photos/vidéos ne sont jamais publiées : le site GitHub Pages garde 
 - [ ] **Parallaxe sur les vignettes de l'album seulement** (pas sur la photo ouverte) : visages et personnes en calques rigides, puis génération des 25 photos ; test sur une double complète après la mesure GPU.
 - [ ] **Photos des invités** (reçues le 22/10 à 16 h 27, copiées dans `prive/<slug>/photos/`) : Laura Geyer, Sarah, Léa, Marine, Shannen, Margot, Suzanne, Elise, Anatole, plus les vidéos de Lise et d'Alba. Lancer `npm run medias:local -- --sans-cecile` quand la machine est calme, puis vérifier.
 - [ ] **Date (mois année) sous chaque photo** : EXIF quand il existe (Cécile : `choix.json` ; invités : `prive/dates-photos.json`), sinon demander à Thomas. L'afficher en local.
+
+## 11. En cours au départ de Thomas (22/10 soir, commit 4585046 non poussé)
+Agents interrompus si la session se ferme : vérifier `git status` et reprendre.
+- [x] Noms (faits et recuits) : Margot & Flo (à confirmer : « Margo » ?), Elise & Lucas, Sarah, Gabriel & Maxime, Lise & Maxime, Emma & Arthur (Excel), puis recuisson de leurs pages.
+- [x] Parallaxe des 9 invités → `prive/baked/parallaxe/invites/` (faite, toutes OK).
+- [ ] Photos : parallaxe sur les vignettes (local), photos des invités (`medias:local -- --sans-cecile`), ouverture plus rapide et naturelle, sans reflet ; un toucher coupe l'animation ; sépia réglable ; légendes et dates.
+- [ ] Boutons Sommaire et Rechercher au survol, illustrations des recettes à variantes centrées, aquarelle des cinnamon rolls.
+- [ ] Dates manquantes (`prive/dates-photos.json`) : Laura Geyer, Léa, Margot, Marine, Sarah, Shannen, Suzanne, vidéos de Lise et d'Alba.
+- [ ] `git push origin claude/reprise-v18` (refusé en mode auto, à faire à la main).
+- [x] Boutons de coin visibles au survol (`src/lib/coin.ts`) ; illustrations des variantes centrées (Emeline, Marie, Coralie, Suzanne) : à recuire `--only emeline,marie,coralie,suzanne,lily`.
+- [ ] Aquarelle des cinnamon rolls : la version provisoire, composée par script (`roules-cannelle`), est trop schématique. Générer une vraie illustration avec le même prompt que les autres aquarelles. Même défaut de zone trop basse sur Antoine, Anatole, Lise, Alba et Laura.
+- [x] Photos (local) : parallaxe sur les vignettes (Cécile et invités), ouverture en 0,4 s, tirage mat sans reflet, un toucher coupe l'animation (photos et tours de page), réglage couleur/sépia, légendes et dates au crayon.
+- [ ] Légendes absentes sous les vignettes vidéo de l'album (cecile-10, 17, 18 : « On a retrouvé le vrai savane », « La farine sur la balance »…).
+- [ ] Double de l'album avec vidéos (`#cecile-3`) : encore ~40 % de GPU, à cause d'une boucle de ~68 rAF/s (lumière / `redessins`) qui tourne en plus des vidéos. À trouver avec `verification/perf/sonder.mjs`.
+- [ ] Légende sous la photo ouverte trop près du bord bas (~40 px).
+- [ ] Documenter `legende`, `date`, la parallaxe et `dates-photos.json` dans `prive/cecile/LISEZMOI.md`.

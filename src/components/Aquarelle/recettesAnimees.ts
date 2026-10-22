@@ -29,11 +29,14 @@ export const RECETTES={lisa,emeline,julien,pierrette,anatole,lise,clemence,laura
 export type RecetteSlug=keyof typeof RECETTES;
 export type RecetteTableau=`recette-${RecetteSlug}`;
 const art=(n:string)=>`aquarelles/acteurs/${n}`;
-const fini:Record<RecetteSlug,string>={marine:'fondant-chocolat',shannen:'flaugnarde-poires',alba:'tarte-pommes',lily:'brioche',lisa:'carotte',emeline:'fondant-chocolat',julien:'framboises-speculoos',pierrette:'citron',anatole:'tarte-myrtilles',lise:'tarte-pommes',clemence:'cookies',laura:'crepes-banane','laura-geyer':'gateau-orange-amandes',marie:'fondant-chocolat',sarah:'brioche',lea:'gateau-pommes',coralie:'fondant-chocolat','lisa-de-paris':'spitzbuben',antoine:'flaugnarde-poires',suzanne:'gateau-pommes','margot-chapuzy':'banana-bread',elise:'gaufres-liege'};
+const fini:Record<RecetteSlug,string>={marine:'fondant-chocolat',shannen:'flaugnarde-poires',alba:'tarte-pommes',lily:'roules-cannelle',lisa:'carotte',emeline:'fondant-chocolat',julien:'framboises-speculoos',pierrette:'citron',anatole:'tarte-myrtilles',lise:'tarte-pommes',clemence:'cookies',laura:'crepes-banane','laura-geyer':'gateau-orange-amandes',marie:'fondant-chocolat',sarah:'brioche',lea:'gateau-pommes',coralie:'fondant-chocolat','lisa-de-paris':'spitzbuben',antoine:'flaugnarde-poires',suzanne:'gateau-pommes','margot-chapuzy':'banana-bread',elise:'gaufres-liege'};
 export { fini as ILLUSTRATIONS_RECETTES };
 const dessert=Object.fromEntries(Object.entries(fini).map(([k,v])=>[k,`aquarelles/${v}`])) as Record<RecetteSlug,string>;dessert.lisa=art('carrot-cake');dessert.pierrette=art('cake-citron');
+// Lily : sa zone (0,2 de haut, sous le texte) est trop basse pour le théâtre ; son aquarelle reste fixe sur la page.
+const PAGE_FIXE:RecetteSlug[]=['lily'];
 export function recetteDe(page:string,nom:string):RecetteTableau|undefined{
   const slug=page.replace(/-(?:gauche|droite)$/,'') as RecetteSlug;
+  if(PAGE_FIXE.includes(slug))return undefined;
   const cote=slug==='margot-chapuzy'?'gauche':'droite';
   return page===`${slug}-${cote}`&&slug in fini&&fini[slug]===nom?`recette-${slug}`:undefined;
 }

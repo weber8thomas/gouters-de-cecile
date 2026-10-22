@@ -3,3 +3,9 @@
 .gc-carte-souvenir__papier svg { position:absolute; inset:0; width:100%; height:100%; fill:none; stroke:var(--gc-ink-crayon); stroke-width:.75; }
 .gc-carte-souvenir__papier span { display:block; transform:rotate(-6deg) scale(2.2); }
 .gc-carte-souvenir__coins { position:absolute; inset:0; width:100%; height:100%; object-fit:fill; }
+
+/* Légende et date d'un tirage de l'album (version locale seulement), écrites au crayon sous le tirage, dans la bande que
+   TirageColle réserve en bas de sa zone. Tailles en unités de la zone (cqw / cqh) : le texte suit la taille de la page. */
+.gc-legende { position:absolute; left:0; right:0; text-align:center; pointer-events:none; color:var(--gc-ink-crayon); font-family:var(--font-hand); }
+.gc-legende__texte { font-weight:500; font-size:clamp(9px, min(10.5cqw, 5.2cqh), 30px); line-height:1.08; text-wrap:balance; opacity:.86; }
+.gc-legende__date { margin-top:.25em; font-weight:500; font-size:clamp(8px, min(8.6cqw, 4.3cqh), 25px); line-height:1.05; opacity:.66; }

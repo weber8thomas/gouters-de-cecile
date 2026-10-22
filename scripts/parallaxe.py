@@ -208,7 +208,12 @@ def analyser(img, modeles, args):
     # échelle des déplacements : le décor médian reste immobile, les personnes
     # (plus proches) bougent le plus ; sans personne, la profondeur médiane
     hors = union < 0.02
-    foyer = float(np.median(prof[hors])) if hors.mean() > 0.2 and union.max() > 0 else float(np.median(prof))
+    if union.max() > 0 and hors.mean() > 0.2:
+        foyer = float(np.median(prof[hors]))
+    elif union.max() > 0:  # personnes partout (selfie serré) : le plus lointain reste fixe
+        foyer = float(np.percentile(prof, 15))
+    else:
+        foyer = float(np.median(prof))
     echelle = max(float(np.percentile(np.abs(prof - foyer), 95)), 0.25)
     rel = lambda d: np.clip((d - foyer) / echelle, -1, 1)
     for c in calques:

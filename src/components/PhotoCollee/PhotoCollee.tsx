@@ -77,10 +77,12 @@ export function PhotoCollee({ video, graine = 1, onSoulever }: PhotoColleeProps)
   const largeurBoite = (1 + 2 * dx) * c + ((1 + 2 * dy) * s) / A;
   const hauteurBoite = (1 + 2 * dx) * s + ((1 + 2 * dy) * c) / A;
   const marge = 0.97;
+  // Version locale : la date écrite au crayon sous le tirage prend une bande en bas de la zone (le tirage rétrécit d'autant).
+  const reserve = video.date ? 0.88 : 1;
   const style: Vars = {
     '--gc-pc-angle': `${angle.toFixed(2)}deg`,
     '--gc-pc-l': `${((100 * marge) / largeurBoite).toFixed(3)}cqw`,
-    '--gc-pc-h': `${((100 * marge) / hauteurBoite).toFixed(3)}cqh`,
+    '--gc-pc-h': `${((100 * marge * reserve) / hauteurBoite).toFixed(3)}cqh`,
     aspectRatio: `${A.toFixed(5)}`,
   };
 
@@ -150,9 +152,10 @@ export function PhotoCollee({ video, graine = 1, onSoulever }: PhotoColleeProps)
         data-gc-objet="photo"
         data-gc-objet-mode={mode}
         data-gc-video-id={video.id}
+        data-gc-parallaxe={video.parallaxe}
         tabIndex={vivant ? 0 : undefined}
         role={vivant ? 'img' : undefined}
-        aria-label={vivant ? `Photo : ${video.titre}. Entrée pour regarder la vidéo.` : undefined}
+        aria-label={vivant ? `${video.video ? 'Vidéo' : 'Photo'} : ${video.titre}. Entrée pour ${video.video ? 'regarder la vidéo' : 'la voir en grand'}.` : undefined}
         aria-hidden={vivant ? undefined : true}
         onKeyDown={vivant ? onKeyDown : undefined}
         onPointerDown={vivant ? () => indiceUtilise(objet) : undefined}
@@ -160,10 +163,15 @@ export function PhotoCollee({ video, graine = 1, onSoulever }: PhotoColleeProps)
         <div ref={souffleRef} className="gc-photo-collee__souffle">
           {vivant && <div ref={ombreRef} className="gc-photo-collee__ombre-indice" aria-hidden="true" />}
           {img('gc-photo-collee__tirage', urlMedia(video.tirage), cadre(geo.image))}
-          {img('gc-photo-collee__lire', srcLire, lire, lireRef)}
+          {video.video && img('gc-photo-collee__lire', srcLire, lire, lireRef)}
           {img('gc-photo-collee__coins', urlMedia(video.coins), cadre(geo.coins))}
         </div>
       </div>
+      {video.date && (
+        <div className="gc-photo-collee__date" aria-hidden="true" style={{ '--gc-pc-l': style['--gc-pc-l'], '--gc-pc-h': style['--gc-pc-h'], top: `calc(50cqh + min(var(--gc-pc-l), var(--gc-pc-h)) / ${A.toFixed(5)} / 2 + 2cqh)` } as Vars}>
+          {video.date}
+        </div>
+      )}
     </div>
   );
 }

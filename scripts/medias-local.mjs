@@ -30,6 +30,21 @@
 //                           possible, avec un seul segment { "x", "y" } pour placer le cadre.
 //   Ni vidéo ni photo : rien (le site garde le placeholder de l'invité).
 //
+// Parallaxe des vignettes (boucles MP4 de 4 s, muettes, au ratio d'origine, faites hors de ce script)
+//   prive/baked/parallaxe/<nom de la photo source>.mp4        album de Cécile : nom de `fichier` de choix.json, extension changée
+//   prive/baked/parallaxe/invites/<slug>.mp4                  invités
+//   Chaque boucle est recopiée (sans piste audio, moov en tête) dans prive/baked/photos/<id>/parallaxe.mp4 et déclarée
+//   par `parallaxe` (nom logique « local/photos/<id>/parallaxe ») dans photos-cecile.json ou videos.json : elle ne joue QUE
+//   sur la vignette posée dans la page (src/components/Magie/photos.ts). La photo ouverte est la vraie photo fixe
+//   (`couleur` pour l'album, `affiche` pour un invité) : un invité qui n'a que des photos est en mode « fixe » (ni montage
+//   de 12 s ni zoom ; `montage.json` › "mode": "zoom" rend l'ancien lent zoom). Les vraies vidéos (cecile-10/17/18,
+//   prive/<slug>/videos/*) restent de vraies vidéos : pas de parallaxe.
+//   Absente, la boucle laisse la vignette fixe ; elle se branche à la prochaine exécution.
+//
+// Légendes et dates (VERSION LOCALE seulement : elles ne passent que par prive/baked/*.json)
+//   prive/cecile/choix.json › `legende` et `date` (« août 2016 », « enfance ») par emplacement → photos-cecile.json
+//   prive/dates-photos.json   { "<slug>": "mois année" | null } → `date` de l'entrée de videos.json (null : pas de date)
+//
 // Sorties (prive/baked/, jamais design-system/baked ni src/content : suivis par git)
 //   videos/<id>.mp4, videos/<id>-affiche.webp, photos/<id>/{tirage,coins}.webp   (id : slug d'invité ou cecile-N)
 //   videos.json, photos-cecile.json   équivalents locaux de src/content/videos.json et photos-cecile.json,
@@ -66,6 +81,10 @@ const CONTENU = join(BAKED_LOCAL, 'videos.json');
 const CONTENU_PHOTOS = join(BAKED_LOCAL, 'photos-cecile.json');
 const CONVERTIS = join(BAKED_LOCAL, '.convertis');
 const CHOIX = join(PRIVE, 'cecile/choix.json');
+const D_CECILE_PHOTOS = join(PRIVE, 'cecile/photos');
+const D_PARALLAXE = join(BAKED_LOCAL, 'parallaxe');
+const D_PARALLAXE_INVITES = join(D_PARALLAXE, 'invites');
+const DATES = join(PRIVE, 'dates-photos.json');
 const D_CECILE_VIDEOS = join(PRIVE, 'cecile/videos');
 const VERSION_FFMPEG = execFileSync(FFMPEG, ['-version']).toString().split('\n')[0];
 
@@ -105,11 +124,16 @@ function sonde(chemin) {
   return { duree: dur, w, h, orientation: h > w ? 'portrait' : 'paysage' };
 }
 const dureeVideo = (chemin) => sonde(chemin).duree;
+/** Largeur et hauteur d'une image (ffprobe). */
+function dimsImage(chemin) {
+  const j = JSON.parse(execFileSync(FFPROBE, ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'json', chemin]).toString());
+  return { w: j.streams[0].width, h: j.streams[0].height };
+}
 
-/** Vidéo montée à son ratio d'origine : grand côté 1280 px (720p), dimensions paires (H.264). */
-function dimsVideo(w, h) {
+/** Vidéo montée à son ratio d'origine : grand côté 1280 px (720p), dimensions paires (H.264). `cote` : autre grand côté. */
+function dimsVideo(w, h, cote = 1280) {
   const pair = (n) => Math.max(2, 2 * Math.round(n / 2));
-  return w >= h ? { w: 1280, h: pair((1280 * h) / w) } : { w: pair((1280 * w) / h), h: 1280 };
+  return w >= h ? { w: cote, h: pair((cote * h) / w) } : { w: pair((cote * w) / h), h: cote };
 }
 /** Photo du tirage au ratio w / h, grand côté 1080 px (comme bake-local-cecile.py), aucun rognage. */
 function dimsTirage(w, h) {
@@ -190,6 +214,38 @@ function encoderPhotoSeule(id, photo, seg, couleur, sortie) {
   return encoderGraphe(id, ['-i', photo], fc, 1, sortie);
 }
 
+/** Texte de légende ou de date : chaîne non vide (espaces rognés), sinon rien. */
+const texteOuRien = (v) => (typeof v === 'string' && v.trim() ? v.trim() : undefined);
+
+/** Nom d'une boucle de parallaxe dans un dossier (NFC, sans casse), ou undefined. */
+function trouverParallaxe(dossier, nomSansExtension) {
+  return trouver(`${nomSansExtension}.mp4`, listerMedias(dossier, ['.mp4']));
+}
+
+/**
+ * Recopie la boucle de parallaxe `source` (mp4 de 4 s, muette, au ratio d'origine) dans prive/baked/photos/<id>/parallaxe.mp4
+ * (sans piste audio, moov en tête) ; renvoie son nom logique, ou undefined s'il n'y en a pas (le fichier périmé est retiré).
+ * Cache par sha256 de la source.
+ */
+function brancherParallaxe(ctx, id, source) {
+  const sortie = join(BAKED_LOCAL, `photos/${id}/parallaxe.mp4`);
+  const cle = `parallaxe:${id}`;
+  if (!source) {
+    rmSync(sortie, { force: true });
+    delete ctx.cache[cle];
+    return undefined;
+  }
+  const sha = sha256Fichier(source);
+  if (FORCE || ctx.cache[cle] !== sha || !existsSync(sortie)) {
+    mkdirSync(join(BAKED_LOCAL, `photos/${id}`), { recursive: true });
+    const r = spawnSync(FFMPEG, ['-v', 'error', '-nostdin', '-y', '-i', source, '-map', '0:v:0', '-c:v', 'copy', '-an', '-movflags', '+faststart', sortie], { encoding: 'utf8' });
+    if (r.status !== 0) throw new Error(`parallaxe ${id} : ffmpeg a échoué (${r.stderr.trim().split('\n').pop()})`);
+    ctx.cache[cle] = sha;
+    console.log(`${id.padEnd(15)} parallaxe ${(statSync(sortie).size / 1024).toFixed(0)} Ko`);
+  }
+  return `local/photos/${id}/parallaxe`;
+}
+
 async function lancerNavigateur() {
   try {
     return await launch();
@@ -230,18 +286,22 @@ function cadreGeneral(vw, vh, pw, ph, x = 0.5, y = 0.5) {
   return [((vw - cw) * x) / vw, ((vh - ch) * y) / vh, cw / vw, ch / vh].map(f5);
 }
 
-/** Entrée de videos.json (même forme que celle de bake-videos.mjs, sans crédit : médias personnels). Sous avecFormat(). */
-function entreeContenu({ id, titre, duree, inv, mode, tirage, coins, cadreVideo }) {
+/**
+ * Entrée de videos.json (même forme que celle de bake-videos.mjs, sans crédit : médias personnels). Sous avecFormat().
+ * Mode « fixe » (photo seule, sans vidéo) : pas de `video` ; `parallaxe` (boucle de la vignette) et `date` s'y ajoutent.
+ */
+function entreeContenu({ id, titre, duree, inv, mode, tirage, coins, cadreVideo, parallaxe, date }) {
   return {
     titre,
-    duree,
-    video: `local/videos/${id}`,
+    ...(mode !== 'fixe' && { duree, video: `local/videos/${id}` }),
     affiche: `local/videos/${id}-affiche`,
     tirage: tirage ?? `local/photos/${id}/tirage`,
     coins: coins ?? `local/photos/${id}/coins`,
     angle: inv.angle,
     maintien: inv.maintien.type === 'scotch' ? 'scotch' : `coins-${inv.maintien.papier}`,
     mode,
+    ...(parallaxe && { parallaxe }),
+    ...(date && { date }),
     geometrie: {
       taille: [T.cw, T.ch],
       papier: [T.marge / T.cw, T.marge / T.ch, T.w / T.cw, T.h / T.ch].map(f5),
@@ -254,12 +314,12 @@ function entreeContenu({ id, titre, duree, inv, mode, tirage, coins, cadreVideo 
 /**
  * Cuit les fichiers d'une vidéo : mp4, affiche (1re image), et, sauf `tirageExterne`, tirage sépia + coins.
  *   inv        { angle, segments, couleur, tirage, maintien } (comme INVITES de bake-videos.mjs)
- *   mode       'video' | 'photo' (photo seule : `sourcePhoto`, lent zoom)
+ *   mode       'video' | 'photo' (photo seule : `sourcePhoto`, lent zoom) | 'fixe' (photo seule, sans vidéo : tirage + affiche en couleur)
  *   formats    { video, tirage } : 'paysage' | 'portrait'
  *   court      le montage peut durer moins de 12 s (album de Cécile)
  *   tirageExterne  { tirage, coins, orientation } : le tirage vient d'ailleurs (photo de l'album) ; ni tirage ni coins ici
  */
-async function cuireMontage(ctx, { id, titre, mode, inv, sourcePhoto, formats, court = false, tirageExterne = null }) {
+async function cuireMontage(ctx, { id, titre, mode, inv, sourcePhoto, formats, court = false, tirageExterne = null, parallaxe, date }) {
   return avecFormat(formats, async () => {
     const segsCle = inv.segments.map(({ fichier, ...s }) => ({ ...s, sha: mode === 'photo' ? inv.shaPhoto : sha256Fichier(fichier) }));
     const fVideo = join(BAKED_LOCAL, `videos/${id}.mp4`);
@@ -270,12 +330,15 @@ async function cuireMontage(ctx, { id, titre, mode, inv, sourcePhoto, formats, c
     if (!tirageExterne) mkdirSync(join(BAKED_LOCAL, `photos/${id}`), { recursive: true });
     const code = empreintesCode();
     const c0 = ctx.cache[id] ?? {};
-    const base = { v: 4, mode, formats, court, V, couleur: inv.couleur, ff: VERSION_FFMPEG, fp: String(filtrePlan) };
+    const base = { v: mode === 'fixe' ? 5 : 4, mode, formats, court, V, couleur: inv.couleur, ff: VERSION_FFMPEG, fp: String(filtrePlan) };
     const kVideo = empreinte({ ...base, segs: segsCle, kb: mode === 'photo' ? KEN_BURNS : 0, enc: String(encoderGraphe) });
     const kImage = empreinte({ ...base, T, s0: segsCle[0], tirage: inv.tirage, id, code: code.tirage, externe: !!tirageExterne });
     const kCoins = empreinte({ v: 2, T, maintien: inv.maintien, id, code: code.coins });
     const fait = [];
-    if (FORCE || c0.video !== kVideo || !existsSync(fVideo)) {
+    if (mode === 'fixe') {
+      rmSync(fVideo, { force: true });                  // plus de montage de 12 s : la vignette a sa parallaxe, la photo ouverte est fixe
+      delete c0.video;
+    } else if (FORCE || c0.video !== kVideo || !existsSync(fVideo)) {
       const t0 = Date.now();
       let enc;
       try {
@@ -302,13 +365,13 @@ async function cuireMontage(ctx, { id, titre, mode, inv, sourcePhoto, formats, c
       c0.coins = kCoins;
     }
     ctx.cache[id] = c0;
-    const duree = +sonde(fVideo).duree.toFixed(2);
+    const duree = mode === 'fixe' ? 0 : +sonde(fVideo).duree.toFixed(2);
     const cadreVideo = tirageExterne
       ? cadreGeneral(V.w, V.h, T.pw, T.ph, inv.tirage.x, inv.tirage.y)
       : [...cadreTirage(inv.tirage)].map((v, k) => v / [V.w, V.h, V.w, V.h][k]).map(f5);
-    const entree = entreeContenu({ id, titre, duree: court ? duree : V.duree, inv, mode, ...(tirageExterne ?? {}), cadreVideo });
-    const poids = [fVideo, fAffiche, ...(tirageExterne ? [] : [fTirage, fCoins])].map((f) => (statSync(f).size / 1024).toFixed(0) + ' Ko');
-    console.log(`${id.padEnd(15)} ${mode === 'video' ? 'vidéo      ' : 'photo seule'} ${(typeof formats.video === 'string' ? formats.video === 'portrait' : formats.video.h > formats.video.w) ? 'portrait' : 'paysage '} ${fait.length ? fait.join(' · ') : 'à jour'} — ${poids.join(' / ')}`);
+    const entree = entreeContenu({ id, titre, duree: court ? duree : V.duree, inv, mode, ...(tirageExterne ?? {}), cadreVideo, parallaxe, date });
+    const poids = [...(mode === 'fixe' ? [] : [fVideo]), fAffiche, ...(tirageExterne ? [] : [fTirage, fCoins])].map((f) => (statSync(f).size / 1024).toFixed(0) + ' Ko');
+    console.log(`${id.padEnd(15)} ${mode === 'video' ? 'vidéo      ' : mode === 'fixe' ? 'photo fixe ' : 'photo seule'} ${(typeof formats.video === 'string' ? formats.video === 'portrait' : formats.video.h > formats.video.w) ? 'portrait' : 'paysage '} ${fait.length ? fait.join(' · ') : 'à jour'} — ${poids.join(' / ')}`);
     return entree;
   });
 }
@@ -326,7 +389,8 @@ async function invites(ctx, precedent) {
   const slugs = new Set(roster.map((g) => g.slug));
   const contenu = {};
   const cles = Object.keys(INVITES);
-  const nb = { video: 0, photo: 0, rien: 0 };
+  const nb = { video: 0, photo: 0, fixe: 0, rien: 0 };
+  const dates = lireJson(DATES, {});
   for (const g of roster) {
     const slug = g.slug;
     if (!vise(slug)) { if (precedent[slug]) contenu[slug] = precedent[slug]; continue; }
@@ -341,10 +405,12 @@ async function invites(ctx, precedent) {
       nb.rien++;
       continue;
     }
-    const mode = videos.length ? 'video' : 'photo';
+    // Photos seules : mode « fixe » (la vignette a sa parallaxe, la photo ouverte est fixe) ; l'ancien lent zoom reste
+    // possible avec montage.json › "mode": "zoom".
+    const mode = videos.length ? 'video' : montage?.mode === 'zoom' ? 'photo' : 'fixe';
     if (mode === 'video' && videos.length > 1 && !montage) console.log(`  ${slug} : ${videos.length} vidéos, seule « ${videos[0]} » est montée (montage.json pour en choisir d'autres)`);
-    if (mode === 'photo' && photos.length > 1) console.log(`  ${slug} : ${photos.length} photos, seule « ${photos[0]} » est utilisée`);
-    let segments, sourcePhoto = null, shaPhoto = null;
+    if (mode !== 'video' && photos.length > 1) console.log(`  ${slug} : ${photos.length} photos, seule « ${photos[0]} » est utilisée`);
+    let segments, sourcePhoto = null, shaPhoto = null, formats = { video: 'paysage', tirage: 'paysage' }, zoom = null;
     if (mode === 'video') {
       segments = montage ? plansDeMontage(montage, dVideos, videos) : plansParDefaut(join(dVideos, videos[0]));
     } else {
@@ -353,6 +419,12 @@ async function invites(ctx, precedent) {
       sourcePhoto = photoNormalisee(chemin, shaPhoto);
       const s0 = (Array.isArray(montage) ? montage[0] : montage?.segments?.[0]) ?? {};
       segments = [{ fichier: sourcePhoto, image: true, de: 0, a: 1, x: s0.x ?? 0.5, y: s0.y ?? 0.5, z: 1 }];
+      if (mode === 'fixe') {
+        // ratio d'origine, aucun rognage : l'affiche (la photo en couleur, grand côté 1600) et le tirage ont celui de la photo
+        const so = dimsImage(sourcePhoto);
+        formats = { video: dimsVideo(so.w, so.h, 1600), tirage: dimsTirage(so.w, so.h) };
+        zoom = zoomPlein(formats.video, formats.tirage);
+      }
     }
     const preset = INVITES[cles[hash(slug) % cles.length]];
     const inv = {
@@ -360,10 +432,14 @@ async function invites(ctx, precedent) {
       segments,
       shaPhoto,
       couleur: preset.couleur ?? COULEUR_DEFAUT,
-      tirage: { ...preset.tirage, x: 0.5 }, // la photo 3:2 est centrée dans le cadre 16:9
+      tirage: { ...preset.tirage, x: 0.5, ...(zoom && { y: 0.5, z: zoom }) }, // la photo 3:2 est centrée dans le cadre 16:9
       maintien: preset.maintien,
     };
-    contenu[slug] = await cuireMontage(ctx, { id: slug, titre: g.firstName, mode, inv, sourcePhoto, formats: { video: 'paysage', tirage: 'paysage' } });
+    // la parallaxe n'anime que la vignette d'une photo : une vraie vidéo reste une vraie vidéo
+    const nomParallaxe = mode === 'video' ? undefined : trouverParallaxe(D_PARALLAXE_INVITES, slug);
+    const parallaxe = brancherParallaxe(ctx, slug, nomParallaxe && join(D_PARALLAXE_INVITES, nomParallaxe));
+    const date = texteOuRien(dates[slug]);
+    contenu[slug] = await cuireMontage(ctx, { id: slug, titre: g.firstName, mode, inv, sourcePhoto, formats, parallaxe, date });
     nb[mode]++;
   }
   for (const n of readdirSync(PRIVE, { withFileTypes: true })) {
@@ -371,7 +447,7 @@ async function invites(ctx, precedent) {
       console.log(`  ! prive/${n.name}/ n'est pas un invité de roster.json : ignoré`);
     }
   }
-  console.log(`invités : ${nb.video} vidéo(s), ${nb.photo} en photo seule, ${nb.rien} sans média (placeholder)`);
+  console.log(`invités : ${nb.video} vidéo(s), ${nb.fixe} photo(s) fixe(s), ${nb.photo} en lent zoom, ${nb.rien} sans média (placeholder)`);
   return contenu;
 }
 
@@ -386,9 +462,20 @@ async function cecile(ctx, precedent) {
   const parId = Object.fromEntries(lireJson(CONTENU_PHOTOS, []).map((p) => [p.id, p]));
   const nomsVideos = listerMedias(D_CECILE_VIDEOS, EXT_VIDEOS);
   const cles = Object.keys(INVITES);
+  const nomsPhotos = listerMedias(D_CECILE_PHOTOS, EXT_PHOTOS);
   for (const id of ids) {
     const c = choix[id];
-    if (!c.video) { nettoyer(id, { garderPhotos: true }); continue; }
+    const legende = texteOuRien(c.legende), date = texteOuRien(c.date);
+    if (!c.video) {
+      nettoyer(id, { garderPhotos: true });
+      // Photo fixe : sa vignette joue la boucle de parallaxe prive/baked/parallaxe/<fichier>.mp4 (si elle existe)
+      const nomPhoto = c.fichier && trouver(c.fichier, nomsPhotos);
+      const nomPar = nomPhoto && trouverParallaxe(D_PARALLAXE, nomPhoto.replace(/\.[^.]+$/, ''));
+      const parallaxe = brancherParallaxe(ctx, id, nomPar && join(D_PARALLAXE, nomPar));
+      if (parId[id]) Object.assign(parId[id], { ...(parallaxe && { parallaxe }), ...(legende && { legende }), ...(date && { date }) });
+      continue;
+    }
+    brancherParallaxe(ctx, id, null);                              // une vraie vidéo reste une vraie vidéo
     const nomVideo = trouver(c.video, nomsVideos);
     if (!nomVideo) throw new Error(`choix.json : ${id} → vidéo « ${c.video} » introuvable dans prive/cecile/videos/ (présent : ${nomsVideos.join(', ') || 'rien'})`);
     const chemin = join(D_CECILE_VIDEOS, nomVideo);
@@ -402,7 +489,7 @@ async function cecile(ctx, precedent) {
     const n = numero(id);
     const angle = c.angle ?? externe?.angle ?? ANGLES[(n - 1) % ANGLES.length];
     // La fiche de l'emplacement : le tirage (photo à part, sinon 1re image de la vidéo) et l'identifiant de la vidéo.
-    parId[id] = { ...(externe ?? { id, orientation: orientationDe(formatTirage.pw, formatTirage.ph), taille: [formatTirage.pw, formatTirage.ph], ratio: +((formatTirage.pw + 320) / (formatTirage.ph + 320)).toFixed(5), tirage: `local/photos/${id}/tirage`, coins: `local/photos/${id}/coins`, angle }), video: id };
+    parId[id] = { ...(externe ?? { id, orientation: orientationDe(formatTirage.pw, formatTirage.ph), taille: [formatTirage.pw, formatTirage.ph], ratio: +((formatTirage.pw + 320) / (formatTirage.ph + 320)).toFixed(5), tirage: `local/photos/${id}/tirage`, coins: `local/photos/${id}/coins`, angle }), video: id, ...(legende && { legende }), ...(date && { date }) };
     if (!vise(id)) { if (precedent[id]) contenu[id] = precedent[id]; continue; }
     const segments = c.montage
       ? plansDeMontage(c.montage, D_CECILE_VIDEOS, [nomVideo, ...nomsVideos.filter((n2) => n2 !== nomVideo)])

@@ -213,6 +213,10 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
   let mesureDue = 0.3;
   let vide = false;
   let endormi = false;
+  /** Cadence maximale du redessin quand seules des vidéos bougent : 30 images par seconde (les boucles sont à 30 ips). */
+  const PERIODE_VIDEO = 1000 / 30 - 4;
+  let dernierDessin = 0;
+  const boucleRaf = (): boolean => !!(window as unknown as { __gcMagieRaf?: boolean }).__gcMagieRaf;
   const bouge = new Map<string, number>(); // gestes de caméra (arrivée, zoom…) : on ne mesure pas pendant
   const compte = { etincelles: 0, bords: 0, secrets: 0, pas: 0 }; // débogage
 
@@ -855,7 +859,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     raf = requestAnimationFrame(image);
   }
 
-  function image(now: number): void {
+  function image(now: number, direct = false): void {
     raf = 0;
     if (arrete || document.hidden) return;
     const T = L.tour.current;
@@ -873,8 +877,8 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       aFaire.length > 0 ||
       redessins.actif() ||
       ornementEnTrace();
-    // 60 images/s quand ça bouge, 30 au calme (poussière, photos)
-    if (!vif && brut < 1 / 31) { raf = requestAnimationFrame(image); return; }
+    // 60 images/s quand ça bouge, 30 au calme (poussière, fondus de photos)
+    if (!direct && !vif && brut < 1 / 31) { raf = requestAnimationFrame(image); return; }
     const dt = Math.min(endormi ? 0.3 : 0.05, Math.max(0, brut)) * vitesseAnimations();
     endormi = false;
     avant = now;
@@ -993,7 +997,9 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     // poussière, grains, photos
     if (ptr) ptr.frais = Math.max(0, ptr.frais - dt * 1.6);
     grains.avancer(dt);
-    const photosVivantes = photos.avancer(dt, horloge, calme, lent, cachee || mouvement);
+    // une photo soulevée (calque Soulever ouvert) couvre le livre : les vignettes ne jouent plus rien derrière elle
+    const dessus = !!document.querySelector('[data-gc-soulever="ouvert"]');
+    const photosVivantes = photos.avancer(dt, horloge, calme, lent, cachee || mouvement || dessus);
 
     // ---- dessin ----
     const ornementsVus = opPose > 0 && pages.some((v) => etats.get(v.id)?.debut != null && horloge >= (etats.get(v.id)!.debut ?? 0));
@@ -1001,11 +1007,26 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
     if (rien && vide) { endormir(mouvement); return; }
     dessiner();
     vide = rien;
+    dernierDessin = now;
 
-    const continuer = vif || photosVivantes || mouvement;
+    // Au repos, seules les vidéos des vignettes bougent : le moteur dort et chaque nouvelle image vidéo le réveille
+    // (surImageVideo, sans rAF). Il ne garde la boucle d'images que pendant un geste, une animation ou un fondu.
+    // `window.__gcMagieRaf = true` rend l'ancienne boucle (un rAF continu tant qu'une photo est vivante) : mesures avant / après.
+    const continuer = vif || mouvement || photos.transitoire || (photosVivantes && boucleRaf());
     if (continuer) raf = requestAnimationFrame(image);
     else endormir(false);
   }
+
+  /** Une image vidéo neuve est prête : redessine tout de suite (au plus 30 fois par seconde), sans demander de rAF. */
+  function surImageVideo(): void {
+    if (arrete || document.hidden || cachee || raf || boucleRaf()) return; // un rAF en cours dessinera
+    const maintenant = performance.now();
+    if (maintenant - dernierDessin < PERIODE_VIDEO) return; // 30 images par seconde au plus : la prochaine image vidéo la prendra
+    clearTimeout(veille);
+    veille = 0;
+    image(maintenant, true);
+  }
+  photos.surImage = surImageVideo;
 
   /** Rien ne bouge : un coup d'œil tous les quarts de seconde (minuteries, mesures), sans dessiner. */
   function endormir(mouvement: boolean): void {
@@ -1086,7 +1107,7 @@ export function demarrerMagie(toile: HTMLCanvasElement, L: LiensMagie): { arrete
       c.uniform1i(I.unif.u_tex1, 1);
       c.uniform1i(I.unif.u_tex2, 2);
       lier(c, I, bImage, [['a_p', 2], ['a_uv', 2]]);
-      photos.dessiner(horloge, I.unif, quad, ptr && ptr.frais > 0 ? ptr : null);
+      photos.dessiner(I.unif, quad);
       delier(c, I);
     }
 

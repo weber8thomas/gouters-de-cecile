@@ -13,7 +13,7 @@ import React from 'react';
 import { PageCuite, PAGES_CUITES } from '../../components/PageCuite';
 import type { VideoInfo } from '../../components/Soulever';
 import { useSoulevementActions } from '../../components/Soulever/contexte';
-import { geometrieDe, proportionImage } from '../../components/Soulever/media';
+import { geometrieDe, proportionImage, type Fractions } from '../../components/Soulever/media';
 import { PhotoCollee } from '../../components/PhotoCollee';
 import { FeuilletVolant } from '../../components/FeuilletVolant';
 import { Aquarelle, ToileAquarelles } from '../../components/Aquarelle';
@@ -24,7 +24,7 @@ import videosJson from '../../content/videos.json';
 import carnetJson from '../../content/carnet.json';
 import photosCecileJson from '../../content/photos-cecile.json';
 import rosterJson from '../../content/roster.json';
-import { assetUrl, cssUrl } from '../../lib/assets';
+import { assetInfo, assetUrl, cssUrl } from '../../lib/assets';
 import { handStyle } from '../../lib/hands';
 import type { Carnet, DoubleCarnet, EncartCarnet } from '../../content/types';
 import './Souvenirs.css';
@@ -53,7 +53,11 @@ interface VolantInfo { recto: string; verso?: string | null; angle?: number }
  * d'une entrée de videos.json (emplacement vidéo, version locale). Le site public n'a que des placeholders en paysage 3:2
  * (cecile-1 à 10) : un emplacement dont le tirage n'a pas la forme de sa zone, ou sans tirage, reste une carte papier vide.
  */
-interface PhotoCecile { id: string; orientation?: string; ratio?: number; tirage: string; coins: string; angle?: number; video?: string }
+interface PhotoCecile {
+  id: string; orientation?: string; ratio?: number; tirage: string; coins: string; angle?: number; video?: string;
+  /** Version locale seulement (prive/baked) : la photo en couleurs, la boucle de parallaxe de la vignette, la légende et la date. */
+  couleur?: string; parallaxe?: string; legende?: string; date?: string;
+}
 const PHOTOS_CECILE = new Map((photosCecileJson as PhotoCecile[]).map((p) => [p.id, p]));
 
 /** Carte au monogramme du proche, en attendant son véritable souvenir. Aucun portrait de tiers. */
@@ -97,18 +101,28 @@ const memeForme = (a: number, b: number | null): boolean => b !== null && Math.a
  * Il se soulève comme une photo (type « tirage » de Soulever) : au toucher, ou à Entrée quand il a le
  * focus (mode vivant). Sa légende au crayon s'écrit sous la photo en grand.
  */
-function TirageColle({ tirage, coins, angle = 0, legende }: { tirage: string; coins: string; angle?: number; legende?: string }) {
+function TirageColle({ tirage, coins, angle = 0, legende, date, couleur, parallaxe }: { tirage: string; coins: string; angle?: number; legende?: string; date?: string; couleur?: string; parallaxe?: string }) {
   const mode = useRenderMode();
   const vivant = mode === 'live';
   const actions = useSoulevementActions();
   const ref = React.useRef<HTMLDivElement>(null);
   // Le tirage tient dans sa zone à sa proportion (image contenue), puis il est incliné.
   const A = proportionImage(tirage);
+  // Zone de la photo dans l'image du tirage (scripts/bake-photos-cecile.py : marge 100, bords 58 / 62 et 56 / 64 px) : celle où
+  // la photo en couleurs prend la place du tirage à l'ouverture.
+  const info = couleur ? assetInfo(tirage) : undefined;
+  const zonePhoto: Fractions | undefined = info && info.w > 320 && info.h > 320 ? [158 / info.w, 156 / info.h, (info.w - 320) / info.w, (info.h - 320) / info.h] : undefined;
+  // Version locale : légende et date au crayon sous le tirage, dans une bande réservée en bas de la zone (le tirage rétrécit
+  // d'autant : aucun chevauchement avec les voisins ni avec le bord de la page).
+  const reserve = legende ? 24 : date ? 11 : 0;
+  const haut = 100 - reserve;
+  const hauteurTirage = `min(100cqw / ${A.toFixed(5)}, ${haut}cqh)`;
+  const decalage = `(100cqh - ${hauteurTirage} - ${Math.max(0, reserve - 3)}cqh) / 2`;
 
   const souleverRef = React.useRef<() => boolean>(() => false);
   souleverRef.current = () => {
     const el = ref.current;
-    return !!el && !!actions?.soulever({ type: 'tirage', tirage, coins, legende, source: el });
+    return !!el && !!actions?.soulever({ type: 'tirage', tirage, coins, legende, date, couleur, zonePhoto, source: el });
   };
 
   // Toucher dans le livre (dans le geste) : la photo se soulève, et le livre ne tourne pas la page.
@@ -132,13 +146,14 @@ function TirageColle({ tirage, coins, angle = 0, legende }: { tirage: string; co
   };
 
   return (
-    <div style={{ position: 'absolute', inset: '3%', containerType: 'size', display: 'grid', placeItems: 'center' }}>
+    <div style={{ position: 'absolute', inset: '3%', containerType: 'size', display: 'grid', placeItems: reserve ? 'start center' : 'center' }}>
       <div
         ref={ref}
         className="gc-tirage__photo"
-        style={{ width: `min(100cqw, ${(A * 100).toFixed(3)}cqh)`, aspectRatio: `${A.toFixed(5)}`, transform: `rotate(${angle}deg)` }}
+        style={{ width: `min(100cqw, ${(A * haut).toFixed(3)}cqh)`, aspectRatio: `${A.toFixed(5)}`, transform: `rotate(${angle}deg)`, ...(reserve && { marginTop: `calc(${decalage})` }) }}
         data-gc-objet="tirage"
         data-gc-objet-mode={mode}
+        data-gc-parallaxe={parallaxe}
         tabIndex={vivant ? 0 : undefined}
         role={vivant ? 'img' : undefined}
         aria-label={vivant ? `Photo${legende ? ` : ${legende}` : ''}. Entrée pour la voir en grand.` : undefined}
@@ -148,6 +163,12 @@ function TirageColle({ tirage, coins, angle = 0, legende }: { tirage: string; co
         <img className="gc-tirage__image" src={assetUrl(tirage)} alt="" draggable={false} decoding="sync" />
         <img src={assetUrl(coins)} alt="" draggable={false} decoding="sync" />
       </div>
+      {reserve > 0 && (
+        <div className="gc-legende" aria-hidden="true" style={{ top: `calc(${decalage} + ${hauteurTirage} + 2.4cqh)` }}>
+          {legende && <div className="gc-legende__texte">{legende}</div>}
+          {date && <div className="gc-legende__date">{date}</div>}
+        </div>
+      )}
     </div>
   );
 }
@@ -174,7 +195,7 @@ function Page({ id, graine }: { id: string; graine: number }) {
     }
     slots[nom] = film
       ? <PhotoCollee video={film} graine={graine + Number(n[1])} />
-      : <TirageColle tirage={t.tirage} coins={t.coins} angle={t.angle} />;
+      : <TirageColle tirage={t.tirage} coins={t.coins} angle={t.angle} legende={t.legende} date={t.date} couleur={t.couleur} parallaxe={t.parallaxe} />;
   }
   Object.entries(info?.aquarelles ?? {}).forEach(([nom, a], i) => {
     slots[nom] = <Aquarelle nom={a.aquarelle} anime={a.anime} angle={a.angle} ordre={i} page={id} />;

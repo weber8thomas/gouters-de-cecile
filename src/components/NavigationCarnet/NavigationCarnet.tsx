@@ -82,7 +82,7 @@ export function NavigationCarnet({ spreads, onAller, apiRef }: NavigationCarnetP
   });
   const style = assetInfo('paper/base') ? { '--gc-recherche-papier': cssUrl('paper/base') } as React.CSSProperties : undefined;
   const contenu = <div className="gc-navigation-carnet">
-    <nav className="gc-navigation-carnet__signets" aria-label="Retrouver une page">
+    <nav className="gc-navigation-carnet__signets" aria-label="Retrouver une page" data-gc-coin="" data-gc-ouvert={ouvert ? '' : undefined}>
       {sommaire >= 0 && <button type="button" data-gc-controle="sommaire" aria-label="Aller au sommaire" aria-keyshortcuts="T" title="Sommaire (T)" onClick={() => onAller(sommaire)}><Icone/><span>Sommaire</span></button>}
       <button ref={bouton} type="button" data-gc-controle="recherche" aria-label="Rechercher une recette" aria-keyshortcuts="/" aria-haspopup="dialog" aria-expanded={ouvert} aria-controls={id} title="Rechercher (/)" onClick={ouvrir}><Icone recherche/><span>Rechercher</span></button>
     </nav>
