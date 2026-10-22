@@ -1,5 +1,5 @@
 {
-  "_": "Dix-huit recettes intégrales ; folios issus du carnet. Messages authentiques Coralie, Antoine, Suzanne, Elise ; tous les autres cadres portent un placeholder provisoire.",
+  "_": "Vingt-deux recettes intégrales ; folios issus du carnet. Les cadres portent le message reçu quand il y en a un, sinon un placeholder provisoire.",
   "recettes": {
     "lisa": {
       "source": "src/content/recettes/lisa.json",
@@ -177,14 +177,14 @@
         "titre": "Pour Cécile — message provisoire"
       }
     },
-    "clemence": {
-      "source": "src/content/recettes/clemence.json",
-      "double": "clemence",
+    "julien": {
+      "source": "src/content/recettes/julien.json",
+      "double": "julien",
       "folios": [
         16,
         17
       ],
-      "graine": 5227,
+      "graine": 9689,
       "photo": {
         "largeur": 0.42,
         "ratio": 0.75,
@@ -241,7 +241,7 @@
       "aquarelles": [
         {
           "page": "droite",
-          "nom": "aq-clemence-1",
+          "nom": "aq-julien-1",
           "rect": [
             0.16,
             0.56,
@@ -260,8 +260,7 @@
       },
       "cadre": {
         "largeur": 0.84,
-        "style": "ondule",
-        "titre": "Pour Cécile — message provisoire"
+        "style": "ondule"
       }
     },
     "pierrette": {
@@ -356,8 +355,8 @@
       "source": "src/content/recettes/anatole.json",
       "double": "anatole",
       "folios": [
-        36,
-        37
+        38,
+        39
       ],
       "graine": 7459,
       "photo": {
@@ -443,8 +442,8 @@
       "source": "src/content/recettes/lise.json",
       "double": "lise",
       "folios": [
-        38,
-        39
+        40,
+        41
       ],
       "graine": 8573,
       "photo": {
@@ -530,6 +529,105 @@
         "places": [
           "dessous"
         ],
+        "taille": 2.2,
+        "pente": 0.3
+      },
+      "cadre": {
+        "largeur": 0.84,
+        "style": "ondule"
+      }
+    },
+    "alba": {
+      "source": "src/content/recettes/alba.json",
+      "double": "alba",
+      "folios": [
+        42,
+        43
+      ],
+      "graine": 23593,
+      "photo": {
+        "largeur": 0.42,
+        "ratio": 0.75,
+        "x": 0.06,
+        "y": 0.035,
+        "angle": -1.5,
+        "marge": 0.028,
+        "blanc": 0.01
+      },
+      "volant": {
+        "zone": [
+          0.83,
+          0.66,
+          0.17,
+          0.215
+        ],
+        "note": [
+          0.08,
+          0.895,
+          0.7,
+          0.06
+        ],
+        "angle": -7
+      },
+      "feuillet": {
+        "papier": "c-lisa",
+        "taille": [
+          0.82,
+          0.88
+        ],
+        "xh": 0.83,
+        "haut": 0.04,
+        "bas": 0.035
+      },
+      "etapes": "auto",
+      "suite": {
+        "texte": "suite sur la feuille",
+        "main": "cecile",
+        "encre": "crayon"
+      },
+      "croquis": {
+        "pages": [
+          "fin"
+        ],
+        "taille": [
+          0.16,
+          0.16
+        ]
+      },
+      "serrage_max": 1,
+      "graines": {},
+      "aquarelles": [
+        {
+          "page": "droite",
+          "nom": "aq-alba-1",
+          "rect": [
+            0.35,
+            0.7,
+            0.4,
+            0.2
+          ],
+          "aquarelle": "tarte-pommes",
+          "anime": "fleurit",
+          "angle": 0
+        },
+        {
+          "page": "droite",
+          "nom": "aq-alba-2",
+          "rect": [
+            0.12,
+            0.73,
+            0.19,
+            0.23
+          ],
+          "aquarelle": "pomme-2",
+          "anime": "fleurit",
+          "angle": 6
+        }
+      ],
+      "bandeau": {
+        "places": [
+          "dessous"
+        ],
         "taille": 2.2
       },
       "cadre": {
@@ -538,14 +636,100 @@
         "titre": "Pour Cécile — message provisoire"
       }
     },
-    "julien": {
-      "source": "src/content/recettes/julien.json",
-      "double": "julien",
+    "shannen": {
+      "source": "src/content/recettes/shannen.json",
+      "double": "shannen",
       "folios": [
-        42,
-        43
+        44,
+        45
       ],
-      "graine": 9689,
+      "graine": 25639,
+      "photo": {
+        "largeur": 0.42,
+        "ratio": 0.75,
+        "x": 0.06,
+        "y": 0.035,
+        "angle": 2.1,
+        "marge": 0.028,
+        "blanc": 0.01
+      },
+      "volant": {
+        "zone": [
+          0.83,
+          0.66,
+          0.17,
+          0.215
+        ],
+        "note": [
+          0.08,
+          0.895,
+          0.7,
+          0.06
+        ],
+        "angle": -7
+      },
+      "feuillet": {
+        "papier": "c-lisa",
+        "taille": [
+          0.82,
+          0.88
+        ],
+        "xh": 0.83,
+        "haut": 0.04,
+        "bas": 0.035
+      },
+      "etapes": "auto",
+      "suite": {
+        "texte": "suite sur la feuille",
+        "main": "cecile",
+        "encre": "crayon"
+      },
+      "croquis": {
+        "pages": [
+          "fin"
+        ],
+        "taille": [
+          0.16,
+          0.16
+        ]
+      },
+      "serrage_max": 1,
+      "graines": {},
+      "aquarelles": [
+        {
+          "page": "droite",
+          "nom": "aq-shannen-1",
+          "rect": [
+            0.35,
+            0.7,
+            0.4,
+            0.22
+          ],
+          "aquarelle": "flaugnarde-poires",
+          "anime": "fleurit",
+          "angle": 0
+        }
+      ],
+      "bandeau": {
+        "places": [
+          "dessous"
+        ],
+        "taille": 2.0
+      },
+      "cadre": {
+        "largeur": 0.84,
+        "style": "ondule",
+        "titre": "Pour Cécile — message provisoire"
+      }
+    },
+    "clemence": {
+      "source": "src/content/recettes/clemence.json",
+      "double": "clemence",
+      "folios": [
+        48,
+        49
+      ],
+      "graine": 5227,
       "photo": {
         "largeur": 0.42,
         "ratio": 0.75,
@@ -600,7 +784,7 @@
       "aquarelles": [
         {
           "page": "droite",
-          "nom": "aq-julien-1",
+          "nom": "aq-clemence-1",
           "rect": [
             0.13,
             0.43,
@@ -617,20 +801,20 @@
         "places": [
           "dessous"
         ],
-        "taille": 2.2
+        "taille": 1.9,
+        "pente": 0.3
       },
       "cadre": {
         "largeur": 0.84,
-        "style": "ondule",
-        "titre": "Pour Cécile — message provisoire"
+        "style": "ondule"
       }
     },
     "laura": {
       "source": "src/content/recettes/laura.json",
       "double": "laura",
       "folios": [
-        52,
-        53
+        60,
+        61
       ],
       "graine": 10867,
       "photo": {
@@ -796,8 +980,7 @@
       },
       "cadre": {
         "largeur": 0.84,
-        "style": "ondule",
-        "titre": "Pour Cécile — message provisoire"
+        "style": "ondule"
       }
     },
     "marie": {
@@ -890,8 +1073,8 @@
       "source": "src/content/recettes/sarah.json",
       "double": "sarah",
       "folios": [
-        48,
-        49
+        54,
+        55
       ],
       "graine": 15347,
       "photo": {
@@ -958,6 +1141,92 @@
           "aquarelle": "brioche",
           "angle": 0,
           "bande": true
+        }
+      ],
+      "bandeau": {
+        "places": [
+          "dessous"
+        ],
+        "taille": 2.0,
+        "pente": 0.3
+      },
+      "cadre": {
+        "largeur": 0.84,
+        "style": "ondule"
+      }
+    },
+    "lily": {
+      "source": "src/content/recettes/lily.json",
+      "double": "lily",
+      "folios": [
+        56,
+        57
+      ],
+      "graine": 24611,
+      "photo": {
+        "largeur": 0.42,
+        "ratio": 0.75,
+        "x": 0.06,
+        "y": 0.035,
+        "angle": -2.2,
+        "marge": 0.028,
+        "blanc": 0.01
+      },
+      "volant": {
+        "zone": [
+          0.83,
+          0.66,
+          0.17,
+          0.215
+        ],
+        "note": [
+          0.08,
+          0.895,
+          0.7,
+          0.06
+        ],
+        "angle": -7
+      },
+      "feuillet": {
+        "papier": "c-lisa",
+        "taille": [
+          0.82,
+          0.88
+        ],
+        "xh": 0.83,
+        "haut": 0.04,
+        "bas": 0.035
+      },
+      "etapes": "auto",
+      "suite": {
+        "texte": "suite sur la feuille",
+        "main": "cecile",
+        "encre": "crayon"
+      },
+      "croquis": {
+        "pages": [
+          "fin"
+        ],
+        "taille": [
+          0.16,
+          0.16
+        ]
+      },
+      "serrage_max": 1,
+      "graines": {},
+      "aquarelles": [
+        {
+          "page": "droite",
+          "nom": "aq-lily-1",
+          "rect": [
+            0.36,
+            0.7,
+            0.36,
+            0.2
+          ],
+          "aquarelle": "cannelle",
+          "anime": "fleurit",
+          "angle": -8
         }
       ],
       "bandeau": {
@@ -1036,10 +1305,10 @@
           "page": "droite",
           "nom": "aq-lea-1",
           "rect": [
-            0.13,
+            0.16,
             0.34,
-            0.74,
-            0.6
+            0.68,
+            0.5
           ],
           "aquarelle": "gateau-pommes",
           "angle": 0,
@@ -1054,8 +1323,7 @@
       },
       "cadre": {
         "largeur": 0.84,
-        "style": "ondule",
-        "titre": "Pour Cécile — message provisoire"
+        "style": "ondule"
       }
     },
     "coralie": {
@@ -1147,8 +1415,8 @@
       "source": "src/content/recettes/lisa-de-paris.json",
       "double": "lisa-de-paris",
       "folios": [
-        44,
-        45
+        50,
+        51
       ],
       "graine": 18671,
       "photo": {
@@ -1227,8 +1495,7 @@
       },
       "cadre": {
         "largeur": 0.84,
-        "style": "ondule",
-        "titre": "Pour Cécile — message provisoire"
+        "style": "ondule"
       }
     },
     "antoine": {
@@ -1466,10 +1733,10 @@
           "page": "gauche",
           "nom": "aq-margot-chapuzy-1",
           "rect": [
-            0.08,
-            0.54,
-            0.84,
-            0.41
+            0.16,
+            0.74,
+            0.68,
+            0.23
           ],
           "bande": true,
           "aquarelle": "banana-bread",
@@ -1482,13 +1749,11 @@
           "dessous"
         ],
         "taille": 1.95,
-        "texte": "Margot Chapuzy",
         "pente": -0.3
       },
       "cadre": {
         "largeur": 0.84,
-        "style": "ondule",
-        "titre": "Pour Cécile — message provisoire"
+        "style": "ondule"
       },
       "preparation_droite": true,
       "ingredients_colonnes": 2
@@ -1497,8 +1762,8 @@
       "source": "src/content/recettes/elise.json",
       "double": "elise",
       "folios": [
-        54,
-        55
+        62,
+        63
       ],
       "graine": 22031,
       "photo": {
@@ -1571,7 +1836,95 @@
         "places": [
           "dessous"
         ],
-        "taille": 2.2
+        "taille": 2.2,
+        "pente": 0.3
+      },
+      "cadre": {
+        "largeur": 0.84,
+        "style": "ondule"
+      }
+    },
+    "marine": {
+      "source": "src/content/recettes/marine.json",
+      "double": "marine",
+      "folios": [
+        34,
+        35
+      ],
+      "graine": 26641,
+      "photo": {
+        "largeur": 0.38,
+        "ratio": 0.75,
+        "x": 0.06,
+        "y": 0.035,
+        "angle": -1.2,
+        "marge": 0.028,
+        "blanc": 0.01
+      },
+      "volant": {
+        "zone": [
+          0.83,
+          0.66,
+          0.17,
+          0.215
+        ],
+        "note": [
+          0.08,
+          0.895,
+          0.7,
+          0.06
+        ],
+        "angle": -7
+      },
+      "feuillet": {
+        "papier": "c-lisa",
+        "taille": [
+          0.82,
+          0.88
+        ],
+        "xh": 0.83,
+        "haut": 0.04,
+        "bas": 0.035
+      },
+      "etapes": "auto",
+      "suite": {
+        "texte": "suite sur la feuille",
+        "main": "cecile",
+        "encre": "crayon"
+      },
+      "croquis": {
+        "pages": [
+          "fin"
+        ],
+        "taille": [
+          0.16,
+          0.16
+        ]
+      },
+      "serrage_max": 1,
+      "graines": {},
+      "aquarelles": [
+        {
+          "page": "droite",
+          "nom": "aq-marine-1",
+          "rect": [
+            0.13,
+            0.52,
+            0.74,
+            0.42
+          ],
+          "aquarelle": "fondant-chocolat",
+          "anime": "fleurit",
+          "angle": 0,
+          "bande": true
+        }
+      ],
+      "bandeau": {
+        "places": [
+          "dessous"
+        ],
+        "taille": 2.2,
+        "pente": 0.3
       },
       "cadre": {
         "largeur": 0.84,

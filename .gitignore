@@ -11,3 +11,5 @@ __pycache__/
 
 # vrais médias des invités (photos, vidéos) : jamais publiés, ajoutés seulement à une version locale
 prive/
+tools/parallaxe/.venv/
+tools/parallaxe/modeles/

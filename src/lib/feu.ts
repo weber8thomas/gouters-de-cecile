@@ -34,6 +34,13 @@ import { abonnerReglages, getReglages } from './reglages';
 
 export type ModeFeu = 'vivant' | 'statique' | 'pause';
 
+/**
+ * Perf iPad : au repos, l'application ne produit aucune image. Le feu est donc une lumière fixe (intensité 1,
+ * source immobile) : aucune boucle rAF, aucune écriture d'opacité sur les calques de lumière. Remettre `true`
+ * rend la lueur vacillante (≈ 60 écritures d'opacité par seconde sur des calques pleine page : GPU saturé).
+ */
+const FEU_VIVANT = false;
+
 export interface Feu {
   /** Intensité de la lumière du feu, entre 0,6 et 1,6 (autour de 1). */
   intensite: MotionValue<number>;
@@ -258,7 +265,7 @@ const visible = () => typeof document === 'undefined' || document.visibilityStat
 
 function statique(): boolean {
   const r = getReglages() as unknown as { feu?: unknown };
-  return r.feu === false || prefersReducedMotion();
+  return !FEU_VIVANT || r.feu === false || prefersReducedMotion();
 }
 
 export function modeFeu(): ModeFeu {

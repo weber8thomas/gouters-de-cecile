@@ -1,11 +1,13 @@
 // Photos vivantes : les tirages de Cécile et les photos collées des invités respirent (un zoom très lent
 // dans leur cadre, un peu de parallaxe sous la main), un reflet passe sur le papier photo ; la photo d'un
-// invité qui a une vidéo la joue en boucle, muette, dans son cadre, virée au ton du tirage (comme une
-// photo de la Gazette du sorcier). Rien n'est inventé : seule l'image existante bouge.
+// invité (ou de Cécile) qui a une vidéo la joue en boucle, muette, dans son cadre, virée au ton du tirage (comme une
+// photo de la Gazette du sorcier), sans toucher : dès que la double page est posée et visible, chaque photo-vidéo
+// démarre (muette, playsinline : Safari iPad l'autorise), tourne en boucle, et s'arrête avec la page (geste, page
+// tournée, photo soulevée, onglet caché, mouvement réduit). Rien n'est inventé : seule l'image existante bouge.
 //
 // La toile ne touche pas au DOM : elle pose sur la zone photo du tirage (mesurée au repos, inclinaison
 // comprise) la même image, zoomée, et redessine par-dessus les coins (et le ▶) qui la chevauchent. Une
-// seule vidéo à la fois, seulement sur la page visible, jamais pendant un geste.
+// vidéo par photo, seulement sur la page visible, jamais pendant un geste.
 
 import videosJson from '../../content/videos.json';
 import { urlMedia } from '../Soulever/media';
@@ -15,8 +17,12 @@ type Fr = [number, number, number, number];
 interface Geo { taille?: [number, number]; papier?: Fr; photo: Fr; cadreVideo?: Fr }
 const VIDEOS = videosJson as unknown as Record<string, { video?: string; geometrie?: Geo }>;
 
-/** Zone photo des tirages de l'album de Cécile (scripts/bake-photos-cecile.py : 1080 × 720 dans 1400 × 1040). */
-const PHOTO_CECILE: Fr = [158 / 1400, 156 / 1040, 1080 / 1400, 720 / 1040];
+/**
+ * Zone photo d'un tirage de l'album de Cécile (scripts/bake-photos-cecile.py : photo de pw × ph px, ratio d'origine, dans une
+ * image de (pw + 320) × (ph + 320) px : marge 100, bords du papier 58 / 62 en largeur et 56 / 64 en hauteur), en fractions
+ * de l'image.
+ */
+const photoCecile = (w: number, h: number): Fr => [158 / w, 156 / h, (w - 320) / w, (h - 320) / h];
 /** Côté des textures de photo (puissance de deux : mipmaps). */
 const COTE = 512;
 
@@ -99,7 +105,7 @@ export function mesurerPhoto(el: HTMLElement, versScene: (x: number, y: number) 
   const video = el.getAttribute('data-gc-video-id');
   const g = video ? VIDEOS[video]?.geometrie : null;
   if (video && !g?.photo) return null;
-  const photo: Fr = g?.photo ?? PHOTO_CECILE;
+  const photo: Fr = g?.photo ?? photoCecile(tirage.naturalWidth, tirage.naturalHeight);
   const bw = el.offsetWidth;
   const bh = el.offsetHeight;
   if (!(bw > 0 && bh > 0)) return null;
@@ -153,10 +159,10 @@ interface Boucle {
 export class Photos {
   private gl: WebGLRenderingContext;
   private etats = new Map<string, Etat>();
-  private boucle: Boucle | null = null;
+  private boucles = new Map<string, Boucle>();
+  /** Lecture refusée par le navigateur : pas de nouvel essai avant cette horloge (par photo). */
+  private reprise = new Map<string, number>();
   private videos = new Map<string, HTMLVideoElement>();
-  /** Prochaine boucle vidéo possible (horloge). */
-  private prochaineVideo = 3;
   private noir: WebGLTexture | null;
   vivantes: Vivante[] = [];
 
@@ -171,11 +177,11 @@ export class Photos {
   poser(vivantes: Vivante[]): void {
     this.vivantes = vivantes;
     for (const v of vivantes) if (!this.etats.has(v.cle)) this.preparer(v);
-    if (this.boucle && !vivantes.some((v) => v.cle === this.boucle!.cle)) this.couperVideo();
+    for (const cle of [...this.boucles.keys()]) if (!vivantes.some((v) => v.cle === cle)) this.couper(cle);
   }
 
   private preparer(v: Vivante): void {
-    const e: Etat = { tex: null, coins: null, lire: null, ton: [1.1, 0.97, 0.8], niv: [0, 1], pret: false, op: 0, ampleur: 0, phase: Math.random() * 6.28, reflet: -9, prochain: 2 + Math.random() * 6 };
+    const e: Etat = { tex: null, coins: null, lire: null, ton: [1.1, 0.97, 0.8], niv: [0, 1], pret: false, op: 0, ampleur: 0, phase: Math.random() * 6.28, reflet: -9, prochain: Infinity /* plus de reflet périodique */ };
     this.etats.set(v.cle, e);
     const toile = (im: HTMLImageElement) => {
       const c = document.createElement('canvas');
@@ -223,8 +229,13 @@ export class Photos {
     for (const v of this.vivantes) {
       const e = this.etats.get(v.cle);
       if (!e?.pret) continue;
-      const indice = !!v.souffle && !!v.souffle.style.transform && v.souffle.style.transform !== 'none';
-      const ok = !lent && !cachee && calme > 1.2 && !v.el.hasAttribute('data-gc-souleve') && !indice;
+      // l'indice qui respire (photo sans vidéo) rend la main au DOM ; une photo-vidéo ne s'interrompt pas pour lui :
+      // la toile dessine tout le tirage (coins compris), la respiration du DOM dessous n'est pas visible
+      const indice = !v.video && !!v.souffle && !!v.souffle.style.transform && v.souffle.style.transform !== 'none';
+      // photo-vidéo dont la lecture a été refusée par le navigateur : le DOM garde la main (tirage fixe et ▶, le toucher la soulève)
+      const refusee = !!v.video && (this.reprise.get(v.cle) ?? 0) > t;
+      // seules les photos-vidéos vivent au repos (la lecture en boucle est voulue) ; une photo sans vidéo ne respire plus
+      const ok = !!v.video && !lent && !cachee && calme > 0.5 && !v.el.hasAttribute('data-gc-souleve') && !indice && !refusee;
       if (!ok) {
         // l'indice qui respire, ou la photo qui se soulève : on rend la main en douceur au DOM
         e.ampleur = Math.max(0, e.ampleur - dt * 2.5);
@@ -239,31 +250,21 @@ export class Photos {
       if (e.reflet > -1) e.reflet += dt / 1.7 * 2.2;
       if (e.reflet > 1.7) e.reflet = -9;
     }
-    // la boucle vidéo : une seule, sur une photo d'invité vivante et visible
-    const b = this.boucle;
-    if (b) {
-      const v = this.vivantes.find((x) => x.cle === b.cle);
+    // les boucles vidéo : une par photo-vidéo vivante et visible, en continu (muettes, en boucle)
+    for (const [cle, b] of [...this.boucles]) {
+      const v = this.vivantes.find((x) => x.cle === cle);
       const e = v && this.etats.get(v.cle);
-      if (!v || !e || e.op < 1 || lent || cachee || calme < 1.2) this.couperVideo();
-      else {
-        vivant = true;
-        if (b.etat === 'joue') {
-          if (b.debut < 0) b.debut = t;
-          b.mix = Math.min(1, b.mix + dt / 0.7);
-          if (t - b.debut > 6.2) b.etat = 'fin';
-        } else if (b.etat === 'fin') {
-          b.mix = Math.max(0, b.mix - dt / 0.7);
-          if (b.mix === 0) {
-            b.v.pause();
-            this.boucle = null;
-            this.prochaineVideo = t + 7 + Math.random() * 5;
-          }
-        }
+      if (!v || !e || e.op <= 0.05 || lent || cachee || calme < 0.5 || document.hidden) { this.couper(cle); continue; }
+      vivant = true;
+      if (b.etat === 'joue') {
+        if (b.debut < 0) b.debut = t;
+        b.mix = Math.min(1, b.mix + dt / 0.7);
       }
-    } else if (!lent && !cachee && calme > 2.5 && t > this.prochaineVideo) {
-      const v = this.vivantes.find((x) => x.video && this.etats.get(x.cle)?.op === 1 && visibleALEcran(x.el));
-      if (v) this.lancerVideo(v, t);
-      else this.prochaineVideo = t + 1;
+    }
+    if (!lent && !cachee && calme > 0.5 && !document.hidden) {
+      for (const v of this.vivantes) {
+        if (v.video && !this.boucles.has(v.cle) && (this.reprise.get(v.cle) ?? 0) <= t && (this.etats.get(v.cle)?.op ?? 0) > 0.2 && visibleALEcran(v.el)) this.lancerVideo(v, t);
+      }
     }
     return vivant;
   }
@@ -272,12 +273,13 @@ export class Photos {
     const nom = v.video ? VIDEOS[v.video]?.video : null;
     const geo = v.video ? VIDEOS[v.video]?.geometrie : null;
     if (!nom) return;
-    this.prochaineVideo = t + 30; // en attendant qu'elle démarre (ou si elle ne démarre jamais)
     let el = this.videos.get(nom);
+    const neuve = !el;
     if (!el) {
       el = document.createElement('video');
       el.muted = true;
       el.defaultMuted = true;
+      el.autoplay = true;
       el.playsInline = true;
       el.setAttribute('playsinline', '');
       el.setAttribute('muted', '');
@@ -287,11 +289,11 @@ export class Photos {
       this.videos.set(nom, el);
     }
     const b: Boucle = { cle: v.cle, v: el, tex: null, etat: 'charge', mix: 0, debut: t, neuve: false, cadre: geo?.cadreVideo ?? [0, 0, 1, 1] };
-    this.boucle = b;
+    this.boucles.set(v.cle, b);
     const video = el;
     const gl = this.gl;
     const demarrer = () => {
-      if (this.boucle !== b) return;
+      if (this.boucles.get(v.cle) !== b) return;
       b.tex = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, b.tex);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -302,22 +304,34 @@ export class Photos {
       b.neuve = true;
       b.debut = -1; // l'horloge de la toile le fixera à la première image
       const image = () => {
-        if (this.boucle !== b) return;
+        if (this.boucles.get(v.cle) !== b) return;
         b.neuve = true;
         (video as HTMLVideoElement & { requestVideoFrameCallback?: (f: () => void) => number }).requestVideoFrameCallback?.(image);
       };
       image();
     };
-    try { video.currentTime = 0.4 + Math.random() * 2; } catch { /* pas encore de métadonnées */ }
-    video.play().then(demarrer).catch(() => { if (this.boucle === b) this.boucle = null; });
+    if (neuve) { try { video.currentTime = 0.1; } catch { /* pas encore de métadonnées */ } }
+    // Muette et playsinline : la lecture sans geste est permise (Chrome, Safari iPad hors économie d'énergie) ;
+    // si elle est refusée, la photo reste le tirage fixe (le toucher la soulève, avec le son).
+    video.muted = true;
+    video.play().then(demarrer).catch(() => {
+      this.reprise.set(v.cle, t + 5);
+      if (this.boucles.get(v.cle) === b) this.boucles.delete(v.cle);
+    });
   }
 
-  couperVideo(): void {
-    const b = this.boucle;
+  /** Coupe la boucle d'une photo (la vidéo est mise en pause ; elle reprendra où elle en était). */
+  private couper(cle: string): void {
+    const b = this.boucles.get(cle);
     if (!b) return;
     b.v.pause();
     if (b.tex) this.gl.deleteTexture(b.tex);
-    this.boucle = null;
+    this.boucles.delete(cle);
+  }
+
+  /** Coupe toutes les vidéos (onglet caché, page qui change). */
+  couperVideo(): void {
+    for (const cle of [...this.boucles.keys()]) this.couper(cle);
   }
 
   /** Coupe tout d'un coup (geste, page qui change) : le DOM reprend la main. */
@@ -332,7 +346,6 @@ export class Photos {
    */
   dessiner(t: number, U: Record<string, WebGLUniformLocation | null>, quad: (q: number[], uv?: number[]) => void, ptr: { x: number; y: number } | null): void {
     const gl = this.gl;
-    const b = this.boucle;
     for (const v of this.vivantes) {
       const e = this.etats.get(v.cle);
       if (!e?.pret || e.op <= 0) continue;
@@ -346,7 +359,8 @@ export class Photos {
         ox = Math.max(-1, Math.min(1, (ptr.x - cx) / 500)) * -0.008 * e.ampleur;
         oy = Math.max(-1, Math.min(1, (ptr.y - cy) / 500)) * -0.008 * e.ampleur;
       }
-      const vid = b && b.cle === v.cle && b.tex ? b : null;
+      const b = this.boucles.get(v.cle);
+      const vid = b?.tex ? b : null;
       if (vid && vid.neuve && vid.v.readyState >= 2) {
         gl.activeTexture(gl.TEXTURE2);
         gl.bindTexture(gl.TEXTURE_2D, vid.tex);
@@ -371,8 +385,8 @@ export class Photos {
       gl.uniform1f(U.u_reflet, e.reflet);
       gl.uniform2f(U.u_aa, 1.2 / Math.max(8, v.zone[0]), 1.2 / Math.max(8, v.zone[1]));
       quad(v.q);
-      // le ▶ par-dessus la photo vivante
-      if (e.lire && v.qLire && v.opLire > 0.01) {
+      // le ▶ par-dessus la photo vivante (sauf une photo-vidéo : la vidéo joue déjà, le ▶ n'a plus de sens)
+      if (e.lire && v.qLire && v.opLire > 0.01 && !v.video) {
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, e.lire);
         gl.uniform1f(U.u_mode, 1);

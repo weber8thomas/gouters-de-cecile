@@ -3,7 +3,8 @@
   "source": "src/content/recettes/lise.txt",
   "adaptations": [
     "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé.",
-    "Le petit mot du plan antérieur n’est pas un message authentique fourni par un invité : remplacé à la demande de Thomas par le placeholder explicite."
+    "Petit mot reçu de Lise le 22 octobre, conservé tel quel (retours à la ligne compris, « Cecile » sans accent comme reçu) ; seuls les espaces en fin de ligne sont retirés. L’emoji 🫶🏻 (peau claire) n’est pas reconnu par l’écriture : remplacé par 🫶, dessiné au trait comme un cœur.",
+    "Nom et signature « Lise & Maxime » (Thomas)."
   ],
   "style": {
     "main": "soignee",
@@ -60,7 +61,7 @@
       "texte": "Et hop au four à 180 degrés et régale-toi !!"
     }
   ],
-  "mot": "Lorem ipsum — message à venir",
-  "signature": "Lise",
-  "nom": "Lise"
+  "mot": "Joyeux anniversaire ma Cecile !!\nEt voilà la trentaine, j'ai l'impression de te revoir hier avec ton fard à paupière de la dame de la cantoche à attendre à ton stop haha !\nOn a bien rigolé cette décennie et je te souhaite le meilleur pour celle à venir.\nRégale toi bien, hâte de goûter à tous ces goûters, Sophie a de la chance !!! Je t'aime beaucoup beaucoup 🫶",
+  "signature": "Lise & Maxime",
+  "nom": "Lise & Maxime"
 }

@@ -92,7 +92,9 @@ ICONE = re.compile(r"^:([a-z][a-z0-9-]*):$")
 _COUPE_ICONES = re.compile(r"(:[a-z][a-z0-9-]*:)")
 # Les deux emojis reçus restent dans les sources et le texte accessible. La main les dessine comme
 # les pictogrammes existants, au lieu de demander au réseau d'écrire des glyphes qu'il ne connaît pas.
-EMOJIS_RECUS = {"😎": "sourire-lunettes", "😋": "sourire", "🤍": "coeur", "💛": "coeur", "🧡": "coeur",
+EMOJIS_RECUS = {"❤️": "coeur", "🫶🏼": "coeur", "❤": "coeur", "🫶": "coeur", "💕": "coeur",
+                "🤩": "sourire", "😉": "sourire", "😙": "sourire", "🤤": "sourire", "🥸": "sourire-lunettes",
+                "😎": "sourire-lunettes", "😋": "sourire", "🤍": "coeur", "💛": "coeur", "🧡": "coeur",
                 "😊": "sourire", "🥰": "sourire", "😍": "sourire", "🤭": "sourire", "😂": "sourire",
                 "🍐": "poire", "🍎": "pomme", "🍌": "banane", "🧇": "gaufre"}
 _COUPE_EMOJIS = re.compile(r"(:[a-z][a-z0-9-]*:|" + "|".join(map(re.escape, EMOJIS_RECUS)) + ")")

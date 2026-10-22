@@ -1,5 +1,5 @@
 {
-  "_": "Dix-huit recettes reçues ; ordre unique des doubles pages, sommaire au folio 8, sources et quantités conservées.",
+  "_": "Vingt-deux recettes reçues ; ordre unique des doubles pages, sommaire au folio 8, sources et quantités conservées.",
   "doubles": [
     {
       "id": "titre",
@@ -56,13 +56,13 @@
       "titre": "Emeline — Gâteau fondant au chocolat"
     },
     {
-      "id": "clemence",
-      "graine": 5227,
+      "id": "julien",
+      "graine": 9689,
       "type": "recette",
       "invites": [
-        "clemence"
+        "julien"
       ],
-      "titre": "Clémence — Cheesecake spéculoos & framboises"
+      "titre": "Julien & Mila — Cheesecake spéculoos & framboises"
     },
     {
       "id": "pierrette",
@@ -134,13 +134,22 @@
       "invites": [
         "margot-chapuzy"
       ],
-      "titre": "Margot Chapuzy — Banana Bread de Margot 🥰"
+      "titre": "Margot & Flo — Banana Bread de Margot 🥰"
+    },
+    {
+      "id": "marine",
+      "graine": 26641,
+      "type": "recette",
+      "invites": [
+        "marine"
+      ],
+      "titre": "Marine, Guillaume & Théo — Tiramisu"
     },
     {
       "id": "tartes",
       "type": "intercalaire",
       "chapitre": "tartes",
-      "titre": "Tartes & confitures",
+      "titre": "Tartes & crumbles",
       "sansFolio": true
     },
     {
@@ -159,7 +168,25 @@
       "invites": [
         "lise"
       ],
-      "titre": "Lise — Tarte aux pommes de ma maman"
+      "titre": "Lise & Maxime — Tarte aux pommes de ma maman"
+    },
+    {
+      "id": "alba",
+      "graine": 23593,
+      "type": "recette",
+      "invites": [
+        "alba"
+      ],
+      "titre": "Alba, Maël & Marc — Crumble aux pommes"
+    },
+    {
+      "id": "shannen",
+      "graine": 25639,
+      "type": "recette",
+      "invites": [
+        "shannen"
+      ],
+      "titre": "Shannen, Olivia, Nathan & Martin — Tarte poire chocolat"
     },
     {
       "id": "biscuits",
@@ -169,13 +196,13 @@
       "sansFolio": true
     },
     {
-      "id": "julien",
-      "graine": 9689,
+      "id": "clemence",
+      "graine": 5227,
       "type": "recette",
       "invites": [
-        "julien"
+        "clemence"
       ],
-      "titre": "Julien — Cookies moelleux pépites & noisettes"
+      "titre": "Clémence & Mila — Cookies moelleux pépites & noisettes"
     },
     {
       "id": "lisa-de-paris",
@@ -200,7 +227,16 @@
       "invites": [
         "sarah"
       ],
-      "titre": "Sarah — Brioche à la mie filante"
+      "titre": "Sarah, Gabriel & Maxime — Brioche à la mie filante"
+    },
+    {
+      "id": "lily",
+      "graine": 24611,
+      "type": "recette",
+      "invites": [
+        "lily"
+      ],
+      "titre": "Lily — Cinnamon rolls"
     },
     {
       "id": "crepes",
@@ -225,7 +261,7 @@
       "invites": [
         "elise"
       ],
-      "titre": "Elise — Gaufres de Liège"
+      "titre": "Elise & Lucas — Gaufres de Liège"
     },
     {
       "id": "fin",
@@ -236,5 +272,29 @@
       ],
       "titre": "Le mot de la fin"
     }
-  ]
+  ],
+  "encarts": [
+    {
+      "id": "cecile-3",
+      "apres": "cecile-2",
+      "type": "album",
+      "titre": "Cécile, l'album (suite)",
+      "sansFolio": true
+    },
+    {
+      "id": "cecile-4",
+      "apres": "cecile-3",
+      "type": "album",
+      "titre": "Cécile, l'album (encore)",
+      "sansFolio": true
+    },
+    {
+      "id": "cecile-5",
+      "apres": "cecile-4",
+      "type": "album",
+      "titre": "Cécile, l'album (la fin)",
+      "sansFolio": true
+    }
+  ],
+  "_encarts": "Encarts sans folio, hors de `doubles` : le moteur Python (folios positionnels 2k+2, 2k+3) les ignore, donc ils ne décalent rien. `apres` : la double page (ou l'encart) qu'ils suivent ; l'application les insère à cet endroit, sans folio. Leurs pages (src/content/pages/<id>-gauche|droite.json) portent un `papier` explicite."
 }

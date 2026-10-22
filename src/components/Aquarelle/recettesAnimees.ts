@@ -1,11 +1,11 @@
 /** Une scène par vraie étape, pas une suite de mouvements indépendants des recettes. */
 import lisa from '../../content/recettes/lisa.json';
 import emeline from '../../content/recettes/emeline.json';
-import clemence from '../../content/recettes/clemence.json';
+import julien from '../../content/recettes/julien.json';
 import pierrette from '../../content/recettes/pierrette.json';
 import anatole from '../../content/recettes/anatole.json';
 import lise from '../../content/recettes/lise.json';
-import julien from '../../content/recettes/julien.json';
+import clemence from '../../content/recettes/clemence.json';
 import laura from '../../content/recettes/laura.json';
 import lauraGeyer from '../../content/recettes/laura-geyer.json';
 import marie from '../../content/recettes/marie.json';
@@ -17,15 +17,19 @@ import antoine from '../../content/recettes/antoine.json';
 import suzanne from '../../content/recettes/suzanne.json';
 import margotChapuzy from '../../content/recettes/margot-chapuzy.json';
 import elise from '../../content/recettes/elise.json';
+import alba from '../../content/recettes/alba.json';
+import lily from '../../content/recettes/lily.json';
+import shannen from '../../content/recettes/shannen.json';
+import marine from '../../content/recettes/marine.json';
 import { acteur, transition, fruitAuBol, fouetter, casserOeuf, verser } from './gestesCuisine';
 import { cloche } from './scenes';
 import type { EtatTableau } from './tableaux';
 
-export const RECETTES={lisa,emeline,clemence,pierrette,anatole,lise,julien,laura,'laura-geyer':lauraGeyer,marie,sarah,lea,coralie,'lisa-de-paris':lisaDeParis,antoine,suzanne,'margot-chapuzy':margotChapuzy,elise};
+export const RECETTES={lisa,emeline,julien,pierrette,anatole,lise,clemence,laura,'laura-geyer':lauraGeyer,marie,sarah,lea,coralie,'lisa-de-paris':lisaDeParis,antoine,suzanne,'margot-chapuzy':margotChapuzy,elise,alba,lily,shannen,marine};
 export type RecetteSlug=keyof typeof RECETTES;
 export type RecetteTableau=`recette-${RecetteSlug}`;
 const art=(n:string)=>`aquarelles/acteurs/${n}`;
-const fini:Record<RecetteSlug,string>={lisa:'carotte',emeline:'fondant-chocolat',clemence:'framboises-speculoos',pierrette:'citron',anatole:'tarte-myrtilles',lise:'tarte-pommes',julien:'cookies',laura:'crepes-banane','laura-geyer':'gateau-orange-amandes',marie:'fondant-chocolat',sarah:'brioche',lea:'gateau-pommes',coralie:'fondant-chocolat','lisa-de-paris':'spitzbuben',antoine:'flaugnarde-poires',suzanne:'gateau-pommes','margot-chapuzy':'banana-bread',elise:'gaufres-liege'};
+const fini:Record<RecetteSlug,string>={marine:'fondant-chocolat',shannen:'flaugnarde-poires',alba:'tarte-pommes',lily:'brioche',lisa:'carotte',emeline:'fondant-chocolat',julien:'framboises-speculoos',pierrette:'citron',anatole:'tarte-myrtilles',lise:'tarte-pommes',clemence:'cookies',laura:'crepes-banane','laura-geyer':'gateau-orange-amandes',marie:'fondant-chocolat',sarah:'brioche',lea:'gateau-pommes',coralie:'fondant-chocolat','lisa-de-paris':'spitzbuben',antoine:'flaugnarde-poires',suzanne:'gateau-pommes','margot-chapuzy':'banana-bread',elise:'gaufres-liege'};
 export { fini as ILLUSTRATIONS_RECETTES };
 const dessert=Object.fromEntries(Object.entries(fini).map(([k,v])=>[k,`aquarelles/${v}`])) as Record<RecetteSlug,string>;dessert.lisa=art('carrot-cake');dessert.pierrette=art('cake-citron');
 export function recetteDe(page:string,nom:string):RecetteTableau|undefined{
@@ -36,11 +40,11 @@ export function recetteDe(page:string,nom:string):RecetteTableau|undefined{
 const GESTES:Record<RecetteSlug,string[]>={
  lisa:['Fouetter les œufs et le sucre','Ajouter huile, vanille et épices','Fouetter progressivement la pâte','Incorporer carottes et noix','Verser dans le moule','Cuire puis laisser refroidir'],
  emeline:['Casser le chocolat, fondre avec le beurre','Fouetter les œufs et le sucre','Incorporer chocolat, farine et sel','Verser dans le moule puis cuire','Laisser tiédir le cœur fondant'],
- clemence:['Émietter les biscuits, mélanger au beurre','Fouetter crème, sucre et œufs','Verser sur le biscuit et ajouter les fruits','Cuire, refroidir puis réfrigérer','Décorer de framboises et de coulis'],
+ julien:['Émietter les biscuits, mélanger au beurre','Fouetter crème, sucre et œufs','Verser sur le biscuit et ajouter les fruits','Cuire, refroidir puis réfrigérer','Décorer de framboises et de coulis'],
  pierrette:['Parfumer le sucre avec les zestes','Fouetter avec les œufs','Ajouter crème, farine et beurre','Cuire le cake et préparer le sirop','Imbiber le cake de sirop tiède'],
  anatole:['Étaler et piquer la pâte','Saupoudrer de poudre d’amandes','Ajouter les myrtilles sucrées','Cuire la tarte','Refroidir et servir avec de la crème'],
  lise:['Étaler la pâte dans le moule','Découper et disposer les pommes','Mélanger crème, œufs, cannelle et sucre','Cuire la tarte aux pommes'],
- julien:['Crémer beurre et sucres, ajouter l’œuf','Incorporer farine, pépites et noisettes','Former les boules et réserver au frais','Cuire les cookies','Laisser tiédir sur la plaque'],
+ clemence:['Crémer beurre et sucres, ajouter l’œuf','Incorporer farine, pépites et noisettes','Former les boules et réserver au frais','Cuire les cookies','Laisser tiédir sur la plaque'],
  'laura-geyer':['Cuire l’orange entière dans l’eau pendant une heure','Préchauffer le four à 180 °C','Préparer le moule avec du papier sulfurisé','Mixer l’orange entière avec sa peau','Fouetter les œufs et le sucre, incorporer poudres et orange','Cuire 40 à 45 minutes à 180 °C','Laisser tiédir 15 minutes avant de démouler'],
  marie:['Faire fondre beurre, chocolat puis sucre','Battre les œufs, incorporer au chocolat','Ajouter la farine et mélanger','Verser dans un moule beurré','Cuire environ 30 minutes à 160 °C'],
  sarah:['Lait tiède, levure et sucre : laisser activer','Ajouter œuf, beurre, farine et sel, puis pétrir','Couvrir et réfrigérer toute la nuit','Façonner six boules dans le moule','Couvrir et laisser pousser au tiède','Dorer puis cuire 40 minutes à 160 °C','Laisser tiédir au moins 30 minutes'],
@@ -51,17 +55,22 @@ const GESTES:Record<RecetteSlug,string[]>={
  suzanne:['Préchauffer le four à 180 °C','Mélanger les œufs, le sucre et la vanille','Incorporer le beurre fondu et le yaourt','Incorporer la farine et la levure','Mélanger les dés de pomme, remplir le moule, disposer les tranches et cuire'],
  'margot-chapuzy':['Préchauffer le four à 180 °C','Écraser les bananes dans le saladier','Incorporer les œufs et le beurre fondu','Incorporer sucre, amandes, farine, levure et sel','Verser dans le moule beurré et ajouter un peu de sucre de canne','Cuire environ 50 minutes à 180 °C et vérifier au couteau'],
  elise:['Délayer la levure dans le lait tiède et laisser reposer','Mélanger farine, sucre roux et sel','Incorporer œufs et lait-levure puis pétrir','Incorporer le beurre ramolli progressivement','Couvrir et laisser lever 1 h 30','Incorporer le sucre perlé','Former les boules et laisser reposer','Chauffer le gaufrier et cuire les gaufres','Laisser tiédir les gaufres'],
+ marine:['Séparer les œufs, mélanger jaunes, sucres et mascarpone','Battre les blancs et les incorporer délicatement','Tremper les boudoirs dans le café et le rhum','Alterner boudoirs et crème dans le plat','Réfrigérer au moins 4 à 5 heures','Saupoudrer de cacao'],
+ shannen:['Fondre le chocolat et l’étaler sur la pâte piquée','Blanchir sucre et œufs, ajouter beurre fondu et amandes','Étaler l’appareil sur le chocolat','Couper les poires en lamelles et les répartir','Cuire 25 à 30 minutes à 200 °C'],
+ lily:['Dissoudre la levure dans le lait tiède','Levure, farine, sel, sucre et œuf : pétrir, puis ajouter le beurre','Laisser lever 1 h 30 sous un torchon','Mélanger beurre fondu, sucre roux et cannelle','Étaler la pâte en rectangle et la couvrir de cannelle','Rouler la pâte en boudin','Découper en tranches et laisser lever 45 min à 1 h','Cuire 25 minutes à 180 °C','Glacer en filets une fois refroidis'],
+ alba:['Éplucher et évider les pommes','Couper les pommes en morceaux','Disposer les pommes dans le plat','Verser la farine dans le saladier','Ajouter le sucre','Ajouter le beurre et mélanger à la main pour obtenir des grains','Recouvrir les pommes avec les grains, puis cuire 25 minutes à 210 °C'],
  laura:['Mélanger œufs, farine, sucre et lait','Verser la pâte dans la crêpière','Retourner la crêpe','Garnir de chocolat, banane et chantilly'],
 };
 // Même horloge et mêmes outils pour toutes les recettes. Chargement limité aux sprites de la page.
 const COMMUNS=['bol','oeuf','coquille-gauche','coquille-droite','jaune','fouet','sac-farine','pichet-lait','pate','sucre','beurre','beurre-fondu','moule','four','four-corps','four-cavite','four-porte','tamis','huile','fromage-blanc'];
-const EXTRAS:Record<RecetteSlug,string[]>={lisa:['carottes-rapees','noix','gousse','carrot-cake'],emeline:['chocolat','chocolat-fondu','casserole'],clemence:['speculoos','speculoos-gauche','speculoos-droite','framboise','chantilly'],pierrette:['cake-citron'],anatole:['myrtilles','rouleau','chantilly','pate-sablee'],lise:['pomme-coupee','rouleau','pate-sablee'],julien:['chocolat','noix','boules-cookies'],'laura-geyer':['orange','puree-orange','amandes','mixeur','casserole','papier-sulfurise'],marie:['chocolat','chocolat-fondu','casserole'],sarah:['pate-brioche','patons-brioche','paton-brioche','pinceau','moule-brioche','torchon'],lea:['pommes-cubes','fromage-blanc','pomme-coupee'],coralie:['chocolat','chocolat-fondu','casserole','huile'],'lisa-de-paris':['biscuit-sable','emporte-piece','confiture','rouleau','pate-sablee','pate-brioche','farine','moule-brioche','torchon'],antoine:['poires-tranches'],suzanne:['pommes-cubes','pomme-coupee','gousse'], 'margot-chapuzy':['banane','banane-ecrasee','chocolat','amandes','pate-brioche','moule-brioche'],elise:['pate-brioche','paton-brioche','torchon','sucre-perle','gaufrier-base','gaufrier-couvercle','gaufres-liege'],laura:['crepe','poele','louche','banane','banane-rondelles','chantilly','chocolat-fondu']};
+const EXTRAS:Record<RecetteSlug,string[]>={marine:['biscuit-sable','moule-brioche','torchon'],shannen:['chocolat','chocolat-fondu','casserole','pate-sablee','amandes','poires-tranches'],alba:['pommes-cubes','farine'],lily:['pate-brioche','paton-brioche','torchon','moule-brioche','rouleau','pate-sablee','beurre-fondu'],lisa:['carottes-rapees','noix','gousse','carrot-cake'],emeline:['chocolat','chocolat-fondu','casserole'],julien:['speculoos','speculoos-gauche','speculoos-droite','framboise','chantilly'],pierrette:['cake-citron'],anatole:['myrtilles','rouleau','chantilly','pate-sablee'],lise:['pomme-coupee','rouleau','pate-sablee'],clemence:['chocolat','noix','boules-cookies'],'laura-geyer':['orange','puree-orange','amandes','mixeur','casserole','papier-sulfurise'],marie:['chocolat','chocolat-fondu','casserole'],sarah:['pate-brioche','patons-brioche','paton-brioche','pinceau','moule-brioche','torchon'],lea:['pommes-cubes','fromage-blanc','pomme-coupee'],coralie:['chocolat','chocolat-fondu','casserole','huile'],'lisa-de-paris':['biscuit-sable','emporte-piece','confiture','rouleau','pate-sablee','pate-brioche','farine','moule-brioche','torchon'],antoine:['poires-tranches'],suzanne:['pommes-cubes','pomme-coupee','gousse'], 'margot-chapuzy':['banane','banane-ecrasee','chocolat','amandes','pate-brioche','moule-brioche'],elise:['pate-brioche','paton-brioche','torchon','sucre-perle','gaufrier-base','gaufrier-couvercle','gaufres-liege'],laura:['crepe','poele','louche','banane','banane-rondelles','chantilly','chocolat-fondu']};
 // Les opérations longues gardent de vrais créneaux, jamais plusieurs récipients au même endroit.
 const DUREES_ETAPES:Partial<Record<RecetteSlug,number[]>>={
  'laura-geyer':[8,8,8,8,24,8,8],
  'lisa-de-paris':[8,8,8,8,8,8,8,8,8,8,8,14,8],
  antoine:[10,10,8,24], suzanne:[8,10,10,8,22],
  'margot-chapuzy':[8,8,12,16,10,10], elise:[8,8,12,10,8,8,10,12,8],
+ alba:[8,8,8,8,8,10,16], shannen:[10,10,8,8,8], marine:[10,8,10,10,8,8], lily:[8,12,8,8,8,8,10,8,8],
 };
 const dureesRecette=(slug:RecetteSlug)=>DUREES_ETAPES[slug]??GESTES[slug].map(()=>8);
 export const REPERES_RECETTES=Object.fromEntries(Object.keys(RECETTES).map((slug)=>{
@@ -105,14 +114,14 @@ export function etatRecette(type:RecetteTableau,temps:number):EtatTableau {
   if(v.debit>0)e.versement={origine,cible:cibleRecipient(),alpha:v.debit,couleur};
   return v;
  };
- const moule=()=>{const index=e.acteurs.length,rect=slug==='sarah'||slug==='margot-chapuzy';e.acteurs.push(a(rect?'moule-brioche':'moule',500,440,640));e.recipient={index,coupe:.47,forme:rect?'rectangle':'moule'};};
+ const moule=()=>{const index=e.acteurs.length,rect=slug==='sarah'||slug==='margot-chapuzy'||slug==='marine';e.acteurs.push(a(rect?'moule-brioche':'moule',500,440,640));e.recipient={index,coupe:.47,forme:rect?'rectangle':'moule'};};
  const resultat=(w=710)=>{e.acteurs.push(acteur(dessert[slug],500,390,w,0));};
  const cuire=(st=s,sortieAsset=dessert[slug])=>{
   if(st<0)return;
   const sortie=transition(st,5.3,7.3),alpha=1-transition(st,6.2,7.6),ouvre=transition(st,.1,.8)*(1-transition(st,2.6,3.15))+transition(st,4.5,5.15);
   const q=transition(st,.9,2.5),four=[650,340,520] as const;
   e.acteurs.push(a('four-cavite',...four,0,alpha));
-  const pat=a(slug==='sarah'||slug==='margot-chapuzy'||slug==='lisa-de-paris'?'moule-brioche':'moule',220+387*q,440-80*q,330-125*q,0,1-transition(st,5,5.4));
+  const pat=a(slug==='sarah'||slug==='margot-chapuzy'||slug==='lisa-de-paris'||slug==='lily'?'moule-brioche':'moule',220+387*q,440-80*q,330-125*q,0,1-transition(st,5,5.4));
   if(slug==='lisa-de-paris')pat.sy=.45;
   e.acteurs.push(pat);
   if(st>=5.05)e.acteurs.push(acteur(sortieAsset,607-107*sortie,360+30*sortie,180+530*sortie,0,transition(st,5.05,5.45)));
@@ -210,6 +219,51 @@ export function etatRecette(type:RecetteTableau,temps:number):EtatTableau {
    const ferme=transition(s,2.8,3.7)*(1-transition(s,6,7)),q=transition(s,.5,2.2),sort=transition(s,8,10.5);
    e.acteurs.push(a('gaufrier-base',500,435,620),a('paton-brioche',190+310*q,160+250*q*q,150,0,1-transition(s,3,3.4)),a('gaufres-liege',500-230*sort,420-170*sort,350,0,transition(s,5.8,6.4)),{...a('gaufrier-couvercle',500,435,620),pivot:[.5,.08],sy:-.32+1.32*ferme});
   }else resultat();
+ }else if(slug==='shannen'){
+  const fond=()=>{moule();e.acteurs.push({...a('pate-sablee',500,435,500),sy:.34});};
+  if(i===0){
+   if(s<5.5){fondre();e.acteurs.forEach(x=>x.alpha*=1-transition(s,5,5.5));if(e.surface)e.surface.alpha*=1-transition(s,5,5.5);}
+   else{fond();e.surface={cx:500,cy:430,rx:240,ry:86,alpha:transition(s,6.5,8.5),asset:art('chocolat-fondu')};verse('casserole','#603523',5.6);}
+  }else if(i===1){battre(false,6.6,9);oeufs();sucre(3.2);verse('beurre-fondu','#d8bd73',5);ajouter('amandes',1,200,6.2);}
+  else if(i===2){fond();e.surface={cx:500,cy:430,rx:240,ry:86,alpha:1,asset:art('chocolat-fondu')};const q=transition(s,2,5);e.acteurs.push({...a('pate',500,430,480,0,q),sy:.36});verse('bol','#e7d09a',.5);}
+  else if(i===3){fond();e.acteurs.push({...a('pate',500,430,480),sy:.36});for(let k=0;k<5;k++){const d=.5+k*1.1,q=transition(s,d,d+1);e.acteurs.push({...a('poires-tranches',230+(500-230)*q,160+(420-160)*q*q,300,-20*(1-q)+72*k,transition(s,d-.2,d)),sy:.5});}}
+  else cuire();
+ }else if(slug==='lily'){
+  const cannelle='#9a5a2c';
+  if(i===0){bol();surface(false,transition(s,1,3));verse('pichet-lait','#eee0bd',.1);poudre(4.2,5.4);}
+  else if(i===1){
+   if(s<7){bol();farine(.1);sucre(2.8);oeufs(4.6);e.acteurs.forEach(x=>x.alpha*=1-transition(s,6.5,7));}
+   else{bol();e.acteurs.push({...a('pate-brioche',500,330,330),sy:1-.08*cloche(s,7,12)*Math.sin(s*5)});beurreEnMorceaux(8,10);}
+  }else if(i===2){bol();const q=transition(s,1,6);e.acteurs.push(a('pate-brioche',500,330-20*q,300+90*q),a('torchon',500,210,550+50*q,0,1-transition(s,6,7)));}
+  else if(i===3){bol();surface(false,transition(s,1,3));verse('beurre-fondu','#d8bd73',.1);sucre(3.2);poudre(5.2,6.6,cannelle);}
+  else if(i===4){e.acteurs.push({...a('pate-sablee',500,440,640),sy:.4});const k=cloche(s,.5,3.5);e.acteurs.push(a('rouleau',500+180*Math.sin(s*2)*k,355,470,-8,1-transition(s,3.5,4)));poudre(4,7,cannelle);if(e.miettes)e.miettes.forEach(m=>m.y+=100);}
+  else if(i===5){const q=transition(s,.5,5.5);e.acteurs.push({...a('pate-sablee',500,440,640*(1-.55*q)),sy:.4+.5*q});}
+  else if(i===6){e.acteurs.push({...a('moule-brioche',500,455,700),sy:.4});for(let k=0;k<6;k++){const d=.4+k*.6,q=transition(s,d,d+.9),x=300+(k%3)*200,y=400+Math.floor(k/3)*70;e.acteurs.push(a('paton-brioche',500+(x-500)*q,250+(y-250)*q,120+25*transition(s,5,8),0,transition(s,d-.2,d)));}e.acteurs.push(a('torchon',500,400,660,0,transition(s,6,7.5)*(1-transition(s,9,9.8))));}
+  else if(i===7)cuire();
+  else{resultat();verse('bol','#f4efe4',.4);}
+ }else if(slug==='alba'){
+  const crumble=(debut:number,fin:number)=>poudre(debut,fin,'#d9be86');
+  if(i===0){const q=transition(s,1,4.5);e.acteurs.push(acteur('aquarelles/pomme',500,300,330,-8*q),acteur('aquarelles/scenes/couteau',500+150*Math.cos(s*2.4)*cloche(s,.6,5),300+80*Math.sin(s*2.4)*cloche(s,.6,5),230,-30,cloche(s,.4,5.6)));}
+  else if(i===1)pommes();
+  else if(i===2){moule();e.acteurs.push(fruitAuBol(art('pommes-cubes'),s,.3,2.2,20,21,[200,160],[500,410],320,-12));}
+  else if(i===3){bol();farine(.5);surface(false,transition(s,2,3.5));}
+  else if(i===4){bol();surface();sucre(.8);}
+  else if(i===5){bol();surface(false,1-transition(s,4,7));beurreEnMorceaux(.5,2.7);e.acteurs.push({...a('farine',500,330,330,0,transition(s,3.5,6.5)),sy:1-.06*cloche(s,3.5,9)*Math.sin(s*6)});}
+  else if(s<8){moule();e.acteurs.push({...a('pommes-cubes',500,425,440),sy:.45},{...a('farine',500,412,420,0,transition(s,2,5)),sy:.32});crumble(.4,5.2);e.acteurs.forEach(x=>x.alpha*=1-transition(s,7.4,8));}
+  else cuire(s-8);
+ }else if(slug==='marine'){
+  // Tiramisu : plat rectangulaire, boudoirs (biscuit-sable) trempés dans le café, crème au mascarpone (fromage-blanc), cacao au tamis.
+  if(i===0){battre(false,8,9.4);oeufs();sucre(3.2);ajouter('fromage-blanc',1,175,5.4);}
+  else if(i===1){battre(false,3,7);}
+  else if(i===2){
+   bol();surface(true,transition(s,1.6,3.5));verse('pichet-lait','#4b2f1d',.1);
+   for(let k=0;k<3;k++){const d=4.2+k*1.8;e.acteurs.push(a('biscuit-sable',330+k*170,150+200*cloche(s,d,d+1.8),170,-12+12*k,transition(s,d-.2,d)*(1-transition(s,d+1.6,d+2))));}
+  }else if(i===3){
+   moule();e.acteurs.push({...a('biscuit-sable',500,430,440),sy:.4});surface(false,transition(s,2.5,5));verse('bol','#f1e5c4',.8);
+   e.acteurs.push({...a('biscuit-sable',500,412,420,0,transition(s,6.5,8.5)),sy:.36});
+  }else if(i===4){
+   moule();e.acteurs.push({...a('biscuit-sable',500,415,420),sy:.36});surface();const q=transition(s,.6,3);e.acteurs.push(a('torchon',500,130+190*q,550,0,q));
+  }else{resultat();e.acteurs.push(a('tamis',500+35*Math.sin(s*5)*cloche(s,1,5),150,310));poudre(1,5,'#6b4326');}
  }else if((slug==='marie'||slug==='coralie')&&i===0){fondre();if(slug==='marie'){ajouter('beurre',1,160,.2);sucre(4.1);}}
  else if(slug==='marie'&&i===1){battre(true);oeufs();}
  else if((slug==='marie'&&i===2)||(slug==='coralie'&&i===3)){battre(true);farine(.2);}
@@ -245,8 +299,8 @@ export function etatRecette(type:RecetteTableau,temps:number):EtatTableau {
  else if(slug==='emeline'&&i===0){
   fondre();const tombe=transition(s,1.5,3),fondu=transition(s,3,5.5);
   e.acteurs.push(a('beurre',680-250*tombe,200+225*tombe*tombe,180*(1-.5*fondu),0,1-fondu));
- }else if((slug==='emeline'&&i===1)||(slug==='lisa'&&i===0)||(slug==='pierrette'&&i===1)||(slug==='julien'&&i===0)){
-  battre();oeufs();sucre();if(slug==='julien')ajouter('beurre',0,160,.1);
+ }else if((slug==='emeline'&&i===1)||(slug==='lisa'&&i===0)||(slug==='pierrette'&&i===1)||(slug==='clemence'&&i===0)){
+  battre();oeufs();sucre();if(slug==='clemence')ajouter('beurre',0,160,.1);
  }else if((slug==='emeline'&&i===2)||(slug==='lisa'&&i===1)||(slug==='pierrette'&&i===2)){
   battre(slug==='emeline');if(slug==='emeline')verse('casserole','#603523');else verse(slug==='lisa'?'huile':'fromage-blanc');if(slug!=='lisa')farine();if(slug==='pierrette')ajouter('beurre',0,160,5.2);
  }else if(slug==='lisa'&&i===2){battre();
@@ -255,11 +309,11 @@ export function etatRecette(type:RecetteTableau,temps:number):EtatTableau {
   remplir(slug==='emeline');
   if(slug==='emeline'){const q=transition(s,3.5,4.5);e.acteurs.forEach(a=>a.alpha*=1-q);if(e.surface)e.surface.alpha*=1-q;const n=e.acteurs.length;cuire();e.acteurs.slice(n).forEach(a=>a.alpha*=q);}
 
- }else if(slug==='clemence'&&i===0){
+ }else if(slug==='julien'&&i===0){
   moule();const q=transition(s,.6,1.2);e.acteurs.push(a('speculoos',500,175,300,0,1-q),a('speculoos-gauche',500-60*q,175,180,-15*q,q),a('speculoos-droite',500+60*q,175,180,15*q,q));poudre(1,5,'#b68850');ajouter('beurre',0,150);
- }else if(slug==='clemence'&&i===1){battre();ajouter('fromage-blanc',0,170,4.8);oeufs();sucre();
- }else if(slug==='clemence'&&i===2){moule();surface(false,transition(s,0,2));fruit('framboise',0,150);fruit('framboise',1,130);
- }else if(slug==='clemence'&&i===4){resultat();e.acteurs.push(fruitAuBol(art('framboise'),s,.5,3,20,21,[180,100],[470,260],160,-20),fruitAuBol(art('framboise'),s,1.5,4,20,21,[820,110],[560,270],140,25));
+ }else if(slug==='julien'&&i===1){battre();ajouter('fromage-blanc',0,170,4.8);oeufs();sucre();
+ }else if(slug==='julien'&&i===2){moule();surface(false,transition(s,0,2));fruit('framboise',0,150);fruit('framboise',1,130);
+ }else if(slug==='julien'&&i===4){resultat();e.acteurs.push(fruitAuBol(art('framboise'),s,.5,3,20,21,[180,100],[470,260],160,-20),fruitAuBol(art('framboise'),s,1.5,4,20,21,[820,110],[560,270],140,25));
  }else if(slug==='pierrette'&&i===0){bol();sucre();const q=transition(s,.5,4);e.acteurs.push(acteur('aquarelles/scenes/citron-entier',500+95*Math.sin(s*5)*cloche(s,1,4),200,240,25*q));poudre(1,5,'#d8b455');
  }else if(slug==='pierrette'&&i===4){resultat();verse('pichet-lait','#d3b859');
  }else if((slug==='anatole'&&i===0)||(slug==='lise'&&i===0)){etaler();
@@ -270,8 +324,8 @@ export function etatRecette(type:RecetteTableau,temps:number):EtatTableau {
   moule();const coupe=transition(s,1,2),arrive=transition(s,3,5);
   e.acteurs.push(acteur('aquarelles/pomme',450,180,280,0,1-coupe),{...a('pomme-coupee',450-80*coupe,180+230*arrive,280,-30*coupe,coupe),sy:1-.65*arrive},{...a('pomme-coupee',450+80*coupe,180+230*arrive,280,30*coupe,coupe),sy:1-.65*arrive},acteur('aquarelles/scenes/couteau',550,60+180*Math.sin(Math.PI*transition(s,.5,2.5)),240,-30,1-transition(s,2.7,3.3)));
  }else if(slug==='lise'&&i===2){battre();oeufs();sucre(3);verse('fromage-blanc','#eee0bd',4.3);
- }else if(slug==='julien'&&i===1){battre();farine(.1);for(let k=0;k<6;k++){const q=transition(s,2.5+k*.25,3.7+k*.25);e.acteurs.push({...a('chocolat',230+k*100+(500-(230+k*100))*q,150+180*q,130,15*k,1-transition(s,4.5+k*.15,5+k*.15)),clip:[(k%3)/3,Math.floor(k/3)/2,1/3,1/2]});}ajouter('noix',1,160,5);
- }else if(slug==='julien'&&i===2){
+ }else if(slug==='clemence'&&i===1){battre();farine(.1);for(let k=0;k<6;k++){const q=transition(s,2.5+k*.25,3.7+k*.25);e.acteurs.push({...a('chocolat',230+k*100+(500-(230+k*100))*q,150+180*q,130,15*k,1-transition(s,4.5+k*.15,5+k*.15)),clip:[(k%3)/3,Math.floor(k/3)/2,1/3,1/2]});}ajouter('noix',1,160,5);
+ }else if(slug==='clemence'&&i===2){
   moule();for(let k=0;k<4;k++){const q=transition(s,.5+k*.65,2+k*.65);e.acteurs.push({...a('boules-cookies',500,180+220*q,440,0,q),clip:[(k%2)*.5,Math.floor(k/2)*.5,.5,.5]});}
  }else if(slug==='laura'&&i===0){battre(false,5.7);oeufs();farine(2.5);verse('pichet-lait','#eee0bd',4.4);
  }else if(slug==='laura'&&i===1){

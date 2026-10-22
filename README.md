@@ -23,6 +23,23 @@ Les rapports et captures vont dans `verification/out/`, ignoré par Git. Ne pas 
 La cuisson de nouveaux textes et l'ajout d'invités utilisent `tools/ecriture/` et ses modèles publics :
 voir [ses instructions](tools/ecriture/README.md). Une couverture dont les tracés sont déjà figés se recuit avec Python, NumPy et Pillow.
 
+## Version locale avec les vrais médias
+
+Les vraies photos et vidéos ne sont jamais publiées : elles vivent dans `prive/` (ignoré par git) et ne servent qu'à une
+version locale, montrée depuis un Mac sur une TV ou un iPad. Le site public garde ses photos de remplacement.
+
+```bash
+npm run medias:planche    # planche contact des photos d'album (prive/baked/planche-cecile.png)
+npm run medias:local      # cuit les médias de prive/ vers prive/baked/ (même rendu que le site, cache par sha256)
+npm run build:local       # dist/local : le même build, avec les médias de prive/baked par-dessus les placeholders
+npm run preview:local     # sert dist/local sur le réseau local
+```
+
+Le mode d'emploi (dépôt des fichiers, `choix.json`, montages) est dans `prive/LISEZMOI.md`. `GC_PRIVE=<dossier>` remplace
+`prive/` (essais). `npm run build:site` échoue si un fichier de `prive/` se retrouve dans `dist/site`, et `publish-pages.mjs`
+refuse un build local. `medias:local` demande ffmpeg (`GC_FFMPEG`), Pillow et NumPy (`tools/ecriture/.venv`, ou `GC_PYTHON`)
+et un Chrome (`GC_CHROME`) pour les coins photo.
+
 ## Publier
 
 Après construction et vérification : `node scripts/publish-pages.mjs`. Cette commande met à jour la racine de `gh-pages`, conserve `essais/` et l'historique, et refuse un push divergent.

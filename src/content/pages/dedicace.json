@@ -69,7 +69,7 @@
       "vignettes": {
         "lisa": "vignette-lisa",
         "emeline": "vignette-emeline",
-        "clemence": "vignette-clemence",
+        "julien": "vignette-julien",
         "pierrette": {
           "zone": "vignette-pierrette",
           "hauteur": 0.08
@@ -79,11 +79,11 @@
       "titres": {
         "lisa": "Lisa Allienne — Carrot cake",
         "emeline": "Emeline — Fondant au chocolat",
-        "clemence": "Clémence — Cheesecake framboises",
+        "julien": "Julien & Mila — Cheesecake framboises",
         "pierrette": "Pierrette — Cake au citron",
         "anatole": "Anatole — Tarte aux myrtilles",
-        "lise": "Lise — Tarte aux pommes",
-        "julien": "Julien — Cookies & noisettes",
+        "lise": "Lise & Maxime — Tarte aux pommes",
+        "clemence": "Clémence & Mila — Cookies & noisettes",
         "laura": "Laura — Crêpes gourmandes",
         "laura-geyer": "Laura Geyer — Orange & amandes",
         "marie": "Marie — Fondant au chocolat",
@@ -91,7 +91,7 @@
         "coralie": "Coralie — Fondant au chocolat",
         "antoine": "Antoine — Flaugnarde aux poires",
         "suzanne": "Suzanne — Gâteau aux pommes",
-        "margot-chapuzy": "Margot — Banana bread"
+        "margot-chapuzy": "Margot & Flo — Banana bread"
       },
       "chapitres": [
         "gateaux"
@@ -102,7 +102,7 @@
         "emeline",
         "marie",
         "coralie",
-        "clemence",
+        "julien",
         "pierrette",
         "laura-geyer"
       ],
@@ -135,7 +135,7 @@
       "anime": "fixe"
     },
     {
-      "nom": "vignette-clemence",
+      "nom": "vignette-julien",
       "aquarelle": "framboises-speculoos",
       "anime": "fixe"
     },

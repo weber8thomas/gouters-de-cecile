@@ -1,70 +1,70 @@
 [
   {
     "id": "cecile-1",
-    "age": "très jeune enfant",
+    "orientation": "paysage",
     "tirage": "photos/cecile-1/tirage",
     "coins": "photos/cecile-1/coins",
     "angle": -3
   },
   {
     "id": "cecile-2",
-    "age": "tout-petit",
+    "orientation": "paysage",
     "tirage": "photos/cecile-2/tirage",
     "coins": "photos/cecile-2/coins",
     "angle": 2
   },
   {
     "id": "cecile-3",
-    "age": "petit garçon",
+    "orientation": "paysage",
     "tirage": "photos/cecile-3/tirage",
     "coins": "photos/cecile-3/coins",
     "angle": -1.5
   },
   {
     "id": "cecile-4",
-    "age": "petite fille",
+    "orientation": "paysage",
     "tirage": "photos/cecile-4/tirage",
     "coins": "photos/cecile-4/coins",
     "angle": 2.5
   },
   {
     "id": "cecile-5",
-    "age": "ado",
+    "orientation": "paysage",
     "tirage": "photos/cecile-5/tirage",
     "coins": "photos/cecile-5/coins",
     "angle": -2.5
   },
   {
     "id": "cecile-6",
-    "age": "ado",
+    "orientation": "paysage",
     "tirage": "photos/cecile-6/tirage",
     "coins": "photos/cecile-6/coins",
     "angle": 1.2
   },
   {
     "id": "cecile-7",
-    "age": "jeune femme",
+    "orientation": "paysage",
     "tirage": "photos/cecile-7/tirage",
     "coins": "photos/cecile-7/coins",
     "angle": 3
   },
   {
     "id": "cecile-8",
-    "age": "jeune femme",
+    "orientation": "paysage",
     "tirage": "photos/cecile-8/tirage",
     "coins": "photos/cecile-8/coins",
     "angle": -1
   },
   {
     "id": "cecile-9",
-    "age": "femme adulte",
+    "orientation": "paysage",
     "tirage": "photos/cecile-9/tirage",
     "coins": "photos/cecile-9/coins",
     "angle": 2
   },
   {
     "id": "cecile-10",
-    "age": "femme adulte",
+    "orientation": "paysage",
     "tirage": "photos/cecile-10/tirage",
     "coins": "photos/cecile-10/coins",
     "angle": -3

@@ -6,11 +6,15 @@
 //                          artifact → /_blob/<id> (design-system/assets.lock.json) · harness → /design-system/baked/…
 //                          · site → ./design-system/baked/…
 // Par défaut dans src/generated/ ; generate({ outDir, components, artboards, target }) pour un build isolé.
+//                        · GC_LOCAL=1 (version locale, npm run build:local) : superpose à ces images celles de
+//                          prive/baked (vraies photos et vidéos, jamais publiées), sous les noms « local/… » et à
+//                          l'adresse ./prive-baked/… (copiées dans dist/local par vite.config.ts). Cible « site » seulement.
 //   node scripts/gen-entry.mjs [--target harness|site|artifact]
 import { readdirSync, existsSync, writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { inventory } from './assets.mjs';
+import { BAKED_LOCAL, DOSSIER_PUBLIE, PREFIXE_LOCAL } from './lib/prive.mjs';
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dirs = (p) => (existsSync(p) ? readdirSync(p, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort() : []);
@@ -48,14 +52,24 @@ export function generate({ outDir = join(ROOT, 'src/generated'), components, art
   // Les vidéos et les sons ne vont pas dans l'artifact du design system (CONTRACT § 12.3) : seulement sur le site.
   const garder = ([, a]) => !(target === 'artifact' && /^(video|audio)\//.test(String(a.type || '')));
   const entriesA = Object.entries(inv).filter(garder).map(([n, a]) => `  ${JSON.stringify(n)}: { u: ${JSON.stringify(url(a))}, w: ${a.w}, h: ${a.h} }`);
+  // Version locale : les médias cuits de prive/baked s'ajoutent (noms « local/… » : aucun recouvrement du design system).
+  // L'empreinte ?v= évite qu'un navigateur (iPad) garde une ancienne vidéo du même nom.
+  let locaux = 0;
+  if (process.env.GC_LOCAL === '1') {
+    if (target !== 'site') throw new Error('GC_LOCAL=1 : cible « site » seulement');
+    for (const [n, a] of Object.entries(inventory({ cible: target, dossier: BAKED_LOCAL, prefixe: PREFIXE_LOCAL, sous: ['videos', 'photos'] }))) {
+      entriesA.push(`  ${JSON.stringify(n)}: { u: ${JSON.stringify(`./${DOSSIER_PUBLIE}/${a.file}?v=${a.sha.slice(0, 12)}`)}, w: ${a.w}, h: ${a.h} }`);
+      locaux++;
+    }
+  }
   write('assets.gen.ts', `${HEAD}// Cible : ${target}\nexport const ASSETS: Record<string, { u: string; w: number; h: number }> = {\n${entriesA.join(',\n')}\n};\n`);
   if (missing.length) throw new Error(`Assets non téléversés (cible artifact) :\n  ${missing.join('\n  ')}`);
 
-  return { comps, boards, assets: entriesA.length, target };
+  return { comps, boards, assets: entriesA.length, target, locaux };
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const ti = process.argv.indexOf('--target');
   const r = generate({ target: ti > 0 ? process.argv[ti + 1] : 'harness' });
-  console.log(`entrées (${r.target}) : ${r.comps.length} composants, ${r.boards.length} artboards, ${r.assets} images`);
+  console.log(`entrées (${r.target}) : ${r.comps.length} composants, ${r.boards.length} artboards, ${r.assets} images${process.env.GC_LOCAL === '1' ? ` (dont ${r.locaux} médias locaux de prive/baked)` : ''}`);
 }

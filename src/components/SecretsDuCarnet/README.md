@@ -12,24 +12,13 @@ un lien peut y conduire seulement après activation du lecteur. L’ouverture re
 **Échap** replie la note. Les citations d’origine sont inchangées, notamment le Scorpion
 ascendant Scorpion. Aucune anecdote n’a été inventée.
 
-La première clé et les mots « Intentions gourmandes… » sont sous un dépôt de farine magique.
-`FarineCachette` dessine une fois des grains blanc cassé réunis en amas irréguliers ; la brosse
-utilise elle aussi une empreinte granuleuse, sans disque net. Le canvas conserve les traces
-entre les gestes. La révélation dépend de la quantité de poudre réellement enlevée, et non du
-simple relâchement du doigt.
-
-Un clic, un toucher sans déplacement ou **Entrée/Espace** donnent chacun un petit coup de
-brosse. Il faut répéter ces gestes pour découvrir la même note qu’en balayant librement.
-Le retour vocal indique si les premiers traits ou les mots apparaissent, sans compteur à
-l’écran. Il n’y a aucune horloge ni boucle `requestAnimationFrame` ; les gestes s’arrêtent
-quand le livre ou le document est caché. Le mouvement réduit conserve tout le fonctionnement.
-L’aide précise du rabat propose aussi « Lire la note sans balayer », un choix explicite qui
-évite de bloquer la lecture. Les autres cachettes mêlent enveloppe, papier plié et tache d’encre.
+La première clé et les mots « Intentions gourmandes… » ne sont plus cachés sous un dépôt de farine (effet
+supprimé : `FarineCachette` et son canvas ont disparu) : un clic, un toucher ou **Entrée/Espace** sur la clé
+découvre directement la note. Les autres cachettes mêlent enveloppe, papier plié et tache d’encre.
 
 Pour tout remettre au départ : **S** (ou « Psst… »), puis **Recommencer les découvertes**.
 Cette commande reste visible en bas du rabat à chaque étape, même avant la première note.
-Elle efface les notes gardées, referme les cachettes et remet toute la farine, y compris après
-un frottage partiel qui n’avait encore rien révélé. Le retour « Tout est à redécouvrir. »
+Elle efface les notes gardées, referme les cachettes et  Le retour « Tout est à redécouvrir. »
 confirme l’action et le focus reste sur le bouton. Les réglages audio et de lumière sont conservés.
 Une révision interne force le remontage du canvas ; revenir seulement à zéro dans le stockage
 ne suffirait pas à restaurer une surface déjà frottée.

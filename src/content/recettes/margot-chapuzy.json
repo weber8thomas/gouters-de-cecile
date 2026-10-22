@@ -3,7 +3,8 @@
   "source": "src/content/recettes/margot-chapuzy.txt",
   "adaptations": [
     "Source reçue le 21 octobre conservée dans le TXT, marqueurs de mise en forme séparés du texte affiché.",
-    "Message provisoire explicitement demandé ; aucun petit mot personnel généré."
+    "Petit mot reçu le 22 octobre, conservé tel quel (retours à la ligne compris) ; seuls l’en-tête de transmission (« Mot pour Cécile: », « Petit mot : », le prénom en tête) est retiré. Les emojis sont dessinés au trait (cœur, sourire).",
+    "Nom et signature « Margot & Flo » (Thomas) ; il avait écrit « Margo & Flo », on garde « Margot » comme dans le reste du carnet, à faire confirmer."
   ],
   "style": {
     "main": "soignee",
@@ -81,9 +82,9 @@
       "texte": "Enfourne pendant environ 50 minutes à 180 °C. Vérifie la cuisson avec la pointe d’un couteau."
     }
   ],
-  "mot": "Lorem ipsum — message à venir",
-  "signature": "Margot Chapuzy",
-  "nom": "Margot Chapuzy",
+  "mot": "Ma chère Cécile,\nPour tes 30 ans, je suis heureuse de partager avec toi la recette de mon banana bread. C'est mon petit brin de réconfort, et j'espère qu'il t'apportera autant de douceur que tu en diffuses autour de toi. 🥰\nBienvenue au club des trentenaires 🤩.Tu verras, c'est une merveilleuse décennie qui commence, pleine de sérénité et de beaux moments.\nJe te souhaite un très joyeux anniversaire ! Profite de chaque instant de ta journée ! Gros bisous 🥰 Margot",
+  "signature": "Margot & Flo",
+  "nom": "Margot & Flo",
   "apres": [
     "Laisse refroidir un peu avant de déguster 😋🍌"
   ]

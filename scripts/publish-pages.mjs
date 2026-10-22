@@ -58,6 +58,7 @@ function validateBuild() {
       if (entry.name.toLowerCase() === '.git' || (top && entry.name === 'essais')) {
         throw new Error('Le build contient un chemin réservé (.git ou essais). Publication annulée.');
       }
+      if (entry.name === 'prive-baked') throw new Error('Le build contient prive-baked : c\u2019est la version locale (médias privés), jamais publiée. Publication annulée.');
       if (entry.isSymbolicLink() || (!entry.isDirectory() && !entry.isFile())) {
         throw new Error('Le build doit contenir uniquement des fichiers et dossiers ordinaires.');
       }

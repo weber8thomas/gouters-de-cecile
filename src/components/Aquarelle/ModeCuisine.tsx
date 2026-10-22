@@ -37,6 +37,7 @@ function Cuisine({demande,fermer}:{demande:Demande;fermer:()=>void}){
  const dialog=React.useRef<HTMLDialogElement>(null),couche=React.useRef<HTMLDivElement>(null),theatre=React.useRef<Theatre|null>(null),titre=React.useRef<HTMLHeadingElement>(null);
  const position=React.useRef(0),mode=React.useRef(auto);mode.current=auto;
  const index=React.useRef(etape);index.current=etape;
+ const relance=React.useRef<()=>void>(undefined);
  const nb=recette.etapes.length,reperes=REPERES_RECETTES[demande.type];
  const intitule=etape>=0?recette.etapes[etape].titre?.replace(/^\d+[.)]?\s*/, ''):'';
  const naviguer=(i:number)=>{setAuto(false);setFini(false);setEtape(Math.max(-1,Math.min(nb-1,i)));setReprise(v=>v+1);};
@@ -64,6 +65,7 @@ function Cuisine({demande,fermer}:{demande:Demande;fermer:()=>void}){
   if(reduit){theatre.current?.rendre(demande.nom,demande.type,reperes[etape].arret,1);return;}
   let raf=0,avant=performance.now();
   const image=(maintenant:number)=>{
+   raf=0;
    const dt=document.hidden?0:Math.min(.1,(maintenant-avant)/1000);avant=maintenant;
    const maximum=mode.current?TABLEAUX[demande.type].duree:Math.max(position.current,reperes[etape].arret);
    position.current=Math.min(maximum,position.current+dt*facteurAnimations());
@@ -71,10 +73,15 @@ function Cuisine({demande,fermer}:{demande:Demande;fermer:()=>void}){
    if(mode.current&&actuel!==index.current){index.current=actuel;setEtape(actuel);}
    theatre.current?.rendre(demande.nom,demande.type,position.current,1);
    if(mode.current&&position.current>=TABLEAUX[demande.type].duree){setAuto(false);setFini(true);}
+   // Entre les étapes, rien ne bouge : la boucle s'arrête au repère de fin de l'étape (pas à pas) ou à la fin de la démonstration (auto).
+   if(mode.current?position.current>=TABLEAUX[demande.type].duree:position.current>=reperes[etape].arret)return;
    raf=requestAnimationFrame(image);
-  };raf=requestAnimationFrame(image);return()=>cancelAnimationFrame(raf);
+  };
+  const demarrer=()=>{if(!raf){avant=performance.now();raf=requestAnimationFrame(image);}};
+  relance.current=demarrer;demarrer();return()=>{relance.current=undefined;cancelAnimationFrame(raf);};
   // Chaque changement d'étape relance uniquement son geste ; la sélection auto conserve l'ordre.
  },[pret,etape,reprise,demande,nb,reduit,reperes]);
+ React.useEffect(()=>{relance.current?.();},[auto]); // « Lecture auto » reprend une animation arrêtée
  const fullscreen=()=>{setAuto(false);const d=dialog.current;if(document.fullscreenElement)void document.exitFullscreen();else if(d?.requestFullscreen)void d.requestFullscreen().catch(()=>{});};
  const groupes=[...recette.ingredients,...(recette.extras??[])];
  return <dialog ref={dialog} className="gc-cuisine" aria-labelledby="gc-cuisine-titre" data-gc-cuisine="" data-mode={auto?'auto':'etapes'} onCancel={e=>{e.preventDefault();fermer();}} onClick={e=>{if(e.target===e.currentTarget)fermer();}}>

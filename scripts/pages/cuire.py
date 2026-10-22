@@ -38,11 +38,24 @@ même avec le feuillet), si un contenu met une correction dans un mot important,
 important se relit mal sur l'encre rendue : aucun mot n'est jamais perdu ni faux en silence.
 
 Déterministe ; cache par empreinte (description, page au dos, papier, croquis utilisés, version de
-l'outil d'écriture et du moteur) dans design-system/baked/pages/.cuisson.json.
+l'outil d'écriture et du moteur) dans design-system/baked/pages/.cuisson.json. La passe ×4 a sa propre
+entrée (`x4/<id>`, clé = empreinte de la page + qualités ×4) : une cuisson sans ×4 garde les tuiles encore
+valides, et une cuisson avec ×4 ne fait la passe que pour les pages dont l'encre a changé.
+
+Modes (`--mode`) :
+  complet  (défaut) écran 2× + variante 1× + passe ×4 + relecture de l'encre rendue → design-system/baked/pages/ ;
+  rapide   aperçu : composition papier + encre à 1× en JPEG, ni 1×, ni ×4, ni relecture de l'encre rendue
+           (la mise en page, les débordements et les mots douteux de l'écriture sont les mêmes) →
+           verification/out/cuisson-rapide/ (son propre cache et son propre manifeste ; le site n'y lit rien).
+Parallèle (`--jobs N`, défaut : cœurs − 2, au plus 8) : les pages à cuire, dans l'ordre du carnet, sont
+réparties par paquets de pages voisines (même feuillet, même double page : les rectos se partagent) entre
+des processus séparés (OMP_NUM_THREADS=1 chacun) ; le processus principal réunit le cache et le manifeste.
+Mêmes octets qu'en séquentiel : chaque page ne dépend que de sa description, de son dos et de son vis-à-vis.
 """
 from __future__ import annotations
 
 import argparse
+import os
 import hashlib
 import inspect
 import io
@@ -50,6 +63,7 @@ import json
 import re
 import sys
 import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 ICI = Path(__file__).resolve().parent
@@ -75,16 +89,24 @@ SOURCES = RACINE / "design-system/sources/papier"
 SORTIE = RACINE / "design-system/baked/pages"
 SORTIE_A5 = RACINE / "design-system/baked/a5"
 APERCUS = RACINE / "verification/out/b/pages"
+SORTIE_RAPIDE = RACINE / "verification/out/cuisson-rapide"
 CACHE = SORTIE / ".cuisson.json"
 ECHELLE = F.ECRAN.echelle
 LARG, HAUT = F.ECRAN.px()
 VERSION_MOTEUR = 3
 Q_PAPIER, Q_ENCRE, Q_ALPHA = 86, 50, 70
 Q_4X, Q_4X_ALPHA = 60, 70
+VERSION_4X = 1
 Q_A5 = 92
 BUDGET_ENCRE = 245 * 1024  # encre ≤ 250 Ko par page à 2× : au-delà, qualités un peu plus basses
 PALIERS = [(Q_ENCRE, Q_ALPHA), (46, 64), (42, 58), (38, 52)]
 NON_PAGES = {"manifeste.json", "papiers.json", "recettes.json"}
+# Aperçu rapide : même page de référence, échelle 1, sans variante 1× ni passe ×4.
+RAPIDE = F.Format("rapide", F.ECRAN.W, F.ECRAN.H, 1.0)
+# Scripts lancés à la main, jamais importés par la cuisson (vérifié sur sys.modules après une cuisson
+# complète) : hors empreinte, les modifier ne recuit plus tout le carnet. tests/ n'est pas lu (glob *.py).
+HORS_EMPREINTE = {"apercu.py", "reparer.py", "planche_graines.py", "couverture.py"}
+OUTIL_HORS_EMPREINTE = {"banc.py", "specimen.py", "convertir_poids.py", "amorces_maison.py", "rendu.py"}
 UNITES_IMPORTANTES = re.compile(r"^(\d|½|¼|¾|°|th\.?$|(g|kg|cl|ml|l|dl|min|h|cm|mm)[.,;:)]*$)")
 
 
@@ -95,12 +117,34 @@ def h(obj) -> str:
 def empreinte_moteur() -> str:
     m = hashlib.sha256(str(VERSION_MOTEUR).encode())
     for f in sorted(ICI.glob("*.py")):
-        m.update(f.read_bytes())
+        if f.name not in HORS_EMPREINTE:
+            m.update(f.read_bytes())
     # réglage de l'écriture (taille, épaisseur) : le changer recuit tout le carnet
     reglage = ICI.parents[1] / "src/content/ecriture.json"
     if reglage.exists():
         m.update(reglage.read_bytes())
     return m.hexdigest()[:16]
+
+
+def empreinte_outil() -> str:
+    """Comme ecriture.version_outil, sans les scripts de l'outil d'écriture que la cuisson n'importe pas."""
+    outil = getattr(ECR, "OUTIL", None)
+    if outil is None:
+        return ECR.version_outil()
+    h_ = hashlib.sha256()
+    for f in sorted(Path(outil).glob("*.py")):
+        if f.name not in OUTIL_HORS_EMPREINTE:
+            h_.update(f.name.encode())
+            h_.update(f.read_bytes())
+    return h_.hexdigest()[:16]
+
+
+def _ecrire(f: Path, data: bytes):
+    """Écriture atomique : deux processus qui cuisent le même papier écrivent les mêmes octets."""
+    f.parent.mkdir(parents=True, exist_ok=True)
+    tmp = f.with_name(f".{f.name}.{os.getpid()}.tmp")
+    tmp.write_bytes(data)
+    tmp.replace(f)
 
 
 def _accepte(f, nom: str) -> bool:
@@ -253,7 +297,7 @@ def folio_dos(folio: int) -> int:
 
 class Cuisine:
     def __init__(self, pages, papiers, force=False, apercus=False, sortie: Path | None = None, apercus_dir: Path | None = None,
-                 cache: Path | None = None, fmt: F.Format = F.ECRAN, x4: bool | None = None):
+                 cache: Path | None = None, fmt: F.Format = F.ECRAN, x4: bool | None = None, relecture: bool = True):
         self.pages = pages
         self.papiers = papiers
         self.force = force
@@ -261,6 +305,7 @@ class Cuisine:
         self.fmt = fmt
         self.ech = float(fmt.echelle)
         self.x4 = fmt.tuiles_4x if x4 is None else (x4 and fmt.tuiles_4x)
+        self.relecture = relecture
         sortie = sortie or SORTIE
         self.sortie = sortie
         self.apercus_dir = apercus_dir or APERCUS
@@ -273,8 +318,9 @@ class Cuisine:
         self._recto = {}
         self._mises = {}
         self._cfg = {}
+        self._V = {}
         self.moteur = empreinte_moteur()
-        self.outil = ECR.version_outil()
+        self.outil = empreinte_outil()
         self.journal = []
         self.douteux_importants: dict = {}
 
@@ -332,7 +378,7 @@ class Cuisine:
         if not hasattr(PAP, "zones_mise") or not self.cfg_papier(fid).get("eviter_texte"):
             return None
         m = re.fullmatch(r"f(\d+)", fid)
-        if not m or self.fmt.nom != "ecran":
+        if not m or self.fmt.mm:  # impression : papier indépendant du texte
             return None
         n = int(m.group(1))
         out = []
@@ -379,8 +425,7 @@ class Cuisine:
             t = time.time()
             img = self._fabriquer_papier(cfg, larg, haut, eviter)
             data = R.webp(img, Q_PAPIER)
-            f.parent.mkdir(parents=True, exist_ok=True)
-            f.write_bytes(data)
+            _ecrire(f, data)
             self.cache[f"papier/{fid}"] = cle
             self.journal.append(f"papier {fid} : {len(data) // 1024} Ko ({time.time() - t:.1f} s)")
         arr = np.asarray(Image.open(f).convert("RGB"))
@@ -389,15 +434,14 @@ class Cuisine:
             f1 = self.sortie / "1x" / "papier" / f"{fid}.webp"
             if self.force or self.cache.get(f"papier1x/{fid}") != cle or not f1.exists():
                 petit = Image.fromarray(arr).resize((larg // 2, haut // 2), Image.LANCZOS)
-                f1.parent.mkdir(parents=True, exist_ok=True)
-                f1.write_bytes(R.webp(np.asarray(petit), Q_PAPIER))
+                _ecrire(f1, R.webp(np.asarray(petit), Q_PAPIER))
                 self.cache[f"papier1x/{fid}"] = cle
             self._papier1[fid] = np.asarray(Image.open(f1).convert("RGB"))
         self._papier[fid] = arr
         return arr
 
     def _px(self, page):
-        if self.fmt.nom == "ecran":
+        if not self.fmt.mm:  # écran (et aperçu rapide) : taille de la page ou du feuillet volant
             w, h_ = taille_page(page)
             return int(w * self.ech), int(h_ * self.ech)
         return self.fmt.px()
@@ -530,28 +574,59 @@ class Cuisine:
                   "vav": [self.empreinte_contenu(vav), dec] if vav else None,
                   "papier": self.cfg_papier(fid), "eviter": self._eviter(fid), "miroir": miroir, "outil": self.outil,
                   "moteur": self.moteur,
-                  "q": [Q_ENCRE, Q_ALPHA], "fmt": self.fmt.manifeste(), "x4": bool(self.x4)})
+                  "q": [Q_ENCRE, Q_ALPHA], "fmt": self.fmt.manifeste(), "x4": False})  # ×4 : clé à part (x4/<id>)
 
     def _a_jour(self, pid: str, ent: dict) -> bool:
         if self.fmt.nom != "ecran":
             return (self.sortie / f"{pid}.jpg").exists()
-        if not ((self.sortie / f"{pid}.webp").exists() and (self.sortie / "1x" / f"{pid}.webp").exists()):
+        return (self.sortie / f"{pid}.webp").exists() and (self.sortie / "1x" / f"{pid}.webp").exists()
+
+    def _cle_4x(self, cle: str) -> str:
+        return h({"page": cle, "q": [Q_4X, Q_4X_ALPHA], "v": VERSION_4X})
+
+    def _x4_a_jour(self, pid: str, cle: str) -> bool:
+        e = self.cache.get(f"x4/{pid}")
+        if self.force or not e or e.get("cle") != self._cle_4x(cle):
             return False
-        if self.x4:
-            tu = (ent.get("manifeste") or {}).get("encre4x", {}).get("tuiles", [])
-            return bool(tu) and all((self.sortie / "4x" / f"{pid}-{t[0]}{t[1]}.webp").exists() for t in tu)
-        return True
+        tu = e["encre4x"].get("tuiles", [])
+        return bool(tu) and all((self.sortie / "4x" / f"{pid}-{t[0]}{t[1]}.webp").exists() for t in tu)
+
+    def a_cuire(self, pid: str) -> bool:
+        """Faut-il calculer quelque chose pour cette page (encre, ou passe ×4 demandée) ?"""
+        cle = self.empreinte_page(pid)
+        ent = self.cache.get(f"page/{pid}")
+        if self.force or not ent or ent.get("cle") != cle or not self._a_jour(pid, ent):
+            return True
+        return bool(self.x4 and not self._x4_a_jour(pid, cle))
+
+    def _avec_4x(self, pid: str, cle: str, man: dict) -> dict:
+        """Manifeste de la page + `encre4x` quand ses tuiles sont valides (faites ici si --sans-4x n'est pas
+        demandé) ; sans ×4, des tuiles encore valides sont gardées, des tuiles périmées ne sont pas annoncées."""
+        man = {k: v for k, v in man.items() if k != "encre4x"}
+        if not self.fmt.tuiles_4x:
+            return man
+        if not self._x4_a_jour(pid, cle):
+            if not self.x4:
+                return man
+            page = self.pages[pid]
+            mise, _, _, extra = self.recto(pid)
+            P = self.papier_page(page)
+            V = self._V[pid] if pid in self._V else self.transparence(page, P.shape[:2])
+            self.cache[f"x4/{pid}"] = {"cle": self._cle_4x(cle), "encre4x": self.passe_4x(pid, page, mise, P, V, extra)}
+        man["encre4x"] = self.cache[f"x4/{pid}"]["encre4x"]
+        return man
 
     def cuire(self, pid: str):
         page = self.pages[pid]
         cle = self.empreinte_page(pid)
         ent = self.cache.get(f"page/{pid}")
         if not self.force and ent and ent.get("cle") == cle and self._a_jour(pid, ent):
-            return ent["manifeste"]
+            return self._avec_4x(pid, cle, ent["manifeste"])
         mise, Rt, union, extra = self.recto(pid)
         P = self.papier_page(page)
         fid, miroir = feuillet_de(page)
         V = self.transparence(page, P.shape[:2])
+        self._V[pid] = V
         rgba, voulu = R.composer(P, Rt, union, V, self.ech)
         from PIL import Image
         man = {}
@@ -563,8 +638,7 @@ class Cuisine:
                     break
             if (q, qa) != PALIERS[0]:
                 self.journal.append(f"{pid} : encre au-dessus du budget, qualités {q}/{qa}")
-            f.parent.mkdir(parents=True, exist_ok=True)
-            f.write_bytes(data)
+            _ecrire(f, data)
             # contrôle : le calque décodé posé sur le papier décodé redonne la composition voulue
             dec = np.asarray(Image.open(io.BytesIO(data)).convert("RGBA")).astype(np.float32)
             a = dec[..., 3:4] / 255.0
@@ -585,23 +659,19 @@ class Cuisine:
             u1 = union.reshape(hh, 2, ww, 2).mean(axis=(1, 3))
             rgba1, _ = R.composer(P1, R1.astype(np.float32), u1.astype(np.float32), None)
             d1 = R.webp(rgba1, Q_ENCRE, Q_ALPHA)
-            (self.sortie / "1x").mkdir(parents=True, exist_ok=True)
-            (self.sortie / "1x" / f"{pid}.webp").write_bytes(d1)
+            _ecrire(self.sortie / "1x" / f"{pid}.webp", d1)
             self.journal.append(f"{pid} : encre 1× {len(d1) // 1024} Ko")
-            if self.x4:
-                man["encre4x"] = self.passe_4x(pid, page, mise, P, V, extra)
         else:
             # impression : l'image composée (papier + encre), opaque
             img = np.clip(np.round(voulu), 0, 255).astype(np.uint8)
             data = R.jpeg(img, Q_A5, self.fmt.dpi)
-            self.sortie.mkdir(parents=True, exist_ok=True)
-            (self.sortie / f"{pid}.jpg").write_bytes(data)
+            _ecrire(self.sortie / f"{pid}.jpg", data)
             self.journal.append(f"{pid} : {self.fmt.nom} {img.shape[1]} × {img.shape[0]} px, {len(data) // 1024} Ko")
             if self.apercus:
                 self.apercus_dir.mkdir(parents=True, exist_ok=True)
                 Image.fromarray(img).save(self.apercus_dir / f"{pid}.png")
         # relecture de l'encre rendue (lot E)
-        relu = self.relire(pid, mise, rgba)
+        relu = self.relire(pid, mise, rgba) if self.relecture else None
         W_, H_ = mise.W, mise.H
         fr = lambda r: [round(r[0] / W_, 5), round(r[1] / H_, 5), round((r[2] - r[0]) / W_, 5), round((r[3] - r[1]) / H_, 5)]  # noqa: E731
         base = {
@@ -622,7 +692,7 @@ class Cuisine:
                 "encre1x": f"pages/1x/{pid}",
             })
         else:
-            base.update({"image": f"a5/{pid}", "fichier": f"{pid}.jpg", "face": page.get("face"), "invite": page.get("invite"),
+            base.update({"image": f"{self.fmt.nom}/{pid}", "fichier": f"{pid}.jpg", "face": page.get("face"), "invite": page.get("invite"),
                          "ordre": page.get("ordre")})
         man = dict(base, **man)
         man.update({
@@ -668,6 +738,8 @@ class Cuisine:
         if relu is not None:
             man["relu"] = True
         self.cache[f"page/{pid}"] = {"cle": cle, "manifeste": man}
+        man = self._avec_4x(pid, cle, man)
+        self._V.pop(pid, None)
         return man
 
     # ---- passe ×4 (loupe) ----------------------------------------------------------------------
@@ -705,7 +777,7 @@ class Cuisine:
             rgba, _ = R.composer(Pu, Rt, union, V, ech4)
             tuile = np.ascontiguousarray(rgba[y0 - Y0:y1 - Y0, x0 - X0:x1 - X0])
             data = R.webp(tuile, Q_4X, Q_4X_ALPHA)
-            (dossier / f"{pid}-{r}{c}.webp").write_bytes(data)
+            _ecrire(dossier / f"{pid}-{r}{c}.webp", data)
             poids += len(data)
             out.append([r, c, round(x0 / W4, 6), round(y0 / H4, 6), round((x1 - x0) / W4, 6), round((y1 - y0) / H4, 6)])
         self.journal.append(f"{pid} : encre ×4 en 4 tuiles, {poids // 1024} Ko ({time.time() - t:.1f} s)")
@@ -818,21 +890,111 @@ def _imprimer(lignes):
         print("  " + l, flush=True)
 
 
+def jobs_defaut() -> int:
+    return max(1, min(8, (os.cpu_count() or 2) - 2))
+
+
+def ordre_carnet(pages: dict, ids: list) -> list:
+    """Pages dans l'ordre du carnet (folio ; un feuillet volant juste après sa double page)."""
+    fol_double = {}
+    for p in pages.values():
+        if p.get("folio") is not None and p.get("double") is not None:
+            fol_double[p["double"]] = max(fol_double.get(p["double"], 0), p["folio"])
+    def cle(pid):
+        p = pages[pid]
+        if p.get("folio") is not None and p.get("type") != "feuillet":
+            return (p["folio"], 0, pid)
+        return (fol_double.get(p.get("double"), 10 ** 6) + 0.5, 0 if p.get("face", "recto") == "recto" else 1, pid)
+    return sorted(ids, key=cle)
+
+
+def paquets(ids: list, jobs: int) -> list:
+    """Un paquet de pages voisines par processus : les papiers et les rectos du dos et du vis-à-vis ne
+    sont recalculés qu'aux bords des paquets (des paquets plus petits coûtent plus qu'ils n'équilibrent)."""
+    n = max(2, -(-len(ids) // jobs))
+    return [ids[k:k + n] for k in range(0, len(ids), n)]
+
+
+_CACHES_ECR = (("rendu", "_CACHE_RENDU"), ("groupes", "_CACHE_GROUPES"))
+
+
+def _travail(ids, pages, papiers, cache, options):
+    """Processus de cuisson : un paquet de pages, rien d'écrit dans les caches partagés (le processus
+    principal réunit le cache des pages et les caches de relecture de l'outil d'écriture)."""
+    os.environ.setdefault("OMP_NUM_THREADS", "1")
+    os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
+    if hasattr(ECR, "_sauver_cache"):
+        ECR._sauver_cache = lambda nom: None
+    fmt = F.FORMATS.get(options["format"]) or RAPIDE
+    cu = Cuisine(pages, papiers, force=options["force"], apercus=options["apercus"], sortie=Path(options["sortie"]),
+                 apercus_dir=Path(options["apercus_dir"]), cache=Path(options["cache"]), fmt=fmt, x4=options["x4"],
+                 relecture=options["relecture"])
+    cu.cache = cache
+    avant = dict(cache)
+    out = {}
+    for pid in ids:
+        t = time.time()
+        out[pid] = cu.cuire(pid)
+        _imprimer(cu.journal + [f"{pid} : {time.time() - t:.1f} s (processus {os.getpid()})"])
+        cu.journal.clear()
+    ecr = {nom: dict(getattr(ECR, attr) or {}) for nom, attr in _CACHES_ECR if hasattr(ECR, attr)}
+    return out, {k: v for k, v in cu.cache.items() if avant.get(k) != v}, ecr, list(MEP.ENCRES_REMPLACEES)
+
+
+def cuire_en_parallele(cuisine: Cuisine, ids: list, jobs: int, entrees: dict):
+    sauver = getattr(ECR, "_sauver_cache", None)
+    options = {"format": cuisine.fmt.nom, "force": cuisine.force, "apercus": cuisine.apercus, "sortie": str(cuisine.sortie),
+               "apercus_dir": str(cuisine.apercus_dir), "cache": str(cuisine.cache_f), "x4": cuisine.x4,
+               "relecture": cuisine.relecture}
+    lots = paquets(ordre_carnet(cuisine.pages, ids), jobs)
+    print(f"  {len(ids)} pages à cuire en {len(lots)} paquets sur {jobs} processus", flush=True)
+    import multiprocessing
+    with ProcessPoolExecutor(max_workers=min(jobs, len(lots)), mp_context=multiprocessing.get_context("spawn")) as pool:
+        futs = [pool.submit(_travail, lot, cuisine.pages, cuisine.papiers, dict(cuisine.cache), options) for lot in lots]
+        for fut in as_completed(futs):
+            out, cache, ecr, encres = fut.result()
+            entrees.update(out)
+            cuisine.cache.update(cache)
+            cuisine.ecrire_cache()
+            for e in encres:
+                if e not in MEP.ENCRES_REMPLACEES:
+                    MEP.ENCRES_REMPLACEES.append(e)
+            for nom, d in ecr.items():
+                if sauver and hasattr(ECR, "_cache_disque"):
+                    ECR._cache_disque(nom).update(d)
+                    sauver(nom)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", default="")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--apercus", action="store_true", help="écrit aussi verification/out/b/pages/<id>.png")
     ap.add_argument("--format", default="ecran", choices=sorted(F.FORMATS))
+    ap.add_argument("--mode", default="complet", choices=["complet", "rapide"])
     ap.add_argument("--sans-4x", action="store_true", help="sans la passe d'encre ×4 (loupe)")
+    ap.add_argument("--jobs", type=int, default=jobs_defaut(), help="processus de cuisson (1 : séquentiel)")
+    ap.add_argument("--sortie", default="", help="dossier de sortie (cache et manifeste compris) au lieu du défaut")
     a = ap.parse_args(argv)
     t0 = time.time()
+    rapide = a.mode == "rapide"
+    if rapide and a.format != "ecran":
+        ap.error("--mode rapide : format écran seulement")
+    sortie = Path(a.sortie).resolve() if a.sortie else (SORTIE_RAPIDE if rapide else None)
     pages, papiers, plan = charger_descriptions()
     carnet, roster = RC.charger_carnet(), RC.charger_roster()
     seul = [s for s in a.only.split(",") if s]
     journal = []
     pages = appliquer_carnet(pages, carnet, roster, journal)
-    cuisine = Cuisine(pages, papiers, force=a.force, apercus=a.apercus, x4=not a.sans_4x)
+    cache_f = sortie / ".cuisson.json" if sortie else None
+    if cache_f is not None and not cache_f.exists() and CACHE.exists():
+        # la pagination ne dépend pas de la sortie : reprise du cache principal (lecture seule)
+        cache_f.parent.mkdir(parents=True, exist_ok=True)
+        base = json.loads(CACHE.read_text())
+        cache_f.write_text(json.dumps({k: v for k, v in base.items() if k.startswith("pagination/")}, ensure_ascii=False))
+    cuisine = Cuisine(pages, papiers, force=a.force, apercus=a.apercus, x4=not a.sans_4x and not rapide,
+                      sortie=sortie, cache=cache_f, apercus_dir=(sortie / "apercus") if sortie else None,
+                      fmt=RAPIDE if rapide else F.ECRAN, relecture=not rapide)
     generees, erreurs = paginer_recettes(plan, papiers, cuisine.cache, cuisine.moteur, cuisine.outil, a.force, seul, journal,
                                          carnet, roster)
     cuisine.ecrire_cache()  # la pagination est longue : gardée tout de suite
@@ -853,11 +1015,19 @@ def main(argv=None):
     contenus = verifier_contenus({pid: pages[pid] for pid in choisies})
     for pid, errs in contenus.items():
         print(f"✗ {pid} : correction dans un mot important : {errs}", flush=True)
-    SORTIE.mkdir(parents=True, exist_ok=True)
-    manifeste_f = DESCRIPTIONS / "manifeste.json"
+    cuisine.sortie.mkdir(parents=True, exist_ok=True)
+    manifeste_f = (sortie / "manifeste.json") if sortie else DESCRIPTIONS / "manifeste.json"
     ancien = json.loads(manifeste_f.read_text()) if manifeste_f.exists() else {"pages": {}}
     entrees = dict(ancien.get("pages", {}))
-    for pid in choisies:
+    a_cuire = [pid for pid in choisies if cuisine.a_cuire(pid)]
+    print(f"  mode {a.mode} : {len(choisies)} pages, {len(a_cuire)} à cuire"
+          + ("" if cuisine.x4 or rapide else " (sans ×4 : tuiles valides gardées)"), flush=True)
+    paralleles = set(a_cuire) if a.jobs > 1 and len(a_cuire) > 1 else set()
+    if paralleles:
+        cuire_en_parallele(cuisine, a_cuire, a.jobs, entrees)
+    for pid in choisies:  # séquentiel, et pages déjà à jour (manifeste depuis le cache)
+        if pid in paralleles:
+            continue
         entrees[pid] = cuisine.cuire(pid)
         cuisine.ecrire_cache()
         _imprimer(cuisine.journal)
@@ -867,15 +1037,18 @@ def main(argv=None):
     entrees = {k: v for k, v in sorted(entrees.items()) if k in pages}
     man = {
         "version": 3,
-        "largeur": MEP.W, "hauteur": MEP.H, "echelle": ECHELLE,
+        "largeur": MEP.W, "hauteur": MEP.H, "echelle": cuisine.ech,
         "pages": entrees,
     }
+    if rapide:
+        man["mode"] = "rapide"
     manifeste_f.write_text(json.dumps(man, indent=1, ensure_ascii=False) + "\n")
     cuisine.ecrire_cache()
     if a.apercus:
-        APERCUS.mkdir(parents=True, exist_ok=True)
+        ap_dir = cuisine.apercus_dir
+        ap_dir.mkdir(parents=True, exist_ok=True)
         for pid in choisies:
-            (APERCUS / f"{pid}.json").write_text(json.dumps(pages[pid], indent=1, ensure_ascii=False, default=MEP._json_defaut) + "\n")
+            (ap_dir / f"{pid}.json").write_text(json.dumps(pages[pid], indent=1, ensure_ascii=False, default=MEP._json_defaut) + "\n")
     return bilan(entrees, choisies, erreurs, contenus, t0)
 
 

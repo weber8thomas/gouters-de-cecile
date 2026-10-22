@@ -29,6 +29,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync, renameSyn
 import { join, dirname } from 'node:path';
 import { createHash } from 'node:crypto';
 import { execFileSync, spawnSync } from 'node:child_process';
+import { pathToFileURL } from 'node:url';
 import { ROOT } from './lib/serve.mjs';
 import { launch } from './lib/browser.mjs';
 import { rng, hash } from './lib/prng.mjs';
@@ -36,7 +37,8 @@ import { gradientNoise, fbm } from './lib/fx-papier.mjs';
 import { tornEdge } from './lib/organic.mjs';
 import { c } from './lib/tokens.mjs';
 
-const FFMPEG = '/usr/bin/ffmpeg';
+// GC_FFMPEG : autre binaire (ex. Homebrew : /opt/homebrew/bin/ffmpeg) ; sinon /usr/bin/ffmpeg, sinon celui du PATH.
+export const FFMPEG = process.env.GC_FFMPEG || (existsSync('/usr/bin/ffmpeg') ? '/usr/bin/ffmpeg' : 'ffmpeg');
 const SRC = join(ROOT, 'design-system/sources/videos');
 const OUT = join(ROOT, 'verification/out/v');
 const DOSSIERS_ORIGINAUX = [join(SRC, 'originaux'), join(OUT, 'originaux')];
@@ -45,25 +47,57 @@ const CACHE = join(OUT, 'cache.json');
 const CONTENU = join(ROOT, 'src/content/videos.json');
 
 /** Vidéo : 720p 25 i/s, 12 s, fondus enchaînés de 0,6 s entre plans. */
-const V = { w: 1280, h: 720, fps: 25, duree: 12, fondu: 0.6, crf: 27, crfMax: 33, plafond: 2_000_000 };
+export const V = { w: 1280, h: 720, fps: 25, duree: 12, fondu: 0.6, crf: 27, crfMax: 33, plafond: 2_000_000 };
 
 /**
  * Tirage : photo 3:2 de 1080×720 px (à 1:1 avec le cadre 720p), bord blanc cassé ≈ 5 à 7,6 %
  * (un peu décentré, comme un vrai tirage d'agrandisseur), coins arrondis de 9 px, et une marge
  * transparente de 100 px tout autour pour l'ombre de contact, les coins photo et le scotch qui déborde.
  */
-const T = { pw: 1080, ph: 720, bord: { g: 58, d: 62, h: 56, b: 64 }, marge: 100, rayon: 9 };
+export const T = { pw: 1080, ph: 720, bord: { g: 58, d: 62, h: 56, b: 64 }, marge: 100, rayon: 9 };
 T.w = T.pw + T.bord.g + T.bord.d; // 1200 : largeur du papier
 T.h = T.ph + T.bord.h + T.bord.b; // 840
 T.cw = T.w + 2 * T.marge; // 1400 : largeur de l'image
 T.ch = T.h + 2 * T.marge; // 1040
+
+/**
+ * Formats portrait (album de Cécile, version locale : vidéos verticales 720×1280, tirages verticaux). Tout le code de
+ * rendu lit V et T ; avecFormat() les met le temps d'un appel, puis les remet en paysage. Les bords du papier, la marge,
+ * les coins et les ombres ne changent pas : seuls la photo (720×1080, 2:3), le papier (840×1200) et l'image
+ * (1040×1400) sont tournés.
+ */
+export const FORMATS = {
+  paysage: { video: { w: 1280, h: 720 }, photo: { pw: 1080, ph: 720 } },
+  portrait: { video: { w: 720, h: 1280 }, photo: { pw: 720, ph: 1080 } },
+};
+/**
+ * Exécute `fn` avec la vidéo et le tirage au format demandé : { video, tirage }. Chacun est « paysage » | « portrait »
+ * (formats 3:2 et 2:3 de FORMATS) ou des dimensions exactes : video { w, h } (px de la vidéo), tirage { pw, ph } (px de la
+ * photo du tirage) — ratio d'origine, sans rognage (album de Cécile). L'orientation du tirage peut différer de celle de la
+ * vidéo. Valable aussi pour un `fn` asynchrone ; pas de rendus en parallèle.
+ */
+export async function avecFormat({ video = 'paysage', tirage = 'paysage' } = {}, fn) {
+  const avant = { V: { w: V.w, h: V.h }, T: { ...T } };
+  Object.assign(V, typeof video === 'string' ? FORMATS[video].video : video);
+  Object.assign(T, typeof tirage === 'string' ? FORMATS[tirage].photo : tirage);
+  T.w = T.pw + T.bord.g + T.bord.d;
+  T.h = T.ph + T.bord.h + T.bord.b;
+  T.cw = T.w + 2 * T.marge;
+  T.ch = T.h + 2 * T.marge;
+  try {
+    return await fn();
+  } finally {
+    Object.assign(V, avant.V);
+    Object.assign(T, avant.T);
+  }
+}
 
 // ---------------------------------------------------------------------------------------------
 // Les invités de la démo. Segments : [de, a] en secondes dans l'original ; x, y : position du cadre
 // 16:9 dans l'original (0 à 1) ; z : zoom (≥ 1). tirage.x : position du cadre 3:2 dans le cadre 16:9.
 // lenteur (optionnel, défaut 1) : étire le plan (1,1 = 10 % plus lent) quand la source est trop courte pour 12 s.
 
-const INVITES = {
+export const INVITES = {
   lisa: {
     titre: 'Le carrot cake de Lisa',
     angle: -2.4,
@@ -142,9 +176,9 @@ const smooth = (t) => t * t * (3 - 2 * t);
 const smoothstep = (a, b, x) => smooth(clamp((x - a) / (b - a)));
 const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
 const f2 = (n) => +n.toFixed(2);
-const f5 = (n) => +n.toFixed(5);
+export const f5 = (n) => +n.toFixed(5);
 
-function ffmpeg(argv, { input } = {}) {
+export function ffmpeg(argv, { input } = {}) {
   const r = spawnSync(FFMPEG, ['-hide_banner', '-nostdin', '-v', 'error', ...argv], { input, maxBuffer: 1 << 30 });
   if (r.status !== 0) throw new Error(`ffmpeg a échoué (${r.status}) :\n${r.stderr}\n${argv.join(' ')}`);
   return r.stdout;
@@ -179,7 +213,7 @@ function original(id) {
 // Vidéo
 
 /** Chaîne de filtres d'un plan : cadre 16:9, 25 i/s, couleur commune à l'invité. */
-function filtrePlan(i, seg, couleur) {
+export function filtrePlan(i, seg, couleur) {
   const z = seg.z ?? 1;
   const [x, y] = [seg.x ?? 0.5, seg.y ?? 0.5];
   const sw = Math.round(V.w * z), sh = Math.round(V.h * z);
@@ -192,16 +226,21 @@ function filtrePlan(i, seg, couleur) {
   );
 }
 
+/** Fichier d'un plan : `fichier` (version locale, prive/) ou `clip` (originaux Pexels de credits.json). */
+const sourceDe = (s) => s.fichier ?? original(s.clip);
+
 function entreesPlans(inv) {
-  return inv.segments.flatMap((s) => ['-ss', s.de.toFixed(3), '-t', (s.a - s.de).toFixed(3), '-i', original(s.clip)]);
+  return inv.segments.flatMap((s) => ['-ss', s.de.toFixed(3), '-t', (s.a - s.de).toFixed(3), '-i', sourceDe(s)]);
 }
 
-function encoderVideo(id, inv, sortie) {
+// cfr : remet une cadence constante après le ralenti (setpts) : les ffmpeg récents refusent sinon l'enchaînement xfade.
+export function encoderVideo(id, inv, sortie, { court = false, cfr = false } = {}) {
   const segs = inv.segments;
   const durees = segs.map((s) => (s.a - s.de) * (s.lenteur ?? 1));
   const total = durees.reduce((a, b) => a + b, 0) - V.fondu * (segs.length - 1);
-  if (total < V.duree - 1e-6) throw new Error(`${id} : montage trop court (${total.toFixed(2)} s)`);
-  let fc = segs.map((s, i) => filtrePlan(i, s, inv.couleur) + `[s${i}]`).join(';');
+  // court : le montage peut durer moins de V.duree (vidéo plus courte que 12 s, sans boucle ni ralenti forcés)
+  if (!court && total < V.duree - 1e-6) throw new Error(`${id} : montage trop court (${total.toFixed(2)} s)`);
+  let fc = segs.map((s, i) => filtrePlan(i, s, inv.couleur) + (cfr ? `,fps=${V.fps}` : '') + `[s${i}]`).join(';');
   let dernier = 's0', acc = durees[0];
   for (let i = 1; i < segs.length; i++) {
     const out = `x${i}`;
@@ -210,13 +249,20 @@ function encoderVideo(id, inv, sortie) {
     dernier = out;
   }
   fc += `;[${dernier}]null[v]`;
-  const nA = segs.length;
+  return encoderGraphe(id, entreesPlans(inv), fc, segs.length, sortie, { court });
+}
+
+/**
+ * Encode un graphe de filtres qui produit « [v] » : `entrees` = arguments « -i » des plans, `nA` = nombre
+ * d'entrées vidéo (l'entrée suivante est le silence AAC). CRF relevé tant que le fichier dépasse V.plafond.
+ */
+export function encoderGraphe(id, entrees, fc, nA, sortie, { court = false } = {}) {
   const tmp = sortie + '.tmp.mp4';
   for (let crf = V.crf; crf <= V.crfMax; crf++) {
     ffmpeg([
-      '-y', ...entreesPlans(inv),
+      '-y', ...entrees,
       '-f', 'lavfi', '-i', 'anullsrc=channel_layout=stereo:sample_rate=48000',
-      '-filter_complex', fc, '-map', '[v]', '-map', `${nA}:a`, '-t', String(V.duree),
+      '-filter_complex', fc, '-map', '[v]', '-map', `${nA}:a`, '-t', String(V.duree), ...(court ? ['-shortest'] : []), // court : le silence s'arrête avec l'image
       '-c:v', 'libx264', '-preset', 'slow', '-profile:v', 'high', '-level:v', '3.1', '-crf', String(crf),
       '-maxrate', '1.4M', '-bufsize', '2.8M', '-pix_fmt', 'yuv420p', '-g', String(2 * V.fps), '-threads', '4',
       '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-color_range', 'tv',
@@ -235,16 +281,16 @@ function encoderVideo(id, inv, sortie) {
 }
 
 /** Première image du montage (avant compression), RGB 8 bits 1280×720, matrice bt709. */
-function premiereImage(inv) {
+export function premiereImage(inv) {
   const s = inv.segments[0];
   return ffmpeg([
-    '-ss', s.de.toFixed(3), '-t', '1', '-i', original(s.clip),
+    ...(s.image ? ['-loop', '1'] : []), '-ss', s.de.toFixed(3), '-t', '1', '-i', sourceDe(s), // image : « -ss » seul ne rendrait aucune image
     '-filter_complex', filtrePlan(0, s, inv.couleur) + ',scale=in_color_matrix=bt709:in_range=tv:flags=lanczos+accurate_rnd+full_chroma_int,format=rgb24[v]',
     '-map', '[v]', '-frames:v', '1', '-f', 'rawvideo', '-pix_fmt', 'rgb24', 'pipe:1',
   ]);
 }
 
-function webp(raw, w, h, fmt, sortie, qualite) {
+export function webp(raw, w, h, fmt, sortie, qualite) {
   mkdirSync(dirname(sortie), { recursive: true });
   ffmpeg(['-y', '-f', 'rawvideo', '-pix_fmt', fmt, '-s', `${w}x${h}`, '-i', 'pipe:0',
     '-c:v', 'libwebp', '-quality', String(qualite), '-compression_level', '6', '-preset', 'photo',
@@ -406,7 +452,7 @@ function courbe(pts, n = 12) {
  * Puis virage par une table de couleurs chaudes (gc-sepia-*), bord blanc cassé jauni vers l'extérieur,
  * texture du papier, usure des coins, coins arrondis et ombre de contact. Renvoie RGBA T.cw × T.ch.
  */
-function tirageSepia(id, frame, p) {
+export function tirageSepia(id, frame, p) {
   const { pw, ph } = T;
   const R = rng(hash(`tirage:${id}`));
   const n = pw * ph;
@@ -603,7 +649,7 @@ function tirageSepia(id, frame, p) {
 }
 
 /** Zone du cadre vidéo 1280×720 montrée par la photo du tirage : [x, y, largeur, hauteur] en px. */
-function cadreTirage(p) {
+export function cadreTirage(p) {
   const z = p.z ?? 1;
   const sw = T.pw / z, sh = T.ph / z;
   return [(V.w - sw) * p.x, (V.h - sh) * (p.y ?? 0.5), sw, sh];
@@ -635,7 +681,7 @@ const coinsTirage = () => {
 };
 
 /** Document SVG des coins photo (noir ou kraft) ou des bandes de scotch, sur le cadre du tirage. */
-function svgMaintien(id, mt) {
+export function svgMaintien(id, mt) {
   const R = rng(hash(`maintien:${id}`));
   const { cw: CW, ch: CH } = T;
   let defs = '', corps = '';
@@ -768,7 +814,7 @@ function svgMaintien(id, mt) {
 }
 
 /** Rend un SVG dans Chromium et renvoie un WebP (alpha conservé). */
-async function rendreSvg(page, svg, W, H, qualite = 0.9) {
+export async function rendreSvg(page, svg, W, H, qualite = 0.9) {
   const dataUrl = await page.evaluate(async ({ svg, W, H, qualite }) => {
     const img = new Image();
     img.decoding = 'sync';
@@ -878,6 +924,14 @@ async function planche(page, ids) {
 
 // ---------------------------------------------------------------------------------------------
 
+/** Empreintes du code de rendu (tirage sépia, coins et scotch) : invalident le cache quand il change. */
+export function empreintesCode() {
+  return {
+    tirage: sha256([tirageSepia, couverture, flou, champ, trait, tampon, courbe, bruit, normaliser].map(String).join('\n')),
+    coins: sha256(String(svgMaintien) + String(rendreSvg)),
+  };
+}
+
 async function main() {
   const ids = Object.keys(INVITES).filter((id) => !ONLY || ONLY.includes(id));
   let browser = null, page = null;
@@ -886,10 +940,7 @@ async function main() {
     return page;
   };
   const contenu = existsSync(CONTENU) ? JSON.parse(readFileSync(CONTENU, 'utf8')) : {};
-  const empreinteCode = {
-    tirage: sha256([tirageSepia, couverture, flou, champ, trait, tampon, courbe, bruit, normaliser].map(String).join('\n')),
-    coins: sha256(String(svgMaintien) + String(rendreSvg)),
-  };
+  const empreinteCode = empreintesCode();
   try {
     if (!PLANCHE_SEULE) {
       for (const id of ids) {
@@ -951,4 +1002,5 @@ async function main() {
   }
 }
 
-await main();
+// Importé par scripts/medias-local.mjs (version locale) : il réutilise les fonctions de rendu sans lancer la cuisson.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();

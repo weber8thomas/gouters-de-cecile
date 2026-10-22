@@ -3,8 +3,8 @@
   "source": "src/content/recettes/lisa-de-paris.txt",
   "adaptations": [
     "Source reçue le 21 octobre conservée dans le TXT, marqueurs de mise en forme séparés du texte affiché.",
-    "Message provisoire explicitement demandé ; aucun petit mot personnel généré.",
-    "Numéro de la hotline masqué à la demande de Thomas, y compris dans la source publique ; reste de la phrase intact."
+    "Numéro de la hotline masqué à la demande de Thomas, y compris dans la source publique ; reste de la phrase intact.",
+    "Petit mot reçu le 22 octobre, conservé tel quel (retours à la ligne compris) ; seuls l’en-tête de transmission (« Mot pour Cécile: », « Petit mot : », le prénom en tête) est retiré. Les emojis sont dessinés au trait (cœur, sourire)."
   ],
   "style": {
     "main": "soignee",
@@ -98,7 +98,7 @@
       "texte": "Saupoudre légèrement de sucre glace et laisse reposer."
     }
   ],
-  "mot": "Lorem ipsum — message à venir",
+  "mot": "Joyeux anniversaire Cécile ! 🫶🏼\nPour tes 30 ans, je te souhaite beaucoup de bonheur, de profiter à fond de cette nouvelle décennie et de vivre plein de beaux moments avec les gens que tu aimes.\nJe partage avec toi cette recette de biscuits de ma mamie, qui fait partie de mes petites traditions de Noël chaque année. J’espère qu’elle te plaira !\nGros bisous et à très vite 🥰",
   "signature": "Lisa De Paris",
   "nom": "Lisa De Paris",
   "details": [

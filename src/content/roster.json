@@ -6,7 +6,7 @@
     },
     {
       "id": "tartes",
-      "title": "Tartes & confitures"
+      "title": "Tartes & crumbles"
     },
     {
       "id": "biscuits",
@@ -37,11 +37,11 @@
       "recette": "src/content/recettes/emeline.json"
     },
     {
-      "slug": "clemence",
-      "firstName": "Clémence",
+      "slug": "julien",
+      "firstName": "Julien & Mila",
       "city": "",
       "chapter": "gateaux",
-      "recette": "src/content/recettes/clemence.json"
+      "recette": "src/content/recettes/julien.json"
     },
     {
       "slug": "pierrette",
@@ -59,17 +59,31 @@
     },
     {
       "slug": "lise",
-      "firstName": "Lise",
+      "firstName": "Lise & Maxime",
       "city": "",
       "chapter": "tartes",
       "recette": "src/content/recettes/lise.json"
     },
     {
-      "slug": "julien",
-      "firstName": "Julien",
+      "slug": "alba",
+      "firstName": "Alba, Maël & Marc",
+      "city": "",
+      "chapter": "tartes",
+      "recette": "src/content/recettes/alba.json"
+    },
+    {
+      "slug": "shannen",
+      "firstName": "Shannen, Olivia, Nathan & Martin",
+      "city": "",
+      "chapter": "tartes",
+      "recette": "src/content/recettes/shannen.json"
+    },
+    {
+      "slug": "clemence",
+      "firstName": "Clémence & Mila",
       "city": "",
       "chapter": "biscuits",
-      "recette": "src/content/recettes/julien.json"
+      "recette": "src/content/recettes/clemence.json"
     },
     {
       "slug": "laura",
@@ -94,10 +108,17 @@
     },
     {
       "slug": "sarah",
-      "firstName": "Sarah",
+      "firstName": "Sarah, Gabriel & Maxime",
       "city": "",
       "chapter": "brioches",
       "recette": "src/content/recettes/sarah.json"
+    },
+    {
+      "slug": "lily",
+      "firstName": "Lily",
+      "city": "",
+      "chapter": "brioches",
+      "recette": "src/content/recettes/lily.json"
     },
     {
       "slug": "lea",
@@ -136,17 +157,24 @@
     },
     {
       "slug": "margot-chapuzy",
-      "firstName": "Margot Chapuzy",
+      "firstName": "Margot & Flo",
       "city": "",
       "chapter": "gateaux",
       "recette": "src/content/recettes/margot-chapuzy.json"
     },
     {
       "slug": "elise",
-      "firstName": "Elise",
+      "firstName": "Elise & Lucas",
       "city": "",
       "chapter": "crepes",
       "recette": "src/content/recettes/elise.json"
+    },
+    {
+      "slug": "marine",
+      "firstName": "Marine, Guillaume & Théo",
+      "city": "",
+      "chapter": "gateaux",
+      "recette": "src/content/recettes/marine.json"
     }
   ]
 }

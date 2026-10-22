@@ -71,16 +71,24 @@ export function useMediaClock(duration = 30, { autoPlay = false, media = null }:
         ended: media.ended,
       });
     EVENTS.forEach((e) => media.addEventListener(e, read));
+    // la boucle ne tourne que pendant la lecture (en pause : aucun rAF)
     let raf = 0;
     const loop = () => {
-      if (!media.paused) read();
+      raf = 0;
+      if (media.paused) return;
+      read();
       raf = requestAnimationFrame(loop);
     };
-    raf = requestAnimationFrame(loop);
+    const demarrer = () => { if (!raf && !media.paused) raf = requestAnimationFrame(loop); };
+    media.addEventListener('play', demarrer);
+    media.addEventListener('playing', demarrer);
+    demarrer();
     read();
     if (autoPlay) void media.play().catch(() => undefined);
     return () => {
       EVENTS.forEach((e) => media.removeEventListener(e, read));
+      media.removeEventListener('play', demarrer);
+      media.removeEventListener('playing', demarrer);
       cancelAnimationFrame(raf);
     };
     // autoPlay ne compte qu'au branchement de l'élément : il n'est pas une dépendance.

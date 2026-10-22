@@ -16,8 +16,14 @@
     "textures": "node scripts/bake-textures.mjs",
     "artifact": "node scripts/build-artifact.mjs",
     "assets": "node scripts/assets.mjs",
+    "pages:rapide": "node scripts/bake-pages.mjs --mode rapide",
+    "pages:complet": "node scripts/bake-pages.mjs --mode complet",
     "invite": "node scripts/invite.mjs",
-    "build:site": "node scripts/build-tokens.mjs && npm run gen && node scripts/gen-entry.mjs --target site && tsc --noEmit && vite build"
+    "build:site": "node scripts/garde-prive.mjs --avant && node scripts/build-tokens.mjs && npm run gen && node scripts/gen-entry.mjs --target site && tsc --noEmit && vite build && node scripts/garde-prive.mjs dist/site",
+    "medias:local": "node scripts/medias-local.mjs",
+    "medias:planche": "node scripts/medias-local.mjs --planche",
+    "build:local": "node scripts/build-local.mjs",
+    "preview:local": "vite preview --outDir dist/local --host"
   },
   "dependencies": {
     "motion": "12.43.0",

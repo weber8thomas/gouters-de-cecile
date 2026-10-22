@@ -6,7 +6,8 @@ export interface PageRedessin { id: string; el: HTMLElement; ecrite: boolean }
 
 const NS = 'http://www.w3.org/2000/svg';
 const EFFACE = .85, PAUSE = .2, TRACE = 3.1;
-const PREMIER_REDESSIN = 2, REPOS_REDESSIN = 5.5;
+// Plus de redessin autonome au repos (perf iPad : il repeignait l'encre ≈ 37 fois par seconde) ; `relancer` le déclenche à la demande.
+const PREMIER_REDESSIN = Infinity, REPOS_REDESSIN = Infinity;
 export const DUREE_REDESSIN = EFFACE + PAUSE + TRACE;
 const borne = (n: number) => Math.max(0, Math.min(1, n));
 

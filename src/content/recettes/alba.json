@@ -1,0 +1,70 @@
+{
+  "slug": "alba",
+  "source": "src/content/recettes/alba.txt",
+  "adaptations": [
+    "Recette reçue sous forme de fiche illustrée : les ingrédients sont des dessins avec leur quantité. Lecture validée par Thomas : sachet brun versé à l'étape 05 = sucre, sac noir puisé à la cuillère à l'étape 04 = farine.",
+    "Les étapes 01 à 05 sont dessinées sans texte : courtes phrases écrites d'après les dessins, validées par Thomas. Les étapes 06 et 07 et la cuisson reprennent les mots de la fiche.",
+    "Petit mot provisoire : Lorem ipsum — message à venir ; aucun message authentique inventé.",
+    "Nom et signature « Alba, Maël & Marc » (la famille signe, sur la demande de Thomas)."
+  ],
+  "style": {
+    "main": "ecole",
+    "encre": "bille-bleue",
+    "police": "playwrite-tradition",
+    "graine": 23593
+  },
+  "titre": "Crumble aux pommes",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "4 pommes"
+        },
+        {
+          "texte": "250 g de sucre"
+        },
+        {
+          "texte": "150 g de farine"
+        },
+        {
+          "texte": "75 g de beurre"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Éplucher et évider les pommes."
+    },
+    {
+      "titre": "2.",
+      "texte": "Les couper en morceaux."
+    },
+    {
+      "titre": "3.",
+      "texte": "Les disposer dans un plat."
+    },
+    {
+      "titre": "4.",
+      "texte": "Verser la farine dans un saladier."
+    },
+    {
+      "titre": "5.",
+      "texte": "Ajouter le sucre."
+    },
+    {
+      "titre": "6.",
+      "texte": "Ajouter le beurre et mélanger à la main pour obtenir des grains."
+    },
+    {
+      "titre": "7.",
+      "texte": "Recouvrir les pommes avec les grains."
+    }
+  ],
+  "cuisson": "25 min · 210 °C · Therm. 7",
+  "mot": "Lorem ipsum — message à venir",
+  "signature": "Alba, Maël & Marc",
+  "nom": "Alba, Maël & Marc"
+}

@@ -41,7 +41,12 @@ function cibleDeLaCommande() {
   return i > 0 ? process.argv[i + 1] : undefined;
 }
 
-export function inventory({ cible = cibleDeLaCommande() } = {}) {
+/**
+ * `dossier` / `prefixe` / `sous` : inventaire d'un autre dossier d'images cuites, pour la version locale
+ * (scripts/gen-entry.mjs, GC_LOCAL=1 : prive/baked, noms logiques préfixés « local/ », seulement `sous` =
+ * ['videos', 'photos']). Les chemins `file` sont alors relatifs à ce dossier. Par défaut : design-system/baked.
+ */
+export function inventory({ cible = cibleDeLaCommande(), dossier = BAKED, prefixe = '', sous = null } = {}) {
   const out = {};
   const walk = (p) => {
     if (!existsSync(p)) return;
@@ -51,14 +56,16 @@ export function inventory({ cible = cibleDeLaCommande() } = {}) {
       const ext = extname(n).toLowerCase();
       if (!TYPES[ext]) continue;
       const buf = readFileSync(f);
-      const name = relative(BAKED, f).split('\\').join('/').replace(/\.[^.]+$/, '');
+      const name = prefixe + relative(dossier, f).split('\\').join('/').replace(/\.[^.]+$/, '');
       if (out[name]) throw new Error(`nom d'asset en double : ${name}`);
       const site = siteSeulement(name, TYPES[ext]);
       if (site && cible === 'artifact') continue;
-      out[name] = { file: `baked/${relative(BAKED, f).split('\\').join('/')}`, sha: createHash('sha256').update(buf).digest('hex'), ...size(buf, ext), bytes: buf.length, type: TYPES[ext], ...(site ? { site: true } : {}) };
+      const fichier = relative(dossier, f).split('\\').join('/');
+      out[name] = { file: prefixe ? fichier : `baked/${fichier}`, sha: createHash('sha256').update(buf).digest('hex'), ...size(buf, ext), bytes: buf.length, type: TYPES[ext], ...(site ? { site: true } : {}) };
     }
   };
-  walk(BAKED);
+  if (sous) sous.forEach((d) => walk(join(dossier, d)));
+  else walk(dossier);
   return out;
 }
 

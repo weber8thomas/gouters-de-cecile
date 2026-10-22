@@ -3,7 +3,9 @@
   "source": "src/content/recettes/sarah.txt",
   "adaptations": [
     "Texte reçu conservé intégralement dans le fichier TXT ; seuls les marqueurs de liste sont retirés pour la mise en page.",
-    "Petit mot provisoire demandé par Thomas : Lorem ipsum — message à venir ; aucun message authentique inventé."
+    "Petit mot reçu le 22 octobre, conservé tel quel (retours à la ligne compris) ; seuls l’en-tête de transmission (« Mot pour Cécile: », « Petit mot : », le prénom en tête) est retiré. Les emojis sont dessinés au trait (cœur, sourire).",
+    "Nom et signature « Sarah & Maxime » (la famille signe, sur la demande de Thomas).",
+    "Nom et signature « Sarah, Gabriel & Maxime » (Thomas)."
   ],
   "style": {
     "main": "ado",
@@ -73,9 +75,9 @@
       "texte": "Refroidir : laisser tiédir au moins 30 min avant de déguster."
     }
   ],
-  "mot": "Lorem ipsum — message à venir",
-  "signature": "Sarah",
-  "nom": "Sarah",
+  "mot": "je te souhaite un très joyeux anniversaire ma Cécile adorée ❤. Bienvenue dans le club de la trentaine, tu vas voir c’est cool et tout avec toujours plus de gourmandise. Gros bisous et à très vite pour déguster pleins de goûters ensemble.",
+  "signature": "Sarah, Gabriel & Maxime",
+  "nom": "Sarah, Gabriel & Maxime",
   "details": [
     "(avec option Nutella ou tout autre ajout à tartiner pour un rendu plus gourmand)",
     "Préparation : 20 min · Repos : une nuit + 30 min · Cuisson : 40 min"

@@ -9,33 +9,33 @@
   "marges": {
     "haut": 0.1
   },
-  "_": "Album « Cécile en cuisine », 1re double page (gauche) : titre manuscrit en haut, trois photos collées (photo-1 à photo-3) de tailles et d'inclinaisons variées ; une légende au crayon sous chaque photo (« Cécile, … ans », l'âge en pointillés). Titre ajusté à 1,8× pour tenir sur une ligne, au-dessus des photos, après dégagement du soulignement.",
+  "_": "Album « Le goût des bonnes choses », page 1/10 : photos 1 à 3 (zones photo-N, une par emplacement cecile-N, chacune une boîte au ratio exact du tirage, sans rognage), tailles et inclinaisons variées, sans légende ni âge. Titre manuscrit en haut.",
   "vivants": [
     {
       "nom": "photo-1",
       "rect": [
-        0.08,
-        0.22,
-        0.48,
-        0.253
+        0.12,
+        0.203,
+        0.6,
+        0.343
       ]
     },
     {
       "nom": "photo-2",
       "rect": [
-        0.6,
-        0.3,
-        0.32,
-        0.168
+        0.56,
+        0.542,
+        0.36,
+        0.255
       ]
     },
     {
       "nom": "photo-3",
       "rect": [
-        0.24,
-        0.6,
-        0.54,
-        0.284
+        0.11,
+        0.647,
+        0.36,
+        0.255
       ]
     }
   ],
@@ -46,64 +46,10 @@
       "texte": "Le goût des bonnes choses",
       "main": "cecile",
       "encre": "chocolat",
-      "echelle": 1.8,
+      "echelle": 1.6,
       "position": "centre",
       "souligne": "trait",
       "graine": 4021
-    },
-    {
-      "id": "legende-photo-1",
-      "type": "annotation",
-      "role": "legende",
-      "main": "cecile",
-      "encre": "crayon",
-      "texte": "Cécile, ……… ans",
-      "sans_parentheses": true,
-      "pente": -1.5,
-      "places": [
-        {
-          "sous": "photo-1",
-          "dx": 0.01,
-          "dy": 0.03
-        }
-      ],
-      "graine": 4031
-    },
-    {
-      "id": "legende-photo-2",
-      "type": "annotation",
-      "role": "legende",
-      "main": "cecile",
-      "encre": "crayon",
-      "texte": "Cécile, ……… ans",
-      "sans_parentheses": true,
-      "pente": -2.0,
-      "places": [
-        {
-          "sous": "photo-2",
-          "dx": 0.0,
-          "dy": 0.03
-        }
-      ],
-      "graine": 4032
-    },
-    {
-      "id": "legende-photo-3",
-      "type": "annotation",
-      "role": "legende",
-      "main": "cecile",
-      "encre": "crayon",
-      "texte": "Cécile, ……… ans",
-      "sans_parentheses": true,
-      "pente": -1.0,
-      "places": [
-        {
-          "sous": "photo-3",
-          "dx": 0.02,
-          "dy": 0.03
-        }
-      ],
-      "graine": 4033
     }
   ]
 }

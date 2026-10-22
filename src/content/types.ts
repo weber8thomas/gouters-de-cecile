@@ -146,6 +146,13 @@ export interface DoubleCarnet {
   pages?: { gauche: string; droite: string };
 }
 
+/** Encart : double page sans folio, hors de `doubles` (le moteur de cuisson l'ignore ; aucun folio n'est décalé). */
+export interface EncartCarnet extends DoubleCarnet {
+  /** Double page (ou encart) après laquelle il s'insère. */
+  apres: string;
+}
+
 export interface Carnet {
   doubles: DoubleCarnet[];
+  encarts?: EncartCarnet[];
 }

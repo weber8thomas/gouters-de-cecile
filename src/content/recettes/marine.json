@@ -1,0 +1,82 @@
+{
+  "slug": "marine",
+  "source": "src/content/recettes/marine.txt",
+  "adaptations": [
+    "Texte reçu conservé intégralement dans le fichier TXT ; dans le JSON, l’en-tête « Recette Tiramisu » devient le titre « Tiramisu », les tirets de liste sont retirés, les étapes « 1 - » deviennent « 1. » dans l’ordre reçu, les espaces en fin de ligne sont retirés. Mots, quantités et fautes éventuelles tels quels.",
+    "« Un peu de rhum », écrit sous la liste sans tiret dans la source, est compté comme un ingrédient (le dernier de la liste), sur décision de Thomas.",
+    "Emojis : 😋 (« Savourez 😋 ») est dessiné au trait (sourire). ☕️ (« Café ☕️ ») n’est pas reconnu par l’écriture : il est remplacé dans le JSON par le croquis de tasse « :tasse: », le plus proche des croquis existants ; la source TXT garde ☕️.",
+    "« Savourez 😋 » est traité comme une fin de recette (paragraphe après les étapes).",
+    "Petit mot reçu le 22 octobre, conservé tel quel (retours à la ligne compris, « 30eme » comme reçu). Emojis : 🥰, 😋 reconnus (sourire) ; ♥️ (cœur noir U+2665) remplacé par ❤️, le cœur déjà reconnu ; 🎂 non reconnu, remplacé par le croquis de gâteau à bougies « :gateau-bougies: », le plus proche des croquis existants.",
+    "Signature et nom « Marine, Guillaume & Théo » (la recette et le mot sont signés par la famille)."
+  ],
+  "style": {
+    "main": "ado",
+    "encre": "plume",
+    "police": "caveat",
+    "graine": 26641
+  },
+  "titre": "Tiramisu",
+  "titreSouligne": "double",
+  "ingredients": [
+    {
+      "lignes": [
+        {
+          "texte": "100g sucre roux"
+        },
+        {
+          "texte": "250g de mascarpone"
+        },
+        {
+          "texte": "1 sachet de sucre vanillé"
+        },
+        {
+          "texte": "3 œufs"
+        },
+        {
+          "texte": "Boudoir"
+        },
+        {
+          "texte": "Café :tasse:"
+        },
+        {
+          "texte": "Cacao"
+        },
+        {
+          "texte": "Un peu de rhum"
+        }
+      ]
+    }
+  ],
+  "etapes": [
+    {
+      "titre": "1.",
+      "texte": "Séparer le blanc des jaunes. Mettre les jaunes dans un saladier. Ajouter le sucre roux, le sucre vanillé. Mélanger. Ajouter le mascarpone et fouetter le mélange."
+    },
+    {
+      "titre": "2.",
+      "texte": "Battre les blancs. Ajouter les blancs délicatement dans le mélange, remuer délicatement avec une spatule."
+    },
+    {
+      "titre": "3.",
+      "texte": "Mettre du café et un peu de rhum dans une assiette à soupe. Tremper les boudoirs."
+    },
+    {
+      "titre": "4.",
+      "texte": "Mettre directement les boudoirs dans le plat. Ajouter le mélange. Rajouter une couche de boudoirs."
+    },
+    {
+      "titre": "5.",
+      "texte": "Mettre le plat au réfrigérateur pendant au moins 4-5h."
+    },
+    {
+      "titre": "6.",
+      "texte": "Ajouter le cacao dans le plat."
+    }
+  ],
+  "apres": [
+    "Savourez 😋"
+  ],
+  "mot": "Joyeux anniversaire Cécile pour ta 30eme année :gateau-bougies:🥰\nNous te souhaitons plein de bonheur, d’amour et de beaux moments avec ta petite famille !\nProfite à fond de ta journée et fêtez bien ça 🥰\nTu nous diras des nouvelles du tiramisu 😋\nGros bisous ❤️",
+  "signature": "Marine, Guillaume & Théo",
+  "nom": "Marine, Guillaume & Théo"
+}

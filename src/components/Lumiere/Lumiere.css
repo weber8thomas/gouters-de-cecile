@@ -44,7 +44,8 @@
 .gc-lumiere__bain,
 .gc-lumiere__voile,
 .gc-ombre-feu {
-  /* Calques promus une fois pour toutes : le feu tourne en continu (opacité et translation composées). */
+  /* Calques promus une fois pour toutes : leur dégradé est peint UNE fois, le vacillement du feu (src/lib/vacille.ts)
+     n'anime que leur opacité, sur le compositeur (aucune repeinture). */
   will-change: opacity, transform;
   backface-visibility: hidden;
 }
@@ -236,6 +237,11 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+}
+
+/* Le seul calque vivant du papier : promu, son dégradé pleine page n'est plus repeint à chaque variation d'opacité. */
+.gc-lumiere-papier__bougie {
+  will-change: opacity;
 }
 
 .gc-lumiere-papier__penombre {

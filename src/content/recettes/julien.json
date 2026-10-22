@@ -3,7 +3,9 @@
   "source": "src/content/recettes/julien.txt",
   "adaptations": [
     "Source du nouveau plan conservée intégralement dans le fichier .txt ; seuls les marqueurs de mise en forme Markdown sont retirés des champs à écrire. Aucun texte ni quantité abrégé.",
-    "Le petit mot du plan antérieur n’est pas un message authentique fourni par un invité : remplacé à la demande de Thomas par le placeholder explicite."
+    "22/10 : recettes inversées à la demande de Thomas (la recette était attribuée par erreur à Clémence) ; « … de Clémence » devient « … de Julien ».",
+    "Petit mot reçu le 22 octobre, conservé tel quel (retours à la ligne compris) ; seuls l’en-tête de transmission (« Mot pour Cécile: », « Petit mot : », le prénom en tête) est retiré. Les emojis sont dessinés au trait (cœur, sourire).",
+    "Nom et signature « Julien & Mila », confirmé par Thomas le 22/10."
   ],
   "style": {
     "main": "ado",
@@ -11,34 +13,30 @@
     "graine": 9689,
     "police": "shantell"
   },
-  "titre": "Cookies moelleux pépites & noisettes",
+  "titre": "Cheesecake spéculoos & framboises",
   "titreSouligne": "double",
   "ingredients": [
     {
+      "titre": "Base :",
       "lignes": [
         {
-          "texte": "220 g de farine"
-        },
+          "texte": "200 g de spéculoos en miettes, 70 g de beurre fondu"
+        }
+      ]
+    },
+    {
+      "titre": "Crème :",
+      "lignes": [
         {
-          "texte": "120 g de beurre demi-sel pommade"
-        },
+          "texte": "450 g de cream cheese (Philadelphia), 150 g de crème fraîche épaisse, 90 g de sucre glace, 2 œufs"
+        }
+      ]
+    },
+    {
+      "titre": "Garniture :",
+      "lignes": [
         {
-          "texte": "100 g de cassonade + 40 g de sucre blanc"
-        },
-        {
-          "texte": "1 œuf frais"
-        },
-        {
-          "texte": "1 c. à café d'extrait de vanille"
-        },
-        {
-          "texte": "1 c. à café de bicarbonate (ou levure)"
-        },
-        {
-          "texte": "160 g de grosses pépites de chocolat (noir et lait)"
-        },
-        {
-          "texte": "50 g de noisettes torréfiées concassées"
+          "texte": "200 g de framboises fraîches + coulis"
         }
       ]
     }
@@ -46,31 +44,31 @@
   "etapes": [
     {
       "titre": "1.",
-      "texte": "Crémer le beurre pommade avec les sucres, puis ajouter l'œuf et la vanille."
+      "texte": "Mélanger les miettes de spéculoos et le beurre fondu. Tasser au fond d'un moule à charnière et réserver 30 min au frais."
     },
     {
       "titre": "2.",
-      "texte": "Ajouter la farine et le bicarbonate sans trop travailler la pâte. Incorporer les pépites et noisettes."
+      "texte": "Fouetter le cream cheese avec le sucre glace, ajouter la crème fraîche, puis les œufs un à un sans trop battre."
     },
     {
       "titre": "3.",
-      "texte": "Former des boules généreuses et les placer 30 min au frigo."
+      "texte": "Verser sur le biscuit, enfoncer quelques framboises dans la crème."
     },
     {
       "titre": "4.",
-      "texte": "Enfourner à 175 °C pendant 10 à 12 minutes (les bords doivent dorer mais le centre doit rester très mou)."
+      "texte": "Cuire 45 min à 150 °C au four. Laisser refroidir dans le four éteint, puis réfrigérer au moins 6h."
     },
     {
       "titre": "5.",
-      "texte": "Le secret de Julien : Laisser tiédir sur la plaque, ils durcissent en surface tout en restant fondants à cœur."
+      "texte": "Le dressage de Julien : Recouvrir de framboises fraîches et d'un coulis au moment de servir."
     }
   ],
-  "mot": "Lorem ipsum — message à venir",
-  "signature": "Julien",
-  "nom": "Julien",
+  "mot": "Joyeux anniversaire Cécile ! J'espère que ma recette préférée de goûter te plaira autant qu'à moi !",
+  "signature": "Julien & Mila",
+  "nom": "Julien & Mila",
   "notesMarge": [
     {
-      "texte": "Ne surtout pas trop les cuire !",
+      "texte": "À préparer la veille, c'est encore meilleur !",
       "pres": "titre"
     }
   ]
